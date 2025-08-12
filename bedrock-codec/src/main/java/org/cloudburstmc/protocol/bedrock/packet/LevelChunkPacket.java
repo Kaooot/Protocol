@@ -7,33 +7,34 @@ import it.unimi.dsi.fastutil.longs.LongList;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.cloudburstmc.protocol.bedrock.data.Dimension;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
-@ToString(doNotUseGetters = true, exclude = {"data"})
+@ToString(doNotUseGetters = true, exclude = {"serializedChunkData"})
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class LevelChunkPacket extends AbstractReferenceCounted implements BedrockPacket {
     private int chunkX;
     private int chunkZ;
-    private int subChunksLength;
-    private boolean cachingEnabled;
+    private int subChunksCount;
+    private boolean cacheEnabled;
     /**
      * @since v471
      */
-    private boolean requestSubChunks;
+    private boolean clientNeedsToRequestSubChunks;
     /**
      * @since v485
      */
-    private int subChunkLimit;
+    private int clientRequestSubChunkLimit;
 
-    private final LongList blobIds = new LongArrayList();
+    private final LongList cacheBlobs = new LongArrayList();
 
-    private ByteBuf data;
+    private ByteBuf serializedChunkData;
 
     /**
      * @since v649
      */
-    private int dimension;
+    private Dimension dimension;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {
@@ -46,13 +47,13 @@ public class LevelChunkPacket extends AbstractReferenceCounted implements Bedroc
 
     @Override
     public LevelChunkPacket touch(Object hint) {
-        this.data.touch(hint);
+        this.serializedChunkData.touch(hint);
         return this;
     }
 
     @Override
     protected void deallocate() {
-        this.data.release();
+        this.serializedChunkData.release();
     }
 
     @Override

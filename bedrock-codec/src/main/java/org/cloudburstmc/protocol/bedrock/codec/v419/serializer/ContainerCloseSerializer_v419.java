@@ -14,13 +14,13 @@ public class ContainerCloseSerializer_v419 implements BedrockPacketSerializer<Co
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ContainerClosePacket packet) {
-        buffer.writeByte(packet.getId());
-        buffer.writeBoolean(packet.isServerInitiated());
+        buffer.writeByte(packet.getContainerID());
+        buffer.writeBoolean(packet.isServerInitiatedClose());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ContainerClosePacket packet) {
-        packet.setId(buffer.readByte());
-        packet.setServerInitiated(buffer.readBoolean());
+        packet.setContainerID(buffer.readByte());
+        packet.setServerInitiatedClose(buffer.readBoolean());
     }
 }

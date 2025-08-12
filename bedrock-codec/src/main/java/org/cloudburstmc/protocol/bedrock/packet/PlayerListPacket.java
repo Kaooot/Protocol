@@ -4,6 +4,8 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.cloudburstmc.protocol.bedrock.data.BuildPlatform;
+import org.cloudburstmc.protocol.bedrock.data.PlayerListPacketType;
 import org.cloudburstmc.protocol.bedrock.data.skin.SerializedSkin;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
@@ -16,7 +18,7 @@ import java.util.UUID;
 @ToString(doNotUseGetters = true)
 public class PlayerListPacket implements BedrockPacket {
     private final List<Entry> entries = new ObjectArrayList<>();
-    private Action action;
+    private PlayerListPacketType action;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {
@@ -27,28 +29,23 @@ public class PlayerListPacket implements BedrockPacket {
         return BedrockPacketType.PLAYER_LIST;
     }
 
-    public enum Action {
-        ADD,
-        REMOVE
-    }
-
 
     @Data
     @ToString(doNotUseGetters = true)
     @EqualsAndHashCode(doNotUseGetters = true)
     public final static class Entry {
         private final UUID uuid;
-        private long entityId;
-        private String name;
-        private String xuid;
+        private long targetActorID;
+        private String playerName;
+        private String xblXUID;
         private String platformChatId;
-        private int buildPlatform;
+        private BuildPlatform buildPlatform;
         private SerializedSkin skin;
-        private boolean teacher;
-        private boolean host;
-        private boolean trustedSkin;
-        private boolean subClient;
-        private Color color;
+        private boolean isTeacher;
+        private boolean isHost;
+        private boolean isTrustedSkin;
+        private boolean isSubClient;
+        private Color playerColor;
     }
 
     @Override

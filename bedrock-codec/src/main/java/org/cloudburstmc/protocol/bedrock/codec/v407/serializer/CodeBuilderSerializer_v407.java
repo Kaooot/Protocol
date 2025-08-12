@@ -14,12 +14,12 @@ public class CodeBuilderSerializer_v407 implements BedrockPacketSerializer<CodeB
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, CodeBuilderPacket packet) {
         helper.writeString(buffer, packet.getUrl());
-        buffer.writeBoolean(packet.isOpening());
+        buffer.writeBoolean(packet.isShouldOpenCodeBuilder());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, CodeBuilderPacket packet) {
         packet.setUrl(helper.readString(buffer));
-        packet.setOpening(buffer.readBoolean());
+        packet.setShouldOpenCodeBuilder(buffer.readBoolean());
     }
 }

@@ -19,23 +19,23 @@ public class SubChunkSerializer_v471 implements BedrockPacketSerializer<SubChunk
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, SubChunkPacket packet) {
-        VarInts.writeInt(buffer, packet.getDimension());
-        SubChunkData subChunk = packet.getSubChunks().get(0);
+        VarInts.writeInt(buffer, packet.getDimensionType());
+        SubChunkData subChunk = packet.getSubChunkDataList().get(0);
         this.serializeSubChunk(buffer, helper, packet, subChunk);
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, SubChunkPacket packet) {
-        packet.setDimension(VarInts.readInt(buffer));
+        packet.setDimensionType(VarInts.readInt(buffer));
         SubChunkData subChunk = this.deserializeSubChunk(buffer, helper, packet);
-        packet.getSubChunks().add(subChunk);
+        packet.getSubChunkDataList().add(subChunk);
     }
 
     protected void serializeSubChunk(ByteBuf buffer, BedrockCodecHelper helper, SubChunkPacket packet, SubChunkData subChunk) {
         helper.writeVector3i(buffer, subChunk.getPosition());
         helper.writeByteBuf(buffer, subChunk.getData());
-        VarInts.writeInt(buffer, subChunk.getResult().ordinal());
-        buffer.writeByte(subChunk.getHeightMapType().ordinal());
+        VarInts.writeInt(buffer, subChunk.getSubChunkRequestResult().ordinal());
+        buffer.writeByte(subChunk.getHeightMapDataType().ordinal());
         ByteBuf heightMapBuf = subChunk.getHeightMapData();
         buffer.writeBytes(heightMapBuf, heightMapBuf.readerIndex(), HEIGHT_MAP_LENGTH);
     }
@@ -44,8 +44,8 @@ public class SubChunkSerializer_v471 implements BedrockPacketSerializer<SubChunk
         SubChunkData subChunk = new SubChunkData();
         subChunk.setPosition(helper.readVector3i(buffer));
         subChunk.setData(helper.readByteBuf(buffer));
-        subChunk.setResult(SubChunkRequestResult.values()[VarInts.readInt(buffer)]);
-        subChunk.setHeightMapType(HeightMapDataType.values()[buffer.readByte()]);
+        subChunk.setSubChunkRequestResult(SubChunkRequestResult.values()[VarInts.readInt(buffer)]);
+        subChunk.setHeightMapDataType(HeightMapDataType.values()[buffer.readByte()]);
         subChunk.setHeightMapData(buffer.readRetainedSlice(HEIGHT_MAP_LENGTH));
         return subChunk;
     }

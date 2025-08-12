@@ -3,19 +3,19 @@ package org.cloudburstmc.protocol.bedrock.codec.v471;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
-import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
+import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelEventSerializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelSoundEvent1Serializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v313.serializer.LevelSoundEvent2Serializer_v313;
 import org.cloudburstmc.protocol.bedrock.codec.v332.serializer.LevelSoundEventSerializer_v332;
 import org.cloudburstmc.protocol.bedrock.codec.v361.serializer.LevelEventGenericSerializer_v361;
 import org.cloudburstmc.protocol.bedrock.codec.v465.Bedrock_v465;
-import org.cloudburstmc.protocol.bedrock.codec.v471.serializer.EventSerializer_v471;
+import org.cloudburstmc.protocol.bedrock.codec.v471.serializer.LegacyTelemetryEventSerializer_v471;
 import org.cloudburstmc.protocol.bedrock.codec.v471.serializer.PhotoInfoRequestSerializer_v471;
 import org.cloudburstmc.protocol.bedrock.codec.v471.serializer.SubChunkRequestSerializer_v471;
 import org.cloudburstmc.protocol.bedrock.codec.v471.serializer.SubChunkSerializer_v471;
 import org.cloudburstmc.protocol.bedrock.data.*;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataTypes;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestActionType;
 import org.cloudburstmc.protocol.bedrock.packet.*;
 import org.cloudburstmc.protocol.bedrock.transformer.TypeMapTransformer;
@@ -28,8 +28,8 @@ public class Bedrock_v471 extends Bedrock_v465 {
             .insert(83, ParticleType.SCULK_SOUL)
             .build();
 
-    protected static final EntityDataTypeMap ENTITY_DATA = Bedrock_v465.ENTITY_DATA.toBuilder()
-            .update(EntityDataTypes.AREA_EFFECT_CLOUD_PARTICLE, new TypeMapTransformer<>(PARTICLE_TYPES))
+    protected static final ActorDataTypeMap ENTITY_DATA = Bedrock_v465.ENTITY_DATA.toBuilder()
+            .update(ActorDataTypes.DATA_PARTICLE, new TypeMapTransformer<>(PARTICLE_TYPES))
             .build();
 
     protected static final TypeMap<ItemStackRequestActionType> ITEM_STACK_REQUEST_TYPES = Bedrock_v465.ITEM_STACK_REQUEST_TYPES.toBuilder()
@@ -51,7 +51,7 @@ public class Bedrock_v471 extends Bedrock_v465 {
             .protocolVersion(471)
             .minecraftVersion("1.17.40")
             .helper(() -> new BedrockCodecHelper_v471(ENTITY_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES))
-            .updateSerializer(EventPacket.class, EventSerializer_v471.INSTANCE)
+            .updateSerializer(LegacyTelemetryEventPacket.class, LegacyTelemetryEventSerializer_v471.INSTANCE)
             .updateSerializer(LevelEventPacket.class, new LevelEventSerializer_v291(LEVEL_EVENTS))
             .updateSerializer(LevelEventGenericPacket.class, new LevelEventGenericSerializer_v361(LEVEL_EVENTS))
             .updateSerializer(LevelSoundEvent1Packet.class, new LevelSoundEvent1Serializer_v291(SOUND_EVENTS))

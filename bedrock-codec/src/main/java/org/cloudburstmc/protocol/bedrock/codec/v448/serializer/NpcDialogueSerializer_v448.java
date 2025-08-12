@@ -16,8 +16,8 @@ public class NpcDialogueSerializer_v448 implements BedrockPacketSerializer<NpcDi
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, NpcDialoguePacket packet) {
-        buffer.writeLongLE(packet.getUniqueEntityId());
-        VarInts.writeInt(buffer, packet.getAction().ordinal());
+        buffer.writeLongLE(packet.getNpcId());
+        VarInts.writeInt(buffer, packet.getActionType().ordinal());
         helper.writeString(buffer, packet.getDialogue());
         helper.writeString(buffer, packet.getSceneName());
         helper.writeString(buffer, packet.getNpcName());
@@ -26,8 +26,8 @@ public class NpcDialogueSerializer_v448 implements BedrockPacketSerializer<NpcDi
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, NpcDialoguePacket packet) {
-        packet.setUniqueEntityId(buffer.readLongLE());
-        packet.setAction(VALUES[VarInts.readInt(buffer)]);
+        packet.setNpcId(buffer.readLongLE());
+        packet.setActionType(VALUES[VarInts.readInt(buffer)]);
         packet.setDialogue(helper.readString(buffer));
         packet.setSceneName(helper.readString(buffer));
         packet.setNpcName(helper.readString(buffer));

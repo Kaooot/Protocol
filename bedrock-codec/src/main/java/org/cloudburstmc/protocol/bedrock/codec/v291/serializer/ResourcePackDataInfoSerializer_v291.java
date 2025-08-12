@@ -18,10 +18,10 @@ public class ResourcePackDataInfoSerializer_v291 implements BedrockPacketSeriali
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ResourcePackDataInfoPacket packet) {
         String packInfo = packet.getPackId().toString() + (packet.getPackVersion() == null ? "" : '_' + packet.getPackVersion());
         helper.writeString(buffer, packInfo);
-        buffer.writeIntLE((int) packet.getMaxChunkSize());
-        buffer.writeIntLE((int) packet.getChunkCount());
-        buffer.writeLongLE(packet.getCompressedPackSize());
-        byte[] hash = packet.getHash();
+        buffer.writeIntLE((int) packet.getChunkSize());
+        buffer.writeIntLE((int) packet.getNumberOfChunks());
+        buffer.writeLongLE(packet.getFileSize());
+        byte[] hash = packet.getFileHash();
         VarInts.writeUnsignedInt(buffer, hash.length);
         buffer.writeBytes(hash);
     }
@@ -33,11 +33,11 @@ public class ResourcePackDataInfoSerializer_v291 implements BedrockPacketSeriali
         if (packInfo.length > 1) {
             packet.setPackVersion(packInfo[1]);
         }
-        packet.setMaxChunkSize(buffer.readIntLE());
-        packet.setChunkCount(buffer.readIntLE());
-        packet.setCompressedPackSize(buffer.readLongLE());
+        packet.setChunkSize(buffer.readIntLE());
+        packet.setNumberOfChunks(buffer.readIntLE());
+        packet.setFileSize(buffer.readLongLE());
         byte[] hash = new byte[VarInts.readUnsignedInt(buffer)];
         buffer.readBytes(hash);
-        packet.setHash(hash);
+        packet.setFileHash(hash);
     }
 }

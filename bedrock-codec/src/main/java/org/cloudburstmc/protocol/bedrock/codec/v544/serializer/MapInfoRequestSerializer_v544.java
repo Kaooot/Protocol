@@ -12,7 +12,7 @@ public class MapInfoRequestSerializer_v544 extends MapInfoRequestSerializer_v291
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, MapInfoRequestPacket packet) {
         super.serialize(buffer, helper, packet);
 
-        helper.writeArray(buffer, packet.getPixels(), ByteBuf::writeIntLE, (buf, aHelper, pixel) -> {
+        helper.writeArray(buffer, packet.getClientPixelsList(), ByteBuf::writeIntLE, (buf, aHelper, pixel) -> {
             buf.writeIntLE(pixel.getPixel());
             buf.writeShortLE(pixel.getIndex());
         });
@@ -22,7 +22,7 @@ public class MapInfoRequestSerializer_v544 extends MapInfoRequestSerializer_v291
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, MapInfoRequestPacket packet) {
         super.deserialize(buffer, helper, packet);
 
-        helper.readArray(buffer, packet.getPixels(), ByteBuf::readUnsignedIntLE, (buf, aHelper) -> {
+        helper.readArray(buffer, packet.getClientPixelsList(), ByteBuf::readUnsignedIntLE, (buf, aHelper) -> {
             int pixel = buf.readIntLE();
             int index = buf.readUnsignedShortLE();
             return new MapPixel(pixel, index);

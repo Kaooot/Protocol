@@ -3,21 +3,21 @@ package org.cloudburstmc.protocol.bedrock.data;
 public enum HudElement {
     PAPER_DOLL,
     ARMOR,
-    TOOL_TIPS, // TOOLTIPS
+    TOOL_TIPS,
     TOUCH_CONTROLS,
     CROSSHAIR,
-    HOTBAR,
+    HOT_BAR,
     HEALTH,
     PROGRESS_BAR,
-    FOOD_BAR, // HUNGER
-    AIR_BUBBLES_BAR, // AIR_BUBBLES
-    VEHICLE_HEALTH, // HORSE_HEALTH
+    HUNGER,
+    AIR_BUBBLES,
+    HORSE_HEALTH,
     /**
      * @since v671
      */
-    EFFECTS_BAR, // STATUS_EFFECTS
+    STATUS_EFFECTS,
     /**
      * @since v671
      */
-    ITEM_TEXT_POPUP, // ITEM_TEXT
+    ITEM_TEXT,
 }

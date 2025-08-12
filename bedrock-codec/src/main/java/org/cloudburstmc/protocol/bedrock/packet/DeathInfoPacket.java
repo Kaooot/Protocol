@@ -12,8 +12,8 @@ import java.util.List;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class DeathInfoPacket implements BedrockPacket {
-   private String causeAttackName;
-   private final List<String> messageList = new ObjectArrayList<>();
+   private String deathCauseAttackName;
+   private final List<String> deathCauseMessageList = new ObjectArrayList<>();
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

@@ -5,8 +5,8 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v582.serializer.CraftingDataSerializer_v582;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
-import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.CraftingDataType;
-import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.recipe.ShapedRecipeData;
+import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.CraftingDataEntryType;
+import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.recipe.ShapedRecipe;
 import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.ItemDescriptorWithCount;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -17,25 +17,25 @@ public class CraftingDataSerializer_v671 extends CraftingDataSerializer_v582 {
     public static final CraftingDataSerializer_v671 INSTANCE = new CraftingDataSerializer_v671();
 
     @Override
-    protected void writeShapedRecipe(ByteBuf buffer, BedrockCodecHelper helper, ShapedRecipeData data) {
-        helper.writeString(buffer, data.getId());
-        VarInts.writeInt(buffer, data.getWidth());
-        VarInts.writeInt(buffer, data.getHeight());
-        int count = data.getWidth() * data.getHeight();
-        List<ItemDescriptorWithCount> inputs = data.getIngredients();
+    protected void writeShapedRecipe(ByteBuf buffer, BedrockCodecHelper helper, ShapedRecipe data) {
+        helper.writeString(buffer, data.getRecipeUniqueId());
+        VarInts.writeInt(buffer, data.getRecipeWidth());
+        VarInts.writeInt(buffer, data.getRecipeHeight());
+        int count = data.getRecipeWidth() * data.getRecipeHeight();
+        List<ItemDescriptorWithCount> inputs = data.getIngredientList();
         for (int i = 0; i < count; i++) {
             helper.writeIngredient(buffer, inputs.get(i));
         }
-        helper.writeArray(buffer, data.getResults(), helper::writeItemInstance);
-        helper.writeUuid(buffer, data.getUuid());
-        helper.writeString(buffer, data.getTag());
+        helper.writeArray(buffer, data.getProductionList(), helper::writeItemInstance);
+        helper.writeUuid(buffer, data.getRecipeID());
+        helper.writeString(buffer, data.getRecipeTag());
         VarInts.writeInt(buffer, data.getPriority());
-        buffer.writeBoolean(data.isAssumeSymetry());
+        buffer.writeBoolean(data.isAssumeSymmetry());
         VarInts.writeUnsignedInt(buffer, data.getNetId());
     }
 
     @Override
-    protected ShapedRecipeData readShapedRecipe(ByteBuf buffer, BedrockCodecHelper helper, CraftingDataType type) {
+    protected ShapedRecipe readShapedRecipe(ByteBuf buffer, BedrockCodecHelper helper, CraftingDataEntryType type) {
         String recipeId = helper.readString(buffer);
         int width = VarInts.readInt(buffer);
         int height = VarInts.readInt(buffer);
@@ -51,6 +51,6 @@ public class CraftingDataSerializer_v671 extends CraftingDataSerializer_v582 {
         int priority = VarInts.readInt(buffer);
         boolean assumeSymmetry = buffer.readBoolean();
         int networkId = VarInts.readUnsignedInt(buffer);
-        return ShapedRecipeData.of(type, recipeId, width, height, inputs, outputs, uuid, craftingTag, priority, networkId, assumeSymmetry);
+        return ShapedRecipe.of(type, recipeId, width, height, inputs, outputs, uuid, craftingTag, priority, networkId, assumeSymmetry);
     }
 }

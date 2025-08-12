@@ -24,11 +24,11 @@ public interface BedrockPacketHandler extends PacketHandler {
         return PacketSignal.UNHANDLED;
     }
 
-    default PacketSignal handle(AvailableEntityIdentifiersPacket packet) {
+    default PacketSignal handle(AvailableActorIdentifiersPacket packet) {
         return PacketSignal.UNHANDLED;
     }
 
-    default PacketSignal handle(BlockEntityDataPacket packet) {
+    default PacketSignal handle(BlockActorDataPacket packet) {
         return PacketSignal.UNHANDLED;
     }
 
@@ -84,7 +84,7 @@ public interface BedrockPacketHandler extends PacketHandler {
         return PacketSignal.UNHANDLED;
     }
 
-    default PacketSignal handle(EntityEventPacket packet) {
+    default PacketSignal handle(ActorEventPacket packet) {
         return PacketSignal.UNHANDLED;
     }
 
@@ -92,11 +92,11 @@ public interface BedrockPacketHandler extends PacketHandler {
         return PacketSignal.UNHANDLED;
     }
 
-    default PacketSignal handle(EntityPickRequestPacket packet) {
+    default PacketSignal handle(ActorPickRequestPacket packet) {
         return PacketSignal.UNHANDLED;
     }
 
-    default PacketSignal handle(EventPacket packet) {
+    default PacketSignal handle(LegacyTelemetryEventPacket packet) {
         return PacketSignal.UNHANDLED;
     }
 
@@ -164,7 +164,7 @@ public interface BedrockPacketHandler extends PacketHandler {
         return PacketSignal.UNHANDLED;
     }
 
-    default PacketSignal handle(MoveEntityAbsolutePacket packet) {
+    default PacketSignal handle(MoveActorAbsolutePacket packet) {
         return PacketSignal.UNHANDLED;
     }
 
@@ -248,7 +248,7 @@ public interface BedrockPacketHandler extends PacketHandler {
         return PacketSignal.UNHANDLED;
     }
 
-    default PacketSignal handle(AddEntityPacket packet) {
+    default PacketSignal handle(AddActorPacket packet) {
         return PacketSignal.UNHANDLED;
     }
 
@@ -256,7 +256,7 @@ public interface BedrockPacketHandler extends PacketHandler {
         return PacketSignal.UNHANDLED;
     }
 
-    default PacketSignal handle(AddItemEntityPacket packet) {
+    default PacketSignal handle(AddItemActorPacket packet) {
         return PacketSignal.UNHANDLED;
     }
 
@@ -356,7 +356,7 @@ public interface BedrockPacketHandler extends PacketHandler {
         return PacketSignal.UNHANDLED;
     }
 
-    default PacketSignal handle(MoveEntityDeltaPacket packet) {
+    default PacketSignal handle(MoveActorDeltaPacket packet) {
         return PacketSignal.UNHANDLED;
     }
 
@@ -384,7 +384,7 @@ public interface BedrockPacketHandler extends PacketHandler {
         return PacketSignal.UNHANDLED;
     }
 
-    default PacketSignal handle(RemoveEntityPacket packet) {
+    default PacketSignal handle(RemoveActorPacket packet) {
         return PacketSignal.UNHANDLED;
     }
 
@@ -436,15 +436,15 @@ public interface BedrockPacketHandler extends PacketHandler {
         return PacketSignal.UNHANDLED;
     }
 
-    default PacketSignal handle(SetEntityDataPacket packet) {
+    default PacketSignal handle(SetActorDataPacket packet) {
         return PacketSignal.UNHANDLED;
     }
 
-    default PacketSignal handle(SetEntityLinkPacket packet) {
+    default PacketSignal handle(SetActorLinkPacket packet) {
         return PacketSignal.UNHANDLED;
     }
 
-    default PacketSignal handle(SetEntityMotionPacket packet) {
+    default PacketSignal handle(SetActorMotionPacket packet) {
         return PacketSignal.UNHANDLED;
     }
 
@@ -524,7 +524,7 @@ public interface BedrockPacketHandler extends PacketHandler {
         return PacketSignal.UNHANDLED;
     }
 
-    default PacketSignal handle(TakeItemEntityPacket packet) {
+    default PacketSignal handle(TakeItemActorPacket packet) {
         return PacketSignal.UNHANDLED;
     }
 
@@ -652,7 +652,7 @@ public interface BedrockPacketHandler extends PacketHandler {
         return PacketSignal.UNHANDLED;
     }
 
-    default PacketSignal handle(ItemComponentPacket packet) {
+    default PacketSignal handle(ItemRegistryPacket packet) {
         return PacketSignal.UNHANDLED;
     }
 
@@ -660,7 +660,7 @@ public interface BedrockPacketHandler extends PacketHandler {
         return PacketSignal.UNHANDLED;
     }
 
-    default PacketSignal handle(SyncEntityPropertyPacket packet) {
+    default PacketSignal handle(SyncActorPropertyPacket packet) {
         return PacketSignal.UNHANDLED;
     }
 
@@ -824,7 +824,7 @@ public interface BedrockPacketHandler extends PacketHandler {
         return PacketSignal.UNHANDLED;
     }
 
-    default PacketSignal handle(ToggleCrafterSlotRequestPacket packet) {
+    default PacketSignal handle(PlayerToggleCrafterSlotRequestPacket packet) {
         return PacketSignal.UNHANDLED;
     }
 
@@ -833,6 +833,10 @@ public interface BedrockPacketHandler extends PacketHandler {
     }
 
     default PacketSignal handle(SetHudPacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
+
+    default PacketSignal handle(ServerPlayerPostMovePositionPacket packet) {
         return PacketSignal.UNHANDLED;
     }
 
@@ -880,11 +884,11 @@ public interface BedrockPacketHandler extends PacketHandler {
         return PacketSignal.UNHANDLED;
     }
 
-    default PacketSignal handle(CameraAimAssistInstructionPacket packet) {
+    default PacketSignal handle(ClientCameraAimAssistPacket packet) {
         return PacketSignal.UNHANDLED;
     }
 
-    default PacketSignal handle(MovementPredictionSyncPacket packet) {
+    default PacketSignal handle(ClientMovementPredictionSyncPacket packet) {
         return PacketSignal.UNHANDLED;
     }
 

@@ -17,8 +17,8 @@ import java.util.Set;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class SetHudPacket implements BedrockPacket {
-    private final Set<HudElement> elements = new ObjectOpenHashSet<>();
-    private HudVisibility visibility;
+    private final Set<HudElement> hudElementList = new ObjectOpenHashSet<>();
+    private HudVisibility hudVisible;
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

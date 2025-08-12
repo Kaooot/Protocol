@@ -2,7 +2,7 @@ package org.cloudburstmc.protocol.bedrock.codec.v818.serializer;
 
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LoginSerializer_v291;
 import org.cloudburstmc.protocol.bedrock.data.auth.AuthPayload;
-import org.cloudburstmc.protocol.bedrock.data.auth.AuthType;
+import org.cloudburstmc.protocol.bedrock.data.auth.PlayerAuthenticationType;
 import org.cloudburstmc.protocol.bedrock.data.auth.CertificateChainPayload;
 import org.cloudburstmc.protocol.bedrock.data.auth.TokenPayload;
 import org.jose4j.json.JsonUtil;
@@ -21,7 +21,7 @@ public class LoginSerializer_v818 extends LoginSerializer_v291 {
     @Override
     protected String writeAuthJwt(AuthPayload payload) {
         Objects.requireNonNull(payload, "AuthPayload cannot be null");
-        checkArgument(payload.getAuthType() != null && payload.getAuthType() != AuthType.UNKNOWN,
+        checkArgument(payload.getAuthType() != null && payload.getAuthType() != PlayerAuthenticationType.UNKNOWN,
                 "Client requires non-null and non-UNKNOWN AuthType for login");
         Map<String, Object> object = new HashMap<>();
         object.put("AuthenticationType", payload.getAuthType().ordinal() - 1); // Adjusting ordinal to match the enum definition
@@ -45,10 +45,10 @@ public class LoginSerializer_v818 extends LoginSerializer_v291 {
             Map<String, Object> payload = JsonUtil.parseJson(authJwt);
             checkArgument(payload.containsKey("AuthenticationType"), "Missing AuthenticationType in JWT");
             int authTypeOrdinal = ((Number) payload.get("AuthenticationType")).intValue();
-            if (authTypeOrdinal < 0 || authTypeOrdinal >= AuthType.values().length - 1) {
+            if (authTypeOrdinal < 0 || authTypeOrdinal >= PlayerAuthenticationType.values().length - 1) {
                 throw new IllegalArgumentException("Invalid AuthenticationType ordinal: " + authTypeOrdinal);
             }
-            AuthType authType = AuthType.values()[authTypeOrdinal + 1];
+            PlayerAuthenticationType playerAuthenticationType = PlayerAuthenticationType.values()[authTypeOrdinal + 1];
 
             if (payload.containsKey("Certificate") && payload.get("Certificate") instanceof String && !((String) payload.get("Certificate")).isEmpty()) {
                 String certJson = (String) payload.get("Certificate");
@@ -57,10 +57,10 @@ public class LoginSerializer_v818 extends LoginSerializer_v291 {
                     throw new IllegalArgumentException("Invalid Certificate chain in JWT");
                 }
                 List<String> chain = (List<String>) certData.get("chain");
-                return new CertificateChainPayload(chain, authType);
+                return new CertificateChainPayload(chain, playerAuthenticationType);
             } else if (payload.containsKey("Token") && payload.get("Token") instanceof String && !((String) payload.get("Token")).isEmpty()) {
                 String token = (String) payload.get("Token");
-                return new TokenPayload(token, authType);
+                return new TokenPayload(token, playerAuthenticationType);
             } else {
                 throw new IllegalArgumentException("Invalid AuthPayload in JWT");
             }

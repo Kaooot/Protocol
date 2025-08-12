@@ -15,8 +15,8 @@ public class CorrectPlayerMovePredictionSerializer_v671 extends CorrectPlayerMov
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, CorrectPlayerMovePredictionPacket packet) {
         buffer.writeByte(packet.getPredictionType().ordinal());
-        helper.writeVector3f(buffer, packet.getPosition());
-        helper.writeVector3f(buffer, packet.getDelta());
+        helper.writeVector3f(buffer, packet.getPos());
+        helper.writeVector3f(buffer, packet.getPosDelta());
         if (packet.getPredictionType() == PredictionType.VEHICLE) {
             this.writeVehiclePrediction(buffer, helper, packet);
         }
@@ -27,8 +27,8 @@ public class CorrectPlayerMovePredictionSerializer_v671 extends CorrectPlayerMov
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, CorrectPlayerMovePredictionPacket packet) {
         packet.setPredictionType(PREDICTION_TYPES[buffer.readUnsignedByte()]);
-        packet.setPosition(helper.readVector3f(buffer));
-        packet.setDelta(helper.readVector3f(buffer));
+        packet.setPos(helper.readVector3f(buffer));
+        packet.setPosDelta(helper.readVector3f(buffer));
         if (packet.getPredictionType() == PredictionType.VEHICLE) {
             this.readVehiclePrediction(buffer, helper, packet);
         }

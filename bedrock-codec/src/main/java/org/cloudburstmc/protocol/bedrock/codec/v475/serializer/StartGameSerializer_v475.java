@@ -16,13 +16,13 @@ public class StartGameSerializer_v475 extends StartGameSerializer_v465 {
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, StartGamePacket packet) {
         super.serialize(buffer, helper, packet);
 
-        buffer.writeLongLE(packet.getBlockRegistryChecksum());
+        buffer.writeLongLE(packet.getServerBlockTypeRegistryChecksum());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, StartGamePacket packet) {
         super.deserialize(buffer, helper, packet);
 
-        packet.setBlockRegistryChecksum(buffer.readLongLE());
+        packet.setServerBlockTypeRegistryChecksum(buffer.readLongLE());
     }
 }

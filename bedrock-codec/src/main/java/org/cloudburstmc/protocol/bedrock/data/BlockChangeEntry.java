@@ -6,15 +6,9 @@ import org.cloudburstmc.protocol.bedrock.data.definitions.BlockDefinition;
 
 @Value
 public class BlockChangeEntry {
-    Vector3i position;
+    Vector3i pos;
     BlockDefinition definition;
     int updateFlags;
-    long messageEntityId;
-    MessageType messageType;
-
-    public enum MessageType {
-        NONE,
-        CREATE,
-        DESTROY
-    }
+    long syncMessageEntityUniqueID;
+    ActorBlockSyncMessageId message;
 }

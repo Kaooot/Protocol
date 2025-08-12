@@ -11,8 +11,8 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class ClientCacheBlobStatusPacket implements BedrockPacket {
-    private final LongList acks = new LongArrayList();
-    private final LongList naks = new LongArrayList();
+    private final LongList missingIds = new LongArrayList();
+    private final LongList foundIds = new LongArrayList();
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

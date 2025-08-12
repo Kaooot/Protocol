@@ -11,13 +11,13 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class PlayerActionPacket implements BedrockPacket {
-    private long runtimeEntityId;
+    private long playerRuntimeID;
     private PlayerActionType action;
     private Vector3i blockPosition;
     /**
      * @since v526
      */
-    private Vector3i resultPosition;
+    private Vector3i resultPos;
     private int face;
 
     @Override
@@ -38,4 +38,3 @@ public class PlayerActionPacket implements BedrockPacket {
         }
     }
 }
-

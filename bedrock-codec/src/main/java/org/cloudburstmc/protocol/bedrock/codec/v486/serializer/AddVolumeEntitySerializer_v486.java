@@ -15,8 +15,8 @@ public class AddVolumeEntitySerializer_v486 extends AddVolumeEntitySerializer_v4
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, AddVolumeEntityPacket packet) {
-        VarInts.writeUnsignedInt(buffer, packet.getId());
-        helper.writeTag(buffer, packet.getData());
+        VarInts.writeUnsignedInt(buffer, packet.getEntityNetworkId());
+        helper.writeTag(buffer, packet.getComponents());
         helper.writeString(buffer, packet.getIdentifier());
         helper.writeString(buffer, packet.getInstanceName());
         helper.writeString(buffer, packet.getEngineVersion());
@@ -24,8 +24,8 @@ public class AddVolumeEntitySerializer_v486 extends AddVolumeEntitySerializer_v4
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, AddVolumeEntityPacket packet) {
-        packet.setId(VarInts.readUnsignedInt(buffer));
-        packet.setData(helper.readTag(buffer, NbtMap.class));
+        packet.setEntityNetworkId(VarInts.readUnsignedInt(buffer));
+        packet.setComponents(helper.readTag(buffer, NbtMap.class));
         packet.setIdentifier(helper.readString(buffer));
         packet.setInstanceName(helper.readString(buffer));
         packet.setEngineVersion(helper.readString(buffer));

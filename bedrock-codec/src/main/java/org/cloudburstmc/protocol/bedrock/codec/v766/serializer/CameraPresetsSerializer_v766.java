@@ -18,8 +18,8 @@ public class CameraPresetsSerializer_v766 extends CameraPresetsSerializer_v729 {
 
     @Override
     public void writePreset(ByteBuf buffer, BedrockCodecHelper helper, CameraPreset preset) {
-        helper.writeString(buffer, preset.getIdentifier());
-        helper.writeString(buffer, preset.getParentPreset());
+        helper.writeString(buffer, preset.getName());
+        helper.writeString(buffer, preset.getInheritFrom());
         helper.writeOptionalNull(buffer, preset.getPos(), (buf, pos) -> buf.writeFloatLE(pos.getX()));
         helper.writeOptionalNull(buffer, preset.getPos(), (buf, pos) -> buf.writeFloatLE(pos.getY()));
         helper.writeOptionalNull(buffer, preset.getPos(), (buf, pos) -> buf.writeFloatLE(pos.getZ()));
@@ -37,11 +37,11 @@ public class CameraPresetsSerializer_v766 extends CameraPresetsSerializer_v729 {
         helper.writeOptionalNull(buffer, preset.getEntityOffset(), helper::writeVector3f);
         helper.writeOptionalNull(buffer, preset.getRadius(), ByteBuf::writeFloatLE);
         helper.writeOptionalNull(buffer, preset.getListener(), (buf, listener) -> buf.writeByte(listener.ordinal()));
-        helper.writeOptional(buffer, OptionalBoolean::isPresent, preset.getPlayEffect(),
+        helper.writeOptional(buffer, OptionalBoolean::isPresent, preset.getPlayerEffects(),
                 (buf, optional) -> buf.writeBoolean(optional.getAsBoolean()));
         helper.writeOptional(buffer, OptionalBoolean::isPresent, preset.getAlignTargetAndCameraForward(),
                 (buf, optional) -> buf.writeBoolean(optional.getAsBoolean()));
-        helper.writeOptionalNull(buffer, preset.getAimAssistPreset(), (buf, aimAssist) -> writeCameraAimAssist(buf, helper, aimAssist));
+        helper.writeOptionalNull(buffer, preset.getAimAssist(), (buf, aimAssist) -> writeCameraAimAssist(buf, helper, aimAssist));
     }
 
     @Override
@@ -76,16 +76,16 @@ public class CameraPresetsSerializer_v766 extends CameraPresetsSerializer_v729 {
 
     protected CameraAimAssistPreset readCameraAimAssist(ByteBuf buffer, BedrockCodecHelper helper) {
         String identifier = helper.readOptional(buffer, null, helper::readString);
-        Integer targetMode = helper.readOptional(buffer, null, ByteBuf::readIntLE);
+        Integer targetMode = helper.readOptional(buffer, null, (buf, h) -> (int) buf.readUnsignedByte());
         Vector2f angle = helper.readOptional(buffer, null, helper::readVector2f);
         Float distance = helper.readOptional(buffer, null, ByteBuf::readFloatLE);
         return new CameraAimAssistPreset(identifier, targetMode, angle, distance);
     }
 
     protected void writeCameraAimAssist(ByteBuf buffer, BedrockCodecHelper helper, CameraAimAssistPreset aimAssist) {
-        helper.writeOptionalNull(buffer, aimAssist.getIdentifier(), helper::writeString);
-        helper.writeOptionalNull(buffer, aimAssist.getTargetMode(), ByteBuf::writeIntLE);
-        helper.writeOptionalNull(buffer, aimAssist.getAngle(), helper::writeVector2f);
+        helper.writeOptionalNull(buffer, aimAssist.getPresetId(), helper::writeString);
+        helper.writeOptionalNull(buffer, aimAssist.getTargetMode(), ByteBuf::writeByte);
+        helper.writeOptionalNull(buffer, aimAssist.getViewAngle(), helper::writeVector2f);
         helper.writeOptionalNull(buffer, aimAssist.getDistance(), ByteBuf::writeFloatLE);
     }
 }

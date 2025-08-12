@@ -1,7 +1,7 @@
 package org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action;
 
 import lombok.Value;
-import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequestSlotData;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequestSlotInfo;
 
 /**
  * PlaceStackRequestAction is sent by the client to the server to place x amount of items from one slot into
@@ -11,8 +11,8 @@ import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemSt
 @Value
 public class PlaceAction implements TransferItemStackRequestAction {
     int count;
-    ItemStackRequestSlotData source;
-    ItemStackRequestSlotData destination;
+    ItemStackRequestSlotInfo source;
+    ItemStackRequestSlotInfo destination;
 
     @Override
     public ItemStackRequestActionType getType() {

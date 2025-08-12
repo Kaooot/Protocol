@@ -20,7 +20,7 @@ public class SubChunkSerializer_v475 extends SubChunkSerializer_v471 {
         super.serialize(buffer, helper, packet);
         buffer.writeBoolean(packet.isCacheEnabled());
         if (packet.isCacheEnabled()) {
-            buffer.writeLongLE(packet.getSubChunks().get(0).getBlobId());
+            buffer.writeLongLE(packet.getSubChunkDataList().get(0).getBlobId());
         }
     }
 
@@ -29,7 +29,7 @@ public class SubChunkSerializer_v475 extends SubChunkSerializer_v471 {
         super.deserialize(buffer, helper, packet);
         packet.setCacheEnabled(buffer.readBoolean());
         if (packet.isCacheEnabled()) {
-            packet.getSubChunks().get(0).setBlobId(buffer.readLongLE());
+            packet.getSubChunkDataList().get(0).setBlobId(buffer.readLongLE());
         }
     }
 
@@ -37,9 +37,9 @@ public class SubChunkSerializer_v475 extends SubChunkSerializer_v471 {
     protected void serializeSubChunk(ByteBuf buffer, BedrockCodecHelper helper, SubChunkPacket packet, SubChunkData subChunk) {
         helper.writeVector3i(buffer, subChunk.getPosition());
         helper.writeByteBuf(buffer, subChunk.getData());
-        VarInts.writeInt(buffer, subChunk.getResult().ordinal());
-        buffer.writeByte(subChunk.getHeightMapType().ordinal());
-        if (subChunk.getHeightMapType() == HeightMapDataType.HAS_DATA) {
+        VarInts.writeInt(buffer, subChunk.getSubChunkRequestResult().ordinal());
+        buffer.writeByte(subChunk.getHeightMapDataType().ordinal());
+        if (subChunk.getHeightMapDataType() == HeightMapDataType.HAS_DATA) {
             ByteBuf heightMapBuf = subChunk.getHeightMapData();
             buffer.writeBytes(heightMapBuf, heightMapBuf.readerIndex(), HEIGHT_MAP_LENGTH);
         }
@@ -50,10 +50,10 @@ public class SubChunkSerializer_v475 extends SubChunkSerializer_v471 {
         SubChunkData subChunk = new SubChunkData();
         subChunk.setPosition(helper.readVector3i(buffer));
         subChunk.setData(helper.readByteBuf(buffer));
-        subChunk.setResult(SubChunkRequestResult.values()[VarInts.readInt(buffer)]);
-        subChunk.setHeightMapType(HeightMapDataType.values()[buffer.readByte()]);
+        subChunk.setSubChunkRequestResult(SubChunkRequestResult.values()[VarInts.readInt(buffer)]);
+        subChunk.setHeightMapDataType(HeightMapDataType.values()[buffer.readByte()]);
 
-        if (subChunk.getHeightMapType() == HeightMapDataType.HAS_DATA) {
+        if (subChunk.getHeightMapDataType() == HeightMapDataType.HAS_DATA) {
             subChunk.setHeightMapData(buffer.readRetainedSlice(HEIGHT_MAP_LENGTH));
         }
         return subChunk;

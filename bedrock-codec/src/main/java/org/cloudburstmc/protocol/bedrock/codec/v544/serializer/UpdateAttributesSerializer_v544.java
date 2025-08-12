@@ -8,13 +8,13 @@ import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v419.serializer.UpdateAttributesSerializer_v419;
 import org.cloudburstmc.protocol.bedrock.data.AttributeData;
 import org.cloudburstmc.protocol.bedrock.data.attribute.AttributeModifierData;
-import org.cloudburstmc.protocol.bedrock.data.attribute.AttributeOperation;
+import org.cloudburstmc.protocol.bedrock.data.attribute.AttributeModifierOperation;
+import org.cloudburstmc.protocol.bedrock.data.attribute.AttributeOperands;
 
 import java.util.List;
 
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public class UpdateAttributesSerializer_v544 extends UpdateAttributesSerializer_v419 {
-    protected static final AttributeOperation[] VALUES = AttributeOperation.values();
 
     public static final UpdateAttributesSerializer_v544 INSTANCE = new UpdateAttributesSerializer_v544();
 
@@ -44,7 +44,7 @@ public class UpdateAttributesSerializer_v544 extends UpdateAttributesSerializer_
         helper.writeString(buffer, modifier.getName());
         buffer.writeFloatLE(modifier.getAmount());
         buffer.writeIntLE(modifier.getOperation().ordinal());
-        buffer.writeIntLE(modifier.getOperand());
+        buffer.writeIntLE(modifier.getOperand().ordinal());
         buffer.writeBoolean(modifier.isSerializable());
     }
 
@@ -52,8 +52,8 @@ public class UpdateAttributesSerializer_v544 extends UpdateAttributesSerializer_
         String id = helper.readString(buffer);
         String name = helper.readString(buffer);
         float amount = buffer.readFloatLE();
-        AttributeOperation operation = VALUES[buffer.readIntLE()];
-        int operand = buffer.readIntLE();
+        AttributeModifierOperation operation = AttributeModifierOperation.from(buffer.readIntLE());
+        AttributeOperands operand = AttributeOperands.from(buffer.readIntLE());
         boolean serializable = buffer.readBoolean();
 
         return new AttributeModifierData(id, name, amount, operation, operand, serializable);

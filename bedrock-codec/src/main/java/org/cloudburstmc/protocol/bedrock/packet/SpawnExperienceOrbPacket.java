@@ -11,7 +11,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @ToString(doNotUseGetters = true)
 public class SpawnExperienceOrbPacket implements BedrockPacket {
     private Vector3f position;
-    private int amount;
+    private int xpValue;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

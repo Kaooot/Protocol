@@ -11,10 +11,10 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class ContainerOpenPacket implements BedrockPacket {
-    private byte id;
-    private ContainerType type;
-    private Vector3i blockPosition;
-    private long uniqueEntityId = -1;
+    private byte containerID;
+    private ContainerType containerType;
+    private Vector3i position;
+    private long targetActorID = -1;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

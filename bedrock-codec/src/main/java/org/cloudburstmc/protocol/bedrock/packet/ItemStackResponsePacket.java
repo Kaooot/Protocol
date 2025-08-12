@@ -3,7 +3,7 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponse;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponseInfo;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 import java.util.ArrayList;
@@ -19,7 +19,7 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = false)
 @ToString(doNotUseGetters = true)
 public class ItemStackResponsePacket implements BedrockPacket {
-    private final List<ItemStackResponse> entries = new ArrayList<>();
+    private final List<ItemStackResponseInfo> responses = new ArrayList<>();
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

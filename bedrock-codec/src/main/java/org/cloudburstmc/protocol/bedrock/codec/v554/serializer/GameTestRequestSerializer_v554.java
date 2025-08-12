@@ -13,7 +13,7 @@ public class GameTestRequestSerializer_v554 implements BedrockPacketSerializer<G
         VarInts.writeInt(buffer, packet.getMaxTestsPerBatch());
         VarInts.writeInt(buffer, packet.getRepeatCount());
         buffer.writeByte(packet.getRotation());
-        buffer.writeBoolean(packet.isStoppingOnFailure());
+        buffer.writeBoolean(packet.isStopOnFailure());
         helper.writeVector3i(buffer, packet.getTestPos());
         VarInts.writeInt(buffer, packet.getTestsPerRow());
         helper.writeString(buffer, packet.getTestName());
@@ -24,7 +24,7 @@ public class GameTestRequestSerializer_v554 implements BedrockPacketSerializer<G
         packet.setMaxTestsPerBatch(VarInts.readInt(buffer));
         packet.setRepeatCount(VarInts.readInt(buffer));
         packet.setRotation(buffer.readByte());
-        packet.setStoppingOnFailure(buffer.readBoolean());
+        packet.setStopOnFailure(buffer.readBoolean());
         packet.setTestPos(helper.readVector3i(buffer));
         packet.setTestsPerRow(VarInts.readInt(buffer));
         packet.setTestName(helper.readString(buffer));

@@ -1,14 +1,14 @@
 package org.cloudburstmc.protocol.bedrock.codec.v422;
 
 import io.netty.buffer.ByteBuf;
-import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
+import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v419.BedrockCodecHelper_v419;
-import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerSlotType;
+import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerEnumName;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequest;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.CraftRecipeOptionalAction;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestAction;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestActionType;
-import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponseSlot;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponseSlotInfo;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -17,8 +17,8 @@ import java.util.List;
 
 public class BedrockCodecHelper_v422 extends BedrockCodecHelper_v419 {
 
-    public BedrockCodecHelper_v422(EntityDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes,
-                                   TypeMap<ItemStackRequestActionType> stackRequestActionTypes, TypeMap<ContainerSlotType> containerSlotTypes) {
+    public BedrockCodecHelper_v422(ActorDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes,
+                                   TypeMap<ItemStackRequestActionType> stackRequestActionTypes, TypeMap<ContainerEnumName> containerSlotTypes) {
         super(entityData, gameRulesTypes, stackRequestActionTypes, containerSlotTypes);
     }
 
@@ -38,14 +38,14 @@ public class BedrockCodecHelper_v422 extends BedrockCodecHelper_v419 {
 
     @Override
     public void writeItemStackRequest(ByteBuf buffer, ItemStackRequest request) {
-        VarInts.writeInt(buffer, request.getRequestId());
+        VarInts.writeInt(buffer, request.getClientRequestId());
 
         this.writeArray(buffer, request.getActions(), (byteBuf, action) -> {
             ItemStackRequestActionType type = action.getType();
             byteBuf.writeByte(this.stackRequestActionTypes.getId(type));
             writeRequestActionData(byteBuf, action);
         });
-        this.writeArray(buffer, request.getFilterStrings(), this::writeString); // new for v422
+        this.writeArray(buffer, request.getStringsToFilter(), this::writeString); // new for v422
     }
 
     @Override
@@ -70,8 +70,8 @@ public class BedrockCodecHelper_v422 extends BedrockCodecHelper_v419 {
     }
 
     @Override
-    protected ItemStackResponseSlot readItemEntry(ByteBuf buffer) {
-        return new ItemStackResponseSlot(
+    protected ItemStackResponseSlotInfo readItemEntry(ByteBuf buffer) {
+        return new ItemStackResponseSlotInfo(
                 buffer.readUnsignedByte(),
                 buffer.readUnsignedByte(),
                 buffer.readUnsignedByte(),
@@ -82,7 +82,7 @@ public class BedrockCodecHelper_v422 extends BedrockCodecHelper_v419 {
     }
 
     @Override
-    protected void writeItemEntry(ByteBuf buffer, ItemStackResponseSlot itemEntry) {
+    protected void writeItemEntry(ByteBuf buffer, ItemStackResponseSlotInfo itemEntry) {
         super.writeItemEntry(buffer, itemEntry);
         this.writeString(buffer, itemEntry.getCustomName());
     }

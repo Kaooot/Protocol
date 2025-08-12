@@ -5,10 +5,10 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
-import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerSlotType;
-import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponse;
-import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponseContainer;
-import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponseSlot;
+import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerEnumName;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponseInfo;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponseContainerInfo;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponseSlotInfo;
 import org.cloudburstmc.protocol.bedrock.packet.ItemStackResponsePacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -23,44 +23,44 @@ public class ItemStackResponseSerializer_v407 implements BedrockPacketSerializer
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ItemStackResponsePacket packet) {
-        helper.writeArray(buffer, packet.getEntries(), (buf, response) -> {
+        helper.writeArray(buffer, packet.getResponses(), (buf, response) -> {
             buf.writeBoolean(response.isSuccess());
             VarInts.writeInt(buffer, response.getRequestId());
 
             if (!response.isSuccess())
                 return;
 
-            helper.writeArray(buf, response.getContainers(), (buf2, containerEntry) -> {
-                helper.writeContainerSlotType(buf2, containerEntry.getContainer());
-                helper.writeArray(buf2, containerEntry.getItems(), this::writeItemEntry);
+            helper.writeArray(buf, response.getContainerInfo(), (buf2, containerEntry) -> {
+                helper.writeContainerSlotType(buf2, containerEntry.getContainerEnumName());
+                helper.writeArray(buf2, containerEntry.getSlots(), this::writeItemEntry);
             });
         });
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ItemStackResponsePacket packet) {
-        List<ItemStackResponse> entries = packet.getEntries();
+        List<ItemStackResponseInfo> entries = packet.getResponses();
         helper.readArray(buffer, entries, buf -> {
             boolean success = buf.readBoolean();
             int requestId = VarInts.readInt(buf);
 
             if (!success)
-                return new ItemStackResponse(success, requestId, Collections.emptyList());
+                return new ItemStackResponseInfo(success, requestId, Collections.emptyList());
 
-            List<ItemStackResponseContainer> containerEntries = new ArrayList<>();
+            List<ItemStackResponseContainerInfo> containerEntries = new ArrayList<>();
             helper.readArray(buf, containerEntries, buf2 -> {
-                ContainerSlotType container = helper.readContainerSlotType(buf2);
+                ContainerEnumName container = helper.readContainerSlotType(buf2);
 
-                List<ItemStackResponseSlot> itemEntries = new ArrayList<>();
+                List<ItemStackResponseSlotInfo> itemEntries = new ArrayList<>();
                 helper.readArray(buf2, itemEntries, byteBuf -> this.readItemEntry(byteBuf, helper));
-                return new ItemStackResponseContainer(container, itemEntries, null);
+                return new ItemStackResponseContainerInfo(container, itemEntries, null);
             });
-            return new ItemStackResponse(success, requestId, containerEntries);
+            return new ItemStackResponseInfo(success, requestId, containerEntries);
         });
     }
 
-    protected ItemStackResponseSlot readItemEntry(ByteBuf buffer, BedrockCodecHelper helper) {
-        return new ItemStackResponseSlot(
+    protected ItemStackResponseSlotInfo readItemEntry(ByteBuf buffer, BedrockCodecHelper helper) {
+        return new ItemStackResponseSlotInfo(
                 buffer.readUnsignedByte(),
                 buffer.readUnsignedByte(),
                 buffer.readUnsignedByte(),
@@ -70,10 +70,10 @@ public class ItemStackResponseSerializer_v407 implements BedrockPacketSerializer
                 "");
     }
 
-    protected void writeItemEntry(ByteBuf buffer, BedrockCodecHelper helper, ItemStackResponseSlot itemEntry) {
+    protected void writeItemEntry(ByteBuf buffer, BedrockCodecHelper helper, ItemStackResponseSlotInfo itemEntry) {
+        buffer.writeByte(itemEntry.getRequestedSlot());
         buffer.writeByte(itemEntry.getSlot());
-        buffer.writeByte(itemEntry.getHotbarSlot());
-        buffer.writeByte(itemEntry.getCount());
-        VarInts.writeInt(buffer, itemEntry.getStackNetworkId());
+        buffer.writeByte(itemEntry.getAmount());
+        VarInts.writeInt(buffer, itemEntry.getItemStackNetId());
     }
 }

@@ -3,14 +3,14 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.protocol.bedrock.data.MultiplayerMode;
+import org.cloudburstmc.protocol.bedrock.data.MultiplayerSettingsPacketType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class MultiplayerSettingsPacket implements BedrockPacket {
-    private MultiplayerMode mode;
+    private MultiplayerSettingsPacketType type;
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

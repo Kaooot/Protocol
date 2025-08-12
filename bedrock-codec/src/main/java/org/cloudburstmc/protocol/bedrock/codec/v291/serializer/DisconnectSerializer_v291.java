@@ -13,17 +13,17 @@ public class DisconnectSerializer_v291 implements BedrockPacketSerializer<Discon
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, DisconnectPacket packet) {
-        buffer.writeBoolean(packet.isMessageSkipped());
-        if (!packet.isMessageSkipped()) {
-            helper.writeString(buffer, packet.getKickMessage());
+        buffer.writeBoolean(packet.isSkipMessage());
+        if (!packet.isSkipMessage()) {
+            helper.writeString(buffer, packet.getMessage());
         }
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, DisconnectPacket packet) {
-        packet.setMessageSkipped(buffer.readBoolean());
-        if (!packet.isMessageSkipped()) {
-            packet.setKickMessage(helper.readString(buffer));
+        packet.setSkipMessage(buffer.readBoolean());
+        if (!packet.isSkipMessage()) {
+            packet.setMessage(helper.readString(buffer));
         }
     }
 }

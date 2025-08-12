@@ -13,14 +13,14 @@ public class AgentActionEventSerializer_v503 implements BedrockPacketSerializer<
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, AgentActionEventPacket packet) {
         helper.writeString(buffer, packet.getRequestId());
-        buffer.writeIntLE(packet.getActionType().ordinal());
-        helper.writeString(buffer, packet.getResponseJson());
+        buffer.writeIntLE(packet.getAction().ordinal());
+        helper.writeString(buffer, packet.getResponse());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, AgentActionEventPacket packet) {
         packet.setRequestId(helper.readString(buffer));
-        packet.setActionType(VALUES[buffer.readIntLE()]);
-        packet.setResponseJson(helper.readString(buffer));
+        packet.setAction(VALUES[buffer.readIntLE()]);
+        packet.setResponse(helper.readString(buffer));
     }
 }

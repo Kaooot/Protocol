@@ -4,19 +4,19 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.protocol.bedrock.data.inventory.InventoryLayout;
-import org.cloudburstmc.protocol.bedrock.data.inventory.InventoryTabLeft;
-import org.cloudburstmc.protocol.bedrock.data.inventory.InventoryTabRight;
+import org.cloudburstmc.protocol.bedrock.data.inventory.InventoryLeftTabIndex;
+import org.cloudburstmc.protocol.bedrock.data.inventory.InventoryRightTabIndex;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class SetPlayerInventoryOptionsPacket implements BedrockPacket {
-    private InventoryTabLeft leftTab;
-    private InventoryTabRight rightTab;
+    private InventoryLeftTabIndex leftInventoryTab;
+    private InventoryRightTabIndex rightInventoryTab;
     private boolean filtering;
-    private InventoryLayout layout;
-    private InventoryLayout craftingLayout;
+    private InventoryLayout layoutInv;
+    private InventoryLayout layoutCraft;
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

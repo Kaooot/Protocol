@@ -3,16 +3,17 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.cloudburstmc.protocol.bedrock.data.BookEditAction;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class BookEditPacket implements BedrockPacket {
-    private Action action;
-    private int inventorySlot;
-    private int pageNumber;
-    private int secondaryPageNumber;
+    private BookEditAction action;
+    private int bookSlot;
+    private int pageIndex;
+    private int pageIndexB;
     private String text;
     private String photoName;
     private String title;
@@ -26,14 +27,6 @@ public class BookEditPacket implements BedrockPacket {
 
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.BOOK_EDIT;
-    }
-
-    public enum Action {
-        REPLACE_PAGE,
-        ADD_PAGE,
-        DELETE_PAGE,
-        SWAP_PAGES,
-        SIGN_BOOK
     }
 
     @Override

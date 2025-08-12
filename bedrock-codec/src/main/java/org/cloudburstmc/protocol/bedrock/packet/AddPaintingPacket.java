@@ -9,7 +9,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = true)
 @ToString(doNotUseGetters = true)
 public class AddPaintingPacket extends AddHangingEntityPacket {
-    private String motive;
+    private String motif;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

@@ -10,24 +10,24 @@ import java.util.List;
 @Value
 @AllArgsConstructor
 public class AttributeData {
-    String name;
-    float minimum;
-    float maximum;
-    float value;
-    float defaultMinimum;
-    float defaultMaximum;
+    String attributeName;
+    float minValue;
+    float maxValue;
+    float currentValue;
+    float defaultMinValue;
+    float defaultMaxValue;
     float defaultValue;
     List<AttributeModifierData> modifiers;
 
-    public AttributeData(String name, float minimum, float maximum, float value) {
-        this(name, minimum, maximum, value, maximum, Collections.emptyList());
+    public AttributeData(String attributeName, float minValue, float maxValue, float currentValue) {
+        this(attributeName, minValue, maxValue, currentValue, maxValue, Collections.emptyList());
     }
 
-    public AttributeData(String name, float minimum, float maximum, float value, float defaultValue) {
-        this(name, minimum, maximum, value, defaultValue, Collections.emptyList());
+    public AttributeData(String attributeName, float minValue, float maxValue, float currentValue, float defaultValue) {
+        this(attributeName, minValue, maxValue, currentValue, defaultValue, Collections.emptyList());
     }
 
-    public AttributeData(String name, float minimum, float maximum, float value, float defaultValue, List<AttributeModifierData> modifiers) {
-        this(name, minimum, maximum, value, minimum, maximum, defaultValue, modifiers);
+    public AttributeData(String attributeName, float minValue, float maxValue, float currentValue, float defaultValue, List<AttributeModifierData> modifiers) {
+        this(attributeName, minValue, maxValue, currentValue, minValue, maxValue, defaultValue, modifiers);
     }
 }

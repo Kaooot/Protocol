@@ -4,10 +4,10 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.ContainerMixData;
-import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.MaterialReducer;
-import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.PotionMixData;
-import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.recipe.RecipeData;
+import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.ContainerMixDataEntry;
+import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.MaterialReducerDataEntry;
+import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.PotionMixDataEntry;
+import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.recipe.CraftingDataEntry;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 import java.util.List;
@@ -16,14 +16,14 @@ import java.util.List;
 @ToString(doNotUseGetters = true)
 @EqualsAndHashCode(doNotUseGetters = true)
 public class CraftingDataPacket implements BedrockPacket {
-    private final List<RecipeData> craftingData = new ObjectArrayList<>();
-    private final List<PotionMixData> potionMixData = new ObjectArrayList<>();
-    private final List<ContainerMixData> containerMixData = new ObjectArrayList<>();
+    private final List<CraftingDataEntry> craftingEntries = new ObjectArrayList<>();
+    private final List<PotionMixDataEntry> potionMixes = new ObjectArrayList<>();
+    private final List<ContainerMixDataEntry> containerMixes = new ObjectArrayList<>();
     /**
      * @since v465
      */
-    private final List<MaterialReducer> materialReducers = new ObjectArrayList<>();
-    private boolean cleanRecipes;
+    private final List<MaterialReducerDataEntry> materialReducers = new ObjectArrayList<>();
+    private boolean clearRecipes;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

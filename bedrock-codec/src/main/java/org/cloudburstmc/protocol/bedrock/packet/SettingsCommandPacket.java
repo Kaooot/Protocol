@@ -10,7 +10,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @ToString(doNotUseGetters = true)
 public class SettingsCommandPacket implements BedrockPacket {
     private String command;
-    private boolean suppressingOutput;
+    private boolean supressOutput;
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

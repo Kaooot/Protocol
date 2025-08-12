@@ -14,15 +14,15 @@ public class ContainerSetDataSerializer_v291 implements BedrockPacketSerializer<
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ContainerSetDataPacket packet) {
-        buffer.writeByte(packet.getWindowId());
-        VarInts.writeInt(buffer, packet.getProperty());
+        buffer.writeByte(packet.getContainerID());
+        VarInts.writeInt(buffer, packet.getId());
         VarInts.writeInt(buffer, packet.getValue());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ContainerSetDataPacket packet) {
-        packet.setWindowId(buffer.readByte());
-        packet.setProperty(VarInts.readInt(buffer));
+        packet.setContainerID(buffer.readByte());
+        packet.setId(VarInts.readInt(buffer));
         packet.setValue(VarInts.readInt(buffer));
     }
 }

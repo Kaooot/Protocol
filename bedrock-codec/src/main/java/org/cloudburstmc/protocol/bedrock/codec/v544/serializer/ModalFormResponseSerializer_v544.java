@@ -16,16 +16,16 @@ public class ModalFormResponseSerializer_v544 extends ModalFormResponseSerialize
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ModalFormResponsePacket packet) {
-        VarInts.writeUnsignedInt(buffer, packet.getFormId());
-        helper.writeOptional(buffer, Objects::nonNull, packet.getFormData(), helper::writeString);
-        helper.writeOptional(buffer, Optional::isPresent, packet.getCancelReason(), (buf, reason) ->
+        VarInts.writeUnsignedInt(buffer, packet.getFormID());
+        helper.writeOptional(buffer, Objects::nonNull, packet.getJsonResponse(), helper::writeString);
+        helper.writeOptional(buffer, Optional::isPresent, packet.getFormCancelReason(), (buf, reason) ->
                 buf.writeByte(reason.get().ordinal()));
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ModalFormResponsePacket packet) {
-        packet.setFormId(VarInts.readUnsignedInt(buffer));
-        packet.setFormData(helper.readOptional(buffer, null, helper::readString));
-        packet.setCancelReason(helper.readOptional(buffer, Optional.empty(), byteBuf -> Optional.of(VALUES[byteBuf.readByte()])));
+        packet.setFormID(VarInts.readUnsignedInt(buffer));
+        packet.setJsonResponse(helper.readOptional(buffer, null, helper::readString));
+        packet.setFormCancelReason(helper.readOptional(buffer, Optional.empty(), byteBuf -> Optional.of(VALUES[byteBuf.readByte()])));
     }
 }

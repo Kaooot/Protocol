@@ -11,10 +11,10 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class PacketViolationWarningPacket implements BedrockPacket {
-    private PacketViolationType type;
-    private PacketViolationSeverity severity;
-    private int packetCauseId;
-    private String context;
+    private PacketViolationType violationType;
+    private PacketViolationSeverity violationSeverity;
+    private int violatingPacketId;
+    private String violationContext;
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

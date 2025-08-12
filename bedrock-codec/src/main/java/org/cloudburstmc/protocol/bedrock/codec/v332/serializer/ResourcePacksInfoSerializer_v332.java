@@ -15,18 +15,18 @@ public class ResourcePacksInfoSerializer_v332 extends ResourcePacksInfoSerialize
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ResourcePacksInfoPacket packet) {
-        buffer.writeBoolean(packet.isForcedToAccept());
-        buffer.writeBoolean(packet.isScriptingEnabled());
-        writePacks(buffer, packet.getBehaviorPackInfos(), helper, false);
-        writePacks(buffer, packet.getResourcePackInfos(), helper, true);
+        buffer.writeBoolean(packet.isResourcePackRequired());
+        buffer.writeBoolean(packet.isHasScripts());
+        writePacks(buffer, packet.getBehaviorPacks(), helper, false);
+        writePacks(buffer, packet.getResourcePacks(), helper, true);
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ResourcePacksInfoPacket packet) {
-        packet.setForcedToAccept(buffer.readBoolean());
-        packet.setScriptingEnabled(buffer.readBoolean());
-        readPacks(buffer, packet.getBehaviorPackInfos(), helper, false);
-        readPacks(buffer, packet.getResourcePackInfos(), helper, true);
+        packet.setResourcePackRequired(buffer.readBoolean());
+        packet.setHasScripts(buffer.readBoolean());
+        readPacks(buffer, packet.getBehaviorPacks(), helper, false);
+        readPacks(buffer, packet.getResourcePacks(), helper, true);
     }
 
     @Override
@@ -34,7 +34,7 @@ public class ResourcePacksInfoSerializer_v332 extends ResourcePacksInfoSerialize
                               boolean resource) {
         super.writeEntry(buffer, helper, entry, resource);
 
-        buffer.writeBoolean(entry.isScripting());
+        buffer.writeBoolean(entry.isHasScripts());
     }
 
     @Override

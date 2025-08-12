@@ -9,19 +9,19 @@ public class CertificateChainPayload implements AuthPayload {
 
     @Getter
     private final List<String> chain;
-    private final AuthType type;
+    private final PlayerAuthenticationType type;
 
     public CertificateChainPayload(List<String> chain) {
-        this(chain, AuthType.UNKNOWN);
+        this(chain, PlayerAuthenticationType.UNKNOWN);
     }
 
-    public CertificateChainPayload(List<String> chain, AuthType type) {
+    public CertificateChainPayload(List<String> chain, PlayerAuthenticationType type) {
         this.chain = chain;
         this.type = Objects.requireNonNull(type);
     }
 
     @Override
-    public AuthType getAuthType() {
+    public PlayerAuthenticationType getAuthType() {
         return type;
     }
 

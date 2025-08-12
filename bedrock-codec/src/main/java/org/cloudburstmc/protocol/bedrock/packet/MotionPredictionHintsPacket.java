@@ -8,7 +8,7 @@ import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
- * Extension of the {@link SetEntityMotionPacket} which adds the {@link #onGround} field.
+ * Extension of the {@link SetActorMotionPacket} which adds the {@link #onGround} field.
  */
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
@@ -18,10 +18,10 @@ public class MotionPredictionHintsPacket implements BedrockPacket {
     /**
      * The runtime ID of the entity to set motion.
      *
-     * @param runtimeEntityId runtime ID
+     * @param runtimeId runtime ID
      * @return runtime ID
      */
-    private long runtimeEntityId;
+    private long runtimeId;
 
     /**
      * Motion to set onto the specified entity
@@ -46,7 +46,7 @@ public class MotionPredictionHintsPacket implements BedrockPacket {
 
     @Override
     public BedrockPacketType getPacketType() {
-        return BedrockPacketType.SET_ENTITY_MOTION_PLUS;
+        return BedrockPacketType.MOTION_PREDICTION_HINTS;
     }
 
     @Override

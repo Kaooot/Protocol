@@ -1,9 +1,9 @@
 package org.cloudburstmc.protocol.bedrock.codec.v448;
 
 import io.netty.buffer.ByteBuf;
-import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
+import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v440.BedrockCodecHelper_v440;
-import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerSlotType;
+import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerEnumName;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.AutoCraftRecipeAction;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestAction;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestActionType;
@@ -13,8 +13,8 @@ import org.cloudburstmc.protocol.common.util.VarInts;
 import java.util.Collections;
 
 public class BedrockCodecHelper_v448 extends BedrockCodecHelper_v440 {
-    public BedrockCodecHelper_v448(EntityDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes,
-                                   TypeMap<ItemStackRequestActionType> stackRequestActionTypes, TypeMap<ContainerSlotType> containerSlotTypes) {
+    public BedrockCodecHelper_v448(ActorDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes,
+                                   TypeMap<ItemStackRequestActionType> stackRequestActionTypes, TypeMap<ContainerEnumName> containerSlotTypes) {
         super(entityData, gameRulesTypes, stackRequestActionTypes, containerSlotTypes);
     }
 

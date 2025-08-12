@@ -1,6 +1,7 @@
 package org.cloudburstmc.protocol.bedrock.data.event;
 
 import lombok.Value;
+import org.cloudburstmc.protocol.bedrock.packet.LegacyTelemetryEventPacket;
 
 @Value
 public class MovementAnomalyEventData implements EventData {
@@ -12,7 +13,7 @@ public class MovementAnomalyEventData implements EventData {
     private final float maxPositionDelta;
 
     @Override
-    public EventDataType getType() {
-        return EventDataType.MOVEMENT_ANOMALY;
+    public LegacyTelemetryEventPacket.Type getType() {
+        return LegacyTelemetryEventPacket.Type.PLAYER_MOVEMENT_ANOMALY_OBSOLETE;
     }
 }

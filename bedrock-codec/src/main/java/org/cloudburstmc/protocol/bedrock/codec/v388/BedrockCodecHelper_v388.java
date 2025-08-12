@@ -4,15 +4,15 @@ import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.math.vector.Vector3i;
-import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
+import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v361.BedrockCodecHelper_v361;
 import org.cloudburstmc.protocol.bedrock.data.skin.AnimatedTextureType;
 import org.cloudburstmc.protocol.bedrock.data.skin.AnimationData;
 import org.cloudburstmc.protocol.bedrock.data.skin.ImageData;
 import org.cloudburstmc.protocol.bedrock.data.skin.SerializedSkin;
-import org.cloudburstmc.protocol.bedrock.data.structure.StructureAnimationMode;
-import org.cloudburstmc.protocol.bedrock.data.structure.StructureMirror;
-import org.cloudburstmc.protocol.bedrock.data.structure.StructureRotation;
+import org.cloudburstmc.protocol.bedrock.data.structure.AnimationMode;
+import org.cloudburstmc.protocol.bedrock.data.structure.Mirror;
+import org.cloudburstmc.protocol.bedrock.data.structure.Rotation;
 import org.cloudburstmc.protocol.bedrock.data.structure.StructureSettings;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 import org.cloudburstmc.protocol.common.util.VarInts;
@@ -25,7 +25,7 @@ public class BedrockCodecHelper_v388 extends BedrockCodecHelper_v361 {
 
     protected static final AnimatedTextureType[] TEXTURE_TYPES = AnimatedTextureType.values();
 
-    public BedrockCodecHelper_v388(EntityDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes) {
+    public BedrockCodecHelper_v388(ActorDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes) {
         super(entityData, gameRulesTypes);
     }
 
@@ -115,19 +115,19 @@ public class BedrockCodecHelper_v388 extends BedrockCodecHelper_v361 {
         Vector3i size = this.readBlockPosition(buffer);
         Vector3i offset = this.readBlockPosition(buffer);
         long lastEditedByEntityId = VarInts.readLong(buffer);
-        StructureRotation rotation = StructureRotation.from(buffer.readByte());
-        StructureMirror mirror = StructureMirror.from(buffer.readByte());
+        Rotation rotation = Rotation.from(buffer.readByte());
+        Mirror mirror = Mirror.from(buffer.readByte());
         float integrityValue = buffer.readFloatLE();
         int integritySeed = buffer.readIntLE();
         Vector3f pivot = this.readVector3f(buffer);
 
         return new StructureSettings(paletteName, ignoringEntities, ignoringBlocks, true, size, offset, lastEditedByEntityId,
-                rotation, mirror, StructureAnimationMode.NONE, 0f, integrityValue, integritySeed, pivot);
+                rotation, mirror, AnimationMode.NONE, 0f, integrityValue, integritySeed, pivot);
     }
 
     @Override
     public void writeStructureSettings(ByteBuf buffer, StructureSettings settings) {
         super.writeStructureSettings(buffer, settings);
-        this.writeVector3f(buffer, settings.getPivot());
+        this.writeVector3f(buffer, settings.getRotationPivot());
     }
 }

@@ -15,11 +15,11 @@ public class SetLastHurtBySerializer_v291 implements BedrockPacketSerializer<Set
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, SetLastHurtByPacket packet) {
-        VarInts.writeInt(buffer, packet.getEntityTypeId());
+        VarInts.writeInt(buffer, packet.getLastHurtBy());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, SetLastHurtByPacket packet) {
-        packet.setEntityTypeId(VarInts.readInt(buffer));
+        packet.setLastHurtBy(VarInts.readInt(buffer));
     }
 }

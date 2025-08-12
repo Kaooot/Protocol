@@ -1,7 +1,7 @@
 package org.cloudburstmc.protocol.bedrock.codec.v594;
 
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
-import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
+import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v575.BedrockCodecHelper_v575;
 import org.cloudburstmc.protocol.bedrock.codec.v575.Bedrock_v575;
 import org.cloudburstmc.protocol.bedrock.codec.v582.Bedrock_v582;
@@ -10,9 +10,9 @@ import org.cloudburstmc.protocol.bedrock.codec.v594.serializer.AgentAnimationSer
 import org.cloudburstmc.protocol.bedrock.codec.v594.serializer.AvailableCommandsSerializer_v594;
 import org.cloudburstmc.protocol.bedrock.data.PacketRecipient;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandParam;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataFormat;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataFormat;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataTypes;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorFlag;
 import org.cloudburstmc.protocol.bedrock.packet.AgentAnimationPacket;
 import org.cloudburstmc.protocol.bedrock.packet.AvailableCommandsPacket;
 import org.cloudburstmc.protocol.bedrock.packet.ScriptCustomEventPacket;
@@ -21,16 +21,16 @@ import org.cloudburstmc.protocol.common.util.TypeMap;
 
 public class Bedrock_v594 extends Bedrock_v589 {
 
-    protected static final TypeMap<EntityFlag> ENTITY_FLAGS = Bedrock_v575.ENTITY_FLAGS
+    protected static final TypeMap<ActorFlag> ENTITY_FLAGS = Bedrock_v575.ENTITY_FLAGS
             .toBuilder()
-            .insert(114, EntityFlag.CRAWLING)
+            .insert(114, ActorFlag.CRAWLING)
             .build();
 
-    protected static final EntityDataTypeMap ENTITY_DATA = Bedrock_v589.ENTITY_DATA
+    protected static final ActorDataTypeMap ENTITY_DATA = Bedrock_v589.ENTITY_DATA
             .toBuilder()
-            .insert(EntityDataTypes.COLLISION_BOX, 130, EntityDataFormat.VECTOR3F)
-            .update(EntityDataTypes.FLAGS, new FlagTransformer(ENTITY_FLAGS, 0))
-            .update(EntityDataTypes.FLAGS_2, new FlagTransformer(ENTITY_FLAGS, 1))
+            .insert(ActorDataTypes.COLLISION_BOX, 130, ActorDataFormat.VECTOR3F)
+            .update(ActorDataTypes.FLAGS, new FlagTransformer(ENTITY_FLAGS, 0))
+            .update(ActorDataTypes.FLAGS_2, new FlagTransformer(ENTITY_FLAGS, 1))
             .build();
 
     protected static final TypeMap<CommandParam> COMMAND_PARAMS = Bedrock_v582.COMMAND_PARAMS.toBuilder()

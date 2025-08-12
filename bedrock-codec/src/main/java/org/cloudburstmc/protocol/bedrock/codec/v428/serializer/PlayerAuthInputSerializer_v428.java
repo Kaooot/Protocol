@@ -58,11 +58,11 @@ public class PlayerAuthInputSerializer_v428 extends PlayerAuthInputSerializer_v4
     protected void writePlayerBlockActionData(ByteBuf buffer, BedrockCodecHelper helper, PlayerBlockActionData actionData) {
         VarInts.writeInt(buffer, actionData.getAction().ordinal());
         switch (actionData.getAction()) {
-            case START_BREAK:
-            case ABORT_BREAK:
-            case CONTINUE_BREAK:
-            case BLOCK_PREDICT_DESTROY:
-            case BLOCK_CONTINUE_DESTROY:
+            case START_DESTROY_BLOCK:
+            case ABORT_DESTROY_BLOCK:
+            case CRACK_BLOCK:
+            case PREDICT_DESTROY_BLOCK:
+            case CONTINUE_DESTROY_BLOCK:
                 helper.writeVector3i(buffer, actionData.getBlockPosition());
                 VarInts.writeInt(buffer, actionData.getFace());
         }
@@ -72,11 +72,11 @@ public class PlayerAuthInputSerializer_v428 extends PlayerAuthInputSerializer_v4
         PlayerBlockActionData actionData = new PlayerBlockActionData();
         actionData.setAction(PlayerActionType.values()[VarInts.readInt(buffer)]);
         switch (actionData.getAction()) {
-            case START_BREAK:
-            case ABORT_BREAK:
-            case CONTINUE_BREAK:
-            case BLOCK_PREDICT_DESTROY:
-            case BLOCK_CONTINUE_DESTROY:
+            case START_DESTROY_BLOCK:
+            case ABORT_DESTROY_BLOCK:
+            case CRACK_BLOCK:
+            case PREDICT_DESTROY_BLOCK:
+            case CONTINUE_DESTROY_BLOCK:
                 actionData.setBlockPosition(helper.readVector3i(buffer));
                 actionData.setFace(VarInts.readInt(buffer));
         }

@@ -19,18 +19,18 @@ public class CorrectPlayerMovePredictionPacket implements BedrockPacket {
     /**
      * Client's reported position by the server
      *
-     * @param position reported position
+     * @param pos reported position
      * @return reported position
      */
-    private Vector3f position;
+    private Vector3f pos;
 
     /**
      * Difference in client and server prediction
      *
-     * @param delta position difference
+     * @param posDelta position difference
      * @return position difference
      */
-    private Vector3f delta;
+    private Vector3f posDelta;
 
     /**
      * If the client is on the ground. (Not falling or jumping)

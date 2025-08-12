@@ -10,9 +10,9 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class MovementEffectPacket implements BedrockPacket {
-    private long entityRuntimeId;
+    private long targetRuntimeID;
     private MovementEffectType effectType;
-    private int duration;
+    private int effectDuration;
     private long tick;
 
     @Override

@@ -14,12 +14,12 @@ public class RequestChunkRadiusSerializer_v582 extends RequestChunkRadiusSeriali
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, RequestChunkRadiusPacket packet) {
         super.serialize(buffer, helper, packet);
-        buffer.writeByte(packet.getMaxRadius());
+        buffer.writeByte(packet.getMaxChunkRadius());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, RequestChunkRadiusPacket packet) {
         super.deserialize(buffer, helper, packet);
-        packet.setMaxRadius(buffer.readUnsignedByte());
+        packet.setMaxChunkRadius(buffer.readUnsignedByte());
     }
 }

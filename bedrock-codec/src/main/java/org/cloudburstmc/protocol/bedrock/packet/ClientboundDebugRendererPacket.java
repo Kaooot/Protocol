@@ -17,32 +17,32 @@ public class ClientboundDebugRendererPacket implements BedrockPacket {
     /**
      * Only used if {@link #debugMarkerType} is set to {@link ClientboundDebugRendererType#ADD_DEBUG_MARKER_CUBE}.
      */
-    private String markerText;
+    private String debugMarkerText;
     /**
      * Only used if {@link #debugMarkerType} is set to {@link ClientboundDebugRendererType#ADD_DEBUG_MARKER_CUBE}.
      */
-    private Vector3f markerPosition;
+    private Vector3f debugMarkerPosition;
     /**
      * Only used if {@link #debugMarkerType} is set to {@link ClientboundDebugRendererType#ADD_DEBUG_MARKER_CUBE}.
      */
-    private float markerColorRed;
+    private float debugMarkerColorRed;
     /**
      * Only used if {@link #debugMarkerType} is set to {@link ClientboundDebugRendererType#ADD_DEBUG_MARKER_CUBE}.
      */
-    private float markerColorGreen;
+    private float debugMarkerColorGreen;
     /**
      * Only used if {@link #debugMarkerType} is set to {@link ClientboundDebugRendererType#ADD_DEBUG_MARKER_CUBE}.
      */
-    private float markerColorBlue;
+    private float debugMarkerColorBlue;
     /**
      * Only used if {@link #debugMarkerType} is set to {@link ClientboundDebugRendererType#ADD_DEBUG_MARKER_CUBE}.
      */
-    private float markerColorAlpha;
+    private float debugMarkerColorAlpha;
     /**
      * Only used if {@link #debugMarkerType} is set to {@link ClientboundDebugRendererType#ADD_DEBUG_MARKER_CUBE}.
      * In milliseconds.
      */
-    private long markerDuration;
+    private long debugMarkerDurationMS;
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

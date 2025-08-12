@@ -7,5 +7,5 @@ public interface AuthPayload {
      *
      * @return the authentication type
      */
-    AuthType getAuthType();
+    PlayerAuthenticationType getAuthType();
 }

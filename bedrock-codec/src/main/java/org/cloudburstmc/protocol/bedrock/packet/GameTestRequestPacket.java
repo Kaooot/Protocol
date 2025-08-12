@@ -13,7 +13,7 @@ public class GameTestRequestPacket implements BedrockPacket {
     private int maxTestsPerBatch;
     private int repeatCount;
     private int rotation;
-    private boolean stoppingOnFailure;
+    private boolean stopOnFailure;
     private Vector3i testPos;
     private int testsPerRow;
     private String testName;

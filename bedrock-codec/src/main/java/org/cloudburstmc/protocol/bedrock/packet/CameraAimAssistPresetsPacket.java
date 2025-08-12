@@ -6,7 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.protocol.bedrock.data.camera.CameraAimAssistCategories;
 import org.cloudburstmc.protocol.bedrock.data.camera.CameraAimAssistCategory;
-import org.cloudburstmc.protocol.bedrock.data.camera.CameraAimAssistOperation;
+import org.cloudburstmc.protocol.bedrock.data.camera.CameraAimAssistPresetPacketOperation;
 import org.cloudburstmc.protocol.bedrock.data.camera.CameraAimAssistPresetDefinition;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
@@ -28,7 +28,7 @@ public class CameraAimAssistPresetsPacket implements BedrockPacket {
     /**
      * @since v776
      */
-    private CameraAimAssistOperation operation;
+    private CameraAimAssistPresetPacketOperation operation;
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

@@ -13,7 +13,7 @@ import java.util.List;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class GameRulesChangedPacket implements BedrockPacket {
-    private final List<GameRuleData<?>> gameRules = new ObjectArrayList<>();
+    private final List<GameRuleData<?>> rulesData = new ObjectArrayList<>();
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

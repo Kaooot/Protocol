@@ -9,7 +9,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 @ToString(doNotUseGetters = true)
 public class GameTestResultsPacket implements BedrockPacket {
-    private boolean successful;
+    private boolean succeeded;
     private String error;
     private String testName;
 

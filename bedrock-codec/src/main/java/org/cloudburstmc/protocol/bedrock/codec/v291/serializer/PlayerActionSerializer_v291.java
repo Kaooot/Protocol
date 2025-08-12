@@ -16,7 +16,7 @@ public class PlayerActionSerializer_v291 implements BedrockPacketSerializer<Play
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, PlayerActionPacket packet) {
-        VarInts.writeUnsignedLong(buffer, packet.getRuntimeEntityId());
+        VarInts.writeUnsignedLong(buffer, packet.getPlayerRuntimeID());
         VarInts.writeInt(buffer, packet.getAction().ordinal());
         helper.writeBlockPosition(buffer, packet.getBlockPosition());
         VarInts.writeInt(buffer, packet.getFace());
@@ -24,7 +24,7 @@ public class PlayerActionSerializer_v291 implements BedrockPacketSerializer<Play
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, PlayerActionPacket packet) {
-        packet.setRuntimeEntityId(VarInts.readUnsignedLong(buffer));
+        packet.setPlayerRuntimeID(VarInts.readUnsignedLong(buffer));
         packet.setAction(PlayerActionType.values()[VarInts.readInt(buffer)]);
         packet.setBlockPosition(helper.readBlockPosition(buffer));
         packet.setFace(VarInts.readInt(buffer));

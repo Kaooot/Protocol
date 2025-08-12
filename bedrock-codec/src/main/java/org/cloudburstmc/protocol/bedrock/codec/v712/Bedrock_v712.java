@@ -8,7 +8,7 @@ import org.cloudburstmc.protocol.bedrock.codec.v686.Bedrock_v686;
 import org.cloudburstmc.protocol.bedrock.codec.v712.serializer.*;
 import org.cloudburstmc.protocol.bedrock.data.PacketRecipient;
 import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
-import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerSlotType;
+import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerEnumName;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestActionType;
 import org.cloudburstmc.protocol.bedrock.packet.*;
 import org.cloudburstmc.protocol.common.util.TypeMap;
@@ -28,9 +28,9 @@ public class Bedrock_v712 extends Bedrock_v686 {
             .remove(8)
             .build();
 
-    protected static final TypeMap<ContainerSlotType> CONTAINER_SLOT_TYPES = Bedrock_v686.CONTAINER_SLOT_TYPES
+    protected static final TypeMap<ContainerEnumName> CONTAINER_SLOT_TYPES = Bedrock_v686.CONTAINER_SLOT_TYPES
             .toBuilder()
-            .insert(63, ContainerSlotType.DYNAMIC_CONTAINER)
+            .insert(63, ContainerEnumName.DYNAMIC_CONTAINER)
             .build();
 
     public static final BedrockCodec CODEC = Bedrock_v686.CODEC.toBuilder()

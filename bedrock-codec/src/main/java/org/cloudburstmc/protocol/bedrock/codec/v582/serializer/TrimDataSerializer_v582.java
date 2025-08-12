@@ -15,11 +15,11 @@ public class TrimDataSerializer_v582 implements BedrockPacketSerializer<TrimData
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, TrimDataPacket packet) {
-        helper.writeArray(buffer, packet.getPatterns(), (buf, pattern) -> {
+        helper.writeArray(buffer, packet.getTrimPatternList(), (buf, pattern) -> {
             helper.writeString(buf, pattern.getItemName());
             helper.writeString(buf, pattern.getPatternId());
         });
-        helper.writeArray(buffer, packet.getMaterials(), (buf, pattern) -> {
+        helper.writeArray(buffer, packet.getTrimMaterialList(), (buf, pattern) -> {
             helper.writeString(buf, pattern.getMaterialId());
             helper.writeString(buf, pattern.getColor());
             helper.writeString(buf, pattern.getItemName());
@@ -28,12 +28,12 @@ public class TrimDataSerializer_v582 implements BedrockPacketSerializer<TrimData
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, TrimDataPacket packet) {
-        helper.readArray(buffer, packet.getPatterns(), buf -> {
+        helper.readArray(buffer, packet.getTrimPatternList(), buf -> {
             String name = helper.readString(buf);
             String id = helper.readString(buf);
             return new TrimPattern(name, id);
         });
-        helper.readArray(buffer, packet.getMaterials(), buf -> {
+        helper.readArray(buffer, packet.getTrimMaterialList(), buf -> {
             String id = helper.readString(buf);
             String color = helper.readString(buf);
             String name = helper.readString(buf);

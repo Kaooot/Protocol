@@ -92,7 +92,7 @@ public class Bedrock_v662 extends Bedrock_v649 {
             .updateSerializer(MobEffectPacket.class, MobEffectSerializer_v662.INSTANCE)
             .updateSerializer(PlayerAuthInputPacket.class, new PlayerAuthInputSerializer_v662())
             .updateSerializer(ResourcePacksInfoPacket.class, ResourcePacksInfoSerializer_v622.INSTANCE)
-            .updateSerializer(SetEntityMotionPacket.class, SetEntityMotionSerializer_v662.INSTANCE)
+            .updateSerializer(SetActorMotionPacket.class, SetActorMotionSerializer_v662.INSTANCE)
             .deregisterPacket(ItemFrameDropItemPacket.class) // this packet is now deprecated
             .build();
 }

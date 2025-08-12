@@ -11,7 +11,7 @@ public class BiomeOverworldGenRulesData {
     List<BiomeWeightedData> mutateTransformations;
     List<BiomeWeightedData> riverTransformations;
     List<BiomeWeightedData> shoreTransformations;
-    List<BiomeConditionalTransformationData> preHillsEdgeTransformations;
-    List<BiomeConditionalTransformationData> postShoreTransformations;
-    List<BiomeWeightedTemperatureData> climateTransformations;
+    List<BiomeConditionalTransformationData> preHillsEdge;
+    List<BiomeConditionalTransformationData> postShoreEdge;
+    List<BiomeWeightedTemperatureData> climate;
 }

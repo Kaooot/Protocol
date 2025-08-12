@@ -2,20 +2,21 @@ package org.cloudburstmc.protocol.bedrock.codec.v407;
 
 import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
+import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v390.BedrockCodecHelper_v390;
+import org.cloudburstmc.protocol.bedrock.data.ActorLinkType;
 import org.cloudburstmc.protocol.bedrock.data.definitions.ItemDefinition;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityLinkData;
-import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerSlotType;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorLink;
+import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerEnumName;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
 import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.DefaultDescriptor;
 import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.InvalidDescriptor;
 import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.ItemDescriptorWithCount;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequest;
-import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequestSlotData;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequestSlotInfo;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.*;
-import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponseContainer;
-import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponseSlot;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponseContainerInfo;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponseSlotInfo;
 import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.InventoryActionData;
 import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.InventorySource;
 import org.cloudburstmc.protocol.common.util.TypeMap;
@@ -32,36 +33,35 @@ import static org.cloudburstmc.protocol.common.util.Preconditions.checkNotNull;
 public class BedrockCodecHelper_v407 extends BedrockCodecHelper_v390 {
 
     protected final TypeMap<ItemStackRequestActionType> stackRequestActionTypes;
-    protected final TypeMap<ContainerSlotType> containerSlotTypes;
+    protected final TypeMap<ContainerEnumName> containerSlotTypes;
 
-    public BedrockCodecHelper_v407(EntityDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes,
-                                   TypeMap<ItemStackRequestActionType> stackRequestActionTypes, TypeMap<ContainerSlotType> containerSlotTypes) {
+    public BedrockCodecHelper_v407(ActorDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes,
+                                   TypeMap<ItemStackRequestActionType> stackRequestActionTypes, TypeMap<ContainerEnumName> containerSlotTypes) {
         super(entityData, gameRulesTypes);
         this.stackRequestActionTypes = stackRequestActionTypes;
         this.containerSlotTypes = containerSlotTypes;
     }
 
     @Override
-    public EntityLinkData readEntityLink(ByteBuf buffer) {
-
-        return new EntityLinkData(
+    public ActorLink readActorLink(ByteBuf buffer) {
+        return new ActorLink(
                 VarInts.readLong(buffer),
                 VarInts.readLong(buffer),
-                EntityLinkData.Type.byId(buffer.readUnsignedByte()),
+                ActorLinkType.from(buffer.readUnsignedByte()),
                 buffer.readBoolean(),
                 buffer.readBoolean()
         );
     }
 
     @Override
-    public void writeEntityLink(ByteBuf buffer, EntityLinkData entityLink) {
-        checkNotNull(entityLink, "entityLink");
+    public void writeActorLink(ByteBuf buffer, ActorLink actorLink) {
+        checkNotNull(actorLink, "entityLink");
 
-        VarInts.writeLong(buffer, entityLink.getFrom());
-        VarInts.writeLong(buffer, entityLink.getTo());
-        buffer.writeByte(entityLink.getType().ordinal());
-        buffer.writeBoolean(entityLink.isImmediate());
-        buffer.writeBoolean(entityLink.isRiderInitiated());
+        VarInts.writeLong(buffer, actorLink.getTargetA());
+        VarInts.writeLong(buffer, actorLink.getTargetB());
+        buffer.writeByte(actorLink.getType().ordinal());
+        buffer.writeBoolean(actorLink.isImmediate());
+        buffer.writeBoolean(actorLink.isPassengerInitiated());
     }
 
     @Override
@@ -124,7 +124,7 @@ public class BedrockCodecHelper_v407 extends BedrockCodecHelper_v390 {
 
     @Override
     public void writeItemStackRequest(ByteBuf buffer, ItemStackRequest request) {
-        VarInts.writeInt(buffer, request.getRequestId());
+        VarInts.writeInt(buffer, request.getClientRequestId());
 
         this.writeArray(buffer, request.getActions(), (byteBuf, action) -> {
             ItemStackRequestActionType type = action.getType();
@@ -255,8 +255,8 @@ public class BedrockCodecHelper_v407 extends BedrockCodecHelper_v390 {
         }
     }
 
-    protected ItemStackRequestSlotData readStackRequestSlotInfo(ByteBuf buffer) {
-        return new ItemStackRequestSlotData(
+    protected ItemStackRequestSlotInfo readStackRequestSlotInfo(ByteBuf buffer) {
+        return new ItemStackRequestSlotInfo(
                 this.readContainerSlotType(buffer),
                 buffer.readUnsignedByte(),
                 VarInts.readInt(buffer),
@@ -264,19 +264,19 @@ public class BedrockCodecHelper_v407 extends BedrockCodecHelper_v390 {
         );
     }
 
-    protected void writeStackRequestSlotInfo(ByteBuf buffer, ItemStackRequestSlotData data) {
-        this.writeContainerSlotType(buffer, data.getContainer());
+    protected void writeStackRequestSlotInfo(ByteBuf buffer, ItemStackRequestSlotInfo data) {
+        this.writeContainerSlotType(buffer, data.getContainerEnumName());
         buffer.writeByte(data.getSlot());
         VarInts.writeInt(buffer, data.getStackNetworkId());
     }
 
     @Override
-    public ContainerSlotType readContainerSlotType(ByteBuf buffer) {
+    public ContainerEnumName readContainerSlotType(ByteBuf buffer) {
         return this.containerSlotTypes.getType(buffer.readByte());
     }
 
     @Override
-    public void writeContainerSlotType(ByteBuf buffer, ContainerSlotType slotType) {
+    public void writeContainerSlotType(ByteBuf buffer, ContainerEnumName slotType) {
         buffer.writeByte(this.containerSlotTypes.getId(slotType));
     }
 
@@ -312,21 +312,21 @@ public class BedrockCodecHelper_v407 extends BedrockCodecHelper_v390 {
     }
 
     @Override
-    public void writeItemStackResponseContainer(ByteBuf buffer, ItemStackResponseContainer container) {
-        this.writeContainerSlotType(buffer, container.getContainer());
-        this.writeArray(buffer, container.getItems(), this::writeItemEntry);
+    public void writeItemStackResponseContainer(ByteBuf buffer, ItemStackResponseContainerInfo container) {
+        this.writeContainerSlotType(buffer, container.getContainerEnumName());
+        this.writeArray(buffer, container.getSlots(), this::writeItemEntry);
     }
 
     @Override
-    public ItemStackResponseContainer readItemStackResponseContainer(ByteBuf buffer) {
-        ContainerSlotType slotType = this.readContainerSlotType(buffer);
-        List<ItemStackResponseSlot> itemEntries = new ArrayList<>();
+    public ItemStackResponseContainerInfo readItemStackResponseContainer(ByteBuf buffer) {
+        ContainerEnumName slotType = this.readContainerSlotType(buffer);
+        List<ItemStackResponseSlotInfo> itemEntries = new ArrayList<>();
         this.readArray(buffer, itemEntries, this::readItemEntry);
-        return new ItemStackResponseContainer(slotType, itemEntries, null);
+        return new ItemStackResponseContainerInfo(slotType, itemEntries, null);
     }
 
-    protected ItemStackResponseSlot readItemEntry(ByteBuf buffer) {
-        return new ItemStackResponseSlot(
+    protected ItemStackResponseSlotInfo readItemEntry(ByteBuf buffer) {
+        return new ItemStackResponseSlotInfo(
                 buffer.readUnsignedByte(),
                 buffer.readUnsignedByte(),
                 buffer.readUnsignedByte(),
@@ -336,11 +336,11 @@ public class BedrockCodecHelper_v407 extends BedrockCodecHelper_v390 {
                 "");
     }
 
-    protected void writeItemEntry(ByteBuf buffer, ItemStackResponseSlot itemEntry) {
+    protected void writeItemEntry(ByteBuf buffer, ItemStackResponseSlotInfo itemEntry) {
+        buffer.writeByte(itemEntry.getRequestedSlot());
         buffer.writeByte(itemEntry.getSlot());
-        buffer.writeByte(itemEntry.getHotbarSlot());
-        buffer.writeByte(itemEntry.getCount());
-        VarInts.writeInt(buffer, itemEntry.getStackNetworkId());
+        buffer.writeByte(itemEntry.getAmount());
+        VarInts.writeInt(buffer, itemEntry.getItemStackNetId());
     }
 
     protected int fromAuxValue(int value) {

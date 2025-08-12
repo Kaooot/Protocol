@@ -2,7 +2,7 @@ package org.cloudburstmc.protocol.bedrock.util;
 
 import lombok.experimental.UtilityClass;
 import org.cloudburstmc.protocol.bedrock.data.auth.AuthPayload;
-import org.cloudburstmc.protocol.bedrock.data.auth.AuthType;
+import org.cloudburstmc.protocol.bedrock.data.auth.PlayerAuthenticationType;
 import org.cloudburstmc.protocol.bedrock.data.auth.CertificateChainPayload;
 import org.cloudburstmc.protocol.bedrock.data.auth.TokenPayload;
 import org.jose4j.json.JsonUtil;
@@ -287,11 +287,11 @@ public class EncryptionUtils {
         }
     }
 
-    public static ChainValidationResult validateToken(AuthType type, String token) throws InvalidJwtException, JoseException {
-        if (type == AuthType.FULL || type == AuthType.GUEST) {
+    public static ChainValidationResult validateToken(PlayerAuthenticationType type, String token) throws InvalidJwtException, JoseException {
+        if (type == PlayerAuthenticationType.FULL || type == PlayerAuthenticationType.GUEST) {
             JwtContext context = MOJANG_CONSUMER.process(token);
             return new ChainValidationResult(true, context);
-        } else if (type == AuthType.SELF_SIGNED) {
+        } else if (type == PlayerAuthenticationType.SELF_SIGNED) {
             JwtContext context = OFFLINE_CONSUMER.process(token);
             return new ChainValidationResult(false, context);
         }

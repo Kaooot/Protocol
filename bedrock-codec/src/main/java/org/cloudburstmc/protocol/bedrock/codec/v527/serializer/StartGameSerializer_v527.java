@@ -15,8 +15,8 @@ public class StartGameSerializer_v527 extends StartGameSerializer_v465 {
         super.serialize(buffer, helper, packet);
 
         helper.writeTag(buffer, packet.getPlayerPropertyData());
-        buffer.writeLongLE(packet.getBlockRegistryChecksum());
-        helper.writeUuid(buffer, packet.getWorldTemplateId());
+        buffer.writeLongLE(packet.getServerBlockTypeRegistryChecksum());
+        helper.writeUuid(buffer, packet.getWorldTemplateID());
     }
 
     @Override
@@ -24,8 +24,8 @@ public class StartGameSerializer_v527 extends StartGameSerializer_v465 {
         super.deserialize(buffer, helper, packet);
 
         packet.setPlayerPropertyData(helper.readTag(buffer, NbtMap.class));
-        packet.setBlockRegistryChecksum(buffer.readLongLE());
-        packet.setWorldTemplateId(helper.readUuid(buffer));
+        packet.setServerBlockTypeRegistryChecksum(buffer.readLongLE());
+        packet.setWorldTemplateID(helper.readUuid(buffer));
     }
 
     // Re-added the previous version's protocol changes to this serializer due to the

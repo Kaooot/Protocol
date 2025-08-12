@@ -10,13 +10,13 @@ public class UpdateClientInputLocksSerializer_v560 implements BedrockPacketSeria
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, UpdateClientInputLocksPacket packet) {
-        VarInts.writeUnsignedInt(buffer, packet.getLockComponentData());
-        helper.writeVector3f(buffer, packet.getServerPosition());
+        VarInts.writeUnsignedInt(buffer, packet.getInputLockComponentData());
+        helper.writeVector3f(buffer, packet.getServerPos());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, UpdateClientInputLocksPacket packet) {
-        packet.setLockComponentData(VarInts.readUnsignedInt(buffer));
-        packet.setServerPosition(helper.readVector3f(buffer));
+        packet.setInputLockComponentData(VarInts.readUnsignedInt(buffer));
+        packet.setServerPos(helper.readVector3f(buffer));
     }
 }

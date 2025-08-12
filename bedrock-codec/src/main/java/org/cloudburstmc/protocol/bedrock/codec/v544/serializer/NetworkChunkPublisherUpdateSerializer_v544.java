@@ -13,14 +13,14 @@ public class NetworkChunkPublisherUpdateSerializer_v544 extends NetworkChunkPubl
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, NetworkChunkPublisherUpdatePacket packet) {
         super.serialize(buffer, helper, packet);
 
-        helper.writeArray(buffer, packet.getSavedChunks(), ByteBuf::writeIntLE, this::writeSavedChunk);
+        helper.writeArray(buffer, packet.getServerBuiltChunksList(), ByteBuf::writeIntLE, this::writeSavedChunk);
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, NetworkChunkPublisherUpdatePacket packet) {
         super.deserialize(buffer, helper, packet);
 
-        helper.readArray(buffer, packet.getSavedChunks(), ByteBuf::readIntLE, this::readSavedChunk);
+        helper.readArray(buffer, packet.getServerBuiltChunksList(), ByteBuf::readIntLE, this::readSavedChunk);
     }
 
     protected void writeSavedChunk(ByteBuf buffer, BedrockCodecHelper helper, Vector2i savedChunk) {

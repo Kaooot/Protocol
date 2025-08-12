@@ -25,12 +25,12 @@ public class PlayerAuthInputSerializer_v388 implements BedrockPacketSerializer<P
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, PlayerAuthInputPacket packet) {
-        Vector3f rotation = packet.getRotation();
+        Vector3f rotation = packet.getPlayerRotation();
         buffer.writeFloatLE(rotation.getX());
         buffer.writeFloatLE(rotation.getY());
         helper.writeVector3f(buffer, packet.getPosition());
-        buffer.writeFloatLE(packet.getMotion().getX());
-        buffer.writeFloatLE(packet.getMotion().getY());
+        buffer.writeFloatLE(packet.getMoveVector().getX());
+        buffer.writeFloatLE(packet.getMoveVector().getY());
         buffer.writeFloatLE(rotation.getZ());
         long flagValue = 0;
         for (PlayerAuthInputData data : packet.getInputData()) {
@@ -51,9 +51,9 @@ public class PlayerAuthInputSerializer_v388 implements BedrockPacketSerializer<P
         float x = buffer.readFloatLE();
         float y = buffer.readFloatLE();
         packet.setPosition(helper.readVector3f(buffer));
-        packet.setMotion(Vector2f.from(buffer.readFloatLE(), buffer.readFloatLE()));
+        packet.setMoveVector(Vector2f.from(buffer.readFloatLE(), buffer.readFloatLE()));
         float z = buffer.readFloatLE();
-        packet.setRotation(Vector3f.from(x, y, z));
+        packet.setPlayerRotation(Vector3f.from(x, y, z));
         long flagValue = VarInts.readUnsignedLong(buffer);
         Set<PlayerAuthInputData> flags = packet.getInputData();
         for (PlayerAuthInputData flag : PlayerAuthInputData.values()) {

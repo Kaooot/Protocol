@@ -5,7 +5,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v776.serializer.CameraAimAssistPresetsSerializer_v776;
-import org.cloudburstmc.protocol.bedrock.data.camera.CameraAimAssistOperation;
+import org.cloudburstmc.protocol.bedrock.data.camera.CameraAimAssistPresetPacketOperation;
 import org.cloudburstmc.protocol.bedrock.packet.CameraAimAssistPresetsPacket;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -13,7 +13,7 @@ public class CameraAimAssistPresetsSerializer_v800 extends CameraAimAssistPreset
 
     public static final CameraAimAssistPresetsSerializer_v800 INSTANCE = new CameraAimAssistPresetsSerializer_v800();
 
-    private static final CameraAimAssistOperation[] OPERATIONS = CameraAimAssistOperation.values();
+    private static final CameraAimAssistPresetPacketOperation[] OPERATIONS = CameraAimAssistPresetPacketOperation.values();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, CameraAimAssistPresetsPacket packet) {

@@ -1,8 +1,8 @@
 package org.cloudburstmc.protocol.bedrock.codec.v388;
 
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
-import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
-import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.EntityEventSerializer_v291;
+import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
+import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.ActorEventSerializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelEventSerializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelSoundEvent1Serializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v313.serializer.LevelSoundEvent2Serializer_v313;
@@ -13,10 +13,10 @@ import org.cloudburstmc.protocol.bedrock.codec.v361.serializer.ResourcePackDataI
 import org.cloudburstmc.protocol.bedrock.codec.v388.serializer.*;
 import org.cloudburstmc.protocol.bedrock.data.*;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandParam;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataFormat;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityEventType;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataFormat;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataTypes;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorEventType;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorFlag;
 import org.cloudburstmc.protocol.bedrock.packet.*;
 import org.cloudburstmc.protocol.bedrock.transformer.BooleanTransformer;
 import org.cloudburstmc.protocol.bedrock.transformer.FlagTransformer;
@@ -25,23 +25,23 @@ import org.cloudburstmc.protocol.common.util.TypeMap;
 
 public class Bedrock_v388 extends Bedrock_v361 {
 
-    protected static final TypeMap<EntityFlag> ENTITY_FLAGS = Bedrock_v361.ENTITY_FLAGS.toBuilder()
-            .insert(88, EntityFlag.IS_IN_UI)
-            .insert(89, EntityFlag.STALKING)
-            .insert(90, EntityFlag.EMOTING)
-            .insert(91, EntityFlag.CELEBRATING)
+    protected static final TypeMap<ActorFlag> ENTITY_FLAGS = Bedrock_v361.ENTITY_FLAGS.toBuilder()
+            .insert(88, ActorFlag.IS_IN_UI)
+            .insert(89, ActorFlag.STALKING)
+            .insert(90, ActorFlag.EMOTING)
+            .insert(91, ActorFlag.CELEBRATING)
             .build();
 
-    protected static final EntityDataTypeMap ENTITY_DATA = Bedrock_v361.ENTITY_DATA.toBuilder()
-            .update(EntityDataTypes.FLAGS, new FlagTransformer(ENTITY_FLAGS, 0))
-            .update(EntityDataTypes.FLAGS_2, new FlagTransformer(ENTITY_FLAGS, 1))
-            .update(EntityDataTypes.AREA_EFFECT_CLOUD_PARTICLE, new TypeMapTransformer<>(PARTICLE_TYPES))
-            .insert(EntityDataTypes.AMBIENT_SOUND_INTERVAL, 107, EntityDataFormat.FLOAT)
-            .insert(EntityDataTypes.AMBIENT_SOUND_INTERVAL_RANGE, 108, EntityDataFormat.FLOAT)
-            .insert(EntityDataTypes.AMBIENT_SOUND_EVENT_NAME, 109, EntityDataFormat.STRING)
-            .insert(EntityDataTypes.FALL_DAMAGE_MULTIPLIER, 110, EntityDataFormat.FLOAT)
-            .insert(EntityDataTypes.NAME_RAW_TEXT, 111, EntityDataFormat.STRING)
-            .insert(EntityDataTypes.CAN_RIDE_TARGET, 112, EntityDataFormat.BYTE, BooleanTransformer.INSTANCE)
+    protected static final ActorDataTypeMap ENTITY_DATA = Bedrock_v361.ENTITY_DATA.toBuilder()
+            .update(ActorDataTypes.FLAGS, new FlagTransformer(ENTITY_FLAGS, 0))
+            .update(ActorDataTypes.FLAGS_2, new FlagTransformer(ENTITY_FLAGS, 1))
+            .update(ActorDataTypes.DATA_PARTICLE, new TypeMapTransformer<>(PARTICLE_TYPES))
+            .insert(ActorDataTypes.AMBIENT_SOUND_INTERVAL, 107, ActorDataFormat.FLOAT)
+            .insert(ActorDataTypes.AMBIENT_SOUND_INTERVAL_RANGE, 108, ActorDataFormat.FLOAT)
+            .insert(ActorDataTypes.AMBIENT_SOUND_EVENT_NAME, 109, ActorDataFormat.STRING)
+            .insert(ActorDataTypes.FALL_DAMAGE_MULTIPLIER, 110, ActorDataFormat.FLOAT)
+            .insert(ActorDataTypes.NAME_RAW_TEXT, 111, ActorDataFormat.STRING)
+            .insert(ActorDataTypes.CAN_RIDE_TARGET, 112, ActorDataFormat.BYTE, BooleanTransformer.INSTANCE)
             .build();
 
     protected static final TypeMap<CommandParam> COMMAND_PARAMS = Bedrock_v361.COMMAND_PARAMS.toBuilder()
@@ -51,8 +51,8 @@ public class Bedrock_v388 extends Bedrock_v361 {
             .shift(46, 1)
             .build();
 
-    protected static final TypeMap<EntityEventType> ENTITY_EVENTS = Bedrock_v361.ENTITY_EVENTS.toBuilder()
-            .insert(74, EntityEventType.FINISHED_CHARGING_ITEM)
+    protected static final TypeMap<ActorEventType> ENTITY_EVENTS = Bedrock_v361.ENTITY_EVENTS.toBuilder()
+            .insert(74, ActorEventType.FINISHED_CHARGING_ITEM)
             .build();
 
     protected static final TypeMap<LevelEventType> LEVEL_EVENTS = Bedrock_v361.LEVEL_EVENTS.toBuilder()
@@ -78,15 +78,15 @@ public class Bedrock_v388 extends Bedrock_v361 {
             .insert(287, SoundEvent.UNDEFINED)
             .build();
 
-    protected static final TypeMap<ResourcePackType> RESOURCE_PACK_TYPES = Bedrock_v361.RESOURCE_PACK_TYPES.toBuilder()
-            .replace(1, ResourcePackType.ADDON)
-            .replace(2, ResourcePackType.CACHED)
-            .replace(3, ResourcePackType.COPY_PROTECTED)
-            .replace(4, ResourcePackType.DATA_ADD_ON)
-            .replace(5, ResourcePackType.PERSONA_PIECE)
-            .replace(6, ResourcePackType.RESOURCES)
-            .replace(7, ResourcePackType.SKINS)
-            .insert(8, ResourcePackType.WORLD_TEMPLATE)
+    protected static final TypeMap<PackType> RESOURCE_PACK_TYPES = Bedrock_v361.RESOURCE_PACK_TYPES.toBuilder()
+            .replace(1, PackType.ADDON)
+            .replace(2, PackType.CACHED)
+            .replace(3, PackType.COPY_PROTECTED)
+            .replace(4, PackType.BEHAVIOR)
+            .replace(5, PackType.PERSONA_PIECE)
+            .replace(6, PackType.RESOURCES)
+            .replace(7, PackType.SKINS)
+            .insert(8, PackType.WORLD_TEMPLATE)
             .build();
 
     public static final BedrockCodec CODEC = Bedrock_v361.CODEC.toBuilder()
@@ -102,14 +102,14 @@ public class Bedrock_v388 extends Bedrock_v361 {
             .updateSerializer(RespawnPacket.class, RespawnSerializer_v388.INSTANCE)
             .updateSerializer(CraftingDataPacket.class, CraftingDataSerializer_v388.INSTANCE)
             .updateSerializer(PlayerListPacket.class, PlayerListSerializer_v388.INSTANCE)
-            .updateSerializer(EventPacket.class, EventSerializer_v388.INSTANCE)
+            .updateSerializer(LegacyTelemetryEventPacket.class, LegacyTelemetryEventSerializer_v388.INSTANCE)
             .updateSerializer(AvailableCommandsPacket.class, new AvailableCommandsSerializer_v388(COMMAND_PARAMS))
             .updateSerializer(ResourcePackChunkDataPacket.class, ResourcePackChunkDataSerializer_v388.INSTANCE)
             .updateSerializer(StructureBlockUpdatePacket.class, StructureBlockUpdateSerializer_v388.INSTANCE)
             .updateSerializer(PlayerSkinPacket.class, PlayerSkinSerializer_v388.INSTANCE)
-            .updateSerializer(MoveEntityDeltaPacket.class, MoveEntityDeltaSerializer_v388.INSTANCE)
+            .updateSerializer(MoveActorDeltaPacket.class, MoveActorDeltaSerializer_v388.INSTANCE)
             .updateSerializer(StructureTemplateDataResponsePacket.class, StructureTemplateDataResponseSerializer_v388.INSTANCE)
-            .updateSerializer(EntityEventPacket.class, new EntityEventSerializer_v291(ENTITY_EVENTS))
+            .updateSerializer(ActorEventPacket.class, new ActorEventSerializer_v291(ENTITY_EVENTS))
             .updateSerializer(LevelSoundEvent1Packet.class, new LevelSoundEvent1Serializer_v291(SOUND_EVENTS))
             .updateSerializer(LevelSoundEvent2Packet.class, new LevelSoundEvent2Serializer_v313(SOUND_EVENTS))
             .updateSerializer(LevelSoundEventPacket.class, new LevelSoundEventSerializer_v332(SOUND_EVENTS))

@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.math.vector.Vector3f;
+import org.cloudburstmc.protocol.bedrock.data.PlayerRespawnState;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
@@ -11,8 +12,8 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @ToString(doNotUseGetters = true)
 public class RespawnPacket implements BedrockPacket {
     private Vector3f position;
-    private State state;
-    private long runtimeEntityId; // Only used server bound and pretty pointless
+    private PlayerRespawnState state;
+    private long playerRuntimeId; // Only used server bound and pretty pointless
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {
@@ -21,12 +22,6 @@ public class RespawnPacket implements BedrockPacket {
 
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.RESPAWN;
-    }
-
-    public enum State {
-        SERVER_SEARCHING,
-        SERVER_READY,
-        CLIENT_READY
     }
 
     @Override
@@ -38,4 +33,3 @@ public class RespawnPacket implements BedrockPacket {
         }
     }
 }
-

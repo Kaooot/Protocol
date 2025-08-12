@@ -9,7 +9,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class ModalFormRequestPacket implements BedrockPacket {
-    private int formId;
+    private int formID;
     private String formData;
 
     @Override

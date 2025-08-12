@@ -37,7 +37,7 @@ public class ResourcePacksInfoSerializer_v618 extends ResourcePacksInfoSerialize
         ByteBuf byteBuf = buffer.alloc().ioBuffer();
         try {
             int size = 0;
-            for (ResourcePacksInfoPacket.Entry info : packet.getResourcePackInfos()) {
+            for (ResourcePacksInfoPacket.Entry info : packet.getResourcePacks()) {
                 if (info.getCdnUrl() != null) {
                     helper.writeString(byteBuf, info.getPackId() + "_" + info.getPackVersion());
                     helper.writeString(byteBuf, info.getCdnUrl());
@@ -58,7 +58,7 @@ public class ResourcePacksInfoSerializer_v618 extends ResourcePacksInfoSerialize
         int size = VarInts.readUnsignedInt(buffer);
         checkArgument(helper.getEncodingSettings().maxListSize() <= 0 || size <= helper.getEncodingSettings().maxListSize(), "CDN entries size is too big: %s", size);
 
-        if (size == 0 || packet.getResourcePackInfos().isEmpty()) {
+        if (size == 0 || packet.getResourcePacks().isEmpty()) {
             return;
         }
 
@@ -69,7 +69,7 @@ public class ResourcePacksInfoSerializer_v618 extends ResourcePacksInfoSerialize
             cdnUrls.put(idVersion, url);
         }
 
-        for (ResourcePacksInfoPacket.Entry info : packet.getResourcePackInfos()) {
+        for (ResourcePacksInfoPacket.Entry info : packet.getResourcePacks()) {
             String url = cdnUrls.remove(info.getPackId() + "_" + info.getPackVersion());
             if (url != null) {
                 info.setCdnUrl(url);

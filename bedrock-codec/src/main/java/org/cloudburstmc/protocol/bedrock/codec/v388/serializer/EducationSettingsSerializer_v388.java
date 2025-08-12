@@ -14,13 +14,13 @@ public class EducationSettingsSerializer_v388 implements BedrockPacketSerializer
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, EducationSettingsPacket packet) {
-        helper.writeString(buffer, packet.getCodeBuilderUri());
-        buffer.writeBoolean(packet.isQuizAttached());
+        helper.writeString(buffer, packet.getEducationLevelSettings().getCodeBuilderDefaultURI());
+        buffer.writeBoolean(packet.getEducationLevelSettings().isQuizAttached());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, EducationSettingsPacket packet) {
-        packet.setCodeBuilderUri(helper.readString(buffer));
-        packet.setQuizAttached(buffer.readBoolean());
+        packet.getEducationLevelSettings().setCodeBuilderDefaultURI(helper.readString(buffer));
+        packet.getEducationLevelSettings().setQuizAttached(buffer.readBoolean());
     }
 }

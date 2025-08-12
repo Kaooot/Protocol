@@ -15,17 +15,17 @@ public class ContainerOpenSerializer_v291 implements BedrockPacketSerializer<Con
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ContainerOpenPacket packet) {
-        buffer.writeByte(packet.getId());
-        buffer.writeByte(packet.getType().getId());
-        helper.writeBlockPosition(buffer, packet.getBlockPosition());
-        VarInts.writeLong(buffer, packet.getUniqueEntityId());
+        buffer.writeByte(packet.getContainerID());
+        buffer.writeByte(packet.getContainerType().getId());
+        helper.writeBlockPosition(buffer, packet.getPosition());
+        VarInts.writeLong(buffer, packet.getTargetActorID());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ContainerOpenPacket packet) {
-        packet.setId(buffer.readByte());
-        packet.setType(ContainerType.from(buffer.readByte()));
-        packet.setBlockPosition(helper.readBlockPosition(buffer));
-        packet.setUniqueEntityId(VarInts.readLong(buffer));
+        packet.setContainerID(buffer.readByte());
+        packet.setContainerType(ContainerType.from(buffer.readByte()));
+        packet.setPosition(helper.readBlockPosition(buffer));
+        packet.setTargetActorID(VarInts.readLong(buffer));
     }
 }

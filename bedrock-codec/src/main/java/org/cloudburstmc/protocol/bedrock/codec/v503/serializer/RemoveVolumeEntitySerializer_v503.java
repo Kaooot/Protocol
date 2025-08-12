@@ -11,11 +11,11 @@ public class RemoveVolumeEntitySerializer_v503 extends RemoveVolumeEntitySeriali
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, RemoveVolumeEntityPacket packet) {
         super.serialize(buffer, helper, packet);
-        VarInts.writeInt(buffer, packet.getDimension());
+        VarInts.writeInt(buffer, packet.getDimensionType());
     }
 
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, RemoveVolumeEntityPacket packet) {
         super.deserialize(buffer, helper, packet);
-        packet.setDimension(VarInts.readInt(buffer));
+        packet.setDimensionType(VarInts.readInt(buffer));
     }
 }

@@ -18,16 +18,16 @@ public class BiomeConsolidatedFeatureData {
     transient Indexable<String> identifier;
     @Getter(AccessLevel.NONE)
     transient Indexable<String> pass;
-    boolean internalUse;
+    boolean canUseInternalFeature;
 
     @JsonCreator
     public BiomeConsolidatedFeatureData(BiomeScatterParamData scatter, String feature, String identifier, String pass,
-            boolean internalUse) {
+            boolean canUseInternalFeature) {
         this.scatter = scatter;
         this.feature = new Unindexed<>(feature);
         this.identifier = new Unindexed<>(identifier);
         this.pass = new Unindexed<>(pass);
-        this.internalUse = internalUse;
+        this.canUseInternalFeature = canUseInternalFeature;
     }
 
     public String getFeature() {

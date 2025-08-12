@@ -9,7 +9,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class PlayerUpdateEntityOverridesPacket implements BedrockPacket {
-    private long entityUniqueId;
+    private long targetID;
     private int propertyIndex;
     private UpdateType updateType;
     private int intValue;

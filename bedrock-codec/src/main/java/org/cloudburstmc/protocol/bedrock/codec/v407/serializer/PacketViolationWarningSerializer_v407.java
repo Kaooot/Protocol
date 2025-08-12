@@ -19,17 +19,17 @@ public class PacketViolationWarningSerializer_v407 implements BedrockPacketSeria
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, PacketViolationWarningPacket packet) {
-        VarInts.writeInt(buffer, packet.getType().ordinal() - 1);
-        VarInts.writeInt(buffer, packet.getSeverity().ordinal() - 1);
-        VarInts.writeInt(buffer, packet.getPacketCauseId());
-        helper.writeString(buffer, packet.getContext());
+        VarInts.writeInt(buffer, packet.getViolationType().ordinal() - 1);
+        VarInts.writeInt(buffer, packet.getViolationSeverity().ordinal() - 1);
+        VarInts.writeInt(buffer, packet.getViolatingPacketId());
+        helper.writeString(buffer, packet.getViolationContext());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, PacketViolationWarningPacket packet) {
-        packet.setType(TYPES[VarInts.readInt(buffer) + 1]);
-        packet.setSeverity(SEVERITIES[VarInts.readInt(buffer) + 1]);
-        packet.setPacketCauseId(VarInts.readInt(buffer));
-        packet.setContext(helper.readString(buffer));
+        packet.setViolationType(TYPES[VarInts.readInt(buffer) + 1]);
+        packet.setViolationSeverity(SEVERITIES[VarInts.readInt(buffer) + 1]);
+        packet.setViolatingPacketId(VarInts.readInt(buffer));
+        packet.setViolationContext(helper.readString(buffer));
     }
 }

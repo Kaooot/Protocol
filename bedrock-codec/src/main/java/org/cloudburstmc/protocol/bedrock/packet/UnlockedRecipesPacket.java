@@ -4,7 +4,6 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.nbt.NbtMap;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 import java.util.List;
@@ -13,8 +12,8 @@ import java.util.List;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class UnlockedRecipesPacket implements BedrockPacket {
-    private ActionType action;
-    private final List<String> unlockedRecipes = new ObjectArrayList<>();
+    private UnlockedRecipesPacketType type;
+    private final List<String> unlockedRecipesList = new ObjectArrayList<>();
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {
@@ -26,7 +25,7 @@ public class UnlockedRecipesPacket implements BedrockPacket {
         return BedrockPacketType.UNLOCKED_RECIPES;
     }
 
-    public enum ActionType {
+    public enum UnlockedRecipesPacketType {
         EMPTY,
         INITIALLY_UNLOCKED,
         NEWLY_UNLOCKED,

@@ -9,8 +9,8 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @Data
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class AddVolumeEntityPacket implements BedrockPacket {
-    private int id;
-    private NbtMap data;
+    private int entityNetworkId;
+    private NbtMap components;
     /**
      * @since v465
      */
@@ -35,7 +35,7 @@ public class AddVolumeEntityPacket implements BedrockPacket {
     /**
      * @since v503
      */
-    private int dimension;
+    private int dimensionType;
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

@@ -1,7 +1,6 @@
 package org.cloudburstmc.protocol.bedrock.codec.v786.serializer;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufAllocator;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
@@ -20,13 +19,13 @@ public class SetHudSerializer_v786 implements BedrockPacketSerializer<SetHudPack
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, SetHudPacket packet) {
-        helper.writeArray(buffer, packet.getElements(), (buf, element) -> VarInts.writeInt(buf, element.ordinal()));
-        VarInts.writeInt(buffer, packet.getVisibility().ordinal());
+        helper.writeArray(buffer, packet.getHudElementList(), (buf, element) -> VarInts.writeInt(buf, element.ordinal()));
+        VarInts.writeInt(buffer, packet.getHudVisible().ordinal());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, SetHudPacket packet) {
-        helper.readArray(buffer, packet.getElements(), buf -> VALUES[VarInts.readInt(buf)]);
-        packet.setVisibility(VISIBILITIES[VarInts.readInt(buffer)]);
+        helper.readArray(buffer, packet.getHudElementList(), buf -> VALUES[VarInts.readInt(buf)]);
+        packet.setHudVisible(VISIBILITIES[VarInts.readInt(buffer)]);
     }
 }

@@ -3,9 +3,9 @@ package org.cloudburstmc.protocol.bedrock.codec.v419.serializer;
 import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v407.serializer.ItemStackResponseSerializer_v407;
-import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponse;
-import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponseContainer;
-import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponseStatus;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponseInfo;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponseContainerInfo;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackNetResult;
 import org.cloudburstmc.protocol.bedrock.packet.ItemStackResponsePacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -19,30 +19,30 @@ public class ItemStackResponseSerializer_v419 extends ItemStackResponseSerialize
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ItemStackResponsePacket packet) {
-        helper.writeArray(buffer, packet.getEntries(), (buf, response) -> {
+        helper.writeArray(buffer, packet.getResponses(), (buf, response) -> {
             buf.writeByte(response.getResult().ordinal());
             VarInts.writeInt(buffer, response.getRequestId());
 
-            if (response.getResult() != ItemStackResponseStatus.OK)
+            if (response.getResult() != ItemStackNetResult.SUCCESS)
                 return;
 
-            helper.writeArray(buf, response.getContainers(), helper::writeItemStackResponseContainer);
+            helper.writeArray(buf, response.getContainerInfo(), helper::writeItemStackResponseContainer);
         });
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ItemStackResponsePacket packet) {
-        List<ItemStackResponse> entries = packet.getEntries();
+        List<ItemStackResponseInfo> entries = packet.getResponses();
         helper.readArray(buffer, entries, buf -> {
-            ItemStackResponseStatus result = ItemStackResponseStatus.values()[buf.readByte()];
+            ItemStackNetResult result = ItemStackNetResult.from(buf.readByte());
             int requestId = VarInts.readInt(buf);
 
-            if (result != ItemStackResponseStatus.OK)
-                return new ItemStackResponse(result, requestId, Collections.emptyList());
+            if (result != ItemStackNetResult.SUCCESS)
+                return new ItemStackResponseInfo(result, requestId, Collections.emptyList());
 
-            List<ItemStackResponseContainer> containerEntries = new ArrayList<>();
+            List<ItemStackResponseContainerInfo> containerEntries = new ArrayList<>();
             helper.readArray(buf, containerEntries, helper::readItemStackResponseContainer);
-            return new ItemStackResponse(result, requestId, containerEntries);
+            return new ItemStackResponseInfo(result, requestId, containerEntries);
         });
     }
 

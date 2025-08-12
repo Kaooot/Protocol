@@ -2,13 +2,13 @@ package org.cloudburstmc.protocol.bedrock.codec.v557;
 
 import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
+import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v554.BedrockCodecHelper_v554;
-import org.cloudburstmc.protocol.bedrock.data.Ability;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityProperties;
-import org.cloudburstmc.protocol.bedrock.data.entity.FloatEntityProperty;
-import org.cloudburstmc.protocol.bedrock.data.entity.IntEntityProperty;
-import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerSlotType;
+import org.cloudburstmc.protocol.bedrock.data.AbilitiesIndex;
+import org.cloudburstmc.protocol.bedrock.data.actor.PropertySyncData;
+import org.cloudburstmc.protocol.bedrock.data.actor.FloatEntityProperty;
+import org.cloudburstmc.protocol.bedrock.data.actor.IntEntityProperty;
+import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerEnumName;
 import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.ItemDescriptorWithCount;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.TextProcessingEventOrigin;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.AutoCraftRecipeAction;
@@ -21,14 +21,14 @@ import java.util.List;
 
 public class BedrockCodecHelper_v557 extends BedrockCodecHelper_v554 {
 
-    public BedrockCodecHelper_v557(EntityDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes,
-                                   TypeMap<ItemStackRequestActionType> stackRequestActionTypes, TypeMap<ContainerSlotType> containerSlotTypes,
-                                   TypeMap<Ability> abilities, TypeMap<TextProcessingEventOrigin> textProcessingEventOrigins) {
+    public BedrockCodecHelper_v557(ActorDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes,
+                                   TypeMap<ItemStackRequestActionType> stackRequestActionTypes, TypeMap<ContainerEnumName> containerSlotTypes,
+                                   TypeMap<AbilitiesIndex> abilities, TypeMap<TextProcessingEventOrigin> textProcessingEventOrigins) {
         super(entityData, gameRulesTypes, stackRequestActionTypes, containerSlotTypes, abilities, textProcessingEventOrigins);
     }
 
     @Override
-    public void readEntityProperties(ByteBuf buffer, EntityProperties properties) {
+    public void readEntityProperties(ByteBuf buffer, PropertySyncData properties) {
         readArray(buffer, properties.getIntProperties(), byteBuf -> {
             int index = VarInts.readUnsignedInt(byteBuf);
             int value = VarInts.readInt(byteBuf);
@@ -42,7 +42,7 @@ public class BedrockCodecHelper_v557 extends BedrockCodecHelper_v554 {
     }
 
     @Override
-    public void writeEntityProperties(ByteBuf buffer, EntityProperties properties) {
+    public void writeEntityProperties(ByteBuf buffer, PropertySyncData properties) {
         writeArray(buffer, properties.getIntProperties(), (byteBuf, property) -> {
             VarInts.writeUnsignedInt(byteBuf, property.getIndex());
             VarInts.writeInt(byteBuf, property.getValue());

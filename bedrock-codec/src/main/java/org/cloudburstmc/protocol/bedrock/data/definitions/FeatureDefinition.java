@@ -4,6 +4,6 @@ import lombok.Value;
 
 @Value
 public class FeatureDefinition {
-    String name;
-    String json;
+    String featureName;
+    String binaryJsonOutput;
 }

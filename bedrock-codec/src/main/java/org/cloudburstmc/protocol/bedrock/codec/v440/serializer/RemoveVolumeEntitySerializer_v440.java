@@ -15,11 +15,11 @@ public class RemoveVolumeEntitySerializer_v440 implements BedrockPacketSerialize
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, RemoveVolumeEntityPacket packet) {
-        VarInts.writeUnsignedInt(buffer, packet.getId());
+        VarInts.writeUnsignedInt(buffer, packet.getEntityNetworkId());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, RemoveVolumeEntityPacket packet) {
-        packet.setId(VarInts.readUnsignedInt(buffer));
+        packet.setEntityNetworkId(VarInts.readUnsignedInt(buffer));
     }
 }

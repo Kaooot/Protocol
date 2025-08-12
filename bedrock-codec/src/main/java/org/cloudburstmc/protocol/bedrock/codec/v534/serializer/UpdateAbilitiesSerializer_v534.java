@@ -13,11 +13,11 @@ public class UpdateAbilitiesSerializer_v534 implements BedrockPacketSerializer<U
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, UpdateAbilitiesPacket packet) {
-        helper.writePlayerAbilities(buffer, packet);
+        helper.writeSerializedAbilitiesData(buffer, packet.getData());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, UpdateAbilitiesPacket packet) {
-        helper.readPlayerAbilities(buffer, packet);
+        helper.readSerializedAbilitiesData(buffer, packet.getData());
     }
 }

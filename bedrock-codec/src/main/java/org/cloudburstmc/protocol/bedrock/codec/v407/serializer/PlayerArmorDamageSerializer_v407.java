@@ -29,7 +29,7 @@ public class PlayerArmorDamageSerializer_v407 implements BedrockPacketSerializer
         }
         buffer.writeByte(flags);
 
-        int[] damage = packet.getDamage();
+        int[] damage = packet.getDamageForSlot();
 
         for (PlayerArmorDamageFlag flag : packet.getFlags()) {
             int value = damage[flag.ordinal()];
@@ -41,7 +41,7 @@ public class PlayerArmorDamageSerializer_v407 implements BedrockPacketSerializer
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, PlayerArmorDamagePacket packet) {
         int flagsVal = buffer.readUnsignedByte();
         Set<PlayerArmorDamageFlag> flags = packet.getFlags();
-        int[] damage = packet.getDamage();
+        int[] damage = packet.getDamageForSlot();
         for (int i = 0; i <= this.getMaxFlagIndex(); i++) {
             if ((flagsVal & (1 << i)) != 0) {
                 flags.add(FLAGS[i]);

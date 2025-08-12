@@ -4,27 +4,27 @@ import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
 import lombok.RequiredArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataMap;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataMap;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorFlag;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 
 import java.util.EnumSet;
 
 
 @RequiredArgsConstructor
-public final class FlagTransformer implements EntityDataTransformer<Long, EnumSet<EntityFlag>> {
+public final class FlagTransformer implements ActorDataTransformer<Long, EnumSet<ActorFlag>> {
 
     private static final InternalLogger log = InternalLoggerFactory.getInstance(FlagTransformer.class);
 
-    private final TypeMap<EntityFlag> typeMap;
+    private final TypeMap<ActorFlag> typeMap;
     private final int index;
 
     @Override
-    public Long serialize(BedrockCodecHelper helper, EntityDataMap map, EnumSet<EntityFlag> flags) {
+    public Long serialize(BedrockCodecHelper helper, ActorDataMap map, EnumSet<ActorFlag> flags) {
         long value = 0;
         int lower = this.index * 64;
         int upper = lower + 64;
-        for (EntityFlag flag : flags) {
+        for (ActorFlag flag : flags) {
             int flagIndex = this.typeMap.getId(flag);
             if (flagIndex >= lower && flagIndex < upper) {
                 value |= 1L << (flagIndex & 0x3f);
@@ -35,15 +35,15 @@ public final class FlagTransformer implements EntityDataTransformer<Long, EnumSe
     }
 
     @Override
-    public EnumSet<EntityFlag> deserialize(BedrockCodecHelper helper, EntityDataMap map, Long value) {
-        EnumSet<EntityFlag> flags = map.getOrCreateFlags();
+    public EnumSet<ActorFlag> deserialize(BedrockCodecHelper helper, ActorDataMap map, Long value) {
+        EnumSet<ActorFlag> flags = map.getOrCreateFlags();
 
         int lower = index * 64;
         int upper = lower + 64;
         for (int i = lower; i < upper; i++) {
             int idx = i & 0x3f;
             if ((value & (1L << idx)) != 0) {
-                EntityFlag flag = this.typeMap.getType(i);
+                ActorFlag flag = this.typeMap.getType(i);
                 if (flag != null) {
                     flags.add(flag);
                 } else {

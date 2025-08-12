@@ -1,7 +1,7 @@
 package org.cloudburstmc.protocol.bedrock.codec.v354;
 
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
-import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
+import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelEventSerializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelSoundEvent1Serializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v313.serializer.LevelSoundEvent2Serializer_v313;
@@ -13,30 +13,30 @@ import org.cloudburstmc.protocol.bedrock.data.LevelEvent;
 import org.cloudburstmc.protocol.bedrock.data.LevelEventType;
 import org.cloudburstmc.protocol.bedrock.data.PacketRecipient;
 import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataFormat;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataFormat;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataTypes;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorFlag;
 import org.cloudburstmc.protocol.bedrock.packet.*;
 import org.cloudburstmc.protocol.bedrock.transformer.FlagTransformer;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 
 public class Bedrock_v354 extends Bedrock_v340 {
 
-    protected static final TypeMap<EntityFlag> ENTITY_FLAGS = Bedrock_v340.ENTITY_FLAGS.toBuilder()
+    protected static final TypeMap<ActorFlag> ENTITY_FLAGS = Bedrock_v340.ENTITY_FLAGS.toBuilder()
             .shift(74, 1)
-            .insert(74, EntityFlag.BLOCKED_USING_DAMAGED_SHIELD)
-            .insert(81, EntityFlag.IS_ILLAGER_CAPTAIN)
-            .insert(82, EntityFlag.STUNNED)
-            .insert(83, EntityFlag.ROARING)
-            .insert(84, EntityFlag.DELAYED_ATTACK)
-            .insert(85, EntityFlag.IS_AVOIDING_MOBS)
-            .insert(86, EntityFlag.FACING_TARGET_TO_RANGE_ATTACK)
+            .insert(74, ActorFlag.BLOCKED_USING_DAMAGED_SHIELD)
+            .insert(81, ActorFlag.IS_ILLAGER_CAPTAIN)
+            .insert(82, ActorFlag.STUNNED)
+            .insert(83, ActorFlag.ROARING)
+            .insert(84, ActorFlag.DELAYED_ATTACK)
+            .insert(85, ActorFlag.IS_AVOIDING_MOBS)
+            .insert(86, ActorFlag.FACING_TARGET_TO_RANGE_ATTACK)
             .build();
 
-    protected static final EntityDataTypeMap ENTITY_DATA = Bedrock_v340.ENTITY_DATA.toBuilder()
-            .update(EntityDataTypes.FLAGS, new FlagTransformer(ENTITY_FLAGS, 0))
-            .update(EntityDataTypes.FLAGS_2, new FlagTransformer(ENTITY_FLAGS, 1))
-            .insert(EntityDataTypes.TRADE_EXPERIENCE, 102, EntityDataFormat.INT)
+    protected static final ActorDataTypeMap ENTITY_DATA = Bedrock_v340.ENTITY_DATA.toBuilder()
+            .update(ActorDataTypes.FLAGS, new FlagTransformer(ENTITY_FLAGS, 0))
+            .update(ActorDataTypes.FLAGS_2, new FlagTransformer(ENTITY_FLAGS, 1))
+            .insert(ActorDataTypes.TRADE_EXPERIENCE, 102, ActorDataFormat.INT)
             .build();
 
     protected static final TypeMap<SoundEvent> SOUND_EVENTS = Bedrock_v340.SOUND_EVENTS.toBuilder()
@@ -71,7 +71,7 @@ public class Bedrock_v354 extends Bedrock_v340 {
             .minecraftVersion("1.11.0")
             .helper(() -> new BedrockCodecHelper_v340(ENTITY_DATA, GAME_RULE_TYPES))
             .updateSerializer(CraftingDataPacket.class, CraftingDataSerializer_v354.INSTANCE)
-            .updateSerializer(EventPacket.class, EventSerializer_v354.INSTANCE)
+            .updateSerializer(LegacyTelemetryEventPacket.class, LegacyTelemetryEventSerializer_v354.INSTANCE)
             .updateSerializer(ClientboundMapItemDataPacket.class, ClientboundMapItemDataSerializer_v354.INSTANCE)
             .updateSerializer(UpdateTradePacket.class, UpdateTradeSerializer_v354.INSTANCE)
             .updateSerializer(LecternUpdatePacket.class, LecternUpdateSerializer_v354.INSTANCE)

@@ -17,9 +17,9 @@ public class InteractSerializer_v388 implements BedrockPacketSerializer<Interact
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, InteractPacket packet) {
         buffer.writeByte(packet.getAction().ordinal());
-        VarInts.writeUnsignedLong(buffer, packet.getRuntimeEntityId());
+        VarInts.writeUnsignedLong(buffer, packet.getTargetRuntimeID());
 
-        if (packet.getAction() == InteractPacket.Action.MOUSEOVER || packet.getAction() == InteractPacket.Action.LEAVE_VEHICLE) {
+        if (packet.getAction() == InteractPacket.Action.INTERACT_UPDATE || packet.getAction() == InteractPacket.Action.STOP_RIDING) {
             helper.writeVector3f(buffer, packet.getMousePosition());
         }
     }
@@ -27,9 +27,9 @@ public class InteractSerializer_v388 implements BedrockPacketSerializer<Interact
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, InteractPacket packet) {
         packet.setAction(ACTIONS[buffer.readUnsignedByte()]);
-        packet.setRuntimeEntityId(VarInts.readUnsignedLong(buffer));
+        packet.setTargetRuntimeID(VarInts.readUnsignedLong(buffer));
 
-        if (packet.getAction() == InteractPacket.Action.MOUSEOVER || packet.getAction() == InteractPacket.Action.LEAVE_VEHICLE) {
+        if (packet.getAction() == InteractPacket.Action.INTERACT_UPDATE || packet.getAction() == InteractPacket.Action.STOP_RIDING) {
             packet.setMousePosition(helper.readVector3f(buffer));
         }
     }

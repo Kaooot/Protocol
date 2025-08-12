@@ -18,7 +18,7 @@ import java.util.List;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class FeatureRegistryPacket implements BedrockPacket {
-    private final List<FeatureDefinition> features = new ObjectArrayList<>();
+    private final List<FeatureDefinition> featuresDataList = new ObjectArrayList<>();
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

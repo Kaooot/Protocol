@@ -13,22 +13,22 @@ public class ResourcePacksInfoSerializer_v766 extends ResourcePacksInfoSerialize
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ResourcePacksInfoPacket packet) {
-        buffer.writeBoolean(packet.isForcedToAccept());
+        buffer.writeBoolean(packet.isResourcePackRequired());
         buffer.writeBoolean(packet.isHasAddonPacks());
-        buffer.writeBoolean(packet.isScriptingEnabled());
-        helper.writeUuid(buffer, packet.getWorldTemplateId());
+        buffer.writeBoolean(packet.isHasScripts());
+        helper.writeUuid(buffer, packet.getWorldTemplateUUID());
         helper.writeString(buffer, packet.getWorldTemplateVersion());
-        writePacks(buffer, packet.getResourcePackInfos(), helper, true);
+        writePacks(buffer, packet.getResourcePacks(), helper, true);
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ResourcePacksInfoPacket packet) {
-        packet.setForcedToAccept(buffer.readBoolean());
+        packet.setResourcePackRequired(buffer.readBoolean());
         packet.setHasAddonPacks(buffer.readBoolean());
-        packet.setScriptingEnabled(buffer.readBoolean());
-        packet.setWorldTemplateId(helper.readUuid(buffer));
+        packet.setHasScripts(buffer.readBoolean());
+        packet.setWorldTemplateUUID(helper.readUuid(buffer));
         packet.setWorldTemplateVersion(helper.readString(buffer));
-        readPacks(buffer, packet.getResourcePackInfos(), helper, true);
+        readPacks(buffer, packet.getResourcePacks(), helper, true);
     }
 
     @Override
@@ -40,11 +40,11 @@ public class ResourcePacksInfoSerializer_v766 extends ResourcePacksInfoSerialize
         buffer.writeLongLE(entry.getPackSize());
         helper.writeString(buffer, entry.getContentKey());
         helper.writeString(buffer, entry.getSubPackName());
-        helper.writeString(buffer, entry.getContentId());
-        buffer.writeBoolean(entry.isScripting());
+        helper.writeString(buffer, entry.getContentIdentity());
+        buffer.writeBoolean(entry.isHasScripts());
         buffer.writeBoolean(entry.isAddonPack());
         if (resource) {
-            buffer.writeBoolean(entry.isRaytracingCapable());
+            buffer.writeBoolean(entry.isRayTracingCapable());
         }
         helper.writeString(buffer, entry.getCdnUrl() == null ? "" : entry.getCdnUrl());
     }

@@ -1,9 +1,9 @@
 package org.cloudburstmc.protocol.bedrock.codec.v471;
 
 import io.netty.buffer.ByteBuf;
-import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
+import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v465.BedrockCodecHelper_v465;
-import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerSlotType;
+import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerEnumName;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.CraftGrindstoneAction;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.CraftLoomAction;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestAction;
@@ -13,8 +13,8 @@ import org.cloudburstmc.protocol.common.util.VarInts;
 
 public class BedrockCodecHelper_v471 extends BedrockCodecHelper_v465 {
 
-    public BedrockCodecHelper_v471(EntityDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes,
-                                   TypeMap<ItemStackRequestActionType> stackRequestActionTypes, TypeMap<ContainerSlotType> containerSlotTypes) {
+    public BedrockCodecHelper_v471(ActorDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes,
+                                   TypeMap<ItemStackRequestActionType> stackRequestActionTypes, TypeMap<ContainerEnumName> containerSlotTypes) {
         super(entityData, gameRulesTypes, stackRequestActionTypes, containerSlotTypes);
     }
 

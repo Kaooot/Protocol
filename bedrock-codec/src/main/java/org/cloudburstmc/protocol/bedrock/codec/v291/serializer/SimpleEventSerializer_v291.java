@@ -5,7 +5,6 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
-import org.cloudburstmc.protocol.bedrock.data.SimpleEventType;
 import org.cloudburstmc.protocol.bedrock.packet.SimpleEventPacket;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -15,11 +14,11 @@ public class SimpleEventSerializer_v291 implements BedrockPacketSerializer<Simpl
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, SimpleEventPacket packet) {
-        buffer.writeShortLE(packet.getEvent().ordinal());
+        buffer.writeShortLE(packet.getType().ordinal());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, SimpleEventPacket packet) {
-        packet.setEvent(SimpleEventType.values()[buffer.readUnsignedShortLE()]);
+        packet.setType(SimpleEventPacket.Subtype.from(buffer.readUnsignedShortLE()));
     }
 }

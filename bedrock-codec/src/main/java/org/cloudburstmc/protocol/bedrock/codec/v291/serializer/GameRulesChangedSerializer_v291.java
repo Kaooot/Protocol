@@ -13,11 +13,11 @@ public class GameRulesChangedSerializer_v291 implements BedrockPacketSerializer<
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, GameRulesChangedPacket packet) {
-        helper.writeArray(buffer, packet.getGameRules(), helper::writeGameRule);
+        helper.writeArray(buffer, packet.getRulesData(), helper::writeGameRule);
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, GameRulesChangedPacket packet) {
-        helper.readArray(buffer, packet.getGameRules(), helper::readGameRule);
+        helper.readArray(buffer, packet.getRulesData(), helper::readGameRule);
     }
 }

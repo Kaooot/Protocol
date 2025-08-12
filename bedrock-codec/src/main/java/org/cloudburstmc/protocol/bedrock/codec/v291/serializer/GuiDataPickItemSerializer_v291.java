@@ -13,15 +13,15 @@ public class GuiDataPickItemSerializer_v291 implements BedrockPacketSerializer<G
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, GuiDataPickItemPacket packet) {
-        helper.writeString(buffer, packet.getDescription());
-        helper.writeString(buffer, packet.getItemEffects());
-        buffer.writeIntLE(packet.getHotbarSlot());
+        helper.writeString(buffer, packet.getItemName());
+        helper.writeString(buffer, packet.getItemEffectName());
+        buffer.writeIntLE(packet.getSlot());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, GuiDataPickItemPacket packet) {
-        packet.setDescription(helper.readString(buffer));
-        packet.setItemEffects(helper.readString(buffer));
-        packet.setHotbarSlot(buffer.readIntLE());
+        packet.setItemName(helper.readString(buffer));
+        packet.setItemEffectName(helper.readString(buffer));
+        packet.setSlot(buffer.readIntLE());
     }
 }

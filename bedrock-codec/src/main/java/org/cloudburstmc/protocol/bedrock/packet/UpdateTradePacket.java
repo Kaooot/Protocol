@@ -12,14 +12,14 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @ToString(doNotUseGetters = true)
 public class UpdateTradePacket implements BedrockPacket {
     private int containerId;
-    private ContainerType containerType;
+    private ContainerType type;
     private int size; // Hardcoded to 0
     private int tradeTier;
-    private long traderUniqueEntityId;
-    private long playerUniqueEntityId;
+    private long entityUniqueId;
+    private long lastTradingPlayer;
     private String displayName;
     private NbtMap offers;
-    private boolean newTradingUi;
+    private boolean useNewTradeScreen;
     private boolean recipeAddedOnUpdate;
     private boolean usingEconomyTrade;
 

@@ -14,7 +14,6 @@ import org.cloudburstmc.protocol.bedrock.data.biome.*;
 import org.cloudburstmc.protocol.bedrock.data.definitions.BlockDefinition;
 import org.cloudburstmc.protocol.bedrock.packet.BiomeDefinitionListPacket;
 import org.cloudburstmc.protocol.common.util.*;
-import org.cloudburstmc.protocol.common.util.index.Indexable;
 import org.cloudburstmc.protocol.common.util.index.Indexed;
 import org.cloudburstmc.protocol.common.util.index.IndexedList;
 
@@ -220,7 +219,7 @@ public class BiomeDefinitionListSerializer_v800 implements BedrockPacketSerializ
         buffer.writeShortLE(strings.addAndGetIndex(consolidatedFeature.getFeature()));
         buffer.writeShortLE(strings.addAndGetIndex(consolidatedFeature.getIdentifier()));
         buffer.writeShortLE(strings.addAndGetIndex(consolidatedFeature.getPass()));
-        buffer.writeBoolean(consolidatedFeature.isInternalUse());
+        buffer.writeBoolean(consolidatedFeature.isCanUseInternalFeature());
     }
 
     protected BiomeConsolidatedFeatureData readConsolidatedFeature(ByteBuf buffer, BedrockCodecHelper helper, List<String> strings) {
@@ -241,7 +240,7 @@ public class BiomeDefinitionListSerializer_v800 implements BedrockPacketSerializ
         VarInts.writeInt(buffer, scatterParam.getChancePercentType() == null ? -1 : scatterParam.getChancePercentType().ordinal());
         buffer.writeShortLE(strings.addAndGetIndex(scatterParam.getChancePercent()));
         buffer.writeIntLE(scatterParam.getChanceNumerator());
-        buffer.writeIntLE(scatterParam.getChangeDenominator());
+        buffer.writeIntLE(scatterParam.getChanceDenominator());
         VarInts.writeInt(buffer, scatterParam.getIterationsType() == null ? -1 : scatterParam.getIterationsType().ordinal());
         buffer.writeShortLE(strings.addAndGetIndex(scatterParam.getIterations()));
     }
@@ -419,9 +418,9 @@ public class BiomeDefinitionListSerializer_v800 implements BedrockPacketSerializ
         helper.writeArray(buffer, overworldGenRules.getShoreTransformations(), writeWeight);
         TriConsumer<ByteBuf, BedrockCodecHelper, BiomeConditionalTransformationData> writeConditionalTransformation =
                 (buf, aHelper, data) -> this.writeConditionalTransformation(buf, aHelper, data, strings);
-        helper.writeArray(buffer, overworldGenRules.getPreHillsEdgeTransformations(), writeConditionalTransformation);
-        helper.writeArray(buffer, overworldGenRules.getPostShoreTransformations(), writeConditionalTransformation);
-        helper.writeArray(buffer, overworldGenRules.getClimateTransformations(), this::writeWeightedTemperature);
+        helper.writeArray(buffer, overworldGenRules.getPreHillsEdge(), writeConditionalTransformation);
+        helper.writeArray(buffer, overworldGenRules.getPostShoreEdge(), writeConditionalTransformation);
+        helper.writeArray(buffer, overworldGenRules.getClimate(), this::writeWeightedTemperature);
     }
 
     protected BiomeOverworldGenRulesData readOverworldGenRules(ByteBuf buffer, BedrockCodecHelper helper, List<String> strings) {
@@ -454,7 +453,7 @@ public class BiomeDefinitionListSerializer_v800 implements BedrockPacketSerializ
     }
 
     protected void writeWeight(ByteBuf buffer, BiomeWeightedData weightedData, SequencedHashSet<String> strings) {
-        buffer.writeShortLE(strings.addAndGetIndex(weightedData.getBiome()));
+        buffer.writeShortLE(strings.addAndGetIndex(weightedData.getBiomeIdentifier()));
         buffer.writeIntLE(weightedData.getWeight());
     }
 
@@ -467,7 +466,7 @@ public class BiomeDefinitionListSerializer_v800 implements BedrockPacketSerializ
     protected void writeConditionalTransformation(ByteBuf buffer, BedrockCodecHelper helper,
                                                   BiomeConditionalTransformationData conditionalTransformation,
                                                   SequencedHashSet<String> strings) {
-        helper.writeArray(buffer, conditionalTransformation.getWeightedBiomes(),
+        helper.writeArray(buffer, conditionalTransformation.getTransformsInto(),
                 (buf, data) -> writeWeight(buf, data, strings));
         buffer.writeShortLE(strings.addAndGetIndex(conditionalTransformation.getConditionJson()));
         buffer.writeIntLE((int) conditionalTransformation.getMinPassingNeighbors());

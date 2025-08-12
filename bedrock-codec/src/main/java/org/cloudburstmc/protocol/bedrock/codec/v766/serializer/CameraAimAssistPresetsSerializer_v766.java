@@ -41,22 +41,22 @@ public class CameraAimAssistPresetsSerializer_v766 implements BedrockPacketSeria
     protected void writeCategory(ByteBuf buffer, BedrockCodecHelper helper, CameraAimAssistCategory category) {
         helper.writeString(buffer, category.getName());
 
-        helper.writeArray(buffer, category.getEntityPriorities(), this::writePriority);
-        helper.writeArray(buffer, category.getBlockPriorities(), this::writePriority);
+        helper.writeArray(buffer, category.getEntities(), this::writePriority);
+        helper.writeArray(buffer, category.getBlocks(), this::writePriority);
 
-        helper.writeOptionalNull(buffer, category.getEntityDefaultPriorities(), ByteBuf::writeIntLE);
-        helper.writeOptionalNull(buffer, category.getBlockDefaultPriorities(), ByteBuf::writeIntLE);
+        helper.writeOptionalNull(buffer, category.getEntityDefault(), ByteBuf::writeIntLE);
+        helper.writeOptionalNull(buffer, category.getBlockDefault(), ByteBuf::writeIntLE);
     }
 
     protected CameraAimAssistCategory readCategory(ByteBuf buffer, BedrockCodecHelper helper) {
         CameraAimAssistCategory category = new CameraAimAssistCategory();
         category.setName(helper.readString(buffer));
 
-        helper.readArray(buffer, category.getEntityPriorities(), this::readPriority);
-        helper.readArray(buffer, category.getBlockPriorities(), this::readPriority);
+        helper.readArray(buffer, category.getEntities(), this::readPriority);
+        helper.readArray(buffer, category.getBlocks(), this::readPriority);
 
-        category.setEntityDefaultPriorities(helper.readOptional(buffer, null, ByteBuf::readIntLE));
-        category.setBlockDefaultPriorities(helper.readOptional(buffer, null, ByteBuf::readIntLE));
+        category.setEntityDefault(helper.readOptional(buffer, null, ByteBuf::readIntLE));
+        category.setBlockDefault(helper.readOptional(buffer, null, ByteBuf::readIntLE));
         return category;
     }
 
@@ -83,7 +83,7 @@ public class CameraAimAssistPresetsSerializer_v766 implements BedrockPacketSeria
     }
 
     protected void writePriority(ByteBuf buffer, BedrockCodecHelper helper, CameraAimAssistPriority priority) {
-        helper.writeString(buffer, priority.getName());
+        helper.writeString(buffer, priority.getId());
         buffer.writeIntLE(priority.getPriority());
     }
 

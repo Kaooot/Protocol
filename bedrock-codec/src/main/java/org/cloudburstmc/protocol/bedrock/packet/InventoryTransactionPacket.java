@@ -21,7 +21,7 @@ import java.util.List;
 @ToString(doNotUseGetters = true)
 public class InventoryTransactionPacket implements BedrockPacket {
     private int legacyRequestId;
-    private final List<LegacySetItemSlotData> legacySlots = new ObjectArrayList<>();
+    private final List<LegacySetItemSlotData> legacySetItemSlots = new ObjectArrayList<>();
     private final List<InventoryActionData> actions = new ObjectArrayList<>();
     private InventoryTransactionType transactionType;
     private int actionType;

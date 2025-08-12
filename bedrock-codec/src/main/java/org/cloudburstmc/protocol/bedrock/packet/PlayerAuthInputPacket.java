@@ -19,9 +19,9 @@ import java.util.Set;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class PlayerAuthInputPacket implements BedrockPacket {
-    private Vector3f rotation; // head rot after motion
+    private Vector3f playerRotation; // head rot after motion
     private Vector3f position;
-    private Vector2f motion;
+    private Vector2f moveVector;
     private final Set<PlayerAuthInputData> inputData = EnumSet.noneOf(PlayerAuthInputData.class);
     private InputMode inputMode;
     private ClientPlayMode playMode;
@@ -29,8 +29,8 @@ public class PlayerAuthInputPacket implements BedrockPacket {
      * @deprecated since v748
      */
     private Vector3f vrGazeDirection;
-    private long tick;
-    private Vector3f delta;
+    private long clientTick;
+    private Vector3f postDelta;
     /**
      * {@link #inputData} must contain {@link PlayerAuthInputData#PERFORM_ITEM_INTERACTION} in order for this to not be null.
      *
@@ -52,7 +52,7 @@ public class PlayerAuthInputPacket implements BedrockPacket {
     /**
      * @since v527
      */
-    private InputInteractionModel inputInteractionModel;
+    private InputInteractionModel newInteractionModel;
     /**
      * @since v748
      */
@@ -64,7 +64,7 @@ public class PlayerAuthInputPacket implements BedrockPacket {
     /**
      * @since 649
      */
-    private long predictedVehicle;
+    private long clientPredictedVehicle;
     /**
      * @since 662
      */

@@ -14,13 +14,13 @@ public class ShowStoreOfferSerializer_v291 implements BedrockPacketSerializer<Sh
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ShowStoreOfferPacket packet) {
-        helper.writeString(buffer, packet.getOfferId());
+        helper.writeString(buffer, packet.getProductID());
         buffer.writeBoolean(packet.isShownToAll());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ShowStoreOfferPacket packet) {
-        packet.setOfferId(helper.readString(buffer));
+        packet.setProductID(helper.readString(buffer));
         packet.setShownToAll(buffer.readBoolean());
     }
 }

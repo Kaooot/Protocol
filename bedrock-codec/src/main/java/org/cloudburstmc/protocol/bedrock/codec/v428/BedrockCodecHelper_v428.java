@@ -2,13 +2,13 @@ package org.cloudburstmc.protocol.bedrock.codec.v428;
 
 import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
+import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v422.BedrockCodecHelper_v422;
-import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerSlotType;
+import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerEnumName;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestAction;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestActionType;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.MineBlockAction;
-import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponseSlot;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponseSlotInfo;
 import org.cloudburstmc.protocol.bedrock.data.skin.*;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 import org.cloudburstmc.protocol.common.util.VarInts;
@@ -19,8 +19,8 @@ import static java.util.Objects.requireNonNull;
 
 public class BedrockCodecHelper_v428 extends BedrockCodecHelper_v422 {
 
-    public BedrockCodecHelper_v428(EntityDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes, TypeMap<ItemStackRequestActionType> stackRequestActionTypes,
-                                   TypeMap<ContainerSlotType> containerSlotTypes) {
+    public BedrockCodecHelper_v428(ActorDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes, TypeMap<ItemStackRequestActionType> stackRequestActionTypes,
+                                   TypeMap<ContainerEnumName> containerSlotTypes) {
         super(entityData, gameRulesTypes, stackRequestActionTypes, containerSlotTypes);
     }
 
@@ -142,8 +142,8 @@ public class BedrockCodecHelper_v428 extends BedrockCodecHelper_v422 {
     }
 
     @Override
-    protected ItemStackResponseSlot readItemEntry(ByteBuf buffer) {
-        return new ItemStackResponseSlot(
+    protected ItemStackResponseSlotInfo readItemEntry(ByteBuf buffer) {
+        return new ItemStackResponseSlotInfo(
                 buffer.readUnsignedByte(),
                 buffer.readUnsignedByte(),
                 buffer.readUnsignedByte(),
@@ -154,7 +154,7 @@ public class BedrockCodecHelper_v428 extends BedrockCodecHelper_v422 {
     }
 
     @Override
-    protected void writeItemEntry(ByteBuf buffer, ItemStackResponseSlot itemEntry) {
+    protected void writeItemEntry(ByteBuf buffer, ItemStackResponseSlotInfo itemEntry) {
         super.writeItemEntry(buffer, itemEntry);
         VarInts.writeInt(buffer, itemEntry.getDurabilityCorrection());
     }

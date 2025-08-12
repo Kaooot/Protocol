@@ -18,13 +18,13 @@ public class ClientboundDebugRendererSerializer_v428 implements BedrockPacketSer
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ClientboundDebugRendererPacket packet) {
         this.writeMarkerType(buffer, helper, packet.getDebugMarkerType());
         if (packet.getDebugMarkerType() == ClientboundDebugRendererType.ADD_DEBUG_MARKER_CUBE) {
-            helper.writeString(buffer, packet.getMarkerText());
-            helper.writeVector3f(buffer, packet.getMarkerPosition());
-            buffer.writeFloat(packet.getMarkerColorRed());
-            buffer.writeFloat(packet.getMarkerColorGreen());
-            buffer.writeFloat(packet.getMarkerColorBlue());
-            buffer.writeFloat(packet.getMarkerColorAlpha());
-            buffer.writeLongLE(packet.getMarkerDuration());
+            helper.writeString(buffer, packet.getDebugMarkerText());
+            helper.writeVector3f(buffer, packet.getDebugMarkerPosition());
+            buffer.writeFloat(packet.getDebugMarkerColorRed());
+            buffer.writeFloat(packet.getDebugMarkerColorGreen());
+            buffer.writeFloat(packet.getDebugMarkerColorBlue());
+            buffer.writeFloat(packet.getDebugMarkerColorAlpha());
+            buffer.writeLongLE(packet.getDebugMarkerDurationMS());
         }
     }
 
@@ -32,13 +32,13 @@ public class ClientboundDebugRendererSerializer_v428 implements BedrockPacketSer
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ClientboundDebugRendererPacket packet) {
         packet.setDebugMarkerType(this.readMarkerType(buffer, helper));
         if (packet.getDebugMarkerType() == ClientboundDebugRendererType.ADD_DEBUG_MARKER_CUBE) {
-            packet.setMarkerText(helper.readString(buffer));
-            packet.setMarkerPosition(helper.readVector3f(buffer));
-            packet.setMarkerColorRed(buffer.readFloat());
-            packet.setMarkerColorGreen(buffer.readFloat());
-            packet.setMarkerColorBlue(buffer.readFloat());
-            packet.setMarkerColorAlpha(buffer.readFloat());
-            packet.setMarkerDuration(buffer.readLongLE());
+            packet.setDebugMarkerText(helper.readString(buffer));
+            packet.setDebugMarkerPosition(helper.readVector3f(buffer));
+            packet.setDebugMarkerColorRed(buffer.readFloat());
+            packet.setDebugMarkerColorGreen(buffer.readFloat());
+            packet.setDebugMarkerColorBlue(buffer.readFloat());
+            packet.setDebugMarkerColorAlpha(buffer.readFloat());
+            packet.setDebugMarkerDurationMS(buffer.readLongLE());
         }
     }
 

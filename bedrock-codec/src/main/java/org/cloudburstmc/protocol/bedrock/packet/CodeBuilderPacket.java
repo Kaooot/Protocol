@@ -10,7 +10,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @ToString(doNotUseGetters = true)
 public class CodeBuilderPacket implements BedrockPacket {
     private String url;
-    private boolean opening;
+    private boolean shouldOpenCodeBuilder;
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

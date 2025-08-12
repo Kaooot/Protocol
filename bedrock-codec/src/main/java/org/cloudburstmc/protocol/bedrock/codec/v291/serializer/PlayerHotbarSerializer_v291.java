@@ -14,15 +14,15 @@ public class PlayerHotbarSerializer_v291 implements BedrockPacketSerializer<Play
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, PlayerHotbarPacket packet) {
-        VarInts.writeUnsignedInt(buffer, packet.getSelectedHotbarSlot());
-        buffer.writeByte(packet.getContainerId());
-        buffer.writeBoolean(packet.isSelectHotbarSlot());
+        VarInts.writeUnsignedInt(buffer, packet.getSelectedSlot());
+        buffer.writeByte(packet.getContainerID());
+        buffer.writeBoolean(packet.isShouldSelectSlot());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, PlayerHotbarPacket packet) {
-        packet.setSelectedHotbarSlot(VarInts.readUnsignedInt(buffer));
-        packet.setContainerId(buffer.readUnsignedByte());
-        packet.setSelectHotbarSlot(buffer.readBoolean());
+        packet.setSelectedSlot(VarInts.readUnsignedInt(buffer));
+        packet.setContainerID(buffer.readUnsignedByte());
+        packet.setShouldSelectSlot(buffer.readBoolean());
     }
 }

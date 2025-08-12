@@ -17,8 +17,8 @@ public class CameraPresetsSerializer_v818 extends CameraPresetsSerializer_v800 {
 
     @Override
     public void writePreset(ByteBuf buffer, BedrockCodecHelper helper, CameraPreset preset) {
-        helper.writeString(buffer, preset.getIdentifier());
-        helper.writeString(buffer, preset.getParentPreset());
+        helper.writeString(buffer, preset.getName());
+        helper.writeString(buffer, preset.getInheritFrom());
         helper.writeOptionalNull(buffer, preset.getPos(), (buf, pos) -> buf.writeFloatLE(pos.getX()));
         helper.writeOptionalNull(buffer, preset.getPos(), (buf, pos) -> buf.writeFloatLE(pos.getY()));
         helper.writeOptionalNull(buffer, preset.getPos(), (buf, pos) -> buf.writeFloatLE(pos.getZ()));
@@ -35,12 +35,12 @@ public class CameraPresetsSerializer_v818 extends CameraPresetsSerializer_v800 {
         helper.writeOptionalNull(buffer, preset.getViewOffset(), helper::writeVector2f);
         helper.writeOptionalNull(buffer, preset.getEntityOffset(), helper::writeVector3f);
         helper.writeOptionalNull(buffer, preset.getRadius(), ByteBuf::writeFloatLE);
-        helper.writeOptionalNull(buffer, preset.getMinYawLimit(), ByteBuf::writeFloatLE);
-        helper.writeOptionalNull(buffer, preset.getMaxYawLimit(), ByteBuf::writeFloatLE);
+        helper.writeOptionalNull(buffer, preset.getYawLimitMin(), ByteBuf::writeFloatLE);
+        helper.writeOptionalNull(buffer, preset.getYawLimitMax(), ByteBuf::writeFloatLE);
         helper.writeOptionalNull(buffer, preset.getListener(), (buf, listener) -> buf.writeByte(listener.ordinal()));
-        helper.writeOptional(buffer, OptionalBoolean::isPresent, preset.getPlayEffect(),
+        helper.writeOptional(buffer, OptionalBoolean::isPresent, preset.getPlayerEffects(),
                 (buf, optional) -> buf.writeBoolean(optional.getAsBoolean()));
-        helper.writeOptionalNull(buffer, preset.getAimAssistPreset(), (buf, aimAssist) -> writeCameraAimAssist(buf, helper, aimAssist));
+        helper.writeOptionalNull(buffer, preset.getAimAssist(), (buf, aimAssist) -> writeCameraAimAssist(buf, helper, aimAssist));
         helper.writeOptionalNull(buffer, preset.getControlScheme(), (buf, scheme) -> buf.writeByte(scheme.ordinal()));
     }
 

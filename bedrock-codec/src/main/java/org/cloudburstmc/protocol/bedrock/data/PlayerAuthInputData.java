@@ -6,7 +6,7 @@ public enum PlayerAuthInputData {
     /**
      * @deprecated since v685
      */
-    NORTH_JUMP,
+    NORTH_JUMP_DEPRECATED,
     JUMP_DOWN,
     SPRINT_DOWN,
     CHANGE_HEIGHT,
@@ -72,19 +72,19 @@ public enum PlayerAuthInputData {
     /**
      * @since v622
      */
-    RECEIVED_SERVER_DATA,
+    CLIENT_ACK_SERVER_DATA,
     /**
      * @since v649
      */
-    IN_CLIENT_PREDICTED_IN_VEHICLE,
+    IS_IN_CLIENT_PREDICTED_VEHICLE,
     /**
      * @since v662
      */
-    PADDLE_LEFT,
+    PADDLING_LEFT,
     /**
      * @since v662
      */
-    PADDLE_RIGHT,
+    PADDLING_RIGHT,
     /**
      * @since v685
      */
@@ -112,11 +112,11 @@ public enum PlayerAuthInputData {
     /**
      * @since v748
      */
-    CAMERA_RELATIVE_MOVEMENT_ENABLED,
+    IS_CAMERA_RELATIVE_MOVEMENT_ENABLED,
     /**
      * @since v748
      */
-    ROT_CONTROLLED_BY_MOVE_DIRECTION,
+    IS_ROT_CONTROLLED_BY_MOVE_DIRECTION,
     /**
      * @since v748
      */
@@ -128,7 +128,7 @@ public enum PlayerAuthInputData {
     /**
      * @since v766
      */
-    HOTBAR_ONLY_TOUCH,
+    IS_HOTBAR_ONLY_TOUCH,
     /**
      * @since v766
      */

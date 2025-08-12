@@ -3,15 +3,15 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.protocol.bedrock.data.Ability;
+import org.cloudburstmc.protocol.bedrock.data.AbilitiesIndex;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class RequestAbilityPacket implements BedrockPacket {
-    private Ability ability;
-    private Ability.Type type;
+    private AbilitiesIndex ability;
+    private AbilitiesIndex.Type valueType;
     private boolean boolValue;
     private float floatValue;
 

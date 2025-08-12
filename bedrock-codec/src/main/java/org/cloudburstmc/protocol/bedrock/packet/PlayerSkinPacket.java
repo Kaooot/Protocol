@@ -13,9 +13,12 @@ import java.util.UUID;
 @ToString(doNotUseGetters = true)
 public class PlayerSkinPacket implements BedrockPacket {
     private UUID uuid;
-    private SerializedSkin skin;
+    private SerializedSkin serializedSkin;
     private String newSkinName;
     private String oldSkinName;
+    /**
+     * Whether skin is trusted marketplace content
+     */
     private boolean trustedSkin;
 
     @Override

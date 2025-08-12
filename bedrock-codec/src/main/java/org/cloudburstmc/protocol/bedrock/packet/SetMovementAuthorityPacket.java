@@ -3,14 +3,14 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.protocol.bedrock.data.AuthoritativeMovementMode;
+import org.cloudburstmc.protocol.bedrock.data.ServerAuthMovementMode;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class SetMovementAuthorityPacket implements BedrockPacket {
-    private AuthoritativeMovementMode movementMode;
+    private ServerAuthMovementMode movementMode;
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

@@ -14,11 +14,11 @@ public class MapInfoRequestSerializer_v291 implements BedrockPacketSerializer<Ma
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, MapInfoRequestPacket packet) {
-        VarInts.writeLong(buffer, packet.getUniqueMapId());
+        VarInts.writeLong(buffer, packet.getMapUniqueID());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, MapInfoRequestPacket packet) {
-        packet.setUniqueMapId(VarInts.readLong(buffer));
+        packet.setMapUniqueID(VarInts.readLong(buffer));
     }
 }

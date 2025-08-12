@@ -15,13 +15,13 @@ public class SubChunkRequestSerializer_v471 implements BedrockPacketSerializer<S
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, SubChunkRequestPacket packet) {
-        VarInts.writeInt(buffer, packet.getDimension());
-        helper.writeVector3i(buffer, packet.getSubChunkPosition());
+        VarInts.writeInt(buffer, packet.getDimensionType());
+        helper.writeVector3i(buffer, packet.getCenterPos());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, SubChunkRequestPacket packet) {
-        packet.setDimension(VarInts.readInt(buffer));
-        packet.setSubChunkPosition(helper.readVector3i(buffer));
+        packet.setDimensionType(VarInts.readInt(buffer));
+        packet.setCenterPos(helper.readVector3i(buffer));
     }
 }

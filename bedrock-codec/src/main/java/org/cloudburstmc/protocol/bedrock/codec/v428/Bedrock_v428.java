@@ -3,7 +3,7 @@ package org.cloudburstmc.protocol.bedrock.codec.v428;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
-import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
+import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelEventSerializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelSoundEvent1Serializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v313.serializer.LevelSoundEvent2Serializer_v313;
@@ -20,9 +20,9 @@ import org.cloudburstmc.protocol.bedrock.data.LevelEventType;
 import org.cloudburstmc.protocol.bedrock.data.PacketRecipient;
 import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandParam;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataFormat;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataFormat;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataTypes;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorFlag;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestActionType;
 import org.cloudburstmc.protocol.bedrock.packet.*;
 import org.cloudburstmc.protocol.bedrock.transformer.FlagTransformer;
@@ -31,19 +31,19 @@ import org.cloudburstmc.protocol.common.util.TypeMap;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Bedrock_v428 extends Bedrock_v422 {
 
-    protected static final TypeMap<EntityFlag> ENTITY_FLAGS = Bedrock_v422.ENTITY_FLAGS.toBuilder()
-            .insert(96, EntityFlag.RAM_ATTACK)
+    protected static final TypeMap<ActorFlag> ENTITY_FLAGS = Bedrock_v422.ENTITY_FLAGS.toBuilder()
+            .insert(96, ActorFlag.RAM_ATTACK)
             .build();
 
-    protected static final EntityDataTypeMap ENTITY_DATA = Bedrock_v422.ENTITY_DATA.toBuilder()
-            .update(EntityDataTypes.FLAGS, new FlagTransformer(ENTITY_FLAGS, 0))
-            .update(EntityDataTypes.FLAGS_2, new FlagTransformer(ENTITY_FLAGS, 1))
+    protected static final ActorDataTypeMap ENTITY_DATA = Bedrock_v422.ENTITY_DATA.toBuilder()
+            .update(ActorDataTypes.FLAGS, new FlagTransformer(ENTITY_FLAGS, 0))
+            .update(ActorDataTypes.FLAGS_2, new FlagTransformer(ENTITY_FLAGS, 1))
             .shift(60, 1)
-            .insert(EntityDataTypes.SEAT_ROTATION_OFFSET_DEGREES, 60, EntityDataFormat.FLOAT)
+            .insert(ActorDataTypes.SEAT_ROTATION_OFFSET_DEGREES, 60, ActorDataFormat.FLOAT)
             .shift(120, 1)
-            .insert(EntityDataTypes.FREEZING_EFFECT_STRENGTH, 120, EntityDataFormat.FLOAT)
-            .insert(EntityDataTypes.GOAT_HORN_COUNT, 122, EntityDataFormat.INT)
-            .insert(EntityDataTypes.BASE_RUNTIME_ID, 123, EntityDataFormat.STRING)
+            .insert(ActorDataTypes.FREEZING_EFFECT_STRENGTH, 120, ActorDataFormat.FLOAT)
+            .insert(ActorDataTypes.GOAT_HORN_COUNT, 122, ActorDataFormat.INT)
+            .insert(ActorDataTypes.BASE_RUNTIME_ID, 123, ActorDataFormat.STRING)
             .build();
 
     protected static final TypeMap<LevelEventType> LEVEL_EVENTS = Bedrock_v422.LEVEL_EVENTS.toBuilder()

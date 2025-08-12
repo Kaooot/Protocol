@@ -9,7 +9,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class RemoveObjectivePacket implements BedrockPacket {
-    private String objectiveId;
+    private String objectiveName;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

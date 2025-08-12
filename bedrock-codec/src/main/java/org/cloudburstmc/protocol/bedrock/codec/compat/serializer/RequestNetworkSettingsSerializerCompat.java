@@ -14,11 +14,11 @@ public class RequestNetworkSettingsSerializerCompat implements BedrockPacketSeri
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, RequestNetworkSettingsPacket packet) {
-        buffer.writeInt(packet.getProtocolVersion());
+        buffer.writeInt(packet.getClientNetworkVersion());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, RequestNetworkSettingsPacket packet) {
-        packet.setProtocolVersion(buffer.readInt());
+        packet.setClientNetworkVersion(buffer.readInt());
     }
 }

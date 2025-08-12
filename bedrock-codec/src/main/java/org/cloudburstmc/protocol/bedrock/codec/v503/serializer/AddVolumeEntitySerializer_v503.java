@@ -11,25 +11,25 @@ public class AddVolumeEntitySerializer_v503 implements BedrockPacketSerializer<A
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, AddVolumeEntityPacket packet) {
-        VarInts.writeUnsignedInt(buffer, packet.getId());
-        helper.writeTag(buffer, packet.getData());
+        VarInts.writeUnsignedInt(buffer, packet.getEntityNetworkId());
+        helper.writeTag(buffer, packet.getComponents());
         helper.writeString(buffer, packet.getIdentifier());
         helper.writeString(buffer, packet.getInstanceName());
         helper.writeBlockPosition(buffer, packet.getMinBounds());
         helper.writeBlockPosition(buffer, packet.getMaxBounds());
-        VarInts.writeInt(buffer, packet.getDimension());
+        VarInts.writeInt(buffer, packet.getDimensionType());
         helper.writeString(buffer, packet.getEngineVersion());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, AddVolumeEntityPacket packet) {
-        packet.setId(VarInts.readUnsignedInt(buffer));
-        packet.setData(helper.readTag(buffer, NbtMap.class));
+        packet.setEntityNetworkId(VarInts.readUnsignedInt(buffer));
+        packet.setComponents(helper.readTag(buffer, NbtMap.class));
         packet.setIdentifier(helper.readString(buffer));
         packet.setInstanceName(helper.readString(buffer));
         packet.setMinBounds(helper.readBlockPosition(buffer));
         packet.setMaxBounds(helper.readBlockPosition(buffer));
-        packet.setDimension(VarInts.readInt(buffer));
+        packet.setDimensionType(VarInts.readInt(buffer));
         packet.setEngineVersion(helper.readString(buffer));
     }
 }

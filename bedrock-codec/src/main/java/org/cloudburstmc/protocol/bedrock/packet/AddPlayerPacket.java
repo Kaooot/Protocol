@@ -5,14 +5,12 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.math.vector.Vector3f;
-import org.cloudburstmc.protocol.bedrock.data.AbilityLayer;
+import org.cloudburstmc.protocol.bedrock.data.BuildPlatform;
 import org.cloudburstmc.protocol.bedrock.data.GameType;
-import org.cloudburstmc.protocol.bedrock.data.PlayerAbilityHolder;
-import org.cloudburstmc.protocol.bedrock.data.PlayerPermission;
-import org.cloudburstmc.protocol.bedrock.data.command.CommandPermission;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataMap;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityLinkData;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityProperties;
+import org.cloudburstmc.protocol.bedrock.data.SerializedAbilitiesData;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataMap;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorLink;
+import org.cloudburstmc.protocol.bedrock.data.actor.PropertySyncData;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
@@ -22,56 +20,31 @@ import java.util.UUID;
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
-public class AddPlayerPacket implements BedrockPacket, PlayerAbilityHolder {
-    private EntityDataMap metadata = new EntityDataMap();
-    private List<EntityLinkData> entityLinks = new ObjectArrayList<>();
+public class AddPlayerPacket implements BedrockPacket {
+    private ActorDataMap actorData = new ActorDataMap();
+    private List<ActorLink> actorLinks = new ObjectArrayList<>();
     private UUID uuid;
-    private String username;
-    private long uniqueEntityId;
-    private long runtimeEntityId;
+    private String playerName;
+    private long targetActorID;
+    private long targetRuntimeID;
     private String platformChatId;
     private Vector3f position;
-    private Vector3f motion;
+    private Vector3f velocity;
     private Vector3f rotation;
-    private ItemData hand;
+    private ItemData carriedItem;
     private AdventureSettingsPacket adventureSettings = new AdventureSettingsPacket();
     private String deviceId;
-    private int buildPlatform;
-    private GameType gameType;
+    private BuildPlatform buildPlatform;
+    private GameType playerGameType;
 
     /**
      * @since v534
      */
-    private List<AbilityLayer> abilityLayers = new ObjectArrayList<>();
+    private SerializedAbilitiesData abilitiesData = new SerializedAbilitiesData();
     /**
      * @since v557
      */
-    private final EntityProperties properties = new EntityProperties();
-
-    public void setUniqueEntityId(long uniqueEntityId) {
-        this.uniqueEntityId = uniqueEntityId;
-        this.adventureSettings.setUniqueEntityId(uniqueEntityId);
-    }
-
-    @Override
-    public PlayerPermission getPlayerPermission() {
-        return this.adventureSettings.getPlayerPermission();
-    }
-
-    @Override
-    public void setPlayerPermission(PlayerPermission playerPermission) {
-        this.adventureSettings.setPlayerPermission(playerPermission);
-    }
-
-    @Override
-    public CommandPermission getCommandPermission() {
-        return this.adventureSettings.getCommandPermission();
-    }
-
-    @Override
-    public void setCommandPermission(CommandPermission commandPermission) {
-        this.adventureSettings.setCommandPermission(commandPermission);
-    }
+    private final PropertySyncData syncedProperties = new PropertySyncData();
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

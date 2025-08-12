@@ -13,11 +13,11 @@ public class AddBehaviorTreeSerializer_v291 implements BedrockPacketSerializer<A
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, AddBehaviorTreePacket packet) {
-        helper.writeString(buffer, packet.getBehaviorTreeJson());
+        helper.writeString(buffer, packet.getBehaviorTreeStructureJson());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, AddBehaviorTreePacket packet) {
-        packet.setBehaviorTreeJson(helper.readString(buffer));
+        packet.setBehaviorTreeStructureJson(helper.readString(buffer));
     }
 }

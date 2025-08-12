@@ -16,7 +16,10 @@ public enum BuildPlatform {
      * Kindle, FireTV
      */
     AMAZON,
-    GEAR_VR,
+    /**
+     * @deprecated since v748
+     */
+    GEAR_VR_DEPRECATED,
     HOLOLENS,
     /**
      * Windows Store version
@@ -30,7 +33,8 @@ public enum BuildPlatform {
     /**
      * Apple TV
      */
-    TV_OS,
+    @Deprecated
+    TV_OS_DEPRECATED,
     /**
      * Playstation
      */
@@ -40,12 +44,16 @@ public enum BuildPlatform {
      */
     NX,
     XBOX,
-    WINDOWS_PHONE,
+    @Deprecated
+    WINDOWS_PHONE_DEPRECATED,
     LINUX;
 
     private static final BuildPlatform[] VALUES = values();
 
-    public static BuildPlatform from(int id) {
-        return id > 0 && id < VALUES.length ? VALUES[id] : VALUES[0];
+    public static BuildPlatform from(int ordinal) {
+        if (ordinal >= 0 && ordinal < VALUES.length) {
+            return VALUES[ordinal];
+        }
+        throw new UnsupportedOperationException("Detected unknown BuildPlatform ID: " + ordinal);
     }
 }

@@ -18,7 +18,7 @@ public class AnimateSerializer_v291 implements BedrockPacketSerializer<AnimatePa
 
     static {
         types.put(0, Action.NO_ACTION);
-        types.put(1, Action.SWING_ARM);
+        types.put(1, Action.SWING);
         types.put(3, Action.WAKE_UP);
         types.put(4, Action.CRITICAL_HIT);
         types.put(5, Action.MAGIC_CRITICAL_HIT);
@@ -30,7 +30,7 @@ public class AnimateSerializer_v291 implements BedrockPacketSerializer<AnimatePa
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, AnimatePacket packet) {
         Action action = packet.getAction();
         VarInts.writeInt(buffer, types.get(action));
-        VarInts.writeUnsignedLong(buffer, packet.getRuntimeEntityId());
+        VarInts.writeUnsignedLong(buffer, packet.getTargetRuntimeID());
         if (action == Action.ROW_LEFT || action == Action.ROW_RIGHT) {
             buffer.writeFloatLE(packet.getRowingTime());
         }
@@ -40,7 +40,7 @@ public class AnimateSerializer_v291 implements BedrockPacketSerializer<AnimatePa
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, AnimatePacket packet) {
         Action action = types.get(VarInts.readInt(buffer));
         packet.setAction(action);
-        packet.setRuntimeEntityId(VarInts.readUnsignedLong(buffer));
+        packet.setTargetRuntimeID(VarInts.readUnsignedLong(buffer));
         if (action == AnimatePacket.Action.ROW_LEFT || action == AnimatePacket.Action.ROW_RIGHT) {
             packet.setRowingTime(buffer.readFloatLE());
         }

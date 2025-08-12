@@ -18,10 +18,10 @@ public class CameraPresetsSerializer_v575 implements BedrockPacketSerializer<Cam
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, CameraPresetsPacket packet) {
         List<NbtMap> presets = new ObjectArrayList<>();
-        for (CameraPreset preset : packet.getPresets()) {
+        for (CameraPreset preset : packet.getCameraPresets()) {
             NbtMapBuilder builder = NbtMap.builder()
-                    .putString("identifier", preset.getIdentifier())
-                    .putString("inherit_from", preset.getParentPreset());
+                    .putString("identifier", preset.getName())
+                    .putString("inherit_from", preset.getInheritFrom());
 
             if (preset.getPos() != null) {
                 builder.putFloat("pos_x", preset.getPos().getX());
@@ -51,8 +51,8 @@ public class CameraPresetsSerializer_v575 implements BedrockPacketSerializer<Cam
         List<NbtMap> list = tag.getList("presets", NbtType.COMPOUND);
         for (NbtMap presetTag : list) {
             CameraPreset preset = new CameraPreset();
-            preset.setIdentifier(presetTag.getString("identifier"));
-            preset.setParentPreset(presetTag.getString("inherit_from"));
+            preset.setName(presetTag.getString("identifier"));
+            preset.setInheritFrom(presetTag.getString("inherit_from"));
 
             if (presetTag.containsKey("pos_x", NbtType.FLOAT) || presetTag.containsKey("pos_y", NbtType.FLOAT) || presetTag.containsKey("pos_z", NbtType.FLOAT)) {
                 float x = presetTag.containsKey("pos_x", NbtType.FLOAT) ? presetTag.getFloat("pos_x") : 0;
@@ -68,7 +68,7 @@ public class CameraPresetsSerializer_v575 implements BedrockPacketSerializer<Cam
             if (presetTag.containsKey("rot_x", NbtType.FLOAT)) {
                 preset.setPitch(presetTag.getFloat("rot_x"));
             }
-            packet.getPresets().add(preset);
+            packet.getCameraPresets().add(preset);
         }
     }
 }

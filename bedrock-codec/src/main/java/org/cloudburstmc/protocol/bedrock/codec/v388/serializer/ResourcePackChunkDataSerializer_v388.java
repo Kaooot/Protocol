@@ -17,9 +17,9 @@ public class ResourcePackChunkDataSerializer_v388 implements BedrockPacketSerial
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ResourcePackChunkDataPacket packet) {
         String packInfo = packet.getPackId().toString() + (packet.getPackVersion() == null ? "" : '_' + packet.getPackVersion());
         helper.writeString(buffer, packInfo);
-        buffer.writeIntLE(packet.getChunkIndex());
-        buffer.writeLongLE(packet.getProgress());
-        helper.writeByteBuf(buffer, packet.getData());
+        buffer.writeIntLE(packet.getChunkID());
+        buffer.writeLongLE(packet.getByteOffset());
+        helper.writeByteBuf(buffer, packet.getChunkData());
     }
 
     @Override
@@ -29,8 +29,8 @@ public class ResourcePackChunkDataSerializer_v388 implements BedrockPacketSerial
         if (packInfo.length > 1) {
             packet.setPackVersion(packInfo[1]);
         }
-        packet.setChunkIndex(buffer.readIntLE());
-        packet.setProgress(buffer.readLongLE());
-        packet.setData(helper.readByteBuf(buffer));
+        packet.setChunkID(buffer.readIntLE());
+        packet.setByteOffset(buffer.readLongLE());
+        packet.setChunkData(helper.readByteBuf(buffer));
     }
 }

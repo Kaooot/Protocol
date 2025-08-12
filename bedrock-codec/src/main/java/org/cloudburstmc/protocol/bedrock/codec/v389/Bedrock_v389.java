@@ -1,16 +1,16 @@
 package org.cloudburstmc.protocol.bedrock.codec.v389;
 
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
-import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
+import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelEventSerializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v361.serializer.LevelEventGenericSerializer_v361;
 import org.cloudburstmc.protocol.bedrock.codec.v388.BedrockCodecHelper_v388;
 import org.cloudburstmc.protocol.bedrock.codec.v388.Bedrock_v388;
-import org.cloudburstmc.protocol.bedrock.codec.v389.serializer.EventSerializer_v389;
+import org.cloudburstmc.protocol.bedrock.codec.v389.serializer.LegacyTelemetryEventSerializer_v389;
 import org.cloudburstmc.protocol.bedrock.data.LevelEventType;
 import org.cloudburstmc.protocol.bedrock.data.ParticleType;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes;
-import org.cloudburstmc.protocol.bedrock.packet.EventPacket;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataTypes;
+import org.cloudburstmc.protocol.bedrock.packet.LegacyTelemetryEventPacket;
 import org.cloudburstmc.protocol.bedrock.packet.LevelEventGenericPacket;
 import org.cloudburstmc.protocol.bedrock.packet.LevelEventPacket;
 import org.cloudburstmc.protocol.bedrock.transformer.TypeMapTransformer;
@@ -36,15 +36,15 @@ public class Bedrock_v389 extends Bedrock_v388 {
             .insert(LEVEL_EVENT_PARTICLE_TYPE, PARTICLE_TYPES)
             .build();
 
-    protected static final EntityDataTypeMap ENTITY_DATA = Bedrock_v388.ENTITY_DATA.toBuilder()
-            .update(EntityDataTypes.AREA_EFFECT_CLOUD_PARTICLE, new TypeMapTransformer<>(PARTICLE_TYPES))
+    protected static final ActorDataTypeMap ENTITY_DATA = Bedrock_v388.ENTITY_DATA.toBuilder()
+            .update(ActorDataTypes.DATA_PARTICLE, new TypeMapTransformer<>(PARTICLE_TYPES))
             .build();
 
     public static BedrockCodec CODEC = Bedrock_v388.CODEC.toBuilder()
             .protocolVersion(389)
             .minecraftVersion("1.14.0")
             .helper(() -> new BedrockCodecHelper_v388(ENTITY_DATA, GAME_RULE_TYPES))
-            .updateSerializer(EventPacket.class, EventSerializer_v389.INSTANCE)
+            .updateSerializer(LegacyTelemetryEventPacket.class, LegacyTelemetryEventSerializer_v389.INSTANCE)
             .updateSerializer(LevelEventPacket.class, new LevelEventSerializer_v291(LEVEL_EVENTS))
             .updateSerializer(LevelEventGenericPacket.class, new LevelEventGenericSerializer_v361(LEVEL_EVENTS))
             .build();

@@ -15,11 +15,11 @@ public class PlayerAuthInputSerializer_v527 extends PlayerAuthInputSerializer_v4
 
     @Override
     protected void readInteractionModel(ByteBuf buffer, BedrockCodecHelper helper, PlayerAuthInputPacket packet) {
-        packet.setInputInteractionModel(VALUES[VarInts.readUnsignedInt(buffer)]);
+        packet.setNewInteractionModel(VALUES[VarInts.readUnsignedInt(buffer)]);
     }
 
     @Override
     protected void writeInteractionModel(ByteBuf buffer, BedrockCodecHelper helper, PlayerAuthInputPacket packet) {
-        VarInts.writeUnsignedInt(buffer, packet.getInputInteractionModel().ordinal());
+        VarInts.writeUnsignedInt(buffer, packet.getNewInteractionModel().ordinal());
     }
 }

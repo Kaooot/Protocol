@@ -10,7 +10,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class ShowStoreOfferPacket implements BedrockPacket {
-    private String offerId;
+    private String productID;
     /**
      * @since v630 deprecated
      */

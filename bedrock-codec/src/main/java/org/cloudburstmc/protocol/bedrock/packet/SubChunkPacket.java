@@ -15,13 +15,13 @@ import java.util.List;
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 @ToString(doNotUseGetters = true)
 public class SubChunkPacket extends AbstractReferenceCounted implements BedrockPacket {
-    private int dimension;
+    private int dimensionType;
     private boolean cacheEnabled;
     /**
      * @since v485
      */
-    private Vector3i centerPosition;
-    private List<SubChunkData> subChunks = new ObjectArrayList<>();
+    private Vector3i centerPos;
+    private List<SubChunkData> subChunkDataList = new ObjectArrayList<>();
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {
@@ -34,13 +34,13 @@ public class SubChunkPacket extends AbstractReferenceCounted implements BedrockP
 
     @Override
     public SubChunkPacket touch(Object o) {
-        this.subChunks.forEach(SubChunkData::touch);
+        this.subChunkDataList.forEach(SubChunkData::touch);
         return this;
     }
 
     @Override
     protected void deallocate() {
-        this.subChunks.forEach(SubChunkData::release);
+        this.subChunkDataList.forEach(SubChunkData::release);
     }
 
     @Override

@@ -5,9 +5,8 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
+import org.cloudburstmc.protocol.bedrock.data.PlayStatus;
 import org.cloudburstmc.protocol.bedrock.packet.PlayStatusPacket;
-
-import static org.cloudburstmc.protocol.bedrock.packet.PlayStatusPacket.Status;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PlayStatusSerializer_v291 implements BedrockPacketSerializer<PlayStatusPacket> {
@@ -21,6 +20,6 @@ public class PlayStatusSerializer_v291 implements BedrockPacketSerializer<PlaySt
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, PlayStatusPacket packet) {
-        packet.setStatus(Status.values()[buffer.readInt()]);
+        packet.setStatus(PlayStatus.from(buffer.readInt()));
     }
 }

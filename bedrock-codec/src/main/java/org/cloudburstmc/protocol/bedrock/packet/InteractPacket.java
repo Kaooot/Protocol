@@ -11,7 +11,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @ToString(doNotUseGetters = true)
 public class InteractPacket implements BedrockPacket {
     private Action action;
-    private long runtimeEntityId;
+    private long targetRuntimeID;
     private Vector3f mousePosition;
 
     @Override
@@ -24,11 +24,11 @@ public class InteractPacket implements BedrockPacket {
     }
 
     public enum Action {
-        NONE,
+        INVALID,
         INTERACT,
         DAMAGE,
-        LEAVE_VEHICLE,
-        MOUSEOVER,
+        STOP_RIDING,
+        INTERACT_UPDATE,
         NPC_OPEN,
         OPEN_INVENTORY
     }
@@ -42,4 +42,3 @@ public class InteractPacket implements BedrockPacket {
         }
     }
 }
-

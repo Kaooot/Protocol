@@ -1,7 +1,7 @@
 package org.cloudburstmc.protocol.bedrock.codec.v685;
 
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
-import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
+import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelEventSerializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelSoundEvent1Serializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v313.serializer.LevelSoundEvent2Serializer_v313;
@@ -13,8 +13,8 @@ import org.cloudburstmc.protocol.bedrock.codec.v671.Bedrock_v671;
 import org.cloudburstmc.protocol.bedrock.codec.v685.serializer.*;
 import org.cloudburstmc.protocol.bedrock.data.*;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandParam;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataFormat;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataFormat;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataTypes;
 import org.cloudburstmc.protocol.bedrock.packet.*;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 
@@ -50,9 +50,9 @@ public class Bedrock_v685 extends Bedrock_v671 {
             .insert(134217728, CommandParam.CHAINED_COMMAND)//reinsert, avoid shift
             .build();
 
-    protected static final EntityDataTypeMap ENTITY_DATA = Bedrock_v671.ENTITY_DATA
+    protected static final ActorDataTypeMap ENTITY_DATA = Bedrock_v671.ENTITY_DATA
             .toBuilder()
-            .insert(EntityDataTypes.VISIBLE_MOB_EFFECTS, 131, EntityDataFormat.LONG)
+            .insert(ActorDataTypes.VISIBLE_MOB_EFFECTS, 131, ActorDataFormat.LONG)
             .build();
 
     protected static final TypeMap<LevelEventType> LEVEL_EVENTS = Bedrock_v671.LEVEL_EVENTS.toBuilder()
@@ -78,7 +78,7 @@ public class Bedrock_v685 extends Bedrock_v671 {
             .updateSerializer(ContainerClosePacket.class, ContainerCloseSerializer_v685.INSTANCE)
             .updateSerializer(CraftingDataPacket.class, CraftingDataSerializer_v685.INSTANCE)
             .updateSerializer(CodeBuilderSourcePacket.class, CodeBuilderSourceSerializer_v685.INSTANCE)
-            .updateSerializer(EventPacket.class, EventSerializer_v685.INSTANCE)
+            .updateSerializer(LegacyTelemetryEventPacket.class, LegacyTelemetryEventSerializer_v685.INSTANCE)
             .updateSerializer(StartGamePacket.class, StartGameSerializer_v685.INSTANCE)
             .updateSerializer(TextPacket.class, TextSerializer_v685.INSTANCE)
             .registerPacket(AwardAchievementPacket::new, AwardAchievementSerializer_v685.INSTANCE, 309, PacketRecipient.CLIENT)

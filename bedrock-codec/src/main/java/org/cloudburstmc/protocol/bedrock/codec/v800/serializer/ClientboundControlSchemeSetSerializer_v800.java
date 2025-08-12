@@ -16,11 +16,11 @@ public class ClientboundControlSchemeSetSerializer_v800 implements BedrockPacket
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ClientboundControlSchemeSetPacket packet) {
-        buffer.writeByte(packet.getScheme().ordinal());
+        buffer.writeByte(packet.getControlScheme().ordinal());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ClientboundControlSchemeSetPacket packet) {
-        packet.setScheme(VALUES[buffer.readUnsignedByte()]);
+        packet.setControlScheme(VALUES[buffer.readUnsignedByte()]);
     }
 }

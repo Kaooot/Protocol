@@ -8,8 +8,8 @@ import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
 import org.cloudburstmc.protocol.bedrock.data.AdventureSetting;
-import org.cloudburstmc.protocol.bedrock.data.PlayerPermission;
-import org.cloudburstmc.protocol.bedrock.data.command.CommandPermission;
+import org.cloudburstmc.protocol.bedrock.data.PlayerPermissionLevel;
+import org.cloudburstmc.protocol.bedrock.data.command.CommandPermissionLevel;
 import org.cloudburstmc.protocol.bedrock.packet.AdventureSettingsPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -20,8 +20,8 @@ import java.util.Set;
 public class AdventureSettingsSerializer_v291 implements BedrockPacketSerializer<AdventureSettingsPacket> {
     public static final AdventureSettingsSerializer_v291 INSTANCE = new AdventureSettingsSerializer_v291();
 
-    private static final CommandPermission[] COMMAND_PERMISSIONS = CommandPermission.values();
-    private static final PlayerPermission[] PLAYER_PERMISSIONS = PlayerPermission.values();
+    private static final CommandPermissionLevel[] COMMAND_PERMISSIONS = CommandPermissionLevel.values();
+    private static final PlayerPermissionLevel[] PLAYER_PERMISSIONS = PlayerPermissionLevel.values();
 
     private static final AdventureSetting[] FLAGS_1 = {AdventureSetting.WORLD_IMMUTABLE, AdventureSetting.NO_PVM, AdventureSetting.NO_MVP, null, AdventureSetting.SHOW_NAME_TAGS, AdventureSetting.AUTO_JUMP, AdventureSetting.MAY_FLY, AdventureSetting.NO_CLIP, AdventureSetting.WORLD_BUILDER, AdventureSetting.FLYING, AdventureSetting.MUTED};
     private static final AdventureSetting[] FLAGS_2 = {AdventureSetting.MINE, AdventureSetting.DOORS_AND_SWITCHES, AdventureSetting.OPEN_CONTAINERS, AdventureSetting.ATTACK_PLAYERS, AdventureSetting.ATTACK_MOBS, AdventureSetting.OPERATOR, null, AdventureSetting.TELEPORT, AdventureSetting.BUILD, AdventureSetting.DEFAULT_LEVEL_PERMISSIONS};

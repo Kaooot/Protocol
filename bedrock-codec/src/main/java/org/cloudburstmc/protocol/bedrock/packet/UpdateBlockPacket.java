@@ -22,7 +22,7 @@ public class UpdateBlockPacket implements BedrockPacket {
     final Set<Flag> flags = EnumSet.noneOf(Flag.class);
     Vector3i blockPosition;
     BlockDefinition definition;
-    int dataLayer;
+    int layer;
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

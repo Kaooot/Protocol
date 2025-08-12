@@ -5,7 +5,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
-import org.cloudburstmc.protocol.bedrock.data.AuthoritativeMovementMode;
+import org.cloudburstmc.protocol.bedrock.data.ServerAuthMovementMode;
 import org.cloudburstmc.protocol.bedrock.packet.SetMovementAuthorityPacket;
 
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
@@ -19,6 +19,6 @@ public class SetMovementAuthoritySerializer_v748 implements BedrockPacketSeriali
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, SetMovementAuthorityPacket packet) {
-        packet.setMovementMode(AuthoritativeMovementMode.values()[buffer.readUnsignedByte()]);
+        packet.setMovementMode(ServerAuthMovementMode.values()[buffer.readUnsignedByte()]);
     }
 }

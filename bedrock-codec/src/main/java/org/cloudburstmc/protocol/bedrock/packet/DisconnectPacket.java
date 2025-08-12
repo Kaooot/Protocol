@@ -11,8 +11,8 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @ToString(doNotUseGetters = true)
 public class DisconnectPacket implements BedrockPacket {
     private DisconnectFailReason reason = DisconnectFailReason.UNKNOWN;
-    private boolean messageSkipped;
-    private String kickMessage;
+    private boolean skipMessage;
+    private String message;
     /**
      * @since v712
      */

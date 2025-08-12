@@ -15,13 +15,13 @@ public class ResourcePackStackSerializer_v388 extends ResourcePackStackSerialize
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ResourcePackStackPacket packet) {
         super.serialize(buffer, helper, packet);
 
-        helper.writeString(buffer, packet.getGameVersion());
+        helper.writeString(buffer, packet.getBaseGameVersion());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ResourcePackStackPacket packet) {
         super.deserialize(buffer, helper, packet);
 
-        packet.setGameVersion(helper.readString(buffer));
+        packet.setBaseGameVersion(helper.readString(buffer));
     }
 }

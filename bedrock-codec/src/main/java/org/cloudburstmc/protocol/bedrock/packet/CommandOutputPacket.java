@@ -16,11 +16,11 @@ import java.util.List;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class CommandOutputPacket implements BedrockPacket {
-    private final List<CommandOutputMessage> messages = new ObjectArrayList<>();
-    private CommandOriginData commandOriginData;
-    private CommandOutputType type;
+    private final List<CommandOutputMessage> outputMessages = new ObjectArrayList<>();
+    private CommandOriginData originData;
+    private CommandOutputType outputType;
     private int successCount;
-    private String data;
+    private String dataSet;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

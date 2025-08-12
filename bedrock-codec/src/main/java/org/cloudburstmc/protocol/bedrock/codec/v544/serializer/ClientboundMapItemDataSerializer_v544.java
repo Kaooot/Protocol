@@ -4,6 +4,7 @@ import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.longs.LongList;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v354.serializer.ClientboundMapItemDataSerializer_v354;
+import org.cloudburstmc.protocol.bedrock.data.Dimension;
 import org.cloudburstmc.protocol.bedrock.data.MapDecoration;
 import org.cloudburstmc.protocol.bedrock.data.MapTrackedObject;
 import org.cloudburstmc.protocol.bedrock.packet.ClientboundMapItemDataPacket;
@@ -16,10 +17,10 @@ public class ClientboundMapItemDataSerializer_v544 extends ClientboundMapItemDat
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ClientboundMapItemDataPacket packet) {
-        VarInts.writeLong(buffer, packet.getUniqueMapId());
+        VarInts.writeLong(buffer, packet.getMapID());
 
         int type = 0;
-        int[] colors = packet.getColors();
+        int[] colors = packet.getPixels();
         if (colors != null && colors.length > 0) {
             type |= FLAG_TEXTURE_UPDATE;
         }
@@ -34,9 +35,9 @@ public class ClientboundMapItemDataSerializer_v544 extends ClientboundMapItemDat
         }
 
         VarInts.writeUnsignedInt(buffer, type);
-        buffer.writeByte(packet.getDimensionId());
-        buffer.writeBoolean(packet.isLocked());
-        helper.writeBlockPosition(buffer, packet.getOrigin());
+        buffer.writeByte(packet.getDimension().ordinal());
+        buffer.writeBoolean(packet.isLockedMap());
+        helper.writeBlockPosition(buffer, packet.getMapOrigin());
 
         if ((type & FLAG_MAP_CREATION) != 0) {
             this.writeMapCreation(buffer, helper, packet);
@@ -57,11 +58,11 @@ public class ClientboundMapItemDataSerializer_v544 extends ClientboundMapItemDat
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ClientboundMapItemDataPacket packet) {
-        packet.setUniqueMapId(VarInts.readLong(buffer));
+        packet.setMapID(VarInts.readLong(buffer));
         int type = VarInts.readUnsignedInt(buffer);
-        packet.setDimensionId(buffer.readUnsignedByte());
-        packet.setLocked(buffer.readBoolean());
-        packet.setOrigin(helper.readBlockPosition(buffer));
+        packet.setDimension(Dimension.from(buffer.readUnsignedByte()));
+        packet.setLockedMap(buffer.readBoolean());
+        packet.setMapOrigin(helper.readBlockPosition(buffer));
 
         if ((type & FLAG_MAP_CREATION) != 0) {
             this.readMapCreation(buffer, helper, packet);

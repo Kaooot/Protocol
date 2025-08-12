@@ -11,44 +11,44 @@ import static org.cloudburstmc.protocol.common.util.Preconditions.checkArgument;
 @ToString
 public class ScoreInfo {
     private final long scoreboardId;
-    private final String objectiveId;
-    private final int score;
-    private final ScorerType type;
-    private final String name;
-    private final long entityId;
+    private final String objectiveName;
+    private final int scoreValue;
+    private final IdentityDefinitionType type;
+    private final String fakePlayerName;
+    private final long actorId;
 
-    public ScoreInfo(long scoreboardId, String objectiveId, int score) {
+    public ScoreInfo(long scoreboardId, String objectiveName, int scoreValue) {
         this.scoreboardId = scoreboardId;
-        this.objectiveId = objectiveId;
-        this.score = score;
-        this.type = ScorerType.INVALID;
-        this.name = null;
-        this.entityId = -1;
+        this.objectiveName = objectiveName;
+        this.scoreValue = scoreValue;
+        this.type = IdentityDefinitionType.INVALID;
+        this.fakePlayerName = null;
+        this.actorId = -1;
     }
 
-    public ScoreInfo(long scoreboardId, String objectiveId, int score, String name) {
+    public ScoreInfo(long scoreboardId, String objectiveName, int scoreValue, String fakePlayerName) {
         this.scoreboardId = scoreboardId;
-        this.objectiveId = objectiveId;
-        this.score = score;
-        this.type = ScorerType.FAKE;
-        this.name = name;
-        this.entityId = -1;
+        this.objectiveName = objectiveName;
+        this.scoreValue = scoreValue;
+        this.type = IdentityDefinitionType.FAKE_PLAYER;
+        this.fakePlayerName = fakePlayerName;
+        this.actorId = -1;
     }
 
-    public ScoreInfo(long scoreboardId, String objectiveId, int score, ScorerType type, long entityId) {
-        checkArgument(type == ScorerType.ENTITY || type == ScorerType.PLAYER, "Must be player or entity");
+    public ScoreInfo(long scoreboardId, String objectiveName, int scoreValue, IdentityDefinitionType type, long actorId) {
+        checkArgument(type == IdentityDefinitionType.ENTITY || type == IdentityDefinitionType.PLAYER, "Must be player or entity");
         this.scoreboardId = scoreboardId;
-        this.objectiveId = objectiveId;
-        this.score = score;
+        this.objectiveName = objectiveName;
+        this.scoreValue = scoreValue;
         this.type = type;
-        this.entityId = entityId;
-        this.name = null;
+        this.actorId = actorId;
+        this.fakePlayerName = null;
     }
 
-    public enum ScorerType {
+    public enum IdentityDefinitionType {
         INVALID,
         PLAYER,
         ENTITY,
-        FAKE
+        FAKE_PLAYER
     }
 }

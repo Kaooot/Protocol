@@ -18,14 +18,14 @@ public class EmoteSerializer_v388 implements BedrockPacketSerializer<EmotePacket
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, EmotePacket packet) {
-        VarInts.writeUnsignedLong(buffer, packet.getRuntimeEntityId());
+        VarInts.writeUnsignedLong(buffer, packet.getActorRuntimeId());
         helper.writeString(buffer, packet.getEmoteId());
         this.writeFlags(buffer, helper, packet.getFlags());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, EmotePacket packet) {
-        packet.setRuntimeEntityId(VarInts.readUnsignedLong(buffer));
+        packet.setActorRuntimeId(VarInts.readUnsignedLong(buffer));
         packet.setEmoteId(helper.readString(buffer));
         this.readFlags(buffer, helper, packet.getFlags());
     }

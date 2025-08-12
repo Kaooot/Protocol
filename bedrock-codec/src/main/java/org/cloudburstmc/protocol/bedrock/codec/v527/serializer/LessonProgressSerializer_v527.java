@@ -15,14 +15,14 @@ public class LessonProgressSerializer_v527 implements BedrockPacketSerializer<Le
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, LessonProgressPacket packet) {
-        VarInts.writeInt(buffer, packet.getAction().ordinal());
+        VarInts.writeInt(buffer, packet.getLessonAction().ordinal());
         VarInts.writeInt(buffer, packet.getScore());
         helper.writeString(buffer, packet.getActivityId());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, LessonProgressPacket packet) {
-        packet.setAction(ACTIONS[VarInts.readInt(buffer)]);
+        packet.setLessonAction(ACTIONS[VarInts.readInt(buffer)]);
         packet.setScore(VarInts.readInt(buffer));
         packet.setActivityId(helper.readString(buffer));
     }

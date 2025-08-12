@@ -3,14 +3,13 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.protocol.bedrock.data.SimpleEventType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class SimpleEventPacket implements BedrockPacket {
-    private SimpleEventType event;
+    private Subtype type;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {
@@ -27,6 +26,22 @@ public class SimpleEventPacket implements BedrockPacket {
             return (SimpleEventPacket) super.clone();
         } catch (CloneNotSupportedException e) {
             throw new AssertionError(e);
+        }
+    }
+
+    public enum Subtype {
+        NONE,
+        ENABLE_COMMANDS,
+        DISABLE_COMMANDS,
+        UNLOCK_WORLD_TEMPLATE_SETTINGS;
+
+        private static final Subtype[] VALUES = values();
+
+        public static Subtype from(int ordinal) {
+            if (ordinal >= 0 && ordinal < VALUES.length) {
+                return VALUES[ordinal];
+            }
+            throw new UnsupportedOperationException("Detected unknown SimpleEventPacket.Subtype ID: " + ordinal);
         }
     }
 }

@@ -1,7 +1,5 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
-import io.netty.util.internal.logging.InternalLogger;
-import io.netty.util.internal.logging.InternalLoggerFactory;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -12,14 +10,14 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class MovePlayerPacket implements BedrockPacket {
-    private long runtimeEntityId;
+    private long playerRuntimeID;
     private Vector3f position;
     private Vector3f rotation;
-    private Mode mode;
+    private PositionMode positionMode;
     private boolean onGround;
-    private long ridingRuntimeEntityId;
+    private long ridingRuntimeID;
     private TeleportationCause teleportationCause;
-    private int entityType;
+    private int sourceActorType;
     private long tick;
 
     @Override
@@ -31,11 +29,20 @@ public class MovePlayerPacket implements BedrockPacket {
         return BedrockPacketType.MOVE_PLAYER;
     }
 
-    public enum Mode {
+    public enum PositionMode {
         NORMAL,
         RESPAWN,
         TELEPORT,
-        HEAD_ROTATION
+        ONLY_HEAD_ROT;
+
+        private static final PositionMode[] VALUES = values();
+
+        public static PositionMode from(int ordinal) {
+            if (ordinal >= 0 && ordinal < VALUES.length) {
+                return VALUES[ordinal];
+            }
+            throw new UnsupportedOperationException("Detected unknown PositionMode ID: " + ordinal);
+        }
     }
 
     public enum TeleportationCause {
@@ -45,16 +52,13 @@ public class MovePlayerPacket implements BedrockPacket {
         COMMAND,
         BEHAVIOR;
 
-        private static final InternalLogger log = InternalLoggerFactory.getInstance(TeleportationCause.class);
-
         private static final TeleportationCause[] VALUES = values();
 
-        public static TeleportationCause byId(int id) {
-            if (id >= 0 && id < VALUES.length) {
-                return VALUES[id];
+        public static TeleportationCause from(int ordinal) {
+            if (ordinal >= 0 && ordinal < VALUES.length) {
+                return VALUES[ordinal];
             }
-            log.debug("Unknown teleportation cause ID: {}", id);
-            return UNKNOWN;
+            throw new UnsupportedOperationException("Detected unknown TeleportationCause ID: " + ordinal);
         }
     }
 

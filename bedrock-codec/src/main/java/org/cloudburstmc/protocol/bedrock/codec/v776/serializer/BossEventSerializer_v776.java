@@ -4,8 +4,8 @@ import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
-import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.BossEventSerializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v486.serializer.BossEventSerializer_v486;
+import org.cloudburstmc.protocol.bedrock.data.BossEventUpdateType;
 import org.cloudburstmc.protocol.bedrock.packet.BossEventPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -15,18 +15,18 @@ public class BossEventSerializer_v776 extends BossEventSerializer_v486 {
 
     @Override
     protected void serializeAction(ByteBuf buffer, BedrockCodecHelper helper, BossEventPacket packet) {
-        if (packet.getAction() == BossEventPacket.Action.CREATE) {
-            helper.writeString(buffer, packet.getTitle());
-            helper.writeString(buffer, packet.getFilteredTitle());
-            buffer.writeFloatLE(packet.getHealthPercentage());
+        if (packet.getEventType() == BossEventUpdateType.ADD) {
+            helper.writeString(buffer, packet.getName());
+            helper.writeString(buffer, packet.getFilteredName());
+            buffer.writeFloatLE(packet.getHealthPercent());
             // fall through to UPDATE_PROPERTIES
-            buffer.writeShortLE(packet.getDarkenSky());
+            buffer.writeShortLE(packet.getDarkenScreen());
             // fall through to UPDATE_STYLE
             VarInts.writeUnsignedInt(buffer, packet.getColor());
             VarInts.writeUnsignedInt(buffer, packet.getOverlay());
-        } else if (packet.getAction() == BossEventPacket.Action.UPDATE_NAME) {
-            helper.writeString(buffer, packet.getTitle());
-            helper.writeString(buffer, packet.getFilteredTitle());
+        } else if (packet.getEventType() == BossEventUpdateType.UPDATE_NAME) {
+            helper.writeString(buffer, packet.getName());
+            helper.writeString(buffer, packet.getFilteredName());
         } else {
             super.serializeAction(buffer, helper, packet);
         }
@@ -34,18 +34,18 @@ public class BossEventSerializer_v776 extends BossEventSerializer_v486 {
 
     @Override
     protected void deserializeAction(ByteBuf buffer, BedrockCodecHelper helper, BossEventPacket packet) {
-        if (packet.getAction() == BossEventPacket.Action.CREATE) {
-            packet.setTitle(helper.readString(buffer));
-            packet.setFilteredTitle(helper.readString(buffer));
-            packet.setHealthPercentage(buffer.readFloatLE());
+        if (packet.getEventType() == BossEventUpdateType.ADD) {
+            packet.setName(helper.readString(buffer));
+            packet.setFilteredName(helper.readString(buffer));
+            packet.setHealthPercent(buffer.readFloatLE());
             // fall through to UPDATE_PROPERTIES
-            packet.setDarkenSky(buffer.readUnsignedShortLE());
+            packet.setDarkenScreen(buffer.readUnsignedShortLE());
             // fall through to UPDATE_STYLE
             packet.setColor(VarInts.readUnsignedInt(buffer));
             packet.setOverlay(VarInts.readUnsignedInt(buffer));
-        } else if (packet.getAction() == BossEventPacket.Action.UPDATE_NAME) {
-            packet.setTitle(helper.readString(buffer));
-            packet.setFilteredTitle(helper.readString(buffer));
+        } else if (packet.getEventType() == BossEventUpdateType.UPDATE_NAME) {
+            packet.setName(helper.readString(buffer));
+            packet.setFilteredName(helper.readString(buffer));
         } else {
             super.deserializeAction(buffer, helper, packet);
         }

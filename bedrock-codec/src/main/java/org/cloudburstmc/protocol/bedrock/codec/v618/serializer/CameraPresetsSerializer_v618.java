@@ -17,24 +17,24 @@ public class CameraPresetsSerializer_v618 implements BedrockPacketSerializer<Cam
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, CameraPresetsPacket packet) {
-        helper.writeArray(buffer, packet.getPresets(), this::writePreset);
+        helper.writeArray(buffer, packet.getCameraPresets(), this::writePreset);
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, CameraPresetsPacket packet) {
-        helper.readArray(buffer, packet.getPresets(), this::readPreset);
+        helper.readArray(buffer, packet.getCameraPresets(), this::readPreset);
     }
 
     public void writePreset(ByteBuf buffer, BedrockCodecHelper helper, CameraPreset preset) {
-        helper.writeString(buffer, preset.getIdentifier());
-        helper.writeString(buffer, preset.getParentPreset());
+        helper.writeString(buffer, preset.getName());
+        helper.writeString(buffer, preset.getInheritFrom());
         helper.writeOptionalNull(buffer, preset.getPos(), (buf, pos) -> buf.writeFloatLE(pos.getX()));
         helper.writeOptionalNull(buffer, preset.getPos(), (buf, pos) -> buf.writeFloatLE(pos.getY()));
         helper.writeOptionalNull(buffer, preset.getPos(), (buf, pos) -> buf.writeFloatLE(pos.getZ()));
         helper.writeOptionalNull(buffer, preset.getPitch(), ByteBuf::writeFloatLE);
         helper.writeOptionalNull(buffer, preset.getYaw(), ByteBuf::writeFloatLE);
         helper.writeOptionalNull(buffer, preset.getListener(), (buf, listener) -> buf.writeByte(listener.ordinal()));
-        helper.writeOptional(buffer, OptionalBoolean::isPresent, preset.getPlayEffect(),
+        helper.writeOptional(buffer, OptionalBoolean::isPresent, preset.getPlayerEffects(),
                 (buf, optional) -> buf.writeBoolean(optional.getAsBoolean()));
     }
 

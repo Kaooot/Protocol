@@ -15,7 +15,7 @@ public class ClientCacheMissResponseSerializer_v361 implements BedrockPacketSeri
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ClientCacheMissResponsePacket packet) {
-        Long2ObjectMap<ByteBuf> blobs = packet.getBlobs();
+        Long2ObjectMap<ByteBuf> blobs = packet.getMissingBlobs();
 
         VarInts.writeUnsignedInt(buffer, blobs.size());
         for (Long2ObjectMap.Entry<ByteBuf> entry : blobs.long2ObjectEntrySet()) {
@@ -26,7 +26,7 @@ public class ClientCacheMissResponseSerializer_v361 implements BedrockPacketSeri
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ClientCacheMissResponsePacket packet) {
-        Long2ObjectMap<ByteBuf> blobs = packet.getBlobs();
+        Long2ObjectMap<ByteBuf> blobs = packet.getMissingBlobs();
 
         int length = VarInts.readUnsignedInt(buffer);
         for (int i = 0; i < length; i++) {

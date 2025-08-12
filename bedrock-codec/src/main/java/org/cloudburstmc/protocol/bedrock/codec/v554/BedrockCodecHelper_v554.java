@@ -2,11 +2,11 @@ package org.cloudburstmc.protocol.bedrock.codec.v554;
 
 import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
+import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v534.BedrockCodecHelper_v534;
-import org.cloudburstmc.protocol.bedrock.data.Ability;
+import org.cloudburstmc.protocol.bedrock.data.AbilitiesIndex;
 import org.cloudburstmc.protocol.bedrock.data.definitions.ItemDefinition;
-import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerSlotType;
+import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerEnumName;
 import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.*;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequest;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.TextProcessingEventOrigin;
@@ -22,9 +22,9 @@ public class BedrockCodecHelper_v554 extends BedrockCodecHelper_v534 {
     protected static final ItemDescriptorType[] DESCRIPTOR_TYPES = ItemDescriptorType.values();
     protected final TypeMap<TextProcessingEventOrigin> textProcessingEventOrigins;
 
-    public BedrockCodecHelper_v554(EntityDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes,
-                                   TypeMap<ItemStackRequestActionType> stackRequestActionTypes, TypeMap<ContainerSlotType> containerSlotTypes,
-                                   TypeMap<Ability> abilities, TypeMap<TextProcessingEventOrigin> textProcessingEventOrigins) {
+    public BedrockCodecHelper_v554(ActorDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes,
+                                   TypeMap<ItemStackRequestActionType> stackRequestActionTypes, TypeMap<ContainerEnumName> containerSlotTypes,
+                                   TypeMap<AbilitiesIndex> abilities, TypeMap<TextProcessingEventOrigin> textProcessingEventOrigins) {
         super(entityData, gameRulesTypes, stackRequestActionTypes, containerSlotTypes, abilities);
         this.textProcessingEventOrigins = textProcessingEventOrigins;
     }
@@ -49,7 +49,7 @@ public class BedrockCodecHelper_v554 extends BedrockCodecHelper_v534 {
     @Override
     public void writeItemStackRequest(ByteBuf buffer, ItemStackRequest request) {
         super.writeItemStackRequest(buffer, request);
-        TextProcessingEventOrigin origin = request.getTextProcessingEventOrigin();
+        TextProcessingEventOrigin origin = request.getStringsToFilterOrigin();
         buffer.writeIntLE(origin == null ? -1 : this.textProcessingEventOrigins.getId(origin));  // new for v552
     }
 

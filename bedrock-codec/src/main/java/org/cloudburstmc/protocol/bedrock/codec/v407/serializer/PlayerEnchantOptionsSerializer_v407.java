@@ -53,8 +53,8 @@ public class PlayerEnchantOptionsSerializer_v407 implements BedrockPacketSeriali
     }
 
     protected void serializeEnchant(ByteBuf buffer, EnchantData enchant) {
-        buffer.writeByte(enchant.getType());
-        buffer.writeByte(enchant.getLevel());
+        buffer.writeByte(enchant.getEnchantType());
+        buffer.writeByte(enchant.getEnchantLevel());
     }
 
     protected EnchantData deserializeEnchant(ByteBuf buffer) {

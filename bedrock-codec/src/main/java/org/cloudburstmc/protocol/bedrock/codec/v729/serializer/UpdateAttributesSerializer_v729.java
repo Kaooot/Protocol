@@ -23,13 +23,13 @@ public class UpdateAttributesSerializer_v729 extends UpdateAttributesSerializer_
     public void writeAttribute(ByteBuf buffer, BedrockCodecHelper helper, AttributeData attribute) {
         checkNotNull(attribute, "attribute");
 
-        buffer.writeFloatLE(attribute.getMinimum());
-        buffer.writeFloatLE(attribute.getMaximum());
-        buffer.writeFloatLE(attribute.getValue());
-        buffer.writeFloatLE(attribute.getDefaultMinimum());
-        buffer.writeFloatLE(attribute.getDefaultMaximum());
+        buffer.writeFloatLE(attribute.getMinValue());
+        buffer.writeFloatLE(attribute.getMaxValue());
+        buffer.writeFloatLE(attribute.getCurrentValue());
+        buffer.writeFloatLE(attribute.getDefaultMinValue());
+        buffer.writeFloatLE(attribute.getDefaultMaxValue());
         buffer.writeFloatLE(attribute.getDefaultValue());
-        helper.writeString(buffer, attribute.getName());
+        helper.writeString(buffer, attribute.getAttributeName());
         helper.writeArray(buffer, attribute.getModifiers(), this::writeModifier);
     }
 

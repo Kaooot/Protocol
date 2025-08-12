@@ -17,20 +17,20 @@ public class EducationSettingsSerializer_v407 implements BedrockPacketSerializer
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, EducationSettingsPacket packet) {
-        helper.writeString(buffer, packet.getCodeBuilderUri());
-        helper.writeString(buffer, packet.getCodeBuilderTitle());
-        buffer.writeBoolean(packet.isCanResizeCodeBuilder());
-        helper.writeOptional(buffer, Optional::isPresent, packet.getOverrideUri(),
+        helper.writeString(buffer, packet.getEducationLevelSettings().getCodeBuilderDefaultURI());
+        helper.writeString(buffer, packet.getEducationLevelSettings().getCodeBuilderTitle());
+        buffer.writeBoolean(packet.getEducationLevelSettings().isCanResizeCodeBuilder());
+        helper.writeOptional(buffer, Optional::isPresent, packet.getEducationLevelSettings().getCodeBuilderOverrideUri(),
                 (byteBuf, optional) -> helper.writeString(byteBuf, optional.get()));
-        buffer.writeBoolean(packet.isQuizAttached());
+        buffer.writeBoolean(packet.getEducationLevelSettings().isQuizAttached());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, EducationSettingsPacket packet) {
-        packet.setCodeBuilderUri(helper.readString(buffer));
-        packet.setCodeBuilderTitle(helper.readString(buffer));
-        packet.setCanResizeCodeBuilder(buffer.readBoolean());
-        packet.setOverrideUri(helper.readOptional(buffer, Optional.empty(), byteBuf -> Optional.of(helper.readString(byteBuf))));
-        packet.setQuizAttached(buffer.readBoolean());
+        packet.getEducationLevelSettings().setCodeBuilderDefaultURI(helper.readString(buffer));
+        packet.getEducationLevelSettings().setCodeBuilderTitle(helper.readString(buffer));
+        packet.getEducationLevelSettings().setCanResizeCodeBuilder(buffer.readBoolean());
+        packet.getEducationLevelSettings().setCodeBuilderOverrideUri(helper.readOptional(buffer, Optional.empty(), byteBuf -> Optional.of(helper.readString(byteBuf))));
+        packet.getEducationLevelSettings().setQuizAttached(buffer.readBoolean());
     }
 }

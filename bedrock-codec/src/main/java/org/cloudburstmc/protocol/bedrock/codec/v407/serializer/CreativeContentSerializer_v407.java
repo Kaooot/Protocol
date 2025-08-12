@@ -32,7 +32,7 @@ public class CreativeContentSerializer_v407 implements BedrockPacketSerializer<C
     }
 
     protected void writeCreativeItem(ByteBuf buffer, BedrockCodecHelper helper, CreativeItemData item) {
-        VarInts.writeUnsignedInt(buffer, item.getNetId());
-        helper.writeItemInstance(buffer, item.getItem());
+        VarInts.writeUnsignedInt(buffer, item.getCreativeNetId());
+        helper.writeItemInstance(buffer, item.getItemInstance());
     }
 }

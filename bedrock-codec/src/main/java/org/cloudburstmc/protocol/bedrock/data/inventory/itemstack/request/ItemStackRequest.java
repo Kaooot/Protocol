@@ -17,7 +17,7 @@ public class ItemStackRequest {
      * requestId is a unique ID for the request. This ID is used by the server to send a response for this
      * specific request in the ItemStackResponse packet.
      */
-    int requestId;
+    int clientRequestId;
 
     /**
      * actions is a list of actions performed by the client. The actual type of the actions depends on which
@@ -30,14 +30,14 @@ public class ItemStackRequest {
      *
      * @since v422
      */
-    String[] filterStrings;
+    String[] stringsToFilter;
 
     /**
      * @since v552
      */
-    TextProcessingEventOrigin textProcessingEventOrigin;
+    TextProcessingEventOrigin stringsToFilterOrigin;
 
-    public ItemStackRequest(int requestId, ItemStackRequestAction[] actions, String[] filterStrings) {
-        this(requestId, actions, filterStrings, TextProcessingEventOrigin.BLOCK_ENTITY_DATA_TEXT);
+    public ItemStackRequest(int clientRequestId, ItemStackRequestAction[] actions, String[] stringsToFilter) {
+        this(clientRequestId, actions, stringsToFilter, TextProcessingEventOrigin.BLOCK_ENTITY_DATA_TEXT);
     }
 }

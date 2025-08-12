@@ -2,10 +2,10 @@ package org.cloudburstmc.protocol.bedrock.codec.v568;
 
 import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
+import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v557.BedrockCodecHelper_v557;
-import org.cloudburstmc.protocol.bedrock.data.Ability;
-import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerSlotType;
+import org.cloudburstmc.protocol.bedrock.data.AbilitiesIndex;
+import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerEnumName;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.TextProcessingEventOrigin;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestActionType;
 import org.cloudburstmc.protocol.bedrock.data.skin.*;
@@ -15,9 +15,9 @@ import java.util.List;
 
 public class BedrockCodecHelper_v568 extends BedrockCodecHelper_v557 {
 
-    public BedrockCodecHelper_v568(EntityDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes,
+    public BedrockCodecHelper_v568(ActorDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes,
                                    TypeMap<ItemStackRequestActionType> stackRequestActionTypes,
-                                   TypeMap<ContainerSlotType> containerSlotTypes, TypeMap<Ability> abilities, TypeMap<TextProcessingEventOrigin> textProcessingEventOrigins) {
+                                   TypeMap<ContainerEnumName> containerSlotTypes, TypeMap<AbilitiesIndex> abilities, TypeMap<TextProcessingEventOrigin> textProcessingEventOrigins) {
         super(entityData, gameRulesTypes, stackRequestActionTypes, containerSlotTypes, abilities, textProcessingEventOrigins);
     }
 

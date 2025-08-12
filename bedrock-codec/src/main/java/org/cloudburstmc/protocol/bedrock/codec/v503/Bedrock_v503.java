@@ -3,9 +3,8 @@ package org.cloudburstmc.protocol.bedrock.codec.v503;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
-import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
-import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.AvailableCommandsSerializer_v291;
-import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.EntityEventSerializer_v291;
+import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
+import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.ActorEventSerializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelEventSerializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelSoundEvent1Serializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v313.serializer.LevelSoundEvent2Serializer_v313;
@@ -19,10 +18,10 @@ import org.cloudburstmc.protocol.bedrock.data.LevelEventType;
 import org.cloudburstmc.protocol.bedrock.data.PacketRecipient;
 import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandParam;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataFormat;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityEventType;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataFormat;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataTypes;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorEventType;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorFlag;
 import org.cloudburstmc.protocol.bedrock.packet.*;
 import org.cloudburstmc.protocol.bedrock.transformer.FlagTransformer;
 import org.cloudburstmc.protocol.common.util.TypeMap;
@@ -30,23 +29,23 @@ import org.cloudburstmc.protocol.common.util.TypeMap;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Bedrock_v503 extends Bedrock_v486 {
 
-    protected static final TypeMap<EntityFlag> ENTITY_FLAGS = Bedrock_v486.ENTITY_FLAGS.toBuilder()
-            .insert(102, EntityFlag.JUMP_GOAL_JUMP)
-            .insert(103, EntityFlag.EMERGING)
-            .insert(104, EntityFlag.SNIFFING)
-            .insert(105, EntityFlag.DIGGING)
+    protected static final TypeMap<ActorFlag> ENTITY_FLAGS = Bedrock_v486.ENTITY_FLAGS.toBuilder()
+            .insert(102, ActorFlag.JUMP_GOAL_JUMP)
+            .insert(103, ActorFlag.EMERGING)
+            .insert(104, ActorFlag.SNIFFING)
+            .insert(105, ActorFlag.DIGGING)
             .build();
 
-    protected static final EntityDataTypeMap ENTITY_DATA = Bedrock_v486.ENTITY_DATA.toBuilder()
-            .update(EntityDataTypes.FLAGS, new FlagTransformer(ENTITY_FLAGS, 0))
-            .update(EntityDataTypes.FLAGS_2, new FlagTransformer(ENTITY_FLAGS, 1))
-            .insert(EntityDataTypes.MOVEMENT_SOUND_DISTANCE_OFFSET, 125, EntityDataFormat.FLOAT)
-            .insert(EntityDataTypes.HEARTBEAT_INTERVAL_TICKS, 126, EntityDataFormat.INT)
-            .insert(EntityDataTypes.HEARTBEAT_SOUND_EVENT, 127, EntityDataFormat.INT)
+    protected static final ActorDataTypeMap ENTITY_DATA = Bedrock_v486.ENTITY_DATA.toBuilder()
+            .update(ActorDataTypes.FLAGS, new FlagTransformer(ENTITY_FLAGS, 0))
+            .update(ActorDataTypes.FLAGS_2, new FlagTransformer(ENTITY_FLAGS, 1))
+            .insert(ActorDataTypes.MOVEMENT_SOUND_DISTANCE_OFFSET, 125, ActorDataFormat.FLOAT)
+            .insert(ActorDataTypes.HEARTBEAT_INTERVAL_TICKS, 126, ActorDataFormat.INT)
+            .insert(ActorDataTypes.HEARTBEAT_SOUND_EVENT, 127, ActorDataFormat.INT)
             .build();
 
-    protected static final TypeMap<EntityEventType> ENTITY_EVENTS = Bedrock_v486.ENTITY_EVENTS.toBuilder()
-            .insert(77, EntityEventType.VIBRATION_DETECTED)
+    protected static final TypeMap<ActorEventType> ENTITY_EVENTS = Bedrock_v486.ENTITY_EVENTS.toBuilder()
+            .insert(77, ActorEventType.VIBRATION_DETECTED)
             .build();
 
     protected static final TypeMap<CommandParam> COMMAND_PARAMS = Bedrock_v486.COMMAND_PARAMS.toBuilder()
@@ -118,7 +117,7 @@ public class Bedrock_v503 extends Bedrock_v486 {
             .updateSerializer(StartGamePacket.class, new StartGameSerializer_v503())
             .updateSerializer(AddPlayerPacket.class, new AddPlayerSerializer_v503())
             .updateSerializer(AvailableCommandsPacket.class, new AvailableCommandsSerializer_v448(COMMAND_PARAMS))
-            .updateSerializer(EntityEventPacket.class, new EntityEventSerializer_v291(ENTITY_EVENTS))
+            .updateSerializer(ActorEventPacket.class, new ActorEventSerializer_v291(ENTITY_EVENTS))
             .updateSerializer(LevelEventPacket.class, new LevelEventSerializer_v291(LEVEL_EVENTS))
             .updateSerializer(LevelEventGenericPacket.class, new LevelEventGenericSerializer_v361(LEVEL_EVENTS))
             .updateSerializer(LevelSoundEvent1Packet.class, new LevelSoundEvent1Serializer_v291(SOUND_EVENTS))

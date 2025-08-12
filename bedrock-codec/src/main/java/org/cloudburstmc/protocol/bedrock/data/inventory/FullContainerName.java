@@ -4,9 +4,9 @@ import lombok.Value;
 
 @Value
 public class FullContainerName {
-   private final ContainerSlotType container;
+   private final ContainerEnumName containerName;
    /**
     * May be null if not present since v729
     */
-   private final Integer dynamicId;
+   private final Integer dynamicID;
 }

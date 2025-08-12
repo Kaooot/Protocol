@@ -3,32 +3,32 @@ package org.cloudburstmc.protocol.bedrock.codec.v567.serializer;
 import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v465.serializer.CraftingDataSerializer_v465;
-import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.CraftingDataType;
+import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.CraftingDataEntryType;
 import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.recipe.*;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
 public class CraftingDataSerializer_v567 extends CraftingDataSerializer_v465 {
 
     @Override
-    protected RecipeData readEntry(ByteBuf buffer, BedrockCodecHelper helper) {
+    protected CraftingDataEntry readEntry(ByteBuf buffer, BedrockCodecHelper helper) {
         int typeInt = VarInts.readInt(buffer);
-        CraftingDataType type = CraftingDataType.byId(typeInt);
+        CraftingDataEntryType type = CraftingDataEntryType.byId(typeInt);
 
         switch (type) {
-            case SHAPELESS:
-            case SHAPELESS_CHEMISTRY:
-            case SHULKER_BOX:
+            case SHAPELESS_RECIPE:
+            case SHAPELESS_CHEMISTRY_RECIPE:
+            case USER_DATA_SHAPELESS_RECIPE:
                 return this.readShapelessRecipe(buffer, helper, type);
-            case SHAPED:
-            case SHAPED_CHEMISTRY:
+            case SHAPED_RECIPE:
+            case SHAPED_CHEMISTRY_RECIPE:
                 return this.readShapedRecipe(buffer, helper, type);
-            case FURNACE:
+            case FURNACE_RECIPE:
                 return this.readFurnaceRecipe(buffer, helper, type);
-            case FURNACE_DATA:
+            case FURNACE_AUX_RECIPE:
                 return this.readFurnaceDataRecipe(buffer, helper, type);
-            case MULTI:
+            case MULTI_RECIPE:
                 return this.readMultiRecipe(buffer, helper, type);
-            case SMITHING_TRANSFORM:
+            case SMITHING_TRANSFORM_RECIPE:
                 return this.readSmithingTransformRecipe(buffer, helper, type);
             default:
                 throw new IllegalArgumentException("Unhandled crafting data type: " + type);
@@ -36,36 +36,36 @@ public class CraftingDataSerializer_v567 extends CraftingDataSerializer_v465 {
     }
 
     @Override
-    protected void writeEntry(ByteBuf buffer, BedrockCodecHelper helper, RecipeData craftingData) {
+    protected void writeEntry(ByteBuf buffer, BedrockCodecHelper helper, CraftingDataEntry craftingData) {
         VarInts.writeInt(buffer, craftingData.getType().ordinal());
         switch (craftingData.getType()) {
-            case SHAPELESS:
-            case SHAPELESS_CHEMISTRY:
-            case SHULKER_BOX:
-                this.writeShapelessRecipe(buffer, helper, (ShapelessRecipeData) craftingData);
+            case SHAPELESS_RECIPE:
+            case SHAPELESS_CHEMISTRY_RECIPE:
+            case USER_DATA_SHAPELESS_RECIPE:
+                this.writeShapelessRecipe(buffer, helper, (ShapelessRecipe) craftingData);
                 break;
-            case SHAPED:
-            case SHAPED_CHEMISTRY:
-                this.writeShapedRecipe(buffer, helper, (ShapedRecipeData) craftingData);
+            case SHAPED_RECIPE:
+            case SHAPED_CHEMISTRY_RECIPE:
+                this.writeShapedRecipe(buffer, helper, (ShapedRecipe) craftingData);
                 break;
-            case FURNACE:
-                this.writeFurnaceRecipe(buffer, helper, (FurnaceRecipeData) craftingData);
+            case FURNACE_RECIPE:
+                this.writeFurnaceRecipe(buffer, helper, (FurnaceRecipe) craftingData);
                 break;
-            case FURNACE_DATA:
-                this.writeFurnaceDataRecipe(buffer, helper, (FurnaceRecipeData) craftingData);
+            case FURNACE_AUX_RECIPE:
+                this.writeFurnaceDataRecipe(buffer, helper, (FurnaceRecipe) craftingData);
                 break;
-            case MULTI:
-                this.writeMultiRecipe(buffer, helper, (MultiRecipeData) craftingData);
+            case MULTI_RECIPE:
+                this.writeMultiRecipe(buffer, helper, (MultiRecipe) craftingData);
                 break;
-            case SMITHING_TRANSFORM:
-                this.writeSmithingTransformRecipe(buffer, helper, (SmithingTransformRecipeData) craftingData);
+            case SMITHING_TRANSFORM_RECIPE:
+                this.writeSmithingTransformRecipe(buffer, helper, (SmithingTransformRecipe) craftingData);
                 break;
         }
     }
 
-    protected SmithingTransformRecipeData readSmithingTransformRecipe(ByteBuf buffer, BedrockCodecHelper helper,
-                                                                      CraftingDataType type) {
-        return SmithingTransformRecipeData.of(
+    protected SmithingTransformRecipe readSmithingTransformRecipe(ByteBuf buffer, BedrockCodecHelper helper,
+                                                                  CraftingDataEntryType type) {
+        return SmithingTransformRecipe.of(
                 helper.readString(buffer), // ID
                 helper.readIngredient(buffer), // Base
                 helper.readIngredient(buffer), // Addition
@@ -76,12 +76,12 @@ public class CraftingDataSerializer_v567 extends CraftingDataSerializer_v465 {
     }
 
     protected void writeSmithingTransformRecipe(ByteBuf buffer, BedrockCodecHelper helper,
-                                                SmithingTransformRecipeData data) {
-        helper.writeString(buffer, data.getId());
-        helper.writeIngredient(buffer, data.getBase());
-        helper.writeIngredient(buffer, data.getAddition());
+                                                SmithingTransformRecipe data) {
+        helper.writeString(buffer, data.getRecipeUniqueId());
+        helper.writeIngredient(buffer, data.getBaseIngredient());
+        helper.writeIngredient(buffer, data.getAdditionIngredient());
         helper.writeItemInstance(buffer, data.getResult());
-        helper.writeString(buffer, data.getTag());
+        helper.writeString(buffer, data.getRecipeTag());
         VarInts.writeUnsignedInt(buffer, data.getNetId());
     }
 }

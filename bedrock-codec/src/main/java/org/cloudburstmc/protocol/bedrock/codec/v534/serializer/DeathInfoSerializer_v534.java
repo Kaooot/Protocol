@@ -13,13 +13,13 @@ public class DeathInfoSerializer_v534 implements BedrockPacketSerializer<DeathIn
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, DeathInfoPacket packet) {
-        helper.writeString(buffer, packet.getCauseAttackName());
-        helper.writeArray(buffer, packet.getMessageList(), helper::writeString);
+        helper.writeString(buffer, packet.getDeathCauseAttackName());
+        helper.writeArray(buffer, packet.getDeathCauseMessageList(), helper::writeString);
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, DeathInfoPacket packet) {
-        packet.setCauseAttackName(helper.readString(buffer));
-        helper.readArray(buffer, packet.getMessageList(), helper::readString);
+        packet.setDeathCauseAttackName(helper.readString(buffer));
+        helper.readArray(buffer, packet.getDeathCauseMessageList(), helper::readString);
     }
 }

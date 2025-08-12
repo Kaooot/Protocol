@@ -14,13 +14,13 @@ public class DebugInfoSerializer_v407 implements BedrockPacketSerializer<DebugIn
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, DebugInfoPacket packet) {
-        VarInts.writeLong(buffer, packet.getUniqueEntityId());
+        VarInts.writeLong(buffer, packet.getActorId());
         helper.writeString(buffer, packet.getData());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, DebugInfoPacket packet) {
-        packet.setUniqueEntityId(VarInts.readLong(buffer));
+        packet.setActorId(VarInts.readLong(buffer));
         packet.setData(helper.readString(buffer));
     }
 }

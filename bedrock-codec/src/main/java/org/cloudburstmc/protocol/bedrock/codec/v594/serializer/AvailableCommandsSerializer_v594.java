@@ -49,11 +49,11 @@ public class AvailableCommandsSerializer_v594 extends AvailableCommandsSerialize
 
                 subCommandData.add(subcommand);
                 for (ChainedSubCommandData.Value value : subcommand.getValues()) {
-                    if (!subCommandValues.contains(value.getFirst())) {
+                    if (!subCommandValues.contains(value.getFirst()) && value.getFirst() != null) {
                         subCommandValues.add(value.getFirst());
                     }
 
-                    if (!subCommandValues.contains(value.getSecond())) {
+                    if (!subCommandValues.contains(value.getSecond()) && value.getSecond() != null) {
                         subCommandValues.add(value.getSecond());
                     }
                 }
@@ -135,7 +135,7 @@ public class AvailableCommandsSerializer_v594 extends AvailableCommandsSerialize
         helper.writeString(buffer, commandData.getName());
         helper.writeString(buffer, commandData.getDescription());
         this.writeFlags(buffer, commandData.getFlags());
-        CommandPermission permission = commandData.getPermission() == null ? CommandPermission.ANY : commandData.getPermission();
+        CommandPermissionLevel permission = commandData.getPermission() == null ? CommandPermissionLevel.ANY : commandData.getPermission();
         buffer.writeByte(permission.ordinal());
 
         CommandEnumData aliases = commandData.getAliases();
@@ -163,7 +163,7 @@ public class AvailableCommandsSerializer_v594 extends AvailableCommandsSerialize
         String name = helper.readString(buffer);
         String description = helper.readString(buffer);
         Set<CommandData.Flag> flags = this.readFlags(buffer);
-        CommandPermission permissions = PERMISSIONS[buffer.readUnsignedByte()];
+        CommandPermissionLevel permissions = PERMISSIONS[buffer.readUnsignedByte()];
         int aliasIndex = buffer.readIntLE();
         CommandEnumData aliases = aliasIndex == -1 ? null : enums.get(aliasIndex);
 

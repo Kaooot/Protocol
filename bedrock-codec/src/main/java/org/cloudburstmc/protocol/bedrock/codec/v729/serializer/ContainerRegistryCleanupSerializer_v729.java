@@ -13,11 +13,11 @@ public class ContainerRegistryCleanupSerializer_v729 implements BedrockPacketSer
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ContainerRegistryCleanupPacket packet) {
-        helper.writeArray(buffer, packet.getContainers(), helper::writeFullContainerName);
+        helper.writeArray(buffer, packet.getRemovedContainers(), helper::writeFullContainerName);
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ContainerRegistryCleanupPacket packet) {
-        helper.readArray(buffer, packet.getContainers(), helper::readFullContainerName);
+        helper.readArray(buffer, packet.getRemovedContainers(), helper::readFullContainerName);
     }
 }

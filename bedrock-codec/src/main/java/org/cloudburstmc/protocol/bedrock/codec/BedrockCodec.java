@@ -1,6 +1,8 @@
 package org.cloudburstmc.protocol.bedrock.codec;
 
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufUtil;
+import io.netty.buffer.Unpooled;
 import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
 import lombok.AccessLevel;
@@ -70,8 +72,8 @@ public final class BedrockCodec {
             throw new PacketSerializeException("Error whilst deserializing " + packet, e);
         }
 
-        if (log.isDebugEnabled() && buf.isReadable()) {
-            log.debug(packet.getClass().getSimpleName() + " still has " + buf.readableBytes() + " bytes to read!");
+        if (buf.isReadable()) {
+            throw new RuntimeException("Failed to deserialize " + packet.getPacketType() + ": found " + buf.readableBytes() + " readable bytes");
         }
         return packet;
     }

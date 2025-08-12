@@ -7,7 +7,7 @@ import org.cloudburstmc.protocol.bedrock.codec.v332.serializer.LevelSoundEventSe
 import org.cloudburstmc.protocol.bedrock.codec.v575.BedrockCodecHelper_v575;
 import org.cloudburstmc.protocol.bedrock.codec.v582.Bedrock_v582;
 import org.cloudburstmc.protocol.bedrock.codec.v589.serializer.EmoteSerializer_v589;
-import org.cloudburstmc.protocol.bedrock.codec.v589.serializer.EventSerializer_v589;
+import org.cloudburstmc.protocol.bedrock.codec.v589.serializer.LegacyTelemetryEventSerializer_v589;
 import org.cloudburstmc.protocol.bedrock.codec.v589.serializer.StartGameSerializer_v589;
 import org.cloudburstmc.protocol.bedrock.codec.v589.serializer.UnlockedRecipesSerializer_v589;
 import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
@@ -49,7 +49,7 @@ public class Bedrock_v589 extends Bedrock_v582 {
             .minecraftVersion("1.20.0")
             .helper(() -> new BedrockCodecHelper_v575(ENTITY_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES, PLAYER_ABILITIES, TEXT_PROCESSING_ORIGINS))
             .updateSerializer(StartGamePacket.class, new StartGameSerializer_v589())
-            .updateSerializer(EventPacket.class, EventSerializer_v589.INSTANCE)
+            .updateSerializer(LegacyTelemetryEventPacket.class, LegacyTelemetryEventSerializer_v589.INSTANCE)
             .updateSerializer(EmotePacket.class, EmoteSerializer_v589.INSTANCE)
             .updateSerializer(UnlockedRecipesPacket.class, new UnlockedRecipesSerializer_v589())
             .updateSerializer(LevelSoundEvent1Packet.class, new LevelSoundEvent1Serializer_v291(SOUND_EVENTS))

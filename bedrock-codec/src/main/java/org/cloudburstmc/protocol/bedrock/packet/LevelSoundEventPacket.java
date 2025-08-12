@@ -13,11 +13,11 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 public class LevelSoundEventPacket implements BedrockPacket {
     private SoundEvent sound;
     private Vector3f position;
-    private int extraData;
-    private String identifier;
-    private boolean babySound;
-    private boolean relativeVolumeDisabled;
-    private long entityUniqueId;
+    private int data;
+    private String actorIdentifier;
+    private boolean isBaby;
+    private boolean isGlobal;
+    private long actorUniqueId;
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

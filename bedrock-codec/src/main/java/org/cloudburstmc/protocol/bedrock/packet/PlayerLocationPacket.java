@@ -12,7 +12,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 public class PlayerLocationPacket implements BedrockPacket {
 
     private Type type;
-    private long targetEntityId;
+    private long targetActorID;
     private Vector3f position;
 
     @Override
@@ -35,7 +35,7 @@ public class PlayerLocationPacket implements BedrockPacket {
     }
 
     public enum Type {
-        COORDINATES,
-        HIDE
+        PLAYER_LOCATION_COORDINATES,
+        PLAYER_LOCATION_HIDE
     }
 }

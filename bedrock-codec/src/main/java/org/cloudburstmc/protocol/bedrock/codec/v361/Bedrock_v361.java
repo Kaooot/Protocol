@@ -1,15 +1,15 @@
 package org.cloudburstmc.protocol.bedrock.codec.v361;
 
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
-import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
+import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelEventSerializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v354.Bedrock_v354;
 import org.cloudburstmc.protocol.bedrock.codec.v354.serializer.LecternUpdateSerializer_v354;
 import org.cloudburstmc.protocol.bedrock.codec.v361.serializer.*;
 import org.cloudburstmc.protocol.bedrock.data.*;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataFormat;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataFormat;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataTypes;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorFlag;
 import org.cloudburstmc.protocol.bedrock.packet.*;
 import org.cloudburstmc.protocol.bedrock.transformer.BooleanTransformer;
 import org.cloudburstmc.protocol.bedrock.transformer.FlagTransformer;
@@ -18,8 +18,8 @@ import org.cloudburstmc.protocol.common.util.TypeMap;
 
 public class Bedrock_v361 extends Bedrock_v354 {
 
-    protected static final TypeMap<EntityFlag> ENTITY_FLAGS = Bedrock_v354.ENTITY_FLAGS.toBuilder()
-            .insert(87, EntityFlag.HIDDEN_WHEN_INVISIBLE)
+    protected static final TypeMap<ActorFlag> ENTITY_FLAGS = Bedrock_v354.ENTITY_FLAGS.toBuilder()
+            .insert(87, ActorFlag.HIDDEN_WHEN_INVISIBLE)
             .build();
 
     protected static final TypeMap<ParticleType> PARTICLE_TYPES = Bedrock_v354.PARTICLE_TYPES.toBuilder()
@@ -31,15 +31,15 @@ public class Bedrock_v361 extends Bedrock_v354 {
             .insert(24, ParticleType.WATER_SPLASH_MANUAL)
             .build();
 
-    protected static final EntityDataTypeMap ENTITY_DATA = Bedrock_v354.ENTITY_DATA.toBuilder()
-            .update(EntityDataTypes.FLAGS, new FlagTransformer(ENTITY_FLAGS, 0))
-            .update(EntityDataTypes.FLAGS_2, new FlagTransformer(ENTITY_FLAGS, 1))
-            .update(EntityDataTypes.AREA_EFFECT_CLOUD_PARTICLE, new TypeMapTransformer<>(PARTICLE_TYPES))
-            .replace(EntityDataTypes.NPC_DATA, 40, EntityDataFormat.STRING)
-            .insert(EntityDataTypes.SKIN_ID, 103, EntityDataFormat.INT)
-            .insert(EntityDataTypes.SPAWNING_FRAMES, 104, EntityDataFormat.INT)
-            .insert(EntityDataTypes.COMMAND_BLOCK_TICK_DELAY, 105, EntityDataFormat.INT)
-            .insert(EntityDataTypes.COMMAND_BLOCK_EXECUTE_ON_FIRST_TICK, 106, EntityDataFormat.BYTE, BooleanTransformer.INSTANCE)
+    protected static final ActorDataTypeMap ENTITY_DATA = Bedrock_v354.ENTITY_DATA.toBuilder()
+            .update(ActorDataTypes.FLAGS, new FlagTransformer(ENTITY_FLAGS, 0))
+            .update(ActorDataTypes.FLAGS_2, new FlagTransformer(ENTITY_FLAGS, 1))
+            .update(ActorDataTypes.DATA_PARTICLE, new TypeMapTransformer<>(PARTICLE_TYPES))
+            .replace(ActorDataTypes.NPC_DATA, 40, ActorDataFormat.STRING)
+            .insert(ActorDataTypes.SKIN_ID, 103, ActorDataFormat.INT)
+            .insert(ActorDataTypes.SPAWNING_FRAMES, 104, ActorDataFormat.INT)
+            .insert(ActorDataTypes.COMMAND_BLOCK_TICK_DELAY, 105, ActorDataFormat.INT)
+            .insert(ActorDataTypes.COMMAND_BLOCK_EXECUTE_ON_FIRST_TICK, 106, ActorDataFormat.BYTE, BooleanTransformer.INSTANCE)
             .build();
 
     protected static final TypeMap<LevelEventType> LEVEL_EVENTS = Bedrock_v354.LEVEL_EVENTS.toBuilder()
@@ -47,15 +47,15 @@ public class Bedrock_v361 extends Bedrock_v354 {
             .insert(LEVEL_EVENT_PARTICLE_TYPE, PARTICLE_TYPES)
             .build();
 
-    protected static final TypeMap<ResourcePackType> RESOURCE_PACK_TYPES = TypeMap.builder(ResourcePackType.class)
-            .insert(0, ResourcePackType.INVALID)
-            .insert(1, ResourcePackType.RESOURCES)
-            .insert(2, ResourcePackType.DATA_ADD_ON)
-            .insert(3, ResourcePackType.WORLD_TEMPLATE)
-            .insert(4, ResourcePackType.ADDON)
-            .insert(5, ResourcePackType.SKINS)
-            .insert(6, ResourcePackType.CACHED)
-            .insert(7, ResourcePackType.COPY_PROTECTED)
+    protected static final TypeMap<PackType> RESOURCE_PACK_TYPES = TypeMap.builder(PackType.class)
+            .insert(0, PackType.INVALID)
+            .insert(1, PackType.RESOURCES)
+            .insert(2, PackType.BEHAVIOR)
+            .insert(3, PackType.WORLD_TEMPLATE)
+            .insert(4, PackType.ADDON)
+            .insert(5, PackType.SKINS)
+            .insert(6, PackType.CACHED)
+            .insert(7, PackType.COPY_PROTECTED)
             .build();
 
     public static BedrockCodec CODEC = Bedrock_v354.CODEC.toBuilder()
@@ -77,7 +77,7 @@ public class Bedrock_v361 extends Bedrock_v354 {
             .registerPacket(LecternUpdatePacket::new, LecternUpdateSerializer_v354.INSTANCE, 125, PacketRecipient.SERVER)
             .registerPacket(VideoStreamConnectPacket::new, VideoStreamConnectSerializer_v361.INSTANCE, 126, PacketRecipient.CLIENT)
             // AddEntityPacket 127
-            // RemoveEntityPacket 128
+            // RemoveActorPacket 128
             .registerPacket(ClientCacheStatusPacket::new, ClientCacheStatusSerializer_v361.INSTANCE, 129, PacketRecipient.SERVER)
             .registerPacket(StructureTemplateDataRequestPacket::new, StructureTemplateDataRequestSerializer_v361.INSTANCE, 132, PacketRecipient.SERVER)
             .registerPacket(StructureTemplateDataResponsePacket::new, StructureTemplateDataResponseSerializer_v361.INSTANCE, 133, PacketRecipient.CLIENT)

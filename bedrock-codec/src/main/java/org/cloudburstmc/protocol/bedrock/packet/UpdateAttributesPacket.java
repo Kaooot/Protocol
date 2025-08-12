@@ -13,8 +13,8 @@ import java.util.List;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class UpdateAttributesPacket implements BedrockPacket {
-    private long runtimeEntityId;
-    private List<AttributeData> attributes = new ObjectArrayList<>();
+    private long runtimeID;
+    private List<AttributeData> attributeList = new ObjectArrayList<>();
     private long tick;
 
     @Override

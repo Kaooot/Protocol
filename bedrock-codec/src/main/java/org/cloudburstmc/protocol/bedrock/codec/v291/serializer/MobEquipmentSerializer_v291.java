@@ -14,19 +14,19 @@ public class MobEquipmentSerializer_v291 implements BedrockPacketSerializer<MobE
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, MobEquipmentPacket packet) {
-        VarInts.writeUnsignedLong(buffer, packet.getRuntimeEntityId());
+        VarInts.writeUnsignedLong(buffer, packet.getTargetRuntimeID());
         helper.writeItem(buffer, packet.getItem());
-        buffer.writeByte(packet.getInventorySlot());
-        buffer.writeByte(packet.getHotbarSlot());
+        buffer.writeByte(packet.getSlot());
+        buffer.writeByte(packet.getSelectedSlot());
         buffer.writeByte(packet.getContainerId());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, MobEquipmentPacket packet) {
-        packet.setRuntimeEntityId(VarInts.readUnsignedLong(buffer));
+        packet.setTargetRuntimeID(VarInts.readUnsignedLong(buffer));
         packet.setItem(helper.readItem(buffer));
-        packet.setInventorySlot(buffer.readUnsignedByte());
-        packet.setHotbarSlot(buffer.readUnsignedByte());
+        packet.setSlot(buffer.readUnsignedByte());
+        packet.setSelectedSlot(buffer.readUnsignedByte());
         packet.setContainerId(buffer.readByte());
     }
 }

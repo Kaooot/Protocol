@@ -17,34 +17,34 @@ public class EducationSettingsSerializer_v465 extends EducationSettingsSerialize
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, EducationSettingsPacket packet) {
-        helper.writeString(buffer, packet.getCodeBuilderUri());
-        helper.writeString(buffer, packet.getCodeBuilderTitle());
-        buffer.writeBoolean(packet.isCanResizeCodeBuilder());
-        buffer.writeBoolean(packet.isDisableLegacyTitle());
-        helper.writeString(buffer, packet.getPostProcessFilter());
-        helper.writeString(buffer, packet.getScreenshotBorderPath());
-        helper.writeOptional(buffer, OptionalBoolean::isPresent, packet.getEntityCapabilities(),
+        helper.writeString(buffer, packet.getEducationLevelSettings().getCodeBuilderDefaultURI());
+        helper.writeString(buffer, packet.getEducationLevelSettings().getCodeBuilderTitle());
+        buffer.writeBoolean(packet.getEducationLevelSettings().isCanResizeCodeBuilder());
+        buffer.writeBoolean(packet.getEducationLevelSettings().isDisableLegacyTitleBar());
+        helper.writeString(buffer, packet.getEducationLevelSettings().getPostProcessFilter());
+        helper.writeString(buffer, packet.getEducationLevelSettings().getScreenshotBorderResourcePath());
+        helper.writeOptional(buffer, OptionalBoolean::isPresent, packet.getEducationLevelSettings().getAgentCapabilities(),
                 (byteBuf, optional) -> byteBuf.writeBoolean(optional.getAsBoolean()));
-        helper.writeOptional(buffer, Optional::isPresent, packet.getOverrideUri(),
+        helper.writeOptional(buffer, Optional::isPresent, packet.getEducationLevelSettings().getCodeBuilderOverrideUri(),
                 (byteBuf, optional) -> helper.writeString(byteBuf, optional.get()));
-        buffer.writeBoolean(packet.isQuizAttached());
-        helper.writeOptional(buffer, OptionalBoolean::isPresent, packet.getExternalLinkSettings(),
+        buffer.writeBoolean(packet.getEducationLevelSettings().isQuizAttached());
+        helper.writeOptional(buffer, OptionalBoolean::isPresent, packet.getEducationLevelSettings().getExternalLinkSettings(),
                 (byteBuf, optional) -> byteBuf.writeBoolean(optional.getAsBoolean()));
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, EducationSettingsPacket packet) {
-        packet.setCodeBuilderUri(helper.readString(buffer));
-        packet.setCodeBuilderTitle(helper.readString(buffer));
-        packet.setCanResizeCodeBuilder(buffer.readBoolean());
-        packet.setDisableLegacyTitle(buffer.readBoolean());
-        packet.setPostProcessFilter(helper.readString(buffer));
-        packet.setScreenshotBorderPath(helper.readString(buffer));
-        packet.setEntityCapabilities(helper.readOptional(buffer, OptionalBoolean.empty(),
+        packet.getEducationLevelSettings().setCodeBuilderDefaultURI(helper.readString(buffer));
+        packet.getEducationLevelSettings().setCodeBuilderTitle(helper.readString(buffer));
+        packet.getEducationLevelSettings().setCanResizeCodeBuilder(buffer.readBoolean());
+        packet.getEducationLevelSettings().setDisableLegacyTitleBar(buffer.readBoolean());
+        packet.getEducationLevelSettings().setPostProcessFilter(helper.readString(buffer));
+        packet.getEducationLevelSettings().setScreenshotBorderResourcePath(helper.readString(buffer));
+        packet.getEducationLevelSettings().setAgentCapabilities(helper.readOptional(buffer, OptionalBoolean.empty(),
                 byteBuf -> OptionalBoolean.of(buffer.readBoolean())));
-        packet.setOverrideUri(helper.readOptional(buffer, Optional.empty(), byteBuf -> Optional.of(helper.readString(byteBuf))));
-        packet.setQuizAttached(buffer.readBoolean());
-        packet.setExternalLinkSettings(helper.readOptional(buffer, OptionalBoolean.empty(),
+        packet.getEducationLevelSettings().setCodeBuilderOverrideUri(helper.readOptional(buffer, Optional.empty(), byteBuf -> Optional.of(helper.readString(byteBuf))));
+        packet.getEducationLevelSettings().setQuizAttached(buffer.readBoolean());
+        packet.getEducationLevelSettings().setExternalLinkSettings(helper.readOptional(buffer, OptionalBoolean.empty(),
                 byteBuf -> OptionalBoolean.of(buffer.readBoolean())));
     }
 }

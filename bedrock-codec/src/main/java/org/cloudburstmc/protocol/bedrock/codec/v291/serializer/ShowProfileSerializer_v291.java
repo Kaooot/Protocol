@@ -14,11 +14,11 @@ public class ShowProfileSerializer_v291 implements BedrockPacketSerializer<ShowP
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ShowProfilePacket packet) {
-        helper.writeString(buffer, packet.getXuid());
+        helper.writeString(buffer, packet.getPlayerXUID());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ShowProfilePacket packet) {
-        packet.setXuid(helper.readString(buffer));
+        packet.setPlayerXUID(helper.readString(buffer));
     }
 }

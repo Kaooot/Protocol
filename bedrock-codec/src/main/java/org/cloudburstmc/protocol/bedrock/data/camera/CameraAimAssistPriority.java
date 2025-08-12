@@ -6,6 +6,6 @@ import lombok.RequiredArgsConstructor;
 @Data
 @RequiredArgsConstructor
 public class CameraAimAssistPriority {
-    private final String name;
+    private final String id;
     private final int priority;
 }

@@ -20,11 +20,11 @@ public class ResourcePacksInfoSerializer_v712 extends ResourcePacksInfoSerialize
         buffer.writeLongLE(entry.getPackSize());
         helper.writeString(buffer, entry.getContentKey());
         helper.writeString(buffer, entry.getSubPackName());
-        helper.writeString(buffer, entry.getContentId());
-        buffer.writeBoolean(entry.isScripting());
+        helper.writeString(buffer, entry.getContentIdentity());
+        buffer.writeBoolean(entry.isHasScripts());
         buffer.writeBoolean(entry.isAddonPack());
         if (resource) {
-            buffer.writeBoolean(entry.isRaytracingCapable());
+            buffer.writeBoolean(entry.isRayTracingCapable());
         }
     }
 

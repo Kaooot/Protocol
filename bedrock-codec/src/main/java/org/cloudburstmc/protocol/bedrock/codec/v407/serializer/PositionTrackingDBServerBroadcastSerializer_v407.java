@@ -19,13 +19,13 @@ public class PositionTrackingDBServerBroadcastSerializer_v407 implements Bedrock
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, PositionTrackingDBServerBroadcastPacket packet) {
         buffer.writeByte(packet.getAction().ordinal());
         VarInts.writeInt(buffer, packet.getTrackingId());
-        helper.writeTag(buffer, packet.getTag());
+        helper.writeTag(buffer, packet.getPositionTrackingData());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, PositionTrackingDBServerBroadcastPacket packet) {
         packet.setAction(ACTIONS[buffer.readByte()]);
         packet.setTrackingId(VarInts.readInt(buffer));
-        packet.setTag(helper.readTag(buffer, NbtMap.class));
+        packet.setPositionTrackingData(helper.readTag(buffer, NbtMap.class));
     }
 }

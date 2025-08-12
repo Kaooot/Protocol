@@ -5,7 +5,6 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
-import org.cloudburstmc.protocol.bedrock.data.NpcRequestType;
 import org.cloudburstmc.protocol.bedrock.packet.NpcRequestPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -16,17 +15,17 @@ public class NpcRequestSerializer_v291 implements BedrockPacketSerializer<NpcReq
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, NpcRequestPacket packet) {
-        VarInts.writeUnsignedLong(buffer, packet.getRuntimeEntityId());
+        VarInts.writeUnsignedLong(buffer, packet.getNpcRuntimeID());
         buffer.writeByte(packet.getRequestType().ordinal());
-        helper.writeString(buffer, packet.getCommand());
-        buffer.writeByte(packet.getActionType());
+        helper.writeString(buffer, packet.getActions());
+        buffer.writeByte(packet.getActionIndex());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, NpcRequestPacket packet) {
-        packet.setRuntimeEntityId(VarInts.readUnsignedLong(buffer));
-        packet.setRequestType(NpcRequestType.values()[buffer.readUnsignedByte()]);
-        packet.setCommand(helper.readString(buffer));
-        packet.setActionType(buffer.readUnsignedByte());
+        packet.setNpcRuntimeID(VarInts.readUnsignedLong(buffer));
+        packet.setRequestType(NpcRequestPacket.RequestType.from(buffer.readUnsignedByte()));
+        packet.setActions(helper.readString(buffer));
+        packet.setActionIndex(buffer.readUnsignedByte());
     }
 }

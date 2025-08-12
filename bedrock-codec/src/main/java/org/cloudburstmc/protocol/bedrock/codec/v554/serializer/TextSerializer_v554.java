@@ -3,73 +3,74 @@ package org.cloudburstmc.protocol.bedrock.codec.v554.serializer;
 import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v332.serializer.TextSerializer_v332;
+import org.cloudburstmc.protocol.bedrock.data.TextPacketType;
 import org.cloudburstmc.protocol.bedrock.packet.TextPacket;
 
 public class TextSerializer_v554 extends TextSerializer_v332 {
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, TextPacket packet) {
-        TextPacket.Type type = packet.getType();
-        buffer.writeByte(type.ordinal());
-        buffer.writeBoolean(packet.isNeedsTranslation());
+        final TextPacketType messageType = packet.getMessageType();
+        buffer.writeByte(messageType.ordinal());
+        buffer.writeBoolean(packet.isLocalize());
 
-        switch (type) {
+        switch (messageType) {
             case CHAT:
             case WHISPER:
             case ANNOUNCEMENT:
-                helper.writeString(buffer, packet.getSourceName());
+                helper.writeString(buffer, packet.getPlayerName());
             case RAW:
             case TIP:
-            case SYSTEM:
-            case JSON:
-            case WHISPER_JSON:
-            case ANNOUNCEMENT_JSON:
+            case SYSTEM_MESSAGE:
+            case TEXT_OBJECT:
+            case TEXT_OBJECT_WHISPER:
+            case TEXT_OBJECT_ANNOUNCEMENT:
                 helper.writeString(buffer, packet.getMessage());
                 break;
-            case TRANSLATION:
+            case TRANSLATE:
             case POPUP:
             case JUKEBOX_POPUP:
                 helper.writeString(buffer, packet.getMessage());
-                helper.writeArray(buffer, packet.getParameters(), helper::writeString);
+                helper.writeArray(buffer, packet.getParameterList(), helper::writeString);
                 break;
             default:
-                throw new UnsupportedOperationException("Unsupported TextType " + type);
+                throw new UnsupportedOperationException("Unsupported TextPacketType " + messageType);
         }
 
-        helper.writeString(buffer, packet.getXuid());
-        helper.writeString(buffer, packet.getPlatformChatId());
+        helper.writeString(buffer, packet.getSendersXUID());
+        helper.writeString(buffer, packet.getPlatformId());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, TextPacket packet) {
-        TextPacket.Type type = TextPacket.Type.values()[buffer.readUnsignedByte()];
-        packet.setType(type);
-        packet.setNeedsTranslation(buffer.readBoolean());
+        final TextPacketType messageType = TextPacketType.from(buffer.readUnsignedByte());
+        packet.setMessageType(messageType);
+        packet.setLocalize(buffer.readBoolean());
 
-        switch (type) {
+        switch (messageType) {
             case CHAT:
             case WHISPER:
             case ANNOUNCEMENT:
-                packet.setSourceName(helper.readString(buffer));
+                packet.setPlayerName(helper.readString(buffer));
             case RAW:
             case TIP:
-            case SYSTEM:
-            case JSON:
-            case WHISPER_JSON:
-            case ANNOUNCEMENT_JSON:
+            case SYSTEM_MESSAGE:
+            case TEXT_OBJECT:
+            case TEXT_OBJECT_WHISPER:
+            case TEXT_OBJECT_ANNOUNCEMENT:
                 packet.setMessage(helper.readString(buffer));
                 break;
-            case TRANSLATION:
+            case TRANSLATE:
             case POPUP:
             case JUKEBOX_POPUP:
                 packet.setMessage(helper.readString(buffer));
-                helper.readArray(buffer, packet.getParameters(), helper::readString);
+                helper.readArray(buffer, packet.getParameterList(), helper::readString);
                 break;
             default:
-                throw new UnsupportedOperationException("Unsupported TextType " + type);
+                throw new UnsupportedOperationException("Unsupported TextPacketType " + messageType);
         }
 
-        packet.setXuid(helper.readString(buffer));
-        packet.setPlatformChatId(helper.readString(buffer));
+        packet.setSendersXUID(helper.readString(buffer));
+        packet.setPlatformId(helper.readString(buffer));
     }
 }

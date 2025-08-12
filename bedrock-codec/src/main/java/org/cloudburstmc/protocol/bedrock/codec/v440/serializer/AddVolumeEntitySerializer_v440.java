@@ -16,13 +16,13 @@ public class AddVolumeEntitySerializer_v440 implements BedrockPacketSerializer<A
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, AddVolumeEntityPacket packet) {
-        VarInts.writeUnsignedInt(buffer, packet.getId());
-        helper.writeTag(buffer, packet.getData());
+        VarInts.writeUnsignedInt(buffer, packet.getEntityNetworkId());
+        helper.writeTag(buffer, packet.getComponents());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, AddVolumeEntityPacket packet) {
-        packet.setId(VarInts.readUnsignedInt(buffer));
-        packet.setData(helper.readTag(buffer, NbtMap.class));
+        packet.setEntityNetworkId(VarInts.readUnsignedInt(buffer));
+        packet.setComponents(helper.readTag(buffer, NbtMap.class));
     }
 }

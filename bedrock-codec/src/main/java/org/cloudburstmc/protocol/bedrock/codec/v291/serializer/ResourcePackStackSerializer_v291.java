@@ -15,16 +15,16 @@ public class ResourcePackStackSerializer_v291 implements BedrockPacketSerializer
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ResourcePackStackPacket packet) {
-        buffer.writeBoolean(packet.isForcedToAccept());
-        helper.writeArray(buffer, packet.getBehaviorPacks(), this::writeEntry);
-        helper.writeArray(buffer, packet.getResourcePacks(), this::writeEntry);
+        buffer.writeBoolean(packet.isTexturePackRequired());
+        helper.writeArray(buffer, packet.getAddonList(), this::writeEntry);
+        helper.writeArray(buffer, packet.getTexturePackList(), this::writeEntry);
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ResourcePackStackPacket packet) {
-        packet.setForcedToAccept(buffer.readBoolean());
-        helper.readArray(buffer, packet.getBehaviorPacks(), this::readEntry);
-        helper.readArray(buffer, packet.getResourcePacks(), this::readEntry);
+        packet.setTexturePackRequired(buffer.readBoolean());
+        helper.readArray(buffer, packet.getAddonList(), this::readEntry);
+        helper.readArray(buffer, packet.getTexturePackList(), this::readEntry);
     }
 
     public ResourcePackStackPacket.Entry readEntry(ByteBuf buffer, BedrockCodecHelper helper) {
@@ -37,8 +37,8 @@ public class ResourcePackStackSerializer_v291 implements BedrockPacketSerializer
     public void writeEntry(ByteBuf buffer, BedrockCodecHelper helper, ResourcePackStackPacket.Entry entry) {
         requireNonNull(entry, "ResourcePackStackPacket entry is null");
 
-        helper.writeString(buffer, entry.getPackId());
-        helper.writeString(buffer, entry.getPackVersion());
+        helper.writeString(buffer, entry.getId());
+        helper.writeString(buffer, entry.getVersion());
         helper.writeString(buffer, entry.getSubPackName());
     }
 }

@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
+import org.cloudburstmc.protocol.bedrock.data.SpawnPositionType;
 import org.cloudburstmc.protocol.bedrock.packet.SetSpawnPositionPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -15,14 +16,14 @@ public class SetSpawnPositionSerializer_v291 implements BedrockPacketSerializer<
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, SetSpawnPositionPacket packet) {
-        VarInts.writeInt(buffer, packet.getSpawnType().ordinal());
+        VarInts.writeInt(buffer, packet.getSpawnPositionType().ordinal());
         helper.writeBlockPosition(buffer, packet.getBlockPosition());
         buffer.writeBoolean(packet.isSpawnForced());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, SetSpawnPositionPacket packet) {
-        packet.setSpawnType(SetSpawnPositionPacket.Type.values()[VarInts.readInt(buffer)]);
+        packet.setSpawnPositionType(SpawnPositionType.from(VarInts.readInt(buffer)));
         packet.setBlockPosition(helper.readBlockPosition(buffer));
         packet.setSpawnForced(buffer.readBoolean());
     }

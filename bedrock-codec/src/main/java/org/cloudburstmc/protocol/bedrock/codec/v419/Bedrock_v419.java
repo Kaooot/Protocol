@@ -42,9 +42,9 @@ public class Bedrock_v419 extends Bedrock_v408 {
             .updateSerializer(StartGamePacket.class, StartGameSerializer_v419.INSTANCE)
             .updateSerializer(MovePlayerPacket.class, MovePlayerSerializer_v419.INSTANCE)
             .updateSerializer(UpdateAttributesPacket.class, UpdateAttributesSerializer_v419.INSTANCE)
-            .updateSerializer(SetEntityDataPacket.class, SetEntityDataSerializer_v419.INSTANCE)
+            .updateSerializer(SetActorDataPacket.class, SetActorDataSerializer_v419.INSTANCE)
             .updateSerializer(ContainerClosePacket.class, ContainerCloseSerializer_v419.INSTANCE)
-            .updateSerializer(MoveEntityDeltaPacket.class, MoveEntityDeltaSerializer_v419.INSTANCE)
+            .updateSerializer(MoveActorDeltaPacket.class, MoveActorDeltaSerializer_v419.INSTANCE)
             .updateSerializer(PlayerAuthInputPacket.class, PlayerAuthInputSerializer_v419.INSTANCE)
             .updateSerializer(ItemStackResponsePacket.class, ItemStackResponseSerializer_v419.INSTANCE)
             .updateSerializer(LevelSoundEvent1Packet.class, new LevelSoundEvent1Serializer_v291(SOUND_EVENTS))
@@ -56,6 +56,6 @@ public class Bedrock_v419 extends Bedrock_v408 {
             .registerPacket(CameraShakePacket::new, CameraShakeSerializer_v419.INSTANCE, 159, PacketRecipient.CLIENT)
             .registerPacket(PlayerFogPacket::new, PlayerFogSerializer_v419.INSTANCE, 160, PacketRecipient.CLIENT)
             .registerPacket(CorrectPlayerMovePredictionPacket::new, CorrectPlayerMovePredictionSerializer_v419.INSTANCE, 161, PacketRecipient.CLIENT)
-            .registerPacket(ItemComponentPacket::new, ItemComponentSerializer_v419.INSTANCE, 162, PacketRecipient.CLIENT)
+            .registerPacket(ItemRegistryPacket::new, ItemRegistrySerializer_v419.INSTANCE, 162, PacketRecipient.CLIENT)
             .build();
 }

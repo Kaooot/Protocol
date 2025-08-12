@@ -9,8 +9,8 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class CameraPacket implements BedrockPacket {
-    private long cameraUniqueEntityId;
-    private long playerUniqueEntityId;
+    private long cameraID;
+    private long targetPlayerID;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

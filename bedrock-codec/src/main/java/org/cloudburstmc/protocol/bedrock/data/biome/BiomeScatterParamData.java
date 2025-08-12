@@ -22,7 +22,7 @@ public class BiomeScatterParamData {
     @Getter(AccessLevel.NONE)
     transient Indexable<String> chancePercent;
     int chanceNumerator;
-    int changeDenominator;
+    int chanceDenominator;
     ExpressionOp iterationsType;
     @Getter(AccessLevel.NONE)
     transient Indexable<String> iterations;
@@ -30,13 +30,13 @@ public class BiomeScatterParamData {
     @JsonCreator
     public BiomeScatterParamData(List<BiomeCoordinateData> coordinates, CoordinateEvaluationOrder evalOrder,
                                  ExpressionOp chancePercentType, String chancePercent, int chanceNumerator,
-                                 int changeDenominator, ExpressionOp iterationsType, String iterations) {
+                                 int chanceDenominator, ExpressionOp iterationsType, String iterations) {
         this.coordinates = coordinates;
         this.evalOrder = evalOrder;
         this.chancePercentType = chancePercentType;
         this.chancePercent = new Unindexed<>(chancePercent);
         this.chanceNumerator = chanceNumerator;
-        this.changeDenominator = changeDenominator;
+        this.chanceDenominator = chanceDenominator;
         this.iterationsType = iterationsType;
         this.iterations = new Unindexed<>(iterations);
     }

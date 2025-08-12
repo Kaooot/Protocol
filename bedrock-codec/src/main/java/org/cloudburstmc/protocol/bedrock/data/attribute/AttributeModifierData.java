@@ -7,7 +7,7 @@ public class AttributeModifierData {
     String id;
     String name;
     float amount;
-    AttributeOperation operation;
-    int operand;
-    boolean serializable;
+    AttributeModifierOperation operation;
+    AttributeOperands operand;
+    boolean isSerializable;
 }

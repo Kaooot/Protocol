@@ -3,7 +3,7 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.protocol.bedrock.data.ResourcePackType;
+import org.cloudburstmc.protocol.bedrock.data.PackType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 import java.util.UUID;
@@ -14,12 +14,12 @@ import java.util.UUID;
 public class ResourcePackDataInfoPacket implements BedrockPacket {
     private UUID packId;
     private String packVersion;
-    private long maxChunkSize;
-    private long chunkCount;
-    private long compressedPackSize;
-    private byte[] hash;
-    private boolean premium;
-    private ResourcePackType type;
+    private long chunkSize;
+    private long numberOfChunks;
+    private long fileSize;
+    private byte[] fileHash;
+    private boolean isPremiumPack;
+    private PackType packType;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

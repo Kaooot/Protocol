@@ -14,7 +14,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 @ToString(doNotUseGetters = true)
 public class RequestNetworkSettingsPacket implements BedrockPacket {
-    private int protocolVersion;
+    private int clientNetworkVersion;
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

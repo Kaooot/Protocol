@@ -11,10 +11,10 @@ import org.cloudburstmc.math.vector.Vector3i;
 public class SubChunkData extends AbstractReferenceCounted {
     private Vector3i position;
     private ByteBuf data;
-    private SubChunkRequestResult result;
-    private HeightMapDataType heightMapType;
+    private SubChunkRequestResult subChunkRequestResult;
+    private HeightMapDataType heightMapDataType;
     private ByteBuf heightMapData;
-    private HeightMapDataType renderHeightMapType;
+    private HeightMapDataType renderHeightMapDataType;
     private ByteBuf renderHeightMapData;
     private boolean cacheEnabled;
     private long blobId;

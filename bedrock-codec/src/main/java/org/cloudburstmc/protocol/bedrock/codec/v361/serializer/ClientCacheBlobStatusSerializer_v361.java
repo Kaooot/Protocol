@@ -19,8 +19,8 @@ public class ClientCacheBlobStatusSerializer_v361 implements BedrockPacketSerial
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ClientCacheBlobStatusPacket packet) {
-        LongList nacks = packet.getNaks();
-        LongList acks = packet.getAcks();
+        LongList nacks = packet.getFoundIds();
+        LongList acks = packet.getMissingIds();
         VarInts.writeUnsignedInt(buffer, nacks.size());
         VarInts.writeUnsignedInt(buffer, acks.size());
 
@@ -38,12 +38,12 @@ public class ClientCacheBlobStatusSerializer_v361 implements BedrockPacketSerial
         int acksLength = VarInts.readUnsignedInt(buffer);
         checkArgument(maxLength <= 0 || acksLength <= maxLength, "Tried to read %s Nacks but maximum is %s", acksLength, maxLength);
 
-        LongList naks = packet.getNaks();
+        LongList naks = packet.getFoundIds();
         for (int i = 0; i < naksLength; i++) {
             naks.add(buffer.readLongLE());
         }
 
-        LongList acks = packet.getAcks();
+        LongList acks = packet.getMissingIds();
         for (int i = 0; i < acksLength; i++) {
             acks.add(buffer.readLongLE());
         }

@@ -28,10 +28,10 @@ public class CameraShakePacket implements BedrockPacket {
     /**
      * Amount of time to shake the player's camera.
      *
-     * @param duration seconds to shake
+     * @param seconds seconds to shake
      * @return seconds to shake
      */
-    private float duration;
+    private float seconds;
 
     private CameraShakeType shakeType;
 

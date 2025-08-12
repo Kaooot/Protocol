@@ -25,7 +25,7 @@ public class CameraInstructionSerializer_618 implements BedrockPacketSerializer<
                 (b, optional) -> b.writeBoolean(optional.getAsBoolean()));
 
         helper.writeOptionalNull(buffer, packet.getFadeInstruction(), (buf, fade) -> {
-            helper.writeOptionalNull(buf, fade.getTimeData(), this::writeTimeData);
+            helper.writeOptionalNull(buf, fade.getTime(), this::writeTimeData);
             helper.writeOptionalNull(buf, fade.getColor(), this::writeColor);
         });
     }
@@ -38,7 +38,7 @@ public class CameraInstructionSerializer_618 implements BedrockPacketSerializer<
         packet.setClear(helper.readOptional(buffer, OptionalBoolean.empty(), buf -> OptionalBoolean.of(buf.readBoolean())));
 
         CameraFadeInstruction fade = helper.readOptional(buffer, null, buf -> {
-            CameraFadeInstruction.TimeData time = helper.readOptional(buf, null, this::readTimeData);
+            CameraFadeInstruction.TimeOption time = helper.readOptional(buf, null, this::readTimeData);
             Color color = helper.readOptional(buf, null, this::readColor);
             return new CameraFadeInstruction(time, color);
         });
@@ -57,17 +57,17 @@ public class CameraInstructionSerializer_618 implements BedrockPacketSerializer<
         return new CameraSetInstruction.EaseData(type, time);
     }
 
-    protected void writeTimeData(ByteBuf buffer, CameraFadeInstruction.TimeData timeData) {
-        buffer.writeFloatLE(timeData.getFadeInTime());
-        buffer.writeFloatLE(timeData.getWaitTime());
-        buffer.writeFloatLE(timeData.getFadeOutTime());
+    protected void writeTimeData(ByteBuf buffer, CameraFadeInstruction.TimeOption timeOption) {
+        buffer.writeFloatLE(timeOption.getFadeInTime());
+        buffer.writeFloatLE(timeOption.getHoldTime());
+        buffer.writeFloatLE(timeOption.getFadeOutTime());
     }
 
-    protected CameraFadeInstruction.TimeData readTimeData(ByteBuf buffer) {
+    protected CameraFadeInstruction.TimeOption readTimeData(ByteBuf buffer) {
         float fadeIn = buffer.readFloatLE();
         float wait = buffer.readFloatLE();
         float fadeOut = buffer.readFloatLE();
-        return new CameraFadeInstruction.TimeData(fadeIn, wait, fadeOut);
+        return new CameraFadeInstruction.TimeOption(fadeIn, wait, fadeOut);
     }
 
     protected void writeColor(ByteBuf buffer, Color color) {

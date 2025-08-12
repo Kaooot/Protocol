@@ -11,10 +11,10 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class StructureTemplateDataResponsePacket implements BedrockPacket {
-    private String name;
+    private String structureName;
     private boolean save;
-    private NbtMap tag;
-    private StructureTemplateResponseType type;
+    private NbtMap structureNBT;
+    private StructureTemplateResponseType responseType;
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

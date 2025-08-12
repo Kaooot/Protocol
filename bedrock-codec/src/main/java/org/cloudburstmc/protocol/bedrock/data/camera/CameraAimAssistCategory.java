@@ -9,8 +9,8 @@ import java.util.List;
 @Data
 public class CameraAimAssistCategory {
     private String name;
-    private List<CameraAimAssistPriority> entityPriorities = new ObjectArrayList<>();
-    private List<CameraAimAssistPriority> blockPriorities = new ArrayList<>();
-    private Integer entityDefaultPriorities;
-    private Integer blockDefaultPriorities;
+    private List<CameraAimAssistPriority> entities = new ObjectArrayList<>();
+    private List<CameraAimAssistPriority> blocks = new ArrayList<>();
+    private Integer entityDefault;
+    private Integer blockDefault;
 }

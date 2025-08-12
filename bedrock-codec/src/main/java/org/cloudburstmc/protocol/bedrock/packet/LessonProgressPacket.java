@@ -10,7 +10,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class LessonProgressPacket implements BedrockPacket {
-    private LessonAction action;
+    private LessonAction lessonAction;
     private int score;
     private String activityId;
 

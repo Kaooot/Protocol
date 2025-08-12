@@ -4,7 +4,6 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.nbt.NbtMap;
 import org.cloudburstmc.protocol.bedrock.data.TrimMaterial;
 import org.cloudburstmc.protocol.bedrock.data.TrimPattern;
 import org.cloudburstmc.protocol.common.PacketSignal;
@@ -15,8 +14,8 @@ import java.util.List;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class TrimDataPacket implements BedrockPacket {
-    private final List<TrimPattern> patterns = new ObjectArrayList<>();
-    private final List<TrimMaterial> materials = new ObjectArrayList<>();
+    private final List<TrimPattern> trimPatternList = new ObjectArrayList<>();
+    private final List<TrimMaterial> trimMaterialList = new ObjectArrayList<>();
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

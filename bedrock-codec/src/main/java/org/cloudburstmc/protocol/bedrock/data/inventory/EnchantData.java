@@ -4,6 +4,6 @@ import lombok.Value;
 
 @Value
 public class EnchantData {
-    private final int type;
-    private final int level;
+    private final int enchantType;
+    private final int enchantLevel;
 }

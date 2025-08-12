@@ -11,7 +11,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 public class AnimatePacket implements BedrockPacket {
     private float rowingTime;
     private Action action;
-    private long runtimeEntityId;
+    private long targetRuntimeID;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {
@@ -24,7 +24,7 @@ public class AnimatePacket implements BedrockPacket {
 
     public enum Action {
         NO_ACTION,
-        SWING_ARM,
+        SWING,
         WAKE_UP,
         CRITICAL_HIT,
         MAGIC_CRITICAL_HIT,
@@ -47,4 +47,3 @@ public class AnimatePacket implements BedrockPacket {
         }
     }
 }
-

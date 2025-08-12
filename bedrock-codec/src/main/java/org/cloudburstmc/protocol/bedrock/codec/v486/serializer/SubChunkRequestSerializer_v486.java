@@ -21,16 +21,16 @@ public class SubChunkRequestSerializer_v486 extends SubChunkRequestSerializer_v4
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, SubChunkRequestPacket packet) {
-        VarInts.writeInt(buffer, packet.getDimension());
-        helper.writeVector3i(buffer, packet.getSubChunkPosition());
-        helper.writeArray(buffer, packet.getPositionOffsets(), ByteBuf::writeIntLE, this::writeSubChunkOffset);
+        VarInts.writeInt(buffer, packet.getDimensionType());
+        helper.writeVector3i(buffer, packet.getCenterPos());
+        helper.writeArray(buffer, packet.getSubChunkPosOffsetList(), ByteBuf::writeIntLE, this::writeSubChunkOffset);
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, SubChunkRequestPacket packet) {
-        packet.setDimension(VarInts.readInt(buffer));
-        packet.setSubChunkPosition(helper.readVector3i(buffer));
-        helper.readArray(buffer, packet.getPositionOffsets(), ByteBuf::readIntLE, this::readSubChunkOffset, MAX_SUB_CHUNKS);
+        packet.setDimensionType(VarInts.readInt(buffer));
+        packet.setCenterPos(helper.readVector3i(buffer));
+        helper.readArray(buffer, packet.getSubChunkPosOffsetList(), ByteBuf::readIntLE, this::readSubChunkOffset, MAX_SUB_CHUNKS);
     }
 
     protected void writeSubChunkOffset(ByteBuf buffer, Vector3i offsetPosition) {

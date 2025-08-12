@@ -6,6 +6,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
+import org.cloudburstmc.protocol.bedrock.data.Dimension;
 import org.cloudburstmc.protocol.bedrock.data.MapDecoration;
 import org.cloudburstmc.protocol.bedrock.data.MapTrackedObject;
 import org.cloudburstmc.protocol.bedrock.packet.ClientboundMapItemDataPacket;
@@ -19,10 +20,10 @@ public class ClientboundMapItemDataSerializer_v291 implements BedrockPacketSeria
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ClientboundMapItemDataPacket packet) {
-        VarInts.writeLong(buffer, packet.getUniqueMapId());
+        VarInts.writeLong(buffer, packet.getMapID());
 
         int type = 0;
-        int[] colors = packet.getColors();
+        int[] colors = packet.getPixels();
         if (colors != null && colors.length > 0) {
             type |= 0x2; // Texture update
         }
@@ -37,7 +38,7 @@ public class ClientboundMapItemDataSerializer_v291 implements BedrockPacketSeria
         }
 
         VarInts.writeUnsignedInt(buffer, type);
-        buffer.writeByte(packet.getDimensionId());
+        buffer.writeByte(packet.getDimension().ordinal());
 
         if ((type & 0x8) != 0) {
             VarInts.writeUnsignedInt(buffer, trackedEntityIds.size());
@@ -77,10 +78,10 @@ public class ClientboundMapItemDataSerializer_v291 implements BedrockPacketSeria
         }
 
         if ((type & 0x2) != 0) {
-            VarInts.writeInt(buffer, packet.getWidth());
-            VarInts.writeInt(buffer, packet.getHeight());
-            VarInts.writeInt(buffer, packet.getXOffset());
-            VarInts.writeInt(buffer, packet.getYOffset());
+            VarInts.writeInt(buffer, packet.getTextureWidth());
+            VarInts.writeInt(buffer, packet.getTextureHeight());
+            VarInts.writeInt(buffer, packet.getXTexCoordinate());
+            VarInts.writeInt(buffer, packet.getYTexCoordinate());
 
             VarInts.writeUnsignedInt(buffer, colors.length);
             for (int color : colors) {
@@ -91,9 +92,9 @@ public class ClientboundMapItemDataSerializer_v291 implements BedrockPacketSeria
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ClientboundMapItemDataPacket packet) {
-        packet.setUniqueMapId(VarInts.readLong(buffer));
+        packet.setMapID(VarInts.readLong(buffer));
         int type = VarInts.readUnsignedInt(buffer);
-        packet.setDimensionId(buffer.readUnsignedByte());
+        packet.setDimension(Dimension.from(buffer.readUnsignedByte()));
 
         if ((type & 0x8) != 0) {
             LongList trackedEntityIds = packet.getTrackedEntityIds();
@@ -136,17 +137,17 @@ public class ClientboundMapItemDataSerializer_v291 implements BedrockPacketSeria
         }
 
         if ((type & 0x2) != 0) {
-            packet.setWidth(VarInts.readInt(buffer));
-            packet.setHeight(VarInts.readInt(buffer));
-            packet.setXOffset(VarInts.readInt(buffer));
-            packet.setYOffset(VarInts.readInt(buffer));
+            packet.setTextureWidth(VarInts.readInt(buffer));
+            packet.setTextureHeight(VarInts.readInt(buffer));
+            packet.setXTexCoordinate(VarInts.readInt(buffer));
+            packet.setYTexCoordinate(VarInts.readInt(buffer));
 
             int length = VarInts.readUnsignedInt(buffer);
             int[] colors = new int[length];
             for (int i = 0; i < length; i++) {
                 colors[i] = VarInts.readUnsignedInt(buffer);
             }
-            packet.setColors(colors);
+            packet.setPixels(colors);
         }
     }
 }

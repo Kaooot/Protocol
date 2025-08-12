@@ -15,9 +15,9 @@ public class EmoteSerializer_v729 extends EmoteSerializer_v589 {
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, EmotePacket packet) {
-        VarInts.writeUnsignedLong(buffer, packet.getRuntimeEntityId());
+        VarInts.writeUnsignedLong(buffer, packet.getActorRuntimeId());
         helper.writeString(buffer, packet.getEmoteId());
-        VarInts.writeUnsignedInt(buffer, packet.getEmoteDuration());
+        VarInts.writeUnsignedInt(buffer, packet.getEmoteLengthTicks());
         helper.writeString(buffer, packet.getXuid());
         helper.writeString(buffer, packet.getPlatformId());
         this.writeFlags(buffer, helper, packet.getFlags());
@@ -25,9 +25,9 @@ public class EmoteSerializer_v729 extends EmoteSerializer_v589 {
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, EmotePacket packet) {
-        packet.setRuntimeEntityId(VarInts.readUnsignedLong(buffer));
+        packet.setActorRuntimeId(VarInts.readUnsignedLong(buffer));
         packet.setEmoteId(helper.readString(buffer));
-        packet.setEmoteDuration(VarInts.readUnsignedInt(buffer));
+        packet.setEmoteLengthTicks(VarInts.readUnsignedInt(buffer));
         packet.setXuid(helper.readString(buffer));
         packet.setPlatformId(helper.readString(buffer));
         this.readFlags(buffer, helper, packet.getFlags());

@@ -15,18 +15,18 @@ public class ResourcePacksInfoSerializer_v748 extends ResourcePacksInfoSerialize
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ResourcePacksInfoPacket packet) {
-        buffer.writeBoolean(packet.isForcedToAccept());
+        buffer.writeBoolean(packet.isResourcePackRequired());
         buffer.writeBoolean(packet.isHasAddonPacks());
-        buffer.writeBoolean(packet.isScriptingEnabled());
-        writePacks(buffer, packet.getResourcePackInfos(), helper, true);
+        buffer.writeBoolean(packet.isHasScripts());
+        writePacks(buffer, packet.getResourcePacks(), helper, true);
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ResourcePacksInfoPacket packet) {
-        packet.setForcedToAccept(buffer.readBoolean());
+        packet.setResourcePackRequired(buffer.readBoolean());
         packet.setHasAddonPacks(buffer.readBoolean());
-        packet.setScriptingEnabled(buffer.readBoolean());
-        readPacks(buffer, packet.getResourcePackInfos(), helper, true);
+        packet.setHasScripts(buffer.readBoolean());
+        readPacks(buffer, packet.getResourcePacks(), helper, true);
     }
 
     @Override

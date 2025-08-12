@@ -1,16 +1,17 @@
 package org.cloudburstmc.protocol.bedrock.data.event;
 
 import lombok.Value;
+import org.cloudburstmc.protocol.bedrock.packet.LegacyTelemetryEventPacket;
 
 @Value
 public class PlayerDiedEventData implements EventData {
-    private final int attackerEntityId;
-    private final int attackerVariant;
-    private final int entityDamageCause;
-    private final boolean inRaid;
+    private final int instigatorActorID;
+    private final int instigatorMobVariant;
+    private final int damageSource;
+    private final boolean diedInRaid;
 
     @Override
-    public EventDataType getType() {
-        return EventDataType.PLAYER_DIED;
+    public LegacyTelemetryEventPacket.Type getType() {
+        return LegacyTelemetryEventPacket.Type.PLAYER_DIED;
     }
 }

@@ -9,7 +9,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class AwardAchievementPacket implements BedrockPacket {
-    private int achievementId;
+    private int achievementID;
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

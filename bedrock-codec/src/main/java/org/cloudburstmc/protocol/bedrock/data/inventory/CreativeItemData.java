@@ -8,7 +8,7 @@ import lombok.Data;
 @Builder(toBuilder = true)
 @AllArgsConstructor
 public class CreativeItemData {
-    private final ItemData item;
-    private final int netId;
-    private final int groupId;
+    private final ItemData itemInstance;
+    private final int creativeNetId;
+    private final int groupIndex;
 }

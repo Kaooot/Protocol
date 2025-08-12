@@ -14,23 +14,23 @@ public class ResourcePacksInfoPacket implements BedrockPacket {
     /**
      * @deprecated since v729
      */
-    private final List<Entry> behaviorPackInfos = new ObjectArrayList<>();
-    private final List<Entry> resourcePackInfos = new ObjectArrayList<>();
-    private boolean forcedToAccept;
+    private final List<Entry> behaviorPacks = new ObjectArrayList<>();
+    private final List<Entry> resourcePacks = new ObjectArrayList<>();
+    private boolean resourcePackRequired;
     /**
      * @since v662
      */
     private boolean hasAddonPacks;
-    private boolean scriptingEnabled;
+    private boolean hasScripts;
     /**
      * @since v448
      * @deprecated since v729
      */
-    private boolean forcingServerPacksEnabled;
+    private boolean forceServerPacksEnabled;
     /**
      * @since v766
      */
-    private UUID worldTemplateId;
+    private UUID worldTemplateUUID;
     /**
      * @since v766
      */
@@ -40,7 +40,7 @@ public class ResourcePacksInfoPacket implements BedrockPacket {
      *
      * @since v818
      */
-    private boolean vibrantVisualsForceDisabled;
+    private boolean forceDisableVibrantVisuals;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {
@@ -59,13 +59,13 @@ public class ResourcePacksInfoPacket implements BedrockPacket {
         private long packSize;
         private String contentKey;
         private String subPackName;
-        private String contentId;
-        private boolean scripting;
-        private boolean raytracingCapable;
+        private String contentIdentity;
+        private boolean hasScripts;
+        private boolean isRayTracingCapable;
         /**
          * @since v712
          */
-        private boolean addonPack;
+        private boolean isAddonPack;
         /**
          * @since v748
          */

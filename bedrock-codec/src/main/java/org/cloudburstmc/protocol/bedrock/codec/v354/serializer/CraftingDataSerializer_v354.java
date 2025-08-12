@@ -7,10 +7,10 @@ import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.CraftingDataSerializer_v291;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
-import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.CraftingDataType;
-import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.recipe.FurnaceRecipeData;
-import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.recipe.ShapedRecipeData;
-import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.recipe.ShapelessRecipeData;
+import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.CraftingDataEntryType;
+import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.recipe.FurnaceRecipe;
+import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.recipe.ShapedRecipe;
+import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.recipe.ShapelessRecipe;
 import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.ItemDescriptorWithCount;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -22,7 +22,7 @@ public class CraftingDataSerializer_v354 extends CraftingDataSerializer_v291 {
     public static final CraftingDataSerializer_v354 INSTANCE = new CraftingDataSerializer_v354();
 
     @Override
-    protected ShapelessRecipeData readShapelessRecipe(ByteBuf buffer, BedrockCodecHelper helper, CraftingDataType type) {
+    protected ShapelessRecipe readShapelessRecipe(ByteBuf buffer, BedrockCodecHelper helper, CraftingDataEntryType type) {
         List<ItemDescriptorWithCount> inputs = new ObjectArrayList<>();
         helper.readArray(buffer, inputs, buf -> ItemDescriptorWithCount.fromItem(helper.readItem(buf)));
 
@@ -31,18 +31,18 @@ public class CraftingDataSerializer_v354 extends CraftingDataSerializer_v291 {
 
         UUID uuid = helper.readUuid(buffer);
         String craftingTag = helper.readString(buffer);
-        return ShapelessRecipeData.of(type, "", inputs, outputs, uuid, craftingTag, 0, -1);
+        return ShapelessRecipe.of(type, "", inputs, outputs, uuid, craftingTag, 0, -1);
     }
 
     @Override
-    protected void writeShapelessRecipe(ByteBuf buffer, BedrockCodecHelper helper, ShapelessRecipeData data) {
+    protected void writeShapelessRecipe(ByteBuf buffer, BedrockCodecHelper helper, ShapelessRecipe data) {
         super.writeShapelessRecipe(buffer, helper, data);
 
-        helper.writeString(buffer, data.getTag());
+        helper.writeString(buffer, data.getRecipeTag());
     }
 
     @Override
-    protected ShapedRecipeData readShapedRecipe(ByteBuf buffer, BedrockCodecHelper helper, CraftingDataType type) {
+    protected ShapedRecipe readShapedRecipe(ByteBuf buffer, BedrockCodecHelper helper, CraftingDataEntryType type) {
         int width = VarInts.readInt(buffer);
         int height = VarInts.readInt(buffer);
         int inputCount = width * height;
@@ -54,29 +54,29 @@ public class CraftingDataSerializer_v354 extends CraftingDataSerializer_v291 {
         helper.readArray(buffer, outputs, helper::readItem);
         UUID uuid = helper.readUuid(buffer);
         String craftingTag = helper.readString(buffer);
-        return ShapedRecipeData.of(type, "", width, height, inputs, outputs, uuid, craftingTag, 0, -1);
+        return ShapedRecipe.of(type, "", width, height, inputs, outputs, uuid, craftingTag, 0, -1);
     }
 
     @Override
-    protected void writeShapedRecipe(ByteBuf buffer, BedrockCodecHelper helper, ShapedRecipeData data) {
+    protected void writeShapedRecipe(ByteBuf buffer, BedrockCodecHelper helper, ShapedRecipe data) {
         super.writeShapedRecipe(buffer, helper, data);
 
-        helper.writeString(buffer, data.getTag());
+        helper.writeString(buffer, data.getRecipeTag());
     }
 
     @Override
-    protected FurnaceRecipeData readFurnaceRecipe(ByteBuf buffer, BedrockCodecHelper helper, CraftingDataType type) {
+    protected FurnaceRecipe readFurnaceRecipe(ByteBuf buffer, BedrockCodecHelper helper, CraftingDataEntryType type) {
         int inputId = VarInts.readInt(buffer);
-        int inputData = type == CraftingDataType.FURNACE_DATA ? VarInts.readInt(buffer) : -1;
+        int inputData = type == CraftingDataEntryType.FURNACE_AUX_RECIPE ? VarInts.readInt(buffer) : -1;
         ItemData result = helper.readItem(buffer);
         String craftingTag = helper.readString(buffer);
-        return FurnaceRecipeData.of(type, inputId, inputData, result, craftingTag);
+        return FurnaceRecipe.of(type, inputId, inputData, result, craftingTag);
     }
 
     @Override
-    protected void writeFurnaceRecipe(ByteBuf buffer, BedrockCodecHelper helper, FurnaceRecipeData data) {
+    protected void writeFurnaceRecipe(ByteBuf buffer, BedrockCodecHelper helper, FurnaceRecipe data) {
         super.writeFurnaceRecipe(buffer, helper, data);
 
-        helper.writeString(buffer, data.getTag());
+        helper.writeString(buffer, data.getRecipeTag());
     }
 }

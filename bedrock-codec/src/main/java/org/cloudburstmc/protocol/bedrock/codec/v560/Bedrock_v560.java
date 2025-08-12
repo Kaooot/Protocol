@@ -1,7 +1,7 @@
 package org.cloudburstmc.protocol.bedrock.codec.v560;
 
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
-import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
+import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelSoundEvent1Serializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v313.serializer.LevelSoundEvent2Serializer_v313;
 import org.cloudburstmc.protocol.bedrock.codec.v332.serializer.LevelSoundEventSerializer_v332;
@@ -10,9 +10,9 @@ import org.cloudburstmc.protocol.bedrock.codec.v557.Bedrock_v557;
 import org.cloudburstmc.protocol.bedrock.codec.v560.serializer.UpdateClientInputLocksSerializer_v560;
 import org.cloudburstmc.protocol.bedrock.data.PacketRecipient;
 import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
-import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerSlotType;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataTypes;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorFlag;
+import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerEnumName;
 import org.cloudburstmc.protocol.bedrock.packet.LevelSoundEvent1Packet;
 import org.cloudburstmc.protocol.bedrock.packet.LevelSoundEvent2Packet;
 import org.cloudburstmc.protocol.bedrock.packet.LevelSoundEventPacket;
@@ -22,21 +22,21 @@ import org.cloudburstmc.protocol.common.util.TypeMap;
 
 public class Bedrock_v560 extends Bedrock_v557 {
 
-    protected static final TypeMap<EntityFlag> ENTITY_FLAGS = Bedrock_v557.ENTITY_FLAGS.toBuilder()
+    protected static final TypeMap<ActorFlag> ENTITY_FLAGS = Bedrock_v557.ENTITY_FLAGS.toBuilder()
             .shift(46, 1)
-            .insert(46, EntityFlag.CAN_DASH)
-            .insert(108, EntityFlag.HAS_DASH_COOLDOWN)
-            .insert(109, EntityFlag.PUSH_TOWARDS_CLOSEST_SPACE)
+            .insert(46, ActorFlag.CAN_DASH)
+            .insert(108, ActorFlag.HAS_DASH_COOLDOWN)
+            .insert(109, ActorFlag.PUSH_TOWARDS_CLOSEST_SPACE)
             .build();
 
-    protected static final EntityDataTypeMap ENTITY_DATA = Bedrock_v557.ENTITY_DATA.toBuilder()
-            .update(EntityDataTypes.FLAGS, new FlagTransformer(ENTITY_FLAGS, 0))
-            .update(EntityDataTypes.FLAGS_2, new FlagTransformer(ENTITY_FLAGS, 1))
+    protected static final ActorDataTypeMap ENTITY_DATA = Bedrock_v557.ENTITY_DATA.toBuilder()
+            .update(ActorDataTypes.FLAGS, new FlagTransformer(ENTITY_FLAGS, 0))
+            .update(ActorDataTypes.FLAGS_2, new FlagTransformer(ENTITY_FLAGS, 1))
             .build();
 
-    protected static final TypeMap<ContainerSlotType> CONTAINER_SLOT_TYPES = Bedrock_v557.CONTAINER_SLOT_TYPES.toBuilder()
+    protected static final TypeMap<ContainerEnumName> CONTAINER_SLOT_TYPES = Bedrock_v557.CONTAINER_SLOT_TYPES.toBuilder()
             .shift(21, 1)
-            .insert(21, ContainerSlotType.RECIPE_BOOK)
+            .insert(21, ContainerEnumName.RECIPE_BOOK_CONTAINER)
             .build();
 
     protected static final TypeMap<SoundEvent> SOUND_EVENTS = Bedrock_v557.SOUND_EVENTS.toBuilder()

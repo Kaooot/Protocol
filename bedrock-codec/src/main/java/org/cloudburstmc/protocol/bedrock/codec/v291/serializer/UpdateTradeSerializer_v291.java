@@ -18,12 +18,12 @@ public class UpdateTradeSerializer_v291 implements BedrockPacketSerializer<Updat
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, UpdateTradePacket packet) {
         buffer.writeByte(packet.getContainerId());
-        buffer.writeByte(packet.getContainerType().getId());
+        buffer.writeByte(packet.getType().getId());
         VarInts.writeInt(buffer, packet.getSize());
         VarInts.writeInt(buffer, packet.isUsingEconomyTrade() ? 40 : 0); // Merchant Timer
         buffer.writeBoolean(packet.isRecipeAddedOnUpdate());
-        VarInts.writeLong(buffer, packet.getTraderUniqueEntityId());
-        VarInts.writeLong(buffer, packet.getPlayerUniqueEntityId());
+        VarInts.writeLong(buffer, packet.getEntityUniqueId());
+        VarInts.writeLong(buffer, packet.getLastTradingPlayer());
         helper.writeString(buffer, packet.getDisplayName());
         helper.writeTag(buffer, packet.getOffers());
     }
@@ -31,12 +31,12 @@ public class UpdateTradeSerializer_v291 implements BedrockPacketSerializer<Updat
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, UpdateTradePacket packet) {
         packet.setContainerId(buffer.readByte());
-        packet.setContainerType(ContainerType.from(buffer.readByte()));
+        packet.setType(ContainerType.from(buffer.readByte()));
         packet.setSize(VarInts.readInt(buffer));
         packet.setUsingEconomyTrade(VarInts.readInt(buffer) >= 40);
         packet.setRecipeAddedOnUpdate(buffer.readBoolean());
-        packet.setTraderUniqueEntityId(VarInts.readLong(buffer));
-        packet.setPlayerUniqueEntityId(VarInts.readLong(buffer));
+        packet.setEntityUniqueId(VarInts.readLong(buffer));
+        packet.setLastTradingPlayer(VarInts.readLong(buffer));
         packet.setDisplayName(helper.readString(buffer));
         packet.setOffers(helper.readTag(buffer, NbtMap.class));
     }

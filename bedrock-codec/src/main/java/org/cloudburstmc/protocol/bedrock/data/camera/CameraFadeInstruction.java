@@ -10,13 +10,13 @@ import java.awt.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CameraFadeInstruction {
-    private TimeData timeData;
+    private TimeOption time;
     private Color color;
 
     @Data
-    public static class TimeData {
+    public static class TimeOption {
         private final float fadeInTime;
-        private final float waitTime;
+        private final float holdTime;
         private final float fadeOutTime;
     }
 }

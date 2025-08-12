@@ -12,15 +12,15 @@ import java.util.Optional;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class ModalFormResponsePacket implements BedrockPacket {
-    private int formId;
-    private String formData;
+    private int formID;
+    private String jsonResponse;
     /**
      * The reason for why the form response was cancelled.
      *
      * @since 1.19.20
      */
     @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
-    private Optional<ModalFormCancelReason> cancelReason;
+    private Optional<ModalFormCancelReason> formCancelReason;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

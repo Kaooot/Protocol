@@ -2,7 +2,7 @@ package org.cloudburstmc.protocol.bedrock.codec.v390;
 
 import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
+import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v388.BedrockCodecHelper_v388;
 import org.cloudburstmc.protocol.bedrock.data.skin.*;
 import org.cloudburstmc.protocol.common.util.TypeMap;
@@ -13,7 +13,7 @@ import static java.util.Objects.requireNonNull;
 
 public class BedrockCodecHelper_v390 extends BedrockCodecHelper_v388 {
 
-    public BedrockCodecHelper_v390(EntityDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes) {
+    public BedrockCodecHelper_v390(ActorDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes) {
         super(entityData, gameRulesTypes);
     }
 

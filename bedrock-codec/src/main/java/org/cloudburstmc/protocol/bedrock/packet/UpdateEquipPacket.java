@@ -10,10 +10,10 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class UpdateEquipPacket implements BedrockPacket {
-    private short windowId;
-    private short windowType;
+    private short containerId;
+    private short type;
     private int size; // Couldn't find anything on this one. Looks like it isn't used?
-    private long uniqueEntityId;
+    private long entityUniqueId;
     private NbtMap tag;
 
     @Override

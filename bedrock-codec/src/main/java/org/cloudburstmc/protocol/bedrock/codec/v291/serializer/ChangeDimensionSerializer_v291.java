@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
+import org.cloudburstmc.protocol.bedrock.data.Dimension;
 import org.cloudburstmc.protocol.bedrock.packet.ChangeDimensionPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -14,14 +15,14 @@ public class ChangeDimensionSerializer_v291 implements BedrockPacketSerializer<C
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ChangeDimensionPacket packet) {
-        VarInts.writeInt(buffer, packet.getDimension());
+        VarInts.writeInt(buffer, packet.getDimension().ordinal());
         helper.writeVector3f(buffer, packet.getPosition());
         buffer.writeBoolean(packet.isRespawn());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ChangeDimensionPacket packet) {
-        packet.setDimension(VarInts.readInt(buffer));
+        packet.setDimension(Dimension.from(VarInts.readInt(buffer)));
         packet.setPosition(helper.readVector3f(buffer));
         packet.setRespawn(buffer.readBoolean());
     }

@@ -68,11 +68,11 @@ public class CameraInstructionSerializer_v575 implements BedrockPacketSerializer
             CameraFadeInstruction fade = packet.getFadeInstruction();
             NbtMapBuilder builder = NbtMap.builder();
 
-            if (fade.getTimeData() != null) {
+            if (fade.getTime() != null) {
                 builder.putCompound("time", NbtMap.builder()
-                        .putFloat("fadeIn", fade.getTimeData().getFadeInTime())
-                        .putFloat("hold", fade.getTimeData().getWaitTime())
-                        .putFloat("fadeOut", fade.getTimeData().getFadeOutTime())
+                        .putFloat("fadeIn", fade.getTime().getFadeInTime())
+                        .putFloat("hold", fade.getTime().getHoldTime())
+                        .putFloat("fadeOut", fade.getTime().getFadeOutTime())
                         .build());
             }
 
@@ -144,7 +144,7 @@ public class CameraInstructionSerializer_v575 implements BedrockPacketSerializer
                 float fadeIn = timeTag.getFloat("fadeIn");
                 float wait = timeTag.getFloat("hold");
                 float fadeout = timeTag.getFloat("fadeOut");
-                fade.setTimeData(new CameraFadeInstruction.TimeData(fadeIn, wait, fadeout));
+                fade.setTime(new CameraFadeInstruction.TimeOption(fadeIn, wait, fadeout));
             }
 
             if (fadeTag.containsKey("color", NbtType.COMPOUND)) {

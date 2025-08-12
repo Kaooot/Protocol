@@ -9,7 +9,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class AddBehaviorTreePacket implements BedrockPacket {
-    private String behaviorTreeJson;
+    private String behaviorTreeStructureJson;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

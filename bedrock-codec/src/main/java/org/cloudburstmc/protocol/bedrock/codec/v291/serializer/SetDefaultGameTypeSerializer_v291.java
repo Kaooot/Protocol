@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
+import org.cloudburstmc.protocol.bedrock.data.GameType;
 import org.cloudburstmc.protocol.bedrock.packet.SetDefaultGameTypePacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -15,11 +16,11 @@ public class SetDefaultGameTypeSerializer_v291 implements BedrockPacketSerialize
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, SetDefaultGameTypePacket packet) {
-        VarInts.writeInt(buffer, packet.getGamemode());
+        VarInts.writeInt(buffer, packet.getGameType().ordinal());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, SetDefaultGameTypePacket packet) {
-        packet.setGamemode(VarInts.readInt(buffer));
+        packet.setGameType(GameType.from(VarInts.readInt(buffer)));
     }
 }

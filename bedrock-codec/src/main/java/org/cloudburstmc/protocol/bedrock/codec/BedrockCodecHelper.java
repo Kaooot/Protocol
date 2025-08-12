@@ -1,28 +1,27 @@
 package org.cloudburstmc.protocol.bedrock.codec;
 
 import io.netty.buffer.ByteBuf;
-import it.unimi.dsi.fastutil.ints.Int2ObjectFunction;
 import org.cloudburstmc.math.vector.Vector2f;
 import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.math.vector.Vector3i;
 import org.cloudburstmc.nbt.NbtType;
 import org.cloudburstmc.protocol.bedrock.data.EncodingSettings;
-import org.cloudburstmc.protocol.bedrock.data.ExperimentData;
+import org.cloudburstmc.protocol.bedrock.data.Experiment;
 import org.cloudburstmc.protocol.bedrock.data.GameRuleData;
-import org.cloudburstmc.protocol.bedrock.data.PlayerAbilityHolder;
+import org.cloudburstmc.protocol.bedrock.data.SerializedAbilitiesData;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandEnumData;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandOriginData;
 import org.cloudburstmc.protocol.bedrock.data.definitions.BlockDefinition;
 import org.cloudburstmc.protocol.bedrock.data.definitions.ItemDefinition;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataMap;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityLinkData;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityProperties;
-import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerSlotType;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataMap;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorLink;
+import org.cloudburstmc.protocol.bedrock.data.actor.PropertySyncData;
+import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerEnumName;
 import org.cloudburstmc.protocol.bedrock.data.inventory.FullContainerName;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
 import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.ItemDescriptorWithCount;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequest;
-import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponseContainer;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponseContainerInfo;
 import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.InventoryActionData;
 import org.cloudburstmc.protocol.bedrock.data.skin.SerializedSkin;
 import org.cloudburstmc.protocol.bedrock.data.structure.StructureSettings;
@@ -99,9 +98,9 @@ public interface BedrockCodecHelper {
 
     // Encoding methods
 
-    EntityLinkData readEntityLink(ByteBuf buffer);
+    ActorLink readActorLink(ByteBuf buffer);
 
-    void writeEntityLink(ByteBuf buffer, EntityLinkData link);
+    void writeActorLink(ByteBuf buffer, ActorLink link);
 
     ItemData readNetItem(ByteBuf buffer);
 
@@ -123,9 +122,9 @@ public interface BedrockCodecHelper {
 
     void writeGameRule(ByteBuf buffer, GameRuleData<?> gameRule);
 
-    void readEntityData(ByteBuf buffer, EntityDataMap entityData);
+    void readActorData(ByteBuf buffer, ActorDataMap entityData);
 
-    void writeEntityData(ByteBuf buffer, EntityDataMap entityData);
+    void writeActorData(ByteBuf buffer, ActorDataMap entityData);
 
     CommandEnumData readCommandEnum(ByteBuf buffer, boolean soft);
 
@@ -205,9 +204,9 @@ public interface BedrockCodecHelper {
 
     void writeInventoryActions(ByteBuf buffer, List<InventoryActionData> actions, boolean hasNetworkIds);
 
-    void readExperiments(ByteBuf buffer, List<ExperimentData> experiments);
+    void readExperiments(ByteBuf buffer, List<Experiment> experiments);
 
-    void writeExperiments(ByteBuf buffer, List<ExperimentData> experiments);
+    void writeExperiments(ByteBuf buffer, List<Experiment> experiments);
 
     ItemStackRequest readItemStackRequest(ByteBuf buffer);
 
@@ -225,25 +224,25 @@ public interface BedrockCodecHelper {
 
     <T> void writeOptionalNull(ByteBuf buffer, T object, TriConsumer<ByteBuf, BedrockCodecHelper, T> consumer);
 
-    void readEntityProperties(ByteBuf buffer, EntityProperties properties);
+    void readEntityProperties(ByteBuf buffer, PropertySyncData properties);
 
-    void writeEntityProperties(ByteBuf buffer, EntityProperties properties);
+    void writeEntityProperties(ByteBuf buffer, PropertySyncData properties);
 
     ItemDescriptorWithCount readIngredient(ByteBuf buffer);
 
     void writeIngredient(ByteBuf buffer, ItemDescriptorWithCount ingredient);
 
-    void writeContainerSlotType(ByteBuf buffer, ContainerSlotType slotType);
+    void writeContainerSlotType(ByteBuf buffer, ContainerEnumName slotType);
 
-    ContainerSlotType readContainerSlotType(ByteBuf buffer);
+    ContainerEnumName readContainerSlotType(ByteBuf buffer);
 
-    void writePlayerAbilities(ByteBuf buffer, PlayerAbilityHolder abilityHolder);
+    void writeSerializedAbilitiesData(ByteBuf buffer, SerializedAbilitiesData abilityHolder);
 
-    void readPlayerAbilities(ByteBuf buffer, PlayerAbilityHolder abilityHolder);
+    void readSerializedAbilitiesData(ByteBuf buffer, SerializedAbilitiesData abilityHolder);
 
-    void writeItemStackResponseContainer(ByteBuf buffer, ItemStackResponseContainer container);
+    void writeItemStackResponseContainer(ByteBuf buffer, ItemStackResponseContainerInfo container);
 
-    ItemStackResponseContainer readItemStackResponseContainer(ByteBuf buffer);
+    ItemStackResponseContainerInfo readItemStackResponseContainer(ByteBuf buffer);
 
     void writeFullContainerName(ByteBuf buffer, FullContainerName containerName);
 

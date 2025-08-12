@@ -61,10 +61,10 @@ public class BlockEventPacket implements BedrockPacket {
     /**
      * Data used by event (if applicable)
      *
-     * @param eventData data for event
+     * @param eventValue data for event
      * @return data for event
      */
-    private int eventData;
+    private int eventValue;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

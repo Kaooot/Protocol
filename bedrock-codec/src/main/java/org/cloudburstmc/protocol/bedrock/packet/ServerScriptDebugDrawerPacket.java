@@ -4,20 +4,17 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.protocol.bedrock.data.DebugShape;
+import org.cloudburstmc.protocol.bedrock.data.PacketShapeData;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 import java.util.List;
 
-/**
- * Sends debug geometry to the client. Meant for script debugging purposes.
- */
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class ServerScriptDebugDrawerPacket implements BedrockPacket {
 
-    private final List<DebugShape> shapes = new ObjectArrayList<>();
+    private final List<PacketShapeData> shapes = new ObjectArrayList<>();
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

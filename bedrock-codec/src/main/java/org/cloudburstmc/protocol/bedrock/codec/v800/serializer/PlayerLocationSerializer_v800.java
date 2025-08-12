@@ -18,8 +18,8 @@ public class PlayerLocationSerializer_v800 implements BedrockPacketSerializer<Pl
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, PlayerLocationPacket packet) {
         buffer.writeIntLE(packet.getType().ordinal());
-        VarInts.writeLong(buffer, packet.getTargetEntityId());
-        if (packet.getType() == PlayerLocationPacket.Type.COORDINATES) {
+        VarInts.writeLong(buffer, packet.getTargetActorID());
+        if (packet.getType() == PlayerLocationPacket.Type.PLAYER_LOCATION_COORDINATES) {
             helper.writeVector3f(buffer, packet.getPosition());
         }
     }
@@ -27,8 +27,8 @@ public class PlayerLocationSerializer_v800 implements BedrockPacketSerializer<Pl
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, PlayerLocationPacket packet) {
         packet.setType(VALUES[buffer.readIntLE()]);
-        packet.setTargetEntityId(VarInts.readLong(buffer));
-        if (packet.getType() == PlayerLocationPacket.Type.COORDINATES) {
+        packet.setTargetActorID(VarInts.readLong(buffer));
+        if (packet.getType() == PlayerLocationPacket.Type.PLAYER_LOCATION_COORDINATES) {
             packet.setPosition(helper.readVector3f(buffer));
         }
     }

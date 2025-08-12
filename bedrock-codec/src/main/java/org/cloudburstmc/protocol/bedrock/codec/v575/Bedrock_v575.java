@@ -1,7 +1,7 @@
 package org.cloudburstmc.protocol.bedrock.codec.v575;
 
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
-import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
+import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelEventSerializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelSoundEvent1Serializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v313.serializer.LevelSoundEvent2Serializer_v313;
@@ -15,8 +15,8 @@ import org.cloudburstmc.protocol.bedrock.codec.v575.serializer.PlayerAuthInputSe
 import org.cloudburstmc.protocol.bedrock.codec.v575.serializer.UnlockedRecipesSerializer_v575;
 import org.cloudburstmc.protocol.bedrock.data.*;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandParam;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataTypes;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorFlag;
 import org.cloudburstmc.protocol.bedrock.packet.*;
 import org.cloudburstmc.protocol.bedrock.transformer.FlagTransformer;
 import org.cloudburstmc.protocol.bedrock.transformer.TypeMapTransformer;
@@ -24,17 +24,17 @@ import org.cloudburstmc.protocol.common.util.TypeMap;
 
 public class Bedrock_v575 extends Bedrock_v568 {
 
-    protected static final TypeMap<Ability> PLAYER_ABILITIES = Bedrock_v568.PLAYER_ABILITIES
+    protected static final TypeMap<AbilitiesIndex> PLAYER_ABILITIES = Bedrock_v568.PLAYER_ABILITIES
             .toBuilder()
-            .insert(18, Ability.PRIVILEGED_BUILDER)
+            .insert(18, AbilitiesIndex.PRIVILEGED_BUILDER)
             .build();
 
-    protected static final TypeMap<EntityFlag> ENTITY_FLAGS = Bedrock_v568.ENTITY_FLAGS
+    protected static final TypeMap<ActorFlag> ENTITY_FLAGS = Bedrock_v568.ENTITY_FLAGS
             .toBuilder()
-            .insert(110, EntityFlag.SCENTING)
-            .insert(111, EntityFlag.RISING)
-            .insert(112, EntityFlag.FEELING_HAPPY)
-            .insert(113, EntityFlag.SEARCHING)
+            .insert(110, ActorFlag.SCENTING)
+            .insert(111, ActorFlag.RISING)
+            .insert(112, ActorFlag.FEELING_HAPPY)
+            .insert(113, ActorFlag.SEARCHING)
             .build();
 
     protected static final TypeMap<ParticleType> PARTICLE_TYPES = Bedrock_v568.PARTICLE_TYPES
@@ -42,11 +42,11 @@ public class Bedrock_v575 extends Bedrock_v568 {
             .insert(85, ParticleType.BRUSH_DUST)
             .build();
 
-    protected static final EntityDataTypeMap ENTITY_DATA = Bedrock_v568.ENTITY_DATA
+    protected static final ActorDataTypeMap ENTITY_DATA = Bedrock_v568.ENTITY_DATA
             .toBuilder()
-            .update(EntityDataTypes.FLAGS, new FlagTransformer(ENTITY_FLAGS, 0))
-            .update(EntityDataTypes.FLAGS_2, new FlagTransformer(ENTITY_FLAGS, 1))
-            .update(EntityDataTypes.AREA_EFFECT_CLOUD_PARTICLE, new TypeMapTransformer<>(PARTICLE_TYPES))
+            .update(ActorDataTypes.FLAGS, new FlagTransformer(ENTITY_FLAGS, 0))
+            .update(ActorDataTypes.FLAGS_2, new FlagTransformer(ENTITY_FLAGS, 1))
+            .update(ActorDataTypes.DATA_PARTICLE, new TypeMapTransformer<>(PARTICLE_TYPES))
             .build();
 
     protected static final TypeMap<SoundEvent> SOUND_EVENTS = Bedrock_v568.SOUND_EVENTS

@@ -19,17 +19,17 @@ public class CommandBlockUpdateSerializer_v291 implements BedrockPacketSerialize
 
         if (packet.isBlock()) {
             helper.writeBlockPosition(buffer, packet.getBlockPosition());
-            VarInts.writeUnsignedInt(buffer, packet.getMode().ordinal());
+            VarInts.writeUnsignedInt(buffer, packet.getCommandBlockMode().ordinal());
             buffer.writeBoolean(packet.isRedstoneMode());
             buffer.writeBoolean(packet.isConditional());
         } else {
-            VarInts.writeUnsignedLong(buffer, packet.getMinecartRuntimeEntityId());
+            VarInts.writeUnsignedLong(buffer, packet.getTargetRuntimeID());
         }
 
         helper.writeString(buffer, packet.getCommand());
         helper.writeString(buffer, packet.getLastOutput());
         helper.writeString(buffer, packet.getName());
-        buffer.writeBoolean(packet.isOutputTracked());
+        buffer.writeBoolean(packet.isTrackOutput());
     }
 
     @Override
@@ -38,16 +38,16 @@ public class CommandBlockUpdateSerializer_v291 implements BedrockPacketSerialize
 
         if (packet.isBlock()) {
             packet.setBlockPosition(helper.readBlockPosition(buffer));
-            packet.setMode(CommandBlockMode.values()[VarInts.readUnsignedInt(buffer)]);
+            packet.setCommandBlockMode(CommandBlockMode.values()[VarInts.readUnsignedInt(buffer)]);
             packet.setRedstoneMode(buffer.readBoolean());
             packet.setConditional(buffer.readBoolean());
         } else {
-            packet.setMinecartRuntimeEntityId(VarInts.readUnsignedLong(buffer));
+            packet.setTargetRuntimeID(VarInts.readUnsignedLong(buffer));
         }
 
         packet.setCommand(helper.readString(buffer));
         packet.setLastOutput(helper.readString(buffer));
         packet.setName(helper.readString(buffer));
-        packet.setOutputTracked(buffer.readBoolean());
+        packet.setTrackOutput(buffer.readBoolean());
     }
 }

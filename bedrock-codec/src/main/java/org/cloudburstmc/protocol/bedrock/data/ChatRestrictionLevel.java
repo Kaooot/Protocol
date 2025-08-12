@@ -11,7 +11,16 @@ public enum ChatRestrictionLevel {
     DROPPED,
     /**
      * The chat window will not show at all, unless you have the
-     * {@link PlayerPermission#OPERATOR} permission set in your abilities.
+     * {@link PlayerPermissionLevel#OPERATOR} permission set in your abilities.
      */
-    DISABLED
+    DISABLED;
+
+    private static final ChatRestrictionLevel[] VALUES = values();
+
+    public static ChatRestrictionLevel from(int ordinal) {
+        if (ordinal >= 0 && ordinal < VALUES.length) {
+            return VALUES[ordinal];
+        }
+        throw new UnsupportedOperationException("Detected unknown ChatRestrictionLevel ID: " + ordinal);
+    }
 }

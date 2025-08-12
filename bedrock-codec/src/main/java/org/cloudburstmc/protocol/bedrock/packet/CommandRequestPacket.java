@@ -11,8 +11,8 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @ToString(doNotUseGetters = true)
 public class CommandRequestPacket implements BedrockPacket {
     private String command;
-    private CommandOriginData commandOriginData;
-    private boolean internal;
+    private CommandOriginData commandOrigin;
+    private boolean isInternalSource;
     /**
      * @since v567
      */

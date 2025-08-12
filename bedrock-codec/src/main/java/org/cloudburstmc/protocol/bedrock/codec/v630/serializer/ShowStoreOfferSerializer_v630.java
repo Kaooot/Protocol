@@ -11,13 +11,13 @@ public class ShowStoreOfferSerializer_v630 extends ShowStoreOfferSerializer_v291
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ShowStoreOfferPacket packet) {
-        helper.writeString(buffer, packet.getOfferId());
+        helper.writeString(buffer, packet.getProductID());
         buffer.writeByte(packet.getRedirectType().ordinal());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ShowStoreOfferPacket packet) {
-        packet.setOfferId(helper.readString(buffer));
+        packet.setProductID(helper.readString(buffer));
         packet.setRedirectType(StoreOfferRedirectType.values()[buffer.readUnsignedByte()]);
     }
 }

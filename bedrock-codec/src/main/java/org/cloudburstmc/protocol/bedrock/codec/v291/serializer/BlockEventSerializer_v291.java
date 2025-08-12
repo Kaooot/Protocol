@@ -16,13 +16,13 @@ public class BlockEventSerializer_v291 implements BedrockPacketSerializer<BlockE
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, BlockEventPacket packet) {
         helper.writeBlockPosition(buffer, packet.getBlockPosition());
         VarInts.writeInt(buffer, packet.getEventType());
-        VarInts.writeInt(buffer, packet.getEventData());
+        VarInts.writeInt(buffer, packet.getEventValue());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, BlockEventPacket packet) {
         packet.setBlockPosition(helper.readBlockPosition(buffer));
         packet.setEventType(VarInts.readInt(buffer));
-        packet.setEventData(VarInts.readInt(buffer));
+        packet.setEventValue(VarInts.readInt(buffer));
     }
 }

@@ -18,27 +18,27 @@ public class CommandOutputSerializer_v291 implements BedrockPacketSerializer<Com
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, CommandOutputPacket packet) {
-        helper.writeCommandOrigin(buffer, packet.getCommandOriginData());
-        buffer.writeByte(packet.getType().ordinal());
+        helper.writeCommandOrigin(buffer, packet.getOriginData());
+        buffer.writeByte(packet.getOutputType().ordinal());
         VarInts.writeUnsignedInt(buffer, packet.getSuccessCount());
 
-        helper.writeArray(buffer, packet.getMessages(), this::writeMessage);
+        helper.writeArray(buffer, packet.getOutputMessages(), this::writeMessage);
 
-        if (packet.getType() == CommandOutputType.DATA_SET) {
-            helper.writeString(buffer, packet.getData());
+        if (packet.getOutputType() == CommandOutputType.DATA_SET) {
+            helper.writeString(buffer, packet.getDataSet());
         }
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, CommandOutputPacket packet) {
-        packet.setCommandOriginData(helper.readCommandOrigin(buffer));
-        packet.setType(CommandOutputType.values()[buffer.readUnsignedByte()]);
+        packet.setOriginData(helper.readCommandOrigin(buffer));
+        packet.setOutputType(CommandOutputType.values()[buffer.readUnsignedByte()]);
         packet.setSuccessCount(VarInts.readUnsignedInt(buffer));
 
-        helper.readArray(buffer, packet.getMessages(), this::readMessage);
+        helper.readArray(buffer, packet.getOutputMessages(), this::readMessage);
 
-        if (packet.getType() == CommandOutputType.DATA_SET) {
-            packet.setData(helper.readString(buffer));
+        if (packet.getOutputType() == CommandOutputType.DATA_SET) {
+            packet.setDataSet(helper.readString(buffer));
         }
     }
 

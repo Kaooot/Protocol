@@ -13,11 +13,11 @@ public class ContainerCloseSerializer_v291 implements BedrockPacketSerializer<Co
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ContainerClosePacket packet) {
-        buffer.writeByte(packet.getId());
+        buffer.writeByte(packet.getContainerID());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ContainerClosePacket packet) {
-        packet.setId(buffer.readByte());
+        packet.setContainerID(buffer.readByte());
     }
 }

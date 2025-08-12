@@ -18,13 +18,13 @@ public class UpdateTradeSerializer_v313 implements BedrockPacketSerializer<Updat
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, UpdateTradePacket packet) {
         buffer.writeByte(packet.getContainerId());
-        buffer.writeByte(packet.getContainerType().getId());
+        buffer.writeByte(packet.getType().getId());
         VarInts.writeInt(buffer, packet.getSize());
-        VarInts.writeInt(buffer, packet.isNewTradingUi() ? 40 : 0);
+        VarInts.writeInt(buffer, packet.isUseNewTradeScreen() ? 40 : 0);
         VarInts.writeInt(buffer, packet.getTradeTier());
         buffer.writeBoolean(packet.isRecipeAddedOnUpdate());
-        VarInts.writeLong(buffer, packet.getTraderUniqueEntityId());
-        VarInts.writeLong(buffer, packet.getPlayerUniqueEntityId());
+        VarInts.writeLong(buffer, packet.getEntityUniqueId());
+        VarInts.writeLong(buffer, packet.getLastTradingPlayer());
         helper.writeString(buffer, packet.getDisplayName());
         helper.writeTag(buffer, packet.getOffers());
     }
@@ -32,13 +32,13 @@ public class UpdateTradeSerializer_v313 implements BedrockPacketSerializer<Updat
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, UpdateTradePacket packet) {
         packet.setContainerId(buffer.readByte());
-        packet.setContainerType(ContainerType.from(buffer.readByte()));
+        packet.setType(ContainerType.from(buffer.readByte()));
         packet.setSize(VarInts.readInt(buffer));
-        packet.setNewTradingUi(VarInts.readInt(buffer) >= 40);
+        packet.setUseNewTradeScreen(VarInts.readInt(buffer) >= 40);
         packet.setTradeTier(VarInts.readInt(buffer));
         packet.setRecipeAddedOnUpdate(buffer.readBoolean());
-        packet.setTraderUniqueEntityId(VarInts.readLong(buffer));
-        packet.setPlayerUniqueEntityId(VarInts.readLong(buffer));
+        packet.setEntityUniqueId(VarInts.readLong(buffer));
+        packet.setLastTradingPlayer(VarInts.readLong(buffer));
         packet.setDisplayName(helper.readString(buffer));
         packet.setOffers(helper.readTag(buffer, NbtMap.class));
     }

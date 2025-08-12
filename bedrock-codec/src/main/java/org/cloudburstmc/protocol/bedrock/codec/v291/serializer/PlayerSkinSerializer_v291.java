@@ -16,7 +16,7 @@ public class PlayerSkinSerializer_v291 implements BedrockPacketSerializer<Player
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, PlayerSkinPacket packet) {
         helper.writeUuid(buffer, packet.getUuid());
-        SerializedSkin skin = packet.getSkin();
+        SerializedSkin skin = packet.getSerializedSkin();
         helper.writeString(buffer, skin.getSkinId());
         helper.writeString(buffer, packet.getNewSkinName());
         helper.writeString(buffer, packet.getOldSkinName());
@@ -40,6 +40,6 @@ public class PlayerSkinSerializer_v291 implements BedrockPacketSerializer<Player
         String geometryName = helper.readString(buffer);
         String geometryData = helper.readString(buffer);
         boolean premium = buffer.readBoolean();
-        packet.setSkin(SerializedSkin.of(skinId, "", skinData, capeData, geometryName, geometryData, premium));
+        packet.setSerializedSkin(SerializedSkin.of(skinId, "", skinData, capeData, geometryName, geometryData, premium));
     }
 }

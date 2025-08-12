@@ -14,11 +14,11 @@ public class AutomationClientConnectSerializer_v291 implements BedrockPacketSeri
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, AutomationClientConnectPacket packet) {
-        helper.writeString(buffer, packet.getAddress());
+        helper.writeString(buffer, packet.getWebSocketServerURI());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, AutomationClientConnectPacket packet) {
-        packet.setAddress(helper.readString(buffer));
+        packet.setWebSocketServerURI(helper.readString(buffer));
     }
 }

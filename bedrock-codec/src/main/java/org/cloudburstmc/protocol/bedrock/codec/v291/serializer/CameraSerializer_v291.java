@@ -14,13 +14,13 @@ public class CameraSerializer_v291 implements BedrockPacketSerializer<CameraPack
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, CameraPacket packet) {
-        VarInts.writeLong(buffer, packet.getCameraUniqueEntityId());
-        VarInts.writeLong(buffer, packet.getPlayerUniqueEntityId());
+        VarInts.writeLong(buffer, packet.getCameraID());
+        VarInts.writeLong(buffer, packet.getTargetPlayerID());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, CameraPacket packet) {
-        packet.setCameraUniqueEntityId(VarInts.readLong(buffer));
-        packet.setPlayerUniqueEntityId(VarInts.readLong(buffer));
+        packet.setCameraID(VarInts.readLong(buffer));
+        packet.setTargetPlayerID(VarInts.readLong(buffer));
     }
 }

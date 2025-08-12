@@ -1,6 +1,7 @@
 package org.cloudburstmc.protocol.bedrock.data.event;
 
 import lombok.Value;
+import org.cloudburstmc.protocol.bedrock.packet.LegacyTelemetryEventPacket;
 
 @Value
 public class MovementCorrectedEventData implements EventData {
@@ -11,7 +12,7 @@ public class MovementCorrectedEventData implements EventData {
     private final int durationThreshold;
 
     @Override
-    public EventDataType getType() {
-        return EventDataType.MOVEMENT_CORRECTED;
+    public LegacyTelemetryEventPacket.Type getType() {
+        return LegacyTelemetryEventPacket.Type.PLAYER_MOVEMENT_CORRECTED_OBSOLETE;
     }
 }

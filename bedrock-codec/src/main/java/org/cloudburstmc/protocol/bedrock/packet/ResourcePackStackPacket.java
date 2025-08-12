@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.Value;
-import org.cloudburstmc.protocol.bedrock.data.ExperimentData;
+import org.cloudburstmc.protocol.bedrock.data.Experiment;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 import java.util.List;
@@ -14,16 +14,16 @@ import java.util.List;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class ResourcePackStackPacket implements BedrockPacket {
-    private boolean forcedToAccept;
-    private final List<Entry> behaviorPacks = new ObjectArrayList<>();
-    private final List<Entry> resourcePacks = new ObjectArrayList<>();
-    private String gameVersion;
-    private final List<ExperimentData> experiments = new ObjectArrayList<>();
-    private boolean experimentsPreviouslyToggled;
+    private boolean texturePackRequired;
+    private final List<Entry> addonList = new ObjectArrayList<>();
+    private final List<Entry> texturePackList = new ObjectArrayList<>();
+    private String baseGameVersion;
+    private final List<Experiment> experiments = new ObjectArrayList<>();
+    private boolean wereAnyExperimentsEverToggled;
     /**
      * @since v671
      */
-    private boolean hasEditorPacks;
+    private boolean includeEditorPacks;
 
 
     @Override
@@ -37,8 +37,8 @@ public class ResourcePackStackPacket implements BedrockPacket {
 
     @Value
     public static class Entry {
-        private final String packId;
-        private final String packVersion;
+        private final String id;
+        private final String version;
         private final String subPackName;
     }
 

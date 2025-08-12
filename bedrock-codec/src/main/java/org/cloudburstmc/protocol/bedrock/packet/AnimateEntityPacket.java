@@ -16,7 +16,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 public class AnimateEntityPacket implements BedrockPacket {
 
     /**
-     * Name of the to play on the entities specified in {@link #runtimeEntityIds}
+     * Name of the to play on the entities specified in {@link #runtimeIds}
      *
      * @param animation entity animation
      * @return entity animation
@@ -42,12 +42,12 @@ public class AnimateEntityPacket implements BedrockPacket {
     /**
      * The molang stop expression version
      *
-     * @param stopExpressionVersion the stop expression version
+     * @param stopExpressionMolangVersion the stop expression version
      * @return molang stop expression version
      *
      * @since v465
      */
-    private int stopExpressionVersion;
+    private int stopExpressionMolangVersion;
 
 
     /**
@@ -69,10 +69,10 @@ public class AnimateEntityPacket implements BedrockPacket {
     /**
      * Entity runtime IDs to run the animation on when sent to the client.
      *
-     * @param runtimeEntityIds runtime entity IDs list
+     * @param runtimeIds runtime entity IDs list
      * @return runtime entity IDs list
      */
-    private final LongList runtimeEntityIds = new LongArrayList();
+    private final LongList runtimeIds = new LongArrayList();
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

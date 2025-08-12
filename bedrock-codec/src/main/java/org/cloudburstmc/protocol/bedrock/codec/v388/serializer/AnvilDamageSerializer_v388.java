@@ -14,13 +14,13 @@ public class AnvilDamageSerializer_v388 implements BedrockPacketSerializer<Anvil
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, AnvilDamagePacket packet) {
-        buffer.writeByte(packet.getDamage());
-        helper.writeBlockPosition(buffer, packet.getPosition());
+        buffer.writeByte(packet.getDamageAmount());
+        helper.writeBlockPosition(buffer, packet.getBlockPosition());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, AnvilDamagePacket packet) {
-        packet.setDamage(buffer.readByte());
-        packet.setPosition(helper.readBlockPosition(buffer));
+        packet.setDamageAmount(buffer.readByte());
+        packet.setBlockPosition(helper.readBlockPosition(buffer));
     }
 }

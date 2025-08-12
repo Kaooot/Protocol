@@ -20,13 +20,13 @@ public class SetHudSerializer_v649 implements BedrockPacketSerializer<SetHudPack
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, SetHudPacket packet) {
-        helper.writeArray(buffer, packet.getElements(), (buf, element) -> VarInts.writeUnsignedInt(buf, element.ordinal()));
-        buffer.writeByte(packet.getVisibility().ordinal());
+        helper.writeArray(buffer, packet.getHudElementList(), (buf, element) -> VarInts.writeUnsignedInt(buf, element.ordinal()));
+        buffer.writeByte(packet.getHudVisible().ordinal());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, SetHudPacket packet) {
-        helper.readArray(buffer, packet.getElements(), buf -> VALUES[VarInts.readUnsignedInt(buf)]);
-        packet.setVisibility(VISIBILITIES[buffer.readUnsignedByte()]);
+        helper.readArray(buffer, packet.getHudElementList(), buf -> VALUES[VarInts.readUnsignedInt(buf)]);
+        packet.setHudVisible(VISIBILITIES[buffer.readUnsignedByte()]);
     }
 }

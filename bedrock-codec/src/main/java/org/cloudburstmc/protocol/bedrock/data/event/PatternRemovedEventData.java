@@ -1,6 +1,7 @@
 package org.cloudburstmc.protocol.bedrock.data.event;
 
 import lombok.Value;
+import org.cloudburstmc.protocol.bedrock.packet.LegacyTelemetryEventPacket;
 
 @Value
 public class PatternRemovedEventData implements EventData {
@@ -11,7 +12,7 @@ public class PatternRemovedEventData implements EventData {
     private final int patternColor;
 
     @Override
-    public EventDataType getType() {
-        return EventDataType.PATTERN_REMOVED;
+    public LegacyTelemetryEventPacket.Type getType() {
+        return LegacyTelemetryEventPacket.Type.PATTERN_REMOVED_OBSOLETE;
     }
 }

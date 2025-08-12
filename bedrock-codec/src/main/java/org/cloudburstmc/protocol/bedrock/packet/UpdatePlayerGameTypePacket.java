@@ -10,8 +10,8 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode
 @ToString(doNotUseGetters = true)
 public class UpdatePlayerGameTypePacket implements BedrockPacket {
-    private GameType gameType;
-    private long entityId;
+    private GameType playerGameType;
+    private long targetPlayer;
     /**
      * @since v671
      */

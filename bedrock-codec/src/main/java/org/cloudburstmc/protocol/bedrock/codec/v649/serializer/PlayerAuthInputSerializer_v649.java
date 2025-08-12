@@ -17,8 +17,8 @@ public class PlayerAuthInputSerializer_v649 extends PlayerAuthInputSerializer_v5
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, PlayerAuthInputPacket packet) {
         super.serialize(buffer, helper, packet);
-        if (packet.getInputData().contains(PlayerAuthInputData.IN_CLIENT_PREDICTED_IN_VEHICLE)) {
-            VarInts.writeLong(buffer, packet.getPredictedVehicle());
+        if (packet.getInputData().contains(PlayerAuthInputData.IS_IN_CLIENT_PREDICTED_VEHICLE)) {
+            VarInts.writeLong(buffer, packet.getClientPredictedVehicle());
         }
         helper.writeVector2f(buffer, packet.getAnalogMoveVector());
     }
@@ -26,8 +26,8 @@ public class PlayerAuthInputSerializer_v649 extends PlayerAuthInputSerializer_v5
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, PlayerAuthInputPacket packet) {
         super.deserialize(buffer, helper, packet);
-        if (packet.getInputData().contains(PlayerAuthInputData.IN_CLIENT_PREDICTED_IN_VEHICLE)) {
-            packet.setPredictedVehicle(VarInts.readLong(buffer));
+        if (packet.getInputData().contains(PlayerAuthInputData.IS_IN_CLIENT_PREDICTED_VEHICLE)) {
+            packet.setClientPredictedVehicle(VarInts.readLong(buffer));
         }
         packet.setAnalogMoveVector(helper.readVector2f(buffer));
     }

@@ -20,7 +20,7 @@ public class InventoryTransactionSerializer_v407 extends InventoryTransactionSer
         VarInts.writeInt(buffer, legacyRequestId);
 
         if (legacyRequestId < -1 && (legacyRequestId & 1) == 0) {
-            helper.writeArray(buffer, packet.getLegacySlots(), (buf, packetHelper, data) -> {
+            helper.writeArray(buffer, packet.getLegacySetItemSlots(), (buf, packetHelper, data) -> {
                 buf.writeByte(data.getContainerId());
                 packetHelper.writeByteArray(buf, data.getSlots());
             });
@@ -50,7 +50,7 @@ public class InventoryTransactionSerializer_v407 extends InventoryTransactionSer
         packet.setLegacyRequestId(legacyRequestId);
 
         if (legacyRequestId < -1 && (legacyRequestId & 1) == 0) {
-            helper.readArray(buffer, packet.getLegacySlots(), (buf, packetHelper) -> {
+            helper.readArray(buffer, packet.getLegacySetItemSlots(), (buf, packetHelper) -> {
                 byte containerId = buf.readByte();
                 byte[] slots = packetHelper.readByteArray(buf, 89); // 89 seems to be the largest slot count
                 return new LegacySetItemSlotData(containerId, slots);

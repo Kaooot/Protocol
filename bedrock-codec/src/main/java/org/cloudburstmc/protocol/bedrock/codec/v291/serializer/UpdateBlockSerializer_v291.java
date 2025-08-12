@@ -26,7 +26,7 @@ public class UpdateBlockSerializer_v291 implements BedrockPacketSerializer<Updat
             flagValue |= (1 << flag.ordinal());
         }
         VarInts.writeUnsignedInt(buffer, flagValue);
-        VarInts.writeUnsignedInt(buffer, packet.getDataLayer());
+        VarInts.writeUnsignedInt(buffer, packet.getLayer());
     }
 
     @Override
@@ -40,6 +40,6 @@ public class UpdateBlockSerializer_v291 implements BedrockPacketSerializer<Updat
                 flags.add(flag);
             }
         }
-        packet.setDataLayer(VarInts.readUnsignedInt(buffer));
+        packet.setLayer(VarInts.readUnsignedInt(buffer));
     }
 }

@@ -5,7 +5,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
-import org.cloudburstmc.protocol.bedrock.data.BlockSyncType;
+import org.cloudburstmc.protocol.bedrock.data.ActorBlockSyncMessageId;
 import org.cloudburstmc.protocol.bedrock.packet.UpdateBlockSyncedPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -27,9 +27,9 @@ public class UpdateBlockSyncedSerializer_v291 implements BedrockPacketSerializer
             flagValue |= (1 << flag.ordinal());
         }
         VarInts.writeUnsignedInt(buffer, flagValue);
-        VarInts.writeUnsignedInt(buffer, packet.getDataLayer());
-        VarInts.writeUnsignedLong(buffer, packet.getRuntimeEntityId());
-        VarInts.writeUnsignedLong(buffer, packet.getEntityBlockSyncType().ordinal());
+        VarInts.writeUnsignedInt(buffer, packet.getLayer());
+        VarInts.writeUnsignedLong(buffer, packet.getUniqueActorId());
+        VarInts.writeUnsignedLong(buffer, packet.getActorSyncMessage().ordinal());
     }
 
     @Override
@@ -43,8 +43,8 @@ public class UpdateBlockSyncedSerializer_v291 implements BedrockPacketSerializer
                 flags.add(flag);
             }
         }
-        packet.setDataLayer(VarInts.readUnsignedInt(buffer));
-        packet.setRuntimeEntityId(VarInts.readUnsignedLong(buffer));
-        packet.setEntityBlockSyncType(BlockSyncType.values()[(int) VarInts.readUnsignedLong(buffer)]);
+        packet.setLayer(VarInts.readUnsignedInt(buffer));
+        packet.setUniqueActorId(VarInts.readUnsignedLong(buffer));
+        packet.setActorSyncMessage(ActorBlockSyncMessageId.values()[(int) VarInts.readUnsignedLong(buffer)]);
     }
 }

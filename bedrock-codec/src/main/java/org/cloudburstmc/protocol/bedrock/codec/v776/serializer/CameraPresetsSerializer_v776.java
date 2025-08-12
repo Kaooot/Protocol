@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.cloudburstmc.math.vector.Vector2f;
 import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
-import org.cloudburstmc.protocol.bedrock.codec.v729.serializer.CameraPresetsSerializer_v729;
 import org.cloudburstmc.protocol.bedrock.codec.v766.serializer.CameraPresetsSerializer_v766;
 import org.cloudburstmc.protocol.bedrock.data.camera.CameraAimAssistPreset;
 import org.cloudburstmc.protocol.bedrock.data.camera.CameraAudioListener;
@@ -19,8 +18,8 @@ public class CameraPresetsSerializer_v776 extends CameraPresetsSerializer_v766 {
 
     @Override
     public void writePreset(ByteBuf buffer, BedrockCodecHelper helper, CameraPreset preset) {
-        helper.writeString(buffer, preset.getIdentifier());
-        helper.writeString(buffer, preset.getParentPreset());
+        helper.writeString(buffer, preset.getName());
+        helper.writeString(buffer, preset.getInheritFrom());
         helper.writeOptionalNull(buffer, preset.getPos(), (buf, pos) -> buf.writeFloatLE(pos.getX()));
         helper.writeOptionalNull(buffer, preset.getPos(), (buf, pos) -> buf.writeFloatLE(pos.getY()));
         helper.writeOptionalNull(buffer, preset.getPos(), (buf, pos) -> buf.writeFloatLE(pos.getZ()));
@@ -37,14 +36,14 @@ public class CameraPresetsSerializer_v776 extends CameraPresetsSerializer_v766 {
         helper.writeOptionalNull(buffer, preset.getViewOffset(), helper::writeVector2f);
         helper.writeOptionalNull(buffer, preset.getEntityOffset(), helper::writeVector3f);
         helper.writeOptionalNull(buffer, preset.getRadius(), ByteBuf::writeFloatLE);
-        helper.writeOptionalNull(buffer, preset.getMinYawLimit(), ByteBuf::writeFloatLE);
-        helper.writeOptionalNull(buffer, preset.getMaxYawLimit(), ByteBuf::writeFloatLE);
+        helper.writeOptionalNull(buffer, preset.getYawLimitMin(), ByteBuf::writeFloatLE);
+        helper.writeOptionalNull(buffer, preset.getYawLimitMax(), ByteBuf::writeFloatLE);
         helper.writeOptionalNull(buffer, preset.getListener(), (buf, listener) -> buf.writeByte(listener.ordinal()));
-        helper.writeOptional(buffer, OptionalBoolean::isPresent, preset.getPlayEffect(),
+        helper.writeOptional(buffer, OptionalBoolean::isPresent, preset.getPlayerEffects(),
                 (buf, optional) -> buf.writeBoolean(optional.getAsBoolean()));
         helper.writeOptional(buffer, OptionalBoolean::isPresent, preset.getAlignTargetAndCameraForward(),
                 (buf, optional) -> buf.writeBoolean(optional.getAsBoolean()));
-        helper.writeOptionalNull(buffer, preset.getAimAssistPreset(), (buf, aimAssist) -> writeCameraAimAssist(buf, helper, aimAssist));
+        helper.writeOptionalNull(buffer, preset.getAimAssist(), (buf, aimAssist) -> writeCameraAimAssist(buf, helper, aimAssist));
     }
 
     @Override
@@ -88,9 +87,9 @@ public class CameraPresetsSerializer_v776 extends CameraPresetsSerializer_v766 {
     }
 
     protected void writeCameraAimAssist(ByteBuf buffer, BedrockCodecHelper helper, CameraAimAssistPreset aimAssist) {
-        helper.writeOptionalNull(buffer, aimAssist.getIdentifier(), helper::writeString);
+        helper.writeOptionalNull(buffer, aimAssist.getPresetId(), helper::writeString);
         helper.writeOptionalNull(buffer, aimAssist.getTargetMode(), ByteBuf::writeIntLE);
-        helper.writeOptionalNull(buffer, aimAssist.getAngle(), helper::writeVector2f);
+        helper.writeOptionalNull(buffer, aimAssist.getViewAngle(), helper::writeVector2f);
         helper.writeOptionalNull(buffer, aimAssist.getDistance(), ByteBuf::writeFloatLE);
     }
 }

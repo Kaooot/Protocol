@@ -14,14 +14,14 @@ public class CommandRequestSerializer_v291 implements BedrockPacketSerializer<Co
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, CommandRequestPacket packet) {
         helper.writeString(buffer, packet.getCommand());
-        helper.writeCommandOrigin(buffer, packet.getCommandOriginData());
-        buffer.writeBoolean(packet.isInternal());
+        helper.writeCommandOrigin(buffer, packet.getCommandOrigin());
+        buffer.writeBoolean(packet.isInternalSource());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, CommandRequestPacket packet) {
         packet.setCommand(helper.readString(buffer));
-        packet.setCommandOriginData(helper.readCommandOrigin(buffer));
-        packet.setInternal(buffer.readBoolean());
+        packet.setCommandOrigin(helper.readCommandOrigin(buffer));
+        packet.setInternalSource(buffer.readBoolean());
     }
 }

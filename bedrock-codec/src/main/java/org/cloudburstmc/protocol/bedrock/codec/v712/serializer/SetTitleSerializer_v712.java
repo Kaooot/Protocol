@@ -11,12 +11,12 @@ public class SetTitleSerializer_v712 extends SetTitleSerializer_v448 {
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, SetTitlePacket packet) {
         super.serialize(buffer, helper, packet);
-        helper.writeString(buffer, packet.getFilteredTitleText());
+        helper.writeString(buffer, packet.getFilteredTitleMessage());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, SetTitlePacket packet) {
         super.deserialize(buffer, helper, packet);
-        packet.setFilteredTitleText(helper.readString(buffer));
+        packet.setFilteredTitleMessage(helper.readString(buffer));
     }
 }

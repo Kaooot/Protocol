@@ -3,9 +3,9 @@ package org.cloudburstmc.protocol.bedrock.data;
 public enum SubChunkRequestResult {
     UNDEFINED,
     SUCCESS,
-    CHUNK_NOT_FOUND,
-    INVALID_DIMENSION,
-    PLAYER_NOT_FOUND,
+    LEVEL_CHUNK_DOESNT_EXIST,
+    WRONG_DIMENSION,
+    PLAYER_DOESNT_EXIST,
     INDEX_OUT_OF_BOUNDS,
     SUCCESS_ALL_AIR
 }

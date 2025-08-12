@@ -12,7 +12,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @ToString(doNotUseGetters = true)
 public class UpdateSoftEnumPacket implements BedrockPacket {
     private CommandEnumData softEnum;
-    private SoftEnumUpdateType type;
+    private SoftEnumUpdateType updateType;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

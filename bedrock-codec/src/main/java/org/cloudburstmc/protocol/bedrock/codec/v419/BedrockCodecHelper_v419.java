@@ -1,10 +1,10 @@
 package org.cloudburstmc.protocol.bedrock.codec.v419;
 
 import io.netty.buffer.ByteBuf;
-import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
+import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v407.BedrockCodecHelper_v407;
-import org.cloudburstmc.protocol.bedrock.data.ExperimentData;
-import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerSlotType;
+import org.cloudburstmc.protocol.bedrock.data.Experiment;
+import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerEnumName;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestActionType;
 import org.cloudburstmc.protocol.bedrock.data.skin.AnimatedTextureType;
 import org.cloudburstmc.protocol.bedrock.data.skin.AnimationData;
@@ -18,16 +18,16 @@ public class BedrockCodecHelper_v419 extends BedrockCodecHelper_v407 {
 
     protected static final AnimationExpressionType[] EXPRESSION_TYPES = AnimationExpressionType.values();
 
-    public BedrockCodecHelper_v419(EntityDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes,
-                                   TypeMap<ItemStackRequestActionType> stackRequestActionTypes, TypeMap<ContainerSlotType> containerSlotTypes) {
+    public BedrockCodecHelper_v419(ActorDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes,
+                                   TypeMap<ItemStackRequestActionType> stackRequestActionTypes, TypeMap<ContainerEnumName> containerSlotTypes) {
         super(entityData, gameRulesTypes, stackRequestActionTypes, containerSlotTypes);
     }
 
     @Override
-    public void readExperiments(ByteBuf buffer, List<ExperimentData> experiments) {
+    public void readExperiments(ByteBuf buffer, List<Experiment> experiments) {
         int count = buffer.readIntLE(); // Actually unsigned
         for (int i = 0; i < count; i++) {
-            experiments.add(new ExperimentData(
+            experiments.add(new Experiment(
                     this.readString(buffer),
                     buffer.readBoolean() // Hardcoded to true in 414
             ));
@@ -35,10 +35,10 @@ public class BedrockCodecHelper_v419 extends BedrockCodecHelper_v407 {
     }
 
     @Override
-    public void writeExperiments(ByteBuf buffer, List<ExperimentData> experiments) {
+    public void writeExperiments(ByteBuf buffer, List<Experiment> experiments) {
         buffer.writeIntLE(experiments.size());
 
-        for (ExperimentData experiment : experiments) {
+        for (Experiment experiment : experiments) {
             this.writeString(buffer, experiment.getName());
             buffer.writeBoolean(experiment.isEnabled());
         }

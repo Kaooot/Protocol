@@ -15,12 +15,12 @@ public class SettingsCommandSerializer_v388 implements BedrockPacketSerializer<S
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, SettingsCommandPacket packet) {
         helper.writeString(buffer, packet.getCommand());
-        buffer.writeBoolean(packet.isSuppressingOutput());
+        buffer.writeBoolean(packet.isSupressOutput());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, SettingsCommandPacket packet) {
         packet.setCommand(helper.readString(buffer));
-        packet.setSuppressingOutput(buffer.readBoolean());
+        packet.setSupressOutput(buffer.readBoolean());
     }
 }

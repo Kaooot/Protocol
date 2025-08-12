@@ -14,7 +14,7 @@ public class PlayerUpdateEntityOverridesSerializer_v786 implements BedrockPacket
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, PlayerUpdateEntityOverridesPacket packet) {
-        VarInts.writeLong(buffer, packet.getEntityUniqueId());
+        VarInts.writeLong(buffer, packet.getTargetID());
         VarInts.writeUnsignedInt(buffer, packet.getPropertyIndex());
         buffer.writeByte(packet.getUpdateType().ordinal());
         if (packet.getUpdateType().equals(PlayerUpdateEntityOverridesPacket.UpdateType.SET_INT_OVERRIDE)) {
@@ -26,7 +26,7 @@ public class PlayerUpdateEntityOverridesSerializer_v786 implements BedrockPacket
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, PlayerUpdateEntityOverridesPacket packet) {
-        packet.setEntityUniqueId(VarInts.readLong(buffer));
+        packet.setTargetID(VarInts.readLong(buffer));
         packet.setPropertyIndex(VarInts.readUnsignedInt(buffer));
         packet.setUpdateType(PlayerUpdateEntityOverridesPacket.UpdateType.values()[buffer.readUnsignedByte()]);
         if (packet.getUpdateType().equals(PlayerUpdateEntityOverridesPacket.UpdateType.SET_INT_OVERRIDE)) {

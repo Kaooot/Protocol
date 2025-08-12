@@ -11,13 +11,13 @@ import java.util.UUID;
 
 @Data
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
-@ToString(doNotUseGetters = true, exclude = {"data"})
+@ToString(doNotUseGetters = true, exclude = {"chunkData"})
 public class ResourcePackChunkDataPacket extends AbstractReferenceCounted implements BedrockPacket {
     private UUID packId;
     private String packVersion;
-    private int chunkIndex;
-    private long progress;
-    private ByteBuf data;
+    private int chunkID;
+    private long byteOffset;
+    private ByteBuf chunkData;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {
@@ -30,12 +30,12 @@ public class ResourcePackChunkDataPacket extends AbstractReferenceCounted implem
 
     @Override
     protected void deallocate() {
-        this.data.release();
+        this.chunkData.release();
     }
 
     @Override
     public ResourcePackChunkDataPacket touch(Object hint) {
-        data.touch(hint);
+        chunkData.touch(hint);
         return this;
     }
 

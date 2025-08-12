@@ -1,7 +1,7 @@
 package org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action;
 
 import lombok.Value;
-import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequestSlotData;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequestSlotInfo;
 
 /**
  * DestroyStackRequestActionData is sent by the client when it destroys an item in creative mode by moving it
@@ -10,7 +10,7 @@ import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemSt
 @Value
 public class DestroyAction implements ItemStackRequestAction {
     int count;
-    ItemStackRequestSlotData source;
+    ItemStackRequestSlotInfo source;
 
     @Override
     public ItemStackRequestActionType getType() {

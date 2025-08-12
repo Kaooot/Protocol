@@ -1,7 +1,7 @@
 package org.cloudburstmc.protocol.bedrock.codec.v527;
 
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
-import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
+import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelEventSerializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelSoundEvent1Serializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v313.serializer.LevelSoundEvent2Serializer_v313;
@@ -13,9 +13,9 @@ import org.cloudburstmc.protocol.bedrock.codec.v503.Bedrock_v503;
 import org.cloudburstmc.protocol.bedrock.codec.v527.serializer.*;
 import org.cloudburstmc.protocol.bedrock.data.*;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandParam;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataFormat;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataFormat;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataTypes;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorFlag;
 import org.cloudburstmc.protocol.bedrock.packet.*;
 import org.cloudburstmc.protocol.bedrock.transformer.BooleanTransformer;
 import org.cloudburstmc.protocol.bedrock.transformer.FlagTransformer;
@@ -24,21 +24,21 @@ import org.cloudburstmc.protocol.common.util.TypeMap;
 
 public class Bedrock_v527 extends Bedrock_v503 {
 
-    protected static final TypeMap<EntityFlag> ENTITY_FLAGS = Bedrock_v503.ENTITY_FLAGS.toBuilder()
-            .insert(106, EntityFlag.SONIC_BOOM)
+    protected static final TypeMap<ActorFlag> ENTITY_FLAGS = Bedrock_v503.ENTITY_FLAGS.toBuilder()
+            .insert(106, ActorFlag.SONIC_BOOM)
             .build();
 
     protected static final TypeMap<ParticleType> PARTICLE_TYPES = Bedrock_v503.PARTICLE_TYPES.toBuilder()
             .insert(84, ParticleType.SONIC_EXPLOSION)
             .build();
 
-    protected static final EntityDataTypeMap ENTITY_DATA = Bedrock_v503.ENTITY_DATA.toBuilder()
-            .update(EntityDataTypes.FLAGS, new FlagTransformer(ENTITY_FLAGS, 0))
-            .update(EntityDataTypes.FLAGS_2, new FlagTransformer(ENTITY_FLAGS, 1))
-            .update(EntityDataTypes.AREA_EFFECT_CLOUD_PARTICLE, new TypeMapTransformer<>(PARTICLE_TYPES))
-            .insert(EntityDataTypes.PLAYER_LAST_DEATH_POS, 128, EntityDataFormat.VECTOR3I)
-            .insert(EntityDataTypes.PLAYER_LAST_DEATH_DIMENSION, 129, EntityDataFormat.INT)
-            .insert(EntityDataTypes.PLAYER_HAS_DIED, 130, EntityDataFormat.BYTE, BooleanTransformer.INSTANCE)
+    protected static final ActorDataTypeMap ENTITY_DATA = Bedrock_v503.ENTITY_DATA.toBuilder()
+            .update(ActorDataTypes.FLAGS, new FlagTransformer(ENTITY_FLAGS, 0))
+            .update(ActorDataTypes.FLAGS_2, new FlagTransformer(ENTITY_FLAGS, 1))
+            .update(ActorDataTypes.DATA_PARTICLE, new TypeMapTransformer<>(PARTICLE_TYPES))
+            .insert(ActorDataTypes.PLAYER_LAST_DEATH_POS, 128, ActorDataFormat.VECTOR3I)
+            .insert(ActorDataTypes.PLAYER_LAST_DEATH_DIMENSION, 129, ActorDataFormat.INT)
+            .insert(ActorDataTypes.PLAYER_HAS_DIED, 130, ActorDataFormat.BYTE, BooleanTransformer.INSTANCE)
             .build();
 
     protected static final TypeMap<CommandParam> COMMAND_PARAMS = Bedrock_v503.COMMAND_PARAMS.toBuilder()

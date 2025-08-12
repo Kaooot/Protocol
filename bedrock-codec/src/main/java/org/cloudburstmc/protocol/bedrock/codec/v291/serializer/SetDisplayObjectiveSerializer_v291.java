@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
+import org.cloudburstmc.protocol.bedrock.data.ObjectiveSortOrder;
 import org.cloudburstmc.protocol.bedrock.packet.SetDisplayObjectivePacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -15,19 +16,19 @@ public class SetDisplayObjectiveSerializer_v291 implements BedrockPacketSerializ
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, SetDisplayObjectivePacket packet) {
-        helper.writeString(buffer, packet.getDisplaySlot());
-        helper.writeString(buffer, packet.getObjectiveId());
-        helper.writeString(buffer, packet.getDisplayName());
-        helper.writeString(buffer, packet.getCriteria());
-        VarInts.writeInt(buffer, packet.getSortOrder());
+        helper.writeString(buffer, packet.getDisplaySlotName());
+        helper.writeString(buffer, packet.getObjectiveName());
+        helper.writeString(buffer, packet.getObjectiveDisplayName());
+        helper.writeString(buffer, packet.getCriteriaName());
+        VarInts.writeInt(buffer, packet.getSortOrder().ordinal());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, SetDisplayObjectivePacket packet) {
-        packet.setDisplaySlot(helper.readString(buffer));
-        packet.setObjectiveId(helper.readString(buffer));
-        packet.setDisplayName(helper.readString(buffer));
-        packet.setCriteria(helper.readString(buffer));
-        packet.setSortOrder(VarInts.readInt(buffer));
+        packet.setDisplaySlotName(helper.readString(buffer));
+        packet.setObjectiveName(helper.readString(buffer));
+        packet.setObjectiveDisplayName(helper.readString(buffer));
+        packet.setCriteriaName(helper.readString(buffer));
+        packet.setSortOrder(ObjectiveSortOrder.values()[VarInts.readInt(buffer)]);
     }
 }

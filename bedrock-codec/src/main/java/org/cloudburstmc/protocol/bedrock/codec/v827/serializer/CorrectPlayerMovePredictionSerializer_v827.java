@@ -14,8 +14,8 @@ public class CorrectPlayerMovePredictionSerializer_v827 extends CorrectPlayerMov
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, CorrectPlayerMovePredictionPacket packet) {
         buffer.writeByte(packet.getPredictionType().ordinal());
-        helper.writeVector3f(buffer, packet.getPosition());
-        helper.writeVector3f(buffer, packet.getDelta());
+        helper.writeVector3f(buffer, packet.getPos());
+        helper.writeVector3f(buffer, packet.getPosDelta());
         this.writeVehiclePrediction(buffer, helper, packet);
         buffer.writeBoolean(packet.isOnGround());
         VarInts.writeUnsignedLong(buffer, packet.getTick());
@@ -24,8 +24,8 @@ public class CorrectPlayerMovePredictionSerializer_v827 extends CorrectPlayerMov
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, CorrectPlayerMovePredictionPacket packet) {
         packet.setPredictionType(PredictionType.values()[buffer.readUnsignedByte()]);
-        packet.setPosition(helper.readVector3f(buffer));
-        packet.setDelta(helper.readVector3f(buffer));
+        packet.setPos(helper.readVector3f(buffer));
+        packet.setPosDelta(helper.readVector3f(buffer));
         this.readVehiclePrediction(buffer, helper, packet);
         packet.setOnGround(buffer.readBoolean());
         packet.setTick(VarInts.readUnsignedLong(buffer));

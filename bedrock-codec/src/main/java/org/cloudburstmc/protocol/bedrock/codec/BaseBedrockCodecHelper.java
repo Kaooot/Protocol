@@ -6,7 +6,6 @@ import io.netty.buffer.ByteBufOutputStream;
 import io.netty.buffer.ByteBufUtil;
 import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
-import it.unimi.dsi.fastutil.ints.Int2ObjectFunction;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -20,17 +19,17 @@ import org.cloudburstmc.nbt.NBTOutputStream;
 import org.cloudburstmc.nbt.NbtType;
 import org.cloudburstmc.nbt.NbtUtils;
 import org.cloudburstmc.protocol.bedrock.data.EncodingSettings;
-import org.cloudburstmc.protocol.bedrock.data.ExperimentData;
-import org.cloudburstmc.protocol.bedrock.data.PlayerAbilityHolder;
+import org.cloudburstmc.protocol.bedrock.data.Experiment;
+import org.cloudburstmc.protocol.bedrock.data.SerializedAbilitiesData;
 import org.cloudburstmc.protocol.bedrock.data.definitions.BlockDefinition;
 import org.cloudburstmc.protocol.bedrock.data.definitions.ItemDefinition;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityProperties;
-import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerSlotType;
+import org.cloudburstmc.protocol.bedrock.data.actor.PropertySyncData;
+import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerEnumName;
 import org.cloudburstmc.protocol.bedrock.data.inventory.FullContainerName;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
 import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.ItemDescriptorWithCount;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequest;
-import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponseContainer;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponseContainerInfo;
 import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.InventoryActionData;
 import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.InventorySource;
 import org.cloudburstmc.protocol.bedrock.data.skin.AnimationData;
@@ -60,7 +59,7 @@ import static org.cloudburstmc.protocol.common.util.Preconditions.checkNotNull;
 public abstract class BaseBedrockCodecHelper implements BedrockCodecHelper {
     protected static final InternalLogger log = InternalLoggerFactory.getInstance(BaseBedrockCodecHelper.class);
 
-    protected final EntityDataTypeMap entityData;
+    protected final ActorDataTypeMap actorData;
     protected final TypeMap<Class<?>> gameRuleType;
 
     @Getter
@@ -480,11 +479,11 @@ public abstract class BaseBedrockCodecHelper implements BedrockCodecHelper {
         }
     }
 
-    public void readExperiments(ByteBuf buffer, List<ExperimentData> experiments) {
+    public void readExperiments(ByteBuf buffer, List<Experiment> experiments) {
         throw new UnsupportedOperationException();
     }
 
-    public void writeExperiments(ByteBuf buffer, List<ExperimentData> experiments) {
+    public void writeExperiments(ByteBuf buffer, List<Experiment> experiments) {
         throw new UnsupportedOperationException();
     }
 
@@ -539,12 +538,12 @@ public abstract class BaseBedrockCodecHelper implements BedrockCodecHelper {
     }
 
     @Override
-    public void readEntityProperties(ByteBuf buffer, EntityProperties properties) {
+    public void readEntityProperties(ByteBuf buffer, PropertySyncData properties) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void writeEntityProperties(ByteBuf buffer, EntityProperties properties) {
+    public void writeEntityProperties(ByteBuf buffer, PropertySyncData properties) {
         throw new UnsupportedOperationException();
     }
 
@@ -559,22 +558,22 @@ public abstract class BaseBedrockCodecHelper implements BedrockCodecHelper {
     }
 
     @Override
-    public ContainerSlotType readContainerSlotType(ByteBuf buffer) {
+    public ContainerEnumName readContainerSlotType(ByteBuf buffer) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void writeContainerSlotType(ByteBuf buffer, ContainerSlotType slotType) {
+    public void writeContainerSlotType(ByteBuf buffer, ContainerEnumName slotType) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void writePlayerAbilities(ByteBuf buffer, PlayerAbilityHolder abilityHolder) {
+    public void writeSerializedAbilitiesData(ByteBuf buffer, SerializedAbilitiesData data) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void readPlayerAbilities(ByteBuf buffer, PlayerAbilityHolder abilityHolder) {
+    public void readSerializedAbilitiesData(ByteBuf buffer, SerializedAbilitiesData data) {
         throw new UnsupportedOperationException();
     }
 
@@ -589,12 +588,12 @@ public abstract class BaseBedrockCodecHelper implements BedrockCodecHelper {
     }
 
     @Override
-    public void writeItemStackResponseContainer(ByteBuf buffer, ItemStackResponseContainer container) {
+    public void writeItemStackResponseContainer(ByteBuf buffer, ItemStackResponseContainerInfo container) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public ItemStackResponseContainer readItemStackResponseContainer(ByteBuf buffer) {
+    public ItemStackResponseContainerInfo readItemStackResponseContainer(ByteBuf buffer) {
         throw new UnsupportedOperationException();
     }
 

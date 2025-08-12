@@ -14,13 +14,13 @@ public class EmoteListSerializer_v407 implements BedrockPacketSerializer<EmoteLi
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, EmoteListPacket packet) {
-        VarInts.writeUnsignedLong(buffer, packet.getRuntimeEntityId());
-        helper.writeArray(buffer, packet.getPieceIds(), helper::writeUuid);
+        VarInts.writeUnsignedLong(buffer, packet.getRuntimeId());
+        helper.writeArray(buffer, packet.getEmotePieceIds(), helper::writeUuid);
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, EmoteListPacket packet) {
-        packet.setRuntimeEntityId(VarInts.readUnsignedLong(buffer));
-        helper.readArray(buffer, packet.getPieceIds(), helper::readUuid);
+        packet.setRuntimeId(VarInts.readUnsignedLong(buffer));
+        helper.readArray(buffer, packet.getEmotePieceIds(), helper::readUuid);
     }
 }

@@ -20,34 +20,34 @@ public class SubChunkSerializer_v486 extends SubChunkSerializer_v475 {
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, SubChunkPacket packet) {
         buffer.writeBoolean(packet.isCacheEnabled());
-        VarInts.writeInt(buffer, packet.getDimension());
-        helper.writeVector3i(buffer, packet.getCenterPosition());
+        VarInts.writeInt(buffer, packet.getDimensionType());
+        helper.writeVector3i(buffer, packet.getCenterPos());
 
-        buffer.writeIntLE(packet.getSubChunks().size());
-        packet.getSubChunks().forEach(subChunk -> this.serializeSubChunk(buffer, helper, packet, subChunk));
+        buffer.writeIntLE(packet.getSubChunkDataList().size());
+        packet.getSubChunkDataList().forEach(subChunk -> this.serializeSubChunk(buffer, helper, packet, subChunk));
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, SubChunkPacket packet) {
         packet.setCacheEnabled(buffer.readBoolean());
-        packet.setDimension(VarInts.readInt(buffer));
-        packet.setCenterPosition(helper.readVector3i(buffer));
+        packet.setDimensionType(VarInts.readInt(buffer));
+        packet.setCenterPos(helper.readVector3i(buffer));
 
         int size = buffer.readIntLE(); // Unsigned but realistically, we're not going to read that many.
         for (int i = 0; i < size; i++) {
-            packet.getSubChunks().add(this.deserializeSubChunk(buffer, helper, packet));
+            packet.getSubChunkDataList().add(this.deserializeSubChunk(buffer, helper, packet));
         }
     }
 
     @Override
     protected void serializeSubChunk(ByteBuf buffer, BedrockCodecHelper helper, SubChunkPacket packet, SubChunkData subChunk) {
         this.writeSubChunkOffset(buffer, subChunk.getPosition());
-        buffer.writeByte(subChunk.getResult().ordinal());
-        if (subChunk.getResult() != SubChunkRequestResult.SUCCESS_ALL_AIR || !packet.isCacheEnabled()) {
+        buffer.writeByte(subChunk.getSubChunkRequestResult().ordinal());
+        if (subChunk.getSubChunkRequestResult() != SubChunkRequestResult.SUCCESS_ALL_AIR || !packet.isCacheEnabled()) {
             helper.writeByteBuf(buffer, subChunk.getData());
         }
-        buffer.writeByte(subChunk.getHeightMapType().ordinal());
-        if (subChunk.getHeightMapType() == HeightMapDataType.HAS_DATA) {
+        buffer.writeByte(subChunk.getHeightMapDataType().ordinal());
+        if (subChunk.getHeightMapDataType() == HeightMapDataType.HAS_DATA) {
             ByteBuf heightMapBuf = subChunk.getHeightMapData();
             buffer.writeBytes(heightMapBuf, heightMapBuf.readerIndex(), HEIGHT_MAP_LENGTH);
         }
@@ -60,12 +60,12 @@ public class SubChunkSerializer_v486 extends SubChunkSerializer_v475 {
     protected SubChunkData deserializeSubChunk(ByteBuf buffer, BedrockCodecHelper helper, SubChunkPacket packet) {
         SubChunkData subChunk = new SubChunkData();
         subChunk.setPosition(this.readSubChunkOffset(buffer));
-        subChunk.setResult(SubChunkRequestResult.values()[buffer.readByte()]);
-        if (subChunk.getResult() != SubChunkRequestResult.SUCCESS_ALL_AIR || !packet.isCacheEnabled()) {
+        subChunk.setSubChunkRequestResult(SubChunkRequestResult.values()[buffer.readByte()]);
+        if (subChunk.getSubChunkRequestResult() != SubChunkRequestResult.SUCCESS_ALL_AIR || !packet.isCacheEnabled()) {
             subChunk.setData(helper.readByteBuf(buffer));
         }
-        subChunk.setHeightMapType(HeightMapDataType.values()[buffer.readByte()]);
-        if (subChunk.getHeightMapType() == HeightMapDataType.HAS_DATA) {
+        subChunk.setHeightMapDataType(HeightMapDataType.values()[buffer.readByte()]);
+        if (subChunk.getHeightMapDataType() == HeightMapDataType.HAS_DATA) {
             subChunk.setHeightMapData(buffer.readRetainedSlice(HEIGHT_MAP_LENGTH));
         }
         if (packet.isCacheEnabled()) {

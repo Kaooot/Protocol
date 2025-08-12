@@ -6,6 +6,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
+import org.cloudburstmc.protocol.bedrock.data.Dimension;
 import org.cloudburstmc.protocol.bedrock.data.MapDecoration;
 import org.cloudburstmc.protocol.bedrock.data.MapTrackedObject;
 import org.cloudburstmc.protocol.bedrock.packet.ClientboundMapItemDataPacket;
@@ -24,10 +25,10 @@ public class ClientboundMapItemDataSerializer_v354 implements BedrockPacketSeria
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ClientboundMapItemDataPacket packet) {
-        VarInts.writeLong(buffer, packet.getUniqueMapId());
+        VarInts.writeLong(buffer, packet.getMapID());
 
         int type = 0;
-        int[] colors = packet.getColors();
+        int[] colors = packet.getPixels();
         if (colors != null && colors.length > 0) {
             type |= FLAG_TEXTURE_UPDATE;
         }
@@ -42,8 +43,8 @@ public class ClientboundMapItemDataSerializer_v354 implements BedrockPacketSeria
         }
 
         VarInts.writeUnsignedInt(buffer, type);
-        buffer.writeByte(packet.getDimensionId());
-        buffer.writeBoolean(packet.isLocked());
+        buffer.writeByte(packet.getDimension().ordinal());
+        buffer.writeBoolean(packet.isLockedMap());
 
         if ((type & FLAG_MAP_CREATION) != 0) {
             this.writeMapCreation(buffer, helper, packet);
@@ -64,10 +65,10 @@ public class ClientboundMapItemDataSerializer_v354 implements BedrockPacketSeria
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ClientboundMapItemDataPacket packet) {
-        packet.setUniqueMapId(VarInts.readLong(buffer));
+        packet.setMapID(VarInts.readLong(buffer));
         int type = VarInts.readUnsignedInt(buffer);
-        packet.setDimensionId(buffer.readUnsignedByte());
-        packet.setLocked(buffer.readBoolean());
+        packet.setDimension(Dimension.from(buffer.readUnsignedByte()));
+        packet.setLockedMap(buffer.readBoolean());
 
         if ((type & FLAG_MAP_CREATION) != 0) {
             this.readMapCreation(buffer, helper, packet);
@@ -159,29 +160,29 @@ public class ClientboundMapItemDataSerializer_v354 implements BedrockPacketSeria
     }
 
     protected void writeTextureUpdate(ByteBuf buffer, BedrockCodecHelper helper, ClientboundMapItemDataPacket packet) {
-        VarInts.writeInt(buffer, packet.getWidth());
-        VarInts.writeInt(buffer, packet.getHeight());
-        VarInts.writeInt(buffer, packet.getXOffset());
-        VarInts.writeInt(buffer, packet.getYOffset());
+        VarInts.writeInt(buffer, packet.getTextureWidth());
+        VarInts.writeInt(buffer, packet.getTextureHeight());
+        VarInts.writeInt(buffer, packet.getXTexCoordinate());
+        VarInts.writeInt(buffer, packet.getYTexCoordinate());
 
-        int length = packet.getColors().length;
+        int length = packet.getPixels().length;
         VarInts.writeUnsignedInt(buffer, length);
-        for (int color : packet.getColors()) {
+        for (int color : packet.getPixels()) {
             VarInts.writeUnsignedInt(buffer, color);
         }
     }
 
     protected void readTextureUpdate(ByteBuf buffer, BedrockCodecHelper helper, ClientboundMapItemDataPacket packet) {
-        packet.setWidth(VarInts.readInt(buffer));
-        packet.setHeight(VarInts.readInt(buffer));
-        packet.setXOffset(VarInts.readInt(buffer));
-        packet.setYOffset(VarInts.readInt(buffer));
+        packet.setTextureWidth(VarInts.readInt(buffer));
+        packet.setTextureHeight(VarInts.readInt(buffer));
+        packet.setXTexCoordinate(VarInts.readInt(buffer));
+        packet.setYTexCoordinate(VarInts.readInt(buffer));
 
         int length = VarInts.readUnsignedInt(buffer);
         int[] colors = new int[length];
         for (int i = 0; i < length; i++) {
             colors[i] = VarInts.readUnsignedInt(buffer);
         }
-        packet.setColors(colors);
+        packet.setPixels(colors);
     }
 }

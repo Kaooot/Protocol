@@ -15,9 +15,9 @@ import org.cloudburstmc.protocol.common.util.OptionalBoolean;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CameraPreset {
-    private String identifier;
+    private String name;
     @Builder.Default
-    private String parentPreset = "";
+    private String inheritFrom = "";
     // All the values below are optional, and will not be encoded if null is used
     private Vector3f pos;
     private Float yaw;
@@ -33,14 +33,14 @@ public class CameraPreset {
     /**
      * @since v776
      */
-    private Float minYawLimit;
+    private Float yawLimitMin;
     /**
      * @since v776
      */
-    private Float maxYawLimit;
+    private Float yawLimitMax;
     private CameraAudioListener listener;
     @Builder.Default
-    private OptionalBoolean playEffect = OptionalBoolean.empty();
+    private OptionalBoolean playerEffects = OptionalBoolean.empty();
     /**
      * @since v729
      */
@@ -80,7 +80,7 @@ public class CameraPreset {
     /**
      * @since v766
      */
-    private CameraAimAssistPreset aimAssistPreset;
+    private CameraAimAssistPreset aimAssist;
     /**
      * @since v800
      */

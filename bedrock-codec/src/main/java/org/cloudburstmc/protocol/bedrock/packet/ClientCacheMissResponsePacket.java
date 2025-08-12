@@ -14,7 +14,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 @ToString(doNotUseGetters = true)
 public class ClientCacheMissResponsePacket extends AbstractReferenceCounted implements BedrockPacket {
-    private final Long2ObjectMap<ByteBuf> blobs = new Long2ObjectLinkedOpenHashMap<>();
+    private final Long2ObjectMap<ByteBuf> missingBlobs = new Long2ObjectLinkedOpenHashMap<>();
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {
@@ -27,12 +27,12 @@ public class ClientCacheMissResponsePacket extends AbstractReferenceCounted impl
 
     @Override
     protected void deallocate() {
-        this.blobs.values().forEach(ReferenceCounted::release);
+        this.missingBlobs.values().forEach(ReferenceCounted::release);
     }
 
     @Override
     public ClientCacheMissResponsePacket touch(Object hint) {
-        this.blobs.values().forEach(byteBuf -> byteBuf.touch(hint));
+        this.missingBlobs.values().forEach(byteBuf -> byteBuf.touch(hint));
         return this;
     }
 

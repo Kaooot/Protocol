@@ -10,19 +10,20 @@ import org.cloudburstmc.nbt.NbtMap;
 import org.cloudburstmc.nbt.NbtUtils;
 import org.cloudburstmc.protocol.bedrock.codec.BaseBedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
-import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
+import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
+import org.cloudburstmc.protocol.bedrock.data.ActorLinkType;
 import org.cloudburstmc.protocol.bedrock.data.GameRuleData;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandEnumConstraint;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandEnumData;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandOriginData;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandOriginType;
 import org.cloudburstmc.protocol.bedrock.data.definitions.ItemDefinition;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataFormat;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataMap;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataType;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityLinkData;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorLink;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataFormat;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataMap;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataType;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
-import org.cloudburstmc.protocol.bedrock.transformer.EntityDataTransformer;
+import org.cloudburstmc.protocol.bedrock.transformer.ActorDataTransformer;
 import org.cloudburstmc.protocol.common.util.TriConsumer;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 import org.cloudburstmc.protocol.common.util.VarInts;
@@ -40,29 +41,28 @@ import static org.cloudburstmc.protocol.common.util.Preconditions.checkNotNull;
 
 public class BedrockCodecHelper_v291 extends BaseBedrockCodecHelper {
 
-    public BedrockCodecHelper_v291(EntityDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes) {
-        super(entityData, gameRulesTypes);
+    public BedrockCodecHelper_v291(ActorDataTypeMap actorData, TypeMap<Class<?>> gameRulesTypes) {
+        super(actorData, gameRulesTypes);
     }
 
     @Override
-    public EntityLinkData readEntityLink(ByteBuf buffer) {
-
-        long from = VarInts.readLong(buffer);
-        long to = VarInts.readLong(buffer);
+    public ActorLink readActorLink(ByteBuf buffer) {
+        long targetA = VarInts.readLong(buffer);
+        long targetB = VarInts.readLong(buffer);
         int type = buffer.readUnsignedByte();
         boolean immediate = buffer.readBoolean();
 
-        return new EntityLinkData(from, to, EntityLinkData.Type.values()[type], immediate);
+        return new ActorLink(targetA, targetB, ActorLinkType.from(type), immediate);
     }
 
     @Override
-    public void writeEntityLink(ByteBuf buffer, EntityLinkData entityLink) {
-        checkNotNull(entityLink, "entityLink");
+    public void writeActorLink(ByteBuf buffer, ActorLink actorLink) {
+        checkNotNull(actorLink, "actorLink");
 
-        VarInts.writeLong(buffer, entityLink.getFrom());
-        VarInts.writeLong(buffer, entityLink.getTo());
-        buffer.writeByte(entityLink.getType().ordinal());
-        buffer.writeBoolean(entityLink.isImmediate());
+        VarInts.writeLong(buffer, actorLink.getTargetA());
+        VarInts.writeLong(buffer, actorLink.getTargetB());
+        buffer.writeByte(actorLink.getType().ordinal());
+        buffer.writeBoolean(actorLink.isImmediate());
     }
 
     @Override
@@ -177,11 +177,11 @@ public class BedrockCodecHelper_v291 extends BaseBedrockCodecHelper {
     @Override
     public void writeCommandOrigin(ByteBuf buffer, CommandOriginData originData) {
         checkNotNull(originData, "commandOriginData");
-        VarInts.writeUnsignedInt(buffer, originData.getOrigin().ordinal());
-        writeUuid(buffer, originData.getUuid());
-        writeString(buffer, originData.getRequestId());
-        if (originData.getOrigin() == CommandOriginType.DEV_CONSOLE || originData.getOrigin() == CommandOriginType.TEST) {
-            VarInts.writeLong(buffer, originData.getEvent());
+        VarInts.writeUnsignedInt(buffer, originData.getCommandType().ordinal());
+        writeUuid(buffer, originData.getCommandUUID());
+        writeString(buffer, originData.getRequestID());
+        if (originData.getCommandType() == CommandOriginType.DEV_CONSOLE || originData.getCommandType() == CommandOriginType.TEST) {
+            VarInts.writeLong(buffer, originData.getPlayerID());
         }
     }
 
@@ -225,15 +225,15 @@ public class BedrockCodecHelper_v291 extends BaseBedrockCodecHelper {
     }
 
     @Override
-    public void readEntityData(ByteBuf buffer, EntityDataMap entityDataMap) {
-        checkNotNull(entityDataMap, "entityDataDictionary");
+    public void readActorData(ByteBuf buffer, ActorDataMap actorDataMap) {
+        checkNotNull(actorDataMap, "actorDataDictionary");
 
         int length = VarInts.readUnsignedInt(buffer);
-        checkArgument(this.encodingSettings.maxListSize() <= 0 || length <= this.encodingSettings.maxListSize(), "Entity data size is too big: %s", length);
+        checkArgument(this.encodingSettings.maxListSize() <= 0 || length <= this.encodingSettings.maxListSize(), "Actor data size is too big: %s", length);
 
         for (int i = 0; i < length; i++) {
             int id = VarInts.readUnsignedInt(buffer);
-            EntityDataFormat format = EntityDataFormat.values()[VarInts.readUnsignedInt(buffer)];
+            ActorDataFormat format = ActorDataFormat.values()[VarInts.readUnsignedInt(buffer)];
 
             Object value;
             switch (format) {
@@ -265,41 +265,41 @@ public class BedrockCodecHelper_v291 extends BaseBedrockCodecHelper {
                     value = readVector3f(buffer);
                     break;
                 default:
-                    throw new UnsupportedOperationException("Unknown entity data type received");
+                    throw new UnsupportedOperationException("Unknown actor data type received");
             }
 
-            EntityDataTypeMap.Definition<?>[] definitions = this.entityData.fromId(id, format);
+            ActorDataTypeMap.Definition<?>[] definitions = this.actorData.fromId(id, format);
             if (definitions != null) {
-                for (EntityDataTypeMap.Definition<?> definition : definitions) {
+                for (ActorDataTypeMap.Definition<?> definition : definitions) {
                     //noinspection unchecked
-                    EntityDataTransformer<Object, ?> transformer = (EntityDataTransformer<Object, ?>) definition.getTransformer();
-                    Object transformedValue = transformer.deserialize(this, entityDataMap, value);
+                    ActorDataTransformer<Object, ?> transformer = (ActorDataTransformer<Object, ?>) definition.getTransformer();
+                    Object transformedValue = transformer.deserialize(this, actorDataMap, value);
                     if (transformedValue != null) {
-                        entityDataMap.put(definition.getType(), transformer.deserialize(this, entityDataMap, value));
+                        actorDataMap.put(definition.getType(), transformer.deserialize(this, actorDataMap, value));
                     }
                 }
             } else {
-                log.debug("Unknown entity data: {} type {} value {}", id, format, value);
+                log.debug("Unknown actor data: {} type {} value {}", id, format, value);
             }
         }
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public void writeEntityData(ByteBuf buffer, EntityDataMap entityDataMap) {
-        checkNotNull(entityDataMap, "entityDataDictionary");
+    public void writeActorData(ByteBuf buffer, ActorDataMap actorDataMap) {
+        checkNotNull(actorDataMap, "actorDataDictionary");
 
-        VarInts.writeUnsignedInt(buffer, entityDataMap.size());
+        VarInts.writeUnsignedInt(buffer, actorDataMap.size());
 
-        for (Map.Entry<EntityDataType<?>, Object> entry : entityDataMap.entrySet()) {
-            EntityDataTypeMap.Definition<?> definition = this.entityData.fromType(entry.getKey());
+        for (Map.Entry<ActorDataType<?>, Object> entry : actorDataMap.entrySet()) {
+            ActorDataTypeMap.Definition<?> definition = this.actorData.fromType(entry.getKey());
 
             VarInts.writeUnsignedInt(buffer, definition.getId());
             VarInts.writeUnsignedInt(buffer, definition.getFormat().ordinal());
 
             try {
-                Object value = ((EntityDataTransformer<?, Object>) definition.getTransformer())
-                        .serialize(this, entityDataMap, entry.getValue());
+                Object value = ((ActorDataTransformer<?, Object>) definition.getTransformer())
+                        .serialize(this, actorDataMap, entry.getValue());
 
                 switch (definition.getFormat()) {
                     case BYTE:
@@ -335,10 +335,10 @@ public class BedrockCodecHelper_v291 extends BaseBedrockCodecHelper {
                         writeVector3f(buffer, (Vector3f) value);
                         break;
                     default:
-                        throw new UnsupportedOperationException("Unknown entity data type " + definition.getFormat());
+                        throw new UnsupportedOperationException("Unknown actor data type " + definition.getFormat());
                 }
             } catch (Exception e) {
-                throw new IllegalArgumentException("Failed to encode EntityData " + definition.getId() + " of " + definition.getType().getTypeName(), e);
+                throw new IllegalArgumentException("Failed to encode ActorData " + definition.getId() + " of " + definition.getType().getTypeName(), e);
             }
         }
     }

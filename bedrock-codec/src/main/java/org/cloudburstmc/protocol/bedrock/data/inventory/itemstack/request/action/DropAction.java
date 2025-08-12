@@ -1,7 +1,7 @@
 package org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action;
 
 import lombok.Value;
-import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequestSlotData;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequestSlotInfo;
 
 /**
  * DropStackRequestActionData is sent by the client when it drops an item out of the inventory when it has its
@@ -12,7 +12,7 @@ import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemSt
 @Value
 public class DropAction implements ItemStackRequestAction {
     int count;
-    ItemStackRequestSlotData source;
+    ItemStackRequestSlotInfo source;
     boolean randomly; // ?? Perhaps deals with order of items being dropped? Normally false.
 
     @Override

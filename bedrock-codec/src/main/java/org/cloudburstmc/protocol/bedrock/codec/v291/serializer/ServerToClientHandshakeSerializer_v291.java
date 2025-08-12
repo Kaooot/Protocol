@@ -16,11 +16,11 @@ public class ServerToClientHandshakeSerializer_v291 implements BedrockPacketSeri
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ServerToClientHandshakePacket packet) {
-        helper.writeString(buffer, packet.getJwt());
+        helper.writeString(buffer, packet.getHandshakeWebToken());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ServerToClientHandshakePacket packet) {
-        packet.setJwt(helper.readString(buffer));
+        packet.setHandshakeWebToken(helper.readString(buffer));
     }
 }

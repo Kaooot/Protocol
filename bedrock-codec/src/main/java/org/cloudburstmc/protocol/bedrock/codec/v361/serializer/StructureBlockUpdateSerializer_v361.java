@@ -19,15 +19,15 @@ public class StructureBlockUpdateSerializer_v361 implements BedrockPacketSeriali
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, StructureBlockUpdatePacket packet) {
         helper.writeBlockPosition(buffer, packet.getBlockPosition());
-        this.writeEditorData(buffer, helper, packet.getEditorData());
-        buffer.writeBoolean(packet.isPowered());
+        this.writeEditorData(buffer, helper, packet.getStructureData());
+        buffer.writeBoolean(packet.isTrigger());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, StructureBlockUpdatePacket packet) {
         packet.setBlockPosition(helper.readBlockPosition(buffer));
-        packet.setEditorData(this.readEditorData(buffer, helper));
-        packet.setPowered(buffer.readBoolean());
+        packet.setStructureData(this.readEditorData(buffer, helper));
+        packet.setTrigger(buffer.readBoolean());
     }
 
     protected StructureEditorData readEditorData(ByteBuf buffer, BedrockCodecHelper helper) {
@@ -42,11 +42,11 @@ public class StructureBlockUpdateSerializer_v361 implements BedrockPacketSeriali
     }
 
     protected void writeEditorData(ByteBuf buffer, BedrockCodecHelper helper, StructureEditorData data) {
-        helper.writeString(buffer, data.getName());
+        helper.writeString(buffer, data.getStructureName());
         helper.writeString(buffer, data.getDataField());
-        buffer.writeBoolean(data.isIncludingPlayers());
-        buffer.writeBoolean(data.isBoundingBoxVisible());
-        VarInts.writeInt(buffer, data.getType().ordinal());
-        helper.writeStructureSettings(buffer, data.getSettings());
+        buffer.writeBoolean(data.isShouldPlayersBeIncluded());
+        buffer.writeBoolean(data.isShouldShowBoundingBox());
+        VarInts.writeInt(buffer, data.getStructureBlockType().ordinal());
+        helper.writeStructureSettings(buffer, data.getStructureSettings());
     }
 }

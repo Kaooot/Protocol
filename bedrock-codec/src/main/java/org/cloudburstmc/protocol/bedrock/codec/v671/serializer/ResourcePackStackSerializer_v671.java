@@ -11,12 +11,12 @@ public class ResourcePackStackSerializer_v671 extends ResourcePackStackSerialize
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ResourcePackStackPacket packet) {
         super.serialize(buffer, helper, packet);
-        buffer.writeBoolean(packet.isHasEditorPacks());
+        buffer.writeBoolean(packet.isIncludeEditorPacks());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ResourcePackStackPacket packet) {
         super.deserialize(buffer, helper, packet);
-        packet.setHasEditorPacks(buffer.readBoolean());
+        packet.setIncludeEditorPacks(buffer.readBoolean());
     }
 }

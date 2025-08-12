@@ -9,8 +9,8 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class TransferPacket implements BedrockPacket {
-    private String address;
-    private int port;
+    private String serverAddress;
+    private int serverPort;
     /**
      * @since v729
      */

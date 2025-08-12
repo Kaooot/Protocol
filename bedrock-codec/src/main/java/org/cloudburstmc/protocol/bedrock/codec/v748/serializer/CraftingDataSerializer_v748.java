@@ -7,9 +7,9 @@ import lombok.RequiredArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v685.serializer.CraftingDataSerializer_v685;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
-import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.CraftingDataType;
+import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.CraftingDataEntryType;
 import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.RecipeUnlockingRequirement;
-import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.recipe.ShapelessRecipeData;
+import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.recipe.ShapelessRecipe;
 import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.ItemDescriptorWithCount;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -21,7 +21,7 @@ public class CraftingDataSerializer_v748 extends CraftingDataSerializer_v685 {
     public static final CraftingDataSerializer_v748 INSTANCE = new CraftingDataSerializer_v748();
 
     @Override
-    protected ShapelessRecipeData readShapelessRecipe(ByteBuf buffer, BedrockCodecHelper helper, CraftingDataType type) {
+    protected ShapelessRecipe readShapelessRecipe(ByteBuf buffer, BedrockCodecHelper helper, CraftingDataEntryType type) {
         String recipeId = helper.readString(buffer);
         List<ItemDescriptorWithCount> inputs = new ObjectArrayList<>();
         helper.readArray(buffer, inputs, helper::readIngredient);
@@ -34,25 +34,25 @@ public class CraftingDataSerializer_v748 extends CraftingDataSerializer_v685 {
         int priority = VarInts.readInt(buffer);
 
         RecipeUnlockingRequirement requirement = RecipeUnlockingRequirement.INVALID;
-        if (type == CraftingDataType.SHAPELESS || type == CraftingDataType.SHULKER_BOX) {
+        if (type == CraftingDataEntryType.SHAPELESS_RECIPE || type == CraftingDataEntryType.USER_DATA_SHAPELESS_RECIPE) {
             requirement = this.readRequirement(buffer, helper, type);
         }
 
         int networkId = VarInts.readUnsignedInt(buffer);
-        return ShapelessRecipeData.of(type, recipeId, inputs, outputs, uuid, craftingTag, priority, networkId, requirement);
+        return ShapelessRecipe.of(type, recipeId, inputs, outputs, uuid, craftingTag, priority, networkId, requirement);
     }
 
     @Override
-    protected void writeShapelessRecipe(ByteBuf buffer, BedrockCodecHelper helper, ShapelessRecipeData data) {
-        helper.writeString(buffer, data.getId());
-        helper.writeArray(buffer, data.getIngredients(), helper::writeIngredient);
-        helper.writeArray(buffer, data.getResults(), helper::writeItemInstance);
+    protected void writeShapelessRecipe(ByteBuf buffer, BedrockCodecHelper helper, ShapelessRecipe data) {
+        helper.writeString(buffer, data.getRecipeUniqueId());
+        helper.writeArray(buffer, data.getIngredientList(), helper::writeIngredient);
+        helper.writeArray(buffer, data.getProductionList(), helper::writeItemInstance);
 
-        helper.writeUuid(buffer, data.getUuid());
-        helper.writeString(buffer, data.getTag());
+        helper.writeUuid(buffer, data.getRecipeID());
+        helper.writeString(buffer, data.getRecipeTag());
         VarInts.writeInt(buffer, data.getPriority());
 
-        if (data.getType() == CraftingDataType.SHAPELESS || data.getType() == CraftingDataType.SHULKER_BOX) {
+        if (data.getType() == CraftingDataEntryType.SHAPELESS_RECIPE || data.getType() == CraftingDataEntryType.USER_DATA_SHAPELESS_RECIPE) {
             this.writeRequirement(buffer, helper, data);
         }
         VarInts.writeUnsignedInt(buffer, data.getNetId());

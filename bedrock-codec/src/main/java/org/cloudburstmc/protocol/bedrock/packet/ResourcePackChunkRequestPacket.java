@@ -13,7 +13,7 @@ import java.util.UUID;
 public class ResourcePackChunkRequestPacket implements BedrockPacket {
     private UUID packId;
     private String packVersion;
-    private int chunkIndex;
+    private int chunk;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

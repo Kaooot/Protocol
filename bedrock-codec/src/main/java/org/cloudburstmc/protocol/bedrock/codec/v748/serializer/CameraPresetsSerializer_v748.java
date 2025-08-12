@@ -17,8 +17,8 @@ public class CameraPresetsSerializer_v748 extends CameraPresetsSerializer_v729 {
 
     @Override
     public void writePreset(ByteBuf buffer, BedrockCodecHelper helper, CameraPreset preset) {
-        helper.writeString(buffer, preset.getIdentifier());
-        helper.writeString(buffer, preset.getParentPreset());
+        helper.writeString(buffer, preset.getName());
+        helper.writeString(buffer, preset.getInheritFrom());
         helper.writeOptionalNull(buffer, preset.getPos(), (buf, pos) -> buf.writeFloatLE(pos.getX()));
         helper.writeOptionalNull(buffer, preset.getPos(), (buf, pos) -> buf.writeFloatLE(pos.getY()));
         helper.writeOptionalNull(buffer, preset.getPos(), (buf, pos) -> buf.writeFloatLE(pos.getZ()));
@@ -35,7 +35,7 @@ public class CameraPresetsSerializer_v748 extends CameraPresetsSerializer_v729 {
         helper.writeOptionalNull(buffer, preset.getEntityOffset(), helper::writeVector3f);
         helper.writeOptionalNull(buffer, preset.getRadius(), ByteBuf::writeFloatLE);
         helper.writeOptionalNull(buffer, preset.getListener(), (buf, listener) -> buf.writeByte(listener.ordinal()));
-        helper.writeOptional(buffer, OptionalBoolean::isPresent, preset.getPlayEffect(),
+        helper.writeOptional(buffer, OptionalBoolean::isPresent, preset.getPlayerEffects(),
                 (buf, optional) -> buf.writeBoolean(optional.getAsBoolean()));
         helper.writeOptional(buffer, OptionalBoolean::isPresent, preset.getAlignTargetAndCameraForward(),
                 (buf, optional) -> buf.writeBoolean(optional.getAsBoolean()));

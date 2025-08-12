@@ -1,7 +1,7 @@
 package org.cloudburstmc.protocol.bedrock.codec.v671;
 
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
-import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
+import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelEventSerializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelSoundEvent1Serializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v313.serializer.LevelSoundEvent2Serializer_v313;
@@ -13,8 +13,8 @@ import org.cloudburstmc.protocol.bedrock.codec.v671.serializer.*;
 import org.cloudburstmc.protocol.bedrock.data.LevelEventType;
 import org.cloudburstmc.protocol.bedrock.data.ParticleType;
 import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataTypes;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorFlag;
 import org.cloudburstmc.protocol.bedrock.packet.*;
 import org.cloudburstmc.protocol.bedrock.transformer.FlagTransformer;
 import org.cloudburstmc.protocol.common.util.TypeMap;
@@ -29,15 +29,15 @@ public class Bedrock_v671 extends Bedrock_v662 {
             .insert(LEVEL_EVENT_PARTICLE_TYPE, PARTICLE_TYPES)
             .build();
 
-    protected static final TypeMap<EntityFlag> ENTITY_FLAGS = Bedrock_v662.ENTITY_FLAGS
+    protected static final TypeMap<ActorFlag> ENTITY_FLAGS = Bedrock_v662.ENTITY_FLAGS
             .toBuilder()
-            .insert(118, EntityFlag.BODY_ROTATION_BLOCKED)
+            .insert(118, ActorFlag.BODY_ROTATION_BLOCKED)
             .build();
 
-    protected static final EntityDataTypeMap ENTITY_DATA = Bedrock_v662.ENTITY_DATA
+    protected static final ActorDataTypeMap ENTITY_DATA = Bedrock_v662.ENTITY_DATA
             .toBuilder()
-            .update(EntityDataTypes.FLAGS, new FlagTransformer(ENTITY_FLAGS, 0))
-            .update(EntityDataTypes.FLAGS_2, new FlagTransformer(ENTITY_FLAGS, 1))
+            .update(ActorDataTypes.FLAGS, new FlagTransformer(ENTITY_FLAGS, 0))
+            .update(ActorDataTypes.FLAGS_2, new FlagTransformer(ENTITY_FLAGS, 1))
             .build();
 
     protected static final TypeMap<SoundEvent> SOUND_EVENTS = Bedrock_v662.SOUND_EVENTS
@@ -67,7 +67,7 @@ public class Bedrock_v671 extends Bedrock_v662 {
             .updateSerializer(UpdatePlayerGameTypePacket.class, UpdatePlayerGameTypeSerializer_v671.INSTANCE)
             .updateSerializer(StartGamePacket.class, StartGameSerializer_v671.INSTANCE)
             .updateSerializer(CraftingDataPacket.class, CraftingDataSerializer_v671.INSTANCE)
-            .updateSerializer(EventPacket.class, EventSerializer_v671.INSTANCE)
+            .updateSerializer(LegacyTelemetryEventPacket.class, LegacyTelemetryEventSerializer_v671.INSTANCE)
             .deregisterPacket(FilterTextPacket.class)
             .build();
 }

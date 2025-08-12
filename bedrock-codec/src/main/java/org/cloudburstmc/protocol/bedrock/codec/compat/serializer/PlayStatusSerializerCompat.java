@@ -3,6 +3,7 @@ package org.cloudburstmc.protocol.bedrock.codec.compat.serializer;
 import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
+import org.cloudburstmc.protocol.bedrock.data.PlayStatus;
 import org.cloudburstmc.protocol.bedrock.packet.PlayStatusPacket;
 
 public class PlayStatusSerializerCompat implements BedrockPacketSerializer<PlayStatusPacket> {
@@ -15,7 +16,7 @@ public class PlayStatusSerializerCompat implements BedrockPacketSerializer<PlayS
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, PlayStatusPacket packet) {
-        packet.setStatus(PlayStatusPacket.Status.values()[buffer.readInt()]);
+        packet.setStatus(PlayStatus.from(buffer.readInt()));
     }
 }
 

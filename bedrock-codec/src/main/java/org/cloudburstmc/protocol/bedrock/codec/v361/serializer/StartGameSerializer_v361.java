@@ -10,6 +10,7 @@ import org.cloudburstmc.nbt.NbtType;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v332.serializer.StartGameSerializer_v332;
 import org.cloudburstmc.protocol.bedrock.data.GameType;
+import org.cloudburstmc.protocol.bedrock.data.LevelSettings;
 import org.cloudburstmc.protocol.bedrock.data.definitions.ItemDefinition;
 import org.cloudburstmc.protocol.bedrock.data.definitions.SimpleItemDefinition;
 import org.cloudburstmc.protocol.bedrock.packet.StartGamePacket;
@@ -23,19 +24,19 @@ public class StartGameSerializer_v361 extends StartGameSerializer_v332 {
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, StartGamePacket packet) {
-        VarInts.writeLong(buffer, packet.getUniqueEntityId());
-        VarInts.writeUnsignedLong(buffer, packet.getRuntimeEntityId());
-        VarInts.writeInt(buffer, packet.getPlayerGameType().ordinal());
-        helper.writeVector3f(buffer, packet.getPlayerPosition());
+        VarInts.writeLong(buffer, packet.getEntityID());
+        VarInts.writeUnsignedLong(buffer, packet.getRuntimeID());
+        VarInts.writeInt(buffer, packet.getGameType().ordinal());
+        helper.writeVector3f(buffer, packet.getPosition());
         helper.writeVector2f(buffer, packet.getRotation());
 
-        this.writeLevelSettings(buffer, helper, packet);
+        this.writeLevelSettings(buffer, helper, packet.getSettings());
 
         helper.writeString(buffer, packet.getLevelId());
         helper.writeString(buffer, packet.getLevelName());
-        helper.writeString(buffer, packet.getPremiumWorldTemplateId());
+        helper.writeString(buffer, packet.getTemplateContentIdentity());
         buffer.writeBoolean(packet.isTrial());
-        buffer.writeLongLE(packet.getCurrentTick());
+        buffer.writeLongLE(packet.getLevelCurrentTime());
         VarInts.writeInt(buffer, packet.getEnchantmentSeed());
 
         List<NbtMap> palette = packet.getBlockPalette();
@@ -55,19 +56,19 @@ public class StartGameSerializer_v361 extends StartGameSerializer_v332 {
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, StartGamePacket packet) {
-        packet.setUniqueEntityId(VarInts.readLong(buffer));
-        packet.setRuntimeEntityId(VarInts.readUnsignedLong(buffer));
-        packet.setPlayerGameType(GameType.from(VarInts.readInt(buffer)));
-        packet.setPlayerPosition(helper.readVector3f(buffer));
+        packet.setEntityID(VarInts.readLong(buffer));
+        packet.setRuntimeID(VarInts.readUnsignedLong(buffer));
+        packet.setGameType(GameType.from(VarInts.readInt(buffer)));
+        packet.setPosition(helper.readVector3f(buffer));
         packet.setRotation(helper.readVector2f(buffer));
 
-        this.readLevelSettings(buffer, helper, packet);
+        this.readLevelSettings(buffer, helper, packet.getSettings());
 
         packet.setLevelId(helper.readString(buffer));
         packet.setLevelName(helper.readString(buffer));
-        packet.setPremiumWorldTemplateId(helper.readString(buffer));
+        packet.setTemplateContentIdentity(helper.readString(buffer));
         packet.setTrial(buffer.readBoolean());
-        packet.setCurrentTick(buffer.readLongLE());
+        packet.setLevelCurrentTime(buffer.readLongLE());
         packet.setEnchantmentSeed(VarInts.readInt(buffer));
 
         int paletteLength = VarInts.readUnsignedInt(buffer);
@@ -89,17 +90,17 @@ public class StartGameSerializer_v361 extends StartGameSerializer_v332 {
     }
 
     @Override
-    protected void readLevelSettings(ByteBuf buffer, BedrockCodecHelper helper, StartGamePacket packet) {
-        super.readLevelSettings(buffer, helper, packet);
+    protected void readLevelSettings(ByteBuf buffer, BedrockCodecHelper helper, LevelSettings settings) {
+        super.readLevelSettings(buffer, helper, settings);
 
-        packet.setOnlySpawningV1Villagers(buffer.readBoolean());
+        settings.setOnlySpawnV1Villagers(buffer.readBoolean());
     }
 
     @Override
-    protected void writeLevelSettings(ByteBuf buffer, BedrockCodecHelper helper, StartGamePacket packet) {
-        super.writeLevelSettings(buffer, helper, packet);
+    protected void writeLevelSettings(ByteBuf buffer, BedrockCodecHelper helper, LevelSettings settings) {
+        super.writeLevelSettings(buffer, helper, settings);
 
-        buffer.writeBoolean(packet.isOnlySpawningV1Villagers());
+        buffer.writeBoolean(settings.isOnlySpawnV1Villagers());
     }
 
     protected void writeItemDefinitions(ByteBuf buffer, BedrockCodecHelper helper, List<ItemDefinition> definitions) {

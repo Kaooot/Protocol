@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.Value;
+import org.cloudburstmc.protocol.bedrock.data.ScoreboardIdentityPacketType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 import java.util.List;
@@ -14,8 +15,8 @@ import java.util.UUID;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class SetScoreboardIdentityPacket implements BedrockPacket {
-    private final List<Entry> entries = new ObjectArrayList<>();
-    private Action action;
+    private final List<Entry> scoreboardIdentifyInfo = new ObjectArrayList<>();
+    private ScoreboardIdentityPacketType scoreboardIdentityPacketType;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {
@@ -26,15 +27,10 @@ public class SetScoreboardIdentityPacket implements BedrockPacket {
         return BedrockPacketType.SET_SCOREBOARD_IDENTITY;
     }
 
-    public enum Action {
-        ADD,
-        REMOVE
-    }
-
     @Value
     public static class Entry {
         private final long scoreboardId;
-        private final UUID uuid;
+        private final UUID playerUniqueId;
     }
 
     @Override

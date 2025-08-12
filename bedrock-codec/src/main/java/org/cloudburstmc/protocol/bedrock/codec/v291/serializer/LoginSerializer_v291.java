@@ -2,7 +2,6 @@ package org.cloudburstmc.protocol.bedrock.codec.v291.serializer;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
-import io.netty.util.AsciiString;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -26,14 +25,14 @@ public class LoginSerializer_v291 implements BedrockPacketSerializer<LoginPacket
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, LoginPacket packet) {
-        buffer.writeInt(packet.getProtocolVersion());
+        buffer.writeInt(packet.getClientNetworkVersion());
 
         writeJwts(buffer, writeAuthJwt(packet.getAuthPayload()), packet.getClientJwt());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, LoginPacket packet) {
-        packet.setProtocolVersion(buffer.readInt());
+        packet.setClientNetworkVersion(buffer.readInt());
 
         ByteBuf jwt = buffer.readSlice(VarInts.readUnsignedInt(buffer)); // Get the JWT.
 

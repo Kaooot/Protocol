@@ -9,16 +9,16 @@ public class TokenPayload implements AuthPayload {
 
     @Getter
     private final String token;
-    private final AuthType type;
+    private final PlayerAuthenticationType type;
 
-    public TokenPayload(String token, AuthType type) {
-        Preconditions.checkArgument(type != AuthType.UNKNOWN, "TokenPayload cannot be of type UNKNOWN");
+    public TokenPayload(String token, PlayerAuthenticationType type) {
+        Preconditions.checkArgument(type != PlayerAuthenticationType.UNKNOWN, "TokenPayload cannot be of type UNKNOWN");
         this.token = token;
         this.type = Objects.requireNonNull(type);
     }
 
     @Override
-    public AuthType getAuthType() {
+    public PlayerAuthenticationType getAuthType() {
         return type;
     }
 }

@@ -7,7 +7,6 @@ import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v748.serializer.CameraInstructionSerializer_v748;
 import org.cloudburstmc.protocol.bedrock.data.camera.CameraSetInstruction;
 import org.cloudburstmc.protocol.common.NamedDefinition;
-import org.cloudburstmc.protocol.common.util.DefinitionUtils;
 import org.cloudburstmc.protocol.common.util.OptionalBoolean;
 import org.cloudburstmc.protocol.common.util.Preconditions;
 
@@ -19,7 +18,7 @@ public class CameraInstructionSerializer_v818 extends CameraInstructionSerialize
     protected void writeSetInstruction(BedrockCodecHelper helper, ByteBuf buf, CameraSetInstruction set) {
         super.writeSetInstruction(helper, buf, set);
 
-        buf.writeBoolean(set.isRemoveIgnoreStartingValues());
+        buf.writeBoolean(set.isRemoveIgnoreStartingValuesComponent());
     }
 
     @Override

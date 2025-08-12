@@ -12,16 +12,16 @@ import org.cloudburstmc.protocol.common.util.index.Unindexed;
 @RequiredArgsConstructor(onConstructor_ = { @Deprecated })
 public class BiomeWeightedData {
     @Getter(AccessLevel.NONE)
-    transient Indexable<String> biome;
+    transient Indexable<String> biomeIdentifier;
     int weight;
 
     @JsonCreator
-    public BiomeWeightedData(String biome, int weight) {
-        this.biome = new Unindexed<>(biome);
+    public BiomeWeightedData(String biomeIdentifier, int weight) {
+        this.biomeIdentifier = new Unindexed<>(biomeIdentifier);
         this.weight = weight;
     }
 
-    public String getBiome() {
-        return biome.get();
+    public String getBiomeIdentifier() {
+        return biomeIdentifier.get();
     }
 }

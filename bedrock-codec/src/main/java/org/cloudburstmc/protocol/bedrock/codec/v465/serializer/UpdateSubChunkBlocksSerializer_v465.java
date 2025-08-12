@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
+import org.cloudburstmc.protocol.bedrock.data.ActorBlockSyncMessageId;
 import org.cloudburstmc.protocol.bedrock.data.BlockChangeEntry;
 import org.cloudburstmc.protocol.bedrock.packet.UpdateSubChunkBlocksPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
@@ -13,7 +14,7 @@ import org.cloudburstmc.protocol.common.util.VarInts;
 public class UpdateSubChunkBlocksSerializer_v465 implements BedrockPacketSerializer<UpdateSubChunkBlocksPacket> {
     public static final UpdateSubChunkBlocksSerializer_v465 INSTANCE = new UpdateSubChunkBlocksSerializer_v465();
 
-    private static final BlockChangeEntry.MessageType[] VALUES = BlockChangeEntry.MessageType.values();
+    private static final ActorBlockSyncMessageId[] VALUES = ActorBlockSyncMessageId.values();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, UpdateSubChunkBlocksPacket packet) {
@@ -34,11 +35,11 @@ public class UpdateSubChunkBlocksSerializer_v465 implements BedrockPacketSeriali
     }
 
     protected void writeBlockChangeEntry(ByteBuf buffer, BedrockCodecHelper helper, BlockChangeEntry entry) {
-        helper.writeBlockPosition(buffer, entry.getPosition());
+        helper.writeBlockPosition(buffer, entry.getPos());
         VarInts.writeUnsignedInt(buffer, entry.getDefinition().getRuntimeId());
         VarInts.writeUnsignedInt(buffer, entry.getUpdateFlags());
-        VarInts.writeUnsignedLong(buffer, entry.getMessageEntityId());
-        VarInts.writeUnsignedInt(buffer, entry.getMessageType().ordinal());
+        VarInts.writeUnsignedLong(buffer, entry.getSyncMessageEntityUniqueID());
+        VarInts.writeUnsignedInt(buffer, entry.getMessage().ordinal());
     }
 
     protected BlockChangeEntry readBlockChangeEntry(ByteBuf buffer, BedrockCodecHelper helper) {

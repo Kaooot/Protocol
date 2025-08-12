@@ -1,6 +1,7 @@
 package org.cloudburstmc.protocol.bedrock.data.event;
 
 import lombok.Value;
+import org.cloudburstmc.protocol.bedrock.packet.LegacyTelemetryEventPacket;
 
 @Value
 public class FishBucketedEventData implements EventData {
@@ -10,7 +11,7 @@ public class FishBucketedEventData implements EventData {
     private final boolean releaseEvent;
 
     @Override
-    public EventDataType getType() {
-        return EventDataType.FISH_BUCKETED;
+    public LegacyTelemetryEventPacket.Type getType() {
+        return LegacyTelemetryEventPacket.Type.DEPRECATED_FISH_BUCKETED;
     }
 }

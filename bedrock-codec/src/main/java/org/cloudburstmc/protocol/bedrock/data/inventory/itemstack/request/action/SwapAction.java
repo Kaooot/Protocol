@@ -1,7 +1,7 @@
 package org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action;
 
 import lombok.Value;
-import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequestSlotData;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequestSlotInfo;
 
 /**
  * SwapStackRequestActionData is sent by the client to swap the item in its cursor with an item present in another
@@ -9,8 +9,8 @@ import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemSt
  */
 @Value
 public class SwapAction implements ItemStackRequestAction {
-    ItemStackRequestSlotData source;
-    ItemStackRequestSlotData destination;
+    ItemStackRequestSlotInfo source;
+    ItemStackRequestSlotInfo destination;
 
     @Override
     public ItemStackRequestActionType getType() {
