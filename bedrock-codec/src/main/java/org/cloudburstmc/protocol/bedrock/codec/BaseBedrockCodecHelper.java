@@ -426,7 +426,7 @@ public abstract class BaseBedrockCodecHelper implements BedrockCodecHelper {
             ItemData toItem = helper.readItem(buf);
 
             return new InventoryActionData(source, slot, fromItem, toItem);
-        }, 64); // 64 should be enough
+        }, this.encodingSettings.maxInventoryActionsOrRequests());
         return false;
     }
 
