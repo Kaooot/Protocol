@@ -31,7 +31,7 @@ public class Bedrock_v465 extends Bedrock_v448 {
             .build();
 
     protected static final TypeMap<ActorEvent> ACTOR_EVENTS = Bedrock_v448.ACTOR_EVENTS.toBuilder()
-            .insert(76, ActorEvent.ENTITY_GROW_UP)
+            .insert(76, ActorEvent.ACTOR_GROW_UP)
             .build();
 
     protected static final TypeMap<LevelEventType> LEVEL_EVENTS = Bedrock_v448.LEVEL_EVENTS.toBuilder()
