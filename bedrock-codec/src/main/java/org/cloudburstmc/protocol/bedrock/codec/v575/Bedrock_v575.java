@@ -16,7 +16,7 @@ import org.cloudburstmc.protocol.bedrock.codec.v575.serializer.UnlockedRecipesSe
 import org.cloudburstmc.protocol.bedrock.data.*;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandParam;
 import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataTypes;
-import org.cloudburstmc.protocol.bedrock.data.actor.ActorFlag;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorFlags;
 import org.cloudburstmc.protocol.bedrock.packet.*;
 import org.cloudburstmc.protocol.bedrock.transformer.FlagTransformer;
 import org.cloudburstmc.protocol.bedrock.transformer.TypeMapTransformer;
@@ -29,12 +29,12 @@ public class Bedrock_v575 extends Bedrock_v568 {
             .insert(18, AbilitiesIndex.PRIVILEGED_BUILDER)
             .build();
 
-    protected static final TypeMap<ActorFlag> ENTITY_FLAGS = Bedrock_v568.ENTITY_FLAGS
+    protected static final TypeMap<ActorFlags> ACTOR_FLAGS = Bedrock_v568.ACTOR_FLAGS
             .toBuilder()
-            .insert(110, ActorFlag.SCENTING)
-            .insert(111, ActorFlag.RISING)
-            .insert(112, ActorFlag.FEELING_HAPPY)
-            .insert(113, ActorFlag.SEARCHING)
+            .insert(110, ActorFlags.SCENTING)
+            .insert(111, ActorFlags.RISING)
+            .insert(112, ActorFlags.FEELING_HAPPY)
+            .insert(113, ActorFlags.SEARCHING)
             .build();
 
     protected static final TypeMap<ParticleType> PARTICLE_TYPES = Bedrock_v568.PARTICLE_TYPES
@@ -42,10 +42,10 @@ public class Bedrock_v575 extends Bedrock_v568 {
             .insert(85, ParticleType.BRUSH_DUST)
             .build();
 
-    protected static final ActorDataTypeMap ENTITY_DATA = Bedrock_v568.ENTITY_DATA
+    protected static final ActorDataTypeMap ACTOR_DATA = Bedrock_v568.ACTOR_DATA
             .toBuilder()
-            .update(ActorDataTypes.FLAGS, new FlagTransformer(ENTITY_FLAGS, 0))
-            .update(ActorDataTypes.FLAGS_2, new FlagTransformer(ENTITY_FLAGS, 1))
+            .update(ActorDataTypes.FLAGS, new FlagTransformer(ACTOR_FLAGS, 0))
+            .update(ActorDataTypes.FLAGS_2, new FlagTransformer(ACTOR_FLAGS, 1))
             .update(ActorDataTypes.DATA_PARTICLE, new TypeMapTransformer<>(PARTICLE_TYPES))
             .build();
 
@@ -140,7 +140,7 @@ public class Bedrock_v575 extends Bedrock_v568 {
             .raknetProtocolVersion(11)
             .protocolVersion(575)
             .minecraftVersion("1.19.70")
-            .helper(() -> new BedrockCodecHelper_v575(ENTITY_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES, PLAYER_ABILITIES, TEXT_PROCESSING_ORIGINS))
+            .helper(() -> new BedrockCodecHelper_v575(ACTOR_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES, PLAYER_ABILITIES, TEXT_PROCESSING_ORIGINS))
             .updateSerializer(LevelSoundEvent1Packet.class, new LevelSoundEvent1Serializer_v291(SOUND_EVENTS))
             .updateSerializer(LevelSoundEvent2Packet.class, new LevelSoundEvent2Serializer_v313(SOUND_EVENTS))
             .updateSerializer(LevelSoundEventPacket.class, new LevelSoundEventSerializer_v332(SOUND_EVENTS))

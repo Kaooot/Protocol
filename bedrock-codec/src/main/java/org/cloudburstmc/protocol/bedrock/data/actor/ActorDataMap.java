@@ -15,25 +15,25 @@ public final class ActorDataMap implements Map<ActorDataType<?>, Object> {
     private final Map<ActorDataType<?>, Object> map = new LinkedHashMap<>();
 
     @NonNull
-    public EnumSet<ActorFlag> getOrCreateFlags() {
-        EnumSet<ActorFlag> flags = get(FLAGS);
+    public EnumSet<ActorFlags> getOrCreateFlags() {
+        EnumSet<ActorFlags> flags = get(FLAGS);
         if (flags == null) {
             flags = get(FLAGS_2);
             if (flags == null) {
-                flags = EnumSet.noneOf(ActorFlag.class);
+                flags = EnumSet.noneOf(ActorFlags.class);
             }
             this.putFlags(flags);
         }
         return flags;
     }
 
-    public EnumSet<ActorFlag> getFlags() {
+    public EnumSet<ActorFlags> getFlags() {
         return get(FLAGS);
     }
 
-    public ActorFlag setFlag(ActorFlag flag, boolean value) {
+    public ActorFlags setFlag(ActorFlags flag, boolean value) {
         Objects.requireNonNull(flag, "flag");
-        EnumSet<ActorFlag> flags = this.getOrCreateFlags();
+        EnumSet<ActorFlags> flags = this.getOrCreateFlags();
         if (value) {
             flags.add(flag);
         } else {
@@ -43,7 +43,7 @@ public final class ActorDataMap implements Map<ActorDataType<?>, Object> {
         return flag;
     }
 
-    public EnumSet<ActorFlag> putFlags(EnumSet<ActorFlag> flags) {
+    public EnumSet<ActorFlags> putFlags(EnumSet<ActorFlags> flags) {
         Objects.requireNonNull(flags, "flags");
         this.map.put(FLAGS, flags);
         this.map.put(FLAGS_2, flags);
@@ -103,7 +103,7 @@ public final class ActorDataMap implements Map<ActorDataType<?>, Object> {
         checkNotNull(value, "value was null for %s", key);
         checkArgument(key.isInstance(value), "value with type %s is not an instance of %s", value.getClass(), key);
         if (key == FLAGS || key == FLAGS_2) {
-            return this.putFlags((EnumSet<ActorFlag>) value);
+            return this.putFlags((EnumSet<ActorFlags>) value);
         }
         return this.map.put(key, value);
     }

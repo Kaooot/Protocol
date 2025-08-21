@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.math.vector.Vector3f;
-import org.cloudburstmc.protocol.bedrock.data.actor.ActorFlag;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorFlags;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 import java.util.Set;
@@ -16,7 +16,7 @@ import java.util.Set;
 public class ClientMovementPredictionSyncPacket implements BedrockPacket {
     private long actorID;
 
-    private final Set<ActorFlag> flags = new ObjectOpenHashSet<>();
+    private final Set<ActorFlags> flags = new ObjectOpenHashSet<>();
     private Vector3f actorBoundingBox;
 
     private float movementSpeed;

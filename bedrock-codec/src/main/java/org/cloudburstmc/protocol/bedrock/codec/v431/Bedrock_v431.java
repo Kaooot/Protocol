@@ -29,7 +29,7 @@ public class Bedrock_v431 extends Bedrock_v428 {
             .insert(30, ParticleType.STALACTITE_DRIP_LAVA)
             .build();
 
-    protected static final ActorDataTypeMap ENTITY_DATA = Bedrock_v428.ENTITY_DATA.toBuilder()
+    protected static final ActorDataTypeMap ACTOR_DATA = Bedrock_v428.ACTOR_DATA.toBuilder()
             .update(ActorDataTypes.DATA_PARTICLE, new TypeMapTransformer<>(PARTICLE_TYPES))
             .build();
 
@@ -60,7 +60,7 @@ public class Bedrock_v431 extends Bedrock_v428 {
     public static BedrockCodec CODEC = Bedrock_v428.CODEC.toBuilder()
             .protocolVersion(431)
             .minecraftVersion("1.16.220")
-            .helper(() -> new BedrockCodecHelper_v431(ENTITY_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES))
+            .helper(() -> new BedrockCodecHelper_v431(ACTOR_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES))
             .updateSerializer(LevelSoundEvent1Packet.class, new LevelSoundEvent1Serializer_v291(SOUND_EVENTS))
             .updateSerializer(LevelSoundEvent2Packet.class, new LevelSoundEvent2Serializer_v313(SOUND_EVENTS))
             .updateSerializer(LevelSoundEventPacket.class, new LevelSoundEventSerializer_v332(SOUND_EVENTS))

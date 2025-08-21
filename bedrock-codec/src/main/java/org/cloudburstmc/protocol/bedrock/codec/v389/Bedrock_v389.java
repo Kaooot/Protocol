@@ -36,14 +36,14 @@ public class Bedrock_v389 extends Bedrock_v388 {
             .insert(LEVEL_EVENT_PARTICLE_TYPE, PARTICLE_TYPES)
             .build();
 
-    protected static final ActorDataTypeMap ENTITY_DATA = Bedrock_v388.ENTITY_DATA.toBuilder()
+    protected static final ActorDataTypeMap ACTOR_DATA = Bedrock_v388.ACTOR_DATA.toBuilder()
             .update(ActorDataTypes.DATA_PARTICLE, new TypeMapTransformer<>(PARTICLE_TYPES))
             .build();
 
     public static BedrockCodec CODEC = Bedrock_v388.CODEC.toBuilder()
             .protocolVersion(389)
             .minecraftVersion("1.14.0")
-            .helper(() -> new BedrockCodecHelper_v388(ENTITY_DATA, GAME_RULE_TYPES))
+            .helper(() -> new BedrockCodecHelper_v388(ACTOR_DATA, GAME_RULE_TYPES))
             .updateSerializer(LegacyTelemetryEventPacket.class, LegacyTelemetryEventSerializer_v389.INSTANCE)
             .updateSerializer(LevelEventPacket.class, new LevelEventSerializer_v291(LEVEL_EVENTS))
             .updateSerializer(LevelEventGenericPacket.class, new LevelEventGenericSerializer_v361(LEVEL_EVENTS))

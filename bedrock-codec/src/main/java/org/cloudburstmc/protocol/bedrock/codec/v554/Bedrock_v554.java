@@ -25,7 +25,7 @@ public class Bedrock_v554 extends Bedrock_v545 {
             .raknetProtocolVersion(11)
             .protocolVersion(554)
             .minecraftVersion("1.19.30")
-            .helper(() -> new BedrockCodecHelper_v554(ENTITY_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES, PLAYER_ABILITIES, TEXT_PROCESSING_ORIGINS))
+            .helper(() -> new BedrockCodecHelper_v554(ACTOR_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES, PLAYER_ABILITIES, TEXT_PROCESSING_ORIGINS))
             .updateSerializer(TextPacket.class, new TextSerializer_v554())
             .updateSerializer(NetworkSettingsPacket.class, new NetworkSettingsSerializer_v554())
             .updateSerializer(StructureBlockUpdatePacket.class, new StructureBlockUpdateSerializer_v554())

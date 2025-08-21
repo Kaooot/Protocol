@@ -14,7 +14,7 @@ import org.cloudburstmc.protocol.bedrock.data.LevelEventType;
 import org.cloudburstmc.protocol.bedrock.data.ParticleType;
 import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
 import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataTypes;
-import org.cloudburstmc.protocol.bedrock.data.actor.ActorFlag;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorFlags;
 import org.cloudburstmc.protocol.bedrock.packet.*;
 import org.cloudburstmc.protocol.bedrock.transformer.FlagTransformer;
 import org.cloudburstmc.protocol.common.util.TypeMap;
@@ -29,15 +29,15 @@ public class Bedrock_v671 extends Bedrock_v662 {
             .insert(LEVEL_EVENT_PARTICLE_TYPE, PARTICLE_TYPES)
             .build();
 
-    protected static final TypeMap<ActorFlag> ENTITY_FLAGS = Bedrock_v662.ENTITY_FLAGS
+    protected static final TypeMap<ActorFlags> ACTOR_FLAGS = Bedrock_v662.ACTOR_FLAGS
             .toBuilder()
-            .insert(118, ActorFlag.BODY_ROTATION_BLOCKED)
+            .insert(118, ActorFlags.BODY_ROTATION_BLOCKED)
             .build();
 
-    protected static final ActorDataTypeMap ENTITY_DATA = Bedrock_v662.ENTITY_DATA
+    protected static final ActorDataTypeMap ACTOR_DATA = Bedrock_v662.ACTOR_DATA
             .toBuilder()
-            .update(ActorDataTypes.FLAGS, new FlagTransformer(ENTITY_FLAGS, 0))
-            .update(ActorDataTypes.FLAGS_2, new FlagTransformer(ENTITY_FLAGS, 1))
+            .update(ActorDataTypes.FLAGS, new FlagTransformer(ACTOR_FLAGS, 0))
+            .update(ActorDataTypes.FLAGS_2, new FlagTransformer(ACTOR_FLAGS, 1))
             .build();
 
     protected static final TypeMap<SoundEvent> SOUND_EVENTS = Bedrock_v662.SOUND_EVENTS
@@ -55,7 +55,7 @@ public class Bedrock_v671 extends Bedrock_v662 {
             .raknetProtocolVersion(11)
             .protocolVersion(671)
             .minecraftVersion("1.20.80")
-            .helper(() -> new BedrockCodecHelper_v575(ENTITY_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES, PLAYER_ABILITIES, TEXT_PROCESSING_ORIGINS))
+            .helper(() -> new BedrockCodecHelper_v575(ACTOR_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES, PLAYER_ABILITIES, TEXT_PROCESSING_ORIGINS))
             .updateSerializer(LevelEventPacket.class, new LevelEventSerializer_v291(LEVEL_EVENTS))
             .updateSerializer(LevelEventGenericPacket.class, new LevelEventGenericSerializer_v361(LEVEL_EVENTS))
             .updateSerializer(LevelSoundEvent1Packet.class, new LevelSoundEvent1Serializer_v291(SOUND_EVENTS))

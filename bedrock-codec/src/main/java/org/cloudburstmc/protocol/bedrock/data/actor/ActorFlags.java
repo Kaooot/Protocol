@@ -1,6 +1,6 @@
 package org.cloudburstmc.protocol.bedrock.data.actor;
 
-public enum ActorFlag {
+public enum ActorFlags {
     ON_FIRE,
     SNEAKING,
     RIDING,

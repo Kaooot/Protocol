@@ -13,11 +13,11 @@ import java.util.Set;
 @UtilityClass
 public class ActorDataTypes {
 
-    public static final ActorDataType<EnumSet<ActorFlag>> FLAGS = new ActorDataType<EnumSet<ActorFlag>>(EnumSet.class, "FLAGS") {
+    public static final ActorDataType<EnumSet<ActorFlags>> FLAGS = new ActorDataType<EnumSet<ActorFlags>>(EnumSet.class, "FLAGS") {
         @Override
         public boolean isInstance(Object value) {
             return value instanceof EnumSet &&
-                    (((EnumSet<?>) value).isEmpty() || ((Set<?>) value).iterator().next() instanceof ActorFlag);
+                    (((EnumSet<?>) value).isEmpty() || ((Set<?>) value).iterator().next() instanceof ActorFlags);
         }
     };
     public static final ActorDataType<Integer> STRUCTURAL_INTEGRITY = new ActorDataType<>(Integer.class, "STRUCTURAL_INTEGRITY");
@@ -196,7 +196,7 @@ public class ActorDataTypes {
     public static final ActorDataType<Float> SITTING_AMOUNT = new ActorDataType<>(Float.class, "SITTING_AMOUNT");
     public static final ActorDataType<Float> SITTING_AMOUNT_PREVIOUS = new ActorDataType<>(Float.class, "SITTING_AMOUNT_PREVIOUS");
     public static final ActorDataType<Integer> EATING_COUNTER = new ActorDataType<>(Integer.class, "EATING_COUNTER");
-    public static final ActorDataType<EnumSet<ActorFlag>> FLAGS_2 = new ActorDataType<>(EnumSet.class, "FLAGS_2");
+    public static final ActorDataType<EnumSet<ActorFlags>> FLAGS_2 = new ActorDataType<>(EnumSet.class, "FLAGS_2");
     public static final ActorDataType<Float> LAYING_AMOUNT = new ActorDataType<>(Float.class, "LAYING_AMOUNT");
     public static final ActorDataType<Float> LAYING_AMOUNT_PREVIOUS = new ActorDataType<>(Float.class, "LAYING_AMOUNT_PREVIOUS");
     /**

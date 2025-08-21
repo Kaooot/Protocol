@@ -22,7 +22,7 @@ import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandParam;
 import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataFormat;
 import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataTypes;
-import org.cloudburstmc.protocol.bedrock.data.actor.ActorFlag;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorFlags;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestActionType;
 import org.cloudburstmc.protocol.bedrock.packet.*;
 import org.cloudburstmc.protocol.bedrock.transformer.FlagTransformer;
@@ -31,13 +31,13 @@ import org.cloudburstmc.protocol.common.util.TypeMap;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Bedrock_v428 extends Bedrock_v422 {
 
-    protected static final TypeMap<ActorFlag> ENTITY_FLAGS = Bedrock_v422.ENTITY_FLAGS.toBuilder()
-            .insert(96, ActorFlag.RAM_ATTACK)
+    protected static final TypeMap<ActorFlags> ACTOR_FLAGS = Bedrock_v422.ACTOR_FLAGS.toBuilder()
+            .insert(96, ActorFlags.RAM_ATTACK)
             .build();
 
-    protected static final ActorDataTypeMap ENTITY_DATA = Bedrock_v422.ENTITY_DATA.toBuilder()
-            .update(ActorDataTypes.FLAGS, new FlagTransformer(ENTITY_FLAGS, 0))
-            .update(ActorDataTypes.FLAGS_2, new FlagTransformer(ENTITY_FLAGS, 1))
+    protected static final ActorDataTypeMap ACTOR_DATA = Bedrock_v422.ACTOR_DATA.toBuilder()
+            .update(ActorDataTypes.FLAGS, new FlagTransformer(ACTOR_FLAGS, 0))
+            .update(ActorDataTypes.FLAGS_2, new FlagTransformer(ACTOR_FLAGS, 1))
             .shift(60, 1)
             .insert(ActorDataTypes.SEAT_ROTATION_OFFSET_DEGREES, 60, ActorDataFormat.FLOAT)
             .shift(120, 1)
@@ -84,7 +84,7 @@ public class Bedrock_v428 extends Bedrock_v422 {
     public static final BedrockCodec CODEC = Bedrock_v422.CODEC.toBuilder()
             .protocolVersion(428)
             .minecraftVersion("1.16.210")
-            .helper(() -> new BedrockCodecHelper_v428(ENTITY_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES))
+            .helper(() -> new BedrockCodecHelper_v428(ACTOR_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES))
             .updateSerializer(StartGamePacket.class, StartGameSerializer_v428.INSTANCE)
             .updateSerializer(PlayerAuthInputPacket.class, PlayerAuthInputSerializer_v428.INSTANCE)
             .updateSerializer(CameraShakePacket.class, CameraShakeSerializer_v428.INSTANCE)

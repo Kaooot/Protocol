@@ -3,7 +3,7 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.protocol.bedrock.data.actor.ActorEventType;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorEvent;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
@@ -11,7 +11,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @ToString(doNotUseGetters = true)
 public class ActorEventPacket implements BedrockPacket {
     private long targetRuntimeID;
-    private ActorEventType type;
+    private ActorEvent type;
     private int data;
 
     @Override

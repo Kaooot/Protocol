@@ -6,7 +6,7 @@ import io.netty.util.internal.logging.InternalLoggerFactory;
 import lombok.RequiredArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
-import org.cloudburstmc.protocol.bedrock.data.actor.ActorEventType;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorEvent;
 import org.cloudburstmc.protocol.bedrock.packet.ActorEventPacket;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 import org.cloudburstmc.protocol.common.util.VarInts;
@@ -16,7 +16,7 @@ public class ActorEventSerializer_v291 implements BedrockPacketSerializer<ActorE
 
     private static final InternalLogger log = InternalLoggerFactory.getInstance(ActorEventSerializer_v291.class);
 
-    private final TypeMap<ActorEventType> typeMap;
+    private final TypeMap<ActorEvent> typeMap;
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ActorEventPacket packet) {

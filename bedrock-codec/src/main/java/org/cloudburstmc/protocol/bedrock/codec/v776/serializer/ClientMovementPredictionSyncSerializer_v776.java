@@ -5,7 +5,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
-import org.cloudburstmc.protocol.bedrock.data.actor.ActorFlag;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorFlags;
 import org.cloudburstmc.protocol.bedrock.packet.ClientMovementPredictionSyncPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -15,7 +15,7 @@ public class ClientMovementPredictionSyncSerializer_v776 implements BedrockPacke
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ClientMovementPredictionSyncPacket packet) {
-        helper.writeLargeVarIntFlags(buffer, packet.getFlags(), ActorFlag.class);
+        helper.writeLargeVarIntFlags(buffer, packet.getFlags(), ActorFlags.class);
         helper.writeVector3f(buffer, packet.getActorBoundingBox());
         buffer.writeFloatLE(packet.getMovementSpeed());
         buffer.writeFloatLE(packet.getUnderwaterMovementSpeed());
@@ -28,7 +28,7 @@ public class ClientMovementPredictionSyncSerializer_v776 implements BedrockPacke
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ClientMovementPredictionSyncPacket packet) {
-        helper.readLargeVarIntFlags(buffer, packet.getFlags(), ActorFlag.class);
+        helper.readLargeVarIntFlags(buffer, packet.getFlags(), ActorFlags.class);
         packet.setActorBoundingBox(helper.readVector3f(buffer));
         packet.setMovementSpeed(buffer.readFloatLE());
         packet.setUnderwaterMovementSpeed(buffer.readFloatLE());

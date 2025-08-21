@@ -13,7 +13,7 @@ public class Bedrock_v748 extends Bedrock_v729 {
             .raknetProtocolVersion(11)
             .protocolVersion(748)
             .minecraftVersion("1.21.40")
-            .helper(() -> new BedrockCodecHelper_v729(ENTITY_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES, PLAYER_ABILITIES, TEXT_PROCESSING_ORIGINS))
+            .helper(() -> new BedrockCodecHelper_v729(ACTOR_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES, PLAYER_ABILITIES, TEXT_PROCESSING_ORIGINS))
             .updateSerializer(CameraInstructionPacket.class, CameraInstructionSerializer_v748.INSTANCE)
             .updateSerializer(CameraPresetsPacket.class, CameraPresetsSerializer_v748.INSTANCE)
             .updateSerializer(CraftingDataPacket.class, CraftingDataSerializer_v748.INSTANCE)

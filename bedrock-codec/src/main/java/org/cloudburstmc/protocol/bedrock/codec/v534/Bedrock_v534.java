@@ -10,14 +10,14 @@ import org.cloudburstmc.protocol.bedrock.codec.v534.serializer.*;
 import org.cloudburstmc.protocol.bedrock.data.AbilitiesIndex;
 import org.cloudburstmc.protocol.bedrock.data.PacketRecipient;
 import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
-import org.cloudburstmc.protocol.bedrock.data.actor.ActorEventType;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorEvent;
 import org.cloudburstmc.protocol.bedrock.packet.*;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 
 public class Bedrock_v534 extends Bedrock_v527 {
 
-    protected static final TypeMap<ActorEventType> ENTITY_EVENTS = Bedrock_v527.ENTITY_EVENTS.toBuilder()
-            .insert(78, ActorEventType.DRINK_MILK)
+    protected static final TypeMap<ActorEvent> ACTOR_EVENTS = Bedrock_v527.ACTOR_EVENTS.toBuilder()
+            .insert(78, ActorEvent.DRINK_MILK)
             .build();
 
     protected static final TypeMap<SoundEvent> SOUND_EVENTS = Bedrock_v527.SOUND_EVENTS.toBuilder()
@@ -51,11 +51,11 @@ public class Bedrock_v534 extends Bedrock_v527 {
     public static final BedrockCodec CODEC = Bedrock_v527.CODEC.toBuilder()
             .protocolVersion(534)
             .minecraftVersion("1.19.10")
-            .helper(() -> new BedrockCodecHelper_v534(ENTITY_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES, PLAYER_ABILITIES))
+            .helper(() -> new BedrockCodecHelper_v534(ACTOR_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES, PLAYER_ABILITIES))
             .updateSerializer(StartGamePacket.class, StartGameSerializer_v534.INSTANCE)
             .updateSerializer(AddActorPacket.class, AddActorSerializer_v534.INSTANCE)
             .updateSerializer(AddPlayerPacket.class, AddPlayerSerializer_v534.INSTANCE)
-            .updateSerializer(ActorEventPacket.class, new ActorEventSerializer_v291(ENTITY_EVENTS))
+            .updateSerializer(ActorEventPacket.class, new ActorEventSerializer_v291(ACTOR_EVENTS))
             .updateSerializer(LevelSoundEvent1Packet.class, new LevelSoundEvent1Serializer_v291(SOUND_EVENTS))
             .updateSerializer(LevelSoundEvent2Packet.class, new LevelSoundEvent2Serializer_v313(SOUND_EVENTS))
             .updateSerializer(LevelSoundEventPacket.class, new LevelSoundEventSerializer_v332(SOUND_EVENTS))

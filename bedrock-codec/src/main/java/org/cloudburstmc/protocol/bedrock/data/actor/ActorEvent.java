@@ -1,6 +1,6 @@
 package org.cloudburstmc.protocol.bedrock.data.actor;
 
-public enum ActorEventType {
+public enum ActorEvent {
     NONE,
     JUMP,
     HURT,

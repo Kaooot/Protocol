@@ -47,7 +47,7 @@ public class Bedrock_v589 extends Bedrock_v582 {
             .raknetProtocolVersion(11)
             .protocolVersion(589)
             .minecraftVersion("1.20.0")
-            .helper(() -> new BedrockCodecHelper_v575(ENTITY_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES, PLAYER_ABILITIES, TEXT_PROCESSING_ORIGINS))
+            .helper(() -> new BedrockCodecHelper_v575(ACTOR_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES, PLAYER_ABILITIES, TEXT_PROCESSING_ORIGINS))
             .updateSerializer(StartGamePacket.class, new StartGameSerializer_v589())
             .updateSerializer(LegacyTelemetryEventPacket.class, LegacyTelemetryEventSerializer_v589.INSTANCE)
             .updateSerializer(EmotePacket.class, EmoteSerializer_v589.INSTANCE)

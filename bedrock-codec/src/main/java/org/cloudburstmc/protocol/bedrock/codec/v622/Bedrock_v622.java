@@ -10,7 +10,7 @@ import org.cloudburstmc.protocol.bedrock.codec.v618.Bedrock_v618;
 import org.cloudburstmc.protocol.bedrock.codec.v622.serializer.DisconnectSerializer_v622;
 import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
 import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataTypes;
-import org.cloudburstmc.protocol.bedrock.data.actor.ActorFlag;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorFlags;
 import org.cloudburstmc.protocol.bedrock.packet.DisconnectPacket;
 import org.cloudburstmc.protocol.bedrock.packet.LevelSoundEvent1Packet;
 import org.cloudburstmc.protocol.bedrock.packet.LevelSoundEvent2Packet;
@@ -20,17 +20,17 @@ import org.cloudburstmc.protocol.common.util.TypeMap;
 
 public class Bedrock_v622 extends Bedrock_v618 {
 
-    protected static final TypeMap<ActorFlag> ENTITY_FLAGS = Bedrock_v618.ENTITY_FLAGS
+    protected static final TypeMap<ActorFlags> ACTOR_FLAGS = Bedrock_v618.ACTOR_FLAGS
             .toBuilder()
-            .insert(115, ActorFlag.TIMER_FLAG_1)
-            .insert(116, ActorFlag.TIMER_FLAG_2)
-            .insert(117, ActorFlag.TIMER_FLAG_3)
+            .insert(115, ActorFlags.TIMER_FLAG_1)
+            .insert(116, ActorFlags.TIMER_FLAG_2)
+            .insert(117, ActorFlags.TIMER_FLAG_3)
             .build();
 
-    protected static final ActorDataTypeMap ENTITY_DATA = Bedrock_v618.ENTITY_DATA
+    protected static final ActorDataTypeMap ACTOR_DATA = Bedrock_v618.ACTOR_DATA
             .toBuilder()
-            .update(ActorDataTypes.FLAGS, new FlagTransformer(ENTITY_FLAGS, 0))
-            .update(ActorDataTypes.FLAGS_2, new FlagTransformer(ENTITY_FLAGS, 1))
+            .update(ActorDataTypes.FLAGS, new FlagTransformer(ACTOR_FLAGS, 0))
+            .update(ActorDataTypes.FLAGS_2, new FlagTransformer(ACTOR_FLAGS, 1))
             .build();
 
     protected static final TypeMap<SoundEvent> SOUND_EVENTS = Bedrock_v618.SOUND_EVENTS
@@ -44,7 +44,7 @@ public class Bedrock_v622 extends Bedrock_v618 {
             .raknetProtocolVersion(11)
             .protocolVersion(622)
             .minecraftVersion("1.20.40")
-            .helper(() -> new BedrockCodecHelper_v575(ENTITY_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES, PLAYER_ABILITIES, TEXT_PROCESSING_ORIGINS))
+            .helper(() -> new BedrockCodecHelper_v575(ACTOR_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES, PLAYER_ABILITIES, TEXT_PROCESSING_ORIGINS))
             .updateSerializer(DisconnectPacket.class, DisconnectSerializer_v622.INSTANCE)
             .updateSerializer(LevelSoundEvent1Packet.class, new LevelSoundEvent1Serializer_v291(SOUND_EVENTS))
             .updateSerializer(LevelSoundEvent2Packet.class, new LevelSoundEvent2Serializer_v313(SOUND_EVENTS))

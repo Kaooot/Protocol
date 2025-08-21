@@ -16,7 +16,7 @@ import org.cloudburstmc.protocol.bedrock.data.PacketRecipient;
 import org.cloudburstmc.protocol.bedrock.data.ParticleType;
 import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
 import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataTypes;
-import org.cloudburstmc.protocol.bedrock.data.actor.ActorFlag;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorFlags;
 import org.cloudburstmc.protocol.bedrock.packet.*;
 import org.cloudburstmc.protocol.bedrock.transformer.FlagTransformer;
 import org.cloudburstmc.protocol.bedrock.transformer.TypeMapTransformer;
@@ -25,9 +25,9 @@ import org.cloudburstmc.protocol.common.util.TypeMap;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Bedrock_v448 extends Bedrock_v440 {
 
-    protected static final TypeMap<ActorFlag> ENTITY_FLAGS = Bedrock_v440.ENTITY_FLAGS.toBuilder()
-            .insert(98, ActorFlag.IN_ASCENDABLE_BLOCK)
-            .insert(99, ActorFlag.OVER_DESCENDABLE_BLOCK)
+    protected static final TypeMap<ActorFlags> ACTOR_FLAGS = Bedrock_v440.ACTOR_FLAGS.toBuilder()
+            .insert(98, ActorFlags.IN_ASCENDABLE_BLOCK)
+            .insert(99, ActorFlags.OVER_DESCENDABLE_BLOCK)
             .build();
 
     protected static final TypeMap<ParticleType> PARTICLE_TYPES = Bedrock_v440.PARTICLE_TYPES.toBuilder()
@@ -35,9 +35,9 @@ public class Bedrock_v448 extends Bedrock_v440 {
             .insert(9, ParticleType.CANDLE_FLAME)
             .build();
 
-    protected static final ActorDataTypeMap ENTITY_DATA = Bedrock_v440.ENTITY_DATA.toBuilder()
-            .update(ActorDataTypes.FLAGS, new FlagTransformer(ENTITY_FLAGS, 0))
-            .update(ActorDataTypes.FLAGS_2, new FlagTransformer(ENTITY_FLAGS, 1))
+    protected static final ActorDataTypeMap ACTOR_DATA = Bedrock_v440.ACTOR_DATA.toBuilder()
+            .update(ActorDataTypes.FLAGS, new FlagTransformer(ACTOR_FLAGS, 0))
+            .update(ActorDataTypes.FLAGS_2, new FlagTransformer(ACTOR_FLAGS, 1))
             .update(ActorDataTypes.DATA_PARTICLE, new TypeMapTransformer<>(PARTICLE_TYPES))
             .build();
 
@@ -55,7 +55,7 @@ public class Bedrock_v448 extends Bedrock_v440 {
     public static final BedrockCodec CODEC = Bedrock_v440.CODEC.toBuilder()
             .protocolVersion(448)
             .minecraftVersion("1.17.10")
-            .helper(() -> new BedrockCodecHelper_v448(ENTITY_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES))
+            .helper(() -> new BedrockCodecHelper_v448(ACTOR_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES))
             .updateSerializer(AvailableCommandsPacket.class, new AvailableCommandsSerializer_v448(COMMAND_PARAMS))
             .updateSerializer(LevelSoundEvent1Packet.class, new LevelSoundEvent1Serializer_v291(SOUND_EVENTS))
             .updateSerializer(LevelSoundEvent2Packet.class, new LevelSoundEvent2Serializer_v313(SOUND_EVENTS))

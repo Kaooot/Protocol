@@ -50,7 +50,7 @@ public class Bedrock_v685 extends Bedrock_v671 {
             .insert(134217728, CommandParam.CHAINED_COMMAND)//reinsert, avoid shift
             .build();
 
-    protected static final ActorDataTypeMap ENTITY_DATA = Bedrock_v671.ENTITY_DATA
+    protected static final ActorDataTypeMap ACTOR_DATA = Bedrock_v671.ACTOR_DATA
             .toBuilder()
             .insert(ActorDataTypes.VISIBLE_MOB_EFFECTS, 131, ActorDataFormat.LONG)
             .build();
@@ -68,7 +68,7 @@ public class Bedrock_v685 extends Bedrock_v671 {
             .raknetProtocolVersion(11)
             .protocolVersion(685)
             .minecraftVersion("1.21.0")
-            .helper(() -> new BedrockCodecHelper_v575(ENTITY_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES, PLAYER_ABILITIES, TEXT_PROCESSING_ORIGINS))
+            .helper(() -> new BedrockCodecHelper_v575(ACTOR_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES, PLAYER_ABILITIES, TEXT_PROCESSING_ORIGINS))
             .updateSerializer(LevelEventPacket.class, new LevelEventSerializer_v291(LEVEL_EVENTS))
             .updateSerializer(LevelEventGenericPacket.class, new LevelEventGenericSerializer_v361(LEVEL_EVENTS))
             .updateSerializer(AvailableCommandsPacket.class, new AvailableCommandsSerializer_v594(COMMAND_PARAMS))

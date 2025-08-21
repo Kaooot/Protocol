@@ -15,7 +15,7 @@ import org.cloudburstmc.protocol.common.util.TypeMap;
 
 public class Bedrock_v557 extends Bedrock_v554 {
 
-    public static final ActorDataTypeMap ENTITY_DATA = Bedrock_v554.ENTITY_DATA.toBuilder()
+    public static final ActorDataTypeMap ACTOR_DATA = Bedrock_v554.ACTOR_DATA.toBuilder()
             .remove(120) // UPDATE_PROPERTIES
             .shift(121, -1)
             .build();
@@ -32,7 +32,7 @@ public class Bedrock_v557 extends Bedrock_v554 {
             .raknetProtocolVersion(11)
             .protocolVersion(557)
             .minecraftVersion("1.19.40")
-            .helper(() -> new BedrockCodecHelper_v557(ENTITY_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES, PLAYER_ABILITIES, TEXT_PROCESSING_ORIGINS))
+            .helper(() -> new BedrockCodecHelper_v557(ACTOR_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES, PLAYER_ABILITIES, TEXT_PROCESSING_ORIGINS))
             .updateSerializer(AddPlayerPacket.class, new AddPlayerSerializer_v557())
             .updateSerializer(AddActorPacket.class, new AddActorSerializer_v557())
             .updateSerializer(SetActorDataPacket.class, new SetActorDataSerializer_v557())

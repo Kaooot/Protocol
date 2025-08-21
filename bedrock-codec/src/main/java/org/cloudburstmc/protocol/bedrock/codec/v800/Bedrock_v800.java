@@ -10,22 +10,22 @@ import org.cloudburstmc.protocol.bedrock.data.PacketRecipient;
 import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
 import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataFormat;
 import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataTypes;
-import org.cloudburstmc.protocol.bedrock.data.actor.ActorFlag;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorFlags;
 import org.cloudburstmc.protocol.bedrock.packet.*;
 import org.cloudburstmc.protocol.bedrock.transformer.FlagTransformer;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 
 public class Bedrock_v800 extends Bedrock_v786 {
 
-    protected static final TypeMap<ActorFlag> ENTITY_FLAGS = Bedrock_v786.ENTITY_FLAGS
+    protected static final TypeMap<ActorFlags> ACTOR_FLAGS = Bedrock_v786.ACTOR_FLAGS
             .toBuilder()
-            .insert(123, ActorFlag.DOES_SERVER_AUTH_ONLY_DISMOUNT)
+            .insert(123, ActorFlags.DOES_SERVER_AUTH_ONLY_DISMOUNT)
             .build();
 
-    protected static final ActorDataTypeMap ENTITY_DATA = Bedrock_v786.ENTITY_DATA
+    protected static final ActorDataTypeMap ACTOR_DATA = Bedrock_v786.ACTOR_DATA
             .toBuilder()
-            .update(ActorDataTypes.FLAGS, new FlagTransformer(ENTITY_FLAGS, 0))
-            .update(ActorDataTypes.FLAGS_2, new FlagTransformer(ENTITY_FLAGS, 1))
+            .update(ActorDataTypes.FLAGS, new FlagTransformer(ACTOR_FLAGS, 0))
+            .update(ActorDataTypes.FLAGS_2, new FlagTransformer(ACTOR_FLAGS, 1))
             .insert(ActorDataTypes.SEAT_THIRD_PERSON_CAMERA_RADIUS, 134, ActorDataFormat.FLOAT)
             .insert(ActorDataTypes.SEAT_CAMERA_RELAX_DISTANCE_SMOOTHING, 135, ActorDataFormat.FLOAT)
             .build();
@@ -49,7 +49,7 @@ public class Bedrock_v800 extends Bedrock_v786 {
             .raknetProtocolVersion(11)
             .protocolVersion(800)
             .minecraftVersion("1.21.80")
-            .helper(() -> new BedrockCodecHelper_v776(ENTITY_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES, PLAYER_ABILITIES, TEXT_PROCESSING_ORIGINS))
+            .helper(() -> new BedrockCodecHelper_v776(ACTOR_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES, PLAYER_ABILITIES, TEXT_PROCESSING_ORIGINS))
             .updateSerializer(LevelSoundEventPacket.class, new LevelSoundEventSerializer_v786(SOUND_EVENTS))
             .updateSerializer(BiomeDefinitionListPacket.class, BiomeDefinitionListSerializer_v800.INSTANCE)
             .updateSerializer(CameraPresetsPacket.class, CameraPresetsSerializer_v800.INSTANCE)

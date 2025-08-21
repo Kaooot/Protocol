@@ -28,7 +28,7 @@ public class Bedrock_v471 extends Bedrock_v465 {
             .insert(83, ParticleType.SCULK_SOUL)
             .build();
 
-    protected static final ActorDataTypeMap ENTITY_DATA = Bedrock_v465.ENTITY_DATA.toBuilder()
+    protected static final ActorDataTypeMap ACTOR_DATA = Bedrock_v465.ACTOR_DATA.toBuilder()
             .update(ActorDataTypes.DATA_PARTICLE, new TypeMapTransformer<>(PARTICLE_TYPES))
             .build();
 
@@ -50,7 +50,7 @@ public class Bedrock_v471 extends Bedrock_v465 {
     public static final BedrockCodec CODEC = Bedrock_v465.CODEC.toBuilder()
             .protocolVersion(471)
             .minecraftVersion("1.17.40")
-            .helper(() -> new BedrockCodecHelper_v471(ENTITY_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES))
+            .helper(() -> new BedrockCodecHelper_v471(ACTOR_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES))
             .updateSerializer(LegacyTelemetryEventPacket.class, LegacyTelemetryEventSerializer_v471.INSTANCE)
             .updateSerializer(LevelEventPacket.class, new LevelEventSerializer_v291(LEVEL_EVENTS))
             .updateSerializer(LevelEventGenericPacket.class, new LevelEventGenericSerializer_v361(LEVEL_EVENTS))

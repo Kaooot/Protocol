@@ -20,7 +20,7 @@ public class Bedrock_v422 extends Bedrock_v419 {
     public static BedrockCodec CODEC = Bedrock_v419.CODEC.toBuilder()
             .protocolVersion(422)
             .minecraftVersion("1.16.200")
-            .helper(() -> new BedrockCodecHelper_v422(ENTITY_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES))
+            .helper(() -> new BedrockCodecHelper_v422(ACTOR_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES))
             .updateSerializer(ResourcePacksInfoPacket.class, ResourcePacksInfoSerializer_v422.INSTANCE)
             .registerPacket(FilterTextPacket::new, FilterTextSerializer_v422.INSTANCE, 163, PacketRecipient.BOTH)
             .build();

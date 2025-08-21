@@ -13,7 +13,7 @@ import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandParam;
 import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataFormat;
 import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataTypes;
-import org.cloudburstmc.protocol.bedrock.data.actor.ActorFlag;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorFlags;
 import org.cloudburstmc.protocol.bedrock.packet.*;
 import org.cloudburstmc.protocol.bedrock.transformer.BooleanTransformer;
 import org.cloudburstmc.protocol.bedrock.transformer.FlagTransformer;
@@ -25,21 +25,21 @@ public class Bedrock_v340 extends Bedrock_v332 {
             .shift(15, -1)
             .build();
 
-    protected static final TypeMap<ActorFlag> ENTITY_FLAGS = Bedrock_v332.ENTITY_FLAGS.toBuilder()
-            .insert(71, ActorFlag.BLOCKING)
-            .insert(72, ActorFlag.TRANSITION_BLOCKING)
-            .insert(73, ActorFlag.BLOCKED_USING_SHIELD)
-            .insert(74, ActorFlag.SLEEPING)
-            .insert(75, ActorFlag.WANTS_TO_WAKE)
-            .insert(76, ActorFlag.TRADE_INTEREST)
-            .insert(77, ActorFlag.DOOR_BREAKER)
-            .insert(78, ActorFlag.BREAKING_OBSTRUCTION)
-            .insert(79, ActorFlag.DOOR_OPENER)
+    protected static final TypeMap<ActorFlags> ACTOR_FLAGS = Bedrock_v332.ACTOR_FLAGS.toBuilder()
+            .insert(71, ActorFlags.BLOCKING)
+            .insert(72, ActorFlags.TRANSITION_BLOCKING)
+            .insert(73, ActorFlags.BLOCKED_USING_SHIELD)
+            .insert(74, ActorFlags.SLEEPING)
+            .insert(75, ActorFlags.WANTS_TO_WAKE)
+            .insert(76, ActorFlags.TRADE_INTEREST)
+            .insert(77, ActorFlags.DOOR_BREAKER)
+            .insert(78, ActorFlags.BREAKING_OBSTRUCTION)
+            .insert(79, ActorFlags.DOOR_OPENER)
             .build();
 
-    protected static final ActorDataTypeMap ENTITY_DATA = Bedrock_v332.ENTITY_DATA.toBuilder()
-            .update(ActorDataTypes.FLAGS, new FlagTransformer(ENTITY_FLAGS, 0))
-            .update(ActorDataTypes.FLAGS_2, new FlagTransformer(ENTITY_FLAGS, 1))
+    protected static final ActorDataTypeMap ACTOR_DATA = Bedrock_v332.ACTOR_DATA.toBuilder()
+            .update(ActorDataTypes.FLAGS, new FlagTransformer(ACTOR_FLAGS, 0))
+            .update(ActorDataTypes.FLAGS_2, new FlagTransformer(ACTOR_FLAGS, 1))
             .replace(ActorDataTypes.HAS_NPC, 39, ActorDataFormat.BYTE, BooleanTransformer.INSTANCE)
             .insert(ActorDataTypes.INTERACT_TEXT, 99, ActorDataFormat.STRING)
             .insert(ActorDataTypes.TRADE_TIER, 100, ActorDataFormat.INT)
@@ -55,7 +55,7 @@ public class Bedrock_v340 extends Bedrock_v332 {
     public static final BedrockCodec CODEC = Bedrock_v332.CODEC.toBuilder()
             .protocolVersion(340)
             .minecraftVersion("1.10.0")
-            .helper(() -> new BedrockCodecHelper_v340(ENTITY_DATA, GAME_RULE_TYPES))
+            .helper(() -> new BedrockCodecHelper_v340(ACTOR_DATA, GAME_RULE_TYPES))
             .updateSerializer(LegacyTelemetryEventPacket.class, LegacyTelemetryEventSerializer_v340.INSTANCE)
             .updateSerializer(AvailableCommandsPacket.class, new AvailableCommandsSerializer_v340(COMMAND_PARAMS))
             .updateSerializer(StructureBlockUpdatePacket.class, StructureBlockUpdateSerializer_v340.INSTANCE)
