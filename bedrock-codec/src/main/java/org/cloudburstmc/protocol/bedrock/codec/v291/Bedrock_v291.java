@@ -590,7 +590,7 @@ public class Bedrock_v291 {
             .insert(31, ActorEvent.PRIME_TNTCART)
             .insert(32, ActorEvent.PRIME_CREEPER)
             .insert(33, ActorEvent.AIR_SUPPLY)
-            .insert(34, ActorEvent.ADD_PLAYER_LEVELS)
+            .insert(34, ActorEvent.DEPRECATED_ADD_PLAYER_LEVELS)
             .insert(35, ActorEvent.GUARDIAN_MINING_FATIGUE)
             .insert(36, ActorEvent.AGENT_SWING_ARM)
             .insert(37, ActorEvent.DRAGON_START_DEATH_ANIM)

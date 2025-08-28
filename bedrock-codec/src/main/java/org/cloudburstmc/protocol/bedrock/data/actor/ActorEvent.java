@@ -35,7 +35,10 @@ public enum ActorEvent {
     PRIME_TNTCART,
     PRIME_CREEPER,
     AIR_SUPPLY,
-    ADD_PLAYER_LEVELS,
+    /**
+     * @deprecated since v843
+     */
+    DEPRECATED_ADD_PLAYER_LEVELS,
     GUARDIAN_MINING_FATIGUE,
     AGENT_SWING_ARM,
     DRAGON_START_DEATH_ANIM,
