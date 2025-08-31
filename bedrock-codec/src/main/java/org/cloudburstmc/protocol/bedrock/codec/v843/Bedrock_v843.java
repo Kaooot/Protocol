@@ -9,7 +9,6 @@ import org.cloudburstmc.protocol.bedrock.codec.v786.serializer.LevelSoundEventSe
 import org.cloudburstmc.protocol.bedrock.codec.v827.Bedrock_v827;
 import org.cloudburstmc.protocol.bedrock.codec.v843.serializer.BiomeDefinitionListSerializer_v843;
 import org.cloudburstmc.protocol.bedrock.codec.v843.serializer.GameRulesChangedSerializer_v843;
-import org.cloudburstmc.protocol.bedrock.codec.v843.serializer.MapInfoRequestSerializer_v843;
 import org.cloudburstmc.protocol.bedrock.codec.v843.serializer.PlayerArmorDamageSerializer_v843;
 import org.cloudburstmc.protocol.bedrock.data.LevelEventType;
 import org.cloudburstmc.protocol.bedrock.data.ParticleType;
@@ -64,7 +63,6 @@ public class Bedrock_v843 extends Bedrock_v827 {
             .updateSerializer(LevelEventPacket.class, new LevelEventSerializer_v291(LEVEL_EVENTS))
             .updateSerializer(LevelEventGenericPacket.class, new LevelEventGenericSerializer_v361(LEVEL_EVENTS))
             .updateSerializer(LevelSoundEventPacket.class, new LevelSoundEventSerializer_v786(SOUND_EVENTS))
-            .updateSerializer(MapInfoRequestPacket.class, MapInfoRequestSerializer_v843.INSTANCE)
             .updateSerializer(PlayerArmorDamagePacket.class, PlayerArmorDamageSerializer_v843.INSTANCE)
             .build();
 }
