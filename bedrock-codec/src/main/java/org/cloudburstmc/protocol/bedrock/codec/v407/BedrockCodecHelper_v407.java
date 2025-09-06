@@ -283,7 +283,7 @@ public class BedrockCodecHelper_v407 extends BedrockCodecHelper_v390 {
     @Override
     public ItemDescriptorWithCount readIngredient(ByteBuf buffer) {
         int runtimeId = VarInts.readInt(buffer);
-        if (runtimeId == 0) {
+        if (runtimeId == 0 || runtimeId == -1) {
             // We don't need to read anything extra.
             return ItemDescriptorWithCount.EMPTY;
         }

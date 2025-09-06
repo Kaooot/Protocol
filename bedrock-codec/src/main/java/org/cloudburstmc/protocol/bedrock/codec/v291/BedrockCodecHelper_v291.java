@@ -78,7 +78,7 @@ public class BedrockCodecHelper_v291 extends BaseBedrockCodecHelper {
     @Override
     public ItemData readItem(ByteBuf buffer) {
         int runtimeId = VarInts.readInt(buffer);
-        if (runtimeId == 0) {
+        if (runtimeId == 0 || runtimeId == -1) {
             // We don't need to read anything extra.
             return ItemData.AIR;
         }
