@@ -19,7 +19,7 @@ public class Bedrock_v786 extends Bedrock_v776 {
             .toBuilder()
             .insert(120, ActorFlags.ROTATION_AXIS_ALIGNED)
             .insert(121, ActorFlags.COLLIDABLE)
-            .insert(122, ActorFlags.WASD_AIR_CONTROLLED)
+            .insert(122, ActorFlags.WASD_FREE_CAMERA_CONTROLLED)
             .build();
 
     protected static final ActorDataTypeMap ACTOR_DATA = Bedrock_v776.ACTOR_DATA
