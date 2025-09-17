@@ -20,12 +20,12 @@ public class GameRulesChangedSerializer_v843 implements BedrockPacketSerializer<
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, GameRulesChangedPacket packet) {
-        helper.writeArray(buffer, packet.getRulesData(), this::writeGameRule);
+        helper.writeArray(buffer, packet.getRulesData().getRulesList(), this::writeGameRule);
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, GameRulesChangedPacket packet) {
-        helper.readArray(buffer, packet.getRulesData(), this::readGameRule);
+        helper.readArray(buffer, packet.getRulesData().getRulesList(), this::readGameRule);
     }
 
     protected void writeGameRule(ByteBuf buffer, BedrockCodecHelper helper, GameRuleData<?> gameRule) {
@@ -52,15 +52,15 @@ public class GameRulesChangedSerializer_v843 implements BedrockPacketSerializer<
     protected GameRuleData<?> readGameRule(ByteBuf buffer, BedrockCodecHelper helper) {
         final String name = helper.readString(buffer);
         final boolean editable = buffer.readBoolean();
-        final int type = VarInts.readUnsignedInt(buffer);
+        final GameRuleData.Type type = GameRuleData.Type.from(VarInts.readUnsignedInt(buffer));
 
         switch (type) {
-            case 1:
-                return new GameRuleData<>(name, editable, buffer.readBoolean());
-            case 2:
-                return new GameRuleData<>(name, editable, buffer.readIntLE());
-            case 3:
-                return new GameRuleData<>(name, editable, buffer.readFloatLE());
+            case BOOL:
+                return new GameRuleData<>(name, editable, type, buffer.readBoolean());
+            case INT:
+                return new GameRuleData<>(name, editable, type, buffer.readIntLE());
+            case FLOAT:
+                return new GameRuleData<>(name, editable, type, buffer.readFloatLE());
         }
         throw new IllegalStateException("Invalid gamerule type received");
     }

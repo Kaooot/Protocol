@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v440.serializer.StartGameSerializer_v440;
 import org.cloudburstmc.protocol.bedrock.data.*;
-import org.cloudburstmc.protocol.bedrock.packet.StartGamePacket;
 import org.cloudburstmc.protocol.common.util.OptionalBoolean;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -36,11 +35,11 @@ public class StartGameSerializer_v465 extends StartGameSerializer_v440 {
         VarInts.writeInt(buffer, settings.getPlatformBroadcastSetting().ordinal());
         buffer.writeBoolean(settings.isCommandsEnabled());
         buffer.writeBoolean(settings.isTexturePacksRequired());
-        helper.writeArray(buffer, settings.getRuleData(), helper::writeGameRule);
+        helper.writeArray(buffer, settings.getRuleData().getRulesList(), helper::writeGameRule);
         helper.writeExperiments(buffer, settings.getExperiments());
         buffer.writeBoolean(settings.isWereAnyExperimentsEverToggled());
         buffer.writeBoolean(settings.isHasBonusChestEnabled());
-        buffer.writeBoolean(settings.isStartingWithMapEnabled());
+        buffer.writeBoolean(settings.isStartWithMapEnabled());
         VarInts.writeInt(buffer, settings.getPlayerPermissions().ordinal());
         buffer.writeIntLE(settings.getServerChunkTickRange());
         buffer.writeBoolean(settings.isHasLockedBehaviorPack());
@@ -82,11 +81,11 @@ public class StartGameSerializer_v465 extends StartGameSerializer_v440 {
         settings.setPlatformBroadcastSetting(GamePublishSetting.from(VarInts.readInt(buffer)));
         settings.setCommandsEnabled(buffer.readBoolean());
         settings.setTexturePacksRequired(buffer.readBoolean());
-        helper.readArray(buffer, settings.getRuleData(), helper::readGameRule);
+        helper.readArray(buffer, settings.getRuleData().getRulesList(), helper::readGameRule);
         helper.readExperiments(buffer, settings.getExperiments());
         settings.setWereAnyExperimentsEverToggled(buffer.readBoolean());
         settings.setHasBonusChestEnabled(buffer.readBoolean());
-        settings.setStartingWithMapEnabled(buffer.readBoolean());
+        settings.setStartWithMapEnabled(buffer.readBoolean());
         settings.setPlayerPermissions(PlayerPermissionLevel.from(VarInts.readInt(buffer)));
         settings.setServerChunkTickRange(buffer.readIntLE());
         settings.setHasLockedBehaviorPack(buffer.readBoolean());

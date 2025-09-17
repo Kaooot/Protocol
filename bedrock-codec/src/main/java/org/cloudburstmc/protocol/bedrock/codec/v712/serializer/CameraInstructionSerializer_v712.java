@@ -4,7 +4,7 @@ import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.math.vector.Vector2f;
 import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
-import org.cloudburstmc.protocol.bedrock.codec.v618.serializer.CameraInstructionSerializer_618;
+import org.cloudburstmc.protocol.bedrock.codec.v618.serializer.CameraInstructionSerializer_v618;
 import org.cloudburstmc.protocol.bedrock.data.camera.CameraSetInstruction;
 import org.cloudburstmc.protocol.bedrock.data.camera.CameraTargetInstruction;
 import org.cloudburstmc.protocol.bedrock.packet.CameraInstructionPacket;
@@ -13,7 +13,7 @@ import org.cloudburstmc.protocol.common.util.DefinitionUtils;
 import org.cloudburstmc.protocol.common.util.OptionalBoolean;
 import org.cloudburstmc.protocol.common.util.Preconditions;
 
-public class CameraInstructionSerializer_v712 extends CameraInstructionSerializer_618 {
+public class CameraInstructionSerializer_v712 extends CameraInstructionSerializer_v618 {
     public static final CameraInstructionSerializer_v712 INSTANCE = new CameraInstructionSerializer_v712();
 
     @Override
@@ -21,7 +21,7 @@ public class CameraInstructionSerializer_v712 extends CameraInstructionSerialize
         super.serialize(buffer, helper, packet);
         helper.writeOptionalNull(buffer, packet.getTargetInstruction(), (buf, targetInstruction) -> {
             helper.writeOptionalNull(buf, targetInstruction.getTargetCenterOffset(), helper::writeVector3f);
-            buf.writeLongLE(targetInstruction.getUniqueEntityId());
+            buf.writeLongLE(targetInstruction.getTargetActorID());
         });
         helper.writeOptional(buffer, OptionalBoolean::isPresent, packet.getRemoveTarget(),
                 (buf, removeTarget) -> buf.writeBoolean(removeTarget.getAsBoolean()));
@@ -59,7 +59,7 @@ public class CameraInstructionSerializer_v712 extends CameraInstructionSerialize
         NamedDefinition definition = helper.getCameraPresetDefinitions().getDefinition(runtimeId);
         Preconditions.checkNotNull(definition, "Unknown camera preset " + runtimeId);
 
-        CameraSetInstruction.EaseData ease = helper.readOptional(buf, null, this::readEase);
+        CameraSetInstruction.EaseOption ease = helper.readOptional(buf, null, this::readEase);
         Vector3f pos = helper.readOptional(buf, null, helper::readVector3f);
         Vector2f rot = helper.readOptional(buf, null, helper::readVector2f);
         Vector3f facing = helper.readOptional(buf, null, helper::readVector3f);

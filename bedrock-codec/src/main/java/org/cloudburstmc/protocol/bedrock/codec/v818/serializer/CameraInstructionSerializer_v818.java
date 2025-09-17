@@ -27,7 +27,7 @@ public class CameraInstructionSerializer_v818 extends CameraInstructionSerialize
         NamedDefinition definition = helper.getCameraPresetDefinitions().getDefinition(runtimeId);
         Preconditions.checkNotNull(definition, "Unknown camera preset " + runtimeId);
 
-        CameraSetInstruction.EaseData ease = helper.readOptional(buf, null, this::readEase);
+        CameraSetInstruction.EaseOption ease = helper.readOptional(buf, null, this::readEase);
         Vector3f pos = helper.readOptional(buf, null, helper::readVector3f);
         Vector2f rot = helper.readOptional(buf, null, helper::readVector2f);
         Vector3f facing = helper.readOptional(buf, null, helper::readVector3f);

@@ -5,18 +5,16 @@ import org.cloudburstmc.math.vector.Vector2f;
 import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
-import org.cloudburstmc.protocol.bedrock.data.camera.CameraEase;
 import org.cloudburstmc.protocol.bedrock.data.camera.CameraFadeInstruction;
 import org.cloudburstmc.protocol.bedrock.data.camera.CameraSetInstruction;
+import org.cloudburstmc.protocol.bedrock.data.camera.EasingType;
 import org.cloudburstmc.protocol.bedrock.packet.CameraInstructionPacket;
 import org.cloudburstmc.protocol.common.NamedDefinition;
 import org.cloudburstmc.protocol.common.util.DefinitionUtils;
 import org.cloudburstmc.protocol.common.util.OptionalBoolean;
 import org.cloudburstmc.protocol.common.util.Preconditions;
 
-import java.awt.*;
-
-public class CameraInstructionSerializer_618 implements BedrockPacketSerializer<CameraInstructionPacket> {
+public class CameraInstructionSerializer_v618 implements BedrockPacketSerializer<CameraInstructionPacket> {
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, CameraInstructionPacket packet) {
@@ -39,22 +37,22 @@ public class CameraInstructionSerializer_618 implements BedrockPacketSerializer<
 
         CameraFadeInstruction fade = helper.readOptional(buffer, null, buf -> {
             CameraFadeInstruction.TimeOption time = helper.readOptional(buf, null, this::readTimeData);
-            Color color = helper.readOptional(buf, null, this::readColor);
+            CameraFadeInstruction.ColorOption color = helper.readOptional(buf, null, this::readColor);
             return new CameraFadeInstruction(time, color);
         });
 
         packet.setFadeInstruction(fade);
     }
 
-    protected void writeEase(ByteBuf buffer, CameraSetInstruction.EaseData ease) {
-        buffer.writeByte(ease.getEaseType().ordinal());
+    protected void writeEase(ByteBuf buffer, CameraSetInstruction.EaseOption ease) {
+        buffer.writeByte(ease.getType().ordinal());
         buffer.writeFloatLE(ease.getTime());
     }
 
-    protected CameraSetInstruction.EaseData readEase(ByteBuf buffer) {
-        CameraEase type = CameraEase.values()[buffer.readUnsignedByte()];
+    protected CameraSetInstruction.EaseOption readEase(ByteBuf buffer) {
+        EasingType type = EasingType.values()[buffer.readUnsignedByte()];
         float time = buffer.readFloatLE();
-        return new CameraSetInstruction.EaseData(type, time);
+        return new CameraSetInstruction.EaseOption(type, time);
     }
 
     protected void writeTimeData(ByteBuf buffer, CameraFadeInstruction.TimeOption timeOption) {
@@ -70,14 +68,14 @@ public class CameraInstructionSerializer_618 implements BedrockPacketSerializer<
         return new CameraFadeInstruction.TimeOption(fadeIn, wait, fadeOut);
     }
 
-    protected void writeColor(ByteBuf buffer, Color color) {
+    protected void writeColor(ByteBuf buffer, CameraFadeInstruction.ColorOption color) {
         buffer.writeFloatLE(color.getRed() / 255F);
         buffer.writeFloatLE(color.getGreen() / 255F);
         buffer.writeFloatLE(color.getBlue() / 255F);
     }
 
-    protected Color readColor(ByteBuf buffer) {
-        return new Color(
+    protected CameraFadeInstruction.ColorOption readColor(ByteBuf buffer) {
+        return new CameraFadeInstruction.ColorOption(
                 (int) (buffer.readFloatLE() * 255),
                 (int) (buffer.readFloatLE() * 255),
                 (int) (buffer.readFloatLE() * 255)
@@ -102,7 +100,7 @@ public class CameraInstructionSerializer_618 implements BedrockPacketSerializer<
         NamedDefinition definition = helper.getCameraPresetDefinitions().getDefinition(runtimeId);
         Preconditions.checkNotNull(definition, "Unknown camera preset " + runtimeId);
 
-        CameraSetInstruction.EaseData ease = helper.readOptional(buf, null, this::readEase);
+        CameraSetInstruction.EaseOption ease = helper.readOptional(buf, null, this::readEase);
         Vector3f pos = helper.readOptional(buf, null, helper::readVector3f);
         Vector2f rot = helper.readOptional(buf, null, helper::readVector2f);
         Vector3f facing = helper.readOptional(buf, null, helper::readVector3f);

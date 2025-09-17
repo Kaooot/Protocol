@@ -1,19 +1,19 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.protocol.bedrock.data.GameRuleData;
+import org.cloudburstmc.protocol.bedrock.data.GameRulesChangedPacketData;
+import org.cloudburstmc.protocol.bedrock.docs.Docs;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-import java.util.List;
-
 @Data
+@Docs
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class GameRulesChangedPacket implements BedrockPacket {
-    private final List<GameRuleData<?>> rulesData = new ObjectArrayList<>();
+    @Docs(linkType = Docs.LinkType.MEMBERS)
+    private final GameRulesChangedPacketData rulesData = new GameRulesChangedPacketData();
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

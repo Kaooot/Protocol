@@ -9,7 +9,7 @@ import org.cloudburstmc.protocol.bedrock.codec.v332.serializer.LevelSoundEventSe
 import org.cloudburstmc.protocol.bedrock.codec.v361.serializer.LevelEventGenericSerializer_v361;
 import org.cloudburstmc.protocol.bedrock.codec.v575.BedrockCodecHelper_v575;
 import org.cloudburstmc.protocol.bedrock.codec.v594.Bedrock_v594;
-import org.cloudburstmc.protocol.bedrock.codec.v618.serializer.CameraInstructionSerializer_618;
+import org.cloudburstmc.protocol.bedrock.codec.v618.serializer.CameraInstructionSerializer_v618;
 import org.cloudburstmc.protocol.bedrock.codec.v618.serializer.CameraPresetsSerializer_v618;
 import org.cloudburstmc.protocol.bedrock.codec.v618.serializer.RefreshEntitlementsSerializer_v618;
 import org.cloudburstmc.protocol.bedrock.codec.v618.serializer.ResourcePacksInfoSerializer_v618;
@@ -68,7 +68,7 @@ public class Bedrock_v618 extends Bedrock_v594 {
             .updateSerializer(LevelEventGenericPacket.class, new LevelEventGenericSerializer_v361(LEVEL_EVENTS))
             .updateSerializer(ResourcePacksInfoPacket.class, ResourcePacksInfoSerializer_v618.INSTANCE)
             .updateSerializer(CameraPresetsPacket.class, CameraPresetsSerializer_v618.INSTANCE)
-            .updateSerializer(CameraInstructionPacket.class, new CameraInstructionSerializer_618())
+            .updateSerializer(CameraInstructionPacket.class, new CameraInstructionSerializer_v618())
             .registerPacket(RefreshEntitlementsPacket::new, new RefreshEntitlementsSerializer_v618(), 305, PacketRecipient.SERVER)
             .build();
 }

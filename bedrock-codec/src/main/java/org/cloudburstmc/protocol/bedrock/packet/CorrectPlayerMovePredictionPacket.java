@@ -6,6 +6,7 @@ import lombok.ToString;
 import org.cloudburstmc.math.vector.Vector2f;
 import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.protocol.bedrock.data.PredictionType;
+import org.cloudburstmc.protocol.bedrock.docs.*;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
@@ -14,7 +15,19 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
+@Docs
+@Changelog({
+        @ChangelogEntry(version = Version.V827, type = ChangelogEntry.Type.REMOVE, value = "condition from vehicle prediction")
+})
 public class CorrectPlayerMovePredictionPacket implements BedrockPacket {
+
+    /**
+     * @since 649
+     * <p>
+     * The type of prediction player sends.
+     */
+    @Docs(notes = "Vehicle or Player Prediction", type = DataType.BYTE)
+    private PredictionType predictionType = PredictionType.PLAYER;
 
     /**
      * Client's reported position by the server
@@ -22,6 +35,7 @@ public class CorrectPlayerMovePredictionPacket implements BedrockPacket {
      * @param pos reported position
      * @return reported position
      */
+    @Docs(notes = "Corrected position")
     private Vector3f pos;
 
     /**
@@ -30,7 +44,21 @@ public class CorrectPlayerMovePredictionPacket implements BedrockPacket {
      * @param posDelta position difference
      * @return position difference
      */
+    @Docs(notes = "Corrected velocity")
     private Vector3f posDelta;
+
+    /**
+     * @since 671
+     * <p>
+     * The rotation of the vehicle.
+     */
+    private Vector2f vehicleRotation;
+
+    /**
+     * @since v712
+     */
+    @Docs(type = DataType.FLOAT, isOptional = true)
+    private Float vehicleAngularVelocity;
 
     /**
      * If the client is on the ground. (Not falling or jumping)
@@ -38,6 +66,7 @@ public class CorrectPlayerMovePredictionPacket implements BedrockPacket {
      * @param onGround is client on the ground
      * @return is client on the ground
      */
+    @Docs(notes = "Is on ground")
     private boolean onGround;
 
     /**
@@ -46,26 +75,8 @@ public class CorrectPlayerMovePredictionPacket implements BedrockPacket {
      * @param tick to be corrected
      * @return to be corrected
      */
+    @Docs(notes = "Which frame we're correcting; should match the tick in the Player Auth Input packet", type = DataType.UNSIGNED_VARINT64)
     private long tick;
-
-    /**
-     * @since 649
-     *
-     * The type of prediction player sends.
-     */
-    private PredictionType predictionType = PredictionType.PLAYER;
-
-    /**
-     * @since 671
-     *
-     * The rotation of the vehicle.
-     */
-    private Vector2f vehicleRotation;
-
-    /**
-     * @since v712
-     */
-    private Float vehicleAngularVelocity;
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

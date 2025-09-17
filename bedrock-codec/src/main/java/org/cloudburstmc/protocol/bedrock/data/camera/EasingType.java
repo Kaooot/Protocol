@@ -3,7 +3,7 @@ package org.cloudburstmc.protocol.bedrock.data.camera;
 import java.util.HashMap;
 import java.util.Map;
 
-public enum CameraEase {
+public enum EasingType {
     LINEAR("linear"),
     SPRING("spring"),
     EASE_IN_SINE("in_sine"),
@@ -37,16 +37,16 @@ public enum CameraEase {
     EASE_OUT_BOUNCE("out_bounce"),
     EASE_IN_OUT_BOUNCE("in_out_bounce");
 
-    private static final Map<String, CameraEase> serializeNames = new HashMap<>();
+    private static final Map<String, EasingType> serializeNames = new HashMap<>();
     static {
-        for (CameraEase value : values()) {
+        for (EasingType value : values()) {
             serializeNames.put(value.getSerializeName(), value);
         }
     }
 
     private final String serializeName;
 
-    CameraEase(String serializeName) {
+    EasingType(String serializeName) {
         this.serializeName = serializeName;
     }
 
@@ -54,7 +54,7 @@ public enum CameraEase {
         return this.serializeName;
     }
 
-    public static CameraEase fromName(String serializeName) {
+    public static EasingType fromName(String serializeName) {
         return serializeNames.get(serializeName);
     }
 }

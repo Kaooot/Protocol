@@ -8,7 +8,7 @@ import org.cloudburstmc.nbt.NbtMapBuilder;
 import org.cloudburstmc.nbt.NbtType;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
-import org.cloudburstmc.protocol.bedrock.data.camera.CameraEase;
+import org.cloudburstmc.protocol.bedrock.data.camera.EasingType;
 import org.cloudburstmc.protocol.bedrock.data.camera.CameraFadeInstruction;
 import org.cloudburstmc.protocol.bedrock.data.camera.CameraSetInstruction;
 import org.cloudburstmc.protocol.bedrock.packet.CameraInstructionPacket;
@@ -17,7 +17,6 @@ import org.cloudburstmc.protocol.common.util.DefinitionUtils;
 import org.cloudburstmc.protocol.common.util.OptionalBoolean;
 import org.cloudburstmc.protocol.common.util.Preconditions;
 
-import java.awt.*;
 import java.util.List;
 
 public class CameraInstructionSerializer_v575 implements BedrockPacketSerializer<CameraInstructionPacket> {
@@ -35,7 +34,7 @@ public class CameraInstructionSerializer_v575 implements BedrockPacketSerializer
 
             if (set.getEase() != null) {
                 builder.putCompound("ease", NbtMap.builder()
-                        .putString("type", set.getEase().getEaseType().getSerializeName())
+                        .putString("type", set.getEase().getType().getSerializeName())
                         .putFloat("time", set.getEase().getTime())
                         .build());
             }
@@ -104,9 +103,9 @@ public class CameraInstructionSerializer_v575 implements BedrockPacketSerializer
 
             if (setTag.containsKey("ease", NbtType.COMPOUND)) {
                 NbtMap easeTag = setTag.getCompound("ease");
-                CameraEase type = CameraEase.fromName(easeTag.getString("type"));
+                EasingType type = EasingType.fromName(easeTag.getString("type"));
                 float time = easeTag.getFloat("time");
-                set.setEase(new CameraSetInstruction.EaseData(type, time));
+                set.setEase(new CameraSetInstruction.EaseOption(type, time));
             }
 
             if (setTag.containsKey("pos", NbtType.COMPOUND)) {
@@ -150,7 +149,7 @@ public class CameraInstructionSerializer_v575 implements BedrockPacketSerializer
             if (fadeTag.containsKey("color", NbtType.COMPOUND)) {
                 NbtMap colorTag = tag.getCompound("color");
 
-                fade.setColor(new Color(
+                fade.setColor(new CameraFadeInstruction.ColorOption(
                         (int) (colorTag.getFloat("r") * 255),
                         (int) (colorTag.getFloat("b") * 255), // game is sending blue as green and green as blue
                         (int) (colorTag.getFloat("g") * 255)

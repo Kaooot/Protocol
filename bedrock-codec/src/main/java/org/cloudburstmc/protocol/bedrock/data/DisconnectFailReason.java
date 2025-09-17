@@ -1,5 +1,10 @@
 package org.cloudburstmc.protocol.bedrock.data;
 
+import org.cloudburstmc.protocol.bedrock.docs.Docs;
+import org.cloudburstmc.protocol.bedrock.docs.Renamed;
+import org.cloudburstmc.protocol.bedrock.docs.Version;
+
+@Docs(name = "Connection::DisconnectFailReason")
 public enum DisconnectFailReason {
     UNKNOWN,
     CANT_CONNECT_NO_INTERNET,
@@ -15,6 +20,8 @@ public enum DisconnectFailReason {
     EDU_LEVEL_SETTINGS_MISSING,
     LOCAL_SERVER_NOT_FOUND,
     LEGACY_DISCONNECT,
+    @Docs(name = "INTERNAL_UserLeaveGameAttempted")
+    @Renamed(since = Version.V827, from = "USER_LEAVE_GAME_ATTEMPTED")
     INTERNAL_USER_LEAVE_GAME_ATTEMPTED,
     PLATFORM_LOCKED_SKINS_ERROR,
     REALMS_WORLD_UNASSIGNED,
@@ -23,23 +30,36 @@ public enum DisconnectFailReason {
     REALMS_SERVER_DISABLED_BETA,
     REALMS_SERVER_DISABLED,
     CROSS_PLATFORM_DISABLED,
+    @Docs(name = "TESTONLY_CantConnect")
+    @Renamed(since = Version.V827, from = "CANT_CONNECT")
     TESTONLY_CANT_CONNECT,
     SESSION_NOT_FOUND,
+    @Deprecated
+    @Docs(name = "DEPRECATED_ClientSettingsIncompatibleWithServer")
+    @Renamed(since = Version.V827, from = "CLIENT_SETTINGS_INCOMPATIBLE_WITH_SERVER")
     DEPRECATED_CLIENT_SETTINGS_INCOMPATIBLE_WITH_SERVER,
     SERVER_FULL,
     INVALID_PLATFORM_SKIN,
     EDITION_VERSION_MISMATCH,
     EDITION_MISMATCH,
     LEVEL_NEWER_THAN_EXE_VERSION,
+    @Docs(name = "INTERNAL_NoFailOccurred")
+    @Renamed(since = Version.V827, from = "NO_FAIL_OCCURRED")
     INTERNAL_NO_FAIL_OCCURRED,
     BANNED_SKIN,
     TIMEOUT,
     SERVER_NOT_FOUND,
     OUTDATED_SERVER,
     OUTDATED_CLIENT,
+    @Deprecated
+    @Docs(name = "DEPRECATED_NoPremiumPlatform")
+    @Renamed(since = Version.V827, from = "NO_PREMIUM_PLATFORM")
     DEPRECATED_NO_PREMIUM_PLATFORM,
     MULTIPLAYER_DISABLED,
     NO_WIFI,
+    @Deprecated
+    @Docs(name = "DEPRECATED_WorldCorruption")
+    @Renamed(since = Version.V827, from = "WORLD_CORRUPTION")
     DEPRECATED_WORLD_CORRUPTION,
     NO_REASON,
     DISCONNECTED,
@@ -63,13 +83,25 @@ public enum DisconnectFailReason {
     INCOMPATIBLE_PACK,
     OUT_OF_STORAGE,
     INVALID_LEVEL,
+    @Deprecated
+    @Docs(name = "DEPRECATED_DisconnectPacket")
+    @Renamed(since = Version.V827, from = "DISCONNECT_PACKET")
     DEPRECATED_DISCONNECT_PACKET,
     BLOCK_MISMATCH,
     INVALID_HEIGHTS,
     INVALID_WIDTHS,
+    @Deprecated
+    @Docs(name = "DEPRECATED_ConnectionLost")
+    @Renamed(since = Version.V827, from = "CONNECTION_LOST")
     DEPRECATED_CONNECTION_LOST,
+    @Deprecated
+    @Docs(name = "DEPRECATED_ZombieConnection")
+    @Renamed(since = Version.V827, from = "ZOMBIE_CONNECTION")
     DEPRECATED_ZOMBIE_CONNECTION,
     SHUTDOWN,
+    @Deprecated
+    @Docs(name = "DEPRECATED_ReasonNotSet")
+    @Renamed(since = Version.V827, from = "REASON_NOT_SET")
     DEPRECATED_REASON_NOT_SET,
     LOADING_STATE_TIMEOUT,
     RESOURCE_PACK_LOADING_FAILED,
@@ -80,16 +112,19 @@ public enum DisconnectFailReason {
     EMPTY_URL_FROM_DISCOVERY,
     EXPIRED_AUTH_FROM_DISCOVERY,
     UNKNOWN_SIGNAL_SERVICE_SIGN_IN_FAILURE,
-    X_B_L_JOIN_LOBBY_FAILURE,
+    XBL_JOIN_LOBBY_FAILURE,
     UNSPECIFIED_CLIENT_INSTANCE_DISCONNECTION,
     NETHER_NET_SESSION_NOT_FOUND,
     NETHER_NET_CREATE_PEER_CONNECTION,
-    NETHER_NET_I_C_E,
+    NETHER_NET_ICE,
     NETHER_NET_CONNECT_REQUEST,
     NETHER_NET_CONNECT_RESPONSE,
     NETHER_NET_NEGOTIATION_TIMEOUT,
     NETHER_NET_INACTIVITY_TIMEOUT,
     STALE_CONNECTION_BEING_REPLACED,
+    @Deprecated
+    @Docs(name = "DEPRECATED_RealmsSessionNotFound")
+    @Renamed(since = Version.V827, from = "REALMS_SESSION_NOT_FOUND")
     DEPRECATED_REALMS_SESSION_NOT_FOUND,
     BAD_PACKET,
     NETHER_NET_FAILED_TO_CREATE_OFFER,
@@ -107,9 +142,14 @@ public enum DisconnectFailReason {
     EDITOR_MISMATCH_EDITOR_WORLD,
     EDITOR_MISMATCH_VANILLA_WORLD,
     WORLD_TRANSFER_NOT_PRIMARY_CLIENT,
+    @Docs(name = "INTERNAL_RequestServerShutdown")
+    @Renamed(since = Version.V827, from = "REQUEST_SERVER_SHUTDOWN")
     INTERNAL_REQUEST_SERVER_SHUTDOWN,
     CLIENT_GAME_SETUP_CANCELLED,
     CLIENT_GAME_SETUP_FAILED,
+    @Deprecated
+    @Docs(name = "DEPRECATED_NoVenue")
+    @Renamed(since = Version.V827, from = "NO_VENUE")
     DEPRECATED_NO_VENUE,
     NETHER_NET_SIGNALING_SIGNIN_FAILED,
     SESSION_ACCESS_DENIED,
@@ -141,5 +181,6 @@ public enum DisconnectFailReason {
     /**
      * @since v827
      */
+    @Docs(since = Version.V827)
     NETHER_NET_DATA_CHANNEL_CLOSED
 }

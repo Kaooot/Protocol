@@ -97,9 +97,9 @@ public class StartGameSerializer_v291 implements BedrockPacketSerializer<StartGa
         buffer.writeBoolean(settings.getXboxLiveBroadcastSetting() != GamePublishSetting.NO_MULTI_PLAY);
         buffer.writeBoolean(settings.isCommandsEnabled());
         buffer.writeBoolean(settings.isTexturePacksRequired());
-        helper.writeArray(buffer, settings.getRuleData(), helper::writeGameRule);
+        helper.writeArray(buffer, settings.getRuleData().getRulesList(), helper::writeGameRule);
         buffer.writeBoolean(settings.isHasBonusChestEnabled());
-        buffer.writeBoolean(settings.isStartingWithMapEnabled());
+        buffer.writeBoolean(settings.isStartWithMapEnabled());
         buffer.writeBoolean(settings.isTrustingPlayers());
         VarInts.writeInt(buffer, settings.getPlayerPermissions().ordinal());
         VarInts.writeInt(buffer, settings.getXboxLiveBroadcastSetting().ordinal());
@@ -131,9 +131,9 @@ public class StartGameSerializer_v291 implements BedrockPacketSerializer<StartGa
         buffer.readBoolean(); // broadcasting to XBL
         settings.setCommandsEnabled(buffer.readBoolean());
         settings.setTexturePacksRequired(buffer.readBoolean());
-        helper.readArray(buffer, settings.getRuleData(), helper::readGameRule);
+        helper.readArray(buffer, settings.getRuleData().getRulesList(), helper::readGameRule);
         settings.setHasBonusChestEnabled(buffer.readBoolean());
-        settings.setStartingWithMapEnabled(buffer.readBoolean());
+        settings.setStartWithMapEnabled(buffer.readBoolean());
         settings.setTrustingPlayers(buffer.readBoolean());
         settings.setPlayerPermissions(PlayerPermissionLevel.from(VarInts.readInt(buffer)));
         settings.setXboxLiveBroadcastSetting(GamePublishSetting.from(VarInts.readInt(buffer)));

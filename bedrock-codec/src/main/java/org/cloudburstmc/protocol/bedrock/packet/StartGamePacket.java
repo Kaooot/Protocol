@@ -10,17 +10,25 @@ import org.cloudburstmc.nbt.NbtList;
 import org.cloudburstmc.nbt.NbtMap;
 import org.cloudburstmc.protocol.bedrock.data.*;
 import org.cloudburstmc.protocol.bedrock.data.definitions.ItemDefinition;
+import org.cloudburstmc.protocol.bedrock.docs.DataType;
+import org.cloudburstmc.protocol.bedrock.docs.Docs;
+import org.cloudburstmc.protocol.bedrock.docs.Ignore;
+import org.cloudburstmc.protocol.bedrock.docs.Version;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 import java.util.List;
 import java.util.UUID;
 
+@Docs
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true, exclude = {"itemDefinitions", "blockPalette"})
 public class StartGamePacket implements BedrockPacket {
+    @Docs(typeName = "ActorUniqueID")
     private long entityID;
+    @Docs(typeName = "ActorRuntimeID")
     private long runtimeID;
+    @Docs(type = DataType.VARINT)
     private GameType gameType;
     private Vector3f position;
     private Vector2f rotation;
@@ -30,13 +38,18 @@ public class StartGamePacket implements BedrockPacket {
     private String templateContentIdentity;
     private boolean isTrial;
     private SyncedPlayerMovementSettings movementSettings;
+    @Docs(type = DataType.UNSIGNED_INT64)
     private long levelCurrentTime;
+    @Docs(type = DataType.VARINT)
     private int enchantmentSeed;
+    @Ignore
     private NbtList<NbtMap> blockPalette;
+    @Docs(type = DataType.ARRAY, linkType = Docs.LinkType.MEMBERS)
     private final List<BlockPropertyData> blockProperties = new ObjectArrayList<>();
     /**
      * @deprecated since v776. Use ItemComponentPacket instead.
      */
+    @Ignore
     private List<ItemDefinition> itemDefinitions = new ObjectArrayList<>();
     private String multiplayerCorrelationId;
     /**
@@ -81,13 +94,14 @@ public class StartGamePacket implements BedrockPacket {
      */
     private boolean blockNetworkIdsAreHashes;
     /**
+     * @since v827
+     */
+    @Docs(since = Version.V827)
+    private boolean tickDeathSystemsEnabled;
+    /**
      * @since v589
      */
     private NetworkPermissions networkPermissions = NetworkPermissions.DEFAULT;
-    /**
-     * @since v827
-     */
-    private boolean tickDeathSystemsEnabled;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

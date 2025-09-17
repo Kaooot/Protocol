@@ -53,15 +53,15 @@ public class BedrockCodecHelper_v440 extends BedrockCodecHelper_v431 {
 
         String name = readString(buffer);
         boolean editable = buffer.readBoolean();
-        int type = VarInts.readUnsignedInt(buffer);
+        GameRuleData.Type type = GameRuleData.Type.from(VarInts.readUnsignedInt(buffer));
 
         switch (type) {
-            case 1:
-                return new GameRuleData<>(name, editable, buffer.readBoolean());
-            case 2:
-                return new GameRuleData<>(name, editable, VarInts.readUnsignedInt(buffer));
-            case 3:
-                return new GameRuleData<>(name, editable, buffer.readFloatLE());
+            case BOOL:
+                return new GameRuleData<>(name, editable, type, buffer.readBoolean());
+            case INT:
+                return new GameRuleData<>(name, editable, type, VarInts.readUnsignedInt(buffer));
+            case FLOAT:
+                return new GameRuleData<>(name, editable, type, buffer.readFloatLE());
         }
         throw new IllegalStateException("Invalid gamerule type received");
     }

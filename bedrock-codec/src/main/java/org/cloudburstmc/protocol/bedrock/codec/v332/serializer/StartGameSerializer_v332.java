@@ -33,9 +33,9 @@ public class StartGameSerializer_v332 extends StartGameSerializer_v291 { // No n
         VarInts.writeInt(buffer, settings.getPlatformBroadcastSetting().ordinal());
         buffer.writeBoolean(settings.isCommandsEnabled());
         buffer.writeBoolean(settings.isTexturePacksRequired());
-        helper.writeArray(buffer, settings.getRuleData(), helper::writeGameRule);
+        helper.writeArray(buffer, settings.getRuleData().getRulesList(), helper::writeGameRule);
         buffer.writeBoolean(settings.isHasBonusChestEnabled());
-        buffer.writeBoolean(settings.isStartingWithMapEnabled());
+        buffer.writeBoolean(settings.isStartWithMapEnabled());
         VarInts.writeInt(buffer, settings.getPlayerPermissions().ordinal());
         buffer.writeIntLE(settings.getServerChunkTickRange());
         buffer.writeBoolean(settings.isHasLockedBehaviorPack());
@@ -67,9 +67,9 @@ public class StartGameSerializer_v332 extends StartGameSerializer_v291 { // No n
         settings.setPlatformBroadcastSetting(GamePublishSetting.from(VarInts.readInt(buffer)));
         settings.setCommandsEnabled(buffer.readBoolean());
         settings.setTexturePacksRequired(buffer.readBoolean());
-        helper.readArray(buffer, settings.getRuleData(), helper::readGameRule);
+        helper.readArray(buffer, settings.getRuleData().getRulesList(), helper::readGameRule);
         settings.setHasBonusChestEnabled(buffer.readBoolean());
-        settings.setStartingWithMapEnabled(buffer.readBoolean());
+        settings.setStartWithMapEnabled(buffer.readBoolean());
         settings.setPlayerPermissions(PlayerPermissionLevel.from(VarInts.readInt(buffer)));
         settings.setServerChunkTickRange(buffer.readIntLE());
         settings.setHasLockedBehaviorPack(buffer.readBoolean());
