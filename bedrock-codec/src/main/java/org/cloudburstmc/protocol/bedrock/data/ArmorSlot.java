@@ -13,15 +13,10 @@ public enum ArmorSlot {
 
     private static final ArmorSlot[] VALUES = values();
 
-    public int getId() {
-        return this.ordinal() * 2;
-    }
-
-    public static ArmorSlot from(int id) {
-        int ordinal = id / 2;
+    public static ArmorSlot from(int ordinal) {
         if (ordinal >= 0 && ordinal < VALUES.length) {
             return VALUES[ordinal];
         }
-        throw new UnsupportedOperationException("Detected unknown ArmorSlot ID: " + id + ", ordinal: " + ordinal);
+        throw new UnsupportedOperationException("Detected unknown ArmorSlot ID: " + ordinal);
     }
 }

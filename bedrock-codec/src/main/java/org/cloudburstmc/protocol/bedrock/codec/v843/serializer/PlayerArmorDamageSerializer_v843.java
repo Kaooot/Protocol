@@ -24,12 +24,12 @@ public class PlayerArmorDamageSerializer_v843 implements BedrockPacketSerializer
     }
 
     protected void writePair(ByteBuf buffer, ArmorSlotAndDamagePair pair) {
-        buffer.writeByte(pair.getSlot().getId());
+        buffer.writeByte(pair.getSlot().ordinal() << 1);
         buffer.writeShortLE(pair.getDamage());
     }
 
     protected ArmorSlotAndDamagePair readPair(ByteBuf buffer) {
-        final ArmorSlot slot = ArmorSlot.from(buffer.readUnsignedByte());
+        final ArmorSlot slot = ArmorSlot.from(buffer.readUnsignedByte() >> 1);
         final short damage = buffer.readShortLE();
         return new ArmorSlotAndDamagePair(slot, damage);
     }
