@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.codec.v843.serializer;
+package org.cloudburstmc.protocol.bedrock.codec.v844.serializer;
 
 import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
@@ -10,8 +10,8 @@ import org.cloudburstmc.protocol.bedrock.packet.PlayerArmorDamagePacket;
 /**
  * @author Kaooot
  */
-public class PlayerArmorDamageSerializer_v843 implements BedrockPacketSerializer<PlayerArmorDamagePacket> {
-    public static final PlayerArmorDamageSerializer_v843 INSTANCE = new PlayerArmorDamageSerializer_v843();
+public class PlayerArmorDamageSerializer_v844 implements BedrockPacketSerializer<PlayerArmorDamagePacket> {
+    public static final PlayerArmorDamageSerializer_v844 INSTANCE = new PlayerArmorDamageSerializer_v844();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, PlayerArmorDamagePacket packet) {

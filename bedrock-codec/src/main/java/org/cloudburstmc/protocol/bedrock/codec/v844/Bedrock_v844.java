@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.codec.v843;
+package org.cloudburstmc.protocol.bedrock.codec.v844;
 
 import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
@@ -7,10 +7,10 @@ import org.cloudburstmc.protocol.bedrock.codec.v361.serializer.LevelEventGeneric
 import org.cloudburstmc.protocol.bedrock.codec.v776.BedrockCodecHelper_v776;
 import org.cloudburstmc.protocol.bedrock.codec.v786.serializer.LevelSoundEventSerializer_v786;
 import org.cloudburstmc.protocol.bedrock.codec.v827.Bedrock_v827;
-import org.cloudburstmc.protocol.bedrock.codec.v843.serializer.BiomeDefinitionListSerializer_v843;
-import org.cloudburstmc.protocol.bedrock.codec.v843.serializer.GameRulesChangedSerializer_v843;
-import org.cloudburstmc.protocol.bedrock.codec.v843.serializer.PlayerArmorDamageSerializer_v843;
-import org.cloudburstmc.protocol.bedrock.codec.v843.serializer.ServerboundPackSettingChangeSerializer_v843;
+import org.cloudburstmc.protocol.bedrock.codec.v844.serializer.BiomeDefinitionListSerializer_v844;
+import org.cloudburstmc.protocol.bedrock.codec.v844.serializer.GameRulesChangedSerializer_v844;
+import org.cloudburstmc.protocol.bedrock.codec.v844.serializer.PlayerArmorDamageSerializer_v844;
+import org.cloudburstmc.protocol.bedrock.codec.v844.serializer.ServerboundPackSettingChangeSerializer_v844;
 import org.cloudburstmc.protocol.bedrock.data.LevelEventType;
 import org.cloudburstmc.protocol.bedrock.data.PacketRecipient;
 import org.cloudburstmc.protocol.bedrock.data.ParticleType;
@@ -24,7 +24,7 @@ import org.cloudburstmc.protocol.common.util.TypeMap;
 /**
  * @author Kaooot
  */
-public class Bedrock_v843 extends Bedrock_v827 {
+public class Bedrock_v844 extends Bedrock_v827 {
 
     protected static final TypeMap<SoundEvent> SOUND_EVENTS = Bedrock_v827.SOUND_EVENTS
             .toBuilder()
@@ -55,15 +55,15 @@ public class Bedrock_v843 extends Bedrock_v827 {
 
     public static final BedrockCodec CODEC = Bedrock_v827.CODEC.toBuilder()
             .raknetProtocolVersion(11)
-            .protocolVersion(843)
-            .minecraftVersion("1.21.110")
+            .protocolVersion(844)
+            .minecraftVersion("1.21.111")
             .helper(() -> new BedrockCodecHelper_v776(ACTOR_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES, PLAYER_ABILITIES, TEXT_PROCESSING_ORIGINS))
-            .updateSerializer(BiomeDefinitionListPacket.class, BiomeDefinitionListSerializer_v843.INSTANCE)
-            .updateSerializer(GameRulesChangedPacket.class, new GameRulesChangedSerializer_v843(GAME_RULE_TYPES))
+            .updateSerializer(BiomeDefinitionListPacket.class, BiomeDefinitionListSerializer_v844.INSTANCE)
+            .updateSerializer(GameRulesChangedPacket.class, new GameRulesChangedSerializer_v844(GAME_RULE_TYPES))
             .updateSerializer(LevelEventPacket.class, new LevelEventSerializer_v291(LEVEL_EVENTS))
             .updateSerializer(LevelEventGenericPacket.class, new LevelEventGenericSerializer_v361(LEVEL_EVENTS))
             .updateSerializer(LevelSoundEventPacket.class, new LevelSoundEventSerializer_v786(SOUND_EVENTS))
-            .updateSerializer(PlayerArmorDamagePacket.class, PlayerArmorDamageSerializer_v843.INSTANCE)
-            .registerPacket(ServerboundPackSettingChangePacket::new, ServerboundPackSettingChangeSerializer_v843.INSTANCE, 329, PacketRecipient.SERVER)
+            .updateSerializer(PlayerArmorDamagePacket.class, PlayerArmorDamageSerializer_v844.INSTANCE)
+            .registerPacket(ServerboundPackSettingChangePacket::new, ServerboundPackSettingChangeSerializer_v844.INSTANCE, 329, PacketRecipient.SERVER)
             .build();
 }

@@ -17,15 +17,15 @@ import java.util.Set;
 @ToString(doNotUseGetters = true)
 public class PlayerArmorDamagePacket implements BedrockPacket {
     /**
-     * @deprecated since v843
+     * @deprecated since v844
      */
     private final Set<PlayerArmorDamageFlag> flags = EnumSet.noneOf(PlayerArmorDamageFlag.class);
     /**
-     * @deprecated since v843
+     * @deprecated since v844
      */
     private final int[] damageForSlot = new int[5];
     /**
-     * @since v843
+     * @since v844
      */
     private final List<ArmorSlotAndDamagePair> armorSlotAndDamagePairs = new ObjectArrayList<>();
 

@@ -165,7 +165,7 @@ public enum ActorFlags {
     COLLIDABLE,
     /**
      * @since v785
-     * WASD_AIR_CONTROLLED before v843
+     * WASD_AIR_CONTROLLED before v844
      */
     WASD_FREE_CAMERA_CONTROLLED,
     /**
@@ -177,7 +177,7 @@ public enum ActorFlags {
      */
     BODY_ROTATION_ALWAYS_FOLLOWS_HEAD,
     /**
-     * @since v843
+     * @since v844
      */
     CAN_USE_VERTICAL_MOVEMENT_ACTION
 }

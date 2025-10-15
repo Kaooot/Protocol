@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.codec.v843.serializer;
+package org.cloudburstmc.protocol.bedrock.codec.v844.serializer;
 
 import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
@@ -11,10 +11,10 @@ import org.cloudburstmc.protocol.common.util.VarInts;
 /**
  * @author Kaooot
  */
-public class GameRulesChangedSerializer_v843 implements BedrockPacketSerializer<GameRulesChangedPacket> {
+public class GameRulesChangedSerializer_v844 implements BedrockPacketSerializer<GameRulesChangedPacket> {
     protected final TypeMap<Class<?>> gameRuleType;
 
-    public GameRulesChangedSerializer_v843(TypeMap<Class<?>> gameRuleType) {
+    public GameRulesChangedSerializer_v844(TypeMap<Class<?>> gameRuleType) {
         this.gameRuleType = gameRuleType;
     }
 

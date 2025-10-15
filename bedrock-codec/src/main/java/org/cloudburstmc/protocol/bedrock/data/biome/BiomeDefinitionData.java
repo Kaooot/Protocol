@@ -23,19 +23,19 @@ public class BiomeDefinitionData {
     float temperature;
     float downfall;
     /**
-     * @deprecated since v843
+     * @deprecated since v844
      */
     float redSporeDensity;
     /**
-     * @deprecated since v843
+     * @deprecated since v844
      */
     float blueSporeDensity;
     /**
-     * @deprecated since v843
+     * @deprecated since v844
      */
     float ashDensity;
     /**
-     * @deprecated since v843
+     * @deprecated since v844
      */
     float whiteAshDensity;
     float depth;
@@ -48,7 +48,7 @@ public class BiomeDefinitionData {
     @Nullable
     BiomeDefinitionChunkGenData chunkGenData;
     /**
-     * @since v843
+     * @since v844
      */
     float foliageSnow;
 

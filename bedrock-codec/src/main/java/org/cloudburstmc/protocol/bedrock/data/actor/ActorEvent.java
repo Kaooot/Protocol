@@ -36,7 +36,7 @@ public enum ActorEvent {
     PRIME_CREEPER,
     AIR_SUPPLY,
     /**
-     * @deprecated since v843
+     * @deprecated since v844
      */
     DEPRECATED_ADD_PLAYER_LEVELS,
     GUARDIAN_MINING_FATIGUE,
