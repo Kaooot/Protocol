@@ -33,12 +33,12 @@ public class BedrockCodecHelper_v388 extends BedrockCodecHelper_v361 {
     public SerializedSkin readSkin(ByteBuf buffer) {
         String skinId = this.readString(buffer);
         String skinResourcePatch = this.readString(buffer);
-        ImageData skinData = this.readImage(buffer, ImageData.SKIN_PERSONA_SIZE);
+        ImageData skinData = this.readImage(buffer);
 
         List<AnimationData> animations = new ObjectArrayList<>();
         this.readArray(buffer, animations, ByteBuf::readIntLE, (b, h) -> this.readAnimationData(b));
 
-        ImageData capeData = this.readImage(buffer, ImageData.SINGLE_SKIN_SIZE);
+        ImageData capeData = this.readImage(buffer);
         String geometryData = this.readStringMaxLen(buffer, this.encodingSettings.maxGeometryDataSize());
         String animationData = this.readString(buffer);
         boolean premium = buffer.readBoolean();
@@ -77,7 +77,7 @@ public class BedrockCodecHelper_v388 extends BedrockCodecHelper_v361 {
 
     @Override
     public AnimationData readAnimationData(ByteBuf buffer) {
-        ImageData image = this.readImage(buffer, ImageData.ANIMATION_SIZE);
+        ImageData image = this.readImage(buffer);
         AnimatedTextureType type = TEXTURE_TYPES[buffer.readIntLE()];
         float frames = buffer.readFloatLE();
         return new AnimationData(image, type, frames);
@@ -91,10 +91,10 @@ public class BedrockCodecHelper_v388 extends BedrockCodecHelper_v361 {
     }
 
     @Override
-    public ImageData readImage(ByteBuf buffer, int maxSize) {
+    public ImageData readImage(ByteBuf buffer) {
         int width = buffer.readIntLE();
         int height = buffer.readIntLE();
-        byte[] image = readByteArray(buffer, maxSize);
+        byte[] image = readByteArray(buffer);
         return ImageData.of(width, height, image);
     }
 
