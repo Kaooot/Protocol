@@ -171,7 +171,7 @@ public class BiomeDefinitionListSerializer_v800 implements BedrockPacketSerializ
                 hasFrozenOceanSurface, hasTheEndSurface,
                 mesaSurface, cappedSurface,
                 overworldGenRules, multinoiseGenRules,
-                legacyWorldGenRules);
+                legacyWorldGenRules, null);
     }
 
     protected void writeClimate(ByteBuf buffer, BedrockCodecHelper helper, BiomeClimateData climate) {

@@ -182,5 +182,13 @@ public enum DisconnectFailReason {
      * @since v827
      */
     @Docs(since = Version.V827)
-    NETHER_NET_DATA_CHANNEL_CLOSED
+    NETHER_NET_DATA_CHANNEL_CLOSED,
+    /**
+     * @since v859
+     */
+    DISCOVERY_ENVIRONMENT_MISMATCH,
+    /**
+     * @since v859
+     */
+    HOST_WITHOUT_KEYS
 }

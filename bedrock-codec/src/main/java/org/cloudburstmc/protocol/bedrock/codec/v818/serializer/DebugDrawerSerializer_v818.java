@@ -1,30 +1,23 @@
 package org.cloudburstmc.protocol.bedrock.codec.v818.serializer;
 
 import io.netty.buffer.ByteBuf;
-import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
 import org.cloudburstmc.protocol.bedrock.data.PacketShapeData;
 import org.cloudburstmc.protocol.bedrock.data.ScriptDebugShapeType;
-import org.cloudburstmc.protocol.bedrock.packet.ServerScriptDebugDrawerPacket;
-import org.cloudburstmc.protocol.common.util.TriConsumer;
+import org.cloudburstmc.protocol.bedrock.packet.DebugDrawerPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
-import java.awt.*;
-import java.util.function.BiConsumer;
-import java.util.function.BiFunction;
-import java.util.function.Function;
-
-public class ServerScriptDebugDrawerSerializer_v818 implements BedrockPacketSerializer<ServerScriptDebugDrawerPacket> {
-    public static final ServerScriptDebugDrawerSerializer_v818 INSTANCE = new ServerScriptDebugDrawerSerializer_v818();
+public class DebugDrawerSerializer_v818 implements BedrockPacketSerializer<DebugDrawerPacket> {
+    public static final DebugDrawerSerializer_v818 INSTANCE = new DebugDrawerSerializer_v818();
 
     @Override
-    public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ServerScriptDebugDrawerPacket packet) {
+    public void serialize(ByteBuf buffer, BedrockCodecHelper helper, DebugDrawerPacket packet) {
         helper.writeArray(buffer, packet.getShapes(), this::writeShapeData);
     }
 
     @Override
-    public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ServerScriptDebugDrawerPacket packet) {
+    public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, DebugDrawerPacket packet) {
         helper.readArray(buffer, packet.getShapes(), this::readShapeData);
     }
 

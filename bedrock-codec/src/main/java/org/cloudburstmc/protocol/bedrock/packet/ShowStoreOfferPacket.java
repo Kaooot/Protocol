@@ -6,11 +6,13 @@ import lombok.ToString;
 import org.cloudburstmc.protocol.bedrock.data.StoreOfferRedirectType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
+import java.util.UUID;
+
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class ShowStoreOfferPacket implements BedrockPacket {
-    private String productID;
+    private UUID productID;
     /**
      * @since v630 deprecated
      */

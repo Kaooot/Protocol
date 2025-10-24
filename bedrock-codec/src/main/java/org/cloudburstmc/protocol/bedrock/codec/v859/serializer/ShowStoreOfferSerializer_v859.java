@@ -1,25 +1,29 @@
-package org.cloudburstmc.protocol.bedrock.codec.v630.serializer;
+package org.cloudburstmc.protocol.bedrock.codec.v859.serializer;
 
 import io.netty.buffer.ByteBuf;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
-import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.ShowStoreOfferSerializer_v291;
+import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
 import org.cloudburstmc.protocol.bedrock.data.StoreOfferRedirectType;
 import org.cloudburstmc.protocol.bedrock.packet.ShowStoreOfferPacket;
 
-import java.util.UUID;
-
-public class ShowStoreOfferSerializer_v630 extends ShowStoreOfferSerializer_v291 {
-    public static final ShowStoreOfferSerializer_v630 INSTANCE = new ShowStoreOfferSerializer_v630();
+/**
+ * @author Kaooot
+ */
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class ShowStoreOfferSerializer_v859 implements BedrockPacketSerializer<ShowStoreOfferPacket> {
+    public static final ShowStoreOfferSerializer_v859 INSTANCE = new ShowStoreOfferSerializer_v859();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ShowStoreOfferPacket packet) {
-        helper.writeString(buffer, packet.getProductID().toString());
+        helper.writeUuid(buffer, packet.getProductID());
         buffer.writeByte(packet.getRedirectType().ordinal());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ShowStoreOfferPacket packet) {
-        packet.setProductID(UUID.fromString(helper.readString(buffer)));
+        packet.setProductID(helper.readUuid(buffer));
         packet.setRedirectType(StoreOfferRedirectType.values()[buffer.readUnsignedByte()]);
     }
 }

@@ -912,11 +912,15 @@ public interface BedrockPacketHandler extends PacketHandler {
         return PacketSignal.UNHANDLED;
     }
 
-    default PacketSignal handle(ServerScriptDebugDrawerPacket packet) {
+    default PacketSignal handle(DebugDrawerPacket packet) {
         return PacketSignal.UNHANDLED;
     }
 
     default PacketSignal handle(ServerboundPackSettingChangePacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
+
+    default PacketSignal handle(GraphicsOverrideParameterPacket packet) {
         return PacketSignal.UNHANDLED;
     }
 }
