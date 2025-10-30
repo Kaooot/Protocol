@@ -85,7 +85,7 @@ public class DebugDrawerSerializer_v859 extends DebugDrawerSerializer_v818 {
             case SPHERE:
                 return this.readSphereData(buffer, helper);
             default:
-                throw new IllegalStateException("Detected unknown Extra Data Shape Type.");
+                throw new IllegalStateException("Detected unknown Extra Shape Data Type.");
         }
     }
 

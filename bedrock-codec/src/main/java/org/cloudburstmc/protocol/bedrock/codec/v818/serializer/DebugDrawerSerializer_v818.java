@@ -4,6 +4,7 @@ import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
+import org.cloudburstmc.protocol.bedrock.data.ExtraShapeDataType;
 import org.cloudburstmc.protocol.bedrock.data.ScriptDebugShapeType;
 import org.cloudburstmc.protocol.bedrock.data.payload.*;
 import org.cloudburstmc.protocol.bedrock.packet.DebugDrawerPacket;
@@ -73,11 +74,11 @@ public class DebugDrawerSerializer_v818 implements BedrockPacketSerializer<Debug
 
         final String text = textDataPayload.getText();
         final Vector3f boxBound = boxDataPayload.getBoxBound();
-        final Vector3f endLocation = payload.getType().equals(ScriptDebugShapeType.LINE) ?
+        final Vector3f endLocation = payload.getType().equals(ExtraShapeDataType.LINE) ?
                 lineDataPayload.getLineEndLocation() : arrowDataPayload.getArrowEndLocation();
         final Float arrowHeadLength = arrowDataPayload.getArrowHeadLength();
         final Float arrowHeadRadius = arrowDataPayload.getArrowHeadRadius();
-        final Integer numSegments = payload.getType().equals(ScriptDebugShapeType.SPHERE) ?
+        final Integer numSegments = payload.getType().equals(ExtraShapeDataType.SPHERE) ?
                 sphereDataPayload.getNumSegments() : arrowDataPayload.getNumSegments();
 
         helper.writeOptionalNull(buffer, text, helper::writeString);
