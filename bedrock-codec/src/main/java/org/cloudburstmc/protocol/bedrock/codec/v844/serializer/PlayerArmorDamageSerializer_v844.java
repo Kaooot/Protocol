@@ -6,6 +6,7 @@ import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
 import org.cloudburstmc.protocol.bedrock.data.ArmorSlot;
 import org.cloudburstmc.protocol.bedrock.data.ArmorSlotAndDamagePair;
 import org.cloudburstmc.protocol.bedrock.packet.PlayerArmorDamagePacket;
+import org.cloudburstmc.protocol.common.util.VarInts;
 
 /**
  * @author Kaooot
@@ -24,12 +25,12 @@ public class PlayerArmorDamageSerializer_v844 implements BedrockPacketSerializer
     }
 
     protected void writePair(ByteBuf buffer, ArmorSlotAndDamagePair pair) {
-        buffer.writeByte(pair.getSlot().ordinal() << 1);
+        VarInts.writeInt(buffer, pair.getSlot().ordinal());
         buffer.writeShortLE(pair.getDamage());
     }
 
     protected ArmorSlotAndDamagePair readPair(ByteBuf buffer) {
-        final ArmorSlot slot = ArmorSlot.from(buffer.readUnsignedByte() >> 1);
+        final ArmorSlot slot = ArmorSlot.from(VarInts.readInt(buffer));
         final short damage = buffer.readShortLE();
         return new ArmorSlotAndDamagePair(slot, damage);
     }
