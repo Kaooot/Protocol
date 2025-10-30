@@ -4,7 +4,7 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.protocol.bedrock.data.PacketShapeData;
+import org.cloudburstmc.protocol.bedrock.data.payload.ShapeDataPayload;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 import java.util.List;
@@ -14,7 +14,7 @@ import java.util.List;
 @ToString(doNotUseGetters = true)
 public class DebugDrawerPacket implements BedrockPacket {
 
-    private final List<PacketShapeData> shapes = new ObjectArrayList<>();
+    private final List<ShapeDataPayload> shapes = new ObjectArrayList<>();
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

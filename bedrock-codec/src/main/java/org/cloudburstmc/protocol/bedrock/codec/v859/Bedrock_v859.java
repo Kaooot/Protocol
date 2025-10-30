@@ -29,6 +29,7 @@ public class Bedrock_v859 extends Bedrock_v844 {
             .updateSerializer(AnimatePacket.class, AnimateSerializer_v859.INSTANCE)
             .updateSerializer(BiomeDefinitionListPacket.class, BiomeDefinitionListSerializer_v859.INSTANCE)
             .updateSerializer(CameraInstructionPacket.class, CameraInstructionSerializer_v859.INSTANCE)
+            .updateSerializer(DebugDrawerPacket.class, DebugDrawerSerializer_v859.INSTANCE)
             .updateSerializer(ShowStoreOfferPacket.class, ShowStoreOfferSerializer_v859.INSTANCE)
             .registerPacket(GraphicsOverrideParameterPacket::new, GraphicsParameterOverrideSerializer_v859.INSTANCE, 331, PacketRecipient.CLIENT)
             .build();
