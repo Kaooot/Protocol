@@ -8,6 +8,7 @@ import org.cloudburstmc.math.vector.Vector2f;
 import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v827.serializer.CameraInstructionSerializer_v827;
+import org.cloudburstmc.protocol.bedrock.data.camera.CameraAttachToEntityInstruction;
 import org.cloudburstmc.protocol.bedrock.data.camera.CameraSplineInstruction;
 import org.cloudburstmc.protocol.bedrock.data.camera.CameraSplineType;
 import org.cloudburstmc.protocol.bedrock.packet.CameraInstructionPacket;
@@ -61,5 +62,11 @@ public class CameraInstructionSerializer_v859 extends CameraInstructionSerialize
             });
             return new CameraSplineInstruction(totalTime, type, curve, progressKeyFrames, rotationOption);
         }));
+        packet.setAttachToEntityInstruction(helper.readOptional(buffer, null, (buf, aHelper) -> {
+            final CameraAttachToEntityInstruction instruction = new CameraAttachToEntityInstruction();
+            instruction.setEntityActorID(buf.readLongLE());
+            return instruction;
+        }));
+        packet.setDetachFromEntity(helper.readOptional(buffer, OptionalBoolean.empty(), buf -> OptionalBoolean.of(buf.readBoolean())));
     }
 }
