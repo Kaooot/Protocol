@@ -4,15 +4,12 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.protocol.bedrock.data.GameRulesChangedPacketData;
-import org.cloudburstmc.protocol.bedrock.docs.Docs;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
-@Docs
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class GameRulesChangedPacket implements BedrockPacket {
-    @Docs(linkType = Docs.LinkType.MEMBERS)
     private final GameRulesChangedPacketData rulesData = new GameRulesChangedPacketData();
 
     @Override

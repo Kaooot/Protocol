@@ -6,7 +6,6 @@ import lombok.ToString;
 import org.cloudburstmc.math.vector.Vector2f;
 import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.protocol.bedrock.data.PredictionType;
-import org.cloudburstmc.protocol.bedrock.docs.*;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
@@ -15,10 +14,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
-@Docs
-@Changelog({
-        @ChangelogEntry(version = Version.V827, type = ChangelogEntry.Type.REMOVE, value = "condition from vehicle prediction")
-})
 public class CorrectPlayerMovePredictionPacket implements BedrockPacket {
 
     /**
@@ -26,7 +21,6 @@ public class CorrectPlayerMovePredictionPacket implements BedrockPacket {
      * <p>
      * The type of prediction player sends.
      */
-    @Docs(notes = "Vehicle or Player Prediction", type = DataType.BYTE)
     private PredictionType predictionType = PredictionType.PLAYER;
 
     /**
@@ -35,7 +29,6 @@ public class CorrectPlayerMovePredictionPacket implements BedrockPacket {
      * @param pos reported position
      * @return reported position
      */
-    @Docs(notes = "Corrected position")
     private Vector3f pos;
 
     /**
@@ -44,7 +37,6 @@ public class CorrectPlayerMovePredictionPacket implements BedrockPacket {
      * @param posDelta position difference
      * @return position difference
      */
-    @Docs(notes = "Corrected velocity")
     private Vector3f posDelta;
 
     /**
@@ -57,7 +49,6 @@ public class CorrectPlayerMovePredictionPacket implements BedrockPacket {
     /**
      * @since v712
      */
-    @Docs(type = DataType.FLOAT, isOptional = true)
     private Float vehicleAngularVelocity;
 
     /**
@@ -66,7 +57,6 @@ public class CorrectPlayerMovePredictionPacket implements BedrockPacket {
      * @param onGround is client on the ground
      * @return is client on the ground
      */
-    @Docs(notes = "Is on ground")
     private boolean onGround;
 
     /**
@@ -75,7 +65,6 @@ public class CorrectPlayerMovePredictionPacket implements BedrockPacket {
      * @param tick to be corrected
      * @return to be corrected
      */
-    @Docs(notes = "Which frame we're correcting; should match the tick in the Player Auth Input packet", type = DataType.UNSIGNED_VARINT64)
     private long tick;
 
     @Override

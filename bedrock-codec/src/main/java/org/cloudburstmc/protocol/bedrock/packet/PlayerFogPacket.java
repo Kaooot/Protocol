@@ -4,8 +4,6 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.protocol.bedrock.docs.DataType;
-import org.cloudburstmc.protocol.bedrock.docs.Docs;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 import java.util.List;
@@ -16,7 +14,6 @@ import java.util.List;
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
-@Docs
 public class PlayerFogPacket implements BedrockPacket {
 
     /**
@@ -25,7 +22,6 @@ public class PlayerFogPacket implements BedrockPacket {
      * @param fogStack list of fog effects
      * @return list of fog effects
      */
-    @Docs(example = "Fog Effect", type = DataType.ARRAY)
     private final List<String> fogStack = new ObjectArrayList<>();
 
     @Override
