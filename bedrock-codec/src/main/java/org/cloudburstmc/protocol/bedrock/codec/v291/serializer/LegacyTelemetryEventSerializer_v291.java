@@ -35,7 +35,7 @@ public class LegacyTelemetryEventSerializer_v291 implements BedrockPacketSeriali
         this.readers.put(LegacyTelemetryEventPacket.Type.AGENT_CREATED, (buf, helper) -> AgentCreatedEventData.INSTANCE);
         this.readers.put(LegacyTelemetryEventPacket.Type.PATTERN_REMOVED_OBSOLETE, this::readPatternRemoved);
         this.readers.put(LegacyTelemetryEventPacket.Type.SLASH_COMMAND, this::readSlashCommandExecuted);
-        this.readers.put(LegacyTelemetryEventPacket.Type.DEPRECATED_FISH_BUCKETED, this::readFishBucketed);
+        this.readers.put(LegacyTelemetryEventPacket.Type.FISH_BUCKETED_OBSOLETE, this::readFishBucketed);
 
         this.writers.put(LegacyTelemetryEventPacket.Type.ACHIEVEMENT, this::writeAchievement);
         this.writers.put(LegacyTelemetryEventPacket.Type.INTERACTION, this::writeInteract);
@@ -50,15 +50,15 @@ public class LegacyTelemetryEventSerializer_v291 implements BedrockPacketSeriali
         });
         this.writers.put(LegacyTelemetryEventPacket.Type.PATTERN_REMOVED_OBSOLETE, this::writePatternRemoved);
         this.writers.put(LegacyTelemetryEventPacket.Type.SLASH_COMMAND, this::writeSlashCommandExecuted);
-        this.writers.put(LegacyTelemetryEventPacket.Type.DEPRECATED_FISH_BUCKETED, this::writeFishBucketed);
+        this.writers.put(LegacyTelemetryEventPacket.Type.FISH_BUCKETED_OBSOLETE, this::writeFishBucketed);
     }
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, LegacyTelemetryEventPacket packet) {
         VarInts.writeLong(buffer, packet.getTargetActorID());
-        EventData eventData = packet.getEventType();
+        EventData eventData = packet.getEventData();
         VarInts.writeInt(buffer, eventData.getType().ordinal());
-        buffer.writeByte(packet.getUsePlayerID());
+        buffer.writeBoolean(packet.isUsePlayerID());
 
         TriConsumer<ByteBuf, BedrockCodecHelper, EventData> function = this.writers.get(eventData.getType());
 
@@ -77,7 +77,7 @@ public class LegacyTelemetryEventSerializer_v291 implements BedrockPacketSeriali
         Preconditions.checkElementIndex(eventId, VALUES.length, "EventDataType");
         LegacyTelemetryEventPacket.Type type = VALUES[eventId];
 
-        packet.setUsePlayerID(buffer.readByte());
+        packet.setUsePlayerID(buffer.readBoolean());
 
         BiFunction<ByteBuf, BedrockCodecHelper, EventData> function = this.readers.get(type);
 
@@ -85,7 +85,7 @@ public class LegacyTelemetryEventSerializer_v291 implements BedrockPacketSeriali
             throw new UnsupportedOperationException("Unknown event type " + type);
         }
 
-        packet.setEventType(function.apply(buffer, helper));
+        packet.setEventData(function.apply(buffer, helper));
     }
 
     protected AchievementEventData readAchievement(ByteBuf buffer, BedrockCodecHelper helper) {

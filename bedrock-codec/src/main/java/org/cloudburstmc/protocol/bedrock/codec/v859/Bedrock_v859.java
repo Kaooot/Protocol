@@ -2,7 +2,6 @@ package org.cloudburstmc.protocol.bedrock.codec.v859;
 
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.ActorEventSerializer_v291;
-import org.cloudburstmc.protocol.bedrock.codec.v527.Bedrock_v527;
 import org.cloudburstmc.protocol.bedrock.codec.v776.BedrockCodecHelper_v776;
 import org.cloudburstmc.protocol.bedrock.codec.v844.Bedrock_v844;
 import org.cloudburstmc.protocol.bedrock.codec.v859.serializer.*;
@@ -16,7 +15,7 @@ import org.cloudburstmc.protocol.common.util.TypeMap;
  */
 public class Bedrock_v859 extends Bedrock_v844 {
 
-    protected static final TypeMap<ActorEvent> ACTOR_EVENTS = Bedrock_v527.ACTOR_EVENTS.toBuilder()
+    protected static final TypeMap<ActorEvent> ACTOR_EVENTS = Bedrock_v844.ACTOR_EVENTS.toBuilder()
             .insert(79, ActorEvent.SHAKE_WETNESS_STOP)
             .build();
 

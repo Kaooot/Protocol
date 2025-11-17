@@ -41,6 +41,8 @@ public class Bedrock_v560 extends Bedrock_v557 {
 
     protected static final TypeMap<SoundEvent> SOUND_EVENTS = Bedrock_v557.SOUND_EVENTS.toBuilder()
             .remove(448) // UNDEFINED
+            .insert(443, SoundEvent.STEP_SAND)
+            .insert(444, SoundEvent.DASH_READY)
             .insert(448, SoundEvent.PRESSURE_PLATE_CLICK_OFF)
             .insert(449, SoundEvent.PRESSURE_PLATE_CLICK_ON)
             .insert(450, SoundEvent.BUTTON_CLICK_OFF)

@@ -12,6 +12,6 @@ public class FishBucketedEventData implements EventData {
 
     @Override
     public LegacyTelemetryEventPacket.Type getType() {
-        return LegacyTelemetryEventPacket.Type.DEPRECATED_FISH_BUCKETED;
+        return LegacyTelemetryEventPacket.Type.FISH_BUCKETED_OBSOLETE;
     }
 }

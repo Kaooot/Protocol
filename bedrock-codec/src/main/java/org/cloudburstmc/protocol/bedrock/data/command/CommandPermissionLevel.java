@@ -1,13 +1,20 @@
 package org.cloudburstmc.protocol.bedrock.data.command;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+@Getter
+@RequiredArgsConstructor
 public enum CommandPermissionLevel {
 
-    ANY,
-    GAME_DIRECTORS,
-    ADMIN,
-    HOST,
-    OWNER,
-    INTERNAL;
+    ANY("Any"),
+    GAME_DIRECTORS("GameDirectors"),
+    ADMIN("Admin"),
+    HOST("Host"),
+    OWNER("Owner"),
+    INTERNAL("Internal");
+
+    private final String id;
 
     private static final CommandPermissionLevel[] VALUES = values();
 
@@ -16,5 +23,14 @@ public enum CommandPermissionLevel {
             return VALUES[ordinal];
         }
         throw new UnsupportedOperationException("Detected unknown CommandPermissionLevel ID: " + ordinal);
+    }
+
+    public static CommandPermissionLevel from(String name) {
+        for (CommandPermissionLevel value : VALUES) {
+            if (value.getId().equalsIgnoreCase(name)) {
+                return value;
+            }
+        }
+        throw new UnsupportedOperationException("Detected unknown CommandPermissionLevel Name: " + name);
     }
 }

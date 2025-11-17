@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.data.payload;
+package org.cloudburstmc.protocol.bedrock.data.payload.shape;
 
 import lombok.Data;
 import lombok.ToString;
@@ -10,12 +10,12 @@ import org.cloudburstmc.protocol.bedrock.data.ExtraShapeDataType;
  */
 @Data
 @ToString
-public class BoxDataPayload implements DebugShapePayload {
+public class LineDataPayload implements DebugShapePayload {
 
-    private Vector3f boxBound;
+    private Vector3f lineEndLocation;
 
     @Override
     public ExtraShapeDataType getType() {
-        return ExtraShapeDataType.BOX;
+        return ExtraShapeDataType.LINE;
     }
 }

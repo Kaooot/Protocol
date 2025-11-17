@@ -21,6 +21,7 @@ import org.cloudburstmc.nbt.NbtUtils;
 import org.cloudburstmc.protocol.bedrock.data.EncodingSettings;
 import org.cloudburstmc.protocol.bedrock.data.Experiment;
 import org.cloudburstmc.protocol.bedrock.data.SerializedAbilitiesData;
+import org.cloudburstmc.protocol.bedrock.data.ddui.DataStoreUpdate;
 import org.cloudburstmc.protocol.bedrock.data.definitions.BlockDefinition;
 import org.cloudburstmc.protocol.bedrock.data.definitions.ItemDefinition;
 import org.cloudburstmc.protocol.bedrock.data.actor.PropertySyncData;
@@ -614,6 +615,16 @@ public abstract class BaseBedrockCodecHelper implements BedrockCodecHelper {
 
     @Override
     public <T extends Enum<?>> void writeLargeVarIntFlags(ByteBuf buffer, Set<T> flags, Class<T> clazz) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void writeDataStoreUpdate(ByteBuf buffer, DataStoreUpdate update) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public DataStoreUpdate readDataStoreUpdate(ByteBuf buffer) {
         throw new UnsupportedOperationException();
     }
 }

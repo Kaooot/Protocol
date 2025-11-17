@@ -12,8 +12,8 @@ public class LegacyTelemetryEventSerializer_v685 extends LegacyTelemetryEventSer
 
     public LegacyTelemetryEventSerializer_v685() {
         super();
-        this.readers.put(LegacyTelemetryEventPacket.Type.ITEM_USED_EVENT, this::readItemUsed);
-        this.writers.put(LegacyTelemetryEventPacket.Type.ITEM_USED_EVENT, this::writeItemUsed);
+        this.readers.put(LegacyTelemetryEventPacket.Type.ITEM_USED, this::readItemUsed);
+        this.writers.put(LegacyTelemetryEventPacket.Type.ITEM_USED, this::writeItemUsed);
     }
 
     protected ItemUsedEventData readItemUsed(ByteBuf buffer, BedrockCodecHelper helper) {

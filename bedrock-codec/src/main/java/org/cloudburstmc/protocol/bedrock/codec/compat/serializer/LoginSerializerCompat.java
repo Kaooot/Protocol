@@ -7,7 +7,6 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
-import org.cloudburstmc.protocol.bedrock.data.auth.CertificateChainPayload;
 import org.cloudburstmc.protocol.bedrock.packet.LoginPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 import org.jose4j.json.internal.json_simple.JSONArray;
@@ -44,7 +43,7 @@ public class LoginSerializerCompat implements BedrockPacketSerializer<LoginPacke
             checkArgument(node instanceof String, "Expected String in login chain");
             chainList.add((String) node);
         }
-        packet.setAuthPayload(new CertificateChainPayload(chainList));
+        packet.setChain(chainList);
 
         String value = (String) jwt.readCharSequence(jwt.readIntLE(), StandardCharsets.UTF_8);
         packet.setClientJwt(value);

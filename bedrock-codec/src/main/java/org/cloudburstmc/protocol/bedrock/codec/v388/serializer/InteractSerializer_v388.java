@@ -12,7 +12,7 @@ import org.cloudburstmc.protocol.common.util.VarInts;
 public class InteractSerializer_v388 implements BedrockPacketSerializer<InteractPacket> {
     public static final InteractSerializer_v388 INSTANCE = new InteractSerializer_v388();
 
-    private static final InteractPacket.Action[] ACTIONS = InteractPacket.Action.values();
+    protected static final InteractPacket.Action[] ACTIONS = InteractPacket.Action.values();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, InteractPacket packet) {
@@ -20,7 +20,7 @@ public class InteractSerializer_v388 implements BedrockPacketSerializer<Interact
         VarInts.writeUnsignedLong(buffer, packet.getTargetRuntimeID());
 
         if (packet.getAction() == InteractPacket.Action.INTERACT_UPDATE || packet.getAction() == InteractPacket.Action.STOP_RIDING) {
-            helper.writeVector3f(buffer, packet.getMousePosition());
+            helper.writeVector3f(buffer, packet.getPosition());
         }
     }
 
@@ -30,7 +30,7 @@ public class InteractSerializer_v388 implements BedrockPacketSerializer<Interact
         packet.setTargetRuntimeID(VarInts.readUnsignedLong(buffer));
 
         if (packet.getAction() == InteractPacket.Action.INTERACT_UPDATE || packet.getAction() == InteractPacket.Action.STOP_RIDING) {
-            packet.setMousePosition(helper.readVector3f(buffer));
+            packet.setPosition(helper.readVector3f(buffer));
         }
     }
 }

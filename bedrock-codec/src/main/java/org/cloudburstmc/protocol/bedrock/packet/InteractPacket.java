@@ -12,7 +12,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 public class InteractPacket implements BedrockPacket {
     private Action action;
     private long targetRuntimeID;
-    private Vector3f mousePosition;
+    private Vector3f position;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

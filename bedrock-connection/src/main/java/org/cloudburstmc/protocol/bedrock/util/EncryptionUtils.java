@@ -1,10 +1,7 @@
 package org.cloudburstmc.protocol.bedrock.util;
 
 import lombok.experimental.UtilityClass;
-import org.cloudburstmc.protocol.bedrock.data.auth.AuthPayload;
 import org.cloudburstmc.protocol.bedrock.data.auth.PlayerAuthenticationType;
-import org.cloudburstmc.protocol.bedrock.data.auth.CertificateChainPayload;
-import org.cloudburstmc.protocol.bedrock.data.auth.TokenPayload;
 import org.jose4j.json.JsonUtil;
 import org.jose4j.json.internal.json_simple.parser.JSONParser;
 import org.jose4j.json.internal.json_simple.parser.ParseException;
@@ -222,7 +219,7 @@ public class EncryptionUtils {
         return clientData.getUnverifiedPayloadBytes();
     }
 
-    public static ChainValidationResult validatePayload(AuthPayload payload)
+    /*public static ChainValidationResult validatePayload(AuthPayload payload)
             throws JoseException, NoSuchAlgorithmException, InvalidKeySpecException, InvalidJwtException {
         if (payload instanceof CertificateChainPayload) {
             CertificateChainPayload chainPayload = (CertificateChainPayload) payload;
@@ -241,7 +238,7 @@ public class EncryptionUtils {
         } else {
             throw new IllegalArgumentException("Unsupported AuthPayload type: " + payload.getClass().getName());
         }
-    }
+    }*/
 
     public static ChainValidationResult validateChain(List<String> chain)
             throws JoseException, NoSuchAlgorithmException, InvalidKeySpecException {

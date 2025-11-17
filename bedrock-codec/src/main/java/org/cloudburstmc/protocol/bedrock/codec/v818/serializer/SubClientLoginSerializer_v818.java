@@ -1,17 +1,15 @@
 package org.cloudburstmc.protocol.bedrock.codec.v818.serializer;
 
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.SubClientLoginSerializer_v291;
-import org.cloudburstmc.protocol.bedrock.data.auth.AuthPayload;
 import org.cloudburstmc.protocol.bedrock.data.auth.PlayerAuthenticationType;
-import org.cloudburstmc.protocol.bedrock.data.auth.CertificateChainPayload;
-import org.cloudburstmc.protocol.bedrock.data.auth.TokenPayload;
+import org.cloudburstmc.protocol.bedrock.packet.SubClientLoginPacket;
 import org.jose4j.json.JsonUtil;
 import org.jose4j.lang.JoseException;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import static org.cloudburstmc.protocol.common.util.Preconditions.checkArgument;
 
@@ -20,28 +18,24 @@ public class SubClientLoginSerializer_v818 extends SubClientLoginSerializer_v291
     public static final SubClientLoginSerializer_v818 INSTANCE = new SubClientLoginSerializer_v818();
 
     @Override
-    protected String writeAuthJwt(AuthPayload payload) {
-        Objects.requireNonNull(payload, "AuthPayload cannot be null");
-        checkArgument(payload.getAuthType() != null && payload.getAuthType() != PlayerAuthenticationType.UNKNOWN,
-                "Client requires non-null and non-UNKNOWN AuthType for login");
-        Map<String, Object> object = new HashMap<>();
-        object.put("AuthenticationType", payload.getAuthType().ordinal() - 1); // Adjusting ordinal to match the enum definition
-        if (payload instanceof TokenPayload) {
-            object.put("Token", ((TokenPayload) payload).getToken());
-            object.put("Certificate", "");
-        } else if (payload instanceof CertificateChainPayload) {
+    protected String writeAuthJwt(SubClientLoginPacket packet) {
+        checkArgument(packet.getAuthenticationType() != PlayerAuthenticationType.UNKNOWN,
+                "Client requires non-UNKNOWN PlayerAuthenticationType for login");
+        Map<String, Object> object = new LinkedHashMap<>();
+        object.put("AuthenticationType", packet.getAuthenticationType().ordinal() - 1); // Adjusting ordinal to match the enum definition
+        if (packet.getChain() != null) {
             Map<String, Object> json = new HashMap<>();
-            json.put("chain", ((CertificateChainPayload) payload).getChain());
+            json.put("chain", packet.getChain());
             object.put("Certificate", JsonUtil.toJson(json));
-            object.put("Token", "");
         } else {
-            throw new IllegalArgumentException("Unsupported AuthPayload type: " + payload.getClass().getName());
+            object.put("Certificate", "");
         }
+        object.put("Token", packet.getToken() != null ? packet.getToken() : "");
         return JsonUtil.toJson(object);
     }
 
     @Override
-    protected AuthPayload readAuthJwt(String authJwt) {
+    protected void readAuthJwt(String authJwt, SubClientLoginPacket packet) {
         try {
             Map<String, Object> payload = JsonUtil.parseJson(authJwt);
             checkArgument(payload.containsKey("AuthenticationType"), "Missing AuthenticationType in JWT");
@@ -51,6 +45,13 @@ public class SubClientLoginSerializer_v818 extends SubClientLoginSerializer_v291
             }
             PlayerAuthenticationType playerAuthenticationType = PlayerAuthenticationType.values()[authTypeOrdinal + 1];
 
+            packet.setAuthenticationType(playerAuthenticationType);
+
+            if (payload.containsKey("Token") && payload.get("Token") instanceof String && !((String) payload.get("Token")).isEmpty()) {
+                String token = (String) payload.get("Token");
+                packet.setToken(token);
+            }
+
             if (payload.containsKey("Certificate") && payload.get("Certificate") instanceof String && !((String) payload.get("Certificate")).isEmpty()) {
                 String certJson = (String) payload.get("Certificate");
                 Map<String, Object> certData = JsonUtil.parseJson(certJson);
@@ -58,12 +59,7 @@ public class SubClientLoginSerializer_v818 extends SubClientLoginSerializer_v291
                     throw new IllegalArgumentException("Invalid Certificate chain in JWT");
                 }
                 List<String> chain = (List<String>) certData.get("chain");
-                return new CertificateChainPayload(chain, playerAuthenticationType);
-            } else if (payload.containsKey("Token") && payload.get("Token") instanceof String && !((String) payload.get("Token")).isEmpty()) {
-                String token = (String) payload.get("Token");
-                return new TokenPayload(token, playerAuthenticationType);
-            } else {
-                throw new IllegalArgumentException("Invalid AuthPayload in JWT");
+                packet.setChain(chain);
             }
         } catch (JoseException e) {
             throw new IllegalArgumentException("Failed to parse auth payload", e);

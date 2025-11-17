@@ -20,7 +20,7 @@ public class InteractSerializer_v291 implements BedrockPacketSerializer<Interact
         VarInts.writeUnsignedLong(buffer, packet.getTargetRuntimeID());
 
         if (packet.getAction() == InteractPacket.Action.INTERACT_UPDATE) {
-            helper.writeVector3f(buffer, packet.getMousePosition());
+            helper.writeVector3f(buffer, packet.getPosition());
         }
     }
 
@@ -30,7 +30,7 @@ public class InteractSerializer_v291 implements BedrockPacketSerializer<Interact
         packet.setTargetRuntimeID(VarInts.readUnsignedLong(buffer));
 
         if (packet.getAction() == InteractPacket.Action.INTERACT_UPDATE) {
-            packet.setMousePosition(helper.readVector3f(buffer));
+            packet.setPosition(helper.readVector3f(buffer));
         }
     }
 }

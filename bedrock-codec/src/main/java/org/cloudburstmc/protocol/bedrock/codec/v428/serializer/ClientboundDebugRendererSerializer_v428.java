@@ -5,7 +5,8 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
-import org.cloudburstmc.protocol.bedrock.data.ClientboundDebugRendererType;
+import org.cloudburstmc.protocol.bedrock.data.DebugMarkerData;
+import org.cloudburstmc.protocol.bedrock.data.PayloadType;
 import org.cloudburstmc.protocol.bedrock.packet.ClientboundDebugRendererPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -16,37 +17,48 @@ public class ClientboundDebugRendererSerializer_v428 implements BedrockPacketSer
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ClientboundDebugRendererPacket packet) {
-        this.writeMarkerType(buffer, helper, packet.getDebugMarkerType());
-        if (packet.getDebugMarkerType() == ClientboundDebugRendererType.ADD_DEBUG_MARKER_CUBE) {
-            helper.writeString(buffer, packet.getDebugMarkerText());
-            helper.writeVector3f(buffer, packet.getDebugMarkerPosition());
-            buffer.writeFloat(packet.getDebugMarkerColorRed());
-            buffer.writeFloat(packet.getDebugMarkerColorGreen());
-            buffer.writeFloat(packet.getDebugMarkerColorBlue());
-            buffer.writeFloat(packet.getDebugMarkerColorAlpha());
-            buffer.writeLongLE(packet.getDebugMarkerDurationMS());
+        this.writePayloadType(buffer, helper, packet.getType());
+        if (packet.getType().equals(PayloadType.ADD_DEBUG_MARKER_CUBE)) {
+            this.writeDebugMarkerData(buffer, helper, packet.getDebugMarkerData());
         }
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ClientboundDebugRendererPacket packet) {
-        packet.setDebugMarkerType(this.readMarkerType(buffer, helper));
-        if (packet.getDebugMarkerType() == ClientboundDebugRendererType.ADD_DEBUG_MARKER_CUBE) {
-            packet.setDebugMarkerText(helper.readString(buffer));
-            packet.setDebugMarkerPosition(helper.readVector3f(buffer));
-            packet.setDebugMarkerColorRed(buffer.readFloat());
-            packet.setDebugMarkerColorGreen(buffer.readFloat());
-            packet.setDebugMarkerColorBlue(buffer.readFloat());
-            packet.setDebugMarkerColorAlpha(buffer.readFloat());
-            packet.setDebugMarkerDurationMS(buffer.readLongLE());
+        packet.setType(this.readPayloadType(buffer, helper));
+        if (packet.getType().equals(PayloadType.ADD_DEBUG_MARKER_CUBE)) {
+            packet.setDebugMarkerData(this.readDebugMarkerData(buffer, helper));
         }
     }
 
-    protected void writeMarkerType(ByteBuf buffer, BedrockCodecHelper helper, ClientboundDebugRendererType type) {
+    protected void writePayloadType(ByteBuf buffer, BedrockCodecHelper helper, PayloadType type) {
         VarInts.writeUnsignedInt(buffer, type.ordinal());
     }
 
-    protected ClientboundDebugRendererType readMarkerType(ByteBuf buffer, BedrockCodecHelper helper) {
-        return ClientboundDebugRendererType.values()[VarInts.readUnsignedInt(buffer)];
+    protected PayloadType readPayloadType(ByteBuf buffer, BedrockCodecHelper helper) {
+        return PayloadType.values()[VarInts.readUnsignedInt(buffer)];
+    }
+
+    protected void writeDebugMarkerData(ByteBuf buffer, BedrockCodecHelper helper, DebugMarkerData data) {
+        helper.writeString(buffer, data.getText());
+        helper.writeVector3f(buffer, data.getPosition());
+        buffer.writeFloat((data.getColor() >> 16) & 0xff);
+        buffer.writeFloat((data.getColor() >> 8) & 0xff);
+        buffer.writeFloat(data.getColor() & 0xff);
+        buffer.writeFloat((data.getColor() >> 24) & 0xff);
+        buffer.writeLongLE(data.getDuration());
+    }
+
+    protected DebugMarkerData readDebugMarkerData(ByteBuf buffer, BedrockCodecHelper helper) {
+        final DebugMarkerData data = new DebugMarkerData();
+        data.setText(helper.readString(buffer));
+        data.setPosition(helper.readVector3f(buffer));
+        final int red = (int) (buffer.readFloatLE() * 255);
+        final int green = (int) (buffer.readFloatLE() * 255);
+        final int blue = (int) (buffer.readFloatLE() * 255);
+        final int alpha = (int) (buffer.readFloatLE() * 255);
+        data.setColor((alpha << 24) | (red << 16) | (green << 8) | blue);
+        data.setDuration(buffer.readLongLE());
+        return data;
     }
 }

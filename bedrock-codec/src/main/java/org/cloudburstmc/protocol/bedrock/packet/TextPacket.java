@@ -1,11 +1,10 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.protocol.bedrock.data.TextPacketType;
+import org.cloudburstmc.protocol.bedrock.data.payload.text.TextPacketBody;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
@@ -14,9 +13,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 public class TextPacket implements BedrockPacket {
     private TextPacketType messageType;
     private boolean localize;
-    private String playerName;
-    private String message;
-    private List<String> parameterList = new ObjectArrayList<>();
+    private TextPacketBody body;
     private String sendersXUID;
     private String platformId = "";
     /**

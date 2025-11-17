@@ -1,21 +1,23 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import lombok.*;
+import org.cloudburstmc.protocol.bedrock.data.ActorSwingSource;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class AnimatePacket implements BedrockPacket {
-    private float rowingTime;
     private Action action;
     private long targetRuntimeID;
     /**
      * @since v859
      */
     private float data;
+    /**
+     * @since v897
+     */
+    private ActorSwingSource swingSource;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

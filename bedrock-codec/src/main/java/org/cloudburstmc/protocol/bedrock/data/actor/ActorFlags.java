@@ -179,5 +179,9 @@ public enum ActorFlags {
     /**
      * @since v844
      */
-    CAN_USE_VERTICAL_MOVEMENT_ACTION
+    CAN_USE_VERTICAL_MOVEMENT_ACTION,
+    /**
+     * @since v897
+     */
+    ROTATION_LOCKED_TO_VEHICLE
 }

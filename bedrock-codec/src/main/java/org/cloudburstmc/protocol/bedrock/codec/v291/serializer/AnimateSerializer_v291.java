@@ -32,7 +32,7 @@ public class AnimateSerializer_v291 implements BedrockPacketSerializer<AnimatePa
         VarInts.writeInt(buffer, types.get(action));
         VarInts.writeUnsignedLong(buffer, packet.getTargetRuntimeID());
         if (action == Action.ROW_LEFT || action == Action.ROW_RIGHT) {
-            buffer.writeFloatLE(packet.getRowingTime());
+            buffer.writeFloatLE(packet.getData());
         }
     }
 
@@ -42,7 +42,7 @@ public class AnimateSerializer_v291 implements BedrockPacketSerializer<AnimatePa
         packet.setAction(action);
         packet.setTargetRuntimeID(VarInts.readUnsignedLong(buffer));
         if (action == AnimatePacket.Action.ROW_LEFT || action == AnimatePacket.Action.ROW_RIGHT) {
-            packet.setRowingTime(buffer.readFloatLE());
+            packet.setData(buffer.readFloatLE());
         }
     }
 }

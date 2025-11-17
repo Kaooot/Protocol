@@ -12,13 +12,13 @@ public class CommandRequestSerializer_v567 extends CommandRequestSerializer_v291
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, CommandRequestPacket packet) {
         super.serialize(buffer, helper, packet);
 
-        VarInts.writeInt(buffer, packet.getVersion());
+        VarInts.writeInt(buffer, packet.getLegacyVersion());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, CommandRequestPacket packet) {
         super.deserialize(buffer, helper, packet);
 
-        packet.setVersion(VarInts.readInt(buffer));
+        packet.setLegacyVersion(VarInts.readInt(buffer));
     }
 }

@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.data.payload;
+package org.cloudburstmc.protocol.bedrock.data.payload.shape;
 
 import lombok.Data;
 import lombok.ToString;
@@ -9,12 +9,12 @@ import org.cloudburstmc.protocol.bedrock.data.ExtraShapeDataType;
  */
 @Data
 @ToString
-public class SphereDataPayload implements DebugShapePayload {
+public class TextDataPayload implements DebugShapePayload {
 
-    private Integer numSegments;
+    private String text;
 
     @Override
     public ExtraShapeDataType getType() {
-        return ExtraShapeDataType.SPHERE;
+        return ExtraShapeDataType.TEXT;
     }
 }

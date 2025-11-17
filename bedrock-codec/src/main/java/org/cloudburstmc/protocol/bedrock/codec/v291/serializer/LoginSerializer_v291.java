@@ -7,15 +7,15 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
-import org.cloudburstmc.protocol.bedrock.data.auth.AuthPayload;
-import org.cloudburstmc.protocol.bedrock.data.auth.CertificateChainPayload;
 import org.cloudburstmc.protocol.bedrock.packet.LoginPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 import org.jose4j.json.JsonUtil;
 import org.jose4j.lang.JoseException;
 
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static org.cloudburstmc.protocol.common.util.Preconditions.checkArgument;
 
@@ -27,7 +27,7 @@ public class LoginSerializer_v291 implements BedrockPacketSerializer<LoginPacket
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, LoginPacket packet) {
         buffer.writeInt(packet.getClientNetworkVersion());
 
-        writeJwts(buffer, writeAuthJwt(packet.getAuthPayload()), packet.getClientJwt());
+        this.writeJwts(buffer, this.writeAuthJwt(packet), packet.getClientJwt());
     }
 
     @Override
@@ -37,22 +37,19 @@ public class LoginSerializer_v291 implements BedrockPacketSerializer<LoginPacket
         ByteBuf jwt = buffer.readSlice(VarInts.readUnsignedInt(buffer)); // Get the JWT.
 
         String authJwt = readString(jwt);
-        packet.setAuthPayload(readAuthJwt(authJwt));
+        this.readAuthJwt(authJwt, packet);
 
         String value = (String) jwt.readCharSequence(jwt.readIntLE(), StandardCharsets.UTF_8);
         packet.setClientJwt(value);
     }
 
-    protected String writeAuthJwt(AuthPayload payload) {
-        checkArgument(payload instanceof CertificateChainPayload, "This client only supports CertificateChainPayload for login");
-
+    protected String writeAuthJwt(LoginPacket packet) {
         Map<String, Object> json = new HashMap<>();
-        json.put("chain", ((CertificateChainPayload) payload).getChain());
-
+        json.put("chain", packet.getChain());
         return JsonUtil.toJson(json);
     }
 
-    protected AuthPayload readAuthJwt(String authJwt) {
+    protected void readAuthJwt(String authJwt, LoginPacket packet) {
         try {
             Map<String, Object> json = JsonUtil.parseJson(authJwt);
             checkArgument(json != null && json.containsKey("chain") && json.get("chain") instanceof List,
@@ -65,7 +62,7 @@ public class LoginSerializer_v291 implements BedrockPacketSerializer<LoginPacket
                 checkArgument(node instanceof String, "Expected String in login chain");
                 chainList.add((String) node);
             }
-            return new CertificateChainPayload(chainList);
+            packet.setChain(chainList);
         } catch (JoseException e) {
             throw new IllegalArgumentException("Failed to parse auth payload", e);
         }

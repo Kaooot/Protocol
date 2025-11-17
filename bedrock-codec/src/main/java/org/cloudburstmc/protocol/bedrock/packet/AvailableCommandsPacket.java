@@ -11,7 +11,7 @@ import java.util.List;
 
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
-@ToString(doNotUseGetters = true)
+@ToString(doNotUseGetters = true, exclude = "commands")
 public class AvailableCommandsPacket implements BedrockPacket {
     private final List<CommandData> commands = new ObjectArrayList<>();
 

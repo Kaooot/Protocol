@@ -5,7 +5,7 @@ import lombok.Value;
 
 @Value
 public class CommandOutputMessage {
-    private final boolean internal;
+    private final boolean successful;
     @NonNull
     private final String messageId;
     @NonNull

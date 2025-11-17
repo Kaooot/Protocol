@@ -8,7 +8,7 @@ import org.cloudburstmc.protocol.bedrock.codec.v818.serializer.DebugDrawerSerial
 import org.cloudburstmc.protocol.bedrock.data.Dimension;
 import org.cloudburstmc.protocol.bedrock.data.ExtraShapeDataType;
 import org.cloudburstmc.protocol.bedrock.data.ScriptDebugShapeType;
-import org.cloudburstmc.protocol.bedrock.data.payload.*;
+import org.cloudburstmc.protocol.bedrock.data.payload.shape.*;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
 /**

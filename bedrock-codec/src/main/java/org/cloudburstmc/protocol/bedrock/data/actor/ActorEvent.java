@@ -77,5 +77,9 @@ public enum ActorEvent {
     /**
      * @since v859
      */
-    SHAKE_WETNESS_STOP
+    SHAKE_WETNESS_STOP,
+    /**
+     * @since v897
+     */
+    KINETIC_DAMAGE_DEALT
 }

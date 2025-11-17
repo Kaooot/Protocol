@@ -6,7 +6,7 @@ import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
 import org.cloudburstmc.protocol.bedrock.data.ExtraShapeDataType;
 import org.cloudburstmc.protocol.bedrock.data.ScriptDebugShapeType;
-import org.cloudburstmc.protocol.bedrock.data.payload.*;
+import org.cloudburstmc.protocol.bedrock.data.payload.shape.*;
 import org.cloudburstmc.protocol.bedrock.packet.DebugDrawerPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 

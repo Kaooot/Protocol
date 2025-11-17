@@ -12,6 +12,6 @@ public class ItemUsedEventData implements EventData {
 
     @Override
     public LegacyTelemetryEventPacket.Type getType() {
-        return LegacyTelemetryEventPacket.Type.ITEM_USED_EVENT;
+        return LegacyTelemetryEventPacket.Type.ITEM_USED;
     }
 }

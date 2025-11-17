@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.data.payload;
+package org.cloudburstmc.protocol.bedrock.data.payload.shape;
 
 import lombok.Data;
 import lombok.ToString;

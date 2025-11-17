@@ -4,6 +4,9 @@ import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v332.serializer.TextSerializer_v332;
 import org.cloudburstmc.protocol.bedrock.data.TextPacketType;
+import org.cloudburstmc.protocol.bedrock.data.payload.text.AuthorAndMessage;
+import org.cloudburstmc.protocol.bedrock.data.payload.text.MessageAndParams;
+import org.cloudburstmc.protocol.bedrock.data.payload.text.MessageOnly;
 import org.cloudburstmc.protocol.bedrock.packet.TextPacket;
 
 public class TextSerializer_v554 extends TextSerializer_v332 {
@@ -18,20 +21,20 @@ public class TextSerializer_v554 extends TextSerializer_v332 {
             case CHAT:
             case WHISPER:
             case ANNOUNCEMENT:
-                helper.writeString(buffer, packet.getPlayerName());
+                helper.writeString(buffer, ((AuthorAndMessage) packet.getBody()).getPlayerName());
             case RAW:
             case TIP:
             case SYSTEM_MESSAGE:
             case TEXT_OBJECT:
             case TEXT_OBJECT_WHISPER:
             case TEXT_OBJECT_ANNOUNCEMENT:
-                helper.writeString(buffer, packet.getMessage());
+                helper.writeString(buffer, packet.getBody().getMessage());
                 break;
             case TRANSLATE:
             case POPUP:
             case JUKEBOX_POPUP:
-                helper.writeString(buffer, packet.getMessage());
-                helper.writeArray(buffer, packet.getParameterList(), helper::writeString);
+                helper.writeString(buffer, packet.getBody().getMessage());
+                helper.writeArray(buffer, ((MessageAndParams) packet.getBody()).getParameterList(), helper::writeString);
                 break;
             default:
                 throw new UnsupportedOperationException("Unsupported TextPacketType " + messageType);
@@ -51,20 +54,28 @@ public class TextSerializer_v554 extends TextSerializer_v332 {
             case CHAT:
             case WHISPER:
             case ANNOUNCEMENT:
-                packet.setPlayerName(helper.readString(buffer));
+                final AuthorAndMessage authorAndMessage = new AuthorAndMessage();
+                authorAndMessage.setPlayerName(helper.readString(buffer));
+                authorAndMessage.setMessage(helper.readString(buffer));
+                packet.setBody(authorAndMessage);
+                break;
             case RAW:
             case TIP:
             case SYSTEM_MESSAGE:
             case TEXT_OBJECT:
             case TEXT_OBJECT_WHISPER:
             case TEXT_OBJECT_ANNOUNCEMENT:
-                packet.setMessage(helper.readString(buffer));
+                final MessageOnly messageOnly = new MessageOnly();
+                messageOnly.setMessage(helper.readString(buffer));
+                packet.setBody(messageOnly);
                 break;
             case TRANSLATE:
             case POPUP:
             case JUKEBOX_POPUP:
-                packet.setMessage(helper.readString(buffer));
-                helper.readArray(buffer, packet.getParameterList(), helper::readString);
+                final MessageAndParams messageAndParams = new MessageAndParams();
+                messageAndParams.setMessage(helper.readString(buffer));
+                helper.readArray(buffer, messageAndParams.getParameterList(), helper::readString);
+                packet.setBody(messageAndParams);
                 break;
             default:
                 throw new UnsupportedOperationException("Unsupported TextPacketType " + messageType);

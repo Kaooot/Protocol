@@ -3,6 +3,7 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.cloudburstmc.protocol.bedrock.data.CurrentCmdVersion;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandOriginData;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
@@ -12,11 +13,16 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 public class CommandRequestPacket implements BedrockPacket {
     private String command;
     private CommandOriginData commandOrigin;
-    private boolean isInternalSource;
+    private boolean isInternal;
     /**
      * @since v567
+     * @deprecated since v897
      */
-    private int version;
+    private int legacyVersion;
+    /**
+     * @since v897
+     */
+    private CurrentCmdVersion version;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

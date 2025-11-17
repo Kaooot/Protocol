@@ -40,7 +40,7 @@ subprojects {
     }
 
     java {
-        withJavadocJar()
+        //withJavadocJar()
         withSourcesJar()
         toolchain {
             languageVersion.set(JavaLanguageVersion.of(8))

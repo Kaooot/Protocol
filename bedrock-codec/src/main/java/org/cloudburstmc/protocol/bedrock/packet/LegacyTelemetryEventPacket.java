@@ -11,8 +11,8 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @ToString(doNotUseGetters = true)
 public class LegacyTelemetryEventPacket implements BedrockPacket {
     private long targetActorID;
-    private byte usePlayerID;
-    private EventData eventType;
+    private boolean usePlayerID;
+    private EventData eventData;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {
@@ -36,7 +36,7 @@ public class LegacyTelemetryEventPacket implements BedrockPacket {
         AGENT_CREATED,
         PATTERN_REMOVED_OBSOLETE,
         SLASH_COMMAND,
-        DEPRECATED_FISH_BUCKETED,
+        FISH_BUCKETED_OBSOLETE,
         MOB_BORN,
         PET_DIED_OBSOLETE,
         POI_CAULDRON_USED,
@@ -55,7 +55,7 @@ public class LegacyTelemetryEventPacket implements BedrockPacket {
         STRIDER_RIDDEN_IN_LAVA_IN_OVERWORLD,
         SNEAK_CLOSE_TO_SCULK_SENSOR,
         CAREFUL_RESTORATION,
-        ITEM_USED_EVENT;
+        ITEM_USED;
 
         private static final Type[] VALUES = values();
 
