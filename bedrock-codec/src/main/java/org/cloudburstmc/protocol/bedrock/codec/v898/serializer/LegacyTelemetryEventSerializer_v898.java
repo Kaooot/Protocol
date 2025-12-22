@@ -23,6 +23,7 @@ public class LegacyTelemetryEventSerializer_v898 implements BedrockPacketSeriali
         VarInts.writeLong(buffer, packet.getTargetActorID());
         VarInts.writeInt(buffer, packet.getEventData().getType().ordinal());
         buffer.writeBoolean(packet.isUsePlayerID());
+        VarInts.writeUnsignedInt(buffer, packet.getEventData().getType().ordinal());
         this.writeEventData(buffer, helper, packet.getEventData());
     }
 
@@ -31,6 +32,7 @@ public class LegacyTelemetryEventSerializer_v898 implements BedrockPacketSeriali
         packet.setTargetActorID(VarInts.readLong(buffer));
         final LegacyTelemetryEventPacket.Type type = LegacyTelemetryEventPacket.Type.from(VarInts.readInt(buffer));
         packet.setUsePlayerID(buffer.readBoolean());
+        VarInts.readUnsignedInt(buffer);
         packet.setEventData(this.readEventData(buffer, helper, type));
     }
 
@@ -398,7 +400,6 @@ public class LegacyTelemetryEventSerializer_v898 implements BedrockPacketSeriali
     }
 
     protected SlashCommand readSlashCommand(ByteBuf buffer, BedrockCodecHelper helper) {
-        final int value = buffer.readUnsignedByte();
         final int successCount = VarInts.readInt(buffer);
         final int errorCount = VarInts.readInt(buffer);
         final String commandName = helper.readString(buffer);
@@ -414,16 +415,4 @@ public class LegacyTelemetryEventSerializer_v898 implements BedrockPacketSeriali
         final int redstoneLevel = VarInts.readInt(buffer);
         return new TargetBlockHit(redstoneLevel);
     }
-
-    /*private void dump(ByteBuf buffer, int maxLength) {
-        final ByteBuf copy = buffer.copy();
-        final byte[] data = new byte[maxLength == -1 ? copy.readableBytes() : maxLength];
-        copy.readBytes(data);
-        System.out.println(ByteBufUtil.hexDump(data));
-        System.out.println(Arrays.toString(data));
-    }
-
-    private void dump(ByteBuf buffer) {
-        this.dump(buffer, -1);
-    }*/
 }
