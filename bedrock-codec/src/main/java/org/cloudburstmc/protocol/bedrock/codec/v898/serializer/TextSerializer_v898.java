@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.codec.v897.serializer;
+package org.cloudburstmc.protocol.bedrock.codec.v898.serializer;
 
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
@@ -17,8 +17,8 @@ import org.cloudburstmc.protocol.bedrock.packet.TextPacket;
  * @author Kaooot
  */
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class TextSerializer_v897 implements BedrockPacketSerializer<TextPacket> {
-    public static final TextSerializer_v897 INSTANCE = new TextSerializer_v897();
+public class TextSerializer_v898 implements BedrockPacketSerializer<TextPacket> {
+    public static final TextSerializer_v898 INSTANCE = new TextSerializer_v898();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, TextPacket packet) {

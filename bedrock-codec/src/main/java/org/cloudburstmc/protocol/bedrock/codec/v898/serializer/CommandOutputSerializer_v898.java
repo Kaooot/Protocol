@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.codec.v897.serializer;
+package org.cloudburstmc.protocol.bedrock.codec.v898.serializer;
 
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
@@ -13,8 +13,8 @@ import org.cloudburstmc.protocol.bedrock.packet.CommandOutputPacket;
  * @author Kaooot
  */
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class CommandOutputSerializer_v897 extends CommandOutputSerializer_v291 {
-    public static final CommandOutputSerializer_v897 INSTANCE = new CommandOutputSerializer_v897();
+public class CommandOutputSerializer_v898 extends CommandOutputSerializer_v291 {
+    public static final CommandOutputSerializer_v898 INSTANCE = new CommandOutputSerializer_v898();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, CommandOutputPacket packet) {

@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.codec.v897.serializer;
+package org.cloudburstmc.protocol.bedrock.codec.v898.serializer;
 
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
@@ -12,8 +12,8 @@ import org.cloudburstmc.protocol.common.util.VarInts;
  * @author Kaooot
  */
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class InteractSerializer_v897 extends InteractSerializer_v388 {
-    public static final InteractSerializer_v897 INSTANCE = new InteractSerializer_v897();
+public class InteractSerializer_v898 extends InteractSerializer_v388 {
+    public static final InteractSerializer_v898 INSTANCE = new InteractSerializer_v898();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, InteractPacket packet) {

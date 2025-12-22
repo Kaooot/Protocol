@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.codec.v897.serializer;
+package org.cloudburstmc.protocol.bedrock.codec.v898.serializer;
 
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
@@ -11,8 +11,8 @@ import org.cloudburstmc.protocol.bedrock.packet.MobEffectPacket;
  * @author Kaooot
  */
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class MobEffectSerializer_v897 extends MobEffectSerializer_v748 {
-    public static final MobEffectSerializer_v897 INSTANCE = new MobEffectSerializer_v897();
+public class MobEffectSerializer_v898 extends MobEffectSerializer_v748 {
+    public static final MobEffectSerializer_v898 INSTANCE = new MobEffectSerializer_v898();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, MobEffectPacket packet) {

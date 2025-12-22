@@ -13,11 +13,11 @@ public class CameraAimAssistPresetDefinition {
      */
     private String categories;
     /**
-     * @deprecated since v897
+     * @deprecated since v898
      */
     private final List<String> exclusionList = new ObjectArrayList<>();
     /**
-     * @since v897
+     * @since v898
      */
     private CameraAimAssistPresetExclusionDefinition exclusionSettings;
     private final List<String> liquidTargetingList = new ObjectArrayList<>();

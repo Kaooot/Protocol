@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.codec.v897.serializer;
+package org.cloudburstmc.protocol.bedrock.codec.v898.serializer;
 
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
@@ -13,8 +13,8 @@ import org.cloudburstmc.protocol.bedrock.data.camera.CameraAimAssistPresetExclus
  * @author Kaooot
  */
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class CameraAimAssistPresetsSerializer_v897 extends CameraAimAssistPresetsSerializer_v800 {
-    public static final CameraAimAssistPresetsSerializer_v897 INSTANCE = new CameraAimAssistPresetsSerializer_v897();
+public class CameraAimAssistPresetsSerializer_v898 extends CameraAimAssistPresetsSerializer_v800 {
+    public static final CameraAimAssistPresetsSerializer_v898 INSTANCE = new CameraAimAssistPresetsSerializer_v898();
 
     @Override
     protected void writeCategory(ByteBuf buffer, BedrockCodecHelper helper, CameraAimAssistCategory category) {
@@ -39,6 +39,7 @@ public class CameraAimAssistPresetsSerializer_v897 extends CameraAimAssistPreset
         category.setBlockDefault(helper.readOptional(buffer, null, ByteBuf::readIntLE));
         return category;
     }
+
 
     @Override
     protected void writePreset(ByteBuf buffer, BedrockCodecHelper helper,

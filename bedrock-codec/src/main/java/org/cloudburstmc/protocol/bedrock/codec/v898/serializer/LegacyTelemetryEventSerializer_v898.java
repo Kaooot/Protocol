@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.codec.v897.serializer;
+package org.cloudburstmc.protocol.bedrock.codec.v898.serializer;
 
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
@@ -15,8 +15,8 @@ import org.cloudburstmc.protocol.common.util.VarInts;
  * @author Kaooot
  */
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class LegacyTelemetryEventSerializer_v897 implements BedrockPacketSerializer<LegacyTelemetryEventPacket> {
-    public static final LegacyTelemetryEventSerializer_v897 INSTANCE = new LegacyTelemetryEventSerializer_v897();
+public class LegacyTelemetryEventSerializer_v898 implements BedrockPacketSerializer<LegacyTelemetryEventPacket> {
+    public static final LegacyTelemetryEventSerializer_v898 INSTANCE = new LegacyTelemetryEventSerializer_v898();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, LegacyTelemetryEventPacket packet) {

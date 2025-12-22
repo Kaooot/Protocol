@@ -16,11 +16,11 @@ public class CommandRequestPacket implements BedrockPacket {
     private boolean isInternal;
     /**
      * @since v567
-     * @deprecated since v897
+     * @deprecated since v898
      */
     private int legacyVersion;
     /**
-     * @since v897
+     * @since v898
      */
     private CurrentCmdVersion version;
 

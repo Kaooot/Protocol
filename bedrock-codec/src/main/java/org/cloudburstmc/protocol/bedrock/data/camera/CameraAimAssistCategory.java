@@ -12,7 +12,7 @@ public class CameraAimAssistCategory {
     private List<CameraAimAssistPriority> entities = new ObjectArrayList<>();
     private List<CameraAimAssistPriority> blocks = new ArrayList<>();
     /**
-     * @since v897
+     * @since v898
      */
     private List<CameraAimAssistPriority> blockTags = new ArrayList<>();
     private Integer entityDefault;
