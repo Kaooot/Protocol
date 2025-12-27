@@ -48,6 +48,7 @@ public class MoveActorAbsoluteSerializer_v291 implements BedrockPacketSerializer
         moveData.setForceMove((flags & FLAG_FORCE_MOVE) != 0);
         moveData.setPos(helper.readVector3f(buffer));
         moveData.setRotation(this.readByteRotation(buffer, helper));
+        packet.setMoveData(moveData);
     }
 
     // Helpers
