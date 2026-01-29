@@ -14,7 +14,71 @@ public enum GraphicsOverrideParameterType {
     RAYLEIGH_STRENGTH,
     SUN_MIE_STRENGTH,
     MOON_MIE_STRENGTH,
-    SUN_GLARE_SHAPE;
+    SUN_GLARE_SHAPE,
+    /**
+     * @since v924
+     */
+    CHLOROPHYLL,
+    /**
+     * @since v924
+     */
+    CDOM,
+    /**
+     * @since v924
+     */
+    SUSPENDED_SEDIMENT,
+    /**
+     * @since v924
+     */
+    WAVES_DEPTH,
+    /**
+     * @since v924
+     */
+    WAVES_FREQUENCY,
+    /**
+     * @since v924
+     */
+    WAVES_FREQUENCY_SCALING,
+    /**
+     * @since v924
+     */
+    WAVES_SPEED,
+    /**
+     * @since v924
+     */
+    WAVES_SPEED_SCALING,
+    /**
+     * @since v924
+     */
+    WAVES_SHAPE,
+    /**
+     * @since v924
+     */
+    WAVES_OCTAVES,
+    /**
+     * @since v924
+     */
+    WAVES_MIX,
+    /**
+     * @since v924
+     */
+    WAVES_PULL,
+    /**
+     * @since v924
+     */
+    WAVES_DIRECTION_INCREMENT,
+    /**
+     * @since v924
+     */
+    MIDTONES_CONTRAST,
+    /**
+     * @since v924
+     */
+    HIGHLIGHTS_CONTRAST,
+    /**
+     * @since v924
+     */
+    SHADOWS_CONTRAST;
 
     private static final GraphicsOverrideParameterType[] VALUES = values();
 

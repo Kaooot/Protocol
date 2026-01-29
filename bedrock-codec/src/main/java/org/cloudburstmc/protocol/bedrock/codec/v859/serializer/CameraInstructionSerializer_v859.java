@@ -26,16 +26,7 @@ public class CameraInstructionSerializer_v859 extends CameraInstructionSerialize
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, CameraInstructionPacket packet) {
         super.serialize(buffer, helper, packet);
-        helper.writeOptionalNull(buffer, packet.getSplineInstruction(), (buf, h, splineInstruction) -> {
-            buf.writeFloatLE(splineInstruction.getTotalTime());
-            buf.writeByte(splineInstruction.getType().ordinal());
-            h.writeArray(buf, splineInstruction.getCurve(), h::writeVector3f);
-            h.writeArray(buf, splineInstruction.getProgressKeyFrames(), h::writeVector2f);
-            h.writeArray(buf, splineInstruction.getRotationOption(), (byteBuf, codecHelper, splineRotationOption) -> {
-                codecHelper.writeVector3f(byteBuf, splineRotationOption.getKeyFrameValues());
-                byteBuf.writeFloatLE(splineRotationOption.getKeyFrameTimes());
-            });
-        });
+        helper.writeOptionalNull(buffer, packet.getSplineInstruction(), this::writeSplineInstruction);
         helper.writeOptionalNull(buffer, packet.getAttachToEntityInstruction(),
                 (buf, h, cameraAttachToEntityInstruction) ->
                         buf.writeLongLE(cameraAttachToEntityInstruction.getEntityActorID())
@@ -47,26 +38,43 @@ public class CameraInstructionSerializer_v859 extends CameraInstructionSerialize
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, CameraInstructionPacket packet) {
         super.deserialize(buffer, helper, packet);
-        packet.setSplineInstruction(helper.readOptional(buffer, null, (byteBuf, codecHelper) -> {
-            final float totalTime = byteBuf.readFloatLE();
-            final CameraSplineType type = CameraSplineType.from(byteBuf.readUnsignedByte());
-            final List<Vector3f> curve = new ObjectArrayList<>();
-            codecHelper.readArray(byteBuf, curve, codecHelper::readVector3f);
-            final List<Vector2f> progressKeyFrames = new ObjectArrayList<>();
-            codecHelper.readArray(byteBuf, progressKeyFrames, codecHelper::readVector2f);
-            final List<CameraSplineInstruction.SplineRotationOption> rotationOption = new ObjectArrayList<>();
-            codecHelper.readArray(byteBuf, rotationOption, (buf, h) -> {
-                final Vector3f keyFrameValues = h.readVector3f(buf);
-                final float keyFrameTimes = buf.readFloatLE();
-                return new CameraSplineInstruction.SplineRotationOption(keyFrameValues, keyFrameTimes);
-            });
-            return new CameraSplineInstruction(totalTime, type, curve, progressKeyFrames, rotationOption);
-        }));
+        packet.setSplineInstruction(helper.readOptional(buffer, null, this::readSplineInstruction));
         packet.setAttachToEntityInstruction(helper.readOptional(buffer, null, (buf, aHelper) -> {
             final CameraAttachToEntityInstruction instruction = new CameraAttachToEntityInstruction();
             instruction.setEntityActorID(buf.readLongLE());
             return instruction;
         }));
         packet.setDetachFromEntity(helper.readOptional(buffer, OptionalBoolean.empty(), buf -> OptionalBoolean.of(buf.readBoolean())));
+    }
+
+    protected void writeSplineInstruction(ByteBuf buffer, BedrockCodecHelper helper, CameraSplineInstruction instruction) {
+        buffer.writeFloatLE(instruction.getTotalTime());
+        buffer.writeByte(instruction.getType().ordinal());
+        helper.writeArray(buffer, instruction.getCurve(), helper::writeVector3f);
+        helper.writeArray(buffer, instruction.getProgressKeyFrames(), (buf, h, option) ->
+                h.writeVector2f(buffer, Vector2f.from(option.getKeyFrameTime(), option.getKeyFrameValue())));
+        helper.writeArray(buffer, instruction.getRotationOption(), (byteBuf, codecHelper, splineRotationOption) -> {
+            codecHelper.writeVector3f(byteBuf, splineRotationOption.getKeyFrameValues());
+            byteBuf.writeFloatLE(splineRotationOption.getKeyFrameTimes());
+        });
+    }
+
+    protected CameraSplineInstruction readSplineInstruction(ByteBuf buffer, BedrockCodecHelper helper) {
+        final float totalTime = buffer.readFloatLE();
+        final CameraSplineType type = CameraSplineType.from(buffer.readUnsignedByte());
+        final List<Vector3f> curve = new ObjectArrayList<>();
+        helper.readArray(buffer, curve, helper::readVector3f);
+        final List<CameraSplineInstruction.SplineProgressOption> progressKeyFrames = new ObjectArrayList<>();
+        helper.readArray(buffer, progressKeyFrames, (buf, h) -> {
+            final Vector2f vector2f = h.readVector2f(buf);
+            return new CameraSplineInstruction.SplineProgressOption(vector2f.getX(), vector2f.getY(), null);
+        });
+        final List<CameraSplineInstruction.SplineRotationOption> rotationOption = new ObjectArrayList<>();
+        helper.readArray(buffer, rotationOption, (buf, h) -> {
+            final Vector3f keyFrameValues = h.readVector3f(buf);
+            final float keyFrameTimes = buf.readFloatLE();
+            return new CameraSplineInstruction.SplineRotationOption(keyFrameValues, keyFrameTimes, null, -1f, null);
+        });
+        return new CameraSplineInstruction(totalTime, type, curve, progressKeyFrames, rotationOption, null, false);
     }
 }

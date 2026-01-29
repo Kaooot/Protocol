@@ -20,12 +20,45 @@ public class CameraSplineInstruction {
     private float totalTime;
     private CameraSplineType type;
     private List<Vector3f> curve = new ObjectArrayList<>();
-    private List<Vector2f> progressKeyFrames = new ObjectArrayList<>();
+    private List<SplineProgressOption> progressKeyFrames = new ObjectArrayList<>();
     private List<SplineRotationOption> rotationOption = new ObjectArrayList<>();
+    /**
+     * @since v924
+     */
+    private String splineIdentifier;
+    /**
+     * @since v924
+     */
+    private boolean loadFromJSON;
 
     @Value
     public static class SplineRotationOption {
+        /**
+         * @deprecated since v924
+         */
         Vector3f keyFrameValues;
+        /**
+         * @deprecated since v924
+         */
         float keyFrameTimes;
+        /**
+         * @since v924
+         */
+        Vector3f keyFrameValue;
+        /**
+         * @since v924
+         */
+        float keyFrameTime;
+        /**
+         * @since v924
+         */
+        EasingType keyFrameEasingFunc;
+    }
+
+    @Value
+    public static class SplineProgressOption {
+        float keyFrameValue;
+        float keyFrameTime;
+        EasingType keyFrameEasingFunc;
     }
 }

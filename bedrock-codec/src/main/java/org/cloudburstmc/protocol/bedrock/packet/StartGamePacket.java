@@ -88,6 +88,34 @@ public class StartGamePacket implements BedrockPacket {
      * @since v589
      */
     private NetworkPermissions networkPermissions = NetworkPermissions.DEFAULT;
+    /**
+     * @since v924
+     */
+    private boolean containsServerJoinInfo;
+    /**
+     * @since v924
+     */
+    private boolean containsGatheringJoinInfo;
+    /**
+     * @since v924
+     */
+    private GatheringJoinInfo gatheringJoinInfo;
+    /**
+     * @since v924
+     */
+    private String serverID;
+    /**
+     * @since v924
+     */
+    private String scenarioID;
+    /**
+     * @since v924
+     */
+    private String worldID;
+    /**
+     * @since v924
+     */
+    private String ownerID;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

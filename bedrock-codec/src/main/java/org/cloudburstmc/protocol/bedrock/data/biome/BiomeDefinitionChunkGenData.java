@@ -36,4 +36,9 @@ public class BiomeDefinitionChunkGenData {
     BiomeLegacyWorldGenRulesData legacyWorldGenRules;
     @Nullable
     BiomeReplacementData replacementData;
+    /**
+     * @since v924
+     */
+    @Nullable
+    VillageType villageType;
 }

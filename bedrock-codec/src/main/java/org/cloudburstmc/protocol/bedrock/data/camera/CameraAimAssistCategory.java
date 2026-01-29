@@ -15,6 +15,10 @@ public class CameraAimAssistCategory {
      * @since v898
      */
     private List<CameraAimAssistPriority> blockTags = new ArrayList<>();
+    /**
+     * @since v924
+     */
+    private List<CameraAimAssistPriority> entityTypeFamilies = new ArrayList<>();
     private Integer entityDefault;
     private Integer blockDefault;
 }

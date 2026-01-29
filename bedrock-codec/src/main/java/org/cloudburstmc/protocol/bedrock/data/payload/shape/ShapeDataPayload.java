@@ -21,5 +21,9 @@ public class ShapeDataPayload {
     private Float totalTimeLeft;
     private Integer color;
     private Dimension dimension;
+    /**
+     * @since v924
+     */
+    private Long attachedToEntityID;
     private DebugShapePayload extraShapeData;
 }
