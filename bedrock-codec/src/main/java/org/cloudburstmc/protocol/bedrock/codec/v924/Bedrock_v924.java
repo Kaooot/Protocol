@@ -41,7 +41,6 @@ public class Bedrock_v924 extends Bedrock_v898 {
 
     // TODO BookEditPacket types
     // TODO Data Store Update type
-    // TODO GraphicsOverrideParameterPacket
 
     public static final BedrockCodec CODEC = Bedrock_v898.CODEC.toBuilder()
             .raknetProtocolVersion(11)
@@ -53,6 +52,7 @@ public class Bedrock_v924 extends Bedrock_v898 {
             .updateSerializer(CameraAimAssistPresetsPacket.class, CameraAimAssistPresetsSerializer_v924.INSTANCE)
             .updateSerializer(CameraInstructionPacket.class, CameraInstructionSerializer_v924.INSTANCE)
             .updateSerializer(DebugDrawerPacket.class, DebugDrawerSerializer_v924.INSTANCE)
+            .updateSerializer(GraphicsOverrideParameterPacket.class, GraphicsParameterOverrideSerializer_v924.INSTANCE)
             .updateSerializer(LevelSoundEventPacket.class, new LevelSoundEventSerializer_v786(SOUND_EVENTS))
             .updateSerializer(ServerboundDiagnosticsPacket.class, ServerboundDiagnosticsSerializer_v924.INSTANCE)
             .updateSerializer(StartGamePacket.class, StartGameSerializer_v924.INSTANCE)

@@ -18,6 +18,14 @@ import java.util.Map;
 @ToString(doNotUseGetters = true)
 public class GraphicsOverrideParameterPacket implements BedrockPacket {
     private final Map<Float, Vector3f> parameterKeyframeValues = new HashMap<>();
+    /**
+     * @since v924
+     */
+    private float floatValue;
+    /**
+     * @since v924
+     */
+    private Vector3f vec3Value;
     private String biomeIdentifier;
     private GraphicsOverrideParameterType identifierForParameter;
     private boolean resetParameter;
