@@ -2,7 +2,6 @@ package org.cloudburstmc.protocol.bedrock.codec.v924;
 
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
 import org.cloudburstmc.protocol.bedrock.codec.v786.serializer.LevelSoundEventSerializer_v786;
-import org.cloudburstmc.protocol.bedrock.codec.v898.BedrockCodecHelper_v898;
 import org.cloudburstmc.protocol.bedrock.codec.v898.Bedrock_v898;
 import org.cloudburstmc.protocol.bedrock.codec.v924.serializer.*;
 import org.cloudburstmc.protocol.bedrock.data.PacketRecipient;
@@ -40,13 +39,12 @@ public class Bedrock_v924 extends Bedrock_v898 {
             .build();
 
     // TODO BookEditPacket types
-    // TODO Data Store Update type
 
     public static final BedrockCodec CODEC = Bedrock_v898.CODEC.toBuilder()
             .raknetProtocolVersion(11)
             .protocolVersion(924)
             .minecraftVersion("1.26.0")
-            .helper(() -> new BedrockCodecHelper_v898(ACTOR_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES, PLAYER_ABILITIES, TEXT_PROCESSING_ORIGINS))
+            .helper(() -> new BedrockCodecHelper_v924(ACTOR_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES, PLAYER_ABILITIES, TEXT_PROCESSING_ORIGINS))
             .updateSerializer(BookEditPacket.class, BookEditSerializer_v924.INSTANCE)
             .updateSerializer(BiomeDefinitionListPacket.class, BiomeDefinitionListSerializer_v924.INSTANCE)
             .updateSerializer(CameraAimAssistPresetsPacket.class, CameraAimAssistPresetsSerializer_v924.INSTANCE)

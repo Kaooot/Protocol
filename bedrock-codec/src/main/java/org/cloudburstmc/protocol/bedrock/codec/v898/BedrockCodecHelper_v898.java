@@ -58,7 +58,7 @@ public class BedrockCodecHelper_v898 extends BedrockCodecHelper_v776 {
                 this.writeString(buffer, (String) update.getData());
                 break;
         }
-        buffer.writeIntLE(update.getUpdateCount());
+        buffer.writeIntLE(update.getPropertyUpdateCount());
     }
 
     @Override
@@ -79,7 +79,7 @@ public class BedrockCodecHelper_v898 extends BedrockCodecHelper_v776 {
                 update.setData(this.readString(buffer));
                 break;
         }
-        update.setUpdateCount(buffer.readIntLE());
+        update.setPropertyUpdateCount(buffer.readIntLE());
         return update;
     }
 }

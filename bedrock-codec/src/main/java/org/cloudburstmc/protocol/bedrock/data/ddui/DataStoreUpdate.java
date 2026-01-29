@@ -15,7 +15,11 @@ public class DataStoreUpdate extends DataStoreChangeInfo {
     private String path;
     private DataStorePropertyType type;
     private Object data;
-    private int updateCount;
+    private int propertyUpdateCount;
+    /**
+     * @since v924
+     */
+    private int pathUpdateCount;
 
     @Override
     public Type getChangeType() {
