@@ -41,7 +41,6 @@ public class Bedrock_v924 extends Bedrock_v898 {
 
     // TODO BookEditPacket types
     // TODO Data Store Update type
-    // TODO InventoryLayout enum
     // TODO GraphicsOverrideParameterPacket
 
     public static final BedrockCodec CODEC = Bedrock_v898.CODEC.toBuilder()
