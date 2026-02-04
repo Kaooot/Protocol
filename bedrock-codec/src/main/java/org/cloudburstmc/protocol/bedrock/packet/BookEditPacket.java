@@ -10,15 +10,8 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class BookEditPacket implements BedrockPacket {
-    private BookEditAction action;
     private int bookSlot;
-    private int pageIndex;
-    private int pageIndexB;
-    private String text;
-    private String photoName;
-    private String title;
-    private String author;
-    private String xuid;
+    private BookEditAction operation;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

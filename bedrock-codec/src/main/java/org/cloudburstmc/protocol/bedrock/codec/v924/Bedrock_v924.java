@@ -38,8 +38,6 @@ public class Bedrock_v924 extends Bedrock_v898 {
             .insert(597, SoundEvent.UNDEFINED)
             .build();
 
-    // TODO BookEditPacket types
-
     public static final BedrockCodec CODEC = Bedrock_v898.CODEC.toBuilder()
             .raknetProtocolVersion(11)
             .protocolVersion(924)

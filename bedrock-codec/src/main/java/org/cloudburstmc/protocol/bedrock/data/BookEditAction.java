@@ -1,22 +1,74 @@
 package org.cloudburstmc.protocol.bedrock.data;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
 /**
  * @author Kaooot
  */
-public enum BookEditAction {
+public abstract class BookEditAction {
 
-    REPLACE_PAGE,
-    ADD_PAGE,
-    DELETE_PAGE,
-    SWAP_PAGES,
-    FINALIZE;
+    public abstract BookEditOperation getType();
 
-    private static final BookEditAction[] VALUES = values();
+    @Data
+    @EqualsAndHashCode(callSuper = false)
+    public static class ReplacePage extends BookEditAction {
+        private int pageIndex;
+        private String pageText;
+        private String photoName;
 
-    public static BookEditAction from(int ordinal) {
-        if (ordinal >= 0 && ordinal < VALUES.length) {
-            return VALUES[ordinal];
+        @Override
+        public BookEditOperation getType() {
+            return BookEditOperation.REPLACE_PAGE;
         }
-        throw new UnsupportedOperationException("Detected unknown BookEditAction ID: " + ordinal);
+    }
+
+    @Data
+    @EqualsAndHashCode(callSuper = false)
+    public static class AddPage extends BookEditAction {
+        private int pageIndex;
+        private String pageText;
+        private String photoName;
+
+        @Override
+        public BookEditOperation getType() {
+            return BookEditOperation.ADD_PAGE;
+        }
+    }
+
+    @Data
+    @EqualsAndHashCode(callSuper = false)
+    public static class DeletePage extends BookEditAction {
+        private int pageIndex;
+
+        @Override
+        public BookEditOperation getType() {
+            return BookEditOperation.DELETE_PAGE;
+        }
+    }
+
+    @Data
+    @EqualsAndHashCode(callSuper = false)
+    public static class SwapPages extends BookEditAction {
+        private int pageIndex;
+        private int swapWithIndex;
+
+        @Override
+        public BookEditOperation getType() {
+            return BookEditOperation.SWAP_PAGES;
+        }
+    }
+
+    @Data
+    @EqualsAndHashCode(callSuper = false)
+    public static class Finalize extends BookEditAction {
+        private String title;
+        private String author;
+        private String xuid;
+
+        @Override
+        public BookEditOperation getType() {
+            return BookEditOperation.FINALIZE;
+        }
     }
 }
