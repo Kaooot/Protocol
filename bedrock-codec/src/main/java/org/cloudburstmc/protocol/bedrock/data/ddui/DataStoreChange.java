@@ -13,8 +13,7 @@ public class DataStoreChange extends DataStoreChangeInfo {
     private String dataStoreName;
     private String property;
     private int updateCount;
-    private DataStorePropertyType type;
-    private Object theNewPropertyValue;
+    private DataStorePropertyValue theNewPropertyValue;
 
     @Override
     public Type getChangeType() {

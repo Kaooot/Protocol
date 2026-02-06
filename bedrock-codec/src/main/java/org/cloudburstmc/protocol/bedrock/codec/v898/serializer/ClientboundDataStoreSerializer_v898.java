@@ -5,12 +5,12 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
-import org.cloudburstmc.protocol.bedrock.data.ddui.DataStoreChange;
-import org.cloudburstmc.protocol.bedrock.data.ddui.DataStoreChangeInfo;
-import org.cloudburstmc.protocol.bedrock.data.ddui.DataStoreRemoval;
-import org.cloudburstmc.protocol.bedrock.data.ddui.DataStoreUpdate;
+import org.cloudburstmc.protocol.bedrock.data.ddui.*;
 import org.cloudburstmc.protocol.bedrock.packet.ClientboundDataStorePacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Kaooot
@@ -29,7 +29,8 @@ public class ClientboundDataStoreSerializer_v898 implements BedrockPacketSeriali
         helper.readArray(buffer, packet.getUpdates(), this::readDataStoreChangeInfo);
     }
 
-    public void writeDataStoreChangeInfo(ByteBuf buffer, BedrockCodecHelper helper, DataStoreChangeInfo info) {
+    protected void writeDataStoreChangeInfo(ByteBuf buffer, BedrockCodecHelper helper, DataStoreChangeInfo info) {
+        VarInts.writeUnsignedInt(buffer, info.getChangeType().ordinal());
         switch (info.getChangeType()) {
             case UPDATE:
                 helper.writeDataStoreUpdate(buffer, (DataStoreUpdate) info);
@@ -43,7 +44,7 @@ public class ClientboundDataStoreSerializer_v898 implements BedrockPacketSeriali
         }
     }
 
-    public DataStoreChangeInfo readDataStoreChangeInfo(ByteBuf buffer, BedrockCodecHelper helper) {
+    protected DataStoreChangeInfo readDataStoreChangeInfo(ByteBuf buffer, BedrockCodecHelper helper) {
         final DataStoreChangeInfo.Type changeType = DataStoreChangeInfo.Type.from(VarInts.readUnsignedInt(buffer));
         switch (changeType) {
             case UPDATE:
@@ -56,52 +57,79 @@ public class ClientboundDataStoreSerializer_v898 implements BedrockPacketSeriali
         throw new IllegalStateException("Could not read data store updates");
     }
 
-    public void writeDataStoreChange(ByteBuf buffer, BedrockCodecHelper helper, DataStoreChange change) {
+    protected void writeDataStoreChange(ByteBuf buffer, BedrockCodecHelper helper, DataStoreChange change) {
         helper.writeString(buffer, change.getDataStoreName());
         helper.writeString(buffer, change.getProperty());
         buffer.writeIntLE(change.getUpdateCount());
-        switch (change.getType()) {
-            case DOUBLE:
-                buffer.writeDoubleLE((double) change.getTheNewPropertyValue());
+        buffer.writeIntLE(change.getTheNewPropertyValue().getType().ordinal());
+        this.writeTheNewPropertyValue(buffer, helper, change.getTheNewPropertyValue());
+    }
+
+    protected void writeTheNewPropertyValue(ByteBuf buffer, BedrockCodecHelper helper, DataStorePropertyValue value) {
+        switch (value.getType()) {
+            case NONE:
                 break;
-            case BOOLEAN:
-                buffer.writeBoolean((boolean) change.getTheNewPropertyValue());
+            case BOOL:
+                buffer.writeBoolean((boolean) value.getValue());
+                break;
+            case INT64:
+                buffer.writeLongLE((long) value.getValue());
                 break;
             case STRING:
-                helper.writeString(buffer, (String) change.getTheNewPropertyValue());
+                helper.writeString(buffer, (String) value.getValue());
                 break;
+            case TYPE:
+                final Map<String, DataStorePropertyValue> map = (Map<String, DataStorePropertyValue>) value.getValue();
+                VarInts.writeUnsignedInt(buffer, map.size());
+                for (Map.Entry<String, DataStorePropertyValue> entry : map.entrySet()) {
+                    helper.writeString(buffer, entry.getKey());
+                    buffer.writeIntLE(entry.getValue().getType().ordinal());
+                    this.writeTheNewPropertyValue(buffer, helper, entry.getValue());
+                }
+            default:
+                throw new IllegalStateException("Read invalid DataStorePropertyValueType");
         }
     }
 
-    public DataStoreChange readDataStoreChange(ByteBuf buffer, BedrockCodecHelper helper) {
+    protected DataStoreChange readDataStoreChange(ByteBuf buffer, BedrockCodecHelper helper) {
         final DataStoreChange change = new DataStoreChange();
         change.setDataStoreName(helper.readString(buffer));
         change.setProperty(helper.readString(buffer));
         change.setUpdateCount(buffer.readIntLE());
-        if (buffer.readableBytes() == 1) {
-            change.setTheNewPropertyValue(buffer.readBoolean());
-        } else {
-            final ByteBuf copy = buffer.copy();
-            try {
-                final int length = VarInts.readUnsignedInt(copy);
-                if (length == copy.readableBytes()) {
-                    change.setTheNewPropertyValue(helper.readString(buffer));
-                } else if (buffer.readableBytes() == 8) {
-                    change.setTheNewPropertyValue(buffer.readDoubleLE());
-                }
-            } finally {
-                copy.release();
-            }
-        }
-        // TODO read The New Property Value
+        final DataStorePropertyValueType valueType = DataStorePropertyValueType.from(buffer.readIntLE());
+        change.setTheNewPropertyValue(this.readTheNewPropertyValue(buffer, helper, valueType));
         return change;
     }
 
-    public void writeDataStoreRemoval(ByteBuf buffer, BedrockCodecHelper helper, DataStoreRemoval removal) {
+    protected DataStorePropertyValue readTheNewPropertyValue(ByteBuf buffer, BedrockCodecHelper helper, DataStorePropertyValueType type) {
+        switch (type) {
+            case NONE:
+                return null;
+            case BOOL:
+                return new DataStorePropertyValue(type, buffer.readBoolean());
+            case INT64:
+                return new DataStorePropertyValue(type, buffer.readLongLE());
+            case STRING:
+                return new DataStorePropertyValue(type, helper.readString(buffer));
+            case TYPE:
+                final int length = VarInts.readUnsignedInt(buffer);
+                final Map<String, DataStorePropertyValue> map = new HashMap<>();
+                for (int i = 0; i < length; i++) {
+                    final String key = helper.readString(buffer);
+                    final DataStorePropertyValueType valueType = DataStorePropertyValueType.from(buffer.readIntLE());
+                    map.put(key, this.readTheNewPropertyValue(buffer, helper, valueType));
+                }
+                return new DataStorePropertyValue(type, map);
+            default:
+                throw new IllegalStateException("Read invalid DataStorePropertyValueType");
+        }
+    }
+
+    protected void writeDataStoreRemoval(ByteBuf buffer, BedrockCodecHelper helper, DataStoreRemoval removal) {
         helper.writeString(buffer, removal.getDataStoreName());
     }
 
-    public DataStoreRemoval readDataStoreRemoval(ByteBuf buffer, BedrockCodecHelper helper) {
+    protected DataStoreRemoval readDataStoreRemoval(ByteBuf buffer, BedrockCodecHelper helper) {
         final DataStoreRemoval removal = new DataStoreRemoval();
         removal.setDataStoreName(helper.readString(buffer));
         return removal;
