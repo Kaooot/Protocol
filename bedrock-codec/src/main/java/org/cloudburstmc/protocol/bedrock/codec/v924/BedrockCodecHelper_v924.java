@@ -33,8 +33,8 @@ public class BedrockCodecHelper_v924 extends BedrockCodecHelper_v898 {
         update.setDataStoreName(this.readString(buffer));
         update.setProperty(this.readString(buffer));
         update.setPath(this.readString(buffer));
-        final DataStorePropertyType type = DataStorePropertyType.from(VarInts.readUnsignedInt(buffer));
-        switch (type) {
+        update.setType(DataStorePropertyType.from(VarInts.readUnsignedInt(buffer)));
+        switch (update.getType()) {
             case DOUBLE:
                 update.setData(buffer.readDoubleLE());
                 break;
