@@ -86,8 +86,7 @@ public class ClientboundDataStoreSerializer_v898 implements BedrockPacketSeriali
                     buffer.writeIntLE(entry.getValue().getType().ordinal());
                     this.writeTheNewPropertyValue(buffer, helper, entry.getValue());
                 }
-            default:
-                throw new IllegalStateException("Read invalid DataStorePropertyValueType");
+                break;
         }
     }
 
