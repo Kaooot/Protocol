@@ -3,6 +3,7 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.cloudburstmc.protocol.bedrock.data.ddui.DataDrivenScreenClosedReason;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
@@ -11,17 +12,10 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
-public class ClientboundDataDrivenUIShowScreenPacket implements BedrockPacket {
+public class ServerboundDataDrivenScreenClosedPacket implements BedrockPacket {
 
-    private String screenId;
-    /**
-     * @since v933
-     */
     private int formId;
-    /**
-     * @since v933
-     */
-    private Integer dataInstanceId;
+    private DataDrivenScreenClosedReason closeReason;
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {
@@ -30,13 +24,13 @@ public class ClientboundDataDrivenUIShowScreenPacket implements BedrockPacket {
 
     @Override
     public BedrockPacketType getPacketType() {
-        return BedrockPacketType.CLIENTBOUND_DATA_DRIVEN_UI_SHOW_SCREEN;
+        return BedrockPacketType.SERVERBOUND_DATA_DRIVEN_SCREEN_CLOSED;
     }
 
     @Override
-    public ClientboundDataDrivenUIShowScreenPacket clone() {
+    public ServerboundDataDrivenScreenClosedPacket clone() {
         try {
-            return (ClientboundDataDrivenUIShowScreenPacket) super.clone();
+            return (ServerboundDataDrivenScreenClosedPacket) super.clone();
         } catch (CloneNotSupportedException e) {
             throw new AssertionError(e);
         }

@@ -81,16 +81,4 @@ public class CameraSplineSerializer_v924 implements BedrockPacketSerializer<Came
         final EasingType easing = EasingType.fromName(helper.readString(buffer));
         return new CameraSplineRotationKeyFrame(rotation, time, easing);
     }
-
-    /*private void dump(ByteBuf buffer, int maxLength) {
-        final ByteBuf copy = buffer.copy();
-        final byte[] data = new byte[maxLength == -1 ? copy.readableBytes() : maxLength];
-        copy.readBytes(data);
-        System.out.println(ByteBufUtil.hexDump(data));
-        System.out.println(Arrays.toString(data));
-    }
-
-    private void dump(ByteBuf buffer) {
-        this.dump(buffer, -1);
-    }*/
 }

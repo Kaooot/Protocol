@@ -959,4 +959,24 @@ public interface BedrockPacketHandler extends PacketHandler {
     default PacketSignal handle(CameraAimAssistActorPriorityPacket packet) {
         return PacketSignal.UNHANDLED;
     }
+
+    default PacketSignal handle(ClientboundDataDrivenUICloseScreenPacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
+
+    default PacketSignal handle(ResourcePacksReadyForValidationPacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
+
+    default PacketSignal handle(LocatorBarPacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
+
+    default PacketSignal handle(PartyChangedPacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
+
+    default PacketSignal handle(ServerboundDataDrivenScreenClosedPacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
 }

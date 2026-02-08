@@ -31,6 +31,10 @@ public class ItemUseTransaction {
      * @since v712
      */
     private TriggerType triggerType;
+    /**
+     * @since v933
+     */
+    private int clientCooldownState;
 
     public enum PredictedResult {
         FAILURE,

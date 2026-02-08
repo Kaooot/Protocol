@@ -11,17 +11,9 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
-public class ClientboundDataDrivenUIShowScreenPacket implements BedrockPacket {
+public class PartyChangedPacket implements BedrockPacket {
 
-    private String screenId;
-    /**
-     * @since v933
-     */
-    private int formId;
-    /**
-     * @since v933
-     */
-    private Integer dataInstanceId;
+    private String partyId;
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {
@@ -30,13 +22,13 @@ public class ClientboundDataDrivenUIShowScreenPacket implements BedrockPacket {
 
     @Override
     public BedrockPacketType getPacketType() {
-        return BedrockPacketType.CLIENTBOUND_DATA_DRIVEN_UI_SHOW_SCREEN;
+        return BedrockPacketType.PARTY_CHANGED;
     }
 
     @Override
-    public ClientboundDataDrivenUIShowScreenPacket clone() {
+    public PartyChangedPacket clone() {
         try {
-            return (ClientboundDataDrivenUIShowScreenPacket) super.clone();
+            return (PartyChangedPacket) super.clone();
         } catch (CloneNotSupportedException e) {
             throw new AssertionError(e);
         }

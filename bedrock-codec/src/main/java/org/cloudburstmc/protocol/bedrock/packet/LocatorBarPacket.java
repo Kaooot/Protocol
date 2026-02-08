@@ -1,9 +1,13 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.cloudburstmc.protocol.bedrock.data.LocatorBarWaypointPayload;
 import org.cloudburstmc.protocol.common.PacketSignal;
+
+import java.util.List;
 
 /**
  * @author Kaooot
@@ -11,17 +15,9 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
-public class ClientboundDataDrivenUIShowScreenPacket implements BedrockPacket {
+public class LocatorBarPacket implements BedrockPacket {
 
-    private String screenId;
-    /**
-     * @since v933
-     */
-    private int formId;
-    /**
-     * @since v933
-     */
-    private Integer dataInstanceId;
+    private final List<LocatorBarWaypointPayload> waypoints = new ObjectArrayList<>();
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {
@@ -30,13 +26,13 @@ public class ClientboundDataDrivenUIShowScreenPacket implements BedrockPacket {
 
     @Override
     public BedrockPacketType getPacketType() {
-        return BedrockPacketType.CLIENTBOUND_DATA_DRIVEN_UI_SHOW_SCREEN;
+        return BedrockPacketType.LOCATOR_BAR;
     }
 
     @Override
-    public ClientboundDataDrivenUIShowScreenPacket clone() {
+    public LocatorBarPacket clone() {
         try {
-            return (ClientboundDataDrivenUIShowScreenPacket) super.clone();
+            return (LocatorBarPacket) super.clone();
         } catch (CloneNotSupportedException e) {
             throw new AssertionError(e);
         }
