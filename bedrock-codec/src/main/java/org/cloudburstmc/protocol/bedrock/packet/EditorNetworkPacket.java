@@ -9,11 +9,22 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class EditorNetworkPacket implements BedrockPacket {
+    /**
+     * @deprecated since v935
+     */
     private Object binaryPayload; // NBT like
     /**
      * @since v712
      */
     private boolean routeToManager;
+    /**
+     * @since v935
+     */
+    private String rawVariantName;
+    /**
+     * @since v935
+     */
+    private String rawVariantData;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

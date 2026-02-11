@@ -21,6 +21,18 @@ public enum ContainerEnumName {
     RECIPE_CONSTRUCTION_CONTAINER,
     RECIPE_NATURE_CONTAINER,
     RECIPE_ITEMS_CONTAINER,
+    /**
+     * @since v935
+     */
+    RECIPE_FOOD_CONTAINER,
+    /**
+     * @since v935
+     */
+    RECIPE_BLOCKS_CONTAINER,
+    /**
+     * @since v935
+     */
+    RECIPE_FURNACE_ITEMS_CONTAINER,
     RECIPE_SEARCH_CONTAINER,
     RECIPE_SEARCH_BAR_CONTAINER,
     RECIPE_EQUIPMENT_CONTAINER,

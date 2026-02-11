@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.codec.v933.serializer;
+package org.cloudburstmc.protocol.bedrock.codec.v935.serializer;
 
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
@@ -15,8 +15,8 @@ import org.cloudburstmc.protocol.common.util.VarInts;
  * @author Kaooot
  */
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class LocatorBarSerializer_v933 implements BedrockPacketSerializer<LocatorBarPacket> {
-    public static final LocatorBarSerializer_v933 INSTANCE = new LocatorBarSerializer_v933();
+public class LocatorBarSerializer_v935 implements BedrockPacketSerializer<LocatorBarPacket> {
+    public static final LocatorBarSerializer_v935 INSTANCE = new LocatorBarSerializer_v935();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, LocatorBarPacket packet) {

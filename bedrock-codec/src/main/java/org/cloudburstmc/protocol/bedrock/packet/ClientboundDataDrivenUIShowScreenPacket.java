@@ -15,11 +15,11 @@ public class ClientboundDataDrivenUIShowScreenPacket implements BedrockPacket {
 
     private String screenId;
     /**
-     * @since v933
+     * @since v935
      */
     private int formId;
     /**
-     * @since v933
+     * @since v935
      */
     private Integer dataInstanceId;
 

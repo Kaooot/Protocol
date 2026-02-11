@@ -237,7 +237,7 @@ public enum BedrockPacketType {
     SERVERBOUND_DATA_STORE,
     CLIENTBOUND_DATA_DRIVEN_UI_SHOW_SCREEN,
     /**
-     * @deprecated since v933
+     * @deprecated since v935
      */
     CLIENTBOUND_DATA_DRIVEN_UI_CLOSE_ALL_SCREENS,
     CLIENTBOUND_DATA_DRIVEN_UI_CLOSE_SCREEN,

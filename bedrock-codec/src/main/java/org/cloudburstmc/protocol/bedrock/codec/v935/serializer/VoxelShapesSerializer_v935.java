@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.codec.v933.serializer;
+package org.cloudburstmc.protocol.bedrock.codec.v935.serializer;
 
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
@@ -11,8 +11,8 @@ import org.cloudburstmc.protocol.bedrock.packet.VoxelShapesPacket;
  * @author Kaooot
  */
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class VoxelShapesSerializer_v933 extends VoxelShapesSerializer_v924 {
-    public static final VoxelShapesSerializer_v933 INSTANCE = new VoxelShapesSerializer_v933();
+public class VoxelShapesSerializer_v935 extends VoxelShapesSerializer_v924 {
+    public static final VoxelShapesSerializer_v935 INSTANCE = new VoxelShapesSerializer_v935();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, VoxelShapesPacket packet) {

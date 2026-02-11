@@ -10,6 +10,7 @@ import org.cloudburstmc.nbt.NbtList;
 import org.cloudburstmc.nbt.NbtMap;
 import org.cloudburstmc.protocol.bedrock.data.*;
 import org.cloudburstmc.protocol.bedrock.data.definitions.ItemDefinition;
+import org.cloudburstmc.protocol.bedrock.data.gathering.ServerJoinInfo;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 import java.util.List;
@@ -91,15 +92,7 @@ public class StartGamePacket implements BedrockPacket {
     /**
      * @since v924
      */
-    private boolean containsServerJoinInfo;
-    /**
-     * @since v924
-     */
-    private boolean containsGatheringJoinInfo;
-    /**
-     * @since v924
-     */
-    private GatheringJoinInfo gatheringJoinInfo;
+    private ServerJoinInfo serverJoinInfo;
     /**
      * @since v924
      */
