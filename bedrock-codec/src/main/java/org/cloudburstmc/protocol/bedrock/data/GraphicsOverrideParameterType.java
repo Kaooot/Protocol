@@ -78,7 +78,67 @@ public enum GraphicsOverrideParameterType {
     /**
      * @since v924
      */
-    SHADOWS_CONTRAST;
+    SHADOWS_CONTRAST,
+    /**
+     * @since v941
+     */
+    HIGHLIGHTS_GAIN,
+    /**
+     * @since v941
+     */
+    HIGHLIGHTS_GAMMA,
+    /**
+     * @since v941
+     */
+    HIGHLIGHTS_OFFSET,
+    /**
+     * @since v941
+     */
+    HIGHLIGHTS_SATURATION,
+    /**
+     * @since v941
+     */
+    MIDTONES_GAIN,
+    /**
+     * @since v941
+     */
+    MIDTONES_GAMMA,
+    /**
+     * @since v941
+     */
+    MIDTONES_OFFSET,
+    /**
+     * @since v941
+     */
+    MIDTONES_SATURATION,
+    /**
+     * @since v941
+     */
+    SHADOWS_GAIN,
+    /**
+     * @since v941
+     */
+    SHADOWS_GAMMA,
+    /**
+     * @since v941
+     */
+    SHADOWS_OFFSET,
+    /**
+     * @since v941
+     */
+    SHADOWS_SATURATION,
+    /**
+     * @since v941
+     */
+    HIGHLIGHTS_MIN,
+    /**
+     * @since v941
+     */
+    SHADOWS_MAX,
+    /**
+     * @since v941
+     */
+    TEMPERATURE;
 
     private static final GraphicsOverrideParameterType[] VALUES = values();
 
