@@ -22,15 +22,15 @@ public enum ContainerEnumName {
     RECIPE_NATURE_CONTAINER,
     RECIPE_ITEMS_CONTAINER,
     /**
-     * @since v935
+     * @since v941
      */
     RECIPE_FOOD_CONTAINER,
     /**
-     * @since v935
+     * @since v941
      */
     RECIPE_BLOCKS_CONTAINER,
     /**
-     * @since v935
+     * @since v941
      */
     RECIPE_FURNACE_ITEMS_CONTAINER,
     RECIPE_SEARCH_CONTAINER,

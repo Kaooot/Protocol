@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.codec.v935.serializer;
+package org.cloudburstmc.protocol.bedrock.codec.v941.serializer;
 
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
@@ -11,8 +11,8 @@ import org.cloudburstmc.protocol.bedrock.packet.ResourcePacksReadyForValidationP
  * @author Kaooot
  */
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ResourcePacksReadyForValidationSerializer_v935 implements BedrockPacketSerializer<ResourcePacksReadyForValidationPacket> {
-    public static final ResourcePacksReadyForValidationSerializer_v935 INSTANCE = new ResourcePacksReadyForValidationSerializer_v935();
+public class ResourcePacksReadyForValidationSerializer_v941 implements BedrockPacketSerializer<ResourcePacksReadyForValidationPacket> {
+    public static final ResourcePacksReadyForValidationSerializer_v941 INSTANCE = new ResourcePacksReadyForValidationSerializer_v941();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ResourcePacksReadyForValidationPacket packet) {

@@ -57,7 +57,7 @@ public class InventoryTransactionPacket implements BedrockPacket {
      */
     private ItemUseTransaction.PredictedResult clientInteractPrediction;
     /**
-     * @since v935
+     * @since v941
      */
     private int clientCooldownState;
 

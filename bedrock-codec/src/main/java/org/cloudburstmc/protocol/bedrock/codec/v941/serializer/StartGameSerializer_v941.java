@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.codec.v935.serializer;
+package org.cloudburstmc.protocol.bedrock.codec.v941.serializer;
 
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
@@ -14,8 +14,8 @@ import org.cloudburstmc.protocol.bedrock.data.gathering.StoreEntryPointInfo;
  * @author Kaooot
  */
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class StartGameSerializer_v935 extends StartGameSerializer_v924 {
-    public static final StartGameSerializer_v935 INSTANCE = new StartGameSerializer_v935();
+public class StartGameSerializer_v941 extends StartGameSerializer_v924 {
+    public static final StartGameSerializer_v941 INSTANCE = new StartGameSerializer_v941();
 
     @Override
     protected void writeServerJoinInfo(ByteBuf buffer, BedrockCodecHelper helper, ServerJoinInfo joinInfo) {

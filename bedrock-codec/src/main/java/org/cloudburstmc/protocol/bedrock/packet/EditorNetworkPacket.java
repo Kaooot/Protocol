@@ -10,7 +10,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @ToString(doNotUseGetters = true)
 public class EditorNetworkPacket implements BedrockPacket {
     /**
-     * @deprecated since v935
+     * @deprecated since v941
      */
     private Object binaryPayload; // NBT like
     /**
@@ -18,11 +18,11 @@ public class EditorNetworkPacket implements BedrockPacket {
      */
     private boolean routeToManager;
     /**
-     * @since v935
+     * @since v941
      */
     private String rawVariantName;
     /**
-     * @since v935
+     * @since v941
      */
     private String rawVariantData;
 
