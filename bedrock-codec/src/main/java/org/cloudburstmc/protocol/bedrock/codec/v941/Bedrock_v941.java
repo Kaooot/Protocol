@@ -36,5 +36,6 @@ public class Bedrock_v941 extends Bedrock_v924 {
             .registerPacket(LocatorBarPacket::new, LocatorBarSerializer_v941.INSTANCE, 341, PacketRecipient.CLIENT)
             .registerPacket(PartyChangedPacket::new, PartyChangedSerializer_v941.INSTANCE, 342, PacketRecipient.CLIENT)
             .registerPacket(ServerboundDataDrivenScreenClosedPacket::new, ServerboundDataDrivenScreenClosedSerializer_v941.INSTANCE, 343, PacketRecipient.CLIENT)
+            .registerPacket(SyncWorldClocksPacket::new, SyncWorldClocksSerializer_v941.INSTANCE, 344, PacketRecipient.CLIENT)
             .build();
 }

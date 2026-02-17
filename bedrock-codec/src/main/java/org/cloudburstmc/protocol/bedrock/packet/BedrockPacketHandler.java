@@ -979,4 +979,8 @@ public interface BedrockPacketHandler extends PacketHandler {
     default PacketSignal handle(ServerboundDataDrivenScreenClosedPacket packet) {
         return PacketSignal.UNHANDLED;
     }
+
+    default PacketSignal handle(SyncWorldClocksPacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
 }
