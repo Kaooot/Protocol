@@ -138,7 +138,39 @@ public enum GraphicsOverrideParameterType {
     /**
      * @since v944
      */
-    TEMPERATURE;
+    TEMPERATURE,
+    /**
+     * @since v944
+     */
+    SUN_COLOR,
+    /**
+     * @since v944
+     */
+    SUN_ILLUMINANCE,
+    /**
+     * @since v944
+     */
+    MOON_COLOR,
+    /**
+     * @since v944
+     */
+    MOON_ILLUMINANCE,
+    /**
+     * @since v944
+     */
+    FLASH_COLOR,
+    /**
+     * @since v944
+     */
+    FLASH_ILLUMINANCE,
+    /**
+     * @since v944
+     */
+    AMBIENT_COLOR,
+    /**
+     * @since v944
+     */
+    AMBIENT_ILLUMINANCE;
 
     private static final GraphicsOverrideParameterType[] VALUES = values();
 

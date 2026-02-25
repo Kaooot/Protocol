@@ -983,4 +983,8 @@ public interface BedrockPacketHandler extends PacketHandler {
     default PacketSignal handle(SyncWorldClocksPacket packet) {
         return PacketSignal.UNHANDLED;
     }
+
+    default PacketSignal handle(ClientboundAttributeLayerSyncPacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
 }
