@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.codec.v941.serializer;
+package org.cloudburstmc.protocol.bedrock.codec.v944.serializer;
 
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
@@ -13,8 +13,8 @@ import org.cloudburstmc.protocol.common.util.VarInts;
  * @author Kaooot
  */
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class SyncWorldClocksSerializer_v941 implements BedrockPacketSerializer<SyncWorldClocksPacket> {
-    public static final SyncWorldClocksSerializer_v941 INSTANCE = new SyncWorldClocksSerializer_v941();
+public class SyncWorldClocksSerializer_v944 implements BedrockPacketSerializer<SyncWorldClocksPacket> {
+    public static final SyncWorldClocksSerializer_v944 INSTANCE = new SyncWorldClocksSerializer_v944();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, SyncWorldClocksPacket packet) {

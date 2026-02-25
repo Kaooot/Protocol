@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.codec.v941.serializer;
+package org.cloudburstmc.protocol.bedrock.codec.v944.serializer;
 
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
@@ -12,8 +12,8 @@ import org.cloudburstmc.protocol.bedrock.packet.ServerboundDataDrivenScreenClose
  * @author Kaooot
  */
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ServerboundDataDrivenScreenClosedSerializer_v941 implements BedrockPacketSerializer<ServerboundDataDrivenScreenClosedPacket> {
-    public static final ServerboundDataDrivenScreenClosedSerializer_v941 INSTANCE = new ServerboundDataDrivenScreenClosedSerializer_v941();
+public class ServerboundDataDrivenScreenClosedSerializer_v944 implements BedrockPacketSerializer<ServerboundDataDrivenScreenClosedPacket> {
+    public static final ServerboundDataDrivenScreenClosedSerializer_v944 INSTANCE = new ServerboundDataDrivenScreenClosedSerializer_v944();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ServerboundDataDrivenScreenClosedPacket packet) {

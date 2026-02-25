@@ -16,15 +16,15 @@ public class GatheringJoinInfo {
     private String experienceWorldName;
     private String creatorID;
     /**
-     * @since v941
+     * @since v944
      */
     private UUID unk;
     /**
-     * @since v941
+     * @since v944
      */
     private UUID unk1;
     /**
-     * @since v941
+     * @since v944
      */
     private String serverID;
 }

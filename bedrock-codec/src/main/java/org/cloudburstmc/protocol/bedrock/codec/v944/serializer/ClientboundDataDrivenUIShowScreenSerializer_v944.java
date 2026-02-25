@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.codec.v941.serializer;
+package org.cloudburstmc.protocol.bedrock.codec.v944.serializer;
 
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
@@ -11,8 +11,8 @@ import org.cloudburstmc.protocol.bedrock.packet.ClientboundDataDrivenUIShowScree
  * @author Kaooot
  */
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ClientboundDataDrivenUIShowScreenSerializer_v941 extends ClientboundDataDrivenUIShowScreenSerializer_v924 {
-    public static final ClientboundDataDrivenUIShowScreenSerializer_v941 INSTANCE = new ClientboundDataDrivenUIShowScreenSerializer_v941();
+public class ClientboundDataDrivenUIShowScreenSerializer_v944 extends ClientboundDataDrivenUIShowScreenSerializer_v924 {
+    public static final ClientboundDataDrivenUIShowScreenSerializer_v944 INSTANCE = new ClientboundDataDrivenUIShowScreenSerializer_v944();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ClientboundDataDrivenUIShowScreenPacket packet) {

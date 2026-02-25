@@ -22,7 +22,7 @@ public class VoxelShapesPacket implements BedrockPacket {
     private final List<VoxelShapes.SerializableVoxelShape> shapes = new ObjectArrayList<>();
     private final Map<String, VoxelShapes.RegistryHandle> nameMap = new HashMap<>();
     /**
-     * @since v941
+     * @since v944
      */
     private int customShapeCount;
 

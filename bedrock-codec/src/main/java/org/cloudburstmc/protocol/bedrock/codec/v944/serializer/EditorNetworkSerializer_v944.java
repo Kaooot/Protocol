@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.codec.v941.serializer;
+package org.cloudburstmc.protocol.bedrock.codec.v944.serializer;
 
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
@@ -11,8 +11,8 @@ import org.cloudburstmc.protocol.bedrock.packet.EditorNetworkPacket;
  * @author Kaooot
  */
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class EditorNetworkSerializer_v941 extends EditorNetworkSerializer_v712 {
-    public static final EditorNetworkSerializer_v941 INSTANCE = new EditorNetworkSerializer_v941();
+public class EditorNetworkSerializer_v944 extends EditorNetworkSerializer_v712 {
+    public static final EditorNetworkSerializer_v944 INSTANCE = new EditorNetworkSerializer_v944();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, EditorNetworkPacket packet) {

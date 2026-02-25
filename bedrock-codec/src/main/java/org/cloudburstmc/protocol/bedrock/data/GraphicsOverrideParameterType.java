@@ -80,63 +80,63 @@ public enum GraphicsOverrideParameterType {
      */
     SHADOWS_CONTRAST,
     /**
-     * @since v941
+     * @since v944
      */
     HIGHLIGHTS_GAIN,
     /**
-     * @since v941
+     * @since v944
      */
     HIGHLIGHTS_GAMMA,
     /**
-     * @since v941
+     * @since v944
      */
     HIGHLIGHTS_OFFSET,
     /**
-     * @since v941
+     * @since v944
      */
     HIGHLIGHTS_SATURATION,
     /**
-     * @since v941
+     * @since v944
      */
     MIDTONES_GAIN,
     /**
-     * @since v941
+     * @since v944
      */
     MIDTONES_GAMMA,
     /**
-     * @since v941
+     * @since v944
      */
     MIDTONES_OFFSET,
     /**
-     * @since v941
+     * @since v944
      */
     MIDTONES_SATURATION,
     /**
-     * @since v941
+     * @since v944
      */
     SHADOWS_GAIN,
     /**
-     * @since v941
+     * @since v944
      */
     SHADOWS_GAMMA,
     /**
-     * @since v941
+     * @since v944
      */
     SHADOWS_OFFSET,
     /**
-     * @since v941
+     * @since v944
      */
     SHADOWS_SATURATION,
     /**
-     * @since v941
+     * @since v944
      */
     HIGHLIGHTS_MIN,
     /**
-     * @since v941
+     * @since v944
      */
     SHADOWS_MAX,
     /**
-     * @since v941
+     * @since v944
      */
     TEMPERATURE;
 

@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.codec.v941.serializer;
+package org.cloudburstmc.protocol.bedrock.codec.v944.serializer;
 
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
@@ -13,8 +13,8 @@ import org.cloudburstmc.protocol.common.util.VarInts;
  * @author Kaooot
  */
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class PlayerAuthInputSerializer_v941 extends PlayerAuthInputSerializer_v766 {
-    public static final PlayerAuthInputSerializer_v941 INSTANCE = new PlayerAuthInputSerializer_v941();
+public class PlayerAuthInputSerializer_v944 extends PlayerAuthInputSerializer_v766 {
+    public static final PlayerAuthInputSerializer_v944 INSTANCE = new PlayerAuthInputSerializer_v944();
 
     @Override
     protected void writeItemUseTransaction(ByteBuf buffer, BedrockCodecHelper helper, ItemUseTransaction transaction) {

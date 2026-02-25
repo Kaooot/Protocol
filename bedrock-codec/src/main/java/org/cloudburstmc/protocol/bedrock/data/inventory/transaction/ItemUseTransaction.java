@@ -32,7 +32,7 @@ public class ItemUseTransaction {
      */
     private TriggerType triggerType;
     /**
-     * @since v941
+     * @since v944
      */
     private int clientCooldownState;
 
