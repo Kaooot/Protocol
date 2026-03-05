@@ -12,7 +12,7 @@ public class AttributeLayerSettings {
     private int priority;
     private WeightData weight;
     private boolean enabled;
-    private boolean transitionPaused;
+    private boolean transitionsPaused;
 
     @Value
     public static class WeightData {

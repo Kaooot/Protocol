@@ -136,7 +136,7 @@ public class ClientboundAttributeLayerSyncSerializer_v944 implements BedrockPack
             helper.writeString(buffer, settings.getWeight().getAsString());
         }
         buffer.writeBoolean(settings.isEnabled());
-        buffer.writeBoolean(settings.isTransitionPaused());
+        buffer.writeBoolean(settings.isTransitionsPaused());
     }
 
     protected AttributeLayerSettings readAttributeLayerSettings(ByteBuf buffer, BedrockCodecHelper helper) {
@@ -149,7 +149,7 @@ public class ClientboundAttributeLayerSyncSerializer_v944 implements BedrockPack
                 )
         );
         settings.setEnabled(buffer.readBoolean());
-        settings.setTransitionPaused(buffer.readBoolean());
+        settings.setTransitionsPaused(buffer.readBoolean());
         return settings;
     }
 
@@ -206,19 +206,20 @@ public class ClientboundAttributeLayerSyncSerializer_v944 implements BedrockPack
 
     protected void writeBoolAttributeData(ByteBuf buffer, BedrockCodecHelper helper, BoolAttributeData data) {
         buffer.writeBoolean(data.isValue());
-        VarInts.writeUnsignedInt(buffer, data.getOperation().ordinal());
+        helper.writeOptionalNull(buffer, data.getOperation().name(), helper::writeString);
     }
 
     protected BoolAttributeData readBoolAttributeData(ByteBuf buffer, BedrockCodecHelper helper) {
         final BoolAttributeData data = new BoolAttributeData();
         data.setValue(buffer.readBoolean());
-        data.setOperation(BoolAttributeOperation.from(VarInts.readUnsignedInt(buffer)));
+        data.setOperation(helper.readOptional(buffer, null,
+                (buf, h) -> BoolAttributeOperation.valueOf(h.readString(buffer))));
         return data;
     }
 
     protected void writeFloatAttributeData(ByteBuf buffer, BedrockCodecHelper helper, FloatAttributeData data) {
         buffer.writeFloatLE(data.getValue());
-        VarInts.writeUnsignedInt(buffer, data.getOperation().ordinal());
+        helper.writeOptionalNull(buffer, data.getOperation().name(), helper::writeString);
         helper.writeOptionalNull(buffer, data.getConstraintMin(), ByteBuf::writeFloatLE);
         helper.writeOptionalNull(buffer, data.getConstraintMax(), ByteBuf::writeFloatLE);
     }
@@ -226,7 +227,8 @@ public class ClientboundAttributeLayerSyncSerializer_v944 implements BedrockPack
     protected FloatAttributeData readFloatAttributeData(ByteBuf buffer, BedrockCodecHelper helper) {
         final FloatAttributeData data = new FloatAttributeData();
         data.setValue(buffer.readFloatLE());
-        data.setOperation(FloatAttributeOperation.from(VarInts.readUnsignedInt(buffer)));
+        data.setOperation(helper.readOptional(buffer, null,
+                (buf, h) -> FloatAttributeOperation.valueOf(h.readString(buffer))));
         data.setConstraintMin(helper.readOptional(buffer, null, ByteBuf::readFloatLE));
         data.setConstraintMax(helper.readOptional(buffer, null, ByteBuf::readFloatLE));
         return data;
@@ -234,13 +236,14 @@ public class ClientboundAttributeLayerSyncSerializer_v944 implements BedrockPack
 
     protected void writeColorAttributeData(ByteBuf buffer, BedrockCodecHelper helper, ColorAttributeData data) {
         buffer.writeIntLE(data.getColor());
-        VarInts.writeUnsignedInt(buffer, data.getOperation().ordinal());
+        helper.writeOptionalNull(buffer, data.getOperation().name(), helper::writeString);
     }
 
     protected ColorAttributeData readColorAttributeData(ByteBuf buffer, BedrockCodecHelper helper) {
         final ColorAttributeData data = new ColorAttributeData();
         data.setColor(buffer.readIntLE());
-        data.setOperation(ColorAttributeOperation.from(VarInts.readUnsignedInt(buffer)));
+        data.setOperation(helper.readOptional(buffer, null,
+                (buf, h) -> ColorAttributeOperation.valueOf(h.readString(buffer))));
         return data;
     }
 }
