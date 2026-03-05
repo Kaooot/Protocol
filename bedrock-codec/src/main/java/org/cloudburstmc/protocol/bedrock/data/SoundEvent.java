@@ -1004,5 +1004,13 @@ public enum SoundEvent {
      * @since v924
      */
     NETHERITE_SPEAR_USE,
+    /**
+     * @since v944
+     */
+    PAUSE_GROWTH,
+    /**
+     * @since v944
+     */
+    RESET_GROWTH,
     UNDEFINED
 }

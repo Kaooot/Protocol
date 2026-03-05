@@ -1,11 +1,13 @@
 package org.cloudburstmc.protocol.bedrock.codec.v944;
 
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
+import org.cloudburstmc.protocol.bedrock.codec.v786.serializer.LevelSoundEventSerializer_v786;
 import org.cloudburstmc.protocol.bedrock.codec.v924.Bedrock_v924;
 import org.cloudburstmc.protocol.bedrock.codec.v924.serializer.ServerboundDiagnosticsSerializer_v924;
 import org.cloudburstmc.protocol.bedrock.codec.v944.serializer.*;
 import org.cloudburstmc.protocol.bedrock.data.MemoryCategory;
 import org.cloudburstmc.protocol.bedrock.data.PacketRecipient;
+import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerEnumName;
 import org.cloudburstmc.protocol.bedrock.packet.*;
 import org.cloudburstmc.protocol.common.util.TypeMap;
@@ -39,6 +41,12 @@ public class Bedrock_v944 extends Bedrock_v924 {
             .insert(91, MemoryCategory.GAMEFACE_SCRIPT_ENGINE)
             .build();
 
+    protected static final TypeMap<SoundEvent> SOUND_EVENTS = Bedrock_v924.SOUND_EVENTS.toBuilder()
+            .replace(597, SoundEvent.PAUSE_GROWTH)
+            .insert(598, SoundEvent.RESET_GROWTH)
+            .insert(599, SoundEvent.UNDEFINED)
+            .build();
+
     public static final BedrockCodec CODEC = Bedrock_v924.CODEC.toBuilder()
             .raknetProtocolVersion(11)
             .protocolVersion(944)
@@ -47,6 +55,7 @@ public class Bedrock_v944 extends Bedrock_v924 {
             .deregisterPacket(ClientboundDataDrivenUICloseAllScreensPacket.class)
             .updateSerializer(ClientboundDataDrivenUIShowScreenPacket.class, ClientboundDataDrivenUIShowScreenSerializer_v944.INSTANCE)
             .updateSerializer(EditorNetworkPacket.class, EditorNetworkSerializer_v944.INSTANCE)
+            .updateSerializer(LevelSoundEventPacket.class, new LevelSoundEventSerializer_v786(SOUND_EVENTS))
             .updateSerializer(PlayerAuthInputPacket.class, PlayerAuthInputSerializer_v944.INSTANCE)
             .updateSerializer(ServerboundDiagnosticsPacket.class, new ServerboundDiagnosticsSerializer_v924(MEMORY_CATEGORY_TYPES))
             .updateSerializer(StartGamePacket.class, StartGameSerializer_v944.INSTANCE)
