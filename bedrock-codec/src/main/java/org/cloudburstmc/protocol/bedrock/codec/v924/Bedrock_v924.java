@@ -1,19 +1,33 @@
 package org.cloudburstmc.protocol.bedrock.codec.v924;
 
+import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
+import org.cloudburstmc.protocol.bedrock.codec.v786.Bedrock_v786;
 import org.cloudburstmc.protocol.bedrock.codec.v786.serializer.LevelSoundEventSerializer_v786;
 import org.cloudburstmc.protocol.bedrock.codec.v898.Bedrock_v898;
 import org.cloudburstmc.protocol.bedrock.codec.v924.serializer.*;
 import org.cloudburstmc.protocol.bedrock.data.MemoryCategory;
 import org.cloudburstmc.protocol.bedrock.data.PacketRecipient;
 import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataFormat;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataTypes;
 import org.cloudburstmc.protocol.bedrock.packet.*;
+import org.cloudburstmc.protocol.bedrock.transformer.FlagTransformer;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 
 /**
  * @author Kaooot
  */
 public class Bedrock_v924 extends Bedrock_v898 {
+
+    protected static final ActorDataTypeMap ACTOR_DATA = Bedrock_v786.ACTOR_DATA
+            .toBuilder()
+            .update(ActorDataTypes.FLAGS, new FlagTransformer(ACTOR_FLAGS, 0))
+            .update(ActorDataTypes.FLAGS_2, new FlagTransformer(ACTOR_FLAGS, 1))
+            .insert(ActorDataTypes.AIM_ASSIST_PRIORITY_PRESET_ID, 136, ActorDataFormat.INT)
+            .insert(ActorDataTypes.AIM_ASSIST_PRIORITY_CATEGORY_ID, 137, ActorDataFormat.INT)
+            .insert(ActorDataTypes.AIM_ASSIST_PRIORITY_ACTOR_ID, 138, ActorDataFormat.INT)
+            .build();
 
     protected static final TypeMap<SoundEvent> SOUND_EVENTS = Bedrock_v898.SOUND_EVENTS
             .toBuilder()

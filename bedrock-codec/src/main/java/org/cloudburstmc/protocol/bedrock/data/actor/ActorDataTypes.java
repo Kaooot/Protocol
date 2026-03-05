@@ -316,4 +316,16 @@ public class ActorDataTypes {
      * @since v800
      */
     public static final ActorDataType<Float> SEAT_CAMERA_RELAX_DISTANCE_SMOOTHING = new ActorDataType<>(Float.class, "SEAT_CAMERA_RELAX_DISTANCE_SMOOTHING");
+    /**
+     * @since v924
+     */
+    public static final ActorDataType<Integer> AIM_ASSIST_PRIORITY_PRESET_ID = new ActorDataType<>(Integer.class, "AIM_ASSIST_PRIORITY_PRESET_ID");
+    /**
+     * @since v924
+     */
+    public static final ActorDataType<Integer> AIM_ASSIST_PRIORITY_CATEGORY_ID = new ActorDataType<>(Integer.class, "AIM_ASSIST_PRIORITY_CATEGORY_ID");
+    /**
+     * @since v924
+     */
+    public static final ActorDataType<Integer> AIM_ASSIST_PRIORITY_ACTOR_ID = new ActorDataType<>(Integer.class, "AIM_ASSIST_PRIORITY_ACTOR_ID");
 }
