@@ -50,6 +50,7 @@ public class Bedrock_v944 extends Bedrock_v924 {
             .updateSerializer(PlayerAuthInputPacket.class, PlayerAuthInputSerializer_v944.INSTANCE)
             .updateSerializer(ServerboundDiagnosticsPacket.class, new ServerboundDiagnosticsSerializer_v924(MEMORY_CATEGORY_TYPES))
             .updateSerializer(StartGamePacket.class, StartGameSerializer_v944.INSTANCE)
+            .updateSerializer(UpdateClientInputLocksPacket.class, UpdateClientInputLocksSerializer_v944.INSTANCE)
             .updateSerializer(VoxelShapesPacket.class, VoxelShapesSerializer_v944.INSTANCE)
             .registerPacket(ClientboundDataDrivenUICloseScreenPacket::new, ClientboundDataDrivenUICloseScreenSerializer_v944.INSTANCE, 334, PacketRecipient.CLIENT)
             .registerPacket(ResourcePacksReadyForValidationPacket::new, ResourcePacksReadyForValidationSerializer_v944.INSTANCE, 340, PacketRecipient.SERVER)
