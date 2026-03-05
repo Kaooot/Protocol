@@ -10,6 +10,9 @@ public enum MemoryCategory {
     ACTOR,
     ACTOR_ANIMATION,
     ACTOR_RENDERING,
+    /**
+     * @deprecated since v944
+     */
     BALANCER,
     BLOCK_TICKING_QUEUES,
     BIOME_STORAGE,
@@ -85,14 +88,53 @@ public enum MemoryCategory {
     SCRIPTING_CONTEXT_BINDINGS_GT,
     SCRIPTING_CONTEXT_RUN,
     DATA_DRIVEN_UI,
-    DATA_DRIVEN_UI_DEFS;
-
-    private static final MemoryCategory[] VALUES = values();
-
-    public static MemoryCategory from(int ordinal) {
-        if (ordinal >= 0 && ordinal < VALUES.length) {
-            return VALUES[ordinal];
-        }
-        throw new UnsupportedOperationException("Detected unknown MemoryCategory ID: " + ordinal);
-    }
+    DATA_DRIVEN_UI_DEFS,
+    /**
+     * @since v944
+     */
+    LIGHT_VOLUME_MANAGER,
+    /**
+     * @since v944
+     */
+    GAMEFACE,
+    /**
+     * @since v944
+     */
+    GAMEFACE_SYSTEM,
+    /**
+     * @since v944
+     */
+    GAMEFACE_DOM,
+    /**
+     * @since v944
+     */
+    GAMEFACE_CSS,
+    /**
+     * @since v944
+     */
+    GAMEFACE_DISPLAY,
+    /**
+     * @since v944
+     */
+    GAMEFACE_TEMP_ALLOCATOR,
+    /**
+     * @since v944
+     */
+    GAMEFACE_POOL_ALLOCATOR,
+    /**
+     * @since v944
+     */
+    GAMEFACE_DUMP,
+    /**
+     * @since v944
+     */
+    GAMEFACE_MEDIA,
+    /**
+     * @since v944
+     */
+    GAMEFACE_JSON,
+    /**
+     * @since v944
+     */
+    GAMEFACE_SCRIPT_ENGINE,
 }

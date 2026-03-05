@@ -2,7 +2,9 @@ package org.cloudburstmc.protocol.bedrock.codec.v944;
 
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
 import org.cloudburstmc.protocol.bedrock.codec.v924.Bedrock_v924;
+import org.cloudburstmc.protocol.bedrock.codec.v924.serializer.ServerboundDiagnosticsSerializer_v924;
 import org.cloudburstmc.protocol.bedrock.codec.v944.serializer.*;
+import org.cloudburstmc.protocol.bedrock.data.MemoryCategory;
 import org.cloudburstmc.protocol.bedrock.data.PacketRecipient;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerEnumName;
 import org.cloudburstmc.protocol.bedrock.packet.*;
@@ -20,6 +22,23 @@ public class Bedrock_v944 extends Bedrock_v924 {
             .insert(20, ContainerEnumName.RECIPE_FURNACE_ITEMS_CONTAINER)
             .build();
 
+    protected static final TypeMap<MemoryCategory> MEMORY_CATEGORY_TYPES = Bedrock_v924.MEMORY_CATEGORY_TYPES.toBuilder()
+            .remove(5)
+            .shift(6, 43, -1)
+            .insert(42, MemoryCategory.LIGHT_VOLUME_MANAGER)
+            .insert(81, MemoryCategory.GAMEFACE)
+            .insert(82, MemoryCategory.GAMEFACE_SYSTEM)
+            .insert(83, MemoryCategory.GAMEFACE_DOM)
+            .insert(84, MemoryCategory.GAMEFACE_CSS)
+            .insert(85, MemoryCategory.GAMEFACE_DISPLAY)
+            .insert(86, MemoryCategory.GAMEFACE_TEMP_ALLOCATOR)
+            .insert(87, MemoryCategory.GAMEFACE_POOL_ALLOCATOR)
+            .insert(88, MemoryCategory.GAMEFACE_DUMP)
+            .insert(89, MemoryCategory.GAMEFACE_MEDIA)
+            .insert(90, MemoryCategory.GAMEFACE_JSON)
+            .insert(91, MemoryCategory.GAMEFACE_SCRIPT_ENGINE)
+            .build();
+
     public static final BedrockCodec CODEC = Bedrock_v924.CODEC.toBuilder()
             .raknetProtocolVersion(11)
             .protocolVersion(944)
@@ -29,6 +48,7 @@ public class Bedrock_v944 extends Bedrock_v924 {
             .updateSerializer(ClientboundDataDrivenUIShowScreenPacket.class, ClientboundDataDrivenUIShowScreenSerializer_v944.INSTANCE)
             .updateSerializer(EditorNetworkPacket.class, EditorNetworkSerializer_v944.INSTANCE)
             .updateSerializer(PlayerAuthInputPacket.class, PlayerAuthInputSerializer_v944.INSTANCE)
+            .updateSerializer(ServerboundDiagnosticsPacket.class, new ServerboundDiagnosticsSerializer_v924(MEMORY_CATEGORY_TYPES))
             .updateSerializer(StartGamePacket.class, StartGameSerializer_v944.INSTANCE)
             .updateSerializer(VoxelShapesPacket.class, VoxelShapesSerializer_v944.INSTANCE)
             .registerPacket(ClientboundDataDrivenUICloseScreenPacket::new, ClientboundDataDrivenUICloseScreenSerializer_v944.INSTANCE, 334, PacketRecipient.CLIENT)
