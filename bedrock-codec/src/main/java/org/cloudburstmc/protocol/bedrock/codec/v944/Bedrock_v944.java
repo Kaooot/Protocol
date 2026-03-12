@@ -18,10 +18,9 @@ import org.cloudburstmc.protocol.common.util.TypeMap;
 public class Bedrock_v944 extends Bedrock_v924 {
 
     protected static final TypeMap<ContainerEnumName> CONTAINER_SLOT_TYPES = Bedrock_v924.CONTAINER_SLOT_TYPES.toBuilder()
-            .shift(18, 3)
-            .insert(18, ContainerEnumName.RECIPE_FOOD_CONTAINER)
-            .insert(19, ContainerEnumName.RECIPE_BLOCKS_CONTAINER)
-            .insert(20, ContainerEnumName.RECIPE_FURNACE_ITEMS_CONTAINER)
+            .insert(64, ContainerEnumName.RECIPE_FOOD_CONTAINER)
+            .insert(65, ContainerEnumName.RECIPE_BLOCKS_CONTAINER)
+            .insert(66, ContainerEnumName.RECIPE_FURNACE_ITEMS_CONTAINER)
             .build();
 
     protected static final TypeMap<MemoryCategory> MEMORY_CATEGORY_TYPES = Bedrock_v924.MEMORY_CATEGORY_TYPES.toBuilder()
