@@ -21,18 +21,6 @@ public enum ContainerEnumName {
     RECIPE_CONSTRUCTION_CONTAINER,
     RECIPE_NATURE_CONTAINER,
     RECIPE_ITEMS_CONTAINER,
-    /**
-     * @since v944
-     */
-    RECIPE_FOOD_CONTAINER,
-    /**
-     * @since v944
-     */
-    RECIPE_BLOCKS_CONTAINER,
-    /**
-     * @since v944
-     */
-    RECIPE_FURNACE_ITEMS_CONTAINER,
     RECIPE_SEARCH_CONTAINER,
     RECIPE_SEARCH_BAR_CONTAINER,
     RECIPE_EQUIPMENT_CONTAINER,
@@ -84,5 +72,17 @@ public enum ContainerEnumName {
     /**
      * @since v712
      */
-    DYNAMIC_CONTAINER
+    DYNAMIC_CONTAINER,
+    /**
+     * @since v944
+     */
+    RECIPE_FOOD_CONTAINER,
+    /**
+     * @since v944
+     */
+    RECIPE_BLOCKS_CONTAINER,
+    /**
+     * @since v944
+     */
+    RECIPE_FURNACE_ITEMS_CONTAINER
 }
