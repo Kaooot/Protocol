@@ -31,14 +31,14 @@ public class LocatorBarSerializer_v944 implements BedrockPacketSerializer<Locato
     protected void writeLocatorBarWaypointPayload(ByteBuf buffer, BedrockCodecHelper helper, LocatorBarWaypointPayload payload) {
         helper.writeUuid(buffer, payload.getGroupHandle());
         this.writeServerWaypointPayload(buffer, helper, payload.getServerWaypointPayload());
-        buffer.writeByte(payload.getActionFlag().ordinal());
+        VarInts.writeUnsignedInt(buffer, payload.getActionFlag().ordinal());
     }
 
     protected LocatorBarWaypointPayload readLocatorBarWaypointPayload(ByteBuf buffer, BedrockCodecHelper helper) {
         final LocatorBarWaypointPayload payload = new LocatorBarWaypointPayload();
         payload.setGroupHandle(helper.readUuid(buffer));
         payload.setServerWaypointPayload(this.readServerWaypointPayload(buffer, helper));
-        payload.setActionFlag(ServerWaypointGroupAction.from(buffer.readUnsignedByte()));
+        payload.setActionFlag(ServerWaypointGroupAction.from(VarInts.readUnsignedInt(buffer)));
         return payload;
     }
 
