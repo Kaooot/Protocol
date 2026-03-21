@@ -7,6 +7,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * @author Kaooot
+ * @deprecated since v944
  */
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
