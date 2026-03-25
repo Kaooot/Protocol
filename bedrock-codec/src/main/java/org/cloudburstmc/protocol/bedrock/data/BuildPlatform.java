@@ -1,59 +1,68 @@
 package org.cloudburstmc.protocol.bedrock.data;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 public enum BuildPlatform {
 
-    UNDEFINED,
+    UNKNOWN(-1),
     /**
      * Android
      */
-    GOOGLE,
-    IOS,
+    GOOGLE(1),
+    IOS(2),
     /**
      * Mac OS
      */
-    OSX,
+    OSX(3),
     /**
      * Kindle, FireTV
      */
-    AMAZON,
+    AMAZON(4),
     /**
      * @deprecated since v748
      */
-    GEAR_VR_DEPRECATED,
-    HOLOLENS,
+    GEAR_VR_DEPRECATED(5),
+    HOLOLENS(6),
     /**
      * Windows Store version
      */
-    UWP,
+    UWP(7),
     /**
      * Educational edition
      */
-    WIN_32,
-    DEDICATED,
+    WIN_32(8),
+    DEDICATED(9),
     /**
      * Apple TV
      */
     @Deprecated
-    TV_OS_DEPRECATED,
+    TV_OS_DEPRECATED(10),
     /**
      * Playstation
      */
-    SONY,
+    SONY(11),
     /**
      * Nintendo Switch
      */
-    NX,
-    XBOX,
+    NX(12),
+    XBOX(13),
     @Deprecated
-    WINDOWS_PHONE_DEPRECATED,
-    LINUX;
+    WINDOWS_PHONE_DEPRECATED(14),
+    LINUX(15);
+
+    @Getter
+    private final int id;
 
     private static final BuildPlatform[] VALUES = values();
 
-    public static BuildPlatform from(int ordinal) {
-        if (ordinal >= 0 && ordinal < VALUES.length) {
-            return VALUES[ordinal];
+    public static BuildPlatform from(int id) {
+        for (BuildPlatform value : VALUES) {
+            if (value.getId() == id) {
+                return value;
+            }
         }
-        throw new UnsupportedOperationException("Detected unknown BuildPlatform ID: " + ordinal);
+        throw new UnsupportedOperationException("Detected unknown BuildPlatform ID: " + id);
     }
 }
