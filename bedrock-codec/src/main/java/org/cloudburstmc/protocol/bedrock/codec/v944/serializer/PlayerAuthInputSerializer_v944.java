@@ -18,8 +18,8 @@ public class PlayerAuthInputSerializer_v944 extends PlayerAuthInputSerializer_v7
 
     @Override
     protected void writeItemUseTransaction(ByteBuf buffer, BedrockCodecHelper helper, ItemUseTransaction transaction) {
-        super.writeItemUseTransaction(buffer,helper,transaction);
-        VarInts.writeUnsignedInt(buffer, transaction.getClientCooldownState());
+        super.writeItemUseTransaction(buffer, helper, transaction);
+        buffer.writeByte(transaction.getClientCooldownState());
     }
 
     @Override
@@ -48,7 +48,7 @@ public class PlayerAuthInputSerializer_v944 extends PlayerAuthInputSerializer_v7
         itemTransaction.setClickPosition(helper.readVector3f(buffer));
         itemTransaction.setBlockDefinition(helper.getBlockDefinitions().getDefinition(VarInts.readUnsignedInt(buffer)));
         itemTransaction.setClientInteractPrediction(ItemUseTransaction.PredictedResult.values()[VarInts.readUnsignedInt(buffer)]);
-        itemTransaction.setClientCooldownState(VarInts.readUnsignedInt(buffer));
+        itemTransaction.setClientCooldownState(buffer.readUnsignedByte());
         return itemTransaction;
     }
 }
