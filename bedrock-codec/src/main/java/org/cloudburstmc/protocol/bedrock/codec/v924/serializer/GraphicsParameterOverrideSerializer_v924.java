@@ -26,8 +26,8 @@ public class GraphicsParameterOverrideSerializer_v924 extends GraphicsParameterO
             buf.writeFloatLE(entry.getKey());
             codecHelper.writeVector3f(buf, entry.getValue());
         });
-        buffer.writeFloatLE(packet.getFloatValue());
-        helper.writeVector3f(buffer, packet.getVec3Value());
+        helper.writeOptionalNull(buffer, packet.getFloatValue(), ByteBuf::writeFloatLE);
+        helper.writeOptionalNull(buffer, packet.getVec3Value(), helper::writeVector3f);
         helper.writeString(buffer, packet.getBiomeIdentifier());
         buffer.writeByte(packet.getIdentifierForParameter().ordinal());
         buffer.writeBoolean(packet.isResetParameter());
@@ -46,8 +46,8 @@ public class GraphicsParameterOverrideSerializer_v924 extends GraphicsParameterO
         }
 
         packet.getParameterKeyframeValues().putAll(parameterKeyframeValues);
-        packet.setFloatValue(buffer.readFloatLE());
-        packet.setVec3Value(helper.readVector3f(buffer));
+        packet.setFloatValue(helper.readOptional(buffer, null, ByteBuf::readFloatLE));
+        packet.setVec3Value(helper.readOptional(buffer, null, helper::readVector3f));
         packet.setBiomeIdentifier(helper.readString(buffer));
         packet.setIdentifierForParameter(GraphicsOverrideParameterType.from(buffer.readUnsignedByte()));
         packet.setResetParameter(buffer.readBoolean());
