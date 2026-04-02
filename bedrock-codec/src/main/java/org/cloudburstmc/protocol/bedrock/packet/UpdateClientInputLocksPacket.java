@@ -1,10 +1,14 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.math.vector.Vector3f;
+import org.cloudburstmc.protocol.bedrock.data.ClientInputLockComponent;
 import org.cloudburstmc.protocol.common.PacketSignal;
+
+import java.util.Set;
 
 import static org.cloudburstmc.protocol.bedrock.packet.BedrockPacketType.*;
 
@@ -12,7 +16,7 @@ import static org.cloudburstmc.protocol.bedrock.packet.BedrockPacketType.*;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class UpdateClientInputLocksPacket implements BedrockPacket {
-    private int inputLockComponentData;
+    private final Set<ClientInputLockComponent> inputLockComponents = new ObjectOpenHashSet<>();
     private Vector3f serverPos;
 
     @Override
