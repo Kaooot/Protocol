@@ -54,7 +54,7 @@ public class Bedrock_v575 extends Bedrock_v568 {
             .replace(462, SoundEvent.BRUSH)
             .insert(463, SoundEvent.BRUSH_COMPLETED)
             .insert(464, SoundEvent.SHATTER_DECORATED_POT)
-            .insert(465, SoundEvent.BREAK_DECORATED_POD)
+            .insert(465, SoundEvent.BREAK_DECORATED_POT)
             .insert(466, SoundEvent.UNDEFINED)
             .build();
 
