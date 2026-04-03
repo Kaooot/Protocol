@@ -487,7 +487,7 @@ public enum SoundEvent {
     /**
      * @since v575
      */
-    BREAK_DECORATED_POD,
+    BREAK_DECORATED_POT,
     /**
      * @since v589
      */
