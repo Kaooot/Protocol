@@ -32,7 +32,7 @@ public class PlayerAuthInputSerializer_v766 extends PlayerAuthInputSerializer_v7
         writeInteractionModel(buffer, helper, packet);
         helper.writeVector2f(buffer, packet.getInteractRotation());
         VarInts.writeUnsignedLong(buffer, packet.getClientTick());
-        helper.writeVector3f(buffer, packet.getPostDelta());
+        helper.writeVector3f(buffer, packet.getPosDelta());
         if (packet.getInputData().contains(PlayerAuthInputData.PERFORM_ITEM_INTERACTION)) {
             this.writeItemUseTransaction(buffer, helper, packet.getItemUseTransaction());
         }
@@ -68,7 +68,7 @@ public class PlayerAuthInputSerializer_v766 extends PlayerAuthInputSerializer_v7
         readInteractionModel(buffer, helper, packet);
         packet.setInteractRotation(helper.readVector2f(buffer));
         packet.setClientTick(VarInts.readUnsignedLong(buffer));
-        packet.setPostDelta(helper.readVector3f(buffer));
+        packet.setPosDelta(helper.readVector3f(buffer));
         if (packet.getInputData().contains(PlayerAuthInputData.PERFORM_ITEM_INTERACTION)) {
             packet.setItemUseTransaction(this.readItemUseTransaction(buffer, helper));
         }

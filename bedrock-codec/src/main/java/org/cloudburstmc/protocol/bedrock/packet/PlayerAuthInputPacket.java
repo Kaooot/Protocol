@@ -30,7 +30,7 @@ public class PlayerAuthInputPacket implements BedrockPacket {
      */
     private Vector3f vrGazeDirection;
     private long clientTick;
-    private Vector3f postDelta;
+    private Vector3f posDelta;
     /**
      * {@link #inputData} must contain {@link PlayerAuthInputData#PERFORM_ITEM_INTERACTION} in order for this to not be null.
      *
