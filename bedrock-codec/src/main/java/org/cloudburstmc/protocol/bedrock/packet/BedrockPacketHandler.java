@@ -912,7 +912,7 @@ public interface BedrockPacketHandler extends PacketHandler {
         return PacketSignal.UNHANDLED;
     }
 
-    default PacketSignal handle(DebugDrawerPacket packet) {
+    default PacketSignal handle(PrimitiveShapesPacket packet) {
         return PacketSignal.UNHANDLED;
     }
 
@@ -985,6 +985,14 @@ public interface BedrockPacketHandler extends PacketHandler {
     }
 
     default PacketSignal handle(ClientboundAttributeLayerSyncPacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
+
+    default PacketSignal handle(ServerStoreInfoPacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
+
+    default PacketSignal handle(ServerPresenceInfoPacket packet) {
         return PacketSignal.UNHANDLED;
     }
 }

@@ -259,4 +259,8 @@ public interface BedrockCodecHelper {
     void writeDataStoreUpdate(ByteBuf buffer, DataStoreUpdate update);
 
     DataStoreUpdate readDataStoreUpdate(ByteBuf buffer);
+
+    void writeNetworkItemStackDescriptor(ByteBuf buffer, ItemData item);
+
+    ItemData readNetworkItemStackDescriptor(ByteBuf buffer);
 }

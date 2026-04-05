@@ -25,6 +25,18 @@ public class ClientMovementPredictionSyncPacket implements BedrockPacket {
     private float jumpStrength;
     private float health;
     private float hunger;
+    /**
+     * @since v972
+     */
+    private float frictionModifier;
+    /**
+     * @since v972
+     */
+    private float bounciness;
+    /**
+     * @since v972
+     */
+    private float airDragModifier;
     private boolean actorFlyingState;
 
 

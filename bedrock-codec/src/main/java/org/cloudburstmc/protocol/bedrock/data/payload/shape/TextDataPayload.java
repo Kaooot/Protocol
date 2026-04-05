@@ -12,6 +12,26 @@ import org.cloudburstmc.protocol.bedrock.data.ExtraShapeDataType;
 public class TextDataPayload implements DebugShapePayload {
 
     private String text;
+    /**
+     * @since v972
+     */
+    private boolean useRotation;
+    /**
+     * @since v972
+     */
+    private Integer backgroundColor;
+    /**
+     * @since v972
+     */
+    private boolean depthTest;
+    /**
+     * @since v972
+     */
+    private boolean showBackface;
+    /**
+     * @since v972
+     */
+    private boolean showTextBackface;
 
     @Override
     public ExtraShapeDataType getType() {

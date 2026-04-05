@@ -4,10 +4,10 @@ import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
-import org.cloudburstmc.protocol.bedrock.codec.v818.serializer.DebugDrawerSerializer_v818;
+import org.cloudburstmc.protocol.bedrock.codec.v818.serializer.PrimitiveShapesSerializer_v818;
 import org.cloudburstmc.protocol.bedrock.data.Dimension;
 import org.cloudburstmc.protocol.bedrock.data.ExtraShapeDataType;
-import org.cloudburstmc.protocol.bedrock.data.ScriptDebugShapeType;
+import org.cloudburstmc.protocol.bedrock.data.payload.shape.ScriptPrimitiveShapeType;
 import org.cloudburstmc.protocol.bedrock.data.payload.shape.*;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -15,8 +15,8 @@ import org.cloudburstmc.protocol.common.util.VarInts;
  * @author Kaooot
  */
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class DebugDrawerSerializer_v859 extends DebugDrawerSerializer_v818 {
-    public static final DebugDrawerSerializer_v859 INSTANCE = new DebugDrawerSerializer_v859();
+public class PrimitiveShapesSerializer_v859 extends PrimitiveShapesSerializer_v818 {
+    public static final PrimitiveShapesSerializer_v859 INSTANCE = new PrimitiveShapesSerializer_v859();
 
     @Override
     protected void writeShapeData(ByteBuf buffer, BedrockCodecHelper helper, ShapeDataPayload payload) {
@@ -35,7 +35,7 @@ public class DebugDrawerSerializer_v859 extends DebugDrawerSerializer_v818 {
     protected ShapeDataPayload readShapeData(ByteBuf buffer, BedrockCodecHelper helper) {
         final ShapeDataPayload payload = new ShapeDataPayload();
         payload.setNetworkId(VarInts.readUnsignedLong(buffer));
-        payload.setShapeType(helper.readOptional(buffer, null, buf -> ScriptDebugShapeType.from(buf.readUnsignedByte())));
+        payload.setShapeType(helper.readOptional(buffer, null, buf -> ScriptPrimitiveShapeType.from(buf.readUnsignedByte())));
         payload.setLocation(helper.readOptional(buffer, null, helper::readVector3f));
         payload.setScale(helper.readOptional(buffer, null, ByteBuf::readFloatLE));
         payload.setRotation(helper.readOptional(buffer, null, helper::readVector3f));
@@ -69,7 +69,7 @@ public class DebugDrawerSerializer_v859 extends DebugDrawerSerializer_v818 {
     }
 
     @Override
-    protected DebugShapePayload readExtraShapeData(ByteBuf buffer, BedrockCodecHelper helper, ScriptDebugShapeType type) {
+    protected DebugShapePayload readExtraShapeData(ByteBuf buffer, BedrockCodecHelper helper, ScriptPrimitiveShapeType type) {
         final ExtraShapeDataType extraShapeDataType = ExtraShapeDataType.from(VarInts.readUnsignedInt(buffer));
         switch (extraShapeDataType) {
             case NONE:

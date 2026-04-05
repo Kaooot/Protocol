@@ -4,7 +4,6 @@ import lombok.Data;
 import lombok.ToString;
 import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.protocol.bedrock.data.Dimension;
-import org.cloudburstmc.protocol.bedrock.data.ScriptDebugShapeType;
 
 /**
  * @author Kaooot
@@ -14,11 +13,15 @@ import org.cloudburstmc.protocol.bedrock.data.ScriptDebugShapeType;
 public class ShapeDataPayload {
 
     private long networkId;
-    private ScriptDebugShapeType shapeType;
+    private ScriptPrimitiveShapeType shapeType;
     private Vector3f location;
     private Float scale;
     private Vector3f rotation;
     private Float totalTimeLeft;
+    /**
+     * @since v972
+     */
+    private Float maximumRenderDistance;
     private Integer color;
     private Dimension dimension;
     /**

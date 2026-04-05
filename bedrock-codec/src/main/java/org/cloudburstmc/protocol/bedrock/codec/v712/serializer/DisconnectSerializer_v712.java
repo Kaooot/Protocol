@@ -4,6 +4,7 @@ import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
 import org.cloudburstmc.protocol.bedrock.data.DisconnectFailReason;
+import org.cloudburstmc.protocol.bedrock.data.payload.connection.DisconnectPacketMessages;
 import org.cloudburstmc.protocol.bedrock.packet.DisconnectPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -15,8 +16,7 @@ public class DisconnectSerializer_v712 implements BedrockPacketSerializer<Discon
         VarInts.writeInt(buffer, packet.getReason().ordinal());
         buffer.writeBoolean(packet.isSkipMessage());
         if (!packet.isSkipMessage()) {
-            helper.writeString(buffer, packet.getMessage());
-            helper.writeString(buffer, packet.getFilteredMessage());
+            this.writeMessages(buffer, helper, packet.getMessages());
         }
     }
 
@@ -25,8 +25,18 @@ public class DisconnectSerializer_v712 implements BedrockPacketSerializer<Discon
         packet.setReason(DisconnectFailReason.values()[VarInts.readInt(buffer)]);
         packet.setSkipMessage(buffer.readBoolean());
         if (!packet.isSkipMessage()) {
-            packet.setMessage(helper.readString(buffer));
-            packet.setFilteredMessage(helper.readString(buffer));
+            packet.setMessages(this.readMessages(buffer, helper));
         }
+    }
+
+    protected void writeMessages(ByteBuf buffer, BedrockCodecHelper helper, DisconnectPacketMessages messages) {
+        helper.writeString(buffer, messages.getMessage());
+        helper.writeString(buffer, messages.getFilteredMessage());
+    }
+
+    protected DisconnectPacketMessages readMessages(ByteBuf buffer, BedrockCodecHelper helper) {
+        final String message = helper.readString(buffer);
+        final String filteredMessage = helper.readString(buffer);
+        return new DisconnectPacketMessages(message, filteredMessage);
     }
 }

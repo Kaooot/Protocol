@@ -3,7 +3,7 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.protocol.bedrock.data.inventory.EnchantOptionData;
+import org.cloudburstmc.protocol.bedrock.data.inventory.ItemEnchantOption;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 import java.util.ArrayList;
@@ -13,7 +13,7 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = false)
 @ToString(doNotUseGetters = true)
 public class PlayerEnchantOptionsPacket implements BedrockPacket {
-    private final List<EnchantOptionData> options = new ArrayList<>();
+    private final List<ItemEnchantOption> options = new ArrayList<>();
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

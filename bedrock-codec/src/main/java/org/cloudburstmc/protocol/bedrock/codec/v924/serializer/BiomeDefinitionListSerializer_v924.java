@@ -31,13 +31,7 @@ public class BiomeDefinitionListSerializer_v924 extends BiomeDefinitionListSeria
         BiomeMountainParamsData mountainParams = helper.readOptional(buffer, null, this::readMountainParamsData);
         BiomeSurfaceMaterialAdjustmentData surfaceMaterialAdjustment = helper.readOptional(buffer, null,
                 (buf, aHelper) -> this.readSurfaceMaterialAdjustment(buf, aHelper, strings));
-        BiomeSurfaceMaterialData surfaceMaterial = helper.readOptional(buffer, null, this::readSurfaceMaterial);
-        boolean hasDefaultOverworldSurface = buffer.readBoolean();
-        boolean hasSwampSurface = buffer.readBoolean();
-        boolean hasFrozenOceanSurface = buffer.readBoolean();
-        boolean hasTheEndSurface = buffer.readBoolean();
-        BiomeMesaSurfaceData mesaSurface = helper.readOptional(buffer, null, this::readMesaSurface);
-        BiomeCappedSurfaceData cappedSurface = helper.readOptional(buffer, null, this::readCappedSurface);
+        BiomeSurfaceBuilderData surfaceBuilderData = this.readBiomeSurfaceBuilderData(buffer, helper);
         BiomeOverworldGenRulesData overworldGenRules = helper.readOptional(buffer, null,
                 (buf, aHelper) -> this.readOverworldGenRules(buf, aHelper, strings));
         BiomeMultinoiseGenRulesData multinoiseGenRules = helper.readOptional(buffer, null, this::readMultinoiseGenRules);
@@ -48,10 +42,8 @@ public class BiomeDefinitionListSerializer_v924 extends BiomeDefinitionListSeria
 
         return new BiomeDefinitionChunkGenData(climate, consolidatedFeatures,
                 mountainParams, surfaceMaterialAdjustment,
-                surfaceMaterial, hasDefaultOverworldSurface, hasSwampSurface,
-                hasFrozenOceanSurface, hasTheEndSurface,
-                mesaSurface, cappedSurface,
+                surfaceBuilderData,
                 overworldGenRules, multinoiseGenRules,
-                legacyWorldGenRules, replacementData, villageType);
+                legacyWorldGenRules, replacementData, null, villageType, null);
     }
 }

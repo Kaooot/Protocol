@@ -170,7 +170,19 @@ public enum GraphicsOverrideParameterType {
     /**
      * @since v944
      */
-    AMBIENT_ILLUMINANCE;
+    AMBIENT_ILLUMINANCE,
+    /**
+     * @since v972
+     */
+    EMISSIVE_DESATURATION,
+    /**
+     * @since v972
+     */
+    SKY_INTENSITY,
+    /**
+     * @since v972
+     */
+    ORBITAL_OFFSET_DEGREES;
 
     private static final GraphicsOverrideParameterType[] VALUES = values();
 
