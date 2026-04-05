@@ -25,7 +25,9 @@ public class UpdateClientOptionsSerializer_v972 extends UpdateClientOptionsSeria
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, UpdateClientOptionsPacket packet) {
         super.deserialize(buffer, helper, packet);
-        helper.readOptional(buffer, OptionalBoolean.empty(),
-                (buf, codecHelper) -> OptionalBoolean.of(buf.readBoolean()));
+        packet.setFilterProfanityChange(
+                helper.readOptional(buffer, OptionalBoolean.empty(),
+                        (buf, codecHelper) -> OptionalBoolean.of(buf.readBoolean()))
+        );
     }
 }
