@@ -1,8 +1,12 @@
-package org.cloudburstmc.protocol.bedrock.data;
+package org.cloudburstmc.protocol.bedrock.data.payload.locatorbar;
 
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import lombok.Data;
+import org.cloudburstmc.protocol.bedrock.data.WorldPosition;
 import org.cloudburstmc.math.vector.Vector2f;
 import org.cloudburstmc.protocol.common.util.OptionalBoolean;
+
+import java.util.Set;
 
 /**
  * @author Kaooot
@@ -10,13 +14,13 @@ import org.cloudburstmc.protocol.common.util.OptionalBoolean;
 @Data
 public class ServerWaypointPayload {
 
-    private int updateFlag;
+    private final Set<VanillaWaypointManagerConstants.UpdateFlag> updateFlags = new ObjectOpenHashSet<>();
     private OptionalBoolean isVisible = OptionalBoolean.empty();
     private WorldPosition worldPosition;
     /**
      * @deprecated since v972
      */
-    private Integer textureId;
+    private VanillaWaypointManagerConstants.ImageType textureId;
     /**
      * @since v972
      */

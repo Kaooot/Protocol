@@ -6,10 +6,17 @@ import lombok.NoArgsConstructor;
 import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
-import org.cloudburstmc.protocol.bedrock.data.*;
+import org.cloudburstmc.protocol.bedrock.data.Dimension;
+import org.cloudburstmc.protocol.bedrock.data.WorldPosition;
+import org.cloudburstmc.protocol.bedrock.data.payload.locatorbar.LocatorBarWaypointPayload;
+import org.cloudburstmc.protocol.bedrock.data.payload.locatorbar.ServerWaypointGroupAction;
+import org.cloudburstmc.protocol.bedrock.data.payload.locatorbar.ServerWaypointPayload;
+import org.cloudburstmc.protocol.bedrock.data.payload.locatorbar.VanillaWaypointManagerConstants;
 import org.cloudburstmc.protocol.bedrock.packet.LocatorBarPacket;
 import org.cloudburstmc.protocol.common.util.OptionalBoolean;
 import org.cloudburstmc.protocol.common.util.VarInts;
+
+import java.util.Set;
 
 /**
  * @author Kaooot
@@ -43,11 +50,11 @@ public class LocatorBarSerializer_v944 implements BedrockPacketSerializer<Locato
     }
 
     protected void writeServerWaypointPayload(ByteBuf buffer, BedrockCodecHelper helper, ServerWaypointPayload payload) {
-        buffer.writeIntLE(payload.getUpdateFlag());
+        this.writeUpdateFlags(buffer, helper, payload.getUpdateFlags());
         helper.writeOptional(buffer, OptionalBoolean::isPresent, payload.getIsVisible(),
                 (buf, aHelper, isVisible) -> buf.writeBoolean(isVisible.getAsBoolean()));
         helper.writeOptionalNull(buffer, payload.getWorldPosition(), this::writeWorldPosition);
-        helper.writeOptionalNull(buffer, payload.getTextureId(), ByteBuf::writeIntLE);
+        helper.writeOptionalNull(buffer, payload.getTextureId(), (buf, imageType) -> buf.writeIntLE(imageType.ordinal()));
         helper.writeOptionalNull(buffer, payload.getColor(), ByteBuf::writeIntLE);
         helper.writeOptional(buffer, OptionalBoolean::isPresent, payload.getClientPositionAuthority(),
                 (buf, aHelper, clientPositionAuthority) -> buf.writeBoolean(clientPositionAuthority.getAsBoolean()));
@@ -56,10 +63,10 @@ public class LocatorBarSerializer_v944 implements BedrockPacketSerializer<Locato
 
     protected ServerWaypointPayload readServerWaypointPayload(ByteBuf buffer, BedrockCodecHelper helper) {
         final ServerWaypointPayload payload = new ServerWaypointPayload();
-        payload.setUpdateFlag(buffer.readIntLE());
+        this.readUpdateFlags(buffer, helper, payload.getUpdateFlags());
         payload.setIsVisible(helper.readOptional(buffer, OptionalBoolean.empty(), buf -> OptionalBoolean.of(buf.readBoolean())));
         payload.setWorldPosition(helper.readOptional(buffer, null, this::readWorldPosition));
-        payload.setTextureId(helper.readOptional(buffer, null, ByteBuf::readIntLE));
+        payload.setTextureId(helper.readOptional(buffer, null, (buf, codecHelper) -> VanillaWaypointManagerConstants.ImageType.from(buffer.readIntLE())));
         payload.setColor(helper.readOptional(buffer, null, ByteBuf::readIntLE));
         payload.setClientPositionAuthority(helper.readOptional(buffer, OptionalBoolean.empty(), buf -> OptionalBoolean.of(buf.readBoolean())));
         payload.setActorUniqueID(helper.readOptional(buffer, null, VarInts::readLong));
@@ -75,5 +82,22 @@ public class LocatorBarSerializer_v944 implements BedrockPacketSerializer<Locato
         final Vector3f position = helper.readVector3f(buffer);
         final Dimension dimensionType = Dimension.from(VarInts.readInt(buffer));
         return new WorldPosition(position, dimensionType);
+    }
+
+    protected void writeUpdateFlags(ByteBuf buffer, BedrockCodecHelper helper, Set<VanillaWaypointManagerConstants.UpdateFlag> set) {
+        int updateFlag = 0;
+        for (VanillaWaypointManagerConstants.UpdateFlag flag : set) {
+            updateFlag = (1 << flag.ordinal());
+        }
+        buffer.writeIntLE(updateFlag);
+    }
+
+    protected void readUpdateFlags(ByteBuf buffer, BedrockCodecHelper helper, Set<VanillaWaypointManagerConstants.UpdateFlag> flags) {
+        final int updateFlag = buffer.readIntLE();
+        for (VanillaWaypointManagerConstants.UpdateFlag flag : VanillaWaypointManagerConstants.UpdateFlag.VALUES) {
+            if ((updateFlag & (1 << flag.ordinal())) != 0) {
+                flags.add(flag);
+            }
+        }
     }
 }
