@@ -46,7 +46,7 @@ public class LocatorBarSerializer_v944 implements BedrockPacketSerializer<Locato
         buffer.writeIntLE(payload.getUpdateFlag());
         helper.writeOptional(buffer, OptionalBoolean::isPresent, payload.getIsVisible(),
                 (buf, aHelper, isVisible) -> buf.writeBoolean(isVisible.getAsBoolean()));
-        helper.writeOptionalNull(buffer, helper, (buf, aHelper) -> this.writeWorldPosition(buf, aHelper, payload.getWorldPosition()));
+        helper.writeOptionalNull(buffer, payload.getWorldPosition(), this::writeWorldPosition);
         helper.writeOptionalNull(buffer, payload.getTextureId(), ByteBuf::writeIntLE);
         helper.writeOptionalNull(buffer, payload.getColor(), ByteBuf::writeIntLE);
         helper.writeOptional(buffer, OptionalBoolean::isPresent, payload.getClientPositionAuthority(),
