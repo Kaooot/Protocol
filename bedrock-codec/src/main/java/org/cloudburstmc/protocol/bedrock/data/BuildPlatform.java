@@ -63,6 +63,6 @@ public enum BuildPlatform {
                 return value;
             }
         }
-        throw new UnsupportedOperationException("Detected unknown BuildPlatform ID: " + id);
+        return UNKNOWN;
     }
 }
