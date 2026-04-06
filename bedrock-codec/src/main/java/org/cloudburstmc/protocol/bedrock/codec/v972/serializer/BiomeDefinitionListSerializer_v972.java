@@ -32,7 +32,7 @@ public class BiomeDefinitionListSerializer_v972 extends BiomeDefinitionListSeria
         helper.writeOptionalNull(buffer, definitionChunkGen.getMultinoiseGenRules(), this::writeMultinoiseGenRules);
         helper.writeOptionalNull(buffer, definitionChunkGen.getLegacyWorldGenRules(),
                 (buf, aHelper, legacyWorldGenRules) -> this.writeLegacyWorldGenRules(buf, aHelper, legacyWorldGenRules, strings));
-        helper.writeOptionalNull(buffer, definitionChunkGen.getReplacementBiomes(), this::writeBiomeReplacementsData);
+        helper.writeOptionalNull(buffer, definitionChunkGen.getReplacementBiomes(), (buf, codecHelper, data) -> this.writeBiomeReplacementsData(buf, codecHelper, data, strings));
         helper.writeOptionalNull(buffer, definitionChunkGen.getVillageType(), (byteBuf, villageType) -> byteBuf.writeByte(villageType.ordinal()));
         helper.writeOptionalNull(buffer, definitionChunkGen.getSurfaceBuilderData(), this::writeBiomeSurfaceBuilderData);
         helper.writeOptionalNull(buffer, definitionChunkGen.getSubSurfaceBuilderData(), this::writeBiomeSurfaceBuilderData);
@@ -51,7 +51,7 @@ public class BiomeDefinitionListSerializer_v972 extends BiomeDefinitionListSeria
         BiomeMultinoiseGenRulesData multinoiseGenRules = helper.readOptional(buffer, null, this::readMultinoiseGenRules);
         BiomeLegacyWorldGenRulesData legacyWorldGenRules = helper.readOptional(buffer, null,
                 (buf, aHelper) -> this.readLegacyWorldGenRules(buf, aHelper, strings));
-        List<BiomeReplacementData> replacementBiomes = helper.readOptional(buffer, null, this::readBiomeReplacementsData);
+        List<BiomeReplacementData> replacementBiomes = helper.readOptional(buffer, null, (buf, codecHelper) -> this.readBiomeReplacementsData(buf, codecHelper, strings));
         VillageType villageType = helper.readOptional(buffer, null, (byteBuf, codecHelper) -> VillageType.from(byteBuf.readUnsignedByte()));
         BiomeSurfaceBuilderData surfaceBuilderData = helper.readOptional(buffer, null, this::readBiomeSurfaceBuilderData);
         BiomeSurfaceBuilderData subSurfaceBuilderData = helper.readOptional(buffer, null, this::readBiomeSurfaceBuilderData);
@@ -62,13 +62,13 @@ public class BiomeDefinitionListSerializer_v972 extends BiomeDefinitionListSeria
                 legacyWorldGenRules, null, replacementBiomes, villageType, subSurfaceBuilderData);
     }
 
-    protected void writeBiomeReplacementsData(ByteBuf buffer, BedrockCodecHelper helper, List<BiomeReplacementData> data) {
-        helper.writeArray(buffer, data, this::writeBiomeReplacement);
+    protected void writeBiomeReplacementsData(ByteBuf buffer, BedrockCodecHelper helper, List<BiomeReplacementData> data, SequencedHashSet<String> strings) {
+        helper.writeArray(buffer, data, (buf, codecHelper, value) -> this.writeBiomeReplacement(buf, codecHelper, value, strings));
     }
 
-    protected List<BiomeReplacementData> readBiomeReplacementsData(ByteBuf buffer, BedrockCodecHelper helper) {
+    protected List<BiomeReplacementData> readBiomeReplacementsData(ByteBuf buffer, BedrockCodecHelper helper, List<String> strings) {
         final List<BiomeReplacementData> biomeReplacements = new ObjectArrayList<>();
-        helper.readArray(buffer, biomeReplacements, this::readBiomeReplacement);
+        helper.readArray(buffer, biomeReplacements, (buf, codecHelper) -> this.readBiomeReplacement(buf, codecHelper, strings));
         return biomeReplacements;
     }
 
