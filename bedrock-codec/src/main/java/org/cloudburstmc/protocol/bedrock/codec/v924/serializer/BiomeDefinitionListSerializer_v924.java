@@ -43,7 +43,7 @@ public class BiomeDefinitionListSerializer_v924 extends BiomeDefinitionListSeria
         BiomeMultinoiseGenRulesData multinoiseGenRules = helper.readOptional(buffer, null, this::readMultinoiseGenRules);
         BiomeLegacyWorldGenRulesData legacyWorldGenRules = helper.readOptional(buffer, null,
                 (buf, aHelper) -> this.readLegacyWorldGenRules(buf, aHelper, strings));
-        BiomeReplacementData replacementData = helper.readOptional(buffer, null, this::readBiomeReplacement);
+        BiomeReplacementData replacementData = helper.readOptional(buffer, null, (buf, codecHelper) -> this.readBiomeReplacement(buffer, codecHelper, strings));
         VillageType villageType = helper.readOptional(buffer, null, (byteBuf, codecHelper) -> VillageType.from(byteBuf.readUnsignedByte()));
 
         return new BiomeDefinitionChunkGenData(climate, consolidatedFeatures,
