@@ -1,0 +1,37 @@
+package org.cloudburstmc.protocol.bedrock.packet;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import org.cloudburstmc.protocol.bedrock.data.payload.configuration.ClientStoreEntryPointConfiguration;
+import org.cloudburstmc.protocol.common.PacketSignal;
+
+/**
+ * @author Kaooot
+ */
+@Data
+@EqualsAndHashCode(doNotUseGetters = true)
+@ToString(doNotUseGetters = true)
+public class ServerStoreInfoPacket implements BedrockPacket {
+
+    private ClientStoreEntryPointConfiguration clientStoreEntryPointConfiguration;
+
+    @Override
+    public PacketSignal handle(BedrockPacketHandler handler) {
+        return handler.handle(this);
+    }
+
+    @Override
+    public BedrockPacketType getPacketType() {
+        return BedrockPacketType.SERVER_STORE_INFO;
+    }
+
+    @Override
+    public ServerStoreInfoPacket clone() {
+        try {
+            return (ServerStoreInfoPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
+}

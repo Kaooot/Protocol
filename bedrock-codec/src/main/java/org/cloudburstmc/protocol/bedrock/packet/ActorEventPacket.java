@@ -3,6 +3,7 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.protocol.bedrock.data.actor.ActorEvent;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
@@ -13,6 +14,10 @@ public class ActorEventPacket implements BedrockPacket {
     private long targetRuntimeID;
     private ActorEvent type;
     private int data;
+    /**
+     * @since v972
+     */
+    private Vector3f fireAtPosition;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

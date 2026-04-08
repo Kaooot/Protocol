@@ -17,12 +17,7 @@ public class ClientMovementPredictionSyncSerializer_v776 implements BedrockPacke
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ClientMovementPredictionSyncPacket packet) {
         helper.writeLargeVarIntFlags(buffer, packet.getFlags(), ActorFlags.class);
         helper.writeVector3f(buffer, packet.getActorBoundingBox());
-        buffer.writeFloatLE(packet.getMovementSpeed());
-        buffer.writeFloatLE(packet.getUnderwaterMovementSpeed());
-        buffer.writeFloatLE(packet.getLavaMovementSpeed());
-        buffer.writeFloatLE(packet.getJumpStrength());
-        buffer.writeFloatLE(packet.getHealth());
-        buffer.writeFloatLE(packet.getHunger());
+        this.writeMovementAttributes(buffer, helper, packet);
         VarInts.writeUnsignedLong(buffer, packet.getActorID());
     }
 
@@ -30,12 +25,25 @@ public class ClientMovementPredictionSyncSerializer_v776 implements BedrockPacke
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ClientMovementPredictionSyncPacket packet) {
         helper.readLargeVarIntFlags(buffer, packet.getFlags(), ActorFlags.class);
         packet.setActorBoundingBox(helper.readVector3f(buffer));
+        this.readMovementAttributes(buffer, helper, packet);
+        packet.setActorID(VarInts.readUnsignedLong(buffer));
+    }
+
+    protected void writeMovementAttributes(ByteBuf buffer, BedrockCodecHelper helper, ClientMovementPredictionSyncPacket packet) {
+        buffer.writeFloatLE(packet.getMovementSpeed());
+        buffer.writeFloatLE(packet.getUnderwaterMovementSpeed());
+        buffer.writeFloatLE(packet.getLavaMovementSpeed());
+        buffer.writeFloatLE(packet.getJumpStrength());
+        buffer.writeFloatLE(packet.getHealth());
+        buffer.writeFloatLE(packet.getHunger());
+    }
+
+    protected void readMovementAttributes(ByteBuf buffer, BedrockCodecHelper helper, ClientMovementPredictionSyncPacket packet) {
         packet.setMovementSpeed(buffer.readFloatLE());
         packet.setUnderwaterMovementSpeed(buffer.readFloatLE());
         packet.setLavaMovementSpeed(buffer.readFloatLE());
         packet.setJumpStrength(buffer.readFloatLE());
         packet.setHealth(buffer.readFloatLE());
         packet.setHunger(buffer.readFloatLE());
-        packet.setActorID(VarInts.readUnsignedLong(buffer));
     }
 }

@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.data.gathering;
+package org.cloudburstmc.protocol.bedrock.data.payload.configuration;
 
 import lombok.Data;
 
@@ -6,7 +6,7 @@ import lombok.Data;
  * @author Kaooot
  */
 @Data
-public class PresenceInfo {
+public class PresenceConfiguration {
 
     private String experienceName;
     private String worldName;

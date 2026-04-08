@@ -18,6 +18,10 @@ public class LevelSoundEventPacket implements BedrockPacket {
     private boolean isBaby;
     private boolean isGlobal;
     private long actorUniqueId;
+    /**
+     * @since v972
+     */
+    private Vector3f fireAtPosition;
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

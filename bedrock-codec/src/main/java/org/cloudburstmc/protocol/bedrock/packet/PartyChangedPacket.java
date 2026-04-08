@@ -3,6 +3,7 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.cloudburstmc.protocol.bedrock.data.payload.party.PlayerPartyInfo;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
@@ -13,7 +14,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @ToString(doNotUseGetters = true)
 public class PartyChangedPacket implements BedrockPacket {
 
-    private String partyId;
+    private PlayerPartyInfo partyInfo;
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

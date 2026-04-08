@@ -16,29 +16,31 @@ public class BiomeDefinitionChunkGenData {
     @Nullable
     BiomeSurfaceMaterialAdjustmentData surfaceMaterialAdjustment;
     @Nullable
-    BiomeSurfaceMaterialData surfaceMaterial;
-    /**
-     * @since v844
-     */
-    boolean hasDefaultOverworldSurface;
-    boolean hasSwampSurface;
-    boolean hasFrozenOceanSurface;
-    boolean hasTheEndSurface;
-    @Nullable
-    BiomeMesaSurfaceData mesaSurface;
-    @Nullable
-    BiomeCappedSurfaceData cappedSurface;
+    BiomeSurfaceBuilderData surfaceBuilderData;
     @Nullable
     BiomeOverworldGenRulesData overworldGenRules;
     @Nullable
     BiomeMultinoiseGenRulesData multinoiseGenRules;
     @Nullable
     BiomeLegacyWorldGenRulesData legacyWorldGenRules;
+    /**
+     * @deprecated since v972
+     */
     @Nullable
     BiomeReplacementData replacementData;
+    /**
+     * @since v972
+     */
+    @Nullable
+    List<BiomeReplacementData> replacementBiomes;
     /**
      * @since v924
      */
     @Nullable
     VillageType villageType;
+    /**
+     * @since v972
+     */
+    @Nullable
+    BiomeSurfaceBuilderData subSurfaceBuilderData;
 }

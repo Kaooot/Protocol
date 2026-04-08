@@ -12,7 +12,7 @@ import java.util.List;
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
-public class DebugDrawerPacket implements BedrockPacket {
+public class PrimitiveShapesPacket implements BedrockPacket {
 
     private final List<ShapeDataPayload> shapes = new ObjectArrayList<>();
 
@@ -29,7 +29,7 @@ public class DebugDrawerPacket implements BedrockPacket {
     @Override
     public BedrockPacket clone() {
         try {
-            return (DebugDrawerPacket) super.clone();
+            return (PrimitiveShapesPacket) super.clone();
         } catch (CloneNotSupportedException e) {
             throw new RuntimeException(e);
         }

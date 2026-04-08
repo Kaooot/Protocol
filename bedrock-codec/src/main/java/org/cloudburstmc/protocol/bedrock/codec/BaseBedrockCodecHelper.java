@@ -627,4 +627,14 @@ public abstract class BaseBedrockCodecHelper implements BedrockCodecHelper {
     public DataStoreUpdate readDataStoreUpdate(ByteBuf buffer) {
         throw new UnsupportedOperationException();
     }
+
+    @Override
+    public void writeNetworkItemStackDescriptor(ByteBuf buffer, ItemData item) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public ItemData readNetworkItemStackDescriptor(ByteBuf buffer) {
+        throw new UnsupportedOperationException();
+    }
 }

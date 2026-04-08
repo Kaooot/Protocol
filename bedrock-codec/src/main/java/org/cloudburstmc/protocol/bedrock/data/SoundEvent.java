@@ -1012,5 +1012,13 @@ public enum SoundEvent {
      * @since v944
      */
     RESET_GROWTH,
+    /**
+     * @since v972
+     */
+    PUSHED_BY_PLAYER,
+    /**
+     * @since v972
+     */
+    BOUNCE,
     UNDEFINED
 }

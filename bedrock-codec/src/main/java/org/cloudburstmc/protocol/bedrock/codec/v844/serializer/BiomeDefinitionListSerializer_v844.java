@@ -86,20 +86,15 @@ public class BiomeDefinitionListSerializer_v844 extends BiomeDefinitionListSeria
     }
 
     @Override
-    protected void writeDefinitionChunkGen(ByteBuf buffer, BedrockCodecHelper helper, BiomeDefinitionChunkGenData definitionChunkGen, SequencedHashSet<String> strings) {
+    protected void writeDefinitionChunkGen(ByteBuf buffer, BedrockCodecHelper helper, BiomeDefinitionChunkGenData definitionChunkGen,
+                                           SequencedHashSet<String> strings) {
         helper.writeOptionalNull(buffer, definitionChunkGen.getClimate(), this::writeClimate);
         helper.writeOptionalNull(buffer, definitionChunkGen.getConsolidatedFeatures(),
                 (buf, aHelper, consolidatedFeatures) -> this.writeConsolidatedFeatures(buf, aHelper, consolidatedFeatures, strings));
         helper.writeOptionalNull(buffer, definitionChunkGen.getMountainParams(), this::writeMountainParamsData);
         helper.writeOptionalNull(buffer, definitionChunkGen.getSurfaceMaterialAdjustment(),
                 (buf, aHelper, surfaceMaterialAdjustment) -> this.writeSurfaceMaterialAdjustment(buf, aHelper, surfaceMaterialAdjustment, strings));
-        helper.writeOptionalNull(buffer, definitionChunkGen.getSurfaceMaterial(), this::writeSurfaceMaterial);
-        buffer.writeBoolean(definitionChunkGen.isHasDefaultOverworldSurface());
-        buffer.writeBoolean(definitionChunkGen.isHasSwampSurface());
-        buffer.writeBoolean(definitionChunkGen.isHasFrozenOceanSurface());
-        buffer.writeBoolean(definitionChunkGen.isHasTheEndSurface());
-        helper.writeOptionalNull(buffer, definitionChunkGen.getMesaSurface(), this::writeMesaSurface);
-        helper.writeOptionalNull(buffer, definitionChunkGen.getCappedSurface(), this::writeCappedSurface);
+        this.writeBiomeSurfaceBuilderData(buffer, helper, definitionChunkGen.getSurfaceBuilderData());
         helper.writeOptionalNull(buffer, definitionChunkGen.getOverworldGenRules(),
                 (buf, aHelper, overworldGenRules) -> this.writeOverworldGenRules(buf, aHelper, overworldGenRules, strings));
         helper.writeOptionalNull(buffer, definitionChunkGen.getMultinoiseGenRules(), this::writeMultinoiseGenRules);
@@ -115,6 +110,32 @@ public class BiomeDefinitionListSerializer_v844 extends BiomeDefinitionListSeria
         BiomeMountainParamsData mountainParams = helper.readOptional(buffer, null, this::readMountainParamsData);
         BiomeSurfaceMaterialAdjustmentData surfaceMaterialAdjustment = helper.readOptional(buffer, null,
                 (buf, aHelper) -> this.readSurfaceMaterialAdjustment(buf, aHelper, strings));
+        BiomeSurfaceBuilderData surfaceBuilderData = this.readBiomeSurfaceBuilderData(buffer, helper);
+        BiomeOverworldGenRulesData overworldGenRules = helper.readOptional(buffer, null,
+                (buf, aHelper) -> this.readOverworldGenRules(buf, aHelper, strings));
+        BiomeMultinoiseGenRulesData multinoiseGenRules = helper.readOptional(buffer, null, this::readMultinoiseGenRules);
+        BiomeLegacyWorldGenRulesData legacyWorldGenRules = helper.readOptional(buffer, null,
+                (buf, aHelper) -> this.readLegacyWorldGenRules(buf, aHelper, strings));
+        return new BiomeDefinitionChunkGenData(climate, consolidatedFeatures,
+                mountainParams, surfaceMaterialAdjustment,
+                surfaceBuilderData,
+                overworldGenRules, multinoiseGenRules,
+                legacyWorldGenRules, null, null, null, null);
+    }
+
+    @Override
+    protected void writeBiomeSurfaceBuilderData(ByteBuf buffer, BedrockCodecHelper helper, BiomeSurfaceBuilderData data) {
+        helper.writeOptionalNull(buffer, data.getSurfaceMaterial(), this::writeSurfaceMaterial);
+        buffer.writeBoolean(data.isHasDefaultOverworldSurface());
+        buffer.writeBoolean(data.isHasSwampSurface());
+        buffer.writeBoolean(data.isHasFrozenOceanSurface());
+        buffer.writeBoolean(data.isHasTheEndSurface());
+        helper.writeOptionalNull(buffer, data.getMesaSurface(), this::writeMesaSurface);
+        helper.writeOptionalNull(buffer, data.getCappedSurface(), this::writeCappedSurface);
+    }
+
+    @Override
+    protected BiomeSurfaceBuilderData readBiomeSurfaceBuilderData(ByteBuf buffer, BedrockCodecHelper helper) {
         BiomeSurfaceMaterialData surfaceMaterial = helper.readOptional(buffer, null, this::readSurfaceMaterial);
         boolean hasDefaultOverworldSurface = buffer.readBoolean();
         boolean hasSwampSurface = buffer.readBoolean();
@@ -122,18 +143,15 @@ public class BiomeDefinitionListSerializer_v844 extends BiomeDefinitionListSeria
         boolean hasTheEndSurface = buffer.readBoolean();
         BiomeMesaSurfaceData mesaSurface = helper.readOptional(buffer, null, this::readMesaSurface);
         BiomeCappedSurfaceData cappedSurface = helper.readOptional(buffer, null, this::readCappedSurface);
-        BiomeOverworldGenRulesData overworldGenRules = helper.readOptional(buffer, null,
-                (buf, aHelper) -> this.readOverworldGenRules(buf, aHelper, strings));
-        BiomeMultinoiseGenRulesData multinoiseGenRules = helper.readOptional(buffer, null, this::readMultinoiseGenRules);
-        BiomeLegacyWorldGenRulesData legacyWorldGenRules = helper.readOptional(buffer, null,
-                (buf, aHelper) -> this.readLegacyWorldGenRules(buf, aHelper, strings));
-
-        return new BiomeDefinitionChunkGenData(climate, consolidatedFeatures,
-                mountainParams, surfaceMaterialAdjustment,
-                surfaceMaterial, hasDefaultOverworldSurface, hasSwampSurface,
-                hasFrozenOceanSurface, hasTheEndSurface,
-                mesaSurface, cappedSurface,
-                overworldGenRules, multinoiseGenRules,
-                legacyWorldGenRules, null, null);
+        return new BiomeSurfaceBuilderData(
+                surfaceMaterial,
+                hasDefaultOverworldSurface,
+                hasSwampSurface,
+                hasFrozenOceanSurface,
+                hasTheEndSurface,
+                mesaSurface,
+                cappedSurface,
+                null
+        );
     }
 }

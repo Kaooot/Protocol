@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.protocol.bedrock.data.DisconnectFailReason;
+import org.cloudburstmc.protocol.bedrock.data.payload.connection.DisconnectPacketMessages;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
@@ -11,12 +12,11 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @ToString(doNotUseGetters = true)
 public class DisconnectPacket implements BedrockPacket {
     private DisconnectFailReason reason = DisconnectFailReason.UNKNOWN;
-    private boolean skipMessage;
-    private String message;
     /**
-     * @since v712
+     * @deprecated since v972
      */
-    private String filteredMessage = "";
+    private boolean skipMessage;
+    private DisconnectPacketMessages messages = new DisconnectPacketMessages("", "");
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

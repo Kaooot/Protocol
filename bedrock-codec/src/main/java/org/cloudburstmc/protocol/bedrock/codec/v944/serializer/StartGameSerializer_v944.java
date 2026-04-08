@@ -6,9 +6,9 @@ import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v924.serializer.StartGameSerializer_v924;
 import org.cloudburstmc.protocol.bedrock.data.gathering.GatheringJoinInfo;
-import org.cloudburstmc.protocol.bedrock.data.gathering.PresenceInfo;
 import org.cloudburstmc.protocol.bedrock.data.gathering.ServerJoinInfo;
-import org.cloudburstmc.protocol.bedrock.data.gathering.StoreEntryPointInfo;
+import org.cloudburstmc.protocol.bedrock.data.payload.configuration.ClientStoreEntryPointConfiguration;
+import org.cloudburstmc.protocol.bedrock.data.payload.configuration.PresenceConfiguration;
 
 /**
  * @author Kaooot
@@ -59,25 +59,25 @@ public class StartGameSerializer_v944 extends StartGameSerializer_v924 {
         return info;
     }
 
-    protected void writeStoreEntryPointInfo(ByteBuf buffer, BedrockCodecHelper helper, StoreEntryPointInfo info) {
-        helper.writeString(buffer, info.getStoreID());
+    protected void writeStoreEntryPointInfo(ByteBuf buffer, BedrockCodecHelper helper, ClientStoreEntryPointConfiguration info) {
+        helper.writeString(buffer, info.getStoreId());
         helper.writeString(buffer, info.getStoreName());
     }
 
-    protected StoreEntryPointInfo readStoreEntryPointInfo(ByteBuf buffer, BedrockCodecHelper helper) {
-        final StoreEntryPointInfo info = new StoreEntryPointInfo();
-        info.setStoreID(helper.readString(buffer));
+    protected ClientStoreEntryPointConfiguration readStoreEntryPointInfo(ByteBuf buffer, BedrockCodecHelper helper) {
+        final ClientStoreEntryPointConfiguration info = new ClientStoreEntryPointConfiguration();
+        info.setStoreId(helper.readString(buffer));
         info.setStoreName(helper.readString(buffer));
         return info;
     }
 
-    protected void writePresenceInfo(ByteBuf buffer, BedrockCodecHelper helper, PresenceInfo info) {
+    protected void writePresenceInfo(ByteBuf buffer, BedrockCodecHelper helper, PresenceConfiguration info) {
         helper.writeString(buffer, info.getExperienceName());
         helper.writeString(buffer, info.getWorldName());
     }
 
-    protected PresenceInfo readPresenceInfo(ByteBuf buffer, BedrockCodecHelper helper) {
-        final PresenceInfo info = new PresenceInfo();
+    protected PresenceConfiguration readPresenceInfo(ByteBuf buffer, BedrockCodecHelper helper) {
+        final PresenceConfiguration info = new PresenceConfiguration();
         info.setExperienceName(helper.readString(buffer));
         info.setWorldName(helper.readString(buffer));
         return info;

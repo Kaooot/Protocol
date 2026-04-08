@@ -1,6 +1,7 @@
 package org.cloudburstmc.protocol.bedrock.data.definitions;
 
 import lombok.Value;
+import org.cloudburstmc.protocol.bedrock.data.Dimension;
 import org.cloudburstmc.protocol.bedrock.data.GeneratorType;
 
 @Value
@@ -9,4 +10,5 @@ public class DimensionDefinitionGroup {
     int heightMaximum;
     int heightMinimum;
     GeneratorType generatorType;
+    Dimension dimensionType;
 }

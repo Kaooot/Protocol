@@ -133,12 +133,7 @@ public class BiomeDefinitionListSerializer_v800 implements BedrockPacketSerializ
         helper.writeOptionalNull(buffer, definitionChunkGen.getMountainParams(), this::writeMountainParamsData);
         helper.writeOptionalNull(buffer, definitionChunkGen.getSurfaceMaterialAdjustment(),
                 (buf, aHelper, surfaceMaterialAdjustment) -> this.writeSurfaceMaterialAdjustment(buf, aHelper, surfaceMaterialAdjustment, strings));
-        helper.writeOptionalNull(buffer, definitionChunkGen.getSurfaceMaterial(), this::writeSurfaceMaterial);
-        buffer.writeBoolean(definitionChunkGen.isHasSwampSurface());
-        buffer.writeBoolean(definitionChunkGen.isHasFrozenOceanSurface());
-        buffer.writeBoolean(definitionChunkGen.isHasTheEndSurface());
-        helper.writeOptionalNull(buffer, definitionChunkGen.getMesaSurface(), this::writeMesaSurface);
-        helper.writeOptionalNull(buffer, definitionChunkGen.getCappedSurface(), this::writeCappedSurface);
+        this.writeBiomeSurfaceBuilderData(buffer, helper, definitionChunkGen.getSurfaceBuilderData());
         helper.writeOptionalNull(buffer, definitionChunkGen.getOverworldGenRules(),
                 (buf, aHelper, overworldGenRules) -> this.writeOverworldGenRules(buf, aHelper, overworldGenRules, strings));
         helper.writeOptionalNull(buffer, definitionChunkGen.getMultinoiseGenRules(), this::writeMultinoiseGenRules);
@@ -153,12 +148,7 @@ public class BiomeDefinitionListSerializer_v800 implements BedrockPacketSerializ
         BiomeMountainParamsData mountainParams = helper.readOptional(buffer, null, this::readMountainParamsData);
         BiomeSurfaceMaterialAdjustmentData surfaceMaterialAdjustment = helper.readOptional(buffer, null,
                 (buf, aHelper) -> this.readSurfaceMaterialAdjustment(buf, aHelper, strings));
-        BiomeSurfaceMaterialData surfaceMaterial = helper.readOptional(buffer, null, this::readSurfaceMaterial);
-        boolean hasSwampSurface = buffer.readBoolean();
-        boolean hasFrozenOceanSurface = buffer.readBoolean();
-        boolean hasTheEndSurface = buffer.readBoolean();
-        BiomeMesaSurfaceData mesaSurface = helper.readOptional(buffer, null, this::readMesaSurface);
-        BiomeCappedSurfaceData cappedSurface = helper.readOptional(buffer, null, this::readCappedSurface);
+        BiomeSurfaceBuilderData surfaceBuilderData = this.readBiomeSurfaceBuilderData(buffer, helper);
         BiomeOverworldGenRulesData overworldGenRules = helper.readOptional(buffer, null,
                 (buf, aHelper) -> this.readOverworldGenRules(buf, aHelper, strings));
         BiomeMultinoiseGenRulesData multinoiseGenRules = helper.readOptional(buffer, null, this::readMultinoiseGenRules);
@@ -167,11 +157,9 @@ public class BiomeDefinitionListSerializer_v800 implements BedrockPacketSerializ
 
         return new BiomeDefinitionChunkGenData(climate, consolidatedFeatures,
                 mountainParams, surfaceMaterialAdjustment,
-                surfaceMaterial, false, hasSwampSurface,
-                hasFrozenOceanSurface, hasTheEndSurface,
-                mesaSurface, cappedSurface,
+                surfaceBuilderData,
                 overworldGenRules, multinoiseGenRules,
-                legacyWorldGenRules, null, null);
+                legacyWorldGenRules, null, null, null, null);
     }
 
     protected void writeClimate(ByteBuf buffer, BedrockCodecHelper helper, BiomeClimateData climate) {
@@ -317,7 +305,7 @@ public class BiomeDefinitionListSerializer_v800 implements BedrockPacketSerializ
     }
 
     protected BiomeSurfaceMaterialAdjustmentData readSurfaceMaterialAdjustment(ByteBuf buffer, BedrockCodecHelper helper,
-                                                                                List<String> strings) {
+                                                                               List<String> strings) {
         List<BiomeElementData> biomeElements = new ObjectArrayList<>();
         helper.readArray(buffer, biomeElements,
                 (buf, aHelper) -> this.readBiomeElement(buf, aHelper, strings));
@@ -553,5 +541,33 @@ public class BiomeDefinitionListSerializer_v800 implements BedrockPacketSerializ
             return;
         }
         VarInts.writeInt(buffer, expressionOp.ordinal());
+    }
+
+    protected void writeBiomeSurfaceBuilderData(ByteBuf buffer, BedrockCodecHelper helper, BiomeSurfaceBuilderData data) {
+        helper.writeOptionalNull(buffer, data.getSurfaceMaterial(), this::writeSurfaceMaterial);
+        buffer.writeBoolean(data.isHasSwampSurface());
+        buffer.writeBoolean(data.isHasFrozenOceanSurface());
+        buffer.writeBoolean(data.isHasTheEndSurface());
+        helper.writeOptionalNull(buffer, data.getMesaSurface(), this::writeMesaSurface);
+        helper.writeOptionalNull(buffer, data.getCappedSurface(), this::writeCappedSurface);
+    }
+
+    protected BiomeSurfaceBuilderData readBiomeSurfaceBuilderData(ByteBuf buffer, BedrockCodecHelper helper) {
+        BiomeSurfaceMaterialData surfaceMaterial = helper.readOptional(buffer, null, this::readSurfaceMaterial);
+        boolean hasSwampSurface = buffer.readBoolean();
+        boolean hasFrozenOceanSurface = buffer.readBoolean();
+        boolean hasTheEndSurface = buffer.readBoolean();
+        BiomeMesaSurfaceData mesaSurface = helper.readOptional(buffer, null, this::readMesaSurface);
+        BiomeCappedSurfaceData cappedSurface = helper.readOptional(buffer, null, this::readCappedSurface);
+        return new BiomeSurfaceBuilderData(
+                surfaceMaterial,
+                false,
+                hasSwampSurface,
+                hasFrozenOceanSurface,
+                hasTheEndSurface,
+                mesaSurface,
+                cappedSurface,
+                null
+        );
     }
 }

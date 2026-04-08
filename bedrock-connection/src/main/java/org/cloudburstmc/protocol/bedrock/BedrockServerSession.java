@@ -2,6 +2,7 @@ package org.cloudburstmc.protocol.bedrock;
 
 import io.netty.util.internal.SystemPropertyUtil;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.cloudburstmc.protocol.bedrock.data.payload.connection.DisconnectPacketMessages;
 import org.cloudburstmc.protocol.bedrock.packet.DisconnectPacket;
 
 import java.util.concurrent.TimeUnit;
@@ -25,7 +26,7 @@ public class BedrockServerSession extends BedrockSession {
         } else {
             finalReason = reason;
         }
-        packet.setMessage(finalReason);
+        packet.setMessages(new DisconnectPacketMessages(finalReason, ""));
         this.sendPacketImmediately(packet);
 
         if (!this.isSubClient()) {
