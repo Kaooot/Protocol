@@ -18,15 +18,15 @@ public class ServerWaypointPayload {
     private OptionalBoolean isVisible = OptionalBoolean.empty();
     private WorldPosition worldPosition;
     /**
-     * @deprecated since v972
+     * @deprecated since v974
      */
     private VanillaWaypointManagerConstants.ImageType textureId;
     /**
-     * @since v972
+     * @since v974
      */
     private String texturePath;
     /**
-     * @since v972
+     * @since v974
      */
     private Vector2f iconSize;
     private Integer color;

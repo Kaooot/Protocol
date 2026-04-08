@@ -19,7 +19,7 @@ public class LevelSoundEventPacket implements BedrockPacket {
     private boolean isGlobal;
     private long actorUniqueId;
     /**
-     * @since v972
+     * @since v974
      */
     private Vector3f fireAtPosition;
 

@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.codec.v972.serializer;
+package org.cloudburstmc.protocol.bedrock.codec.v974.serializer;
 
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
@@ -12,8 +12,8 @@ import org.cloudburstmc.protocol.common.util.VarInts;
  * @author Kaooot
  */
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
-public class InventorySlotSerializer_v972 extends InventorySlotSerializer_v748 {
-    public static final InventorySlotSerializer_v748 INSTANCE = new InventorySlotSerializer_v972();
+public class InventorySlotSerializer_v974 extends InventorySlotSerializer_v748 {
+    public static final InventorySlotSerializer_v748 INSTANCE = new InventorySlotSerializer_v974();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, InventorySlotPacket packet) {

@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.codec.v972.serializer;
+package org.cloudburstmc.protocol.bedrock.codec.v974.serializer;
 
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
@@ -11,8 +11,8 @@ import org.cloudburstmc.protocol.bedrock.packet.ClientMovementPredictionSyncPack
  * @author Kaooot
  */
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ClientMovementPredictionSyncSerializer_v972 extends ClientMovementPredictionSyncSerializer_v786 {
-    public static final ClientMovementPredictionSyncSerializer_v972 INSTANCE = new ClientMovementPredictionSyncSerializer_v972();
+public class ClientMovementPredictionSyncSerializer_v974 extends ClientMovementPredictionSyncSerializer_v786 {
+    public static final ClientMovementPredictionSyncSerializer_v974 INSTANCE = new ClientMovementPredictionSyncSerializer_v974();
 
     @Override
     protected void writeMovementAttributes(ByteBuf buffer, BedrockCodecHelper helper, ClientMovementPredictionSyncPacket packet) {

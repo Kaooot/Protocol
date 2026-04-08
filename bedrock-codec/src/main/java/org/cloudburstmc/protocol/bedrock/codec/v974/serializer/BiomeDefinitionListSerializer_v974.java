@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.codec.v972.serializer;
+package org.cloudburstmc.protocol.bedrock.codec.v974.serializer;
 
 import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
@@ -16,8 +16,8 @@ import java.util.List;
  * @author Kaooot
  */
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class BiomeDefinitionListSerializer_v972 extends BiomeDefinitionListSerializer_v924 {
-    public static final BiomeDefinitionListSerializer_v972 INSTANCE = new BiomeDefinitionListSerializer_v972();
+public class BiomeDefinitionListSerializer_v974 extends BiomeDefinitionListSerializer_v924 {
+    public static final BiomeDefinitionListSerializer_v974 INSTANCE = new BiomeDefinitionListSerializer_v974();
 
     @Override
     protected void writeDefinitionChunkGen(ByteBuf buffer, BedrockCodecHelper helper, BiomeDefinitionChunkGenData definitionChunkGen, SequencedHashSet<String> strings) {

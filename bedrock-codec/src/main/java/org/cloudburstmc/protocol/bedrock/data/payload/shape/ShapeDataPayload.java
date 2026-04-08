@@ -19,7 +19,7 @@ public class ShapeDataPayload {
     private Vector3f rotation;
     private Float totalTimeLeft;
     /**
-     * @since v972
+     * @since v974
      */
     private Float maximumRenderDistance;
     private Integer color;

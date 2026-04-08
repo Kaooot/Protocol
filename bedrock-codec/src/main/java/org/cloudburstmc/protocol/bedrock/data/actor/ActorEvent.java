@@ -83,7 +83,7 @@ public enum ActorEvent {
      */
     KINETIC_DAMAGE_DEALT,
     /**
-     * @since v972
+     * @since v974
      */
     HURT_WITHOUT_RECEIVING_DAMAGE
 }

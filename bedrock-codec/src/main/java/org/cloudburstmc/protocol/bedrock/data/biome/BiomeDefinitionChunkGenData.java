@@ -24,12 +24,12 @@ public class BiomeDefinitionChunkGenData {
     @Nullable
     BiomeLegacyWorldGenRulesData legacyWorldGenRules;
     /**
-     * @deprecated since v972
+     * @deprecated since v974
      */
     @Nullable
     BiomeReplacementData replacementData;
     /**
-     * @since v972
+     * @since v974
      */
     @Nullable
     List<BiomeReplacementData> replacementBiomes;
@@ -39,7 +39,7 @@ public class BiomeDefinitionChunkGenData {
     @Nullable
     VillageType villageType;
     /**
-     * @since v972
+     * @since v974
      */
     @Nullable
     BiomeSurfaceBuilderData subSurfaceBuilderData;

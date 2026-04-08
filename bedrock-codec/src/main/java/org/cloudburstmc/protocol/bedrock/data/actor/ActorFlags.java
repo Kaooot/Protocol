@@ -185,7 +185,7 @@ public enum ActorFlags {
      */
     ROTATION_LOCKED_TO_VEHICLE,
     /**
-     * @since v972
+     * @since v974
      */
     USES_LEGACY_FRICTION
 }
