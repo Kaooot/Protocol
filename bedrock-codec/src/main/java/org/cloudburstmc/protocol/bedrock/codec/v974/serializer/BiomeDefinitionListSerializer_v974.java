@@ -9,6 +9,7 @@ import org.cloudburstmc.protocol.bedrock.codec.v924.serializer.BiomeDefinitionLi
 import org.cloudburstmc.protocol.bedrock.data.biome.*;
 import org.cloudburstmc.protocol.bedrock.data.definitions.BlockDefinition;
 import org.cloudburstmc.protocol.common.util.SequencedHashSet;
+import org.cloudburstmc.protocol.common.util.VarInts;
 
 import java.util.List;
 
@@ -109,6 +110,9 @@ public class BiomeDefinitionListSerializer_v974 extends BiomeDefinitionListSeria
     protected void writeBiomeNoiseGradientSurfaceData(ByteBuf buffer, BedrockCodecHelper helper, BiomeNoiseGradientSurfaceData data) {
         helper.writeArray(buffer, data.getNonReplaceableBlocks(), this::writeBlock);
         helper.writeArray(buffer, data.getGradientBlocks(), this::writeBlock);
+        helper.writeString(buffer, data.getNoiseSeedString());
+        VarInts.writeInt(buffer, data.getFirstOctave());
+        helper.writeArray(buffer, data.getAmplitudes(), ByteBuf::writeFloatLE);
     }
 
     protected BiomeNoiseGradientSurfaceData readBiomeNoiseGradientSurfaceData(ByteBuf buffer, BedrockCodecHelper helper) {
@@ -116,9 +120,16 @@ public class BiomeDefinitionListSerializer_v974 extends BiomeDefinitionListSeria
         final List<BlockDefinition> gradientBlocks = new ObjectArrayList<>();
         helper.readArray(buffer, nonReplaceableBlocks, this::readBlock);
         helper.readArray(buffer, gradientBlocks, this::readBlock);
+        final String noiseSeedString = helper.readString(buffer);
+        final int firstOctave = VarInts.readInt(buffer);
+        final List<Float> amplitudes = new ObjectArrayList<>();
+        helper.readArray(buffer, amplitudes, ByteBuf::readFloatLE);
         return new BiomeNoiseGradientSurfaceData(
                 nonReplaceableBlocks,
-                gradientBlocks
+                gradientBlocks,
+                noiseSeedString,
+                firstOctave,
+                amplitudes
         );
     }
 }

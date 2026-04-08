@@ -13,4 +13,7 @@ public class BiomeNoiseGradientSurfaceData {
 
     List<BlockDefinition> nonReplaceableBlocks;
     List<BlockDefinition> gradientBlocks;
+    String noiseSeedString;
+    int firstOctave;
+    List<Float> amplitudes;
 }

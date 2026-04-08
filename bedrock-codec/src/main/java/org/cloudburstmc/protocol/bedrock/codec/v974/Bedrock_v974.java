@@ -2,7 +2,6 @@ package org.cloudburstmc.protocol.bedrock.codec.v974;
 
 import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
-import org.cloudburstmc.protocol.bedrock.codec.v859.Bedrock_v859;
 import org.cloudburstmc.protocol.bedrock.codec.v944.Bedrock_v944;
 import org.cloudburstmc.protocol.bedrock.codec.v974.serializer.*;
 import org.cloudburstmc.protocol.bedrock.data.PacketRecipient;
@@ -30,7 +29,7 @@ public class Bedrock_v974 extends Bedrock_v944 {
             .update(ActorDataTypes.FLAGS_2, new FlagTransformer(ACTOR_FLAGS, 1))
             .build();
 
-    protected static final TypeMap<ActorEvent> ACTOR_EVENTS = Bedrock_v859.ACTOR_EVENTS.toBuilder()
+    protected static final TypeMap<ActorEvent> ACTOR_EVENTS = Bedrock_v944.ACTOR_EVENTS.toBuilder()
             .insert(81, ActorEvent.HURT_WITHOUT_RECEIVING_DAMAGE)
             .build();
 
@@ -56,7 +55,9 @@ public class Bedrock_v974 extends Bedrock_v944 {
             .updateSerializer(MobEquipmentPacket.class, MobEquipmentSerializer_v974.INSTANCE)
             .updateSerializer(PartyChangedPacket.class, PartyChangedSerializer_v974.INSTANCE)
             .updateSerializer(PlayerEnchantOptionsPacket.class, PlayerEnchantOptionsSerializer_v974.INSTANCE)
+            .updateSerializer(PlaySoundPacket.class, PlaySoundSerializer_v974.INSTANCE)
             .updateSerializer(PrimitiveShapesPacket.class, PrimitiveShapesSerializer_v974.INSTANCE)
+            .updateSerializer(ServerboundDiagnosticsPacket.class, new ServerboundDiagnosticsSerializer_v974(MEMORY_CATEGORY_TYPES))
             .updateSerializer(UpdateClientOptionsPacket.class, UpdateClientOptionsSerializer_v974.INSTANCE)
             .registerPacket(ServerStoreInfoPacket::new, ServerStoreInfoSerializer_v974.INSTANCE, 346, PacketRecipient.CLIENT)
             .registerPacket(ServerPresenceInfoPacket::new, ServerPresenceInfoSerializer_v974.INSTANCE, 347, PacketRecipient.CLIENT)

@@ -1,0 +1,15 @@
+package org.cloudburstmc.protocol.bedrock.data.payload.diagnostics;
+
+import lombok.Data;
+
+/**
+ * @author Kaooot
+ */
+@Data
+public class SystemDiagnosticTimingInfo {
+
+    private String displayName;
+    private long systemIndex;
+    private long timeInNS;
+    private int percentOfTotal;
+}
