@@ -97,18 +97,22 @@ public class LevelSettings {
     private boolean disablePlayerInteractions;
     /**
      * @since v685
+     * @deprecated since v924
      */
     private String serverId;
     /**
      * @since v685
+     * @deprecated since v924
      */
     private String worldId;
     /**
      * @since v685
+     * @deprecated since v924
      */
     private String scenarioId;
     /**
      * @since v818
+     * @deprecated since v924
      */
     private String ownerId;
 }
