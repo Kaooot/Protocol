@@ -40,7 +40,6 @@ public class RequestPermissionsSerializer_v527 implements BedrockPacketSerialize
 
     protected void deserializeBitset(ByteBuf buffer, Set<AbilitiesIndex> set) {
         final int commandPermissionFlags = buffer.readUnsignedShortLE();
-        System.out.println("commandPermissionFlags: " + commandPermissionFlags);
         for (AbilitiesIndex value : AbilitiesIndex.values()) {
             if (value.ordinal() < this.getMinIndex() || value.ordinal() > this.getMaxIndex()) {
                 continue;
