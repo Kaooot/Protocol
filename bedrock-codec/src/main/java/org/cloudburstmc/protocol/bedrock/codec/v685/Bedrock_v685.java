@@ -16,6 +16,7 @@ import org.cloudburstmc.protocol.bedrock.data.command.CommandParam;
 import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataFormat;
 import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataTypes;
 import org.cloudburstmc.protocol.bedrock.packet.*;
+import org.cloudburstmc.protocol.bedrock.transformer.TypeMapTransformer;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 
 public class Bedrock_v685 extends Bedrock_v671 {
@@ -53,6 +54,7 @@ public class Bedrock_v685 extends Bedrock_v671 {
     protected static final ActorDataTypeMap ACTOR_DATA = Bedrock_v671.ACTOR_DATA
             .toBuilder()
             .insert(ActorDataTypes.VISIBLE_MOB_EFFECTS, 131, ActorDataFormat.LONG)
+            .update(ActorDataTypes.DATA_PARTICLE, new TypeMapTransformer<>(PARTICLE_TYPES))
             .build();
 
     protected static final TypeMap<LevelEventType> LEVEL_EVENTS = Bedrock_v671.LEVEL_EVENTS.toBuilder()

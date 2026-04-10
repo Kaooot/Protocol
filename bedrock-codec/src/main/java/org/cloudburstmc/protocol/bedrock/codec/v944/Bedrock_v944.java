@@ -1,5 +1,6 @@
 package org.cloudburstmc.protocol.bedrock.codec.v944;
 
+import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelEventSerializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v361.serializer.LevelEventGenericSerializer_v361;
@@ -7,10 +8,15 @@ import org.cloudburstmc.protocol.bedrock.codec.v786.serializer.LevelSoundEventSe
 import org.cloudburstmc.protocol.bedrock.codec.v924.Bedrock_v924;
 import org.cloudburstmc.protocol.bedrock.codec.v924.serializer.ServerboundDiagnosticsSerializer_v924;
 import org.cloudburstmc.protocol.bedrock.codec.v944.serializer.*;
-import org.cloudburstmc.protocol.bedrock.data.*;
+import org.cloudburstmc.protocol.bedrock.data.LevelEventType;
+import org.cloudburstmc.protocol.bedrock.data.PacketRecipient;
+import org.cloudburstmc.protocol.bedrock.data.ParticleType;
+import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataTypes;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerEnumName;
 import org.cloudburstmc.protocol.bedrock.data.payload.diagnostics.MemoryCategory;
 import org.cloudburstmc.protocol.bedrock.packet.*;
+import org.cloudburstmc.protocol.bedrock.transformer.TypeMapTransformer;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 
 /**
@@ -54,6 +60,11 @@ public class Bedrock_v944 extends Bedrock_v924 {
 
     protected static final TypeMap<LevelEventType> LEVEL_EVENTS = Bedrock_v924.LEVEL_EVENTS.toBuilder()
             .insert(LEVEL_EVENT_PARTICLE_TYPE, PARTICLE_TYPES)
+            .build();
+
+    protected static final ActorDataTypeMap ACTOR_DATA = Bedrock_v924.ACTOR_DATA
+            .toBuilder()
+            .update(ActorDataTypes.DATA_PARTICLE, new TypeMapTransformer<>(PARTICLE_TYPES))
             .build();
 
     public static final BedrockCodec CODEC = Bedrock_v924.CODEC.toBuilder()

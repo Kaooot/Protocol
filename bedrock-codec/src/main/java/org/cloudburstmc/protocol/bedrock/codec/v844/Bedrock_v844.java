@@ -4,6 +4,7 @@ import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelEventSerializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v361.serializer.LevelEventGenericSerializer_v361;
+import org.cloudburstmc.protocol.bedrock.codec.v748.Bedrock_v748;
 import org.cloudburstmc.protocol.bedrock.codec.v776.BedrockCodecHelper_v776;
 import org.cloudburstmc.protocol.bedrock.codec.v786.serializer.LevelSoundEventSerializer_v786;
 import org.cloudburstmc.protocol.bedrock.codec.v827.Bedrock_v827;
@@ -19,6 +20,7 @@ import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataTypes;
 import org.cloudburstmc.protocol.bedrock.data.actor.ActorFlags;
 import org.cloudburstmc.protocol.bedrock.packet.*;
 import org.cloudburstmc.protocol.bedrock.transformer.FlagTransformer;
+import org.cloudburstmc.protocol.bedrock.transformer.TypeMapTransformer;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 
 /**
@@ -39,14 +41,15 @@ public class Bedrock_v844 extends Bedrock_v827 {
             .insert(125, ActorFlags.CAN_USE_VERTICAL_MOVEMENT_ACTION)
             .build();
 
+    protected static final TypeMap<ParticleType> PARTICLE_TYPES = Bedrock_v827.PARTICLE_TYPES.toBuilder()
+            .insert(98, ParticleType.GREEN_FLAME)
+            .build();
+
     protected static final ActorDataTypeMap ACTOR_DATA = Bedrock_v827.ACTOR_DATA
             .toBuilder()
             .update(ActorDataTypes.FLAGS, new FlagTransformer(ACTOR_FLAGS, 0))
             .update(ActorDataTypes.FLAGS_2, new FlagTransformer(ACTOR_FLAGS, 1))
-            .build();
-
-    protected static final TypeMap<ParticleType> PARTICLE_TYPES = Bedrock_v827.PARTICLE_TYPES.toBuilder()
-            .insert(98, ParticleType.GREEN_FLAME)
+            .update(ActorDataTypes.DATA_PARTICLE, new TypeMapTransformer<>(PARTICLE_TYPES))
             .build();
 
     protected static final TypeMap<LevelEventType> LEVEL_EVENTS = Bedrock_v827.LEVEL_EVENTS.toBuilder()
