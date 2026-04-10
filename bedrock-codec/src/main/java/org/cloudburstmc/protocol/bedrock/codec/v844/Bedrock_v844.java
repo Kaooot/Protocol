@@ -50,6 +50,7 @@ public class Bedrock_v844 extends Bedrock_v827 {
             .update(ActorDataTypes.FLAGS, new FlagTransformer(ACTOR_FLAGS, 0))
             .update(ActorDataTypes.FLAGS_2, new FlagTransformer(ACTOR_FLAGS, 1))
             .update(ActorDataTypes.DATA_PARTICLE, new TypeMapTransformer<>(PARTICLE_TYPES))
+            .update(ActorDataTypes.HEARTBEAT_SOUND_EVENT, new TypeMapTransformer<>(SOUND_EVENTS))
             .build();
 
     protected static final TypeMap<LevelEventType> LEVEL_EVENTS = Bedrock_v827.LEVEL_EVENTS.toBuilder()

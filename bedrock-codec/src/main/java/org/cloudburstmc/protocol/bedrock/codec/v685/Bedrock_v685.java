@@ -55,6 +55,7 @@ public class Bedrock_v685 extends Bedrock_v671 {
             .toBuilder()
             .insert(ActorDataTypes.VISIBLE_MOB_EFFECTS, 131, ActorDataFormat.LONG)
             .update(ActorDataTypes.DATA_PARTICLE, new TypeMapTransformer<>(PARTICLE_TYPES))
+            .update(ActorDataTypes.HEARTBEAT_SOUND_EVENT, new TypeMapTransformer<>(SOUND_EVENTS))
             .build();
 
     protected static final TypeMap<LevelEventType> LEVEL_EVENTS = Bedrock_v671.LEVEL_EVENTS.toBuilder()

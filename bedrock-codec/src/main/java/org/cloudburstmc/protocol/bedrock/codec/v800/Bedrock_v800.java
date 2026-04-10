@@ -13,6 +13,7 @@ import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataTypes;
 import org.cloudburstmc.protocol.bedrock.data.actor.ActorFlags;
 import org.cloudburstmc.protocol.bedrock.packet.*;
 import org.cloudburstmc.protocol.bedrock.transformer.FlagTransformer;
+import org.cloudburstmc.protocol.bedrock.transformer.TypeMapTransformer;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 
 public class Bedrock_v800 extends Bedrock_v786 {
@@ -20,14 +21,6 @@ public class Bedrock_v800 extends Bedrock_v786 {
     protected static final TypeMap<ActorFlags> ACTOR_FLAGS = Bedrock_v786.ACTOR_FLAGS
             .toBuilder()
             .insert(123, ActorFlags.DOES_SERVER_AUTH_ONLY_DISMOUNT)
-            .build();
-
-    protected static final ActorDataTypeMap ACTOR_DATA = Bedrock_v786.ACTOR_DATA
-            .toBuilder()
-            .update(ActorDataTypes.FLAGS, new FlagTransformer(ACTOR_FLAGS, 0))
-            .update(ActorDataTypes.FLAGS_2, new FlagTransformer(ACTOR_FLAGS, 1))
-            .insert(ActorDataTypes.SEAT_THIRD_PERSON_CAMERA_RADIUS, 134, ActorDataFormat.FLOAT)
-            .insert(ActorDataTypes.SEAT_CAMERA_RELAX_DISTANCE_SMOOTHING, 135, ActorDataFormat.FLOAT)
             .build();
 
     protected static final TypeMap<SoundEvent> SOUND_EVENTS = Bedrock_v786.SOUND_EVENTS
@@ -42,6 +35,15 @@ public class Bedrock_v800 extends Bedrock_v786 {
             .insert(553, SoundEvent.IMITATE_HAPPY_GHAST)
             .insert(554, SoundEvent.UNEQUIP_GENERIC)
             .insert(555, SoundEvent.UNDEFINED)
+            .build();
+
+    protected static final ActorDataTypeMap ACTOR_DATA = Bedrock_v786.ACTOR_DATA
+            .toBuilder()
+            .update(ActorDataTypes.FLAGS, new FlagTransformer(ACTOR_FLAGS, 0))
+            .update(ActorDataTypes.FLAGS_2, new FlagTransformer(ACTOR_FLAGS, 1))
+            .insert(ActorDataTypes.SEAT_THIRD_PERSON_CAMERA_RADIUS, 134, ActorDataFormat.FLOAT)
+            .insert(ActorDataTypes.SEAT_CAMERA_RELAX_DISTANCE_SMOOTHING, 135, ActorDataFormat.FLOAT)
+            .update(ActorDataTypes.HEARTBEAT_SOUND_EVENT, new TypeMapTransformer<>(SOUND_EVENTS))
             .build();
 
     @SuppressWarnings("deprecation")

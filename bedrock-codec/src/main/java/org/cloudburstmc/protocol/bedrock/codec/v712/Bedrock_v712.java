@@ -1,5 +1,6 @@
 package org.cloudburstmc.protocol.bedrock.codec.v712;
 
+import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelSoundEvent1Serializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v313.serializer.LevelSoundEvent2Serializer_v313;
@@ -8,9 +9,11 @@ import org.cloudburstmc.protocol.bedrock.codec.v686.Bedrock_v686;
 import org.cloudburstmc.protocol.bedrock.codec.v712.serializer.*;
 import org.cloudburstmc.protocol.bedrock.data.PacketRecipient;
 import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataTypes;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerEnumName;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestActionType;
 import org.cloudburstmc.protocol.bedrock.packet.*;
+import org.cloudburstmc.protocol.bedrock.transformer.TypeMapTransformer;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 
 public class Bedrock_v712 extends Bedrock_v686 {
@@ -31,6 +34,11 @@ public class Bedrock_v712 extends Bedrock_v686 {
     protected static final TypeMap<ContainerEnumName> CONTAINER_SLOT_TYPES = Bedrock_v686.CONTAINER_SLOT_TYPES
             .toBuilder()
             .insert(63, ContainerEnumName.DYNAMIC_CONTAINER)
+            .build();
+
+    protected static final ActorDataTypeMap ACTOR_DATA = Bedrock_v686.ACTOR_DATA
+            .toBuilder()
+            .update(ActorDataTypes.HEARTBEAT_SOUND_EVENT, new TypeMapTransformer<>(SOUND_EVENTS))
             .build();
 
     public static final BedrockCodec CODEC = Bedrock_v686.CODEC.toBuilder()

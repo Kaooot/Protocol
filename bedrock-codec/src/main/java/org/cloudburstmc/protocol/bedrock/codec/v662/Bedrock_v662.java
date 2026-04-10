@@ -50,11 +50,6 @@ public class Bedrock_v662 extends Bedrock_v649 {
             .insert(91, ParticleType.WIND_EXPLOSION)
             .build();
 
-    protected static final ActorDataTypeMap ACTOR_DATA = Bedrock_v649.ACTOR_DATA
-            .toBuilder()
-            .update(ActorDataTypes.DATA_PARTICLE, new TypeMapTransformer<>(PARTICLE_TYPES))
-            .build();
-
     protected static final TypeMap<LevelEventType> LEVEL_EVENTS = Bedrock_v649.LEVEL_EVENTS.toBuilder()
             .replace(LEVEL_EVENT_BLOCK + 110, LevelEvent.PARTICLE_BREEZE_WIND_EXPLOSION)
             .replace(LEVEL_EVENT_BLOCK + 114, LevelEvent.PARTICLE_WIND_EXPLOSION)
@@ -83,6 +78,12 @@ public class Bedrock_v662 extends Bedrock_v649 {
             .insert(508, SoundEvent.HURT_REDUCED)
             .insert(509, SoundEvent.WIND_CHARGE_BURST)
             .insert(511, SoundEvent.UNDEFINED)
+            .build();
+
+    protected static final ActorDataTypeMap ACTOR_DATA = Bedrock_v649.ACTOR_DATA
+            .toBuilder()
+            .update(ActorDataTypes.DATA_PARTICLE, new TypeMapTransformer<>(PARTICLE_TYPES))
+            .update(ActorDataTypes.HEARTBEAT_SOUND_EVENT, new TypeMapTransformer<>(SOUND_EVENTS))
             .build();
 
     public static final BedrockCodec CODEC = Bedrock_v649.CODEC.toBuilder()

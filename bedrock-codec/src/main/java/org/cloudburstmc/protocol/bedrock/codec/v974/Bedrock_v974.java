@@ -11,6 +11,7 @@ import org.cloudburstmc.protocol.bedrock.data.actor.ActorEvent;
 import org.cloudburstmc.protocol.bedrock.data.actor.ActorFlags;
 import org.cloudburstmc.protocol.bedrock.packet.*;
 import org.cloudburstmc.protocol.bedrock.transformer.FlagTransformer;
+import org.cloudburstmc.protocol.bedrock.transformer.TypeMapTransformer;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 
 /**
@@ -23,12 +24,6 @@ public class Bedrock_v974 extends Bedrock_v944 {
             .insert(127, ActorFlags.USES_LEGACY_FRICTION)
             .build();
 
-    protected static final ActorDataTypeMap ACTOR_DATA = Bedrock_v944.ACTOR_DATA
-            .toBuilder()
-            .update(ActorDataTypes.FLAGS, new FlagTransformer(ACTOR_FLAGS, 0))
-            .update(ActorDataTypes.FLAGS_2, new FlagTransformer(ACTOR_FLAGS, 1))
-            .build();
-
     protected static final TypeMap<ActorEvent> ACTOR_EVENTS = Bedrock_v944.ACTOR_EVENTS.toBuilder()
             .insert(81, ActorEvent.HURT_WITHOUT_RECEIVING_DAMAGE)
             .build();
@@ -37,6 +32,13 @@ public class Bedrock_v974 extends Bedrock_v944 {
             .replace(599, SoundEvent.PUSHED_BY_PLAYER)
             .insert(600, SoundEvent.BOUNCE)
             .insert(601, SoundEvent.UNDEFINED)
+            .build();
+
+    protected static final ActorDataTypeMap ACTOR_DATA = Bedrock_v944.ACTOR_DATA
+            .toBuilder()
+            .update(ActorDataTypes.FLAGS, new FlagTransformer(ACTOR_FLAGS, 0))
+            .update(ActorDataTypes.FLAGS_2, new FlagTransformer(ACTOR_FLAGS, 1))
+            .update(ActorDataTypes.HEARTBEAT_SOUND_EVENT, new TypeMapTransformer<>(SOUND_EVENTS))
             .build();
 
     public static final BedrockCodec CODEC = Bedrock_v944.CODEC.toBuilder()

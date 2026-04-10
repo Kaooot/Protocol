@@ -32,15 +32,6 @@ public class Bedrock_v527 extends Bedrock_v503 {
             .insert(84, ParticleType.SONIC_EXPLOSION)
             .build();
 
-    protected static final ActorDataTypeMap ACTOR_DATA = Bedrock_v503.ACTOR_DATA.toBuilder()
-            .update(ActorDataTypes.FLAGS, new FlagTransformer(ACTOR_FLAGS, 0))
-            .update(ActorDataTypes.FLAGS_2, new FlagTransformer(ACTOR_FLAGS, 1))
-            .update(ActorDataTypes.DATA_PARTICLE, new TypeMapTransformer<>(PARTICLE_TYPES))
-            .insert(ActorDataTypes.PLAYER_LAST_DEATH_POS, 128, ActorDataFormat.VECTOR3I)
-            .insert(ActorDataTypes.PLAYER_LAST_DEATH_DIMENSION, 129, ActorDataFormat.INT)
-            .insert(ActorDataTypes.PLAYER_HAS_DIED, 130, ActorDataFormat.BYTE, BooleanTransformer.INSTANCE)
-            .build();
-
     protected static final TypeMap<CommandParam> COMMAND_PARAMS = Bedrock_v503.COMMAND_PARAMS.toBuilder()
             .shift(7, 1)
             .insert(7, CommandParam.COMPARE_OPERATOR)
@@ -69,6 +60,16 @@ public class Bedrock_v527 extends Bedrock_v503 {
             .insert(439, SoundEvent.RECORD_5)
             .insert(440, SoundEvent.CONVERT_TO_FROG)
             .insert(441, SoundEvent.UNDEFINED)
+            .build();
+
+    protected static final ActorDataTypeMap ACTOR_DATA = Bedrock_v503.ACTOR_DATA.toBuilder()
+            .update(ActorDataTypes.FLAGS, new FlagTransformer(ACTOR_FLAGS, 0))
+            .update(ActorDataTypes.FLAGS_2, new FlagTransformer(ACTOR_FLAGS, 1))
+            .update(ActorDataTypes.DATA_PARTICLE, new TypeMapTransformer<>(PARTICLE_TYPES))
+            .insert(ActorDataTypes.PLAYER_LAST_DEATH_POS, 128, ActorDataFormat.VECTOR3I)
+            .insert(ActorDataTypes.PLAYER_LAST_DEATH_DIMENSION, 129, ActorDataFormat.INT)
+            .insert(ActorDataTypes.PLAYER_HAS_DIED, 130, ActorDataFormat.BYTE, BooleanTransformer.INSTANCE)
+            .update(ActorDataTypes.HEARTBEAT_SOUND_EVENT, new TypeMapTransformer<>(SOUND_EVENTS))
             .build();
 
     public static final BedrockCodec CODEC = Bedrock_v503.CODEC.toBuilder()

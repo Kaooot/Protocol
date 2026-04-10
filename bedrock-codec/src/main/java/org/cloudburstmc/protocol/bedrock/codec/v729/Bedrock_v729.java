@@ -1,5 +1,6 @@
 package org.cloudburstmc.protocol.bedrock.codec.v729;
 
+import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelSoundEvent1Serializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v313.serializer.LevelSoundEvent2Serializer_v313;
@@ -8,7 +9,9 @@ import org.cloudburstmc.protocol.bedrock.codec.v712.Bedrock_v712;
 import org.cloudburstmc.protocol.bedrock.codec.v729.serializer.*;
 import org.cloudburstmc.protocol.bedrock.data.PacketRecipient;
 import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataTypes;
 import org.cloudburstmc.protocol.bedrock.packet.*;
+import org.cloudburstmc.protocol.bedrock.transformer.TypeMapTransformer;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 
 public class Bedrock_v729 extends Bedrock_v712 {
@@ -19,6 +22,11 @@ public class Bedrock_v729 extends Bedrock_v712 {
             // skip 532
             .insert(533, SoundEvent.BUNDLE_INSERT_FAILED)
             .insert(534, SoundEvent.UNDEFINED)
+            .build();
+
+    protected static final ActorDataTypeMap ACTOR_DATA = Bedrock_v712.ACTOR_DATA
+            .toBuilder()
+            .update(ActorDataTypes.HEARTBEAT_SOUND_EVENT, new TypeMapTransformer<>(SOUND_EVENTS))
             .build();
 
     public static final BedrockCodec CODEC = Bedrock_v712.CODEC.toBuilder()

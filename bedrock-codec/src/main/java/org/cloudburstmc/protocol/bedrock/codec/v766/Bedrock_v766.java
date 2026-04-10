@@ -49,6 +49,7 @@ public class Bedrock_v766 extends Bedrock_v748 {
     protected static final ActorDataTypeMap ACTOR_DATA = Bedrock_v748.ACTOR_DATA
             .toBuilder()
             .update(ActorDataTypes.DATA_PARTICLE, new TypeMapTransformer<>(PARTICLE_TYPES))
+            .update(ActorDataTypes.HEARTBEAT_SOUND_EVENT, new TypeMapTransformer<>(SOUND_EVENTS))
             .build();
 
     public static final BedrockCodec CODEC = Bedrock_v748.CODEC.toBuilder()

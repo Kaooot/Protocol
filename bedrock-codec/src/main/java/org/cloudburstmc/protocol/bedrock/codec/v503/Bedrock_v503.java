@@ -24,25 +24,11 @@ import org.cloudburstmc.protocol.bedrock.data.actor.ActorEvent;
 import org.cloudburstmc.protocol.bedrock.data.actor.ActorFlags;
 import org.cloudburstmc.protocol.bedrock.packet.*;
 import org.cloudburstmc.protocol.bedrock.transformer.FlagTransformer;
+import org.cloudburstmc.protocol.bedrock.transformer.TypeMapTransformer;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Bedrock_v503 extends Bedrock_v486 {
-
-    protected static final TypeMap<ActorFlags> ACTOR_FLAGS = Bedrock_v486.ACTOR_FLAGS.toBuilder()
-            .insert(102, ActorFlags.JUMP_GOAL_JUMP)
-            .insert(103, ActorFlags.EMERGING)
-            .insert(104, ActorFlags.SNIFFING)
-            .insert(105, ActorFlags.DIGGING)
-            .build();
-
-    protected static final ActorDataTypeMap ACTOR_DATA = Bedrock_v486.ACTOR_DATA.toBuilder()
-            .update(ActorDataTypes.FLAGS, new FlagTransformer(ACTOR_FLAGS, 0))
-            .update(ActorDataTypes.FLAGS_2, new FlagTransformer(ACTOR_FLAGS, 1))
-            .insert(ActorDataTypes.MOVEMENT_SOUND_DISTANCE_OFFSET, 125, ActorDataFormat.FLOAT)
-            .insert(ActorDataTypes.HEARTBEAT_INTERVAL_TICKS, 126, ActorDataFormat.INT)
-            .insert(ActorDataTypes.HEARTBEAT_SOUND_EVENT, 127, ActorDataFormat.INT)
-            .build();
 
     protected static final TypeMap<ActorEvent> ACTOR_EVENTS = Bedrock_v486.ACTOR_EVENTS.toBuilder()
             .insert(77, ActorEvent.VIBRATION_DETECTED)
@@ -108,6 +94,21 @@ public class Bedrock_v503 extends Bedrock_v486 {
             .insert(421, SoundEvent.GOAT_BASS_8)
             .insert(422, SoundEvent.GOAT_BASS_9)
             .insert(423, SoundEvent.UNDEFINED)
+            .build();
+
+    protected static final TypeMap<ActorFlags> ACTOR_FLAGS = Bedrock_v486.ACTOR_FLAGS.toBuilder()
+            .insert(102, ActorFlags.JUMP_GOAL_JUMP)
+            .insert(103, ActorFlags.EMERGING)
+            .insert(104, ActorFlags.SNIFFING)
+            .insert(105, ActorFlags.DIGGING)
+            .build();
+
+    protected static final ActorDataTypeMap ACTOR_DATA = Bedrock_v486.ACTOR_DATA.toBuilder()
+            .update(ActorDataTypes.FLAGS, new FlagTransformer(ACTOR_FLAGS, 0))
+            .update(ActorDataTypes.FLAGS_2, new FlagTransformer(ACTOR_FLAGS, 1))
+            .insert(ActorDataTypes.MOVEMENT_SOUND_DISTANCE_OFFSET, 125, ActorDataFormat.FLOAT)
+            .insert(ActorDataTypes.HEARTBEAT_INTERVAL_TICKS, 126, ActorDataFormat.INT)
+            .insert(ActorDataTypes.HEARTBEAT_SOUND_EVENT, 127, ActorDataFormat.INT, new TypeMapTransformer<>(SOUND_EVENTS))
             .build();
 
     public static final BedrockCodec CODEC = Bedrock_v486.CODEC.toBuilder()

@@ -35,11 +35,6 @@ public class Bedrock_v630 extends Bedrock_v622 {
             .insert(LEVEL_EVENT_PARTICLE_TYPE, PARTICLE_TYPES)
             .build();
 
-    protected static final ActorDataTypeMap ACTOR_DATA = Bedrock_v622.ACTOR_DATA
-            .toBuilder()
-            .update(ActorDataTypes.DATA_PARTICLE, new TypeMapTransformer<>(PARTICLE_TYPES))
-            .build();
-
     protected static final TypeMap<ContainerEnumName> CONTAINER_SLOT_TYPES = Bedrock_v622.CONTAINER_SLOT_TYPES.toBuilder()
             .insert(62, ContainerEnumName.CRAFTER_LEVEL_ENTITY_CONTAINER)
             .build();
@@ -62,6 +57,11 @@ public class Bedrock_v630 extends Bedrock_v622 {
             .insert(492, SoundEvent.UNDEFINED)
             .build();
 
+    protected static final ActorDataTypeMap ACTOR_DATA = Bedrock_v622.ACTOR_DATA
+            .toBuilder()
+            .update(ActorDataTypes.DATA_PARTICLE, new TypeMapTransformer<>(PARTICLE_TYPES))
+            .update(ActorDataTypes.HEARTBEAT_SOUND_EVENT, new TypeMapTransformer<>(SOUND_EVENTS))
+            .build();
 
     public static final BedrockCodec CODEC = Bedrock_v622.CODEC.toBuilder()
             .raknetProtocolVersion(11)

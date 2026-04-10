@@ -1,5 +1,6 @@
 package org.cloudburstmc.protocol.bedrock.codec.v589;
 
+import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelSoundEvent1Serializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v313.serializer.LevelSoundEvent2Serializer_v313;
@@ -11,8 +12,10 @@ import org.cloudburstmc.protocol.bedrock.codec.v589.serializer.LegacyTelemetryEv
 import org.cloudburstmc.protocol.bedrock.codec.v589.serializer.StartGameSerializer_v589;
 import org.cloudburstmc.protocol.bedrock.codec.v589.serializer.UnlockedRecipesSerializer_v589;
 import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataTypes;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.TextProcessingEventOrigin;
 import org.cloudburstmc.protocol.bedrock.packet.*;
+import org.cloudburstmc.protocol.bedrock.transformer.TypeMapTransformer;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 
 public class Bedrock_v589 extends Bedrock_v582 {
@@ -24,6 +27,11 @@ public class Bedrock_v589 extends Bedrock_v582 {
             .insert(468, SoundEvent.WAXED_SIGN_INTERACT_FAIL)
             .insert(469, SoundEvent.RECORD_RELIC)
             .insert(470, SoundEvent.UNDEFINED)
+            .build();
+
+    protected static final ActorDataTypeMap ACTOR_DATA = Bedrock_v582.ACTOR_DATA
+            .toBuilder()
+            .update(ActorDataTypes.HEARTBEAT_SOUND_EVENT, new TypeMapTransformer<>(SOUND_EVENTS))
             .build();
 
     protected static final TypeMap<TextProcessingEventOrigin> TEXT_PROCESSING_ORIGINS = TypeMap.builder(TextProcessingEventOrigin.class)

@@ -1,7 +1,7 @@
 package org.cloudburstmc.protocol.bedrock.codec.v557;
 
-import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
 import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
+import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelSoundEvent1Serializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v313.serializer.LevelSoundEvent2Serializer_v313;
 import org.cloudburstmc.protocol.bedrock.codec.v332.serializer.LevelSoundEventSerializer_v332;
@@ -10,15 +10,12 @@ import org.cloudburstmc.protocol.bedrock.codec.v557.serializer.AddActorSerialize
 import org.cloudburstmc.protocol.bedrock.codec.v557.serializer.AddPlayerSerializer_v557;
 import org.cloudburstmc.protocol.bedrock.codec.v557.serializer.SetActorDataSerializer_v557;
 import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataTypes;
 import org.cloudburstmc.protocol.bedrock.packet.*;
+import org.cloudburstmc.protocol.bedrock.transformer.TypeMapTransformer;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 
 public class Bedrock_v557 extends Bedrock_v554 {
-
-    public static final ActorDataTypeMap ACTOR_DATA = Bedrock_v554.ACTOR_DATA.toBuilder()
-            .remove(120) // UPDATE_PROPERTIES
-            .shift(121, -1)
-            .build();
 
     public static final TypeMap<SoundEvent> SOUND_EVENTS = Bedrock_v554.SOUND_EVENTS.toBuilder()
             .remove(443) // UNDEFINED
@@ -26,6 +23,12 @@ public class Bedrock_v557 extends Bedrock_v554 {
             .insert(446, SoundEvent.BUNDLE_INSERT)
             .insert(447, SoundEvent.BUNDLE_REMOVE_ONE)
             .insert(448, SoundEvent.UNDEFINED)
+            .build();
+
+    public static final ActorDataTypeMap ACTOR_DATA = Bedrock_v554.ACTOR_DATA.toBuilder()
+            .remove(120) // UPDATE_PROPERTIES
+            .shift(121, -1)
+            .update(ActorDataTypes.HEARTBEAT_SOUND_EVENT, new TypeMapTransformer<>(SOUND_EVENTS))
             .build();
 
     public static final BedrockCodec CODEC = Bedrock_v554.CODEC.toBuilder()
