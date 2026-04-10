@@ -1,10 +1,14 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.cloudburstmc.protocol.bedrock.data.AbilitiesIndex;
 import org.cloudburstmc.protocol.bedrock.data.PlayerPermissionLevel;
 import org.cloudburstmc.protocol.common.PacketSignal;
+
+import java.util.Set;
 
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
@@ -12,7 +16,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 public class RequestPermissionsPacket implements BedrockPacket {
     private long targetPlayerId;
     private PlayerPermissionLevel playerPermissionLevel;
-    private int commandPermissionFlags;
+    private final Set<AbilitiesIndex> commandPermissionFlags = new ObjectOpenHashSet<>();
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {
