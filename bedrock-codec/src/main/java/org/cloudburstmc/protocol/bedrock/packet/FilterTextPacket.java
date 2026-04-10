@@ -5,9 +5,13 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
+/**
+ * @deprecated since v671
+ */
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
+@Deprecated
 public class FilterTextPacket implements BedrockPacket {
     private String text;
     private boolean fromServer;
