@@ -1,7 +1,7 @@
 package org.cloudburstmc.protocol.bedrock.codec.v800.serializer;
 
 import io.netty.buffer.ByteBuf;
-import it.unimi.dsi.fastutil.ints.IntObjectPair;
+import it.unimi.dsi.fastutil.Pair;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -13,13 +13,13 @@ import org.cloudburstmc.protocol.bedrock.data.RandomDistributionType;
 import org.cloudburstmc.protocol.bedrock.data.biome.*;
 import org.cloudburstmc.protocol.bedrock.data.definitions.BlockDefinition;
 import org.cloudburstmc.protocol.bedrock.packet.BiomeDefinitionListPacket;
-import org.cloudburstmc.protocol.common.util.*;
-import org.cloudburstmc.protocol.common.util.index.Indexed;
-import org.cloudburstmc.protocol.common.util.index.IndexedList;
+import org.cloudburstmc.protocol.common.util.DefinitionUtils;
+import org.cloudburstmc.protocol.common.util.TriConsumer;
+import org.cloudburstmc.protocol.common.util.VarInts;
 
 import java.awt.*;
-import java.util.*;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 
@@ -36,39 +36,31 @@ public class BiomeDefinitionListSerializer_v800 implements BedrockPacketSerializ
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, BiomeDefinitionListPacket packet) {
-        SequencedHashSet<String> strings = new SequencedHashSet<>();
-        BiomeDefinitions biomeDefinitions = packet.getBiomes();
-        Map<String, BiomeDefinitionData> biomes = biomeDefinitions.getDefinitions();
-        helper.writeArray(buffer, biomes.entrySet(), (byteBuf, aHelper, entry) -> {
-            String name = entry.getKey();
-            BiomeDefinitionData definition = entry.getValue();
-            byteBuf.writeShortLE(strings.addAndGetIndex(name));
-            writeDefinition(byteBuf, aHelper, definition, strings);
+        helper.writeArray(buffer, packet.getBiomes(), (byteBuf, aHelper, entry) -> {
+            byteBuf.writeShortLE(entry.key());
+            writeDefinition(byteBuf, aHelper, entry.value());
         });
-        helper.writeArray(buffer, strings, (byteBuf, bedrockCodecHelper, biomeName) -> bedrockCodecHelper.writeString(byteBuf, biomeName));
+        helper.writeArray(buffer, packet.getBiomeStringList(), helper::writeString);
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, BiomeDefinitionListPacket packet) {
-        List<String> strings = new ObjectArrayList<>();
-        List<IntObjectPair<BiomeDefinitionData>> biomeDefinitions = new ObjectArrayList<>();
-        helper.readArray(buffer, biomeDefinitions, (byteBuf, bedrockCodecHelper) -> {
-            int index = byteBuf.readUnsignedShortLE();
-            return IntObjectPair.of(index, readDefinition(byteBuf, bedrockCodecHelper, strings));
+        final List<Pair<Short, BiomeDefinitionData>> biomes = new ObjectArrayList<>();
+        helper.readArray(buffer, biomes, (byteBuf, bedrockCodecHelper) -> {
+            final short index = (short) byteBuf.readUnsignedShortLE();
+            return Pair.of(index, this.readDefinition(byteBuf, bedrockCodecHelper));
         });
-        IndexedBiomes indexedBiomes = new IndexedBiomes(biomeDefinitions, strings);
-
-        helper.readArray(buffer, strings,
+        helper.readArray(buffer, packet.getBiomeStringList(),
                 (byteBuf, bedrockCodecHelper) -> bedrockCodecHelper.readString(byteBuf));
-        packet.setBiomes(new BiomeDefinitions(indexedBiomes));
+        packet.getBiomes().addAll(biomes);
     }
 
-    protected void writeDefinitionId(ByteBuf buffer, BedrockCodecHelper helper, BiomeDefinitionData definition, SequencedHashSet<String> strings) {
-        helper.writeOptional(buffer, Objects::nonNull, definition.getId(), (buf, id) -> buf.writeShortLE(strings.addAndGetIndex(id)));
+    protected void writeDefinitionId(ByteBuf buffer, BedrockCodecHelper helper, BiomeDefinitionData definition) {
+        helper.writeOptional(buffer, Objects::nonNull, definition.getId(), (buf, id) -> buf.writeShortLE(id));
     }
 
-    protected void writeDefinition(ByteBuf buffer, BedrockCodecHelper helper, BiomeDefinitionData definition, SequencedHashSet<String> strings) {
-        this.writeDefinitionId(buffer, helper, definition, strings);
+    protected void writeDefinition(ByteBuf buffer, BedrockCodecHelper helper, BiomeDefinitionData definition) {
+        this.writeDefinitionId(buffer, helper, definition);
         buffer.writeFloatLE(definition.getTemperature());
         buffer.writeFloatLE(definition.getDownfall());
         buffer.writeFloatLE(definition.getRedSporeDensity());
@@ -81,79 +73,61 @@ public class BiomeDefinitionListSerializer_v800 implements BedrockPacketSerializ
         buffer.writeBoolean(definition.isRain());
         helper.writeOptionalNull(buffer, definition.getTags(), (byteBuf, aHelper, tags) -> {
             VarInts.writeUnsignedInt(byteBuf, tags.size());
-            for (String tag : tags) {
-                byteBuf.writeShortLE(strings.addAndGetIndex(tag));
+            for (Short tag : tags) {
+                byteBuf.writeShortLE(tag);
             }
         });
-        helper.writeOptionalNull(buffer, definition.getChunkGenData(),
-                (buf, aHelper, data) -> writeDefinitionChunkGen(buf, aHelper, data, strings));
+        helper.writeOptionalNull(buffer, definition.getChunkGenData(), this::writeDefinitionChunkGen);
     }
 
-    protected Indexed<String> readDefinitionId(ByteBuf buffer, BedrockCodecHelper helper, List<String> strings) {
-        return helper.readOptional(buffer, null, (buf, aHelper) -> new Indexed<>(strings, buf.readUnsignedShortLE()));
+    protected short readDefinitionId(ByteBuf buffer, BedrockCodecHelper helper) {
+        return helper.readOptional(buffer, null, (buf, codecHelper) -> (short) buf.readUnsignedShortLE());
     }
 
-    protected BiomeDefinitionData readDefinition(ByteBuf buffer, BedrockCodecHelper helper, List<String> strings) {
-        Indexed<String> id = this.readDefinitionId(buffer, helper, strings);
-        float temperature = buffer.readFloatLE();
-        float downfall = buffer.readFloatLE();
-        float redSporeDensity = buffer.readFloatLE();
-        float blueSporeDensity = buffer.readFloatLE();
-        float ashDensity = buffer.readFloatLE();
-        float whiteAshDensity = buffer.readFloatLE();
-        float depth = buffer.readFloatLE();
-        float scale = buffer.readFloatLE();
-        Color mapWaterColor = new Color(buffer.readIntLE(), true);
-        boolean rain = buffer.readBoolean();
-
-
-        IndexedList<String> tags = helper.readOptional(buffer, null, byteBuf -> {
-            int length = VarInts.readUnsignedInt(byteBuf);
-            Preconditions.checkArgument(byteBuf.isReadable(length * 2), "Not enough readable bytes for tags");
-            int[] array = new int[length];
-            for (int i = 0; i < length; i++) {
-                array[i] = byteBuf.readUnsignedShortLE();
-            }
-            return new IndexedList<>(strings, array);
+    protected BiomeDefinitionData readDefinition(ByteBuf buffer, BedrockCodecHelper helper) {
+        final short id = this.readDefinitionId(buffer, helper);
+        final float temperature = buffer.readFloatLE();
+        final float downfall = buffer.readFloatLE();
+        final float redSporeDensity = buffer.readFloatLE();
+        final float blueSporeDensity = buffer.readFloatLE();
+        final float ashDensity = buffer.readFloatLE();
+        final float whiteAshDensity = buffer.readFloatLE();
+        final float depth = buffer.readFloatLE();
+        final float scale = buffer.readFloatLE();
+        final Color mapWaterColor = new Color(buffer.readIntLE(), true);
+        final boolean rain = buffer.readBoolean();
+        final List<Short> tags = helper.readOptional(buffer, null, (buf, codecHelper) -> {
+            final List<Short> list = new ObjectArrayList<>();
+            codecHelper.readArray(buf, list, (buf1, codecHelper1) -> (short) buf1.readUnsignedShortLE());
+            return list;
         });
-
-        BiomeDefinitionChunkGenData chunkGenData = helper.readOptional(buffer, null,
-                (buf, aHelper) -> this.readDefinitionChunkGen(buf, aHelper, strings));
-
+        final BiomeDefinitionChunkGenData chunkGenData = helper.readOptional(buffer, null, this::readDefinitionChunkGen);
         return new BiomeDefinitionData(id, temperature, downfall, redSporeDensity, blueSporeDensity,
                 ashDensity, whiteAshDensity, depth, scale, mapWaterColor,
-                rain, tags, chunkGenData);
+                rain, tags, chunkGenData, 0f
+        );
     }
 
-    protected void writeDefinitionChunkGen(ByteBuf buffer, BedrockCodecHelper helper, BiomeDefinitionChunkGenData definitionChunkGen,
-                                           SequencedHashSet<String> strings) {
+    protected void writeDefinitionChunkGen(ByteBuf buffer, BedrockCodecHelper helper, BiomeDefinitionChunkGenData definitionChunkGen) {
         helper.writeOptionalNull(buffer, definitionChunkGen.getClimate(), this::writeClimate);
-        helper.writeOptionalNull(buffer, definitionChunkGen.getConsolidatedFeatures(),
-                (buf, aHelper, consolidatedFeatures) -> this.writeConsolidatedFeatures(buf, aHelper, consolidatedFeatures, strings));
+        helper.writeOptionalNull(buffer, definitionChunkGen.getConsolidatedFeatures(), this::writeConsolidatedFeatures);
         helper.writeOptionalNull(buffer, definitionChunkGen.getMountainParams(), this::writeMountainParamsData);
-        helper.writeOptionalNull(buffer, definitionChunkGen.getSurfaceMaterialAdjustment(),
-                (buf, aHelper, surfaceMaterialAdjustment) -> this.writeSurfaceMaterialAdjustment(buf, aHelper, surfaceMaterialAdjustment, strings));
+        helper.writeOptionalNull(buffer, definitionChunkGen.getSurfaceMaterialAdjustment(), this::writeSurfaceMaterialAdjustment);
         this.writeBiomeSurfaceBuilderData(buffer, helper, definitionChunkGen.getSurfaceBuilderData());
-        helper.writeOptionalNull(buffer, definitionChunkGen.getOverworldGenRules(),
-                (buf, aHelper, overworldGenRules) -> this.writeOverworldGenRules(buf, aHelper, overworldGenRules, strings));
+        helper.writeOptionalNull(buffer, definitionChunkGen.getOverworldGenRules(), this::writeOverworldGenRules);
         helper.writeOptionalNull(buffer, definitionChunkGen.getMultinoiseGenRules(), this::writeMultinoiseGenRules);
-        helper.writeOptionalNull(buffer, definitionChunkGen.getLegacyWorldGenRules(),
-                (buf, aHelper, legacyWorldGenRules) -> this.writeLegacyWorldGenRules(buf, aHelper, legacyWorldGenRules, strings));
+        helper.writeOptionalNull(buffer, definitionChunkGen.getLegacyWorldGenRules(), this::writeLegacyWorldGenRules);
     }
 
-    protected BiomeDefinitionChunkGenData readDefinitionChunkGen(ByteBuf buffer, BedrockCodecHelper helper, List<String> strings) {
+    protected BiomeDefinitionChunkGenData readDefinitionChunkGen(ByteBuf buffer, BedrockCodecHelper helper) {
         BiomeClimateData climate = helper.readOptional(buffer, null, this::readClimate);
-        List<BiomeConsolidatedFeatureData> consolidatedFeatures = helper.readOptional(buffer, null,
-                (buf, aHelper) -> this.readConsolidatedFeatures(buf, aHelper, strings));
+        List<BiomeConsolidatedFeatureData> consolidatedFeatures = helper.readOptional(buffer, null, this::readConsolidatedFeatures);
         BiomeMountainParamsData mountainParams = helper.readOptional(buffer, null, this::readMountainParamsData);
-        BiomeSurfaceMaterialAdjustmentData surfaceMaterialAdjustment = helper.readOptional(buffer, null,
-                (buf, aHelper) -> this.readSurfaceMaterialAdjustment(buf, aHelper, strings));
+        BiomeSurfaceMaterialAdjustmentData surfaceMaterialAdjustment = helper.readOptional(buffer, null, this::readSurfaceMaterialAdjustment);
         BiomeSurfaceBuilderData surfaceBuilderData = this.readBiomeSurfaceBuilderData(buffer, helper);
-        BiomeOverworldGenRulesData overworldGenRules = helper.readOptional(buffer, null,
-                (buf, aHelper) -> this.readOverworldGenRules(buf, aHelper, strings));
+        BiomeOverworldGenRulesData overworldGenRules = helper.readOptional(buffer, null, this::readOverworldGenRules);
         BiomeMultinoiseGenRulesData multinoiseGenRules = helper.readOptional(buffer, null, this::readMultinoiseGenRules);
-        BiomeLegacyWorldGenRulesData legacyWorldGenRules = helper.readOptional(buffer, null,
-                (buf, aHelper) -> this.readLegacyWorldGenRules(buf, aHelper, strings));
+        BiomeLegacyWorldGenRulesData legacyWorldGenRules = helper.readOptional(buffer, null, this::readLegacyWorldGenRules);
 
         return new BiomeDefinitionChunkGenData(climate, consolidatedFeatures,
                 mountainParams, surfaceMaterialAdjustment,
@@ -187,91 +161,79 @@ public class BiomeDefinitionListSerializer_v800 implements BedrockPacketSerializ
                 ashDensity, whiteAshDensity, snowAccumulationMin, snowAccumulationMax);
     }
 
-    protected void writeConsolidatedFeatures(ByteBuf buffer, BedrockCodecHelper helper, List<BiomeConsolidatedFeatureData> consolidatedFeatures,
-                                             SequencedHashSet<String> strings) {
-        helper.writeArray(buffer, consolidatedFeatures,
-                (buf, aHelper, consolidatedFeature) -> this.writeConsolidatedFeature(buf, aHelper, consolidatedFeature, strings));
+    protected void writeConsolidatedFeatures(ByteBuf buffer, BedrockCodecHelper helper, List<BiomeConsolidatedFeatureData> consolidatedFeatures) {
+        helper.writeArray(buffer, consolidatedFeatures, this::writeConsolidatedFeature);
     }
 
-    protected List<BiomeConsolidatedFeatureData> readConsolidatedFeatures(ByteBuf buffer, BedrockCodecHelper helper, List<String> strings) {
+    protected List<BiomeConsolidatedFeatureData> readConsolidatedFeatures(ByteBuf buffer, BedrockCodecHelper helper) {
         List<BiomeConsolidatedFeatureData> consolidatedFeatures = new ObjectArrayList<>();
-        helper.readArray(buffer, consolidatedFeatures,
-                (buf, aHelper) -> this.readConsolidatedFeature(buf, aHelper, strings));
+        helper.readArray(buffer, consolidatedFeatures, this::readConsolidatedFeature);
         return consolidatedFeatures;
     }
 
-    protected void writeConsolidatedFeature(ByteBuf buffer, BedrockCodecHelper helper,
-                                            BiomeConsolidatedFeatureData consolidatedFeature,
-                                            SequencedHashSet<String> strings) {
-        this.writeScatterParam(buffer, helper, consolidatedFeature.getScatter(), strings);
-        buffer.writeShortLE(strings.addAndGetIndex(consolidatedFeature.getFeature()));
-        buffer.writeShortLE(strings.addAndGetIndex(consolidatedFeature.getIdentifier()));
-        buffer.writeShortLE(strings.addAndGetIndex(consolidatedFeature.getPass()));
+    protected void writeConsolidatedFeature(ByteBuf buffer, BedrockCodecHelper helper, BiomeConsolidatedFeatureData consolidatedFeature) {
+        this.writeScatterParam(buffer, helper, consolidatedFeature.getScatter());
+        buffer.writeShortLE(consolidatedFeature.getFeature());
+        buffer.writeShortLE(consolidatedFeature.getIdentifier());
+        buffer.writeShortLE(consolidatedFeature.getPass());
         buffer.writeBoolean(consolidatedFeature.isCanUseInternalFeature());
     }
 
-    protected BiomeConsolidatedFeatureData readConsolidatedFeature(ByteBuf buffer, BedrockCodecHelper helper, List<String> strings) {
-        BiomeScatterParamData scatter = readScatterParam(buffer, helper, strings);
-        Indexed<String> feature = new Indexed<>(strings, buffer.readShortLE());
-        Indexed<String> identifier = new Indexed<>(strings, buffer.readShortLE());
-        Indexed<String> pass = new Indexed<>(strings, buffer.readShortLE());
-        boolean internalUse = buffer.readBoolean();
-
-        return new BiomeConsolidatedFeatureData(scatter, feature, identifier, pass, internalUse);
+    protected BiomeConsolidatedFeatureData readConsolidatedFeature(ByteBuf buffer, BedrockCodecHelper helper) {
+        final BiomeScatterParamData scatter = this.readScatterParam(buffer, helper);
+        final short feature = buffer.readShortLE();
+        final short identifier = buffer.readShortLE();
+        final short pass = buffer.readShortLE();
+        final boolean canUseInternalFeature = buffer.readBoolean();
+        return new BiomeConsolidatedFeatureData(scatter, feature, identifier, pass, canUseInternalFeature);
     }
 
-    protected void writeScatterParam(ByteBuf buffer, BedrockCodecHelper helper, BiomeScatterParamData scatterParam,
-                                     SequencedHashSet<String> strings) {
-        helper.writeArray(buffer, scatterParam.getCoordinates(),
-                (buf, aHelper, coordinate) -> this.writeCoordinate(buf, aHelper, coordinate, strings));
+    protected void writeScatterParam(ByteBuf buffer, BedrockCodecHelper helper, BiomeScatterParamData scatterParam) {
+        helper.writeArray(buffer, scatterParam.getCoordinates(), this::writeCoordinate);
         VarInts.writeInt(buffer, scatterParam.getEvalOrder().ordinal());
         VarInts.writeInt(buffer, scatterParam.getChancePercentType() == null ? -1 : scatterParam.getChancePercentType().ordinal());
-        buffer.writeShortLE(strings.addAndGetIndex(scatterParam.getChancePercent()));
+        buffer.writeShortLE(scatterParam.getChancePercent());
         buffer.writeIntLE(scatterParam.getChanceNumerator());
         buffer.writeIntLE(scatterParam.getChanceDenominator());
         VarInts.writeInt(buffer, scatterParam.getIterationsType() == null ? -1 : scatterParam.getIterationsType().ordinal());
-        buffer.writeShortLE(strings.addAndGetIndex(scatterParam.getIterations()));
+        buffer.writeShortLE(scatterParam.getIterations());
     }
 
-    protected BiomeScatterParamData readScatterParam(ByteBuf buffer, BedrockCodecHelper helper, List<String> strings) {
-        List<BiomeCoordinateData> coordinates = new ObjectArrayList<>();
-        helper.readArray(buffer, coordinates,
-                (buf, aHelper) -> this.readCoordinate(buf, aHelper, strings));
-        CoordinateEvaluationOrder evalOrder = EVALUATION_ORDERS[VarInts.readInt(buffer)];
-        int chancePercentTypeInt = VarInts.readInt(buffer);
-        ExpressionOp chancePercentType = chancePercentTypeInt == -1 ? null : EXPRESSION_OPS[chancePercentTypeInt];
-        Indexed<String> chancePercent = new Indexed<>(strings, buffer.readShortLE());
-        int chanceNumerator = buffer.readIntLE();
-        int chanceDenominator = buffer.readIntLE();
-        int iterationTypeInt = VarInts.readInt(buffer);
-        ExpressionOp iterationsType = iterationTypeInt == -1 ? null : EXPRESSION_OPS[iterationTypeInt];
-        Indexed<String> iterations = new Indexed<>(strings, buffer.readShortLE());
-
+    protected BiomeScatterParamData readScatterParam(ByteBuf buffer, BedrockCodecHelper helper) {
+        final List<BiomeCoordinateData> coordinates = new ObjectArrayList<>();
+        helper.readArray(buffer, coordinates, this::readCoordinate);
+        final CoordinateEvaluationOrder evalOrder = EVALUATION_ORDERS[VarInts.readInt(buffer)];
+        final int chancePercentTypeInt = VarInts.readInt(buffer);
+        final ExpressionOp chancePercentType = chancePercentTypeInt == -1 ? null : EXPRESSION_OPS[chancePercentTypeInt];
+        final short chancePercent = buffer.readShortLE();
+        final int chanceNumerator = buffer.readIntLE();
+        final int chanceDenominator = buffer.readIntLE();
+        final int iterationTypeInt = VarInts.readInt(buffer);
+        final ExpressionOp iterationsType = iterationTypeInt == -1 ? null : EXPRESSION_OPS[iterationTypeInt];
+        final short iterations = buffer.readShortLE();
         return new BiomeScatterParamData(coordinates, evalOrder, chancePercentType,
                 chancePercent, chanceNumerator, chanceDenominator,
                 iterationsType, iterations);
     }
 
-    protected void writeCoordinate(ByteBuf buffer, BedrockCodecHelper helper, BiomeCoordinateData coordinate,
-                                   SequencedHashSet<String> strings) {
+    protected void writeCoordinate(ByteBuf buffer, BedrockCodecHelper helper, BiomeCoordinateData coordinate) {
         this.writeExpressionOp(buffer, coordinate.getMinValueType());
-        buffer.writeShortLE(strings.addAndGetIndex(coordinate.getMinValue()));
+        buffer.writeShortLE(coordinate.getMinValue());
         this.writeExpressionOp(buffer, coordinate.getMaxValueType());
-        buffer.writeShortLE(strings.addAndGetIndex(coordinate.getMaxValue()));
+        buffer.writeShortLE(coordinate.getMaxValue());
         buffer.writeIntLE((int) coordinate.getGridOffset());
         buffer.writeIntLE((int) coordinate.getGridStepSize());
         VarInts.writeInt(buffer, coordinate.getDistribution().ordinal());
     }
 
-    protected BiomeCoordinateData readCoordinate(ByteBuf buffer, BedrockCodecHelper helper, List<String> strings) {
-        ExpressionOp minValueType = this.readExpressionOp(buffer);
-        Indexed<String> minValue = new Indexed<>(strings, buffer.readShortLE());
-        ExpressionOp maxValueType = this.readExpressionOp(buffer);
-        Indexed<String> maxValue = new Indexed<>(strings, buffer.readShortLE());
-        long gridOffset = buffer.readUnsignedIntLE();
-        long gridStepSize = buffer.readUnsignedIntLE();
-        RandomDistributionType distribution = RANDOM_DISTRIBUTION_TYPES[VarInts.readInt(buffer)];
-
+    protected BiomeCoordinateData readCoordinate(ByteBuf buffer, BedrockCodecHelper helper) {
+        final ExpressionOp minValueType = this.readExpressionOp(buffer);
+        final short minValue = buffer.readShortLE();
+        final ExpressionOp maxValueType = this.readExpressionOp(buffer);
+        final short maxValue = buffer.readShortLE();
+        final long gridOffset = buffer.readUnsignedIntLE();
+        final long gridStepSize = buffer.readUnsignedIntLE();
+        final RandomDistributionType distribution = RANDOM_DISTRIBUTION_TYPES[VarInts.readInt(buffer)];
         return new BiomeCoordinateData(minValueType, minValue, maxValueType,
                 maxValue, gridOffset, gridStepSize, distribution);
     }
@@ -298,42 +260,36 @@ public class BiomeDefinitionListSerializer_v800 implements BedrockPacketSerializ
     }
 
     protected void writeSurfaceMaterialAdjustment(ByteBuf buffer, BedrockCodecHelper helper,
-                                                  BiomeSurfaceMaterialAdjustmentData surfaceMaterialAdjustment,
-                                                  SequencedHashSet<String> strings) {
-        helper.writeArray(buffer, surfaceMaterialAdjustment.getBiomeElements(),
-                (buf, aHelper, biomeElement) -> this.writeBiomeElement(buf, aHelper, biomeElement, strings));
+                                                  BiomeSurfaceMaterialAdjustmentData surfaceMaterialAdjustment) {
+        helper.writeArray(buffer, surfaceMaterialAdjustment.getBiomeElements(), this::writeBiomeElement);
     }
 
-    protected BiomeSurfaceMaterialAdjustmentData readSurfaceMaterialAdjustment(ByteBuf buffer, BedrockCodecHelper helper,
-                                                                               List<String> strings) {
+    protected BiomeSurfaceMaterialAdjustmentData readSurfaceMaterialAdjustment(ByteBuf buffer, BedrockCodecHelper helper) {
         List<BiomeElementData> biomeElements = new ObjectArrayList<>();
-        helper.readArray(buffer, biomeElements,
-                (buf, aHelper) -> this.readBiomeElement(buf, aHelper, strings));
+        helper.readArray(buffer, biomeElements, this::readBiomeElement);
         return new BiomeSurfaceMaterialAdjustmentData(biomeElements);
     }
 
-    protected void writeBiomeElement(ByteBuf buffer, BedrockCodecHelper helper, BiomeElementData biomeElement,
-                                     SequencedHashSet<String> strings) {
+    protected void writeBiomeElement(ByteBuf buffer, BedrockCodecHelper helper, BiomeElementData biomeElement) {
         buffer.writeFloatLE(biomeElement.getNoiseFrequencyScale());
         buffer.writeFloatLE(biomeElement.getNoiseLowerBound());
         buffer.writeFloatLE(biomeElement.getNoiseUpperBound());
         this.writeExpressionOp(buffer, biomeElement.getHeightMinType());
-        buffer.writeShortLE(strings.addAndGetIndex(biomeElement.getHeightMin()));
+        buffer.writeShortLE(biomeElement.getHeightMin());
         this.writeExpressionOp(buffer, biomeElement.getHeightMaxType());
-        buffer.writeShortLE(strings.addAndGetIndex(biomeElement.getHeightMax()));
+        buffer.writeShortLE(biomeElement.getHeightMax());
         this.writeSurfaceMaterial(buffer, helper, biomeElement.getAdjustedMaterials());
     }
 
-    protected BiomeElementData readBiomeElement(ByteBuf buffer, BedrockCodecHelper helper, List<String> strings) {
-        float noiseFrequencyScale = buffer.readFloatLE();
-        float noiseLowerBound = buffer.readFloatLE();
-        float noiseUpperBound = buffer.readFloatLE();
-        ExpressionOp heightMinType = this.readExpressionOp(buffer);
-        Indexed<String> heightMin = new Indexed<>(strings, buffer.readShortLE());
-        ExpressionOp heightMaxType = this.readExpressionOp(buffer);
-        Indexed<String> heightMax = new Indexed<>(strings, buffer.readShortLE());
-        BiomeSurfaceMaterialData adjustedMaterials = readSurfaceMaterial(buffer, helper);
-
+    protected BiomeElementData readBiomeElement(ByteBuf buffer, BedrockCodecHelper helper) {
+        final float noiseFrequencyScale = buffer.readFloatLE();
+        final float noiseLowerBound = buffer.readFloatLE();
+        final float noiseUpperBound = buffer.readFloatLE();
+        final ExpressionOp heightMinType = this.readExpressionOp(buffer);
+        final short heightMin = buffer.readShortLE();
+        final ExpressionOp heightMaxType = this.readExpressionOp(buffer);
+        final short heightMax = buffer.readShortLE();
+        final BiomeSurfaceMaterialData adjustedMaterials = readSurfaceMaterial(buffer, helper);
         return new BiomeElementData(noiseFrequencyScale, noiseLowerBound, noiseUpperBound,
                 heightMinType, heightMin, heightMaxType, heightMax, adjustedMaterials);
     }
@@ -396,41 +352,41 @@ public class BiomeDefinitionListSerializer_v800 implements BedrockPacketSerializ
         return new BiomeCappedSurfaceData(floorBlocks, ceilingBlocks, seaBlock, foundationBlock, beachBlock);
     }
 
-    protected void writeOverworldGenRules(ByteBuf buffer, BedrockCodecHelper helper,
-                                          BiomeOverworldGenRulesData overworldGenRules, SequencedHashSet<String> strings) {
-        BiConsumer<ByteBuf, BiomeWeightedData> writeWeight =
-                (buf, data) -> this.writeWeight(buf, data, strings);
+    protected void writeOverworldGenRules(ByteBuf buffer, BedrockCodecHelper helper, BiomeOverworldGenRulesData overworldGenRules) {
+        final BiConsumer<ByteBuf, BiomeWeightedData> writeWeight = this::writeWeight;
         helper.writeArray(buffer, overworldGenRules.getHillsTransformations(), writeWeight);
         helper.writeArray(buffer, overworldGenRules.getMutateTransformations(), writeWeight);
         helper.writeArray(buffer, overworldGenRules.getRiverTransformations(), writeWeight);
         helper.writeArray(buffer, overworldGenRules.getShoreTransformations(), writeWeight);
-        TriConsumer<ByteBuf, BedrockCodecHelper, BiomeConditionalTransformationData> writeConditionalTransformation =
-                (buf, aHelper, data) -> this.writeConditionalTransformation(buf, aHelper, data, strings);
+        final TriConsumer<ByteBuf, BedrockCodecHelper, BiomeConditionalTransformationData> writeConditionalTransformation = this::writeConditionalTransformation;
         helper.writeArray(buffer, overworldGenRules.getPreHillsEdge(), writeConditionalTransformation);
         helper.writeArray(buffer, overworldGenRules.getPostShoreEdge(), writeConditionalTransformation);
         helper.writeArray(buffer, overworldGenRules.getClimate(), this::writeWeightedTemperature);
     }
 
-    protected BiomeOverworldGenRulesData readOverworldGenRules(ByteBuf buffer, BedrockCodecHelper helper, List<String> strings) {
-        BiFunction<ByteBuf, BedrockCodecHelper, BiomeWeightedData> readWeight =
-                (buf, aHelper) -> this.readWeight(buf, aHelper, strings);
-        List<BiomeWeightedData> hillsTransformations = new ObjectArrayList<>();
+    protected BiomeOverworldGenRulesData readOverworldGenRules(ByteBuf buffer, BedrockCodecHelper helper) {
+        final BiFunction<ByteBuf, BedrockCodecHelper, BiomeWeightedData> readWeight = this::readWeight;
+        final List<BiomeWeightedData> hillsTransformations = new ObjectArrayList<>();
         helper.readArray(buffer, hillsTransformations, readWeight);
-        List<BiomeWeightedData> mutateTransformations = new ObjectArrayList<>();
-        helper.readArray(buffer, mutateTransformations, readWeight);
-        List<BiomeWeightedData> riverTransformations = new ObjectArrayList<>();
-        helper.readArray(buffer, riverTransformations, readWeight);
-        List<BiomeWeightedData> shoreTransformations = new ObjectArrayList<>();
-        helper.readArray(buffer, shoreTransformations, readWeight);
-        BiFunction<ByteBuf, BedrockCodecHelper, BiomeConditionalTransformationData> readConditionalTransformation =
-                (buf, aHelper) -> this.readConditionalTransformation(buf, aHelper, strings);
-        List<BiomeConditionalTransformationData> preHillsEdgeTransformations = new ObjectArrayList<>();
-        helper.readArray(buffer, preHillsEdgeTransformations, readConditionalTransformation);
-        List<BiomeConditionalTransformationData> postShoreTransformations = new ObjectArrayList<>();
-        helper.readArray(buffer, postShoreTransformations, readConditionalTransformation);
-        List<BiomeWeightedTemperatureData> climateTransformations = new ObjectArrayList<>();
-        helper.readArray(buffer, climateTransformations, this::readWeightedTemperature);
 
+        final List<BiomeWeightedData> mutateTransformations = new ObjectArrayList<>();
+        helper.readArray(buffer, mutateTransformations, readWeight);
+
+        final List<BiomeWeightedData> riverTransformations = new ObjectArrayList<>();
+        helper.readArray(buffer, riverTransformations, readWeight);
+
+        final List<BiomeWeightedData> shoreTransformations = new ObjectArrayList<>();
+        helper.readArray(buffer, shoreTransformations, readWeight);
+
+        final BiFunction<ByteBuf, BedrockCodecHelper, BiomeConditionalTransformationData> readConditionalTransformation = this::readConditionalTransformation;
+        final List<BiomeConditionalTransformationData> preHillsEdgeTransformations = new ObjectArrayList<>();
+        helper.readArray(buffer, preHillsEdgeTransformations, readConditionalTransformation);
+
+        final List<BiomeConditionalTransformationData> postShoreTransformations = new ObjectArrayList<>();
+        helper.readArray(buffer, postShoreTransformations, readConditionalTransformation);
+
+        final List<BiomeWeightedTemperatureData> climateTransformations = new ObjectArrayList<>();
+        helper.readArray(buffer, climateTransformations, this::readWeightedTemperature);
         return new BiomeOverworldGenRulesData(hillsTransformations,
                 mutateTransformations,
                 riverTransformations,
@@ -440,32 +396,28 @@ public class BiomeDefinitionListSerializer_v800 implements BedrockPacketSerializ
                 climateTransformations);
     }
 
-    protected void writeWeight(ByteBuf buffer, BiomeWeightedData weightedData, SequencedHashSet<String> strings) {
-        buffer.writeShortLE(strings.addAndGetIndex(weightedData.getBiomeIdentifier()));
+    protected void writeWeight(ByteBuf buffer, BiomeWeightedData weightedData) {
+        buffer.writeShortLE(weightedData.getBiomeIdentifier());
         buffer.writeIntLE(weightedData.getWeight());
     }
 
-    protected BiomeWeightedData readWeight(ByteBuf buffer, BedrockCodecHelper helper, List<String> strings) {
-        Indexed<String> biome = new Indexed<>(strings, buffer.readShortLE());
-        int weight = buffer.readIntLE();
-        return new BiomeWeightedData(biome, weight);
+    protected BiomeWeightedData readWeight(ByteBuf buffer, BedrockCodecHelper helper) {
+        final short biomeIdentifier = buffer.readShortLE();
+        final int weight = buffer.readIntLE();
+        return new BiomeWeightedData(biomeIdentifier, weight);
     }
 
-    protected void writeConditionalTransformation(ByteBuf buffer, BedrockCodecHelper helper,
-                                                  BiomeConditionalTransformationData conditionalTransformation,
-                                                  SequencedHashSet<String> strings) {
-        helper.writeArray(buffer, conditionalTransformation.getTransformsInto(),
-                (buf, data) -> writeWeight(buf, data, strings));
-        buffer.writeShortLE(strings.addAndGetIndex(conditionalTransformation.getConditionJson()));
-        buffer.writeIntLE((int) conditionalTransformation.getMinPassingNeighbors());
+    protected void writeConditionalTransformation(ByteBuf buffer, BedrockCodecHelper helper, BiomeConditionalTransformationData conditionalTransformation) {
+        helper.writeArray(buffer, conditionalTransformation.getTransformsInto(), this::writeWeight);
+        buffer.writeShortLE(conditionalTransformation.getConditionJson());
+        buffer.writeIntLE(conditionalTransformation.getMinPassingNeighbors());
     }
 
-    protected BiomeConditionalTransformationData readConditionalTransformation(ByteBuf buffer, BedrockCodecHelper helper,
-                                                                               List<String> strings) {
-        List<BiomeWeightedData> weightedBiomes = new ObjectArrayList<>();
-        helper.readArray(buffer, weightedBiomes, (buf, aHelper) -> readWeight(buf, aHelper, strings));
-        Indexed<String> conditionJson = new Indexed<>(strings, buffer.readShortLE());
-        long minPassingNeighbors = buffer.readUnsignedIntLE();
+    protected BiomeConditionalTransformationData readConditionalTransformation(ByteBuf buffer, BedrockCodecHelper helper) {
+        final List<BiomeWeightedData> weightedBiomes = new ObjectArrayList<>();
+        helper.readArray(buffer, weightedBiomes, this::readWeight);
+        final short conditionJson = buffer.readShortLE();
+        final int minPassingNeighbors = (int) buffer.readUnsignedIntLE();
         return new BiomeConditionalTransformationData(weightedBiomes, conditionJson, minPassingNeighbors);
     }
 
@@ -498,15 +450,13 @@ public class BiomeDefinitionListSerializer_v800 implements BedrockPacketSerializ
         return new BiomeMultinoiseGenRulesData(temperature, humidity, altitude, weirdness, weight);
     }
 
-    protected void writeLegacyWorldGenRules(ByteBuf buffer, BedrockCodecHelper helper, BiomeLegacyWorldGenRulesData legacyWorldGenRules, SequencedHashSet<String> strings) {
-        helper.writeArray(buffer, legacyWorldGenRules.getLegacyPreHills(),
-                (buf, aHelper, data) -> this.writeConditionalTransformation(buf, aHelper, data, strings));
+    protected void writeLegacyWorldGenRules(ByteBuf buffer, BedrockCodecHelper helper, BiomeLegacyWorldGenRulesData legacyWorldGenRules) {
+        helper.writeArray(buffer, legacyWorldGenRules.getLegacyPreHills(), this::writeConditionalTransformation);
     }
 
-    protected BiomeLegacyWorldGenRulesData readLegacyWorldGenRules(ByteBuf buffer, BedrockCodecHelper helper,
-                                                                   List<String> strings) {
-        List<BiomeConditionalTransformationData> legacyPreHills = new ObjectArrayList<>();
-        helper.readArray(buffer, legacyPreHills, (buf, aHelper) -> this.readConditionalTransformation(buf, aHelper, strings));
+    protected BiomeLegacyWorldGenRulesData readLegacyWorldGenRules(ByteBuf buffer, BedrockCodecHelper helper) {
+        final List<BiomeConditionalTransformationData> legacyPreHills = new ObjectArrayList<>();
+        helper.readArray(buffer, legacyPreHills, this::readConditionalTransformation);
         return new BiomeLegacyWorldGenRulesData(legacyPreHills);
     }
 
@@ -553,12 +503,12 @@ public class BiomeDefinitionListSerializer_v800 implements BedrockPacketSerializ
     }
 
     protected BiomeSurfaceBuilderData readBiomeSurfaceBuilderData(ByteBuf buffer, BedrockCodecHelper helper) {
-        BiomeSurfaceMaterialData surfaceMaterial = helper.readOptional(buffer, null, this::readSurfaceMaterial);
-        boolean hasSwampSurface = buffer.readBoolean();
-        boolean hasFrozenOceanSurface = buffer.readBoolean();
-        boolean hasTheEndSurface = buffer.readBoolean();
-        BiomeMesaSurfaceData mesaSurface = helper.readOptional(buffer, null, this::readMesaSurface);
-        BiomeCappedSurfaceData cappedSurface = helper.readOptional(buffer, null, this::readCappedSurface);
+        final BiomeSurfaceMaterialData surfaceMaterial = helper.readOptional(buffer, null, this::readSurfaceMaterial);
+        final boolean hasSwampSurface = buffer.readBoolean();
+        final boolean hasFrozenOceanSurface = buffer.readBoolean();
+        final boolean hasTheEndSurface = buffer.readBoolean();
+        final BiomeMesaSurfaceData mesaSurface = helper.readOptional(buffer, null, this::readMesaSurface);
+        final BiomeCappedSurfaceData cappedSurface = helper.readOptional(buffer, null, this::readCappedSurface);
         return new BiomeSurfaceBuilderData(
                 surfaceMaterial,
                 false,

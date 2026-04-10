@@ -1,15 +1,12 @@
 package org.cloudburstmc.protocol.bedrock.codec.v859.serializer;
 
 import io.netty.buffer.ByteBuf;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v844.serializer.BiomeDefinitionListSerializer_v844;
 import org.cloudburstmc.protocol.bedrock.data.biome.*;
-import org.cloudburstmc.protocol.common.util.SequencedHashSet;
-import org.cloudburstmc.protocol.common.util.VarInts;
-import org.cloudburstmc.protocol.common.util.index.Indexed;
-import org.cloudburstmc.protocol.common.util.index.IndexedList;
 
 import java.util.List;
 
@@ -21,26 +18,26 @@ public class BiomeDefinitionListSerializer_v859 extends BiomeDefinitionListSeria
     public static final BiomeDefinitionListSerializer_v859 INSTANCE = new BiomeDefinitionListSerializer_v859();
 
     @Override
-    protected void writeDefinitionChunkGen(ByteBuf buffer, BedrockCodecHelper helper, BiomeDefinitionChunkGenData definitionChunkGen, SequencedHashSet<String> strings) {
-        super.writeDefinitionChunkGen(buffer, helper, definitionChunkGen, strings);
-        helper.writeOptionalNull(buffer, definitionChunkGen.getReplacementData(), (buf, codecHelper, data) -> this.writeBiomeReplacement(buf, codecHelper, data, strings));
+    protected void writeDefinitionChunkGen(ByteBuf buffer, BedrockCodecHelper helper, BiomeDefinitionChunkGenData definitionChunkGen) {
+        super.writeDefinitionChunkGen(buffer, helper, definitionChunkGen);
+        helper.writeOptionalNull(buffer, definitionChunkGen.getReplacementData(), (buf, codecHelper, data) -> this.writeBiomeReplacement(buf, codecHelper, data));
     }
 
     @Override
-    protected BiomeDefinitionChunkGenData readDefinitionChunkGen(ByteBuf buffer, BedrockCodecHelper helper, List<String> strings) {
-        BiomeClimateData climate = helper.readOptional(buffer, null, this::readClimate);
-        List<BiomeConsolidatedFeatureData> consolidatedFeatures = helper.readOptional(buffer, null,
-                (buf, aHelper) -> this.readConsolidatedFeatures(buf, aHelper, strings));
-        BiomeMountainParamsData mountainParams = helper.readOptional(buffer, null, this::readMountainParamsData);
-        BiomeSurfaceMaterialAdjustmentData surfaceMaterialAdjustment = helper.readOptional(buffer, null,
-                (buf, aHelper) -> this.readSurfaceMaterialAdjustment(buf, aHelper, strings));
-        BiomeSurfaceBuilderData surfaceBuilderData = helper.readOptional(buffer, null, this::readBiomeSurfaceBuilderData);
-        BiomeOverworldGenRulesData overworldGenRules = helper.readOptional(buffer, null,
-                (buf, aHelper) -> this.readOverworldGenRules(buf, aHelper, strings));
-        BiomeMultinoiseGenRulesData multinoiseGenRules = helper.readOptional(buffer, null, this::readMultinoiseGenRules);
-        BiomeLegacyWorldGenRulesData legacyWorldGenRules = helper.readOptional(buffer, null,
-                (buf, aHelper) -> this.readLegacyWorldGenRules(buf, aHelper, strings));
-        BiomeReplacementData replacementData = helper.readOptional(buffer, null, (buf, codecHelper) -> this.readBiomeReplacement(buffer, codecHelper, strings));
+    protected BiomeDefinitionChunkGenData readDefinitionChunkGen(ByteBuf buffer, BedrockCodecHelper helper) {
+        final BiomeClimateData climate = helper.readOptional(buffer, null, this::readClimate);
+        final List<BiomeConsolidatedFeatureData> consolidatedFeatures = helper.readOptional(buffer, null,
+                this::readConsolidatedFeatures);
+        final BiomeMountainParamsData mountainParams = helper.readOptional(buffer, null, this::readMountainParamsData);
+        final BiomeSurfaceMaterialAdjustmentData surfaceMaterialAdjustment = helper.readOptional(buffer, null,
+                this::readSurfaceMaterialAdjustment);
+        final BiomeSurfaceBuilderData surfaceBuilderData = helper.readOptional(buffer, null, this::readBiomeSurfaceBuilderData);
+        final BiomeOverworldGenRulesData overworldGenRules = helper.readOptional(buffer, null,
+                this::readOverworldGenRules);
+        final BiomeMultinoiseGenRulesData multinoiseGenRules = helper.readOptional(buffer, null, this::readMultinoiseGenRules);
+        final BiomeLegacyWorldGenRulesData legacyWorldGenRules = helper.readOptional(buffer, null,
+                this::readLegacyWorldGenRules);
+        final BiomeReplacementData replacementData = helper.readOptional(buffer, null, (buf, codecHelper) -> this.readBiomeReplacement(buffer, codecHelper));
 
         return new BiomeDefinitionChunkGenData(climate, consolidatedFeatures,
                 mountainParams, surfaceMaterialAdjustment,
@@ -49,24 +46,20 @@ public class BiomeDefinitionListSerializer_v859 extends BiomeDefinitionListSeria
                 legacyWorldGenRules, replacementData, null, null, null);
     }
 
-    protected void writeBiomeReplacement(ByteBuf buffer, BedrockCodecHelper helper, BiomeReplacementData data, SequencedHashSet<String> strings) {
-        buffer.writeShortLE(strings.addAndGetIndex(data.getBiome()));
-        buffer.writeShortLE(strings.addAndGetIndex(data.getDimension()));
-        helper.writeArray(buffer, data.getTargetBiomes(), (buf, value) -> buf.writeShortLE(strings.addAndGetIndex(value)));
+    protected void writeBiomeReplacement(ByteBuf buffer, BedrockCodecHelper helper, BiomeReplacementData data) {
+        buffer.writeShortLE(data.getBiome());
+        buffer.writeShortLE(data.getDimension());
+        helper.writeArray(buffer, data.getTargetBiomes(), (buf, codecHelper, targetBiome) -> buf.writeShortLE(targetBiome));
         buffer.writeFloatLE(data.getAmount());
         buffer.writeFloatLE(data.getNoiseFrequencyScale());
         buffer.writeIntLE(data.getReplacementIndex());
     }
 
-    protected BiomeReplacementData readBiomeReplacement(ByteBuf buffer, BedrockCodecHelper helper, List<String> strings) {
-        final Indexed<String> biome = new Indexed<>(strings, buffer.readShortLE());
-        final Indexed<String> dimension = new Indexed<>(strings, buffer.readShortLE());
-        final int targetBiomesLength = VarInts.readUnsignedInt(buffer);
-        final int[] targetBiomesIndices = new int[targetBiomesLength];
-        for (int i = 0; i < targetBiomesLength; i++) {
-            targetBiomesIndices[i] = buffer.readShortLE();
-        }
-        final IndexedList<String> targetBiomes = new IndexedList<>(strings, targetBiomesIndices);
+    protected BiomeReplacementData readBiomeReplacement(ByteBuf buffer, BedrockCodecHelper helper) {
+        final short biome = buffer.readShortLE();
+        final short dimension = buffer.readShortLE();
+        final List<Short> targetBiomes = new ObjectArrayList<>();
+        helper.readArray(buffer, targetBiomes, ByteBuf::readShortLE);
         final float amount = buffer.readFloatLE();
         final float noiseFrequencyScale = buffer.readFloatLE();
         final int replacementIndex = buffer.readIntLE();

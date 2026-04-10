@@ -21,41 +21,33 @@ public class BiomeDefinitionListSerializer_v974 extends BiomeDefinitionListSeria
     public static final BiomeDefinitionListSerializer_v974 INSTANCE = new BiomeDefinitionListSerializer_v974();
 
     @Override
-    protected void writeDefinitionChunkGen(ByteBuf buffer, BedrockCodecHelper helper, BiomeDefinitionChunkGenData definitionChunkGen, SequencedHashSet<String> strings) {
+    protected void writeDefinitionChunkGen(ByteBuf buffer, BedrockCodecHelper helper, BiomeDefinitionChunkGenData definitionChunkGen) {
         helper.writeOptionalNull(buffer, definitionChunkGen.getClimate(), this::writeClimate);
-        helper.writeOptionalNull(buffer, definitionChunkGen.getConsolidatedFeatures(),
-                (buf, aHelper, consolidatedFeatures) -> this.writeConsolidatedFeatures(buf, aHelper, consolidatedFeatures, strings));
+        helper.writeOptionalNull(buffer, definitionChunkGen.getConsolidatedFeatures(), this::writeConsolidatedFeatures);
         helper.writeOptionalNull(buffer, definitionChunkGen.getMountainParams(), this::writeMountainParamsData);
-        helper.writeOptionalNull(buffer, definitionChunkGen.getSurfaceMaterialAdjustment(),
-                (buf, aHelper, surfaceMaterialAdjustment) -> this.writeSurfaceMaterialAdjustment(buf, aHelper, surfaceMaterialAdjustment, strings));
-        helper.writeOptionalNull(buffer, definitionChunkGen.getOverworldGenRules(),
-                (buf, aHelper, overworldGenRules) -> this.writeOverworldGenRules(buf, aHelper, overworldGenRules, strings));
+        helper.writeOptionalNull(buffer, definitionChunkGen.getSurfaceMaterialAdjustment(), this::writeSurfaceMaterialAdjustment);
+        helper.writeOptionalNull(buffer, definitionChunkGen.getOverworldGenRules(), this::writeOverworldGenRules);
         helper.writeOptionalNull(buffer, definitionChunkGen.getMultinoiseGenRules(), this::writeMultinoiseGenRules);
-        helper.writeOptionalNull(buffer, definitionChunkGen.getLegacyWorldGenRules(),
-                (buf, aHelper, legacyWorldGenRules) -> this.writeLegacyWorldGenRules(buf, aHelper, legacyWorldGenRules, strings));
-        helper.writeOptionalNull(buffer, definitionChunkGen.getReplacementBiomes(), (buf, codecHelper, data) -> this.writeBiomeReplacementsData(buf, codecHelper, data, strings));
+        helper.writeOptionalNull(buffer, definitionChunkGen.getLegacyWorldGenRules(), this::writeLegacyWorldGenRules);
+        helper.writeOptionalNull(buffer, definitionChunkGen.getReplacementBiomes(), this::writeBiomeReplacementsData);
         helper.writeOptionalNull(buffer, definitionChunkGen.getVillageType(), (byteBuf, villageType) -> byteBuf.writeByte(villageType.ordinal()));
         helper.writeOptionalNull(buffer, definitionChunkGen.getSurfaceBuilderData(), this::writeBiomeSurfaceBuilderData);
         helper.writeOptionalNull(buffer, definitionChunkGen.getSubSurfaceBuilderData(), this::writeBiomeSurfaceBuilderData);
     }
 
     @Override
-    protected BiomeDefinitionChunkGenData readDefinitionChunkGen(ByteBuf buffer, BedrockCodecHelper helper, List<String> strings) {
-        BiomeClimateData climate = helper.readOptional(buffer, null, this::readClimate);
-        List<BiomeConsolidatedFeatureData> consolidatedFeatures = helper.readOptional(buffer, null,
-                (buf, aHelper) -> this.readConsolidatedFeatures(buf, aHelper, strings));
-        BiomeMountainParamsData mountainParams = helper.readOptional(buffer, null, this::readMountainParamsData);
-        BiomeSurfaceMaterialAdjustmentData surfaceMaterialAdjustment = helper.readOptional(buffer, null,
-                (buf, aHelper) -> this.readSurfaceMaterialAdjustment(buf, aHelper, strings));
-        BiomeOverworldGenRulesData overworldGenRules = helper.readOptional(buffer, null,
-                (buf, aHelper) -> this.readOverworldGenRules(buf, aHelper, strings));
-        BiomeMultinoiseGenRulesData multinoiseGenRules = helper.readOptional(buffer, null, this::readMultinoiseGenRules);
-        BiomeLegacyWorldGenRulesData legacyWorldGenRules = helper.readOptional(buffer, null,
-                (buf, aHelper) -> this.readLegacyWorldGenRules(buf, aHelper, strings));
-        List<BiomeReplacementData> replacementBiomes = helper.readOptional(buffer, null, (buf, codecHelper) -> this.readBiomeReplacementsData(buf, codecHelper, strings));
-        VillageType villageType = helper.readOptional(buffer, null, (byteBuf, codecHelper) -> VillageType.from(byteBuf.readUnsignedByte()));
-        BiomeSurfaceBuilderData surfaceBuilderData = helper.readOptional(buffer, null, this::readBiomeSurfaceBuilderData);
-        BiomeSurfaceBuilderData subSurfaceBuilderData = helper.readOptional(buffer, null, this::readBiomeSurfaceBuilderData);
+    protected BiomeDefinitionChunkGenData readDefinitionChunkGen(ByteBuf buffer, BedrockCodecHelper helper) {
+        final BiomeClimateData climate = helper.readOptional(buffer, null, this::readClimate);
+        final List<BiomeConsolidatedFeatureData> consolidatedFeatures = helper.readOptional(buffer, null, this::readConsolidatedFeatures);
+        final BiomeMountainParamsData mountainParams = helper.readOptional(buffer, null, this::readMountainParamsData);
+        final BiomeSurfaceMaterialAdjustmentData surfaceMaterialAdjustment = helper.readOptional(buffer, null, this::readSurfaceMaterialAdjustment);
+        final BiomeOverworldGenRulesData overworldGenRules = helper.readOptional(buffer, null, this::readOverworldGenRules);
+        final BiomeMultinoiseGenRulesData multinoiseGenRules = helper.readOptional(buffer, null, this::readMultinoiseGenRules);
+        final BiomeLegacyWorldGenRulesData legacyWorldGenRules = helper.readOptional(buffer, null, this::readLegacyWorldGenRules);
+        final List<BiomeReplacementData> replacementBiomes = helper.readOptional(buffer, null, this::readBiomeReplacementsData);
+        final VillageType villageType = helper.readOptional(buffer, null, (byteBuf, codecHelper) -> VillageType.from(byteBuf.readUnsignedByte()));
+        final BiomeSurfaceBuilderData surfaceBuilderData = helper.readOptional(buffer, null, this::readBiomeSurfaceBuilderData);
+        final BiomeSurfaceBuilderData subSurfaceBuilderData = helper.readOptional(buffer, null, this::readBiomeSurfaceBuilderData);
 
         return new BiomeDefinitionChunkGenData(climate, consolidatedFeatures,
                 mountainParams, surfaceMaterialAdjustment,
@@ -63,13 +55,13 @@ public class BiomeDefinitionListSerializer_v974 extends BiomeDefinitionListSeria
                 legacyWorldGenRules, null, replacementBiomes, villageType, subSurfaceBuilderData);
     }
 
-    protected void writeBiomeReplacementsData(ByteBuf buffer, BedrockCodecHelper helper, List<BiomeReplacementData> data, SequencedHashSet<String> strings) {
-        helper.writeArray(buffer, data, (buf, codecHelper, value) -> this.writeBiomeReplacement(buf, codecHelper, value, strings));
+    protected void writeBiomeReplacementsData(ByteBuf buffer, BedrockCodecHelper helper, List<BiomeReplacementData> data) {
+        helper.writeArray(buffer, data, this::writeBiomeReplacement);
     }
 
-    protected List<BiomeReplacementData> readBiomeReplacementsData(ByteBuf buffer, BedrockCodecHelper helper, List<String> strings) {
+    protected List<BiomeReplacementData> readBiomeReplacementsData(ByteBuf buffer, BedrockCodecHelper helper) {
         final List<BiomeReplacementData> biomeReplacements = new ObjectArrayList<>();
-        helper.readArray(buffer, biomeReplacements, (buf, codecHelper) -> this.readBiomeReplacement(buf, codecHelper, strings));
+        helper.readArray(buffer, biomeReplacements, this::readBiomeReplacement);
         return biomeReplacements;
     }
 
