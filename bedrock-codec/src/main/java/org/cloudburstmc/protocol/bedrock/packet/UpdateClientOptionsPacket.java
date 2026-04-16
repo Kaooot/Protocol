@@ -14,7 +14,7 @@ public class UpdateClientOptionsPacket implements BedrockPacket {
 
     private GraphicsMode graphicsMode;
     /**
-     * @since v974
+     * @since v975
      */
     private OptionalBoolean filterProfanityChange = OptionalBoolean.empty();
 

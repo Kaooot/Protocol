@@ -15,7 +15,7 @@ public class ActorEventPacket implements BedrockPacket {
     private ActorEvent type;
     private int data;
     /**
-     * @since v974
+     * @since v975
      */
     private Vector3f fireAtPosition;
 

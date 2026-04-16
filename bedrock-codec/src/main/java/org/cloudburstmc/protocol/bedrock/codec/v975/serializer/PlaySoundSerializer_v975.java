@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.codec.v974.serializer;
+package org.cloudburstmc.protocol.bedrock.codec.v975.serializer;
 
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
@@ -12,8 +12,8 @@ import org.cloudburstmc.protocol.bedrock.packet.PlaySoundPacket;
  * @author Kaooot
  */
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class PlaySoundSerializer_v974 extends PlaySoundSerializer_v291 {
-    public static final PlaySoundSerializer_v974 INSTANCE = new PlaySoundSerializer_v974();
+public class PlaySoundSerializer_v975 extends PlaySoundSerializer_v291 {
+    public static final PlaySoundSerializer_v975 INSTANCE = new PlaySoundSerializer_v975();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, PlaySoundPacket packet) {

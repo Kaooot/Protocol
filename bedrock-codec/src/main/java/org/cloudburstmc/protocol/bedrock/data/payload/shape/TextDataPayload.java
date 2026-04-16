@@ -13,23 +13,23 @@ public class TextDataPayload implements DebugShapePayload {
 
     private String text;
     /**
-     * @since v974
+     * @since v975
      */
     private boolean useRotation;
     /**
-     * @since v974
+     * @since v975
      */
     private Integer backgroundColor;
     /**
-     * @since v974
+     * @since v975
      */
     private boolean depthTest;
     /**
-     * @since v974
+     * @since v975
      */
     private boolean showBackface;
     /**
-     * @since v974
+     * @since v975
      */
     private boolean showTextBackface;
 

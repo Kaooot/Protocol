@@ -29,11 +29,11 @@ public class ServerboundDiagnosticsPacket implements BedrockPacket{
      */
     private final List<MemoryCategoryCounter> memoryCategoryValues = new ObjectArrayList<>();
     /**
-     * @since v974
+     * @since v975
      */
     private final List<EntityDiagnosticTimingInfo> entityDiagnostics = new ObjectArrayList<>();
     /**
-     * @since v974
+     * @since v975
      */
     private final List<SystemDiagnosticTimingInfo> systemDiagnostics = new ObjectArrayList<>();
 

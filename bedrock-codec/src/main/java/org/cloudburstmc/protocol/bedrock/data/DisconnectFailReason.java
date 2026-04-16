@@ -195,19 +195,19 @@ public enum DisconnectFailReason {
      */
     DENY_LISTED,
     /**
-     * @since v974
+     * @since v975
      */
     NONCE_MISSING,
     /**
-     * @since v974
+     * @since v975
      */
     NONCE_NOT_FOUND,
     /**
-     * @since v974
+     * @since v975
      */
     NONCE_EXPIRED,
     /**
-     * @since v974
+     * @since v975
      */
     NONCE_NOT_VALID
 }

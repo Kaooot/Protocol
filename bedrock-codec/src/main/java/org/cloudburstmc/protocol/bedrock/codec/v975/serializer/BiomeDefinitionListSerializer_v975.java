@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.codec.v974.serializer;
+package org.cloudburstmc.protocol.bedrock.codec.v975.serializer;
 
 import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
@@ -8,7 +8,6 @@ import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v924.serializer.BiomeDefinitionListSerializer_v924;
 import org.cloudburstmc.protocol.bedrock.data.biome.*;
 import org.cloudburstmc.protocol.bedrock.data.definitions.BlockDefinition;
-import org.cloudburstmc.protocol.common.util.SequencedHashSet;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
 import java.util.List;
@@ -17,8 +16,8 @@ import java.util.List;
  * @author Kaooot
  */
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class BiomeDefinitionListSerializer_v974 extends BiomeDefinitionListSerializer_v924 {
-    public static final BiomeDefinitionListSerializer_v974 INSTANCE = new BiomeDefinitionListSerializer_v974();
+public class BiomeDefinitionListSerializer_v975 extends BiomeDefinitionListSerializer_v924 {
+    public static final BiomeDefinitionListSerializer_v975 INSTANCE = new BiomeDefinitionListSerializer_v975();
 
     @Override
     protected void writeDefinitionChunkGen(ByteBuf buffer, BedrockCodecHelper helper, BiomeDefinitionChunkGenData definitionChunkGen) {
@@ -113,7 +112,7 @@ public class BiomeDefinitionListSerializer_v974 extends BiomeDefinitionListSeria
         helper.readArray(buffer, nonReplaceableBlocks, this::readBlock);
         helper.readArray(buffer, gradientBlocks, this::readBlock);
         final String noiseSeedString = helper.readString(buffer);
-        final int firstOctave = VarInts.readInt(buffer);
+        final int firstOctave = buffer.readIntLE();
         final List<Float> amplitudes = new ObjectArrayList<>();
         helper.readArray(buffer, amplitudes, ByteBuf::readFloatLE);
         return new BiomeNoiseGradientSurfaceData(

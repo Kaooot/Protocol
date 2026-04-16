@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.codec.v974.serializer;
+package org.cloudburstmc.protocol.bedrock.codec.v975.serializer;
 
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
@@ -12,8 +12,8 @@ import org.cloudburstmc.protocol.common.util.OptionalBoolean;
  * @author Kaooot
  */
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class UpdateClientOptionsSerializer_v974 extends UpdateClientOptionsSerializer_v786 {
-    public static final UpdateClientOptionsSerializer_v974 INSTANCE = new UpdateClientOptionsSerializer_v974();
+public class UpdateClientOptionsSerializer_v975 extends UpdateClientOptionsSerializer_v786 {
+    public static final UpdateClientOptionsSerializer_v975 INSTANCE = new UpdateClientOptionsSerializer_v975();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, UpdateClientOptionsPacket packet) {

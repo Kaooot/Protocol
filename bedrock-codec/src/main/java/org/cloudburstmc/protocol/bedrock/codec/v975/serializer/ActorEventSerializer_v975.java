@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.codec.v974.serializer;
+package org.cloudburstmc.protocol.bedrock.codec.v975.serializer;
 
 import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
@@ -10,9 +10,9 @@ import org.cloudburstmc.protocol.common.util.TypeMap;
 /**
  * @author Kaooot
  */
-public class ActorEventSerializer_v974 extends ActorEventSerializer_v291 {
+public class ActorEventSerializer_v975 extends ActorEventSerializer_v291 {
 
-    public ActorEventSerializer_v974(TypeMap<ActorEvent> typeMap) {
+    public ActorEventSerializer_v975(TypeMap<ActorEvent> typeMap) {
         super(typeMap);
     }
 

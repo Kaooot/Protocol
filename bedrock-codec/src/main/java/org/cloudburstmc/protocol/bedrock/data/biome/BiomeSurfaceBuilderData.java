@@ -25,7 +25,7 @@ public class BiomeSurfaceBuilderData {
     @Nullable
     BiomeCappedSurfaceData cappedSurface;
     /**
-     * @since v974
+     * @since v975
      */
     @Nullable
     BiomeNoiseGradientSurfaceData noiseGradientSurface;

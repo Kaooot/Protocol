@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.codec.v974.serializer;
+package org.cloudburstmc.protocol.bedrock.codec.v975.serializer;
 
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
@@ -13,8 +13,8 @@ import org.cloudburstmc.protocol.common.util.VarInts;
  * @author Kaooot
  */
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class DisconnectSerializer_v974 extends DisconnectSerializer_v712 {
-    public static final DisconnectSerializer_v974 INSTANCE = new DisconnectSerializer_v974();
+public class DisconnectSerializer_v975 extends DisconnectSerializer_v712 {
+    public static final DisconnectSerializer_v975 INSTANCE = new DisconnectSerializer_v975();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, DisconnectPacket packet) {

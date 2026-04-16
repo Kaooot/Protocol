@@ -13,7 +13,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 public class DisconnectPacket implements BedrockPacket {
     private DisconnectFailReason reason = DisconnectFailReason.UNKNOWN;
     /**
-     * @deprecated since v974
+     * @deprecated since v975
      */
     private boolean skipMessage;
     private DisconnectPacketMessages messages = new DisconnectPacketMessages("", "");

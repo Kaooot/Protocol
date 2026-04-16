@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.codec.v974.serializer;
+package org.cloudburstmc.protocol.bedrock.codec.v975.serializer;
 
 import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
@@ -12,9 +12,9 @@ import org.cloudburstmc.protocol.common.util.TypeMap;
 /**
  * @author Kaooot
  */
-public class ServerboundDiagnosticsSerializer_v974 extends ServerboundDiagnosticsSerializer_v924 {
+public class ServerboundDiagnosticsSerializer_v975 extends ServerboundDiagnosticsSerializer_v924 {
 
-    public ServerboundDiagnosticsSerializer_v974(TypeMap<MemoryCategory> memoryCategoryTypes) {
+    public ServerboundDiagnosticsSerializer_v975(TypeMap<MemoryCategory> memoryCategoryTypes) {
         super(memoryCategoryTypes);
     }
 
