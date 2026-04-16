@@ -102,7 +102,7 @@ public class BiomeDefinitionListSerializer_v975 extends BiomeDefinitionListSeria
         helper.writeArray(buffer, data.getNonReplaceableBlocks(), this::writeBlock);
         helper.writeArray(buffer, data.getGradientBlocks(), this::writeBlock);
         helper.writeString(buffer, data.getNoiseSeedString());
-        VarInts.writeInt(buffer, data.getFirstOctave());
+        buffer.writeIntLE(data.getFirstOctave());
         helper.writeArray(buffer, data.getAmplitudes(), ByteBuf::writeFloatLE);
     }
 
