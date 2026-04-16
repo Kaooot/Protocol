@@ -31,11 +31,11 @@ public class ServerboundDiagnosticsPacket implements BedrockPacket{
     /**
      * @since v974
      */
-    private EntityDiagnosticTimingInfo entityDiagnostics;
+    private final List<EntityDiagnosticTimingInfo> entityDiagnostics = new ObjectArrayList<>();
     /**
      * @since v974
      */
-    private SystemDiagnosticTimingInfo systemDiagnostics;
+    private final List<SystemDiagnosticTimingInfo> systemDiagnostics = new ObjectArrayList<>();
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {
