@@ -18,7 +18,7 @@ public class DisconnectSerializer_v975 extends DisconnectSerializer_v712 {
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, DisconnectPacket packet) {
-        VarInts.writeUnsignedInt(buffer, packet.getReason().ordinal());
+        VarInts.writeInt(buffer, packet.getReason().ordinal());
         final int type = packet.getMessages() != null ? 0 : 1;
         VarInts.writeUnsignedInt(buffer, type);
         if (type == 0) {
@@ -28,7 +28,7 @@ public class DisconnectSerializer_v975 extends DisconnectSerializer_v712 {
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, DisconnectPacket packet) {
-        packet.setReason(DisconnectFailReason.values()[VarInts.readUnsignedInt(buffer)]);
+        packet.setReason(DisconnectFailReason.values()[VarInts.readInt(buffer)]);
         final int type = VarInts.readUnsignedInt(buffer);
         if (type == 0) {
             packet.setMessages(this.readMessages(buffer, helper));
