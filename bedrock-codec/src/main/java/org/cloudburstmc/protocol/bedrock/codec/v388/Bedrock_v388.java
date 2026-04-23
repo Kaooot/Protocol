@@ -47,7 +47,7 @@ public class Bedrock_v388 extends Bedrock_v361 {
     protected static final TypeMap<CommandParam> COMMAND_PARAMS = Bedrock_v361.COMMAND_PARAMS.toBuilder()
             .shift(27, 2)
             .shift(31, 7)
-            .insert(37, CommandParam.BLOCK_POSITION)
+            .insert(37, CommandParam.POSITION)
             .shift(46, 1)
             .build();
 

@@ -37,11 +37,11 @@ public class Bedrock_v582 extends Bedrock_v575 {
 
     protected static final TypeMap<CommandParam> COMMAND_PARAMS = Bedrock_v575.COMMAND_PARAMS.toBuilder()
             .shift(32, 5)
-            .insert(32, CommandParam.PERMISSION)
-            .insert(33, CommandParam.PERMISSIONS)
-            .insert(34, CommandParam.PERMISSION_SELECTOR)
-            .insert(35, CommandParam.PERMISSION_ELEMENT)
-            .insert(36, CommandParam.PERMISSION_ELEMENTS)
+            .insert(32, CommandParam.HAS_PERMISSION_ARG)
+            .insert(33, CommandParam.HAS_PERMISSIONS_ARG)
+            .insert(34, CommandParam.HAS_PERMISSION_SELECTOR)
+            .insert(35, CommandParam.HAS_PERMISSION_ELEMENT)
+            .insert(36, CommandParam.HAS_PERMISSION_ELEMENTS)
             .build();
 
     public static final BedrockCodec CODEC = Bedrock_v575.CODEC.toBuilder()

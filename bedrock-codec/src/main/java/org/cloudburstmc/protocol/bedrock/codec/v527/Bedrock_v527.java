@@ -35,7 +35,7 @@ public class Bedrock_v527 extends Bedrock_v503 {
     protected static final TypeMap<CommandParam> COMMAND_PARAMS = Bedrock_v503.COMMAND_PARAMS.toBuilder()
             .shift(7, 1)
             .insert(7, CommandParam.COMPARE_OPERATOR)
-            .insert(23, CommandParam.INT_RANGE)
+            .insert(23, CommandParam.INTEGER_RANGE)
             .build();
 
     protected static final TypeMap<LevelEventType> LEVEL_EVENTS = Bedrock_v503.LEVEL_EVENTS.toBuilder()

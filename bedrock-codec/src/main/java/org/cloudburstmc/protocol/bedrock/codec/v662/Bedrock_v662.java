@@ -30,7 +30,7 @@ public class Bedrock_v662 extends Bedrock_v649 {
             .insert(24, CommandParam.RATIONAL_RANGE_VAL)
             .insert(25, CommandParam.RATIONAL_RANGE_POST_VAL)
             .insert(26, CommandParam.RATIONAL_RANGE)
-            .insert(27, CommandParam.RATIONAL_RANGE_FULL)
+            .insert(27, CommandParam.FULL_RATIONAL_RANGE)
             .shift(48, 8)
             .insert(48, CommandParam.PROPERTY_VALUE)
             .insert(49, CommandParam.HAS_PROPERTY_PARAM_VALUE)

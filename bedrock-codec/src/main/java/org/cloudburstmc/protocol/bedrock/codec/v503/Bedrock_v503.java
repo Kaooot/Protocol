@@ -36,7 +36,7 @@ public class Bedrock_v503 extends Bedrock_v486 {
 
     protected static final TypeMap<CommandParam> COMMAND_PARAMS = Bedrock_v486.COMMAND_PARAMS.toBuilder()
             .shift(32, 6)
-            .insert(37, CommandParam.EQUIPMENT_SLOTS)
+            .insert(37, CommandParam.EQUIPMENT_SLOT_ENUM)
             .build();
 
     protected static final TypeMap<LevelEventType> LEVEL_EVENTS = Bedrock_v486.LEVEL_EVENTS.toBuilder()
