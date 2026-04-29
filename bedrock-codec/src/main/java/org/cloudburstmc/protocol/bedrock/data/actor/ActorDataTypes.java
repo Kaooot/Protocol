@@ -332,9 +332,9 @@ public class ActorDataTypes {
     /**
      * @since v975
      */
-    public static final ActorDataType<Integer> RESERVED_139 = new ActorDataType<>(Integer.class, "RESERVED_139");
+    public static final ActorDataType<Long> RESERVED_139 = new ActorDataType<>(Long.class, "RESERVED_139");
     /**
      * @since v975
      */
-    public static final ActorDataType<Integer> NAMEPLATE_RENDER_DISTANCE_MAX = new ActorDataType<>(Integer.class, "NAMEPLATE_RENDER_DISTANCE_MAX");
+    public static final ActorDataType<Float> NAMEPLATE_RENDER_DISTANCE_MAX = new ActorDataType<>(Float.class, "NAMEPLATE_RENDER_DISTANCE_MAX");
 }

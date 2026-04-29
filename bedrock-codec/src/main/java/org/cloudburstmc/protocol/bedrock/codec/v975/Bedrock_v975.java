@@ -55,8 +55,8 @@ public class Bedrock_v975 extends Bedrock_v944 {
             .toBuilder()
             .update(ActorDataTypes.FLAGS, new FlagTransformer(ACTOR_FLAGS, 0))
             .update(ActorDataTypes.FLAGS_2, new FlagTransformer(ACTOR_FLAGS, 1))
-            .insert(ActorDataTypes.RESERVED_139, 139, ActorDataFormat.INT) // TODO check
-            .insert(ActorDataTypes.NAMEPLATE_RENDER_DISTANCE_MAX, 140, ActorDataFormat.INT) // TODO check
+            .insert(ActorDataTypes.RESERVED_139, 139, ActorDataFormat.LONG)
+            .insert(ActorDataTypes.NAMEPLATE_RENDER_DISTANCE_MAX, 140, ActorDataFormat.FLOAT)
             .update(ActorDataTypes.HEARTBEAT_SOUND_EVENT, new TypeMapTransformer<>(SOUND_EVENTS))
             .update(ActorDataTypes.DATA_PARTICLE, new TypeMapTransformer<>(PARTICLE_TYPES))
             .build();
