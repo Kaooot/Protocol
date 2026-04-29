@@ -94,6 +94,7 @@ public class CommandParam {
     public static final CommandParam BLOCK_STATE_VALUES = new CommandParam(CommandParamType.BLOCK_STATE_VALUES);
     public static final CommandParam BLOCK_STATE_ARRAY = new CommandParam(CommandParamType.BLOCK_STATE_ARRAY);
     public static final CommandParam BLOCK_STATE_ARRAY_CONT = new CommandParam(CommandParamType.BLOCK_STATE_ARRAY_CONT);
+    public static final CommandParam CLOCK_TIME_MARKER_NAME = new CommandParam(CommandParamType.CLOCK_TIME_MARKER_NAME);
     public static final CommandParam COMMAND = new CommandParam(CommandParamType.COMMAND);
     public static final CommandParam SLASH_COMMAND = new CommandParam(CommandParamType.SLASH_COMMAND);
     public static final CommandParam CHAINED_COMMAND = new CommandParam(CommandParamType.CHAINED_COMMAND);

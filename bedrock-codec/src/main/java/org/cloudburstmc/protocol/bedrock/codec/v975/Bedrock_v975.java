@@ -2,13 +2,20 @@ package org.cloudburstmc.protocol.bedrock.codec.v975;
 
 import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
+import org.cloudburstmc.protocol.bedrock.codec.v671.Bedrock_v671;
+import org.cloudburstmc.protocol.bedrock.codec.v898.serializer.AvailableCommandsSerializer_v898;
 import org.cloudburstmc.protocol.bedrock.codec.v944.Bedrock_v944;
 import org.cloudburstmc.protocol.bedrock.codec.v975.serializer.*;
+import org.cloudburstmc.protocol.bedrock.data.LevelEventType;
 import org.cloudburstmc.protocol.bedrock.data.PacketRecipient;
+import org.cloudburstmc.protocol.bedrock.data.ParticleType;
 import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataFormat;
 import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataTypes;
 import org.cloudburstmc.protocol.bedrock.data.actor.ActorEvent;
 import org.cloudburstmc.protocol.bedrock.data.actor.ActorFlags;
+import org.cloudburstmc.protocol.bedrock.data.command.CommandParam;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.TextProcessingEventOrigin;
 import org.cloudburstmc.protocol.bedrock.packet.*;
 import org.cloudburstmc.protocol.bedrock.transformer.FlagTransformer;
 import org.cloudburstmc.protocol.bedrock.transformer.TypeMapTransformer;
@@ -22,6 +29,8 @@ public class Bedrock_v975 extends Bedrock_v944 {
     protected static final TypeMap<ActorFlags> ACTOR_FLAGS = Bedrock_v944.ACTOR_FLAGS
             .toBuilder()
             .insert(127, ActorFlags.USES_LEGACY_FRICTION)
+            .insert(128, ActorFlags.USES_UNIFORM_AIR_DRAG)
+            .insert(129, ActorFlags.NAMEPLATE_DEPTH_TESTED)
             .build();
 
     protected static final TypeMap<ActorEvent> ACTOR_EVENTS = Bedrock_v944.ACTOR_EVENTS.toBuilder()
@@ -34,11 +43,34 @@ public class Bedrock_v975 extends Bedrock_v944 {
             .insert(601, SoundEvent.UNDEFINED)
             .build();
 
+    protected static final TypeMap<ParticleType> PARTICLE_TYPES = Bedrock_v944.PARTICLE_TYPES.toBuilder()
+            .insert(101, ParticleType.SULFUR_CUBE)
+            .build();
+
+    protected static final TypeMap<LevelEventType> LEVEL_EVENTS = Bedrock_v944.LEVEL_EVENTS.toBuilder()
+            .insert(LEVEL_EVENT_PARTICLE_TYPE, PARTICLE_TYPES)
+            .build();
+
     protected static final ActorDataTypeMap ACTOR_DATA = Bedrock_v944.ACTOR_DATA
             .toBuilder()
             .update(ActorDataTypes.FLAGS, new FlagTransformer(ACTOR_FLAGS, 0))
             .update(ActorDataTypes.FLAGS_2, new FlagTransformer(ACTOR_FLAGS, 1))
+            .insert(ActorDataTypes.RESERVED_139, 139, ActorDataFormat.INT) // TODO check
+            .insert(ActorDataTypes.NAMEPLATE_RENDER_DISTANCE_MAX, 140, ActorDataFormat.INT) // TODO check
             .update(ActorDataTypes.HEARTBEAT_SOUND_EVENT, new TypeMapTransformer<>(SOUND_EVENTS))
+            .update(ActorDataTypes.DATA_PARTICLE, new TypeMapTransformer<>(PARTICLE_TYPES))
+            .build();
+
+    protected static final TypeMap<TextProcessingEventOrigin> TEXT_PROCESSING_ORIGINS = Bedrock_v944.TEXT_PROCESSING_ORIGINS
+            .toBuilder()
+            .insert(15, TextProcessingEventOrigin.DATA_DRIVEN_UI)
+            .build();
+
+    protected static final TypeMap<CommandParam> COMMAND_PARAMS = Bedrock_v671.COMMAND_PARAMS.toBuilder()
+            .remove(134217728)
+            .shift(86, 1)
+            .insert(86, CommandParam.CLOCK_TIME_MARKER_NAME)
+            .insert(134217728, CommandParam.CHAINED_COMMAND)
             .build();
 
     public static final BedrockCodec CODEC = Bedrock_v944.CODEC.toBuilder()
@@ -47,6 +79,7 @@ public class Bedrock_v975 extends Bedrock_v944 {
             .minecraftVersion("1.26.20")
             .helper(() -> new BedrockCodecHelper_v975(ACTOR_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES, PLAYER_ABILITIES, TEXT_PROCESSING_ORIGINS))
             .updateSerializer(ActorEventPacket.class, new ActorEventSerializer_v975(ACTOR_EVENTS))
+            .updateSerializer(AvailableCommandsPacket.class, new AvailableCommandsSerializer_v898(COMMAND_PARAMS))
             .updateSerializer(BiomeDefinitionListPacket.class, BiomeDefinitionListSerializer_v975.INSTANCE)
             .updateSerializer(ClientMovementPredictionSyncPacket.class, ClientMovementPredictionSyncSerializer_v975.INSTANCE)
             .updateSerializer(DimensionDataPacket.class, DimensionDataSerializer_v975.INSTANCE)

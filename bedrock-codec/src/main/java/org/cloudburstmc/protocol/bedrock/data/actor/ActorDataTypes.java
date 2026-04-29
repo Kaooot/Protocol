@@ -329,4 +329,12 @@ public class ActorDataTypes {
      * @since v924
      */
     public static final ActorDataType<Integer> AIM_ASSIST_PRIORITY_ACTOR_ID = new ActorDataType<>(Integer.class, "AIM_ASSIST_PRIORITY_ACTOR_ID");
+    /**
+     * @since v975
+     */
+    public static final ActorDataType<Integer> RESERVED_139 = new ActorDataType<>(Integer.class, "RESERVED_139");
+    /**
+     * @since v975
+     */
+    public static final ActorDataType<Integer> NAMEPLATE_RENDER_DISTANCE_MAX = new ActorDataType<>(Integer.class, "NAMEPLATE_RENDER_DISTANCE_MAX");
 }

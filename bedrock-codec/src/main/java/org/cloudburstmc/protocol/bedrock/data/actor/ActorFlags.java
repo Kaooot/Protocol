@@ -187,5 +187,13 @@ public enum ActorFlags {
     /**
      * @since v975
      */
-    USES_LEGACY_FRICTION
+    USES_LEGACY_FRICTION,
+    /**
+     * @since v975
+     */
+    USES_UNIFORM_AIR_DRAG,
+    /**
+     * @since v975
+     */
+    NAMEPLATE_DEPTH_TESTED
 }
