@@ -81,6 +81,7 @@ public class Bedrock_v975 extends Bedrock_v944 {
             .updateSerializer(ActorEventPacket.class, new ActorEventSerializer_v975(ACTOR_EVENTS))
             .updateSerializer(AvailableCommandsPacket.class, new AvailableCommandsSerializer_v898(COMMAND_PARAMS))
             .updateSerializer(BiomeDefinitionListPacket.class, BiomeDefinitionListSerializer_v975.INSTANCE)
+            .updateSerializer(ClientboundAttributeLayerSyncPacket.class, ClientboundAttributeLayerSyncSerializer_v975.INSTANCE)
             .updateSerializer(ClientMovementPredictionSyncPacket.class, ClientMovementPredictionSyncSerializer_v975.INSTANCE)
             .updateSerializer(DimensionDataPacket.class, DimensionDataSerializer_v975.INSTANCE)
             .updateSerializer(DisconnectPacket.class, DisconnectSerializer_v975.INSTANCE)

@@ -129,12 +129,7 @@ public class ClientboundAttributeLayerSyncSerializer_v944 implements BedrockPack
 
     protected void writeAttributeLayerSettings(ByteBuf buffer, BedrockCodecHelper helper, AttributeLayerSettings settings) {
         buffer.writeIntLE(settings.getPriority());
-        VarInts.writeUnsignedInt(buffer, settings.getWeight().getType().ordinal());
-        if (settings.getWeight().getType().equals(AttributeLayerSettings.WeightData.Type.FLOAT)) {
-            buffer.writeFloatLE(settings.getWeight().getAsFloat());
-        } else {
-            helper.writeString(buffer, settings.getWeight().getAsString());
-        }
+        this.writeWeight(buffer, helper, settings.getWeight());
         buffer.writeBoolean(settings.isEnabled());
         buffer.writeBoolean(settings.isTransitionsPaused());
     }
@@ -142,12 +137,7 @@ public class ClientboundAttributeLayerSyncSerializer_v944 implements BedrockPack
     protected AttributeLayerSettings readAttributeLayerSettings(ByteBuf buffer, BedrockCodecHelper helper) {
         final AttributeLayerSettings settings = new AttributeLayerSettings();
         settings.setPriority(buffer.readIntLE());
-        final AttributeLayerSettings.WeightData.Type type = AttributeLayerSettings.WeightData.Type.from(VarInts.readUnsignedInt(buffer));
-        settings.setWeight(new AttributeLayerSettings.WeightData(
-                        type,
-                        type.equals(AttributeLayerSettings.WeightData.Type.FLOAT) ? buffer.readFloatLE() : helper.readString(buffer)
-                )
-        );
+        settings.setWeight(this.readWeight(buffer, helper));
         settings.setEnabled(buffer.readBoolean());
         settings.setTransitionsPaused(buffer.readBoolean());
         return settings;
@@ -245,5 +235,22 @@ public class ClientboundAttributeLayerSyncSerializer_v944 implements BedrockPack
         data.setOperation(helper.readOptional(buffer, null,
                 (buf, h) -> ColorAttributeOperation.valueOf(h.readString(buffer))));
         return data;
+    }
+
+    protected void writeWeight(ByteBuf buffer, BedrockCodecHelper helper, AttributeLayerSettings.WeightData weight) {
+        VarInts.writeUnsignedInt(buffer, weight.getType().ordinal());
+        if (weight.getType().equals(AttributeLayerSettings.WeightData.Type.FLOAT)) {
+            buffer.writeFloatLE(weight.getAsFloat());
+        } else {
+            helper.writeString(buffer, weight.getAsString());
+        }
+    }
+
+    protected AttributeLayerSettings.WeightData readWeight(ByteBuf buffer, BedrockCodecHelper helper) {
+        final AttributeLayerSettings.WeightData.Type type = AttributeLayerSettings.WeightData.Type.from(VarInts.readUnsignedInt(buffer));
+        return new AttributeLayerSettings.WeightData(
+                type,
+                type.equals(AttributeLayerSettings.WeightData.Type.FLOAT) ? buffer.readFloatLE() : helper.readString(buffer)
+        );
     }
 }
