@@ -23,7 +23,7 @@ subprojects {
         plugin(rootProject.libs.plugins.lombok.get().pluginId)
     }
 
-    group = "org.cloudburstmc.protocol"
+    group = "org.powernukkitx.protocol"
 
     tasks {
         compileJava {
@@ -48,20 +48,6 @@ subprojects {
     }
 
     publishing {
-        repositories {
-            maven {
-                name = "maven-deploy"
-                url = uri(
-                    System.getenv("MAVEN_DEPLOY_URL")
-                        ?: "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
-                )
-                credentials {
-                    username = System.getenv("MAVEN_DEPLOY_USERNAME") ?: "username"
-                    password = System.getenv("MAVEN_DEPLOY_PASSWORD") ?: "password"
-                }
-            }
-        }
-
         publications {
             create<MavenPublication>("maven") {
                 from(components["java"])
@@ -70,9 +56,9 @@ subprojects {
                     url.set("https://github.com/CloudburstMC/Protocol")
 
                     scm {
-                        connection.set("scm:git:git://github.com/CloudburstMC/Protocol.git")
-                        developerConnection.set("scm:git:ssh://github.com/CloudburstMC/Protocol.git")
-                        url.set("https://github.com/CloudburstMC/Protocol")
+                        connection.set("scm:git:git://github.com/PowerNukkitX/Protocol.git")
+                        developerConnection.set("scm:git:ssh://github.com/PowerNukkitX/Protocol.git")
+                        url.set("https://github.com/PowerNukkitX/Protocol")
                     }
 
                     licenses {
@@ -89,6 +75,21 @@ subprojects {
                             organizationUrl.set("https://github.com/CloudburstMC")
                         }
                     }
+                }
+            }
+        }
+    
+        repositories {
+            maven {
+                name = "pnx"
+                url = uri("https://repo.powernukkitx.org/releases")
+                credentials {
+                    username = providers.gradleProperty("pnxUsername")
+                        .orElse(providers.environmentVariable("PNX_REPO_USERNAME"))
+                        .orNull
+                    password = providers.gradleProperty("pnxPassword")
+                        .orElse(providers.environmentVariable("PNX_REPO_PASSWORD"))
+                        .orNull
                 }
             }
         }
