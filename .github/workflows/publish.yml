@@ -1,4 +1,4 @@
-name: PowerNukkitX Publish
+name: Protocol Build & Publish
 
 on:
   push:
