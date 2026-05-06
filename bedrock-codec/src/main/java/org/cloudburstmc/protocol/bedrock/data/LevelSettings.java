@@ -115,4 +115,8 @@ public class LevelSettings {
      * @deprecated since v924
      */
     private String ownerId;
+    /**
+     * @since v986
+     */
+    private int serverEditorConnectionPolicy;
 }

@@ -9,6 +9,7 @@ import org.cloudburstmc.nbt.NbtMap;
 import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v944.BedrockCodecHelper_v944;
 import org.cloudburstmc.protocol.bedrock.data.AbilitiesIndex;
+import org.cloudburstmc.protocol.bedrock.data.ServerSoundHandle;
 import org.cloudburstmc.protocol.bedrock.data.definitions.ItemDefinition;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerEnumName;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
@@ -172,5 +173,16 @@ public class BedrockCodecHelper_v975 extends BedrockCodecHelper_v944 {
                 .usingNetId(hasNetId)
                 .netId(netId)
                 .build();
+    }
+
+    @Override
+    public void writeServerSoundHandle(ByteBuf buffer, ServerSoundHandle handle) {
+        buffer.writeLongLE(handle.getServerSoundHandle());
+    }
+
+    @Override
+    public ServerSoundHandle readServerSoundHandle(ByteBuf buffer) {
+        final long serverSoundHandle = buffer.readLongLE();
+        return new ServerSoundHandle(serverSoundHandle);
     }
 }

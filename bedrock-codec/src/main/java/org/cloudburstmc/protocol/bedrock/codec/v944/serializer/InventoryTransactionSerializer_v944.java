@@ -1,0 +1,44 @@
+package org.cloudburstmc.protocol.bedrock.codec.v944.serializer;
+
+import io.netty.buffer.ByteBuf;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
+import org.cloudburstmc.protocol.bedrock.codec.v712.serializer.InventoryTransactionSerializer_v712;
+import org.cloudburstmc.protocol.bedrock.data.payload.inventory.transaction.ItemUseActionType;
+import org.cloudburstmc.protocol.bedrock.data.payload.inventory.transaction.ItemUseClientCooldownState;
+import org.cloudburstmc.protocol.bedrock.data.payload.inventory.transaction.ItemUsePredictedResult;
+import org.cloudburstmc.protocol.bedrock.data.payload.inventory.transaction.ItemUseTriggerType;
+import org.cloudburstmc.protocol.bedrock.data.payload.inventory.transaction.data.ItemUseInventoryTransaction;
+import org.cloudburstmc.protocol.common.util.VarInts;
+
+/**
+ * @author Kaooot
+ */
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class InventoryTransactionSerializer_v944 extends InventoryTransactionSerializer_v712 {
+    public static final InventoryTransactionSerializer_v944 INSTANCE = new InventoryTransactionSerializer_v944();
+
+    @Override
+    protected void writeItemUseInventoryTransaction(ByteBuf buffer, BedrockCodecHelper helper, ItemUseInventoryTransaction transaction) {
+        super.writeItemUseInventoryTransaction(buffer, helper, transaction);
+        buffer.writeByte(transaction.getClientCooldownState().ordinal());
+    }
+
+    @Override
+    protected ItemUseInventoryTransaction readItemUseInventoryTransaction(ByteBuf buffer, BedrockCodecHelper helper) {
+        final ItemUseInventoryTransaction transaction = new ItemUseInventoryTransaction();
+        transaction.setActionType(ItemUseActionType.from(VarInts.readUnsignedInt(buffer)));
+        transaction.setTriggerType(ItemUseTriggerType.from(buffer.readUnsignedByte()));
+        transaction.setPosition(helper.readVector3i(buffer));
+        transaction.setFace(VarInts.readInt(buffer));
+        transaction.setSlot(VarInts.readInt(buffer));
+        transaction.setItem(helper.readItem(buffer));
+        transaction.setFromPosition(helper.readVector3f(buffer));
+        transaction.setClickPosition(helper.readVector3f(buffer));
+        transaction.setTargetBlockId(helper.getBlockDefinitions().getDefinition(VarInts.readUnsignedInt(buffer)));
+        transaction.setClientInteractPrediction(ItemUsePredictedResult.from(buffer.readUnsignedByte()));
+        transaction.setClientCooldownState(ItemUseClientCooldownState.from(buffer.readUnsignedByte()));
+        return transaction;
+    }
+}

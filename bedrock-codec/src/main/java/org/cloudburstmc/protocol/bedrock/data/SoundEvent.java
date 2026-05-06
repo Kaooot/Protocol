@@ -1020,5 +1020,17 @@ public enum SoundEvent {
      * @since v975
      */
     BOUNCE,
+    /**
+     * @since v986
+     */
+    SLIME_LANDING,
+    /**
+     * @since v986
+     */
+    ABSORB_BLOCK,
+    /**
+     * @since v986
+     */
+    EJECT_BLOCK,
     UNDEFINED
 }

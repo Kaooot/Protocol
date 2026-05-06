@@ -21,23 +21,23 @@ import org.cloudburstmc.nbt.NbtUtils;
 import org.cloudburstmc.protocol.bedrock.data.EncodingSettings;
 import org.cloudburstmc.protocol.bedrock.data.Experiment;
 import org.cloudburstmc.protocol.bedrock.data.SerializedAbilitiesData;
+import org.cloudburstmc.protocol.bedrock.data.ServerSoundHandle;
+import org.cloudburstmc.protocol.bedrock.data.actor.PropertySyncData;
 import org.cloudburstmc.protocol.bedrock.data.ddui.DataStoreUpdate;
 import org.cloudburstmc.protocol.bedrock.data.definitions.BlockDefinition;
 import org.cloudburstmc.protocol.bedrock.data.definitions.ItemDefinition;
-import org.cloudburstmc.protocol.bedrock.data.actor.PropertySyncData;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerEnumName;
+import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerId;
 import org.cloudburstmc.protocol.bedrock.data.inventory.FullContainerName;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
 import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.ItemDescriptorWithCount;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequest;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponseContainerInfo;
-import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.InventoryActionData;
-import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.InventorySource;
+import org.cloudburstmc.protocol.bedrock.data.payload.inventory.transaction.*;
 import org.cloudburstmc.protocol.bedrock.data.skin.AnimationData;
 import org.cloudburstmc.protocol.bedrock.data.skin.ImageData;
 import org.cloudburstmc.protocol.bedrock.data.skin.SerializedSkin;
 import org.cloudburstmc.protocol.bedrock.data.structure.StructureSettings;
-import org.cloudburstmc.protocol.bedrock.packet.InventoryTransactionPacket;
 import org.cloudburstmc.protocol.common.DefinitionRegistry;
 import org.cloudburstmc.protocol.common.NamedDefinition;
 import org.cloudburstmc.protocol.common.util.TriConsumer;
@@ -397,87 +397,69 @@ public abstract class BaseBedrockCodecHelper implements BedrockCodecHelper {
     }
 
     @Override
-    public void readItemUse(ByteBuf buffer, InventoryTransactionPacket packet) {
-        packet.setActionType(VarInts.readUnsignedInt(buffer));
-        packet.setBlockPosition(this.readBlockPosition(buffer));
-        packet.setBlockFace(VarInts.readInt(buffer));
-        packet.setHotbarSlot(VarInts.readInt(buffer));
-        packet.setItemInHand(this.readItem(buffer));
-        packet.setPlayerPosition(this.readVector3f(buffer));
-        packet.setClickPosition(this.readVector3f(buffer));
+    public void readInventoryTransactions(ByteBuf buffer, InventoryTransaction actions) {
+        this.readArray(buffer, actions.getActions(), this::readInventoryAction, this.encodingSettings.maxInventoryActionsOrRequests());
     }
 
     @Override
-    public void writeItemUse(ByteBuf buffer, InventoryTransactionPacket packet) {
-        VarInts.writeUnsignedInt(buffer, packet.getActionType());
-        this.writeBlockPosition(buffer, packet.getBlockPosition());
-        VarInts.writeInt(buffer, packet.getBlockFace());
-        VarInts.writeInt(buffer, packet.getHotbarSlot());
-        this.writeItem(buffer, packet.getItemInHand());
-        this.writeVector3f(buffer, packet.getPlayerPosition());
-        this.writeVector3f(buffer, packet.getClickPosition());
+    public void writeInventoryTransactions(ByteBuf buffer, InventoryTransaction actions) {
+        this.writeArray(buffer, actions.getActions(), this::writeInventoryAction);
     }
 
-    @Override
-    public boolean readInventoryActions(ByteBuf buffer, List<InventoryActionData> actions) {
-        this.readArray(buffer, actions, (buf, helper) -> {
-            InventorySource source = this.readSource(buf);
-            int slot = VarInts.readUnsignedInt(buf);
-            ItemData fromItem = helper.readItem(buf);
-            ItemData toItem = helper.readItem(buf);
-
-            return new InventoryActionData(source, slot, fromItem, toItem);
-        }, this.encodingSettings.maxInventoryActionsOrRequests());
-        return false;
-    }
-
-    @Override
-    public void writeInventoryActions(ByteBuf buffer, List<InventoryActionData> actions, boolean hasNetworkIds) {
-        this.writeArray(buffer, actions, (buf, helper, action) -> {
-            this.writeSource(buf, action.getSource());
-            VarInts.writeUnsignedInt(buf, action.getSlot());
-            helper.writeItem(buf, action.getFromItem());
-            helper.writeItem(buf, action.getToItem());
-        });
-    }
-
-    protected InventorySource readSource(ByteBuf buffer) {
-        InventorySource.Type type = InventorySource.Type.byId(VarInts.readUnsignedInt(buffer));
+    protected InventorySource readInventorySource(ByteBuf buffer) {
+        final InventorySourceType type = InventorySourceType.from(VarInts.readUnsignedInt(buffer));
+        final InventorySource source = new InventorySource();
+        source.setSourceType(type);
 
         switch (type) {
-            case CONTAINER:
-                int containerId = VarInts.readInt(buffer);
-                return InventorySource.fromContainerWindowId(containerId);
-            case GLOBAL:
-                return InventorySource.fromGlobalInventory();
+            case CONTAINER_INVENTORY:
+            case NON_IMPLEMENTED_FEATURE_TODO:
+                source.setContainerID(VarInts.readInt(buffer));
+                source.setBitFlags(InventorySourceFlags.NO_FLAG);
+                break;
+            case GLOBAL_INVENTORY:
+            case CREATIVE_INVENTORY:
+                source.setContainerID(ContainerId.NONE);
+                source.setBitFlags(InventorySourceFlags.NO_FLAG);
+                break;
             case WORLD_INTERACTION:
-                InventorySource.Flag flag = InventorySource.Flag.values()[VarInts.readUnsignedInt(buffer)];
-                return InventorySource.fromWorldInteraction(flag);
-            case CREATIVE:
-                return InventorySource.fromCreativeInventory();
-            case NON_IMPLEMENTED_TODO:
-                containerId = VarInts.readInt(buffer);
-                return InventorySource.fromNonImplementedTodo(containerId);
-            default:
-                return InventorySource.fromInvalid();
+                source.setContainerID(ContainerId.NONE);
+                source.setBitFlags(InventorySourceFlags.from(VarInts.readUnsignedInt(buffer)));
+                break;
+        }
+        return source;
+    }
+
+    protected void writeInventorySource(ByteBuf buffer, InventorySource inventorySource) {
+        requireNonNull(inventorySource, "InventorySource was null");
+
+        VarInts.writeUnsignedInt(buffer, inventorySource.getSourceType().ordinal());
+
+        switch (inventorySource.getSourceType()) {
+            case CONTAINER_INVENTORY:
+            case NON_IMPLEMENTED_FEATURE_TODO:
+                VarInts.writeInt(buffer, inventorySource.getContainerID());
+                break;
+            case WORLD_INTERACTION:
+                VarInts.writeUnsignedInt(buffer, inventorySource.getBitFlags().ordinal());
+                break;
         }
     }
 
-    protected void writeSource(ByteBuf buffer, InventorySource inventorySource) {
-        requireNonNull(inventorySource, "InventorySource was null");
+    protected void writeInventoryAction(ByteBuf buffer, InventoryAction action) {
+        this.writeInventorySource(buffer, action.getSource());
+        VarInts.writeUnsignedInt(buffer, action.getSlot());
+        this.writeItem(buffer, action.getFromItem());
+        this.writeItem(buffer, action.getToItem());
+    }
 
-        VarInts.writeUnsignedInt(buffer, inventorySource.getType().id());
-
-        switch (inventorySource.getType()) {
-            case CONTAINER:
-            case UNTRACKED_INTERACTION_UI:
-            case NON_IMPLEMENTED_TODO:
-                VarInts.writeInt(buffer, inventorySource.getContainerId());
-                break;
-            case WORLD_INTERACTION:
-                VarInts.writeUnsignedInt(buffer, inventorySource.getFlag().ordinal());
-                break;
-        }
+    protected InventoryAction readInventoryAction(ByteBuf buffer) {
+        final InventoryAction action = new InventoryAction();
+        action.setSource(this.readInventorySource(buffer));
+        action.setSlot(VarInts.readUnsignedInt(buffer));
+        action.setFromItem(this.readItem(buffer));
+        action.setToItem(this.readItem(buffer));
+        return action;
     }
 
     public void readExperiments(ByteBuf buffer, List<Experiment> experiments) {
@@ -635,6 +617,16 @@ public abstract class BaseBedrockCodecHelper implements BedrockCodecHelper {
 
     @Override
     public ItemData readNetworkItemStackDescriptor(ByteBuf buffer) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void writeServerSoundHandle(ByteBuf buffer, ServerSoundHandle serverSoundHandle) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public ServerSoundHandle readServerSoundHandle(ByteBuf buffer) {
         throw new UnsupportedOperationException();
     }
 }

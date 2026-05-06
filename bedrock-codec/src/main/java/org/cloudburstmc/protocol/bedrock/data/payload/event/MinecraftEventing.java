@@ -115,7 +115,11 @@ public final class MinecraftEventing {
         UNLEASHING,
         PET_SLEEP,
         TRUSTING,
-        COMMANDING;
+        COMMANDING,
+        /**
+         * @since v986
+         */
+        EQUIPPING;
 
         private static final InteractionType[] VALUES = values();
 

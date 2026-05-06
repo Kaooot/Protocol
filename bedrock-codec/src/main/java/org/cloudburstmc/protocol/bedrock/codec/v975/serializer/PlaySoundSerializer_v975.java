@@ -5,7 +5,6 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.PlaySoundSerializer_v291;
-import org.cloudburstmc.protocol.bedrock.data.ServerSoundHandle;
 import org.cloudburstmc.protocol.bedrock.packet.PlaySoundPacket;
 
 /**
@@ -18,21 +17,12 @@ public class PlaySoundSerializer_v975 extends PlaySoundSerializer_v291 {
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, PlaySoundPacket packet) {
         super.serialize(buffer, helper, packet);
-        helper.writeOptionalNull(buffer, packet.getServerSoundHandle(), this::writeServerSoundHandle);
+        helper.writeOptionalNull(buffer, packet.getServerSoundHandle(), helper::writeServerSoundHandle);
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, PlaySoundPacket packet) {
         super.deserialize(buffer, helper, packet);
-        packet.setServerSoundHandle(helper.readOptional(buffer, null, this::readServerSoundHandle));
-    }
-
-    protected void writeServerSoundHandle(ByteBuf buffer, BedrockCodecHelper helper, ServerSoundHandle handle) {
-        buffer.writeLongLE(handle.getServerSoundHandle());
-    }
-
-    protected ServerSoundHandle readServerSoundHandle(ByteBuf buffer, BedrockCodecHelper helper) {
-        final long serverSoundHandle = buffer.readLongLE();
-        return new ServerSoundHandle(serverSoundHandle);
+        packet.setServerSoundHandle(helper.readOptional(buffer, null, helper::readServerSoundHandle));
     }
 }

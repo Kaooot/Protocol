@@ -16,4 +16,12 @@ public class EnvironmentAttributeData {
     private int currentTransitionTicks;
     private int totalTransitionTicks;
     private EasingType easing;
+    /**
+     * @since v986
+     */
+    private int localTransitionTicks;
+    /**
+     * @since v986
+     */
+    private boolean noiseTransition;
 }

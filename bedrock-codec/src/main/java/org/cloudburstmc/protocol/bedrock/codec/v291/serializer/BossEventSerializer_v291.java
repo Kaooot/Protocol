@@ -5,7 +5,9 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
-import org.cloudburstmc.protocol.bedrock.data.BossEventUpdateType;
+import org.cloudburstmc.protocol.bedrock.data.payload.boss.BossBarColor;
+import org.cloudburstmc.protocol.bedrock.data.payload.boss.BossBarOverlay;
+import org.cloudburstmc.protocol.bedrock.data.payload.boss.BossEventUpdateType;
 import org.cloudburstmc.protocol.bedrock.packet.BossEventPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -31,7 +33,7 @@ public class BossEventSerializer_v291 implements BedrockPacketSerializer<BossEve
         switch (packet.getEventType()) {
             case PLAYER_ADDED:
             case PLAYER_REMOVED:
-                VarInts.writeLong(buffer, packet.getPlayerUniqueEntityId());
+                VarInts.writeLong(buffer, packet.getPlayerID());
                 break;
             case ADD:
                 helper.writeString(buffer, packet.getName());
@@ -41,8 +43,8 @@ public class BossEventSerializer_v291 implements BedrockPacketSerializer<BossEve
                 buffer.writeShortLE(packet.getDarkenScreen());
                 // fall through
             case UPDATE_STYLE:
-                VarInts.writeUnsignedInt(buffer, packet.getColor());
-                VarInts.writeUnsignedInt(buffer, packet.getOverlay());
+                VarInts.writeUnsignedInt(buffer, packet.getColor().ordinal());
+                VarInts.writeUnsignedInt(buffer, packet.getOverlay().ordinal());
                 break;
             case UPDATE_PERCENT:
                 buffer.writeFloatLE(packet.getHealthPercent());
@@ -61,7 +63,7 @@ public class BossEventSerializer_v291 implements BedrockPacketSerializer<BossEve
         switch (packet.getEventType()) {
             case PLAYER_ADDED:
             case PLAYER_REMOVED:
-                packet.setPlayerUniqueEntityId(VarInts.readLong(buffer));
+                packet.setPlayerID(VarInts.readLong(buffer));
                 break;
             case ADD:
                 packet.setName(helper.readString(buffer));
@@ -71,8 +73,8 @@ public class BossEventSerializer_v291 implements BedrockPacketSerializer<BossEve
                 packet.setDarkenScreen(buffer.readUnsignedShortLE());
                 // fall through
             case UPDATE_STYLE:
-                packet.setColor(VarInts.readUnsignedInt(buffer));
-                packet.setOverlay(VarInts.readUnsignedInt(buffer));
+                packet.setColor(BossBarColor.from(VarInts.readUnsignedInt(buffer)));
+                packet.setOverlay(BossBarOverlay.from(VarInts.readUnsignedInt(buffer)));
                 break;
             case UPDATE_PERCENT:
                 packet.setHealthPercent(buffer.readFloatLE());

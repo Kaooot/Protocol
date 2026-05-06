@@ -15,8 +15,6 @@ import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.TextPr
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.*;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponseContainerInfo;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponseSlotInfo;
-import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.ItemUseTransaction;
-import org.cloudburstmc.protocol.bedrock.packet.InventoryTransactionPacket;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -128,34 +126,6 @@ public class BedrockCodecHelper_v712 extends BedrockCodecHelper_v575 {
         List<ItemStackResponseSlotInfo> itemEntries = new ArrayList<>();
         this.readArray(buffer, itemEntries, this::readItemEntry);
         return new ItemStackResponseContainerInfo(containerName.getContainerName(), itemEntries, containerName);
-    }
-
-    @Override
-    public void writeItemUse(ByteBuf buffer, InventoryTransactionPacket packet) {
-        VarInts.writeUnsignedInt(buffer, packet.getActionType());
-        VarInts.writeUnsignedInt(buffer, packet.getTriggerType().ordinal());
-        this.writeBlockPosition(buffer, packet.getBlockPosition());
-        VarInts.writeInt(buffer, packet.getBlockFace());
-        VarInts.writeInt(buffer, packet.getHotbarSlot());
-        this.writeItem(buffer, packet.getItemInHand());
-        this.writeVector3f(buffer, packet.getPlayerPosition());
-        this.writeVector3f(buffer, packet.getClickPosition());
-        VarInts.writeUnsignedInt(buffer, packet.getBlockDefinition().getRuntimeId());
-        VarInts.writeUnsignedInt(buffer, packet.getClientInteractPrediction().ordinal());
-    }
-
-    @Override
-    public void readItemUse(ByteBuf buffer, InventoryTransactionPacket packet) {
-        packet.setActionType(VarInts.readUnsignedInt(buffer));
-        packet.setTriggerType(ItemUseTransaction.TriggerType.values()[VarInts.readUnsignedInt(buffer)]);
-        packet.setBlockPosition(this.readBlockPosition(buffer));
-        packet.setBlockFace(VarInts.readInt(buffer));
-        packet.setHotbarSlot(VarInts.readInt(buffer));
-        packet.setItemInHand(this.readItem(buffer));
-        packet.setPlayerPosition(this.readVector3f(buffer));
-        packet.setClickPosition(this.readVector3f(buffer));
-        packet.setBlockDefinition(this.blockDefinitions.getDefinition(VarInts.readUnsignedInt(buffer)));
-        packet.setClientInteractPrediction(ItemUseTransaction.PredictedResult.values()[VarInts.readUnsignedInt(buffer)]);
     }
 
     @Override

@@ -5,10 +5,7 @@ import org.cloudburstmc.math.vector.Vector2f;
 import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.math.vector.Vector3i;
 import org.cloudburstmc.nbt.NbtType;
-import org.cloudburstmc.protocol.bedrock.data.EncodingSettings;
-import org.cloudburstmc.protocol.bedrock.data.Experiment;
-import org.cloudburstmc.protocol.bedrock.data.GameRuleData;
-import org.cloudburstmc.protocol.bedrock.data.SerializedAbilitiesData;
+import org.cloudburstmc.protocol.bedrock.data.*;
 import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataMap;
 import org.cloudburstmc.protocol.bedrock.data.actor.ActorLink;
 import org.cloudburstmc.protocol.bedrock.data.actor.PropertySyncData;
@@ -23,10 +20,9 @@ import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
 import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.ItemDescriptorWithCount;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequest;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponseContainerInfo;
-import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.InventoryActionData;
+import org.cloudburstmc.protocol.bedrock.data.payload.inventory.transaction.InventoryTransaction;
 import org.cloudburstmc.protocol.bedrock.data.skin.SerializedSkin;
 import org.cloudburstmc.protocol.bedrock.data.structure.StructureSettings;
-import org.cloudburstmc.protocol.bedrock.packet.InventoryTransactionPacket;
 import org.cloudburstmc.protocol.common.DefinitionRegistry;
 import org.cloudburstmc.protocol.common.NamedDefinition;
 import org.cloudburstmc.protocol.common.util.TriConsumer;
@@ -200,13 +196,9 @@ public interface BedrockCodecHelper {
 
     void writeTagValue(ByteBuf buffer, Object tag);
 
-    void readItemUse(ByteBuf buffer, InventoryTransactionPacket packet);
+    void readInventoryTransactions(ByteBuf buffer, InventoryTransaction actions);
 
-    void writeItemUse(ByteBuf buffer, InventoryTransactionPacket packet);
-
-    boolean readInventoryActions(ByteBuf buffer, List<InventoryActionData> actions);
-
-    void writeInventoryActions(ByteBuf buffer, List<InventoryActionData> actions, boolean hasNetworkIds);
+    void writeInventoryTransactions(ByteBuf buffer, InventoryTransaction actions);
 
     void readExperiments(ByteBuf buffer, List<Experiment> experiments);
 
@@ -263,4 +255,8 @@ public interface BedrockCodecHelper {
     void writeNetworkItemStackDescriptor(ByteBuf buffer, ItemData item);
 
     ItemData readNetworkItemStackDescriptor(ByteBuf buffer);
+
+    void writeServerSoundHandle(ByteBuf buffer, ServerSoundHandle serverSoundHandle);
+
+    ServerSoundHandle readServerSoundHandle(ByteBuf buffer);
 }

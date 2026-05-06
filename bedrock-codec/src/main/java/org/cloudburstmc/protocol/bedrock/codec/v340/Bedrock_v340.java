@@ -58,6 +58,7 @@ public class Bedrock_v340 extends Bedrock_v332 {
             .helper(() -> new BedrockCodecHelper_v340(ACTOR_DATA, GAME_RULE_TYPES))
             .updateSerializer(LegacyTelemetryEventPacket.class, LegacyTelemetryEventSerializer_v340.INSTANCE)
             .updateSerializer(AvailableCommandsPacket.class, new AvailableCommandsSerializer_v340(COMMAND_PARAMS))
+            .updateSerializer(InventoryTransactionPacket.class, InventoryTransactionSerializer_v340.INSTANCE)
             .updateSerializer(StructureBlockUpdatePacket.class, StructureBlockUpdateSerializer_v340.INSTANCE)
             .updateSerializer(LevelEventPacket.class, new LevelEventSerializer_v291(LEVEL_EVENTS))
             .updateSerializer(LevelSoundEvent1Packet.class, new LevelSoundEvent1Serializer_v291(SOUND_EVENTS))

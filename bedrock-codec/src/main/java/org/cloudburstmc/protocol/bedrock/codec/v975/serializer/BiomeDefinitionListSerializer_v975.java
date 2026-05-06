@@ -8,7 +8,6 @@ import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v924.serializer.BiomeDefinitionListSerializer_v924;
 import org.cloudburstmc.protocol.bedrock.data.biome.*;
 import org.cloudburstmc.protocol.bedrock.data.definitions.BlockDefinition;
-import org.cloudburstmc.protocol.common.util.VarInts;
 
 import java.util.List;
 
@@ -100,27 +99,54 @@ public class BiomeDefinitionListSerializer_v975 extends BiomeDefinitionListSeria
 
     protected void writeBiomeNoiseGradientSurfaceData(ByteBuf buffer, BedrockCodecHelper helper, BiomeNoiseGradientSurfaceData data) {
         helper.writeArray(buffer, data.getNonReplaceableBlocks(), this::writeBlock);
-        helper.writeArray(buffer, data.getGradientBlocks(), this::writeBlock);
-        helper.writeString(buffer, data.getNoiseSeedString());
-        buffer.writeIntLE(data.getFirstOctave());
-        helper.writeArray(buffer, data.getAmplitudes(), ByteBuf::writeFloatLE);
+        helper.writeArray(buffer, data.getGradientBlocks(), this::writeSerializedNoiseBlockSpecifier);
+        this.writeNoiseDescriptor(buffer, helper, data.getNoise());
     }
 
     protected BiomeNoiseGradientSurfaceData readBiomeNoiseGradientSurfaceData(ByteBuf buffer, BedrockCodecHelper helper) {
         final List<BlockDefinition> nonReplaceableBlocks = new ObjectArrayList<>();
-        final List<BlockDefinition> gradientBlocks = new ObjectArrayList<>();
+        final List<SerializedNoiseBlockSpecifier> gradientBlocks = new ObjectArrayList<>();
         helper.readArray(buffer, nonReplaceableBlocks, this::readBlock);
-        helper.readArray(buffer, gradientBlocks, this::readBlock);
-        final String noiseSeedString = helper.readString(buffer);
-        final int firstOctave = buffer.readIntLE();
-        final List<Float> amplitudes = new ObjectArrayList<>();
-        helper.readArray(buffer, amplitudes, ByteBuf::readFloatLE);
+        helper.readArray(buffer, gradientBlocks, this::readSerializedNoiseBlockSpecifier);
+        final NoiseDescriptor noise = this.readNoiseDescriptor(buffer, helper);
         return new BiomeNoiseGradientSurfaceData(
                 nonReplaceableBlocks,
                 gradientBlocks,
-                noiseSeedString,
-                firstOctave,
-                amplitudes
+                noise
         );
+    }
+
+    protected void writeSerializedNoiseBlockSpecifier(ByteBuf buffer, BedrockCodecHelper helper, SerializedNoiseBlockSpecifier specifier) {
+        this.writeBlock(buffer, helper, specifier.getBlock());
+    }
+
+    protected SerializedNoiseBlockSpecifier readSerializedNoiseBlockSpecifier(ByteBuf buffer, BedrockCodecHelper helper) {
+        final BlockDefinition block = this.readBlock(buffer, helper);
+        return new SerializedNoiseBlockSpecifier(null, 0f, null, block);
+    }
+
+    protected void writeFloatRange(ByteBuf buffer, BedrockCodecHelper helper, FloatRange range) {
+        buffer.writeFloatLE(range.getMin());
+        buffer.writeFloatLE(range.getMax());
+    }
+
+    protected FloatRange readFloatRange(ByteBuf buffer, BedrockCodecHelper helper) {
+        final float min = buffer.readFloatLE();
+        final float max = buffer.readFloatLE();
+        return new FloatRange(min, max);
+    }
+
+    protected void writeNoiseDescriptor(ByteBuf buffer, BedrockCodecHelper helper, NoiseDescriptor descriptor) {
+        helper.writeString(buffer, descriptor.getName());
+        buffer.writeIntLE(descriptor.getFirstOctave());
+        helper.writeArray(buffer, descriptor.getAmplitudes(), ByteBuf::writeFloatLE);
+    }
+
+    protected NoiseDescriptor readNoiseDescriptor(ByteBuf buffer, BedrockCodecHelper helper) {
+        final String name = helper.readString(buffer);
+        final int firstOctave = buffer.readIntLE();
+        final List<Float> amplitudes = new ObjectArrayList<>();
+        helper.readArray(buffer, amplitudes, ByteBuf::readFloatLE);
+        return new NoiseDescriptor(name, firstOctave, amplitudes);
     }
 }

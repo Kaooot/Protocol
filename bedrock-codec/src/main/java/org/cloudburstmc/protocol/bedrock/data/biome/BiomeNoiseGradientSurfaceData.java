@@ -12,8 +12,6 @@ import java.util.List;
 public class BiomeNoiseGradientSurfaceData {
 
     List<BlockDefinition> nonReplaceableBlocks;
-    List<BlockDefinition> gradientBlocks;
-    String noiseSeedString;
-    int firstOctave;
-    List<Float> amplitudes;
+    List<SerializedNoiseBlockSpecifier> gradientBlocks;
+    NoiseDescriptor noise;
 }

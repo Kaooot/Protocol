@@ -8,7 +8,6 @@ import org.cloudburstmc.protocol.bedrock.data.AbilitiesIndex;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerEnumName;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.TextProcessingEventOrigin;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestActionType;
-import org.cloudburstmc.protocol.bedrock.packet.InventoryTransactionPacket;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -34,17 +33,5 @@ public class BedrockCodecHelper_v944 extends BedrockCodecHelper_v924 {
         int y = VarInts.readInt(buffer);
         int z = VarInts.readInt(buffer);
         return Vector3i.from(x, y, z);
-    }
-
-    @Override
-    public void writeItemUse(ByteBuf buffer, InventoryTransactionPacket packet) {
-        super.writeItemUse(buffer, packet);
-        buffer.writeByte(packet.getClientCooldownState());
-    }
-
-    @Override
-    public void readItemUse(ByteBuf buffer, InventoryTransactionPacket packet) {
-        super.readItemUse(buffer, packet);
-        packet.setClientCooldownState(buffer.readUnsignedByte());
     }
 }

@@ -15,7 +15,7 @@ public class SubChunkRequestSerializer_v486 extends SubChunkRequestSerializer_v4
     // It seems that client does not have any cap on how many sub chunks it can request,
     // and in some edge cases it requests all sub chunks within the view distance
     // The limit set here is based on maximum view distance vanilla client supports (96 chunks)
-    private static final int MAX_SUB_CHUNKS = (int) (0.785 * 96 * 96 * 24); // circle area * 96 chunks * 24 sub chunks per chunk
+    protected static final int MAX_SUB_CHUNKS = (int) (0.785 * 96 * 96 * 24); // circle area * 96 chunks * 24 sub chunks per chunk
 
     public static final SubChunkRequestSerializer_v486 INSTANCE = new SubChunkRequestSerializer_v486();
 

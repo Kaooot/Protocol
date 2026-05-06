@@ -5,8 +5,8 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v390.BedrockCodecHelper_v390;
 import org.cloudburstmc.protocol.bedrock.data.ActorLinkType;
-import org.cloudburstmc.protocol.bedrock.data.definitions.ItemDefinition;
 import org.cloudburstmc.protocol.bedrock.data.actor.ActorLink;
+import org.cloudburstmc.protocol.bedrock.data.definitions.ItemDefinition;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerEnumName;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
 import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.DefaultDescriptor;
@@ -17,8 +17,6 @@ import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemSt
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.*;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponseContainerInfo;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponseSlotInfo;
-import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.InventoryActionData;
-import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.InventorySource;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -62,38 +60,6 @@ public class BedrockCodecHelper_v407 extends BedrockCodecHelper_v390 {
         buffer.writeByte(actorLink.getType().ordinal());
         buffer.writeBoolean(actorLink.isImmediate());
         buffer.writeBoolean(actorLink.isPassengerInitiated());
-    }
-
-    @Override
-    public boolean readInventoryActions(ByteBuf buffer, List<InventoryActionData> actions) {
-        boolean hasNetworkIds = buffer.readBoolean();
-        this.readArray(buffer, actions, (buf, helper) -> {
-            InventorySource source = this.readSource(buf);
-            int slot = VarInts.readUnsignedInt(buf);
-            ItemData fromItem = helper.readItem(buf);
-            ItemData toItem = helper.readItem(buf);
-            int networkStackId = 0;
-            if (hasNetworkIds) {
-                networkStackId = VarInts.readInt(buf);
-            }
-
-            return new InventoryActionData(source, slot, fromItem, toItem, networkStackId);
-        }, this.encodingSettings.maxInventoryActionsOrRequests());
-        return hasNetworkIds;
-    }
-
-    @Override
-    public void writeInventoryActions(ByteBuf buffer, List<InventoryActionData> actions, boolean hasNetworkIds) {
-        buffer.writeBoolean(hasNetworkIds);
-        this.writeArray(buffer, actions, (buf, helper, action) -> {
-            this.writeSource(buffer, action.getSource());
-            VarInts.writeUnsignedInt(buffer, action.getSlot());
-            helper.writeItem(buffer, action.getFromItem());
-            helper.writeItem(buffer, action.getToItem());
-            if (hasNetworkIds) {
-                VarInts.writeInt(buffer, action.getStackNetworkId());
-            }
-        });
     }
 
     @Override

@@ -8,7 +8,7 @@ import org.cloudburstmc.math.vector.Vector2f;
 import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.protocol.bedrock.data.*;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequest;
-import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.ItemUseTransaction;
+import org.cloudburstmc.protocol.bedrock.data.payload.inventory.transaction.data.PackedLegacyItemUseInventoryTransaction;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 import java.util.EnumSet;
@@ -36,7 +36,7 @@ public class PlayerAuthInputPacket implements BedrockPacket {
      *
      * @since v428
      */
-    private ItemUseTransaction itemUseTransaction;
+    private PackedLegacyItemUseInventoryTransaction itemUseTransaction;
     /**
      * {@link #inputData} must contain {@link PlayerAuthInputData#PERFORM_ITEM_STACK_REQUEST} in order for this to not be null.
      *

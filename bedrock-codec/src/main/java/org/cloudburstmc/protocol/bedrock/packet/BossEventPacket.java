@@ -3,7 +3,9 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.protocol.bedrock.data.BossEventUpdateType;
+import org.cloudburstmc.protocol.bedrock.data.payload.boss.BossBarColor;
+import org.cloudburstmc.protocol.bedrock.data.payload.boss.BossBarOverlay;
+import org.cloudburstmc.protocol.bedrock.data.payload.boss.BossEventUpdateType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
@@ -12,13 +14,13 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 public class BossEventPacket implements BedrockPacket {
     private long targetActorID;
     private BossEventUpdateType eventType;
-    private long playerUniqueEntityId;
+    private long playerID;
     private String name;
     private String filteredName = "";
     private float healthPercent;
     private int darkenScreen;
-    private int color;
-    private int overlay;
+    private BossBarColor color;
+    private BossBarOverlay overlay;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

@@ -14,15 +14,12 @@ import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.CraftResultsDeprecatedAction;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestAction;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestActionType;
-import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.InventoryActionData;
-import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.InventorySource;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 import org.cloudburstmc.protocol.common.util.VarInts;
 import org.cloudburstmc.protocol.common.util.stream.LittleEndianByteBufInputStream;
 import org.cloudburstmc.protocol.common.util.stream.LittleEndianByteBufOutputStream;
 
 import java.io.IOException;
-import java.util.List;
 
 import static java.util.Objects.requireNonNull;
 import static org.cloudburstmc.protocol.common.util.Preconditions.checkArgument;
@@ -306,29 +303,6 @@ public class BedrockCodecHelper_v431 extends BedrockCodecHelper_v428 {
     @Override
     public void writeNetItem(ByteBuf buffer, ItemData item) {
         this.writeItem(buffer, item);
-    }
-
-    @Override
-    public boolean readInventoryActions(ByteBuf buffer, List<InventoryActionData> actions) {
-        this.readArray(buffer, actions, (buf, helper) -> {
-            InventorySource source = readSource(buf);
-            int slot = VarInts.readUnsignedInt(buf);
-            ItemData fromItem = helper.readItem(buf);
-            ItemData toItem = helper.readItem(buf);
-
-            return new InventoryActionData(source, slot, fromItem, toItem);
-        }, this.encodingSettings.maxInventoryActionsOrRequests());
-        return false;
-    }
-
-    @Override
-    public void writeInventoryActions(ByteBuf buffer, List<InventoryActionData> actions, boolean hasNetworkIds) {
-        this.writeArray(buffer, actions, (buf, helper, action) -> {
-            writeSource(buf, action.getSource());
-            VarInts.writeUnsignedInt(buf, action.getSlot());
-            helper.writeItem(buf, action.getFromItem());
-            helper.writeItem(buf, action.getToItem());
-        });
     }
 
     @Override

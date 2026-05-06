@@ -13,6 +13,10 @@ import java.util.List;
 public class AttributeLayerData {
 
     private String name;
+    /**
+     * @since v986
+     */
+    private String noiseName;
     private Dimension dimension;
     private AttributeLayerSettings settings;
     private final List<EnvironmentAttributeData> attributes = new ObjectArrayList<>();

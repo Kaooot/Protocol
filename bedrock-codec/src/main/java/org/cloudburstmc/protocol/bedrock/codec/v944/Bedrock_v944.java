@@ -76,6 +76,7 @@ public class Bedrock_v944 extends Bedrock_v924 {
             .deregisterPacket(ClientboundDataDrivenUICloseAllScreensPacket.class)
             .updateSerializer(ClientboundDataDrivenUIShowScreenPacket.class, ClientboundDataDrivenUIShowScreenSerializer_v944.INSTANCE)
             .updateSerializer(EditorNetworkPacket.class, EditorNetworkSerializer_v944.INSTANCE)
+            .updateSerializer(InventoryTransactionPacket.class, InventoryTransactionSerializer_v944.INSTANCE)
             .updateSerializer(LevelEventPacket.class, new LevelEventSerializer_v291(LEVEL_EVENTS))
             .updateSerializer(LevelEventGenericPacket.class, new LevelEventGenericSerializer_v361(LEVEL_EVENTS))
             .updateSerializer(LevelSoundEventPacket.class, new LevelSoundEventSerializer_v786(SOUND_EVENTS))

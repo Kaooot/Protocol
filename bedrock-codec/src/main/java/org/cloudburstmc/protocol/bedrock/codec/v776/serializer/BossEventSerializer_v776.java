@@ -5,7 +5,9 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v486.serializer.BossEventSerializer_v486;
-import org.cloudburstmc.protocol.bedrock.data.BossEventUpdateType;
+import org.cloudburstmc.protocol.bedrock.data.payload.boss.BossBarColor;
+import org.cloudburstmc.protocol.bedrock.data.payload.boss.BossBarOverlay;
+import org.cloudburstmc.protocol.bedrock.data.payload.boss.BossEventUpdateType;
 import org.cloudburstmc.protocol.bedrock.packet.BossEventPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -22,8 +24,8 @@ public class BossEventSerializer_v776 extends BossEventSerializer_v486 {
             // fall through to UPDATE_PROPERTIES
             buffer.writeShortLE(packet.getDarkenScreen());
             // fall through to UPDATE_STYLE
-            VarInts.writeUnsignedInt(buffer, packet.getColor());
-            VarInts.writeUnsignedInt(buffer, packet.getOverlay());
+            VarInts.writeUnsignedInt(buffer, packet.getColor().ordinal());
+            VarInts.writeUnsignedInt(buffer, packet.getOverlay().ordinal());
         } else if (packet.getEventType() == BossEventUpdateType.UPDATE_NAME) {
             helper.writeString(buffer, packet.getName());
             helper.writeString(buffer, packet.getFilteredName());
@@ -41,8 +43,8 @@ public class BossEventSerializer_v776 extends BossEventSerializer_v486 {
             // fall through to UPDATE_PROPERTIES
             packet.setDarkenScreen(buffer.readUnsignedShortLE());
             // fall through to UPDATE_STYLE
-            packet.setColor(VarInts.readUnsignedInt(buffer));
-            packet.setOverlay(VarInts.readUnsignedInt(buffer));
+            packet.setColor(BossBarColor.from(VarInts.readUnsignedInt(buffer)));
+            packet.setOverlay(BossBarOverlay.from(VarInts.readUnsignedInt(buffer)));
         } else if (packet.getEventType() == BossEventUpdateType.UPDATE_NAME) {
             packet.setName(helper.readString(buffer));
             packet.setFilteredName(helper.readString(buffer));

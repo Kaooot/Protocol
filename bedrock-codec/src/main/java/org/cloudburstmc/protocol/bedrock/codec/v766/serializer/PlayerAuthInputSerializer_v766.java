@@ -34,7 +34,7 @@ public class PlayerAuthInputSerializer_v766 extends PlayerAuthInputSerializer_v7
         VarInts.writeUnsignedLong(buffer, packet.getClientTick());
         helper.writeVector3f(buffer, packet.getPosDelta());
         if (packet.getInputData().contains(PlayerAuthInputData.PERFORM_ITEM_INTERACTION)) {
-            this.writeItemUseTransaction(buffer, helper, packet.getItemUseTransaction());
+            this.writePackedLegacyItemUseTransaction(buffer, helper, packet.getItemUseTransaction());
         }
         if (packet.getInputData().contains(PlayerAuthInputData.PERFORM_ITEM_STACK_REQUEST)) {
             helper.writeItemStackRequest(buffer, packet.getItemStackRequest());
@@ -70,7 +70,7 @@ public class PlayerAuthInputSerializer_v766 extends PlayerAuthInputSerializer_v7
         packet.setClientTick(VarInts.readUnsignedLong(buffer));
         packet.setPosDelta(helper.readVector3f(buffer));
         if (packet.getInputData().contains(PlayerAuthInputData.PERFORM_ITEM_INTERACTION)) {
-            packet.setItemUseTransaction(this.readItemUseTransaction(buffer, helper));
+            packet.setItemUseTransaction(this.readPackedLegacyItemUseTransaction(buffer, helper));
         }
         if (packet.getInputData().contains(PlayerAuthInputData.PERFORM_ITEM_STACK_REQUEST)) {
             packet.setItemStackRequest(helper.readItemStackRequest(buffer));
