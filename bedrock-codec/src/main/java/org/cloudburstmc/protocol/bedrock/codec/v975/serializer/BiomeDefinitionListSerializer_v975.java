@@ -125,17 +125,6 @@ public class BiomeDefinitionListSerializer_v975 extends BiomeDefinitionListSeria
         return new SerializedNoiseBlockSpecifier(null, 0f, null, block);
     }
 
-    protected void writeFloatRange(ByteBuf buffer, BedrockCodecHelper helper, FloatRange range) {
-        buffer.writeFloatLE(range.getMin());
-        buffer.writeFloatLE(range.getMax());
-    }
-
-    protected FloatRange readFloatRange(ByteBuf buffer, BedrockCodecHelper helper) {
-        final float min = buffer.readFloatLE();
-        final float max = buffer.readFloatLE();
-        return new FloatRange(min, max);
-    }
-
     protected void writeNoiseDescriptor(ByteBuf buffer, BedrockCodecHelper helper, NoiseDescriptor descriptor) {
         helper.writeString(buffer, descriptor.getName());
         buffer.writeIntLE(descriptor.getFirstOctave());
