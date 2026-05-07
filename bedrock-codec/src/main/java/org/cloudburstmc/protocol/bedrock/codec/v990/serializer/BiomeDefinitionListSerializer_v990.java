@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.codec.v986.serializer;
+package org.cloudburstmc.protocol.bedrock.codec.v990.serializer;
 
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
@@ -13,8 +13,8 @@ import org.cloudburstmc.protocol.bedrock.data.definitions.BlockDefinition;
  * @author Kaooot
  */
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class BiomeDefinitionListSerializer_v986 extends BiomeDefinitionListSerializer_v975 {
-    public static final BiomeDefinitionListSerializer_v986 INSTANCE = new BiomeDefinitionListSerializer_v986();
+public class BiomeDefinitionListSerializer_v990 extends BiomeDefinitionListSerializer_v975 {
+    public static final BiomeDefinitionListSerializer_v990 INSTANCE = new BiomeDefinitionListSerializer_v990();
 
     protected void writeSerializedNoiseBlockSpecifier(ByteBuf buffer, BedrockCodecHelper helper, SerializedNoiseBlockSpecifier specifier) {
         helper.writeString(buffer, specifier.getNoise());

@@ -211,11 +211,11 @@ public enum DisconnectFailReason {
      */
     NONCE_NOT_VALID,
     /**
-     * @since v986
+     * @since v990
      */
     HOST_DISCONNECTED,
     /**
-     * @since v986
+     * @since v990
      */
     EDITOR_JOIN_INTENT_POLICY_FAILURE
 }

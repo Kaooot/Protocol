@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.codec.v986.serializer;
+package org.cloudburstmc.protocol.bedrock.codec.v990.serializer;
 
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
@@ -15,8 +15,8 @@ import org.cloudburstmc.protocol.common.util.VarInts;
  * @author Kaooot
  */
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ClientboundAttributeLayerSyncSerializer_v986 extends ClientboundAttributeLayerSyncSerializer_v975 {
-    public static final ClientboundAttributeLayerSyncSerializer_v986 INSTANCE = new ClientboundAttributeLayerSyncSerializer_v986();
+public class ClientboundAttributeLayerSyncSerializer_v990 extends ClientboundAttributeLayerSyncSerializer_v975 {
+    public static final ClientboundAttributeLayerSyncSerializer_v990 INSTANCE = new ClientboundAttributeLayerSyncSerializer_v990();
 
     @Override
     protected void writeAttributeLayerData(ByteBuf buffer, BedrockCodecHelper helper, AttributeLayerData data) {

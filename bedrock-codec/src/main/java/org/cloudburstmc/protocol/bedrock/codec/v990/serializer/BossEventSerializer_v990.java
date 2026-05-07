@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.codec.v986.serializer;
+package org.cloudburstmc.protocol.bedrock.codec.v990.serializer;
 
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
@@ -15,8 +15,8 @@ import org.cloudburstmc.protocol.common.util.VarInts;
  * @author Kaooot
  */
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class BossEventSerializer_v986 implements BedrockPacketSerializer<BossEventPacket> {
-    public static final BossEventSerializer_v986 INSTANCE = new BossEventSerializer_v986();
+public class BossEventSerializer_v990 implements BedrockPacketSerializer<BossEventPacket> {
+    public static final BossEventSerializer_v990 INSTANCE = new BossEventSerializer_v990();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, BossEventPacket packet) {

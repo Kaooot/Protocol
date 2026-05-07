@@ -117,7 +117,7 @@ public final class MinecraftEventing {
         TRUSTING,
         COMMANDING,
         /**
-         * @since v986
+         * @since v990
          */
         EQUIPPING;
 

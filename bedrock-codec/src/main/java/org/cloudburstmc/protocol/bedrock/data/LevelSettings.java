@@ -116,7 +116,7 @@ public class LevelSettings {
      */
     private String ownerId;
     /**
-     * @since v986
+     * @since v990
      */
     private int serverEditorConnectionPolicy;
 }
