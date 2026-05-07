@@ -22,7 +22,9 @@ public class Bedrock_v990 extends Bedrock_v975 {
             .replace(601, SoundEvent.SLIME_LANDING)
             .insert(602, SoundEvent.ABSORB_BLOCK)
             .insert(603, SoundEvent.EJECT_BLOCK)
-            .insert(604, SoundEvent.UNDEFINED)
+            .insert(604, SoundEvent.GEYSER_ERUPTION_START)
+            .insert(605, SoundEvent.GEYSER_ERUPTION_ACTIVE)
+            .insert(606, SoundEvent.UNDEFINED)
             .build();
 
     protected static final ActorDataTypeMap ACTOR_DATA = Bedrock_v975.ACTOR_DATA
@@ -40,8 +42,11 @@ public class Bedrock_v990 extends Bedrock_v975 {
             .updateSerializer(BiomeDefinitionListPacket.class, BiomeDefinitionListSerializer_v990.INSTANCE)
             .updateSerializer(BossEventPacket.class, BossEventSerializer_v990.INSTANCE)
             .updateSerializer(ClientboundAttributeLayerSyncPacket.class, ClientboundAttributeLayerSyncSerializer_v990.INSTANCE)
+            .updateSerializer(GraphicsOverrideParameterPacket.class, GraphicsOverrideParameterSerializer_v990.INSTANCE)
             .updateSerializer(InventoryTransactionPacket.class, InventoryTransactionSerializer_v990.INSTANCE)
             .updateSerializer(LevelSoundEventPacket.class, new LevelSoundEventSerializer_v975(SOUND_EVENTS))
+            .updateSerializer(MobArmorEquipmentPacket.class, MobArmorEquipmentSerializer_v990.INSTANCE)
+            .updateSerializer(PrimitiveShapesPacket.class, PrimitiveShapesSerializer_v990.INSTANCE)
             .updateSerializer(ServerboundDiagnosticsPacket.class, new ServerboundDiagnosticsSerializer_v990(MEMORY_CATEGORY_TYPES))
             .updateSerializer(ServerPresenceInfoPacket.class, ServerPresenceInfoSerializer_v990.INSTANCE)
             .updateSerializer(StartGamePacket.class, StartGameSerializer_v990.INSTANCE)

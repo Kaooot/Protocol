@@ -9,7 +9,23 @@ public enum ScriptPrimitiveShapeType {
     SPHERE,
     CIRCLE,
     TEXT,
-    ARROW;
+    ARROW,
+    /**
+     * @since v990
+     */
+    CYLINDER,
+    /**
+     * @since v990
+     */
+    PYRAMID,
+    /**
+     * @since v990
+     */
+    ELLIPSOID,
+    /**
+     * @since v990
+     */
+    CONE;
 
     private static final ScriptPrimitiveShapeType[] VALUES = values();
 

@@ -10,7 +10,23 @@ public enum ExtraShapeDataType {
     TEXT,
     BOX,
     LINE,
-    SPHERE;
+    SPHERE,
+    /**
+     * @since v990
+     */
+    CYLINDER,
+    /**
+     * @since v990
+     */
+    PYRAMID,
+    /**
+     * @since v990
+     */
+    ELLIPSOID,
+    /**
+     * @since v990
+     */
+    CONE;
 
     private static final ExtraShapeDataType[] VALUES = values();
 

@@ -82,7 +82,12 @@ public final class MinecraftEventing {
         OVER_OVERKILL(112),
         HEART_TRANSPLANTER(113),
         STAY_HYDRATED(114),
-        MOB_KABOB(115);
+        MOB_KABOB(115),
+        ADVENTURING_TIME(116),
+        /**
+         * @since v990
+         */
+        UH_OH(117);
 
         private final int id;
 

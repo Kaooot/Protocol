@@ -18,14 +18,14 @@ public class SendPartyDestinationCookieSerializer_v990 implements BedrockPacketS
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, SendPartyDestinationCookiePacket packet) {
         helper.writeString(buffer, packet.getCookie());
-        helper.writeString(buffer, packet.getIntent().getId());
+        buffer.writeByte(packet.getIntent().ordinal());
         helper.writeString(buffer, packet.getDestinationName());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, SendPartyDestinationCookiePacket packet) {
         packet.setCookie(helper.readString(buffer));
-        packet.setIntent(PartyDestinationCookieIntent.from(helper.readString(buffer)));
+        packet.setIntent(PartyDestinationCookieIntent.from(buffer.readByte()));
         packet.setDestinationName(helper.readString(buffer));
     }
 }

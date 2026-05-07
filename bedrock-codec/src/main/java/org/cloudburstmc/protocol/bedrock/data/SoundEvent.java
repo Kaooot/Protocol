@@ -1032,5 +1032,13 @@ public enum SoundEvent {
      * @since v990
      */
     EJECT_BLOCK,
+    /**
+     * @since v990
+     */
+    GEYSER_ERUPTION_START,
+    /**
+     * @since v990
+     */
+    GEYSER_ERUPTION_ACTIVE,
     UNDEFINED
 }
