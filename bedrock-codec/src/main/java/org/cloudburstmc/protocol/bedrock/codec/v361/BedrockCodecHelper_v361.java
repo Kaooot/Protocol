@@ -98,6 +98,10 @@ public class BedrockCodecHelper_v361 extends BedrockCodecHelper_v340 {
         for (Map.Entry<ActorDataType<?>, Object> entry : actorDataMap.entrySet()) {
             ActorDataTypeMap.Definition<?> definition = this.actorData.fromType(entry.getKey());
 
+            if (definition == null) {
+                throw new NullPointerException("Failed to get definition for Actor Data Type: " + entry.getKey());
+            }
+
             VarInts.writeUnsignedInt(buffer, definition.getId());
             VarInts.writeUnsignedInt(buffer, definition.getFormat().ordinal());
 
