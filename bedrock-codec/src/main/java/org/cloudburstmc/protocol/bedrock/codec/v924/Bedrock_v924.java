@@ -2,15 +2,14 @@ package org.cloudburstmc.protocol.bedrock.codec.v924;
 
 import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
-import org.cloudburstmc.protocol.bedrock.codec.v786.Bedrock_v786;
 import org.cloudburstmc.protocol.bedrock.codec.v786.serializer.LevelSoundEventSerializer_v786;
 import org.cloudburstmc.protocol.bedrock.codec.v898.Bedrock_v898;
 import org.cloudburstmc.protocol.bedrock.codec.v924.serializer.*;
-import org.cloudburstmc.protocol.bedrock.data.payload.diagnostics.MemoryCategory;
 import org.cloudburstmc.protocol.bedrock.data.PacketRecipient;
 import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
 import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataFormat;
 import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataTypes;
+import org.cloudburstmc.protocol.bedrock.data.payload.diagnostics.MemoryCategory;
 import org.cloudburstmc.protocol.bedrock.packet.*;
 import org.cloudburstmc.protocol.bedrock.transformer.FlagTransformer;
 import org.cloudburstmc.protocol.bedrock.transformer.TypeMapTransformer;
@@ -45,7 +44,7 @@ public class Bedrock_v924 extends Bedrock_v898 {
             .insert(597, SoundEvent.UNDEFINED)
             .build();
 
-    protected static final ActorDataTypeMap ACTOR_DATA = Bedrock_v786.ACTOR_DATA
+    protected static final ActorDataTypeMap ACTOR_DATA = Bedrock_v898.ACTOR_DATA
             .toBuilder()
             .update(ActorDataTypes.FLAGS, new FlagTransformer(ACTOR_FLAGS, 0))
             .update(ActorDataTypes.FLAGS_2, new FlagTransformer(ACTOR_FLAGS, 1))
