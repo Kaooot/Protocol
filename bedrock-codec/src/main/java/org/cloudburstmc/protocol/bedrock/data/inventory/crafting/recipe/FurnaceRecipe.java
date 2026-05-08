@@ -6,10 +6,14 @@ import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.CraftingDataEnt
 
 import static org.cloudburstmc.protocol.common.util.Preconditions.checkArgument;
 
+/**
+ * @deprecated since v975. Use {@link ShapelessRecipe}.
+ */
 @Getter
 @ToString
 @EqualsAndHashCode
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+@Deprecated
 public class FurnaceRecipe implements TaggedCraftingDataEntry {
 
     private final CraftingDataEntryType type;
