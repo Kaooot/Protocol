@@ -91,7 +91,7 @@ public class PrimitiveShapesSerializer_v990 extends PrimitiveShapesSerializer_v9
         payload.setRadiusX(helper.readVector2f(buffer));
         payload.setRadiusZ(helper.readVector2f(buffer));
         payload.setHeight(buffer.readFloatLE());
-        payload.setNumSegments((int) buffer.readUnsignedByte());
+        payload.setNumSegments(buffer.readUnsignedByte());
         return payload;
     }
 
@@ -117,7 +117,7 @@ public class PrimitiveShapesSerializer_v990 extends PrimitiveShapesSerializer_v9
     protected EllipsoidDataPayload readEllipsoidData(ByteBuf buffer, BedrockCodecHelper helper) {
         final EllipsoidDataPayload payload = new EllipsoidDataPayload();
         payload.setRadii(helper.readVector3f(buffer));
-        payload.setSegmentsPerAxis((int) buffer.readUnsignedByte());
+        payload.setSegmentsPerAxis(buffer.readUnsignedByte());
         return payload;
     }
 
@@ -131,7 +131,7 @@ public class PrimitiveShapesSerializer_v990 extends PrimitiveShapesSerializer_v9
         final ConeDataPayload payload = new ConeDataPayload();
         payload.setRadii(helper.readVector2f(buffer));
         payload.setHeight(buffer.readFloatLE());
-        payload.setNumSegments((int) buffer.readUnsignedByte());
+        payload.setNumSegments(buffer.readUnsignedByte());
         return payload;
     }
 }
