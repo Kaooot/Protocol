@@ -85,7 +85,7 @@ public final class MinecraftEventing {
         MOB_KABOB(115),
         ADVENTURING_TIME(116),
         /**
-         * @since v990
+         * @since v998
          */
         UH_OH(117);
 
@@ -122,7 +122,7 @@ public final class MinecraftEventing {
         TRUSTING,
         COMMANDING,
         /**
-         * @since v990
+         * @since v998
          */
         EQUIPPING;
 

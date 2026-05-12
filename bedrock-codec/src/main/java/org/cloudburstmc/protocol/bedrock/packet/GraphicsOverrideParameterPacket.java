@@ -28,7 +28,7 @@ public class GraphicsOverrideParameterPacket implements BedrockPacket {
     private Vector3f vec3Value;
     private String biomeIdentifier;
     /**
-     * @since v990
+     * @since v998
      */
     private String playerIdentifier;
     private GraphicsOverrideParameterType identifierForParameter;

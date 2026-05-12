@@ -11,19 +11,19 @@ public enum ScriptPrimitiveShapeType {
     TEXT,
     ARROW,
     /**
-     * @since v990
+     * @since v998
      */
     CYLINDER,
     /**
-     * @since v990
+     * @since v998
      */
     PYRAMID,
     /**
-     * @since v990
+     * @since v998
      */
     ELLIPSOID,
     /**
-     * @since v990
+     * @since v998
      */
     CONE;
 
