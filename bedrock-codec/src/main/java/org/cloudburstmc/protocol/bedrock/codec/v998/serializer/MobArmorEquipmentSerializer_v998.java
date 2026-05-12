@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.codec.v990.serializer;
+package org.cloudburstmc.protocol.bedrock.codec.v998.serializer;
 
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
@@ -12,8 +12,8 @@ import org.cloudburstmc.protocol.common.util.VarInts;
  * @author Kaooot
  */
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class MobArmorEquipmentSerializer_v990 extends MobArmorEquipmentSerializer_v712 {
-    public static final MobArmorEquipmentSerializer_v990 INSTANCE = new MobArmorEquipmentSerializer_v990();
+public class MobArmorEquipmentSerializer_v998 extends MobArmorEquipmentSerializer_v712 {
+    public static final MobArmorEquipmentSerializer_v998 INSTANCE = new MobArmorEquipmentSerializer_v998();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, MobArmorEquipmentPacket packet) {

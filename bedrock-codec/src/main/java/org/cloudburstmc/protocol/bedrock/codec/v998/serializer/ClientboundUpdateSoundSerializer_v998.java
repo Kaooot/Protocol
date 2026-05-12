@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.codec.v990.serializer;
+package org.cloudburstmc.protocol.bedrock.codec.v998.serializer;
 
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
@@ -12,8 +12,8 @@ import org.cloudburstmc.protocol.bedrock.packet.ClientboundUpdateSoundDataPacket
  * @author Kaooot
  */
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ClientboundUpdateSoundSerializer_v990 implements BedrockPacketSerializer<ClientboundUpdateSoundDataPacket> {
-    public static final ClientboundUpdateSoundSerializer_v990 INSTANCE = new ClientboundUpdateSoundSerializer_v990();
+public class ClientboundUpdateSoundSerializer_v998 implements BedrockPacketSerializer<ClientboundUpdateSoundDataPacket> {
+    public static final ClientboundUpdateSoundSerializer_v998 INSTANCE = new ClientboundUpdateSoundSerializer_v998();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ClientboundUpdateSoundDataPacket packet) {

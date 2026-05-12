@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.codec.v990.serializer;
+package org.cloudburstmc.protocol.bedrock.codec.v998.serializer;
 
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
@@ -17,8 +17,8 @@ import java.util.Map;
  * @author Kaooot
  */
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class GraphicsOverrideParameterSerializer_v990 extends GraphicsParameterOverrideSerializer_v924 {
-    public static final GraphicsOverrideParameterSerializer_v990 INSTANCE = new GraphicsOverrideParameterSerializer_v990();
+public class GraphicsOverrideParameterSerializer_v998 extends GraphicsParameterOverrideSerializer_v924 {
+    public static final GraphicsOverrideParameterSerializer_v998 INSTANCE = new GraphicsOverrideParameterSerializer_v998();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, GraphicsOverrideParameterPacket packet) {

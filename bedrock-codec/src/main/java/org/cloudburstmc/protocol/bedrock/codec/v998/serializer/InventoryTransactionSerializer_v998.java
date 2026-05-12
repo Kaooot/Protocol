@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.codec.v990.serializer;
+package org.cloudburstmc.protocol.bedrock.codec.v998.serializer;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
@@ -17,8 +17,8 @@ import java.util.Arrays;
  * @author Kaooot
  */
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class InventoryTransactionSerializer_v990 extends InventoryTransactionSerializer_v944 {
-    public static final InventoryTransactionSerializer_v990 INSTANCE = new InventoryTransactionSerializer_v990();
+public class InventoryTransactionSerializer_v998 extends InventoryTransactionSerializer_v944 {
+    public static final InventoryTransactionSerializer_v998 INSTANCE = new InventoryTransactionSerializer_v998();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, InventoryTransactionPacket packet) {

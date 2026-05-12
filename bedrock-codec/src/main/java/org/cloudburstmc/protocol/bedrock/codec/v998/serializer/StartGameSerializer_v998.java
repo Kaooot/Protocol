@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.codec.v990.serializer;
+package org.cloudburstmc.protocol.bedrock.codec.v998.serializer;
 
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
@@ -13,8 +13,8 @@ import org.cloudburstmc.protocol.common.util.VarInts;
  * @author Kaooot
  */
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class StartGameSerializer_v990 extends StartGameSerializer_v944 {
-    public static final StartGameSerializer_v990 INSTANCE = new StartGameSerializer_v990();
+public class StartGameSerializer_v998 extends StartGameSerializer_v944 {
+    public static final StartGameSerializer_v998 INSTANCE = new StartGameSerializer_v998();
 
     @Override
     protected void writeLevelSettings(ByteBuf buffer, BedrockCodecHelper helper, LevelSettings settings) {
