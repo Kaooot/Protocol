@@ -7,6 +7,7 @@ import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v944.serializer.StartGameSerializer_v944;
 import org.cloudburstmc.protocol.bedrock.data.LevelSettings;
 import org.cloudburstmc.protocol.bedrock.data.payload.configuration.PresenceConfiguration;
+import org.cloudburstmc.protocol.bedrock.packet.StartGamePacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
 /**
@@ -20,12 +21,14 @@ public class StartGameSerializer_v998 extends StartGameSerializer_v944 {
     protected void writeLevelSettings(ByteBuf buffer, BedrockCodecHelper helper, LevelSettings settings) {
         super.writeLevelSettings(buffer, helper, settings);
         VarInts.writeInt(buffer, settings.getServerEditorConnectionPolicy());
+        buffer.writeBoolean(settings.isAllowAnonymousBlockDropsInEditorWorlds());
     }
 
     @Override
     protected void readLevelSettings(ByteBuf buffer, BedrockCodecHelper helper, LevelSettings settings) {
         super.readLevelSettings(buffer, helper, settings);
         settings.setServerEditorConnectionPolicy(VarInts.readInt(buffer));
+        settings.setAllowAnonymousBlockDropsInEditorWorlds(buffer.readBoolean());
     }
 
     @Override
@@ -41,5 +44,15 @@ public class StartGameSerializer_v998 extends StartGameSerializer_v944 {
         info.setWorldName(helper.readString(buffer));
         info.setRichPresenceId(helper.readString(buffer));
         return info;
+    }
+
+    @Override
+    protected void writeAfterJoinInfo(ByteBuf buffer, BedrockCodecHelper helper, StartGamePacket packet) {
+        buffer.writeLongLE(packet.getRuntimeID());
+    }
+
+    @Override
+    protected void readAfterJoinInfo(ByteBuf buffer, BedrockCodecHelper helper, StartGamePacket packet) {
+        buffer.readLongLE();
     }
 }

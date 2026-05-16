@@ -3,7 +3,6 @@ package org.cloudburstmc.protocol.bedrock.codec.v998;
 import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
 import org.cloudburstmc.protocol.bedrock.codec.v975.Bedrock_v975;
-import org.cloudburstmc.protocol.bedrock.codec.v975.serializer.LevelSoundEventSerializer_v975;
 import org.cloudburstmc.protocol.bedrock.codec.v998.serializer.*;
 import org.cloudburstmc.protocol.bedrock.data.PacketRecipient;
 import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
@@ -24,7 +23,10 @@ public class Bedrock_v998 extends Bedrock_v975 {
             .insert(603, SoundEvent.EJECT_BLOCK)
             .insert(604, SoundEvent.GEYSER_ERUPTION_START)
             .insert(605, SoundEvent.GEYSER_ERUPTION_ACTIVE)
-            .insert(606, SoundEvent.UNDEFINED)
+            .insert(606, SoundEvent.RECORD_BOUNCE)
+            .insert(607, SoundEvent.BUCKET_FILL_LAND_ANIMAL)
+            .insert(608, SoundEvent.BUCKET_EMPTY_LAND_ANIMAL)
+            .insert(609, SoundEvent.UNDEFINED)
             .build();
 
     protected static final ActorDataTypeMap ACTOR_DATA = Bedrock_v975.ACTOR_DATA
@@ -42,9 +44,10 @@ public class Bedrock_v998 extends Bedrock_v975 {
             .updateSerializer(BiomeDefinitionListPacket.class, BiomeDefinitionListSerializer_v998.INSTANCE)
             .updateSerializer(BossEventPacket.class, BossEventSerializer_v998.INSTANCE)
             .updateSerializer(ClientboundAttributeLayerSyncPacket.class, ClientboundAttributeLayerSyncSerializer_v998.INSTANCE)
+            .updateSerializer(ClientCacheBlobStatusPacket.class, ClientCacheBlobStatusSerializer_v998.INSTANCE)
             .updateSerializer(GraphicsOverrideParameterPacket.class, GraphicsOverrideParameterSerializer_v998.INSTANCE)
             .updateSerializer(InventoryTransactionPacket.class, InventoryTransactionSerializer_v998.INSTANCE)
-            .updateSerializer(LevelSoundEventPacket.class, new LevelSoundEventSerializer_v975(SOUND_EVENTS))
+            .updateSerializer(LevelSoundEventPacket.class, new LevelSoundEventSerializer_v998(SOUND_EVENTS))
             .updateSerializer(MobArmorEquipmentPacket.class, MobArmorEquipmentSerializer_v998.INSTANCE)
             .updateSerializer(PrimitiveShapesPacket.class, PrimitiveShapesSerializer_v998.INSTANCE)
             .updateSerializer(ServerboundDiagnosticsPacket.class, new ServerboundDiagnosticsSerializer_v998(MEMORY_CATEGORY_TYPES))

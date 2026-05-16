@@ -119,4 +119,8 @@ public class LevelSettings {
      * @since v998
      */
     private int serverEditorConnectionPolicy;
+    /**
+     * @since v998
+     */
+    private boolean allowAnonymousBlockDropsInEditorWorlds;
 }

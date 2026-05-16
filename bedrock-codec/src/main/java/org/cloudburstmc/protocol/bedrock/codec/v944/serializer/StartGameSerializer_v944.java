@@ -40,8 +40,8 @@ public class StartGameSerializer_v944 extends StartGameSerializer_v924 {
         helper.writeUuid(buffer, info.getExperienceWorldID());
         helper.writeString(buffer, info.getExperienceWorldName());
         helper.writeString(buffer, info.getCreatorID());
-        helper.writeUuid(buffer, info.getUnk());
-        helper.writeUuid(buffer, info.getUnk1());
+        helper.writeUuid(buffer, info.getOwnerID());
+        helper.writeString(buffer, info.getScenarioID());
         helper.writeString(buffer, info.getServerID());
     }
 
@@ -53,8 +53,8 @@ public class StartGameSerializer_v944 extends StartGameSerializer_v924 {
         info.setExperienceWorldID(helper.readUuid(buffer));
         info.setExperienceWorldName(helper.readString(buffer));
         info.setCreatorID(helper.readString(buffer));
-        info.setUnk(helper.readUuid(buffer));
-        info.setUnk1(helper.readUuid(buffer));
+        info.setOwnerID(helper.readUuid(buffer));
+        info.setScenarioID(helper.readString(buffer));
         info.setServerID(helper.readString(buffer));
         return info;
     }

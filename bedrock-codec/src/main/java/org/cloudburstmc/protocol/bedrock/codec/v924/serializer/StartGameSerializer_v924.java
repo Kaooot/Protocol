@@ -25,20 +25,14 @@ public class StartGameSerializer_v924 extends StartGameSerializer_v818 {
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, StartGamePacket packet) {
         super.serialize(buffer, helper, packet);
         helper.writeOptionalNull(buffer, packet.getServerJoinInfo(), this::writeServerJoinInfo);
-        helper.writeString(buffer, packet.getServerID());
-        helper.writeString(buffer, packet.getScenarioID());
-        helper.writeString(buffer, packet.getWorldID());
-        helper.writeString(buffer, packet.getOwnerID());
+        this.writeAfterJoinInfo(buffer, helper, packet);
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, StartGamePacket packet) {
         super.deserialize(buffer, helper, packet);
         packet.setServerJoinInfo(helper.readOptional(buffer, null, this::readServerJoinInfo));
-        packet.setServerID(helper.readString(buffer));
-        packet.setScenarioID(helper.readString(buffer));
-        packet.setWorldID(helper.readString(buffer));
-        packet.setOwnerID(helper.readString(buffer));
+        this.readAfterJoinInfo(buffer, helper, packet);
     }
 
     @Override
@@ -189,5 +183,19 @@ public class StartGameSerializer_v924 extends StartGameSerializer_v818 {
         info.setCreatorID(helper.readString(buffer));
         helper.readString(buffer); // Store ID
         return info;
+    }
+
+    protected void writeAfterJoinInfo(ByteBuf buffer, BedrockCodecHelper helper, StartGamePacket packet) {
+        helper.writeString(buffer, packet.getServerID());
+        helper.writeString(buffer, packet.getScenarioID());
+        helper.writeString(buffer, packet.getWorldID());
+        helper.writeString(buffer, packet.getOwnerID());
+    }
+
+    protected void readAfterJoinInfo(ByteBuf buffer, BedrockCodecHelper helper, StartGamePacket packet) {
+        packet.setServerID(helper.readString(buffer));
+        packet.setScenarioID(helper.readString(buffer));
+        packet.setWorldID(helper.readString(buffer));
+        packet.setOwnerID(helper.readString(buffer));
     }
 }

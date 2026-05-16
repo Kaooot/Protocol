@@ -4,7 +4,13 @@ public enum PlayerActionType {
     START_DESTROY_BLOCK,
     ABORT_DESTROY_BLOCK,
     STOP_DESTROY_BLOCK,
+    /**
+     * @deprecated since v998
+     */
     GET_UPDATED_BLOCK,
+    /**
+     * @deprecated since v998
+     */
     DROP_ITEM,
     START_SLEEPING,
     STOP_SLEEPING,
@@ -20,12 +26,21 @@ public enum PlayerActionType {
     STOP_GLIDING,
     DENY_DESTROY_BLOCK,
     CRACK_BLOCK,
+    /**
+     * @deprecated since v998
+     */
     CHANGE_SKIN,
+    /**
+     * @deprecated since v998
+     */
     DEPRECATED_UPDATED_ENCHANTING_SEED,
     START_SWIMMING,
     STOP_SWIMMING,
     START_SPIN_ATTACK,
     STOP_SPIN_ATTACK,
+    /**
+     * @deprecated since v998
+     */
     INTERACT_WITH_BLOCK,
     /**
      * @since v428
@@ -70,6 +85,7 @@ public enum PlayerActionType {
     /**
      * @since v622
      * @deprecated
+     * @deprecated since v998
      */
     DEPRECATED_CLIENT_ACK_SERVER_DATA,
     /**

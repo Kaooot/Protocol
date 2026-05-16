@@ -18,11 +18,11 @@ public class GatheringJoinInfo {
     /**
      * @since v944
      */
-    private UUID unk;
+    private UUID ownerID; // owner id?
     /**
      * @since v944
      */
-    private UUID unk1;
+    private String scenarioID;
     /**
      * @since v944
      */

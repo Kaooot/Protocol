@@ -1040,5 +1040,17 @@ public enum SoundEvent {
      * @since v998
      */
     GEYSER_ERUPTION_ACTIVE,
+    /**
+     * @since v998
+     */
+    RECORD_BOUNCE,
+    /**
+     * @since v998
+     */
+    BUCKET_FILL_LAND_ANIMAL,
+    /**
+     * @since v998
+     */
+    BUCKET_EMPTY_LAND_ANIMAL,
     UNDEFINED
 }
