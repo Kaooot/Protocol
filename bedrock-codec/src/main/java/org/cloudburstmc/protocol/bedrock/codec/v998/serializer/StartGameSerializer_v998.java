@@ -1,6 +1,7 @@
 package org.cloudburstmc.protocol.bedrock.codec.v998.serializer;
 
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufUtil;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
@@ -9,6 +10,8 @@ import org.cloudburstmc.protocol.bedrock.data.LevelSettings;
 import org.cloudburstmc.protocol.bedrock.data.payload.configuration.PresenceConfiguration;
 import org.cloudburstmc.protocol.bedrock.packet.StartGamePacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
+
+import java.util.Arrays;
 
 /**
  * @author Kaooot
@@ -47,12 +50,14 @@ public class StartGameSerializer_v998 extends StartGameSerializer_v944 {
     }
 
     @Override
-    protected void writeAfterJoinInfo(ByteBuf buffer, BedrockCodecHelper helper, StartGamePacket packet) {
-        buffer.writeLongLE(packet.getRuntimeID());
+    protected void writeBeforeNetworkPermissions(ByteBuf buffer, BedrockCodecHelper helper, StartGamePacket packet) {
+        super.writeBeforeNetworkPermissions(buffer, helper, packet);
+        buffer.writeByte(0); // TODO
     }
 
     @Override
-    protected void readAfterJoinInfo(ByteBuf buffer, BedrockCodecHelper helper, StartGamePacket packet) {
-        buffer.readLongLE();
+    protected void readBeforeNetworkPermissions(ByteBuf buffer, BedrockCodecHelper helper, StartGamePacket packet) {
+        super.readBeforeNetworkPermissions(buffer, helper, packet);
+        buffer.readUnsignedByte(); // TODO
     }
 }
