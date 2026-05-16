@@ -18,7 +18,7 @@ public class GatheringJoinInfo {
     /**
      * @since v944
      */
-    private UUID ownerID; // owner id?
+    private UUID targetID;
     /**
      * @since v944
      */
