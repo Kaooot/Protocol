@@ -109,6 +109,10 @@ public class StartGamePacket implements BedrockPacket {
      * @since v924
      */
     private String ownerID;
+    /**
+     * @since v998
+     */
+    private boolean isLoggingChat;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {
