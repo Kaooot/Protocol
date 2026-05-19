@@ -8,10 +8,12 @@ import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v503.BedrockCodecHelper_v503;
 import org.cloudburstmc.protocol.bedrock.data.AbilitiesIndex;
 import org.cloudburstmc.protocol.bedrock.data.PlayerPermissionLevel;
-import org.cloudburstmc.protocol.bedrock.data.SerializedAbilitiesData;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandPermissionLevel;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerEnumName;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestActionType;
+import org.cloudburstmc.protocol.bedrock.data.payload.abilities.SerializedAbilitiesData;
+import org.cloudburstmc.protocol.bedrock.data.payload.abilities.SerializedAbilitiesDataSerializedLayer;
+import org.cloudburstmc.protocol.bedrock.data.payload.abilities.SerializedLayer;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 
 import java.util.Set;
@@ -38,9 +40,9 @@ public class BedrockCodecHelper_v534 extends BedrockCodecHelper_v503 {
         this.readArray(buffer, data.getLayers(), this::readAbilityLayer);
     }
 
-    protected SerializedAbilitiesData.SerializedLayer readAbilityLayer(ByteBuf buffer) {
-        SerializedAbilitiesData.SerializedLayer abilityLayer = new SerializedAbilitiesData.SerializedLayer();
-        abilityLayer.setSerializedLayer(SerializedAbilitiesData.SerializedLayer.SerializedAbilitiesLayer.from(buffer.readUnsignedShortLE()));
+    protected SerializedAbilitiesDataSerializedLayer readAbilityLayer(ByteBuf buffer) {
+        SerializedAbilitiesDataSerializedLayer abilityLayer = new SerializedAbilitiesDataSerializedLayer();
+        abilityLayer.setSerializedLayer(SerializedLayer.from(buffer.readUnsignedShortLE()));
         readAbilitiesFromNumber(buffer.readIntLE(), abilityLayer.getAbilitiesSet());
         readAbilitiesFromNumber(buffer.readIntLE(), abilityLayer.getAbilityValues());
         abilityLayer.setFlySpeed(buffer.readFloatLE());
@@ -56,7 +58,7 @@ public class BedrockCodecHelper_v534 extends BedrockCodecHelper_v503 {
         this.writeArray(buffer, data.getLayers(), this::writeAbilityLayer);
     }
 
-    protected void writeAbilityLayer(ByteBuf buffer, SerializedAbilitiesData.SerializedLayer abilityLayer) {
+    protected void writeAbilityLayer(ByteBuf buffer, SerializedAbilitiesDataSerializedLayer abilityLayer) {
         buffer.writeShortLE(abilityLayer.getSerializedLayer().ordinal());
         buffer.writeIntLE(getAbilitiesNumber(abilityLayer.getAbilitiesSet()));
         buffer.writeIntLE(getAbilitiesNumber(abilityLayer.getAbilityValues()));

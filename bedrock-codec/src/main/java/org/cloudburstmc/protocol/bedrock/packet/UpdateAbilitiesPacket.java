@@ -3,7 +3,7 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.protocol.bedrock.data.SerializedAbilitiesData;
+import org.cloudburstmc.protocol.bedrock.data.payload.abilities.SerializedAbilitiesData;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
