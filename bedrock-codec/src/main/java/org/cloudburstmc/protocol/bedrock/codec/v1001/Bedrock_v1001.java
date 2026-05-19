@@ -46,6 +46,7 @@ public class Bedrock_v1001 extends Bedrock_v975 {
             .updateSerializer(ClientboundAttributeLayerSyncPacket.class, ClientboundAttributeLayerSyncSerializer_v1001.INSTANCE)
             .updateSerializer(ClientCacheBlobStatusPacket.class, ClientCacheBlobStatusSerializer_v1001.INSTANCE)
             .updateSerializer(GraphicsOverrideParameterPacket.class, GraphicsOverrideParameterSerializer_v1001.INSTANCE)
+            .updateSerializer(InventoryContentPacket.class, InventoryContentSerializer_v1001.INSTANCE)
             .updateSerializer(InventoryTransactionPacket.class, InventoryTransactionSerializer_v1001.INSTANCE)
             .updateSerializer(LevelSoundEventPacket.class, new LevelSoundEventSerializer_v1001(SOUND_EVENTS))
             .updateSerializer(MobArmorEquipmentPacket.class, MobArmorEquipmentSerializer_v1001.INSTANCE)
