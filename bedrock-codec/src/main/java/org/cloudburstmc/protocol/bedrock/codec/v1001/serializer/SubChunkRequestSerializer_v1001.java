@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.codec.v998.serializer;
+package org.cloudburstmc.protocol.bedrock.codec.v1001.serializer;
 
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
@@ -13,8 +13,8 @@ import org.cloudburstmc.protocol.common.util.VarInts;
  * @author Kaooot
  */
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class SubChunkRequestSerializer_v998 extends SubChunkRequestSerializer_v486 {
-    public static final SubChunkRequestSerializer_v998 INSTANCE = new SubChunkRequestSerializer_v998();
+public class SubChunkRequestSerializer_v1001 extends SubChunkRequestSerializer_v486 {
+    public static final SubChunkRequestSerializer_v1001 INSTANCE = new SubChunkRequestSerializer_v1001();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, SubChunkRequestPacket packet) {

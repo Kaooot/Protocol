@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.codec.v998.serializer;
+package org.cloudburstmc.protocol.bedrock.codec.v1001.serializer;
 
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
@@ -12,8 +12,8 @@ import org.cloudburstmc.protocol.bedrock.packet.SendPartyDestinationCookiePacket
  * @author Kaooot
  */
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class SendPartyDestinationCookieSerializer_v998 implements BedrockPacketSerializer<SendPartyDestinationCookiePacket> {
-    public static final SendPartyDestinationCookieSerializer_v998 INSTANCE = new SendPartyDestinationCookieSerializer_v998();
+public class SendPartyDestinationCookieSerializer_v1001 implements BedrockPacketSerializer<SendPartyDestinationCookiePacket> {
+    public static final SendPartyDestinationCookieSerializer_v1001 INSTANCE = new SendPartyDestinationCookieSerializer_v1001();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, SendPartyDestinationCookiePacket packet) {

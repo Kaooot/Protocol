@@ -12,11 +12,11 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @ToString(doNotUseGetters = true)
 public class LevelSoundEventPacket implements BedrockPacket {
     /**
-     * @deprecated since v998
+     * @deprecated since v1001
      */
     private SoundEvent sound;
     /**
-     * @since v998
+     * @since v1001
      */
     private String soundEvent;
     private Vector3f position;

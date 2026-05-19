@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.codec.v998.serializer;
+package org.cloudburstmc.protocol.bedrock.codec.v1001.serializer;
 
 import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
@@ -11,9 +11,9 @@ import org.cloudburstmc.protocol.common.util.VarInts;
 /**
  * @author Kaooot
  */
-public class LevelSoundEventSerializer_v998 extends LevelSoundEventSerializer_v975 {
+public class LevelSoundEventSerializer_v1001 extends LevelSoundEventSerializer_v975 {
 
-    public LevelSoundEventSerializer_v998(TypeMap<SoundEvent> typeMap) {
+    public LevelSoundEventSerializer_v1001(TypeMap<SoundEvent> typeMap) {
         super(typeMap);
     }
 

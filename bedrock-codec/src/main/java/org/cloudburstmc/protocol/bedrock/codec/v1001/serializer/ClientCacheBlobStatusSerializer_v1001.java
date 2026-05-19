@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.codec.v998.serializer;
+package org.cloudburstmc.protocol.bedrock.codec.v1001.serializer;
 
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
@@ -11,8 +11,8 @@ import org.cloudburstmc.protocol.bedrock.packet.ClientCacheBlobStatusPacket;
  * @author Kaooot
  */
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ClientCacheBlobStatusSerializer_v998 extends ClientCacheBlobStatusSerializer_v361 {
-    public static final ClientCacheBlobStatusSerializer_v998 INSTANCE = new ClientCacheBlobStatusSerializer_v998();
+public class ClientCacheBlobStatusSerializer_v1001 extends ClientCacheBlobStatusSerializer_v361 {
+    public static final ClientCacheBlobStatusSerializer_v1001 INSTANCE = new ClientCacheBlobStatusSerializer_v1001();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ClientCacheBlobStatusPacket packet) {

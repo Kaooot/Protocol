@@ -38,7 +38,7 @@ public class ServerboundDiagnosticsPacket implements BedrockPacket{
      */
     private final List<SystemDiagnosticTimingInfo> systemDiagnostics = new ObjectArrayList<>();
     /**
-     * @since v998
+     * @since v1001
      */
     private final List<WhiskerScopeDataSummary> whiskerScopes = new ObjectArrayList<>();
 

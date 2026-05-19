@@ -11,7 +11,7 @@ public class PresenceConfiguration {
     private String experienceName;
     private String worldName;
     /**
-     * @since v998
+     * @since v1001
      */
     private String richPresenceId;
 }

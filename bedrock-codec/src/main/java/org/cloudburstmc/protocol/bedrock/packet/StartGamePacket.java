@@ -110,7 +110,7 @@ public class StartGamePacket implements BedrockPacket {
      */
     private String ownerID;
     /**
-     * @since v998
+     * @since v1001
      */
     private boolean isLoggingChat;
 

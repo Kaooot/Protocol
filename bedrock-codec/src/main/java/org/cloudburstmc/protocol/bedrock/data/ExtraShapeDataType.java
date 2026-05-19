@@ -12,19 +12,19 @@ public enum ExtraShapeDataType {
     LINE,
     SPHERE,
     /**
-     * @since v998
+     * @since v1001
      */
     CYLINDER,
     /**
-     * @since v998
+     * @since v1001
      */
     PYRAMID,
     /**
-     * @since v998
+     * @since v1001
      */
     ELLIPSOID,
     /**
-     * @since v998
+     * @since v1001
      */
     CONE;
 

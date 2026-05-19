@@ -116,11 +116,11 @@ public class LevelSettings {
      */
     private String ownerId;
     /**
-     * @since v998
+     * @since v1001
      */
     private int serverEditorConnectionPolicy;
     /**
-     * @since v998
+     * @since v1001
      */
     private boolean allowAnonymousBlockDropsInEditorWorlds;
 }
