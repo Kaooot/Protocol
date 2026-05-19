@@ -5,7 +5,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
-import org.cloudburstmc.protocol.bedrock.data.CommandBlockMode;
+import org.cloudburstmc.protocol.bedrock.data.payload.command.*;
 import org.cloudburstmc.protocol.bedrock.packet.CommandBlockUpdatePacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -15,17 +15,7 @@ public class CommandBlockUpdateSerializer_v291 implements BedrockPacketSerialize
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, CommandBlockUpdatePacket packet) {
-        buffer.writeBoolean(packet.isBlock());
-
-        if (packet.isBlock()) {
-            helper.writeBlockPosition(buffer, packet.getBlockPosition());
-            VarInts.writeUnsignedInt(buffer, packet.getCommandBlockMode().ordinal());
-            buffer.writeBoolean(packet.isRedstoneMode());
-            buffer.writeBoolean(packet.isConditional());
-        } else {
-            VarInts.writeUnsignedLong(buffer, packet.getTargetRuntimeID());
-        }
-
+        this.writeTargetVariant(buffer, helper, packet.getTarget());
         helper.writeString(buffer, packet.getCommand());
         helper.writeString(buffer, packet.getLastOutput());
         helper.writeString(buffer, packet.getName());
@@ -34,20 +24,58 @@ public class CommandBlockUpdateSerializer_v291 implements BedrockPacketSerialize
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, CommandBlockUpdatePacket packet) {
-        packet.setBlock(buffer.readBoolean());
-
-        if (packet.isBlock()) {
-            packet.setBlockPosition(helper.readBlockPosition(buffer));
-            packet.setCommandBlockMode(CommandBlockMode.values()[VarInts.readUnsignedInt(buffer)]);
-            packet.setRedstoneMode(buffer.readBoolean());
-            packet.setConditional(buffer.readBoolean());
-        } else {
-            packet.setTargetRuntimeID(VarInts.readUnsignedLong(buffer));
-        }
-
+        this.readTargetVariant(buffer, helper);
         packet.setCommand(helper.readString(buffer));
         packet.setLastOutput(helper.readString(buffer));
         packet.setName(helper.readString(buffer));
         packet.setTrackOutput(buffer.readBoolean());
+    }
+
+    protected void writeTargetVariant(ByteBuf buffer, BedrockCodecHelper helper, CommandBlockUpdateTarget target) {
+        VarInts.writeUnsignedInt(buffer, target.getType().ordinal());
+        switch (target.getType()) {
+            case ENTITY:
+                this.writeEntityCommandTarget(buffer, helper, (EntityCommandTarget) target);
+                break;
+            case BLOCK:
+                this.writeBlockCommandData(buffer, helper, (BlockCommandData) target);
+                break;
+        }
+    }
+
+    protected CommandBlockUpdateTarget readTargetVariant(ByteBuf buffer, BedrockCodecHelper helper) {
+        final CommandBlockUpdateTargetType targetType = CommandBlockUpdateTargetType.from(VarInts.readUnsignedInt(buffer));
+        switch (targetType) {
+            case ENTITY:
+                return this.readEntityCommandTarget(buffer, helper);
+            case BLOCK:
+                return this.readBlockCommandData(buffer, helper);
+            default:
+                throw new IllegalStateException("should never happen");
+        }
+    }
+
+    protected void writeEntityCommandTarget(ByteBuf buffer, BedrockCodecHelper helper, EntityCommandTarget target) {
+        VarInts.writeUnsignedLong(buffer, target.getTargetRuntimeID());
+    }
+
+    protected EntityCommandTarget readEntityCommandTarget(ByteBuf buffer, BedrockCodecHelper helper) {
+        return new EntityCommandTarget(VarInts.readUnsignedLong(buffer));
+    }
+
+    protected void writeBlockCommandData(ByteBuf buffer, BedrockCodecHelper helper, BlockCommandData data) {
+        helper.writeBlockPosition(buffer, data.getBlockPosition());
+        VarInts.writeUnsignedInt(buffer, data.getCommandBlockMode().ordinal());
+        buffer.writeBoolean(data.isRedstoneMode());
+        buffer.writeBoolean(data.isConditional());
+    }
+
+    protected BlockCommandData readBlockCommandData(ByteBuf buffer, BedrockCodecHelper helper) {
+        final BlockCommandData data = new BlockCommandData();
+        data.setBlockPosition(helper.readBlockPosition(buffer));
+        data.setCommandBlockMode(CommandBlockMode.from(VarInts.readUnsignedInt(buffer)));
+        data.setRedstoneMode(buffer.readBoolean());
+        data.setConditional(buffer.readBoolean());
+        return data;
     }
 }

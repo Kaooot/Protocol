@@ -3,27 +3,31 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.math.vector.Vector3i;
-import org.cloudburstmc.protocol.bedrock.data.CommandBlockMode;
+import org.cloudburstmc.protocol.bedrock.data.payload.command.CommandBlockUpdateTarget;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class CommandBlockUpdatePacket implements BedrockPacket {
-    private boolean isBlock;
-    private Vector3i blockPosition;
-    private CommandBlockMode commandBlockMode;
-    private boolean redstoneMode;
-    private boolean isConditional;
-    private long targetRuntimeID;
+
+    private CommandBlockUpdateTarget target;
     private String command;
     private String lastOutput;
     private String name;
+    /**
+     * @since v776
+     */
     private String filteredName;
     private boolean trackOutput;
-    private long tickDelay;
-    private boolean shouldExecuteOnFirstTick;
+    /**
+     * @since v361
+     */
+    private int tickDelay;
+    /**
+     * @since v361
+     */
+    private boolean executeOnFirstTick;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {
@@ -43,4 +47,3 @@ public class CommandBlockUpdatePacket implements BedrockPacket {
         }
     }
 }
-
