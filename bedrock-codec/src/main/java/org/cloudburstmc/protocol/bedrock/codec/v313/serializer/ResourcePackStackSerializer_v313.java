@@ -5,20 +5,20 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.ResourcePackStackSerializer_v291;
-import org.cloudburstmc.protocol.bedrock.data.Experiment;
+import org.cloudburstmc.protocol.bedrock.data.payload.experiment.ExperimentToggle;
 import org.cloudburstmc.protocol.bedrock.packet.ResourcePackStackPacket;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ResourcePackStackSerializer_v313 extends ResourcePackStackSerializer_v291 {
     public static final ResourcePackStackSerializer_v313 INSTANCE = new ResourcePackStackSerializer_v313();
 
-    private static final Experiment LEGACY_EXPERIMENT_DATA = new Experiment("legacy_experiment", true);
+    private static final ExperimentToggle LEGACY_EXPERIMENT_DATA = new ExperimentToggle("legacy_experiment", true);
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ResourcePackStackPacket packet) {
         super.serialize(buffer, helper, packet);
 
-        buffer.writeBoolean(packet.getExperiments().contains(LEGACY_EXPERIMENT_DATA));
+        buffer.writeBoolean(packet.getExperiments().getToggles().contains(LEGACY_EXPERIMENT_DATA));
     }
 
     @Override
@@ -26,7 +26,7 @@ public class ResourcePackStackSerializer_v313 extends ResourcePackStackSerialize
         super.deserialize(buffer, helper, packet);
 
         if (buffer.readBoolean()) {
-            packet.getExperiments().add(LEGACY_EXPERIMENT_DATA);
+            packet.getExperiments().getToggles().add(LEGACY_EXPERIMENT_DATA);
         }
     }
 }
