@@ -10,6 +10,8 @@ import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.TextPr
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestActionType;
 import org.cloudburstmc.protocol.bedrock.data.payload.inventory.transaction.InventoryAction;
 import org.cloudburstmc.protocol.bedrock.data.payload.inventory.transaction.InventorySource;
+import org.cloudburstmc.protocol.bedrock.data.payload.inventory.transaction.InventorySourceFlags;
+import org.cloudburstmc.protocol.bedrock.data.payload.inventory.transaction.InventorySourceType;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -26,13 +28,20 @@ public class BedrockCodecHelper_v998 extends BedrockCodecHelper_v975 {
 
     @Override
     protected InventorySource readInventorySource(ByteBuf buffer) {
-        buffer.readUnsignedByte();
-        buffer.readUnsignedByte();
-        buffer.readUnsignedByte();
-        buffer.readUnsignedByte();
-        buffer.readUnsignedByte();
-        buffer.readUnsignedByte();
-        return new InventorySource();
+        final InventorySource source = new InventorySource();
+        source.setSourceType(InventorySourceType.from(VarInts.readUnsignedInt(buffer)));
+        buffer.readBoolean(); // has value? - always 1
+        final int variant = VarInts.readUnsignedInt(buffer); // variant?
+        if (variant == 1) {
+            source.setContainerID(buffer.readByte());
+            source.setBitFlags(InventorySourceFlags.NO_FLAG);
+        } else {
+            source.setContainerID(-1);
+            source.setBitFlags(InventorySourceFlags.from(VarInts.readUnsignedInt(buffer)));
+        }
+        buffer.readUnsignedByte(); //1
+        buffer.readUnsignedByte(); //0
+        return source;
     }
 
     @Override

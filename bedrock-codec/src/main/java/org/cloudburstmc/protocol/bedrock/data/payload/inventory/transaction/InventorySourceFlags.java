@@ -6,8 +6,7 @@ package org.cloudburstmc.protocol.bedrock.data.payload.inventory.transaction;
 public enum InventorySourceFlags {
 
     NO_FLAG,
-    WORLD_INTERACTION_RANDOM,
-    NONE;
+    WORLD_INTERACTION_RANDOM;
 
     private static final InventorySourceFlags[] VALUES = values();
 

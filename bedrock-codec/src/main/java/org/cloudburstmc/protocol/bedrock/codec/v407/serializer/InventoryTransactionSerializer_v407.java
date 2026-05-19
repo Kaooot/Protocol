@@ -31,7 +31,6 @@ public class InventoryTransactionSerializer_v407 extends InventoryTransactionSer
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, InventoryTransactionPacket packet) {
-        //dump(buffer);
         packet.setLegacyRequestID(this.readLegacyRequestId(buffer, helper));
 
         if (packet.getLegacyRequestID().getID() < -1 && (packet.getLegacyRequestID().getID() & 1) == 0) {
@@ -56,16 +55,8 @@ public class InventoryTransactionSerializer_v407 extends InventoryTransactionSer
 
     protected LegacySetSlot readLegacySetSlot(ByteBuf buffer, BedrockCodecHelper helper) {
         final LegacySetSlot slot = new LegacySetSlot();
-        slot.setContainerEnum(ContainerEnumName.values()[buffer.readByte()]);
-        slot.setSlots(helper.readByteArray(buffer, 89));// 89 seems to be the largest slot count
+        slot.setContainerEnum(ContainerEnumName.values()[buffer.readUnsignedByte()]);
+        slot.setSlots(helper.readByteArray(buffer));
         return slot;
-    }
-
-    private void dump(ByteBuf buffer){
-        final ByteBuf copy = buffer.copy();
-        System.out.println(ByteBufUtil.hexDump(copy));
-        final byte[] data = new byte[copy.readableBytes()];
-        copy.readBytes(data);
-        System.out.println(Arrays.toString(data));
     }
 }

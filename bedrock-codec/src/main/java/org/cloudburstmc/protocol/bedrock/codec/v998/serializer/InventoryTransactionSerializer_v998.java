@@ -29,17 +29,20 @@ public class InventoryTransactionSerializer_v998 extends InventoryTransactionSer
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, InventoryTransactionPacket packet) {
         packet.setLegacyRequestID(this.readLegacyRequestId(buffer, helper));
 
-        final boolean isPresent = buffer.readBoolean();
-        final int length = VarInts.readUnsignedInt(buffer);
+        // negative, even values are valid
+        final boolean legacySetSlotsHasValue = buffer.readBoolean();
+        if (legacySetSlotsHasValue) {
+            helper.readArray(buffer, packet.getLegacySetItemSlots(), this::readLegacySetSlot);
+        }
+        VarInts.readUnsignedInt(buffer); // seems to be 1 in all cases - transaction length maybe?
         packet.setTransaction(this.readInventoryTransactionVariant(buffer, helper));
-        buffer.readBytes(buffer.readableBytes());
     }
 
     protected InventoryTransactionData readInventoryTransactionVariant(ByteBuf buffer, BedrockCodecHelper helper) {
         final InventoryTransactionDataType type = InventoryTransactionDataType.values()[VarInts.readUnsignedInt(buffer)];
         final InventoryTransaction actions = new InventoryTransaction();
 
-        buffer.readBoolean();
+        buffer.readBoolean(); // could be useNetIds or sth like that
         helper.readInventoryTransactions(buffer, actions);
 
         final InventoryTransactionData data;
