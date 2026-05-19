@@ -26,13 +26,13 @@ public class ResourcePackStackSerializer_v291 implements BedrockPacketSerializer
         helper.readArray(buffer, packet.getTexturePackList(), this::readPackInstanceId);
     }
 
-    private void writePackInstanceId(ByteBuf buffer, BedrockCodecHelper helper, PackInstanceId packInstanceId) {
+    protected void writePackInstanceId(ByteBuf buffer, BedrockCodecHelper helper, PackInstanceId packInstanceId) {
         helper.writeString(buffer, packInstanceId.getPackID());
         helper.writeString(buffer, packInstanceId.getVersion());
         helper.writeString(buffer, packInstanceId.getSubPackName());
     }
 
-    public PackInstanceId readPackInstanceId(ByteBuf buffer, BedrockCodecHelper helper) {
+    protected PackInstanceId readPackInstanceId(ByteBuf buffer, BedrockCodecHelper helper) {
         final PackInstanceId packInstanceId = new PackInstanceId();
         packInstanceId.setPackID(packInstanceId.getPackID());
         packInstanceId.setVersion(packInstanceId.getVersion());

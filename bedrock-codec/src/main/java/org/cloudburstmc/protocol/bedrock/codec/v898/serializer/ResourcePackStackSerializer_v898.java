@@ -17,20 +17,18 @@ public class ResourcePackStackSerializer_v898 extends ResourcePackStackSerialize
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ResourcePackStackPacket packet) {
         buffer.writeBoolean(packet.isTexturePackRequired());
-        helper.writeArray(buffer, packet.getTexturePackList(), this::writeEntry);
+        helper.writeArray(buffer, packet.getTexturePackList(), this::writePackInstanceId);
         helper.writeString(buffer, packet.getBaseGameVersion());
-        helper.writeExperiments(buffer, packet.getExperiments());
-        buffer.writeBoolean(packet.isWereAnyExperimentsEverToggled());
+        this.writeExperiments(buffer, helper, packet.getExperiments());
         buffer.writeBoolean(packet.isIncludeEditorPacks());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ResourcePackStackPacket packet) {
         packet.setTexturePackRequired(buffer.readBoolean());
-        helper.readArray(buffer, packet.getTexturePackList(), this::readEntry);
+        helper.readArray(buffer, packet.getTexturePackList(), this::readPackInstanceId);
         packet.setBaseGameVersion(helper.readString(buffer));
-        helper.readExperiments(buffer, packet.getExperiments());
-        packet.setWereAnyExperimentsEverToggled(buffer.readBoolean());
+        packet.setExperiments(this.readExperiments(buffer, helper));
         packet.setIncludeEditorPacks(buffer.readBoolean());
     }
 }
