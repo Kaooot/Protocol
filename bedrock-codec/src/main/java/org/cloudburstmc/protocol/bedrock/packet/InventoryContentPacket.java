@@ -16,7 +16,7 @@ import java.util.List;
 @ToString(doNotUseGetters = true)
 public class InventoryContentPacket implements BedrockPacket {
     private List<ItemData> slots = new ObjectArrayList<>();
-    private int inventoryId;
+    private int containerId;
     /**
      * @since v712
      */
