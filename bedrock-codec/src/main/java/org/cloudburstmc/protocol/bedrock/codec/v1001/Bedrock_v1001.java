@@ -26,7 +26,9 @@ public class Bedrock_v1001 extends Bedrock_v975 {
             .insert(606, SoundEvent.RECORD_BOUNCE)
             .insert(607, SoundEvent.BUCKET_FILL_LAND_ANIMAL)
             .insert(608, SoundEvent.BUCKET_EMPTY_LAND_ANIMAL)
-            .insert(609, SoundEvent.UNDEFINED)
+            .insert(609, SoundEvent.GEYSER_CONTINUOUS_ERUPTION_START)
+            .insert(610, SoundEvent.GEYSER_CONTINUOUS_ERUPTION_ACTIVE)
+            .insert(611, SoundEvent.UNDEFINED)
             .build();
 
     protected static final ActorDataTypeMap ACTOR_DATA = Bedrock_v975.ACTOR_DATA
