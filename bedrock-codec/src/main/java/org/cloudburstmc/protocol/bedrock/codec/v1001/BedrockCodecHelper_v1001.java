@@ -31,16 +31,16 @@ public class BedrockCodecHelper_v1001 extends BedrockCodecHelper_v975 {
         final InventorySource source = new InventorySource();
         source.setSourceType(InventorySourceType.from(VarInts.readUnsignedInt(buffer)));
         buffer.readBoolean(); // has value? - always 1
-        final int variant = VarInts.readUnsignedInt(buffer); // variant?
-        if (variant == 1) {
+        buffer.readBoolean(); // containerID has value?
+        if (source.getSourceType().equals(InventorySourceType.CONTAINER_INVENTORY)) {
             source.setContainerID(buffer.readByte());
             source.setBitFlags(InventorySourceFlags.NO_FLAG);
-        } else {
+        } else if (source.getSourceType().equals(InventorySourceType.WORLD_INTERACTION)) {
             source.setContainerID(-1);
             source.setBitFlags(InventorySourceFlags.from(VarInts.readUnsignedInt(buffer)));
         }
-        buffer.readUnsignedByte(); //1
-        buffer.readUnsignedByte(); //0
+        buffer.readUnsignedByte();
+        buffer.readUnsignedByte();
         return source;
     }
 
