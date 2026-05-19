@@ -6,8 +6,8 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v544.serializer.UpdateAttributesSerializer_v544;
-import org.cloudburstmc.protocol.bedrock.data.AttributeData;
-import org.cloudburstmc.protocol.bedrock.data.attribute.AttributeModifierData;
+import org.cloudburstmc.protocol.bedrock.data.payload.attribute.AttributeData;
+import org.cloudburstmc.protocol.bedrock.data.payload.attribute.AttributeModifier;
 
 import java.util.List;
 
@@ -43,7 +43,7 @@ public class UpdateAttributesSerializer_v729 extends UpdateAttributesSerializer_
         float def = buffer.readFloatLE();
         String name = helper.readString(buffer);
 
-        List<AttributeModifierData> modifiers = new ObjectArrayList<>();
+        List<AttributeModifier> modifiers = new ObjectArrayList<>();
         helper.readArray(buffer, modifiers, this::readModifier);
 
         return new AttributeData(name, min, max, val, defMin, defMax, def, modifiers);

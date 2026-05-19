@@ -1,9 +1,9 @@
-package org.cloudburstmc.protocol.bedrock.data.attribute;
+package org.cloudburstmc.protocol.bedrock.data.payload.attribute;
 
 import lombok.Value;
 
 @Value
-public class AttributeModifierData {
+public class AttributeModifier {
     String id;
     String name;
     float amount;

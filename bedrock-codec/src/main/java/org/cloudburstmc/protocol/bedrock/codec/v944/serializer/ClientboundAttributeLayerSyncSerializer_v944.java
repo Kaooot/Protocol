@@ -165,7 +165,7 @@ public class ClientboundAttributeLayerSyncSerializer_v944 implements BedrockPack
         return data;
     }
 
-    protected void writeAttributeData(ByteBuf buffer, BedrockCodecHelper helper, AttributeData data) {
+    protected void writeAttributeData(ByteBuf buffer, BedrockCodecHelper helper, EASAttributeData data) {
         VarInts.writeUnsignedInt(buffer, data.getType().ordinal());
         switch (data.getType()) {
             case BOOL:
@@ -180,7 +180,7 @@ public class ClientboundAttributeLayerSyncSerializer_v944 implements BedrockPack
         }
     }
 
-    protected AttributeData readAttributeData(ByteBuf buffer, BedrockCodecHelper helper) {
+    protected EASAttributeData readAttributeData(ByteBuf buffer, BedrockCodecHelper helper) {
         final AttributeDataType type = AttributeDataType.from(VarInts.readUnsignedInt(buffer));
         switch (type) {
             case BOOL:

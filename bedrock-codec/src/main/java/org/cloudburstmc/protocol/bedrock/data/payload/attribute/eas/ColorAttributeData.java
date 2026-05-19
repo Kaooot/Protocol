@@ -6,7 +6,7 @@ import lombok.Data;
  * @author Kaooot
  */
 @Data
-public class ColorAttributeData implements AttributeData {
+public class ColorAttributeData implements EASAttributeData {
 
     private Integer color;
     private ColorAttributeOperation operation;

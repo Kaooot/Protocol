@@ -6,7 +6,7 @@ import lombok.Data;
  * @author Kaooot
  */
 @Data
-public class FloatAttributeData implements AttributeData {
+public class FloatAttributeData implements EASAttributeData {
 
     private float value;
     private FloatAttributeOperation operation;

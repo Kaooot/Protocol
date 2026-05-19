@@ -6,7 +6,7 @@ import lombok.Data;
  * @author Kaooot
  */
 @Data
-public class BoolAttributeData implements AttributeData {
+public class BoolAttributeData implements EASAttributeData {
 
     private boolean value;
     private BoolAttributeOperation operation;

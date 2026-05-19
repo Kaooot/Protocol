@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.data.attribute;
+package org.cloudburstmc.protocol.bedrock.data.payload.attribute;
 
 /**
  * @author Kaooot

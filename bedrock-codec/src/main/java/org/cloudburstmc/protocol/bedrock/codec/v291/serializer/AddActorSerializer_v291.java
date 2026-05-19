@@ -5,7 +5,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
-import org.cloudburstmc.protocol.bedrock.data.AttributeData;
+import org.cloudburstmc.protocol.bedrock.data.payload.attribute.AttributeData;
 import org.cloudburstmc.protocol.bedrock.packet.AddActorPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
