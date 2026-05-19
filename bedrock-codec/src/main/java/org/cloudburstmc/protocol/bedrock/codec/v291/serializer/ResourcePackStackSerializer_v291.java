@@ -15,14 +15,14 @@ public class ResourcePackStackSerializer_v291 implements BedrockPacketSerializer
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ResourcePackStackPacket packet) {
         buffer.writeBoolean(packet.isTexturePackRequired());
-        helper.writeArray(buffer, packet.getAddonList(), this::writePackInstanceId);
+        //helper.writeArray(buffer, packet.getAddonList(), this::writePackInstanceId);
         helper.writeArray(buffer, packet.getTexturePackList(), this::writePackInstanceId);
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ResourcePackStackPacket packet) {
         packet.setTexturePackRequired(buffer.readBoolean());
-        helper.readArray(buffer, packet.getAddonList(), this::readPackInstanceId);
+       // helper.readArray(buffer, packet.getAddonList(), this::readPackInstanceId);
         helper.readArray(buffer, packet.getTexturePackList(), this::readPackInstanceId);
     }
 
