@@ -4,8 +4,6 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import lombok.Value;
-import org.cloudburstmc.protocol.bedrock.data.Experiment;
 import org.cloudburstmc.protocol.bedrock.data.payload.experiment.Experiments;
 import org.cloudburstmc.protocol.bedrock.data.payload.pack.PackInstanceId;
 import org.cloudburstmc.protocol.common.PacketSignal;

@@ -29,13 +29,13 @@ public class ResourcePackStackSerializer_v419 extends ResourcePackStackSerialize
     }
 
     protected void writeExperiments(ByteBuf buffer, BedrockCodecHelper helper, Experiments experiments) {
-        helper.writeArray(buffer, experiments.getToggles(), this::writeExperimentToggle);
+        helper.writeArray(buffer, experiments.getToggles(), ByteBuf::writeIntLE, this::writeExperimentToggle);
         buffer.writeBoolean(experiments.isExperimentsEverToggled());
     }
 
     protected Experiments readExperiments(ByteBuf buffer, BedrockCodecHelper helper) {
         final Experiments experiments = new Experiments();
-        helper.readArray(buffer, experiments.getToggles(), this::readExperimentToggle);
+        helper.readArray(buffer, experiments.getToggles(), ByteBuf::readIntLE, this::readExperimentToggle);
         experiments.setExperimentsEverToggled(buffer.readBoolean());
         return experiments;
     }

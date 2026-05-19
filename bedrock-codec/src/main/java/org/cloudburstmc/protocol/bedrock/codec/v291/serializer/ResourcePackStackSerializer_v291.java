@@ -15,14 +15,14 @@ public class ResourcePackStackSerializer_v291 implements BedrockPacketSerializer
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ResourcePackStackPacket packet) {
         buffer.writeBoolean(packet.isTexturePackRequired());
-        //helper.writeArray(buffer, packet.getAddonList(), this::writeEntry);
+        helper.writeArray(buffer, packet.getAddonList(), this::writePackInstanceId);
         helper.writeArray(buffer, packet.getTexturePackList(), this::writePackInstanceId);
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ResourcePackStackPacket packet) {
         packet.setTexturePackRequired(buffer.readBoolean());
-        //helper.readArray(buffer, packet.getAddonList(), this::readEntry);
+        helper.readArray(buffer, packet.getAddonList(), this::readPackInstanceId);
         helper.readArray(buffer, packet.getTexturePackList(), this::readPackInstanceId);
     }
 
@@ -34,9 +34,9 @@ public class ResourcePackStackSerializer_v291 implements BedrockPacketSerializer
 
     protected PackInstanceId readPackInstanceId(ByteBuf buffer, BedrockCodecHelper helper) {
         final PackInstanceId packInstanceId = new PackInstanceId();
-        packInstanceId.setPackID(packInstanceId.getPackID());
-        packInstanceId.setVersion(packInstanceId.getVersion());
-        packInstanceId.setSubPackName(packInstanceId.getSubPackName());
+        packInstanceId.setPackID(helper.readString(buffer));
+        packInstanceId.setVersion(helper.readString(buffer));
+        packInstanceId.setSubPackName(helper.readString(buffer));
         return packInstanceId;
     }
 }
