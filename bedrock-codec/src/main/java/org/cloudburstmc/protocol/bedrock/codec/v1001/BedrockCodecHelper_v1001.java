@@ -1,7 +1,6 @@
 package org.cloudburstmc.protocol.bedrock.codec.v1001;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufUtil;
 import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v975.BedrockCodecHelper_v975;
 import org.cloudburstmc.protocol.bedrock.data.AbilitiesIndex;
@@ -14,8 +13,6 @@ import org.cloudburstmc.protocol.bedrock.data.payload.inventory.transaction.Inve
 import org.cloudburstmc.protocol.bedrock.data.payload.inventory.transaction.InventorySourceType;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 import org.cloudburstmc.protocol.common.util.VarInts;
-
-import java.util.Arrays;
 
 /**
  * @author Kaooot
@@ -30,17 +27,12 @@ public class BedrockCodecHelper_v1001 extends BedrockCodecHelper_v975 {
     protected InventorySource readInventorySource(ByteBuf buffer) {
         final InventorySource source = new InventorySource();
         source.setSourceType(InventorySourceType.from(VarInts.readUnsignedInt(buffer)));
-        buffer.readBoolean(); // has value? - always 1
-        buffer.readBoolean(); // containerID has value?
-        if (source.getSourceType().equals(InventorySourceType.CONTAINER_INVENTORY)) {
+        if (buffer.readBoolean() && buffer.readBoolean()) {
             source.setContainerID(buffer.readByte());
-            source.setBitFlags(InventorySourceFlags.NO_FLAG);
-        } else if (source.getSourceType().equals(InventorySourceType.WORLD_INTERACTION)) {
-            source.setContainerID(-1);
+        }
+        if (buffer.readBoolean() && buffer.readBoolean()) {
             source.setBitFlags(InventorySourceFlags.from(VarInts.readUnsignedInt(buffer)));
         }
-        buffer.readUnsignedByte();
-        buffer.readUnsignedByte();
         return source;
     }
 
@@ -60,14 +52,5 @@ public class BedrockCodecHelper_v1001 extends BedrockCodecHelper_v975 {
         action.setFromItem(this.readNetworkItemStackDescriptor(buffer));
         action.setToItem(this.readNetworkItemStackDescriptor(buffer));
         return action;
-    }
-
-    private void dump(ByteBuf buffer) {
-        final ByteBuf copy = buffer.copy();
-        System.out.println(ByteBufUtil.hexDump(copy));
-        final byte[] data = new byte[copy.readableBytes()];
-        copy.readBytes(data);
-        System.out.println(Arrays.toString(data));
-        System.out.println(new String(data));
     }
 }
