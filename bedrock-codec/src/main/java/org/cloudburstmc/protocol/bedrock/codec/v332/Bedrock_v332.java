@@ -24,7 +24,7 @@ public class Bedrock_v332 extends Bedrock_v313 {
 
     protected static final ActorDataTypeMap ACTOR_DATA = Bedrock_v313.ACTOR_DATA.toBuilder()
             .insert(ActorDataTypes.DATA_DURATION, 94, ActorDataFormat.INT)
-            .insert(ActorDataTypes.DATA_SPAWN_TIME_deprecated, 95, ActorDataFormat.INT)
+            .insert(ActorDataTypes.DATA_SPAWN_TIME_DEPRECATED, 95, ActorDataFormat.INT)
             .insert(ActorDataTypes.DATA_CHANGE_RATE, 96, ActorDataFormat.FLOAT)
             .insert(ActorDataTypes.DATA_CHANGE_ON_PICKUP, 97, ActorDataFormat.FLOAT)
             .insert(ActorDataTypes.DATA_PICKUP_COUNT, 98, ActorDataFormat.INT)
