@@ -4,8 +4,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.math.vector.Vector3i;
-import org.cloudburstmc.protocol.bedrock.data.Dimension;
 import org.cloudburstmc.protocol.bedrock.data.SpawnPositionType;
+import org.cloudburstmc.protocol.bedrock.data.payload.common.DimensionType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
@@ -24,7 +24,7 @@ public class SetSpawnPositionPacket implements BedrockPacket {
     // dimensionId is the ID of the dimension that had its spawn updated. This is specifically relevant for
     // behaviour added in 1.16 such as the respawn anchor, which allows setting the spawn in a specific
     // dimension.
-    private Dimension dimensionType;
+    private DimensionType dimensionType;
 
     // SpawnPosition is a new field added in 1.16. It holds the spawn position of the world. This spawn
     // position is {-2147483648, -2147483648, -2147483648} for a default spawn position.

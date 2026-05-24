@@ -7,7 +7,7 @@ import it.unimi.dsi.fastutil.longs.LongList;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.protocol.bedrock.data.Dimension;
+import org.cloudburstmc.protocol.bedrock.data.payload.common.DimensionType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
@@ -34,7 +34,7 @@ public class LevelChunkPacket extends AbstractReferenceCounted implements Bedroc
     /**
      * @since v649
      */
-    private Dimension dimension;
+    private DimensionType dimension;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

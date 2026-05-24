@@ -2,8 +2,8 @@ package org.cloudburstmc.protocol.bedrock.data.payload.attribute;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
-import org.cloudburstmc.protocol.bedrock.data.Dimension;
 import org.cloudburstmc.protocol.bedrock.data.payload.attribute.eas.EnvironmentAttributeData;
+import org.cloudburstmc.protocol.bedrock.data.payload.common.DimensionType;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ import java.util.List;
 public class UpdateEnvironmentAttributesData implements AttributeLayerSyncPacketData{
 
     private String attributeLayerName;
-    private Dimension attributeLayerDimension;
+    private DimensionType attributeLayerDimension;
     private final List<EnvironmentAttributeData> attributes = new ObjectArrayList<>();
 
     @Override

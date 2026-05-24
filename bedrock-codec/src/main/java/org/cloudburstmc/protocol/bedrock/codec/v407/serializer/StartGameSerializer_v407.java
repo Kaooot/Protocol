@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v388.serializer.StartGameSerializer_v388;
 import org.cloudburstmc.protocol.bedrock.data.*;
+import org.cloudburstmc.protocol.bedrock.data.payload.common.DimensionType;
 import org.cloudburstmc.protocol.bedrock.packet.StartGamePacket;
 import org.cloudburstmc.protocol.common.util.OptionalBoolean;
 import org.cloudburstmc.protocol.common.util.VarInts;
@@ -116,13 +117,13 @@ public class StartGameSerializer_v407 extends StartGameSerializer_v388 {
     protected void writeSpawnSettings(ByteBuf buffer, BedrockCodecHelper helper, SpawnSettings settings) {
         buffer.writeShortLE(settings.getType().ordinal());
         helper.writeString(buffer, settings.getUserDefinedBiomeName());
-        VarInts.writeInt(buffer, settings.getDimension().ordinal());
+        VarInts.writeInt(buffer, settings.getDimension().getValue());
     }
 
     @Override
     protected void readSpawnSettings(ByteBuf buffer, BedrockCodecHelper helper, SpawnSettings settings) {
         settings.setType(SpawnBiomeType.byId(buffer.readShortLE()));
         settings.setUserDefinedBiomeName(helper.readString(buffer));
-        settings.setDimension(Dimension.from(VarInts.readInt(buffer)));
+        settings.setDimension(DimensionType.from(VarInts.readInt(buffer)));
     }
 }

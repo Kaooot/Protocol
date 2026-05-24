@@ -9,6 +9,7 @@ import org.cloudburstmc.protocol.bedrock.data.Dimension;
 import org.cloudburstmc.protocol.bedrock.data.camera.EasingType;
 import org.cloudburstmc.protocol.bedrock.data.payload.attribute.eas.AttributeLayerData;
 import org.cloudburstmc.protocol.bedrock.data.payload.attribute.eas.EnvironmentAttributeData;
+import org.cloudburstmc.protocol.bedrock.data.payload.common.DimensionType;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
 /**
@@ -22,7 +23,7 @@ public class ClientboundAttributeLayerSyncSerializer_v1001 extends ClientboundAt
     protected void writeAttributeLayerData(ByteBuf buffer, BedrockCodecHelper helper, AttributeLayerData data) {
         helper.writeString(buffer, data.getName());
         helper.writeOptionalNull(buffer, data.getNoiseName(), helper::writeString);
-        VarInts.writeInt(buffer, data.getDimension().ordinal());
+        VarInts.writeInt(buffer, data.getDimension().getValue());
         this.writeAttributeLayerSettings(buffer, helper, data.getSettings());
         helper.writeArray(buffer, data.getAttributes(), this::writeEnvironmentAttributeData);
     }
@@ -32,7 +33,7 @@ public class ClientboundAttributeLayerSyncSerializer_v1001 extends ClientboundAt
         final AttributeLayerData data = new AttributeLayerData();
         data.setName(helper.readString(buffer));
         data.setNoiseName(helper.readOptional(buffer, null, helper::readString));
-        data.setDimension(Dimension.from(VarInts.readInt(buffer)));
+        data.setDimension(DimensionType.from(VarInts.readInt(buffer)));
         data.setSettings(this.readAttributeLayerSettings(buffer, helper));
         helper.readArray(buffer, data.getAttributes(), this::readEnvironmentAttributeData);
         return data;

@@ -1,8 +1,8 @@
 package org.cloudburstmc.protocol.bedrock.data.payload.event;
 
 import lombok.Value;
-import org.cloudburstmc.protocol.bedrock.data.Dimension;
 import org.cloudburstmc.protocol.bedrock.data.event.EventData;
+import org.cloudburstmc.protocol.bedrock.data.payload.common.DimensionType;
 import org.cloudburstmc.protocol.bedrock.packet.LegacyTelemetryEventPacket;
 
 /**
@@ -11,8 +11,8 @@ import org.cloudburstmc.protocol.bedrock.packet.LegacyTelemetryEventPacket;
 @Value
 public class PortalUsed implements EventData {
 
-    Dimension sourceDimension;
-    Dimension targetDimension;
+    DimensionType sourceDimension;
+    DimensionType targetDimension;
 
     @Override
     public LegacyTelemetryEventPacket.Type getType() {

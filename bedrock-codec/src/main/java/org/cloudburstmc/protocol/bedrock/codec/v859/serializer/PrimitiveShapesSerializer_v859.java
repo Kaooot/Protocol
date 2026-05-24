@@ -5,9 +5,8 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v818.serializer.PrimitiveShapesSerializer_v818;
-import org.cloudburstmc.protocol.bedrock.data.Dimension;
 import org.cloudburstmc.protocol.bedrock.data.ExtraShapeDataType;
-import org.cloudburstmc.protocol.bedrock.data.payload.shape.ScriptPrimitiveShapeType;
+import org.cloudburstmc.protocol.bedrock.data.payload.common.DimensionType;
 import org.cloudburstmc.protocol.bedrock.data.payload.shape.*;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -27,7 +26,7 @@ public class PrimitiveShapesSerializer_v859 extends PrimitiveShapesSerializer_v8
         helper.writeOptionalNull(buffer, payload.getRotation(), helper::writeVector3f);
         helper.writeOptionalNull(buffer, payload.getTotalTimeLeft(), ByteBuf::writeFloatLE);
         helper.writeOptionalNull(buffer, payload.getColor(), ByteBuf::writeIntLE);
-        helper.writeOptionalNull(buffer, payload.getDimension(), (buf, dimension) ->  VarInts.writeInt(buf, dimension.ordinal())); // Added
+        helper.writeOptionalNull(buffer, payload.getDimension(), (buf, dimension) ->  VarInts.writeInt(buf, dimension.getValue())); // Added
         this.writeExtraShapeData(buffer, helper, payload.getExtraShapeData());
     }
 
@@ -41,7 +40,7 @@ public class PrimitiveShapesSerializer_v859 extends PrimitiveShapesSerializer_v8
         payload.setRotation(helper.readOptional(buffer, null, helper::readVector3f));
         payload.setTotalTimeLeft(helper.readOptional(buffer, null, ByteBuf::readFloatLE));
         payload.setColor(helper.readOptional(buffer, null, ByteBuf::readIntLE));
-        payload.setDimension(helper.readOptional(buffer, null, buf -> Dimension.from(VarInts.readInt(buf)))); // Added
+        payload.setDimension(helper.readOptional(buffer, null, buf -> DimensionType.from(VarInts.readInt(buf)))); // Added
         payload.setExtraShapeData(this.readExtraShapeData(buffer, helper, payload.getShapeType()));
         return payload;
     }

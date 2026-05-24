@@ -2,7 +2,7 @@ package org.cloudburstmc.protocol.bedrock.data.payload.attribute.eas;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
-import org.cloudburstmc.protocol.bedrock.data.Dimension;
+import org.cloudburstmc.protocol.bedrock.data.payload.common.DimensionType;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ public class AttributeLayerData {
      * @since v1001
      */
     private String noiseName;
-    private Dimension dimension;
+    private DimensionType dimension;
     private AttributeLayerSettings settings;
     private final List<EnvironmentAttributeData> attributes = new ObjectArrayList<>();
 }

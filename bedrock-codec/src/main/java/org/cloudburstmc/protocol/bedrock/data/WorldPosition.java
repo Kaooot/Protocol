@@ -2,6 +2,7 @@ package org.cloudburstmc.protocol.bedrock.data;
 
 import lombok.Value;
 import org.cloudburstmc.math.vector.Vector3f;
+import org.cloudburstmc.protocol.bedrock.data.payload.common.DimensionType;
 
 /**
  * @author Kaooot
@@ -10,5 +11,5 @@ import org.cloudburstmc.math.vector.Vector3f;
 public class WorldPosition {
 
     Vector3f position;
-    Dimension dimensionType;
+    DimensionType dimensionType;
 }

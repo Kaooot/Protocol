@@ -7,6 +7,7 @@ import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
 import org.cloudburstmc.protocol.bedrock.data.Dimension;
 import org.cloudburstmc.protocol.bedrock.data.SpawnPositionType;
+import org.cloudburstmc.protocol.bedrock.data.payload.common.DimensionType;
 import org.cloudburstmc.protocol.bedrock.packet.SetSpawnPositionPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -19,7 +20,7 @@ public class SetSpawnPositionSerializer_v407 implements BedrockPacketSerializer<
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, SetSpawnPositionPacket packet) {
         VarInts.writeInt(buffer, packet.getSpawnPositionType().ordinal());
         helper.writeBlockPosition(buffer, packet.getBlockPosition());
-        VarInts.writeInt(buffer, packet.getDimensionType().ordinal());
+        VarInts.writeInt(buffer, packet.getDimensionType().getValue());
         helper.writeBlockPosition(buffer, packet.getSpawnBlockPos());
     }
 
@@ -27,7 +28,7 @@ public class SetSpawnPositionSerializer_v407 implements BedrockPacketSerializer<
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, SetSpawnPositionPacket packet) {
         packet.setSpawnPositionType(SpawnPositionType.from(VarInts.readInt(buffer)));
         packet.setBlockPosition(helper.readBlockPosition(buffer));
-        packet.setDimensionType(Dimension.from(VarInts.readInt(buffer)));
+        packet.setDimensionType(DimensionType.from(VarInts.readInt(buffer)));
         packet.setSpawnBlockPos(helper.readBlockPosition(buffer));
     }
 }

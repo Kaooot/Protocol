@@ -10,6 +10,7 @@ import org.cloudburstmc.nbt.NbtType;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
 import org.cloudburstmc.protocol.bedrock.data.*;
+import org.cloudburstmc.protocol.bedrock.data.payload.common.DimensionType;
 import org.cloudburstmc.protocol.bedrock.packet.StartGamePacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -148,11 +149,11 @@ public class StartGameSerializer_v291 implements BedrockPacketSerializer<StartGa
     }
 
     protected void writeSpawnSettings(ByteBuf buffer, BedrockCodecHelper helper, SpawnSettings settings) {
-        VarInts.writeInt(buffer, settings.getDimension().ordinal());
+        VarInts.writeInt(buffer, settings.getDimension().getValue());
     }
 
     protected void readSpawnSettings(ByteBuf buffer, BedrockCodecHelper helper, SpawnSettings settings) {
-        settings.setDimension(Dimension.from(VarInts.readInt(buffer)));
+        settings.setDimension(DimensionType.from(VarInts.readInt(buffer)));
     }
 
     protected long readSeed(ByteBuf buffer) {

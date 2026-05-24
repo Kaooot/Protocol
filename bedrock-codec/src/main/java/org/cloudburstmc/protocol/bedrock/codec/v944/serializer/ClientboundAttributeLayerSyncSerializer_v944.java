@@ -9,6 +9,7 @@ import org.cloudburstmc.protocol.bedrock.data.Dimension;
 import org.cloudburstmc.protocol.bedrock.data.camera.EasingType;
 import org.cloudburstmc.protocol.bedrock.data.payload.attribute.*;
 import org.cloudburstmc.protocol.bedrock.data.payload.attribute.eas.*;
+import org.cloudburstmc.protocol.bedrock.data.payload.common.DimensionType;
 import org.cloudburstmc.protocol.bedrock.packet.ClientboundAttributeLayerSyncPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -71,49 +72,49 @@ public class ClientboundAttributeLayerSyncSerializer_v944 implements BedrockPack
 
     protected void writeUpdateAttributeLayerSettingsData(ByteBuf buffer, BedrockCodecHelper helper, UpdateAttributeLayerSettingsData data) {
         helper.writeString(buffer, data.getAttributeLayerName());
-        VarInts.writeInt(buffer, data.getAttributeLayerDimension().ordinal());
+        VarInts.writeInt(buffer, data.getAttributeLayerDimension().getValue());
         this.writeAttributeLayerSettings(buffer, helper, data.getAttributesLayerSettings());
     }
 
     protected UpdateAttributeLayerSettingsData readUpdateAttributeLayerSettingsData(ByteBuf buffer, BedrockCodecHelper helper) {
         final UpdateAttributeLayerSettingsData data = new UpdateAttributeLayerSettingsData();
         data.setAttributeLayerName(helper.readString(buffer));
-        data.setAttributeLayerDimension(Dimension.from(VarInts.readInt(buffer)));
+        data.setAttributeLayerDimension(DimensionType.from(VarInts.readInt(buffer)));
         data.setAttributesLayerSettings(this.readAttributeLayerSettings(buffer, helper));
         return data;
     }
 
     protected void writeUpdateEnvironmentAttributesData(ByteBuf buffer, BedrockCodecHelper helper, UpdateEnvironmentAttributesData data) {
         helper.writeString(buffer, data.getAttributeLayerName());
-        VarInts.writeInt(buffer, data.getAttributeLayerDimension().ordinal());
+        VarInts.writeInt(buffer, data.getAttributeLayerDimension().getValue());
         helper.writeArray(buffer, data.getAttributes(), this::writeEnvironmentAttributeData);
     }
 
     protected UpdateEnvironmentAttributesData readUpdateEnvironmentAttributesData(ByteBuf buffer, BedrockCodecHelper helper) {
         final UpdateEnvironmentAttributesData data = new UpdateEnvironmentAttributesData();
         data.setAttributeLayerName(helper.readString(buffer));
-        data.setAttributeLayerDimension(Dimension.from(VarInts.readInt(buffer)));
+        data.setAttributeLayerDimension(DimensionType.from(VarInts.readInt(buffer)));
         helper.readArray(buffer, data.getAttributes(), this::readEnvironmentAttributeData);
         return data;
     }
 
     protected void writeRemoveEnvironmentAttributesData(ByteBuf buffer, BedrockCodecHelper helper, RemoveEnvironmentAttributesData data) {
         helper.writeString(buffer, data.getAttributeLayerName());
-        VarInts.writeInt(buffer, data.getAttributeLayerDimension().ordinal());
+        VarInts.writeInt(buffer, data.getAttributeLayerDimension().getValue());
         helper.writeArray(buffer, data.getAttributes(), helper::writeString);
     }
 
     protected RemoveEnvironmentAttributesData readRemoveEnvironmentAttributesData(ByteBuf buffer, BedrockCodecHelper helper) {
         final RemoveEnvironmentAttributesData data = new RemoveEnvironmentAttributesData();
         data.setAttributeLayerName(helper.readString(buffer));
-        data.setAttributeLayerDimension(Dimension.from(VarInts.readInt(buffer)));
+        data.setAttributeLayerDimension(DimensionType.from(VarInts.readInt(buffer)));
         helper.readArray(buffer, data.getAttributes(), helper::readString);
         return data;
     }
 
     protected void writeAttributeLayerData(ByteBuf buffer, BedrockCodecHelper helper, AttributeLayerData data) {
         helper.writeString(buffer, data.getName());
-        VarInts.writeInt(buffer, data.getDimension().ordinal());
+        VarInts.writeInt(buffer, data.getDimension().getValue());
         this.writeAttributeLayerSettings(buffer, helper, data.getSettings());
         helper.writeArray(buffer, data.getAttributes(), this::writeEnvironmentAttributeData);
     }
@@ -121,7 +122,7 @@ public class ClientboundAttributeLayerSyncSerializer_v944 implements BedrockPack
     protected AttributeLayerData readAttributeLayerData(ByteBuf buffer, BedrockCodecHelper helper) {
         final AttributeLayerData data = new AttributeLayerData();
         data.setName(helper.readString(buffer));
-        data.setDimension(Dimension.from(VarInts.readInt(buffer)));
+        data.setDimension(DimensionType.from(VarInts.readInt(buffer)));
         data.setSettings(this.readAttributeLayerSettings(buffer, helper));
         helper.readArray(buffer, data.getAttributes(), this::readEnvironmentAttributeData);
         return data;

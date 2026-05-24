@@ -5,8 +5,8 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
-import org.cloudburstmc.protocol.bedrock.data.Dimension;
 import org.cloudburstmc.protocol.bedrock.data.event.EventData;
+import org.cloudburstmc.protocol.bedrock.data.payload.common.DimensionType;
 import org.cloudburstmc.protocol.bedrock.data.payload.event.*;
 import org.cloudburstmc.protocol.bedrock.packet.LegacyTelemetryEventPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
@@ -360,22 +360,22 @@ public class LegacyTelemetryEventSerializer_v898 implements BedrockPacketSeriali
     }
 
     protected void writePortalCreated(ByteBuf buffer, BedrockCodecHelper helper, PortalCreated value) {
-        VarInts.writeInt(buffer, value.getDimension().ordinal());
+        VarInts.writeInt(buffer, value.getDimension().getValue());
     }
 
     protected PortalCreated readPortalCreated(ByteBuf buffer, BedrockCodecHelper helper) {
-        final Dimension dimension = Dimension.from(VarInts.readInt(buffer));
+        final DimensionType dimension = DimensionType.from(VarInts.readInt(buffer));
         return new PortalCreated(dimension);
     }
 
     protected void writePortalUsed(ByteBuf buffer, BedrockCodecHelper helper, PortalUsed value) {
-        VarInts.writeInt(buffer, value.getSourceDimension().ordinal());
-        VarInts.writeInt(buffer, value.getTargetDimension().ordinal());
+        VarInts.writeInt(buffer, value.getSourceDimension().getValue());
+        VarInts.writeInt(buffer, value.getTargetDimension().getValue());
     }
 
     protected PortalUsed readPortalUsed(ByteBuf buffer, BedrockCodecHelper helper) {
-        final Dimension sourceDimension = Dimension.from(VarInts.readInt(buffer));
-        final Dimension targetDimension = Dimension.from(VarInts.readInt(buffer));
+        final DimensionType sourceDimension = DimensionType.from(VarInts.readInt(buffer));
+        final DimensionType targetDimension = DimensionType.from(VarInts.readInt(buffer));
         return new PortalUsed(sourceDimension, targetDimension);
     }
 

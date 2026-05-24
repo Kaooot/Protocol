@@ -7,9 +7,9 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.math.vector.Vector3i;
-import org.cloudburstmc.protocol.bedrock.data.Dimension;
 import org.cloudburstmc.protocol.bedrock.data.MapDecoration;
 import org.cloudburstmc.protocol.bedrock.data.MapTrackedObject;
+import org.cloudburstmc.protocol.bedrock.data.payload.common.DimensionType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 import java.util.List;
@@ -22,7 +22,7 @@ public class ClientboundMapItemDataPacket implements BedrockPacket {
     private final List<MapTrackedObject> trackedObjects = new ObjectArrayList<>();
     private final List<MapDecoration> decorations = new ObjectArrayList<>();
     private long mapID;
-    private Dimension dimension;
+    private DimensionType dimension;
     private boolean isLockedMap;
     /**
      * The world-relative position of the map's origin.

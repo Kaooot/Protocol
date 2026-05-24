@@ -5,7 +5,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v924.serializer.PrimitiveShapesSerializer_v924;
-import org.cloudburstmc.protocol.bedrock.data.Dimension;
+import org.cloudburstmc.protocol.bedrock.data.payload.common.DimensionType;
 import org.cloudburstmc.protocol.bedrock.data.payload.shape.ScriptPrimitiveShapeType;
 import org.cloudburstmc.protocol.bedrock.data.payload.shape.ShapeDataPayload;
 import org.cloudburstmc.protocol.bedrock.data.payload.shape.TextDataPayload;
@@ -28,7 +28,7 @@ public class PrimitiveShapesSerializer_v975 extends PrimitiveShapesSerializer_v9
         helper.writeOptionalNull(buffer, payload.getTotalTimeLeft(), ByteBuf::writeFloatLE);
         helper.writeOptionalNull(buffer, payload.getMaximumRenderDistance(), ByteBuf::writeFloatLE);
         helper.writeOptionalNull(buffer, payload.getColor(), ByteBuf::writeIntLE);
-        helper.writeOptionalNull(buffer, payload.getDimension(), (buf, dimension) -> VarInts.writeInt(buf, dimension.ordinal()));
+        helper.writeOptionalNull(buffer, payload.getDimension(), (buf, dimension) -> VarInts.writeInt(buf, dimension.getValue()));
         helper.writeOptionalNull(buffer, payload.getAttachedToEntityID(), VarInts::writeLong);
         this.writeExtraShapeData(buffer, helper, payload.getExtraShapeData());
     }
@@ -44,7 +44,7 @@ public class PrimitiveShapesSerializer_v975 extends PrimitiveShapesSerializer_v9
         payload.setTotalTimeLeft(helper.readOptional(buffer, null, ByteBuf::readFloatLE));
         payload.setMaximumRenderDistance(helper.readOptional(buffer, null, ByteBuf::readFloatLE));
         payload.setColor(helper.readOptional(buffer, null, ByteBuf::readIntLE));
-        payload.setDimension(helper.readOptional(buffer, null, buf -> Dimension.from(VarInts.readInt(buf))));
+        payload.setDimension(helper.readOptional(buffer, null, buf -> DimensionType.from(VarInts.readInt(buf))));
         payload.setAttachedToEntityID(helper.readOptional(buffer, null, VarInts::readLong));
         payload.setExtraShapeData(this.readExtraShapeData(buffer, helper, payload.getShapeType()));
         return payload;

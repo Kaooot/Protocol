@@ -6,9 +6,9 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
-import org.cloudburstmc.protocol.bedrock.data.Dimension;
 import org.cloudburstmc.protocol.bedrock.data.MapDecoration;
 import org.cloudburstmc.protocol.bedrock.data.MapTrackedObject;
+import org.cloudburstmc.protocol.bedrock.data.payload.common.DimensionType;
 import org.cloudburstmc.protocol.bedrock.packet.ClientboundMapItemDataPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -43,7 +43,7 @@ public class ClientboundMapItemDataSerializer_v354 implements BedrockPacketSeria
         }
 
         VarInts.writeUnsignedInt(buffer, type);
-        buffer.writeByte(packet.getDimension().ordinal());
+        buffer.writeByte(packet.getDimension().getValue());
         buffer.writeBoolean(packet.isLockedMap());
 
         if ((type & FLAG_MAP_CREATION) != 0) {
@@ -67,7 +67,7 @@ public class ClientboundMapItemDataSerializer_v354 implements BedrockPacketSeria
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ClientboundMapItemDataPacket packet) {
         packet.setMapID(VarInts.readLong(buffer));
         int type = VarInts.readUnsignedInt(buffer);
-        packet.setDimension(Dimension.from(buffer.readUnsignedByte()));
+        packet.setDimension(DimensionType.from(buffer.readUnsignedByte()));
         packet.setLockedMap(buffer.readBoolean());
 
         if ((type & FLAG_MAP_CREATION) != 0) {

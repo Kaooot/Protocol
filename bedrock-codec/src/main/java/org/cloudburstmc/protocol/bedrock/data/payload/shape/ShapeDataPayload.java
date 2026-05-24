@@ -3,7 +3,7 @@ package org.cloudburstmc.protocol.bedrock.data.payload.shape;
 import lombok.Data;
 import lombok.ToString;
 import org.cloudburstmc.math.vector.Vector3f;
-import org.cloudburstmc.protocol.bedrock.data.Dimension;
+import org.cloudburstmc.protocol.bedrock.data.payload.common.DimensionType;
 
 /**
  * @author Kaooot
@@ -23,7 +23,7 @@ public class ShapeDataPayload {
      */
     private Float maximumRenderDistance;
     private Integer color;
-    private Dimension dimension;
+    private DimensionType dimension;
     /**
      * @since v924
      */

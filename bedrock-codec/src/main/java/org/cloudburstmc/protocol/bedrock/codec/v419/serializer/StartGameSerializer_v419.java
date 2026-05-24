@@ -10,6 +10,7 @@ import org.cloudburstmc.protocol.bedrock.data.*;
 import org.cloudburstmc.protocol.bedrock.data.definitions.ItemDefinition;
 import org.cloudburstmc.protocol.bedrock.data.definitions.SimpleItemDefinition;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemVersion;
+import org.cloudburstmc.protocol.bedrock.data.payload.common.DimensionType;
 import org.cloudburstmc.protocol.bedrock.packet.StartGamePacket;
 import org.cloudburstmc.protocol.common.util.OptionalBoolean;
 import org.cloudburstmc.protocol.common.util.VarInts;
@@ -177,13 +178,13 @@ public class StartGameSerializer_v419 implements BedrockPacketSerializer<StartGa
     protected void writeSpawnSettings(ByteBuf buffer, BedrockCodecHelper helper, SpawnSettings settings) {
         buffer.writeShortLE(settings.getType().ordinal());
         helper.writeString(buffer, settings.getUserDefinedBiomeName());
-        VarInts.writeInt(buffer, settings.getDimension().ordinal());
+        VarInts.writeInt(buffer, settings.getDimension().getValue());
     }
 
     protected void readSpawnSettings(ByteBuf buffer, BedrockCodecHelper helper, SpawnSettings settings) {
         settings.setType(SpawnBiomeType.byId(buffer.readShortLE()));
         settings.setUserDefinedBiomeName(helper.readString(buffer));
-        settings.setDimension(Dimension.from(VarInts.readInt(buffer)));
+        settings.setDimension(DimensionType.from(VarInts.readInt(buffer)));
     }
 
     protected void writeItemDefinitions(ByteBuf buffer, BedrockCodecHelper helper, List<ItemDefinition> definitions) {

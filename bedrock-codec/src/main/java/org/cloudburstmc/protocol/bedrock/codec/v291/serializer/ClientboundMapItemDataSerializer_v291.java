@@ -6,9 +6,9 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
-import org.cloudburstmc.protocol.bedrock.data.Dimension;
 import org.cloudburstmc.protocol.bedrock.data.MapDecoration;
 import org.cloudburstmc.protocol.bedrock.data.MapTrackedObject;
+import org.cloudburstmc.protocol.bedrock.data.payload.common.DimensionType;
 import org.cloudburstmc.protocol.bedrock.packet.ClientboundMapItemDataPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -38,7 +38,7 @@ public class ClientboundMapItemDataSerializer_v291 implements BedrockPacketSeria
         }
 
         VarInts.writeUnsignedInt(buffer, type);
-        buffer.writeByte(packet.getDimension().ordinal());
+        buffer.writeByte(packet.getDimension().getValue());
 
         if ((type & 0x8) != 0) {
             VarInts.writeUnsignedInt(buffer, trackedEntityIds.size());
@@ -94,7 +94,7 @@ public class ClientboundMapItemDataSerializer_v291 implements BedrockPacketSeria
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ClientboundMapItemDataPacket packet) {
         packet.setMapID(VarInts.readLong(buffer));
         int type = VarInts.readUnsignedInt(buffer);
-        packet.setDimension(Dimension.from(buffer.readUnsignedByte()));
+        packet.setDimension(DimensionType.from(buffer.readUnsignedByte()));
 
         if ((type & 0x8) != 0) {
             LongList trackedEntityIds = packet.getTrackedEntityIds();

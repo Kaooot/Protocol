@@ -8,7 +8,8 @@ public enum Dimension {
     OVERWORLD,
     NETHER,
     THE_END,
-    UNDEFINED;
+    UNDEFINED,
+    CUSTOM;
 
     private static final Dimension[] VALUES = values();
 
@@ -16,6 +17,10 @@ public enum Dimension {
         if (ordinal >= 0 && ordinal < VALUES.length) {
             return VALUES[ordinal];
         }
-        throw new UnsupportedOperationException("Detected unknown Dimension ID: " + ordinal);
+        if (ordinal < 1000) {
+            throw new UnsupportedOperationException("Detected unknown Dimension ID: " + ordinal);
+        } else {
+            return CUSTOM;
+        }
     }
 }

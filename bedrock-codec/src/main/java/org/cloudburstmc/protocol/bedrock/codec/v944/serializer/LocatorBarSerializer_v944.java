@@ -6,8 +6,8 @@ import lombok.NoArgsConstructor;
 import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
-import org.cloudburstmc.protocol.bedrock.data.Dimension;
 import org.cloudburstmc.protocol.bedrock.data.WorldPosition;
+import org.cloudburstmc.protocol.bedrock.data.payload.common.DimensionType;
 import org.cloudburstmc.protocol.bedrock.data.payload.locatorbar.LocatorBarWaypointPayload;
 import org.cloudburstmc.protocol.bedrock.data.payload.locatorbar.ServerWaypointGroupAction;
 import org.cloudburstmc.protocol.bedrock.data.payload.locatorbar.ServerWaypointPayload;
@@ -75,12 +75,12 @@ public class LocatorBarSerializer_v944 implements BedrockPacketSerializer<Locato
 
     protected void writeWorldPosition(ByteBuf buffer, BedrockCodecHelper helper, WorldPosition position) {
         helper.writeVector3f(buffer, position.getPosition());
-        VarInts.writeInt(buffer, position.getDimensionType().ordinal());
+        VarInts.writeInt(buffer, position.getDimensionType().getValue());
     }
 
     protected WorldPosition readWorldPosition(ByteBuf buffer, BedrockCodecHelper helper) {
         final Vector3f position = helper.readVector3f(buffer);
-        final Dimension dimensionType = Dimension.from(VarInts.readInt(buffer));
+        final DimensionType dimensionType = DimensionType.from(VarInts.readInt(buffer));
         return new WorldPosition(position, dimensionType);
     }
 
