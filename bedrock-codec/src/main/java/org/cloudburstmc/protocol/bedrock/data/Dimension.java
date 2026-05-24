@@ -14,7 +14,7 @@ public enum Dimension {
     private static final Dimension[] VALUES = values();
 
     public static Dimension from(int ordinal) {
-        if (ordinal >= 0 && ordinal < VALUES.length) {
+        if (ordinal >= 0 && ordinal < Dimension.CUSTOM.ordinal()) {
             return VALUES[ordinal];
         }
         if (ordinal < 1000) {
