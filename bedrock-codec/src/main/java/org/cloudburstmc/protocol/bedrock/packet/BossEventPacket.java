@@ -18,6 +18,9 @@ public class BossEventPacket implements BedrockPacket {
     private String name;
     private String filteredName = "";
     private float healthPercent;
+    /**
+     * @deprecated since v1001
+     */
     private int darkenScreen;
     private BossBarColor color;
     private BossBarOverlay overlay;
