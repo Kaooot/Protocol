@@ -112,7 +112,7 @@ public class StartGamePacket implements BedrockPacket {
     /**
      * @since v1001
      */
-    private boolean isLoggingChat;
+    private boolean isChatLogging;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

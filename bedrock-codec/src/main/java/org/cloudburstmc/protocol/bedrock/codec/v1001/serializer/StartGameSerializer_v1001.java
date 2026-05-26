@@ -50,12 +50,12 @@ public class StartGameSerializer_v1001 extends StartGameSerializer_v944 {
     @Override
     protected void writeBeforeNetworkPermissions(ByteBuf buffer, BedrockCodecHelper helper, StartGamePacket packet) {
         super.writeBeforeNetworkPermissions(buffer, helper, packet);
-        buffer.writeBoolean(packet.isLoggingChat());
+        buffer.writeBoolean(packet.isChatLogging());
     }
 
     @Override
     protected void readBeforeNetworkPermissions(ByteBuf buffer, BedrockCodecHelper helper, StartGamePacket packet) {
         super.readBeforeNetworkPermissions(buffer, helper, packet);
-        packet.setLoggingChat(buffer.readBoolean());
+        packet.setChatLogging(buffer.readBoolean());
     }
 }
