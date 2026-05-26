@@ -32,18 +32,19 @@ public class StartGameSerializer_v1001 extends StartGameSerializer_v944 {
     }
 
     @Override
-    protected void writePresenceInfo(ByteBuf buffer, BedrockCodecHelper helper, PresenceConfiguration info) {
-        super.writePresenceInfo(buffer, helper, info);
-        helper.writeString(buffer, info.getRichPresenceId());
+    protected void writePresenceInfo(ByteBuf buffer, BedrockCodecHelper helper, PresenceConfiguration configuration) {
+        helper.writeOptionalNull(buffer, configuration.getExperienceName(), helper::writeString);
+        helper.writeOptionalNull(buffer, configuration.getWorldName(), helper::writeString);
+        helper.writeString(buffer, configuration.getRichPresenceId());
     }
 
     @Override
     protected PresenceConfiguration readPresenceInfo(ByteBuf buffer, BedrockCodecHelper helper) {
-        final PresenceConfiguration info = new PresenceConfiguration();
-        info.setExperienceName(helper.readString(buffer));
-        info.setWorldName(helper.readString(buffer));
-        info.setRichPresenceId(helper.readString(buffer));
-        return info;
+        final PresenceConfiguration configuration = new PresenceConfiguration();
+        configuration.setExperienceName(helper.readOptional(buffer, null, helper::readString));
+        configuration.setWorldName(helper.readOptional(buffer, null, helper::readString));
+        configuration.setRichPresenceId(helper.readString(buffer));
+        return configuration;
     }
 
     @Override

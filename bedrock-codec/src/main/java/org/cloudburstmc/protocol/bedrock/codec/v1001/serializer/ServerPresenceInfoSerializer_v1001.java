@@ -16,15 +16,16 @@ public class ServerPresenceInfoSerializer_v1001 extends ServerPresenceInfoSerial
 
     @Override
     protected void writePresenceConfiguration(ByteBuf buffer, BedrockCodecHelper helper, PresenceConfiguration configuration) {
-        super.writePresenceConfiguration(buffer, helper, configuration);
+        helper.writeOptionalNull(buffer, configuration.getExperienceName(), helper::writeString);
+        helper.writeOptionalNull(buffer, configuration.getWorldName(), helper::writeString);
         helper.writeString(buffer, configuration.getRichPresenceId());
     }
 
     @Override
     protected PresenceConfiguration readPresenceConfiguration(ByteBuf buffer, BedrockCodecHelper helper) {
         final PresenceConfiguration configuration = new PresenceConfiguration();
-        configuration.setExperienceName(helper.readString(buffer));
-        configuration.setWorldName(helper.readString(buffer));
+        configuration.setExperienceName(helper.readOptional(buffer, null, helper::readString));
+        configuration.setWorldName(helper.readOptional(buffer, null, helper::readString));
         configuration.setRichPresenceId(helper.readString(buffer));
         return configuration;
     }
