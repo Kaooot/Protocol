@@ -7,12 +7,12 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum CommandPermissionLevel {
 
-    ANY("Any"),
-    GAME_DIRECTORS("GameDirectors"),
-    ADMIN("Admin"),
-    HOST("Host"),
-    OWNER("Owner"),
-    INTERNAL("Internal");
+    ANY("any"),
+    GAME_DIRECTORS("gamedirectors"),
+    ADMIN("admin"),
+    HOST("host"),
+    OWNER("owner"),
+    INTERNAL("internal");
 
     private final String id;
 
@@ -26,6 +26,7 @@ public enum CommandPermissionLevel {
     }
 
     public static CommandPermissionLevel from(String name) {
+        System.out.println("read command permission level from string: " + name);
         for (CommandPermissionLevel value : VALUES) {
             if (value.getId().equalsIgnoreCase(name)) {
                 return value;
