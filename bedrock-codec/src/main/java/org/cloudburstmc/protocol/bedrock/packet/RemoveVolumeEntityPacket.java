@@ -2,6 +2,7 @@ package org.cloudburstmc.protocol.bedrock.packet;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.cloudburstmc.protocol.bedrock.data.payload.common.DimensionType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
@@ -11,7 +12,7 @@ public class RemoveVolumeEntityPacket implements BedrockPacket {
     /**
      * @since v503
      */
-    private int dimensionType;
+    private DimensionType dimensionType;
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

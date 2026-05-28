@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.math.vector.Vector3i;
+import org.cloudburstmc.protocol.bedrock.data.payload.common.DimensionType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.List;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class SubChunkRequestPacket implements BedrockPacket {
-    private int dimensionType;
+    private DimensionType dimensionType;
     private Vector3i centerPos;
     /**
      * @since v485

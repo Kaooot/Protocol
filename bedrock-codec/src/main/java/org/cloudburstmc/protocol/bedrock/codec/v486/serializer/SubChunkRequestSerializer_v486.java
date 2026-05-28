@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import org.cloudburstmc.math.vector.Vector3i;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v471.serializer.SubChunkRequestSerializer_v471;
+import org.cloudburstmc.protocol.bedrock.data.payload.common.DimensionType;
 import org.cloudburstmc.protocol.bedrock.packet.SubChunkRequestPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -21,14 +22,14 @@ public class SubChunkRequestSerializer_v486 extends SubChunkRequestSerializer_v4
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, SubChunkRequestPacket packet) {
-        VarInts.writeInt(buffer, packet.getDimensionType());
+        VarInts.writeInt(buffer, packet.getDimensionType().hashCode());
         helper.writeVector3i(buffer, packet.getCenterPos());
         helper.writeArray(buffer, packet.getSubChunkPosOffsetList(), ByteBuf::writeIntLE, this::writeSubChunkOffset);
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, SubChunkRequestPacket packet) {
-        packet.setDimensionType(VarInts.readInt(buffer));
+        packet.setDimensionType(DimensionType.from(VarInts.readInt(buffer)));
         packet.setCenterPos(helper.readVector3i(buffer));
         helper.readArray(buffer, packet.getSubChunkPosOffsetList(), ByteBuf::readIntLE, this::readSubChunkOffset, MAX_SUB_CHUNKS);
     }

@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.cloudburstmc.math.vector.Vector3i;
 import org.cloudburstmc.nbt.NbtMap;
+import org.cloudburstmc.protocol.bedrock.data.payload.common.DimensionType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
@@ -35,7 +36,7 @@ public class AddVolumeEntityPacket implements BedrockPacket {
     /**
      * @since v503
      */
-    private int dimensionType;
+    private DimensionType dimensionType;
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

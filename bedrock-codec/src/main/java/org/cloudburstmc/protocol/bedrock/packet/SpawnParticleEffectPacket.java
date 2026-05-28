@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.math.vector.Vector3f;
+import org.cloudburstmc.protocol.bedrock.data.payload.common.DimensionType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 import java.util.Optional;
@@ -13,7 +14,7 @@ import java.util.Optional;
 @ToString(doNotUseGetters = true)
 @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 public class SpawnParticleEffectPacket implements BedrockPacket {
-    private int dimensionId;
+    private DimensionType dimensionId;
     private long actorId = -1;
     private Vector3f position;
     private String effectName;

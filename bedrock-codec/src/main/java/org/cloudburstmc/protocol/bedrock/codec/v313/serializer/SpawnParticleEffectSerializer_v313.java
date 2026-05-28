@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
+import org.cloudburstmc.protocol.bedrock.data.payload.common.DimensionType;
 import org.cloudburstmc.protocol.bedrock.packet.SpawnParticleEffectPacket;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -13,14 +14,14 @@ public class SpawnParticleEffectSerializer_v313 implements BedrockPacketSerializ
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, SpawnParticleEffectPacket packet) {
-        buffer.writeByte(packet.getDimensionId());
+        buffer.writeByte(packet.getDimensionId().getValue());
         helper.writeVector3f(buffer, packet.getPosition());
         helper.writeString(buffer, packet.getEffectName());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, SpawnParticleEffectPacket packet) {
-        packet.setDimensionId(buffer.readUnsignedByte());
+        packet.setDimensionId(DimensionType.from(buffer.readUnsignedByte()));
         packet.setPosition(helper.readVector3f(buffer));
         packet.setEffectName(helper.readString(buffer));
     }

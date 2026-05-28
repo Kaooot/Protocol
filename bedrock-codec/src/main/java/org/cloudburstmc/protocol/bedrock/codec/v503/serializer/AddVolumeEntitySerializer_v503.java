@@ -4,6 +4,7 @@ import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.nbt.NbtMap;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
+import org.cloudburstmc.protocol.bedrock.data.payload.common.DimensionType;
 import org.cloudburstmc.protocol.bedrock.packet.AddVolumeEntityPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -17,7 +18,7 @@ public class AddVolumeEntitySerializer_v503 implements BedrockPacketSerializer<A
         helper.writeString(buffer, packet.getInstanceName());
         helper.writeBlockPosition(buffer, packet.getMinBounds());
         helper.writeBlockPosition(buffer, packet.getMaxBounds());
-        VarInts.writeInt(buffer, packet.getDimensionType());
+        VarInts.writeInt(buffer, packet.getDimensionType().getValue());
         helper.writeString(buffer, packet.getEngineVersion());
     }
 
@@ -29,7 +30,7 @@ public class AddVolumeEntitySerializer_v503 implements BedrockPacketSerializer<A
         packet.setInstanceName(helper.readString(buffer));
         packet.setMinBounds(helper.readBlockPosition(buffer));
         packet.setMaxBounds(helper.readBlockPosition(buffer));
-        packet.setDimensionType(VarInts.readInt(buffer));
+        packet.setDimensionType(DimensionType.from(VarInts.readInt(buffer)));
         packet.setEngineVersion(helper.readString(buffer));
     }
 }

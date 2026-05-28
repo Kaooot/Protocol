@@ -7,6 +7,7 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.math.vector.Vector3i;
 import org.cloudburstmc.protocol.bedrock.data.SubChunkData;
+import org.cloudburstmc.protocol.bedrock.data.payload.common.DimensionType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 import java.util.List;
@@ -15,7 +16,7 @@ import java.util.List;
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 @ToString(doNotUseGetters = true)
 public class SubChunkPacket extends AbstractReferenceCounted implements BedrockPacket {
-    private int dimensionType;
+    private DimensionType dimensionType;
     private boolean cacheEnabled;
     /**
      * @since v485

@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
+import org.cloudburstmc.protocol.bedrock.data.payload.common.DimensionType;
 import org.cloudburstmc.protocol.bedrock.packet.SubChunkRequestPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -15,13 +16,13 @@ public class SubChunkRequestSerializer_v471 implements BedrockPacketSerializer<S
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, SubChunkRequestPacket packet) {
-        VarInts.writeInt(buffer, packet.getDimensionType());
+        VarInts.writeInt(buffer, packet.getDimensionType().getValue());
         helper.writeVector3i(buffer, packet.getCenterPos());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, SubChunkRequestPacket packet) {
-        packet.setDimensionType(VarInts.readInt(buffer));
+        packet.setDimensionType(DimensionType.from(VarInts.readInt(buffer)));
         packet.setCenterPos(helper.readVector3i(buffer));
     }
 }

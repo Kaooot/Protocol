@@ -4,6 +4,7 @@ import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
 import org.cloudburstmc.protocol.bedrock.data.event.*;
+import org.cloudburstmc.protocol.bedrock.data.payload.common.DimensionType;
 import org.cloudburstmc.protocol.bedrock.packet.LegacyTelemetryEventPacket;
 import org.cloudburstmc.protocol.common.util.Preconditions;
 import org.cloudburstmc.protocol.common.util.TriConsumer;
@@ -115,13 +116,13 @@ public class LegacyTelemetryEventSerializer_v291 implements BedrockPacketSeriali
     }
 
     protected PortalCreatedEventData readPortalCreated(ByteBuf buffer, BedrockCodecHelper helper) {
-        int dimensionId = VarInts.readInt(buffer);
+        DimensionType dimensionId = DimensionType.from(VarInts.readInt(buffer));
         return new PortalCreatedEventData(dimensionId);
     }
 
     protected void writePortalCreated(ByteBuf buffer, BedrockCodecHelper helper, EventData eventData) {
         PortalCreatedEventData event = (PortalCreatedEventData) eventData;
-        VarInts.writeInt(buffer, event.getDimensionID());
+        VarInts.writeInt(buffer, event.getDimensionID().getValue());
     }
 
     protected PortalUsedEventData readPortalUsed(ByteBuf buffer, BedrockCodecHelper helper) {

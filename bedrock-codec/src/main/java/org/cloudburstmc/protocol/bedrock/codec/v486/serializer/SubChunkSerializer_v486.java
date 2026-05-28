@@ -9,6 +9,7 @@ import org.cloudburstmc.protocol.bedrock.codec.v475.serializer.SubChunkSerialize
 import org.cloudburstmc.protocol.bedrock.data.HeightMapDataType;
 import org.cloudburstmc.protocol.bedrock.data.SubChunkData;
 import org.cloudburstmc.protocol.bedrock.data.SubChunkRequestResult;
+import org.cloudburstmc.protocol.bedrock.data.payload.common.DimensionType;
 import org.cloudburstmc.protocol.bedrock.packet.SubChunkPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -20,7 +21,7 @@ public class SubChunkSerializer_v486 extends SubChunkSerializer_v475 {
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, SubChunkPacket packet) {
         buffer.writeBoolean(packet.isCacheEnabled());
-        VarInts.writeInt(buffer, packet.getDimensionType());
+        VarInts.writeInt(buffer, packet.getDimensionType().getValue());
         helper.writeVector3i(buffer, packet.getCenterPos());
 
         buffer.writeIntLE(packet.getSubChunkDataList().size());
@@ -30,7 +31,7 @@ public class SubChunkSerializer_v486 extends SubChunkSerializer_v475 {
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, SubChunkPacket packet) {
         packet.setCacheEnabled(buffer.readBoolean());
-        packet.setDimensionType(VarInts.readInt(buffer));
+        packet.setDimensionType(DimensionType.from(VarInts.readInt(buffer)));
         packet.setCenterPos(helper.readVector3i(buffer));
 
         int size = buffer.readIntLE(); // Unsigned but realistically, we're not going to read that many.

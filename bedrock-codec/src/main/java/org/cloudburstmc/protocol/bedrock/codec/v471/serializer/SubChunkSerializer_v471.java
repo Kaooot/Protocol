@@ -8,6 +8,7 @@ import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
 import org.cloudburstmc.protocol.bedrock.data.HeightMapDataType;
 import org.cloudburstmc.protocol.bedrock.data.SubChunkData;
 import org.cloudburstmc.protocol.bedrock.data.SubChunkRequestResult;
+import org.cloudburstmc.protocol.bedrock.data.payload.common.DimensionType;
 import org.cloudburstmc.protocol.bedrock.packet.SubChunkPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -19,14 +20,14 @@ public class SubChunkSerializer_v471 implements BedrockPacketSerializer<SubChunk
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, SubChunkPacket packet) {
-        VarInts.writeInt(buffer, packet.getDimensionType());
+        VarInts.writeInt(buffer, packet.getDimensionType().getValue());
         SubChunkData subChunk = packet.getSubChunkDataList().get(0);
         this.serializeSubChunk(buffer, helper, packet, subChunk);
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, SubChunkPacket packet) {
-        packet.setDimensionType(VarInts.readInt(buffer));
+        packet.setDimensionType(DimensionType.from(VarInts.readInt(buffer)));
         SubChunkData subChunk = this.deserializeSubChunk(buffer, helper, packet);
         packet.getSubChunkDataList().add(subChunk);
     }
