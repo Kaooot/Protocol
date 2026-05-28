@@ -26,7 +26,6 @@ public enum CommandPermissionLevel {
     }
 
     public static CommandPermissionLevel from(String name) {
-        System.out.println("read command permission level from string: " + name);
         for (CommandPermissionLevel value : VALUES) {
             if (value.getId().equalsIgnoreCase(name)) {
                 return value;
