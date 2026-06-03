@@ -15,7 +15,7 @@ public class ResourcePackClientResponseSerializer_v291 implements BedrockPacketS
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ResourcePackClientResponsePacket packet) {
-        buffer.writeByte(packet.getResponse().ordinal());
+        buffer.writeByte(packet.getResponse().ordinal() + 1);
         helper.writeArray(buffer, packet.getDownloadingPacks(), ByteBuf::writeShortLE, helper::writeString);
     }
 
