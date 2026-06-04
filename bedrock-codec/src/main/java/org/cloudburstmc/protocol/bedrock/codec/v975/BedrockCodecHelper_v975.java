@@ -114,7 +114,7 @@ public class BedrockCodecHelper_v975 extends BedrockCodecHelper_v944 {
                     .count(count)
                     .tag(compoundTag)
                     .blockingTicks(blockingTicks)
-                    .blockDefinition(this.getBlockDefinitions().getDefinition(blockRuntimeId))
+                    .blockDefinition(blockRuntimeId == 0 ? ItemData.AIR.getBlockDefinition() : this.getBlockDefinitions().getDefinition(blockRuntimeId))
                     .usingNetId(hasNetId)
                     .netId(netId)
                     .build();
