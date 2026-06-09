@@ -217,5 +217,13 @@ public enum DisconnectFailReason {
     /**
      * @since v1001
      */
-    EDITOR_JOIN_INTENT_POLICY_FAILURE
+    EDITOR_JOIN_INTENT_POLICY_FAILURE,
+    /**
+     * @since v1011
+     */
+    NETHER_NET_IDENTITY_NOT_ALLOWED,
+    /**
+     * @since v1011
+     */
+    INVALID_NAME
 }

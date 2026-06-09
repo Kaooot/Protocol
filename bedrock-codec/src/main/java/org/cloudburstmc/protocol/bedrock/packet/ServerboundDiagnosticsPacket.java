@@ -4,10 +4,7 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.protocol.bedrock.data.payload.diagnostics.EntityDiagnosticTimingInfo;
-import org.cloudburstmc.protocol.bedrock.data.payload.diagnostics.MemoryCategoryCounter;
-import org.cloudburstmc.protocol.bedrock.data.payload.diagnostics.WhiskerScopeDataSummary;
-import org.cloudburstmc.protocol.bedrock.data.payload.diagnostics.SystemDiagnosticTimingInfo;
+import org.cloudburstmc.protocol.bedrock.data.payload.diagnostics.*;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 import java.util.List;
@@ -37,6 +34,10 @@ public class ServerboundDiagnosticsPacket implements BedrockPacket{
      * @since v975
      */
     private final List<SystemDiagnosticTimingInfo> systemDiagnostics = new ObjectArrayList<>();
+    /**
+     * @since v1011
+     */
+    private final List<SystemCategory> systemCategories = new ObjectArrayList<>();
     /**
      * @since v1001
      */

@@ -87,7 +87,19 @@ public final class MinecraftEventing {
         /**
          * @since v1001
          */
-        UH_OH(117);
+        UH_OH(117),
+        /**
+         * @since v1011
+         */
+        GETTING_WOOD(118), // TODO check ids
+        BENCH_MAKING(119),
+        TIME_TO_MINE(120),
+        HOT_TOPIC(121),
+        ACQUIRE_HARDWARE(122),
+        GETTING_AN_UPGRADE(123),
+        MONSTER_HUNTER(124),
+        DIAMONDS(125),
+        PLETHORA_OF_CATS(126);
 
         private final int id;
 

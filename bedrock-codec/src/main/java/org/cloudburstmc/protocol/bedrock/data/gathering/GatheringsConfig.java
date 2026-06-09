@@ -8,23 +8,23 @@ import java.util.UUID;
  * @author Kaooot
  */
 @Data
-public class GatheringJoinInfo {
+public class GatheringsConfig {
 
-    private UUID experienceID;
+    private UUID experienceId;
     private String experienceName;
-    private UUID experienceWorldID;
-    private String experienceWorldName;
-    private String creatorID;
+    private UUID worldId;
+    private String worldName;
+    private String creatorId;
     /**
      * @since v944
      */
-    private UUID targetID;
+    private UUID targetId;
     /**
      * @since v944
      */
-    private String scenarioID;
+    private String scenarioId;
     /**
      * @since v944
      */
-    private String serverID;
+    private String serverId;
 }

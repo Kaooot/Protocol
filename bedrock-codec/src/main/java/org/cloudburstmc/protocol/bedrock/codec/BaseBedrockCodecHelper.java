@@ -25,6 +25,7 @@ import org.cloudburstmc.protocol.bedrock.data.actor.PropertySyncData;
 import org.cloudburstmc.protocol.bedrock.data.ddui.DataStoreUpdate;
 import org.cloudburstmc.protocol.bedrock.data.definitions.BlockDefinition;
 import org.cloudburstmc.protocol.bedrock.data.definitions.ItemDefinition;
+import org.cloudburstmc.protocol.bedrock.data.gathering.GatheringsConfig;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerEnumName;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerId;
 import org.cloudburstmc.protocol.bedrock.data.inventory.FullContainerName;
@@ -33,6 +34,7 @@ import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.ItemDescripto
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequest;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponseContainerInfo;
 import org.cloudburstmc.protocol.bedrock.data.payload.abilities.SerializedAbilitiesData;
+import org.cloudburstmc.protocol.bedrock.data.payload.configuration.PresenceConfiguration;
 import org.cloudburstmc.protocol.bedrock.data.payload.inventory.transaction.*;
 import org.cloudburstmc.protocol.bedrock.data.skin.AnimationData;
 import org.cloudburstmc.protocol.bedrock.data.skin.ImageData;
@@ -60,6 +62,7 @@ import static org.cloudburstmc.protocol.common.util.Preconditions.checkNotNull;
 public abstract class BaseBedrockCodecHelper implements BedrockCodecHelper {
     protected static final InternalLogger log = InternalLoggerFactory.getInstance(BaseBedrockCodecHelper.class);
 
+    @Getter
     protected final ActorDataTypeMap actorData;
     protected final TypeMap<Class<?>> gameRuleType;
 
@@ -627,6 +630,26 @@ public abstract class BaseBedrockCodecHelper implements BedrockCodecHelper {
 
     @Override
     public ServerSoundHandle readServerSoundHandle(ByteBuf buffer) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void writeGatheringsConfig(ByteBuf buffer, GatheringsConfig config) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public GatheringsConfig readGatheringsConfig(ByteBuf buffer) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void writePresenceConfiguration(ByteBuf buffer, PresenceConfiguration configuration) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public PresenceConfiguration readPresenceConfiguration(ByteBuf buffer) {
         throw new UnsupportedOperationException();
     }
 }

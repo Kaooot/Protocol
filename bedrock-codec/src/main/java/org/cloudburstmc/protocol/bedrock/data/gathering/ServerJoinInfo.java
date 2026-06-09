@@ -10,7 +10,7 @@ import org.cloudburstmc.protocol.bedrock.data.payload.configuration.PresenceConf
 @Data
 public class ServerJoinInfo {
 
-    private GatheringJoinInfo gatheringJoinInfo;
+    private GatheringsConfig gatheringsConfig;
     private ClientStoreEntryPointConfiguration storeEntryPointInfo;
-    private PresenceConfiguration presenceInfo;
+    private PresenceConfiguration presenceConfiguration;
 }

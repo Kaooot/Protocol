@@ -8,7 +8,13 @@ import lombok.Data;
 @Data
 public class PresenceConfiguration {
 
+    /**
+     * @deprecated since v1011
+     */
     private String experienceName;
+    /**
+     * @deprecated since v1011
+     */
     private String worldName;
     /**
      * @since v1001

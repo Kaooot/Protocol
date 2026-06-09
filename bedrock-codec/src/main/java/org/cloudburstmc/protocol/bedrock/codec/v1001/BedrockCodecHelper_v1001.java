@@ -7,6 +7,7 @@ import org.cloudburstmc.protocol.bedrock.data.AbilitiesIndex;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerEnumName;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.TextProcessingEventOrigin;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestActionType;
+import org.cloudburstmc.protocol.bedrock.data.payload.configuration.PresenceConfiguration;
 import org.cloudburstmc.protocol.bedrock.data.payload.inventory.transaction.InventoryAction;
 import org.cloudburstmc.protocol.bedrock.data.payload.inventory.transaction.InventorySource;
 import org.cloudburstmc.protocol.bedrock.data.payload.inventory.transaction.InventorySourceFlags;
@@ -52,5 +53,21 @@ public class BedrockCodecHelper_v1001 extends BedrockCodecHelper_v975 {
         action.setFromItem(this.readNetworkItemStackDescriptor(buffer));
         action.setToItem(this.readNetworkItemStackDescriptor(buffer));
         return action;
+    }
+
+    @Override
+    public void writePresenceConfiguration(ByteBuf buffer, PresenceConfiguration configuration) {
+        this.writeOptionalNull(buffer, configuration.getExperienceName(), this::writeString);
+        this.writeOptionalNull(buffer, configuration.getWorldName(), this::writeString);
+        this.writeString(buffer, configuration.getRichPresenceId());
+    }
+
+    @Override
+    public PresenceConfiguration readPresenceConfiguration(ByteBuf buffer) {
+        final PresenceConfiguration configuration = new PresenceConfiguration();
+        configuration.setExperienceName(this.readOptional(buffer, null, this::readString));
+        configuration.setWorldName(this.readOptional(buffer, null, this::readString));
+        configuration.setRichPresenceId(this.readString(buffer));
+        return configuration;
     }
 }

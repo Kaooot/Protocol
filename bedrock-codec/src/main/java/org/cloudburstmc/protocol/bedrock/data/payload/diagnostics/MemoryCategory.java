@@ -16,6 +16,10 @@ public enum MemoryCategory {
     BALANCER,
     BLOCK_TICKING_QUEUES,
     BIOME_STORAGE,
+    /**
+     * @since v1011
+     */
+    BLOBS,
     CEREAL,
     CIRCUIT_SYSTEM,
     CLIENT,
@@ -62,13 +66,80 @@ public enum MemoryCategory {
     MATERIAL_VARIATION_MANAGER,
     MOLANG,
     ORE_UI,
+    /**
+     * @deprecated since v1011
+     */
     PERSONA,
+    /**
+     * @since v1011
+     */
+    PERSONA_PIECES,
+    /**
+     * @since v1011
+     */
+    PERSONA_ANIMATIONS,
+    /**
+     * @since v1011
+     */
+    PERSONA_TEXTURES,
+    /**
+     * @since v1011
+     */
+    PERSONA_CHARACTERS,
+    /**
+     * @since v1011
+     */
+    PERSONA_SKIN_PACKS,
+    /**
+     * @since v1011
+     */
+    PERSONA_REPO,
     PLAYER,
     RENDER_CHUNK,
     RENDER_CHUNK_INDEX_BUFFER,
     RENDER_CHUNK_VERTEX_BUFFER,
     RENDERING,
+    /**
+     * @since v1011
+     */
+    RENDERING_BGFX_INIT,
+    /**
+     * @since v1011
+     */
+    RENDERING_BGFX_START_FRAME,
+    /**
+     * @since v1011
+     */
+    RENDERING_BGFX_TESSELLATOR,
+    /**
+     * @since v1011
+     */
+    RENDERING_BGFX_END_FRAME,
+    /**
+     * @since v1011
+     */
+    RENDERING_BGFX_GRAPHICS_TASKS_INIT,
     RENDERING_LIBRARY,
+    /**
+     * @since v1011
+     */
+    RENDERING_POLYGON_OPERATOR_POOL,
+    /**
+     * @since v1011
+     */
+    RENDERING_PBR_TEXTURE_DATA,
+    /**
+     * @since v975
+     */
+    RENDERING_RENDER_REGISTRY,
+    /**
+     * @since v1011
+     */
+    RENDERING_SETUP,
+    /**
+     * @since v1011
+     */
+    RENDERING_VERTICES,
     REQUEST_LOG,
     RESOURCE_PACKS,
     SOUND,
@@ -76,11 +147,18 @@ public enum MemoryCategory {
     SUB_CHUNK_BLOCK_DATA,
     SUB_CHUNK_LIGHT_DATA,
     TEXTURES,
+    /**
+     * @deprecated since v975
+     */
     VR,
     WEATHER_RENDERER,
     WORLD_GENERATOR,
     TASKS,
     TEST,
+    /**
+     * @since v1011
+     */
+    TEST_LOAD_TEST_FLAGS,
     SCRIPTING,
     SCRIPTING_RUNTIME,
     SCRIPTING_CONTEXT,
@@ -137,4 +215,12 @@ public enum MemoryCategory {
      * @since v944
      */
     GAMEFACE_SCRIPT_ENGINE,
+    /**
+     * @since v1011
+     */
+    GAMEFACE_SCRIPT,
+    /**
+     * @since v1011
+     */
+    GAMEFACE_LAYOUT
 }

@@ -16,6 +16,10 @@ public class PlaySoundPacket implements BedrockPacket {
     private float volume;
     private float pitch;
     /**
+     * @since v1011
+     */
+    private int loopCount;
+    /**
      * @since v975
      */
     private ServerSoundHandle serverSoundHandle;

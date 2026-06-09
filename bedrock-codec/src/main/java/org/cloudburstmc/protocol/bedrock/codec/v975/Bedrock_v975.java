@@ -16,6 +16,7 @@ import org.cloudburstmc.protocol.bedrock.data.actor.ActorEvent;
 import org.cloudburstmc.protocol.bedrock.data.actor.ActorFlags;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandParam;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.TextProcessingEventOrigin;
+import org.cloudburstmc.protocol.bedrock.data.payload.diagnostics.MemoryCategory;
 import org.cloudburstmc.protocol.bedrock.packet.*;
 import org.cloudburstmc.protocol.bedrock.transformer.FlagTransformer;
 import org.cloudburstmc.protocol.bedrock.transformer.TypeMapTransformer;
@@ -71,6 +72,13 @@ public class Bedrock_v975 extends Bedrock_v944 {
             .shift(86, 1)
             .insert(86, CommandParam.CLOCK_TIME_MARKER_NAME)
             .insert(134217728, CommandParam.CHAINED_COMMAND)
+            .build();
+
+    protected static final TypeMap<MemoryCategory> MEMORY_CATEGORY_TYPES = Bedrock_v944.MEMORY_CATEGORY_TYPES.toBuilder()
+            .remove(68)
+            .shift(60, 68, 1)
+            .shift(91, 68, -1)
+            .insert(60, MemoryCategory.RENDERING_RENDER_REGISTRY)
             .build();
 
     public static final BedrockCodec CODEC = Bedrock_v944.CODEC.toBuilder()

@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v818.serializer.StartGameSerializer_v818;
 import org.cloudburstmc.protocol.bedrock.data.*;
-import org.cloudburstmc.protocol.bedrock.data.gathering.GatheringJoinInfo;
+import org.cloudburstmc.protocol.bedrock.data.gathering.GatheringsConfig;
 import org.cloudburstmc.protocol.bedrock.data.gathering.ServerJoinInfo;
 import org.cloudburstmc.protocol.bedrock.packet.StartGamePacket;
 import org.cloudburstmc.protocol.common.util.OptionalBoolean;
@@ -144,45 +144,45 @@ public class StartGameSerializer_v924 extends StartGameSerializer_v818 {
     }
 
     protected void writeServerJoinInfo(ByteBuf buffer, BedrockCodecHelper helper, ServerJoinInfo joinInfo) {
-        helper.writeOptionalNull(buffer, joinInfo.getGatheringJoinInfo(), this::writeGatheringJoinInfo);
+        helper.writeOptionalNull(buffer, joinInfo.getGatheringsConfig(), this::writeGatheringsConfig);
     }
 
     protected ServerJoinInfo readServerJoinInfo(ByteBuf buffer, BedrockCodecHelper helper) {
         final ServerJoinInfo joinInfo = new ServerJoinInfo();
-        joinInfo.setGatheringJoinInfo(helper.readOptional(buffer, null, this::readGatheringJoinInfo));
+        joinInfo.setGatheringsConfig(helper.readOptional(buffer, null, this::readGatheringsConfig));
         return joinInfo;
     }
 
-    protected void writeGatheringJoinInfo(ByteBuf buffer, BedrockCodecHelper helper, GatheringJoinInfo info) {
-        helper.writeString(buffer, info.getExperienceID().toString());
-        helper.writeString(buffer, info.getExperienceName());
-        helper.writeString(buffer, info.getExperienceWorldID().toString());
-        helper.writeString(buffer, info.getExperienceWorldName());
-        helper.writeString(buffer, info.getCreatorID());
+    protected void writeGatheringsConfig(ByteBuf buffer, BedrockCodecHelper helper, GatheringsConfig config) {
+        helper.writeString(buffer, config.getExperienceId().toString());
+        helper.writeString(buffer, config.getExperienceName());
+        helper.writeString(buffer, config.getWorldId().toString());
+        helper.writeString(buffer, config.getWorldName());
+        helper.writeString(buffer, config.getCreatorId());
         helper.writeString(buffer, ""); // Store ID
     }
 
-    protected GatheringJoinInfo readGatheringJoinInfo(ByteBuf buffer, BedrockCodecHelper helper) {
-        final GatheringJoinInfo info = new GatheringJoinInfo();
+    protected GatheringsConfig readGatheringsConfig(ByteBuf buffer, BedrockCodecHelper helper) {
+        final GatheringsConfig config = new GatheringsConfig();
         UUID experienceID;
         try {
             experienceID = UUID.fromString(helper.readString(buffer));
         } catch (Exception e) {
             experienceID = null;
         }
-        info.setExperienceID(experienceID);
-        info.setExperienceName(helper.readString(buffer));
+        config.setExperienceId(experienceID);
+        config.setExperienceName(helper.readString(buffer));
         UUID experienceWorldID;
         try {
             experienceWorldID = UUID.fromString(helper.readString(buffer));
         } catch (Exception e) {
             experienceWorldID = null;
         }
-        info.setExperienceWorldID(experienceWorldID);
-        info.setExperienceWorldName(helper.readString(buffer));
-        info.setCreatorID(helper.readString(buffer));
+        config.setWorldId(experienceWorldID);
+        config.setWorldName(helper.readString(buffer));
+        config.setCreatorId(helper.readString(buffer));
         helper.readString(buffer); // Store ID
-        return info;
+        return config;
     }
 
     protected void writeAfterJoinInfo(ByteBuf buffer, BedrockCodecHelper helper, StartGamePacket packet) {

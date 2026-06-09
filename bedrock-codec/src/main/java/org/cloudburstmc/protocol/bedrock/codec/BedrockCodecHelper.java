@@ -14,6 +14,7 @@ import org.cloudburstmc.protocol.bedrock.data.command.CommandOriginData;
 import org.cloudburstmc.protocol.bedrock.data.ddui.DataStoreUpdate;
 import org.cloudburstmc.protocol.bedrock.data.definitions.BlockDefinition;
 import org.cloudburstmc.protocol.bedrock.data.definitions.ItemDefinition;
+import org.cloudburstmc.protocol.bedrock.data.gathering.GatheringsConfig;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerEnumName;
 import org.cloudburstmc.protocol.bedrock.data.inventory.FullContainerName;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
@@ -21,6 +22,7 @@ import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.ItemDescripto
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequest;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponseContainerInfo;
 import org.cloudburstmc.protocol.bedrock.data.payload.abilities.SerializedAbilitiesData;
+import org.cloudburstmc.protocol.bedrock.data.payload.configuration.PresenceConfiguration;
 import org.cloudburstmc.protocol.bedrock.data.payload.inventory.transaction.InventoryTransaction;
 import org.cloudburstmc.protocol.bedrock.data.skin.SerializedSkin;
 import org.cloudburstmc.protocol.bedrock.data.structure.StructureSettings;
@@ -260,4 +262,12 @@ public interface BedrockCodecHelper {
     void writeServerSoundHandle(ByteBuf buffer, ServerSoundHandle serverSoundHandle);
 
     ServerSoundHandle readServerSoundHandle(ByteBuf buffer);
+
+    void writeGatheringsConfig(ByteBuf buffer, GatheringsConfig config);
+
+    GatheringsConfig readGatheringsConfig(ByteBuf buffer);
+
+    void writePresenceConfiguration(ByteBuf buffer, PresenceConfiguration config);
+
+    PresenceConfiguration readPresenceConfiguration(ByteBuf buffer);
 }
