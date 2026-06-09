@@ -20,7 +20,7 @@ public class Bedrock_v729 extends Bedrock_v712 {
             .toBuilder()
             .replace(531, SoundEvent.IMITATE_DROWNED)
             // skip 532
-            .insert(533, SoundEvent.BUNDLE_INSERT_FAILED)
+            .insert(533, SoundEvent.BUNDLE_INSERT_FAIL)
             .insert(534, SoundEvent.UNDEFINED)
             .build();
 

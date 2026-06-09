@@ -31,7 +31,7 @@ public class Bedrock_v618 extends Bedrock_v594 {
             .insert(471, SoundEvent.PUMPKIN_CARVE)
             .insert(472, SoundEvent.CONVERT_HUSK_TO_ZOMBIE)
             .insert(473, SoundEvent.PIG_DEATH)
-            .insert(474, SoundEvent.HOGLIN_CONVERT_TO_ZOMBIE)
+            .insert(474, SoundEvent.HOGLIN_CONVERT_TO_ZOMBIFIED)
             .insert(475, SoundEvent.AMBIENT_UNDERWATER_ENTER)
             .insert(476, SoundEvent.AMBIENT_UNDERWATER_EXIT)
             .insert(477, SoundEvent.UNDEFINED)

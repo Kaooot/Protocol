@@ -37,12 +37,12 @@ public class Bedrock_v671 extends Bedrock_v662 {
 
     protected static final TypeMap<SoundEvent> SOUND_EVENTS = Bedrock_v662.SOUND_EVENTS
             .toBuilder()
-            .replace(511, SoundEvent.ARMOR_CRACK_WOLF)
-            .insert(512, SoundEvent.ARMOR_BREAK_WOLF)
-            .insert(513, SoundEvent.ARMOR_REPAIR_WOLF)
+            .replace(511, SoundEvent.WOLF_ARMOR_CRACK)
+            .insert(512, SoundEvent.WOLF_ARMOR_BREAK)
+            .insert(513, SoundEvent.WOLF_ARMOR_REPAIR)
             .insert(514, SoundEvent.MACE_SMASH_AIR)
             .insert(515, SoundEvent.MACE_SMASH_GROUND)
-            .insert(520, SoundEvent.MACE_SMASH_HEAVY_GROUND)
+            .insert(520, SoundEvent.MACE_HEAVY_SMASH_GROUND)
             .insert(521, SoundEvent.UNDEFINED)
             .build();
 

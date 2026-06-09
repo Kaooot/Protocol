@@ -67,12 +67,12 @@ public class Bedrock_v313 extends Bedrock_v291 {
             .build();
 
     protected static final TypeMap<SoundEvent> SOUND_EVENTS = Bedrock_v291.SOUND_EVENTS.toBuilder()
-            .replace(239, SoundEvent.BLOCK_BAMBOO_SAPLING_PLACE)
+            .replace(239, SoundEvent.BAMBOO_SAPLING_PLACE)
             .insert(240, SoundEvent.PRE_SNEEZE)
             .insert(241, SoundEvent.SNEEZE)
             .insert(242, SoundEvent.AMBIENT_TAME)
             .insert(243, SoundEvent.SCARED)
-            .insert(244, SoundEvent.BLOCK_SCAFFOLDING_CLIMB)
+            .insert(244, SoundEvent.SCAFFOLDING_CLIMB)
             .insert(245, SoundEvent.CROSSBOW_LOADING_START)
             .insert(246, SoundEvent.CROSSBOW_LOADING_MIDDLE)
             .insert(247, SoundEvent.CROSSBOW_LOADING_END)

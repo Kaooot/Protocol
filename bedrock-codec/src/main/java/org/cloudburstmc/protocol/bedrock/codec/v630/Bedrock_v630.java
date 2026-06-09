@@ -42,9 +42,9 @@ public class Bedrock_v630 extends Bedrock_v622 {
     protected static final TypeMap<SoundEvent> SOUND_EVENTS = Bedrock_v622.SOUND_EVENTS
             .toBuilder()
             .replace(479, SoundEvent.CRAFTER_CRAFT)
-            .insert(480, SoundEvent.CRAFTER_FAILED)
+            .insert(480, SoundEvent.CRAFTER_DISABLE_SLOT)
             .insert(481, SoundEvent.DECORATED_POT_INSERT)
-            .insert(482, SoundEvent.DECORATED_POT_INSERT_FAILED)
+            .insert(482, SoundEvent.DECORATED_POT_INSERT_FAIL)
             .insert(483, SoundEvent.CRAFTER_DISABLE_SLOT)
             .insert(484, SoundEvent.TRIAL_SPAWNER_OPEN_SHUTTER)
             .insert(485, SoundEvent.TRIAL_SPAWNER_EJECT_ITEM)
@@ -52,8 +52,8 @@ public class Bedrock_v630 extends Bedrock_v622 {
             .insert(487, SoundEvent.TRIAL_SPAWNER_SPAWN_MOB)
             .insert(488, SoundEvent.TRIAL_SPAWNER_CLOSE_SHUTTER)
             .insert(489, SoundEvent.TRIAL_SPAWNER_AMBIENT)
-            .insert(490, SoundEvent.COPPER_BULB_ON)
-            .insert(491, SoundEvent.COPPER_BULB_OFF)
+            .insert(490, SoundEvent.COPPER_BULB_TURN_ON)
+            .insert(491, SoundEvent.COPPER_BULB_TURN_OFF)
             .insert(492, SoundEvent.UNDEFINED)
             .build();
 

@@ -37,7 +37,7 @@ public class Bedrock_v649 extends Bedrock_v630 {
     protected static final TypeMap<SoundEvent> SOUND_EVENTS = Bedrock_v630.SOUND_EVENTS
             .toBuilder()
             .replace(492, SoundEvent.AMBIENT_IN_AIR)
-            .insert(493, SoundEvent.WIND_BURST)
+            .insert(493, SoundEvent.WIND_CHARGE_BURST)
             .insert(494, SoundEvent.IMITATE_BREEZE)
             .insert(495, SoundEvent.ARMADILLO_BRUSH)
             .insert(496, SoundEvent.ARMADILLO_SCUTE_DROP)
