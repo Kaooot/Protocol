@@ -24,8 +24,8 @@ public class Bedrock_v534 extends Bedrock_v527 {
             .build();
 
     protected static final TypeMap<SoundEvent> SOUND_EVENTS = Bedrock_v527.SOUND_EVENTS.toBuilder()
-            .insert(432, SoundEvent.MILK_DRINK)
-            .replace(441, SoundEvent.RECORD_PLAYING)
+            .insert(432, SoundEvent.DRINK_MILK)
+          //  .replace(441, SoundEvent.RECORD_PLAYING)
             .insert(442, SoundEvent.UNDEFINED)
             .build();
 

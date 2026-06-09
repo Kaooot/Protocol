@@ -44,10 +44,10 @@ public class Bedrock_v465 extends Bedrock_v448 {
             .replace(363, SoundEvent.BLOCK_CLICK)
             .insert(364, SoundEvent.BLOCK_CLICK_FAIL)
             .insert(366, SoundEvent.SCULK_SHRIEKER_SHRIEK)
-            .insert(367, SoundEvent.WARDEN_NEARBY_CLOSE)
-            .insert(368, SoundEvent.WARDEN_NEARBY_CLOSER)
-            .insert(369, SoundEvent.WARDEN_NEARBY_CLOSEST)
-            .insert(370, SoundEvent.WARDEN_SLIGHTLY_ANGRY)
+            .insert(367, SoundEvent.NEARBY_CLOSE)
+            .insert(368, SoundEvent.NEARBY_CLOSER)
+            .insert(369, SoundEvent.NEARBY_CLOSEST)
+            .insert(370, SoundEvent.AGITATED)
             .insert(371, SoundEvent.UNDEFINED)
             .build();
 

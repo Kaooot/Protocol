@@ -57,7 +57,7 @@ public class Bedrock_v527 extends Bedrock_v503 {
             .insert(436, SoundEvent.SONIC_BOOM)
             .insert(437, SoundEvent.SONIC_CHARGE)
             .insert(438, SoundEvent.ITEM_THROWN)
-            .insert(439, SoundEvent.RECORD_5)
+            .insert(439, SoundEvent.RECORD5)
             .insert(440, SoundEvent.CONVERT_TO_FROG)
             .insert(441, SoundEvent.UNDEFINED)
             .build();

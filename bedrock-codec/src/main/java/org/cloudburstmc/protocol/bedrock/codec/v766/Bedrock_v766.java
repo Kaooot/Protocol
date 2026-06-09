@@ -21,7 +21,7 @@ public class Bedrock_v766 extends Bedrock_v748 {
             .toBuilder()
             .insert(532, SoundEvent.IMITATE_CREAKING)
             .replace(534, SoundEvent.SPONGE_ABSORB)
-            .insert(536, SoundEvent.BLOCK_CREAKING_HEART_TRAIL)
+            .insert(536, SoundEvent.CREAKING_HEART_TRAIL)
             .insert(537, SoundEvent.CREAKING_HEART_SPAWN)
             .insert(538, SoundEvent.ACTIVATE)
             .insert(539, SoundEvent.DEACTIVATE)

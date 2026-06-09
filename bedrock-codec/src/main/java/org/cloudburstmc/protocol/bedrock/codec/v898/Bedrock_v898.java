@@ -23,9 +23,9 @@ public class Bedrock_v898 extends Bedrock_v859 {
 
     protected static final TypeMap<SoundEvent> SOUND_EVENTS = Bedrock_v859.SOUND_EVENTS
             .toBuilder()
-            .replace(566, SoundEvent.LUNGE_1)
-            .insert(567, SoundEvent.LUNGE_2)
-            .insert(568, SoundEvent.LUNGE_3)
+            .replace(566, SoundEvent.LUNGE1)
+            .insert(567, SoundEvent.LUNGE2)
+            .insert(568, SoundEvent.LUNGE3)
             .insert(569, SoundEvent.ATTACK_CRITICAL)
             .insert(570, SoundEvent.SPEAR_ATTACK_HIT)
             .insert(571, SoundEvent.SPEAR_ATTACK_MISS)

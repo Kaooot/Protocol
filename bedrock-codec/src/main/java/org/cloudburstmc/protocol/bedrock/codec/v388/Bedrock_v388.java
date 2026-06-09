@@ -63,9 +63,9 @@ public class Bedrock_v388 extends Bedrock_v361 {
 
     protected static final TypeMap<SoundEvent> SOUND_EVENTS = Bedrock_v361.SOUND_EVENTS.toBuilder()
             .replace(274, SoundEvent.AMBIENT_IN_RAID)
-            .insert(275, SoundEvent.UI_CARTOGRAPHY_TABLE_USE)
-            .insert(276, SoundEvent.UI_STONECUTTER_USE)
-            .insert(277, SoundEvent.UI_LOOM_USE)
+            .insert(275, SoundEvent.CARTOGRAPHY_TABLE_USE)
+            .insert(276, SoundEvent.STONECUTTER_USE)
+            .insert(277, SoundEvent.LOOM_USE)
             .insert(278, SoundEvent.SMOKER_USE)
             .insert(279, SoundEvent.BLAST_FURNACE_USE)
             .insert(280, SoundEvent.SMITHING_TABLE_USE)
