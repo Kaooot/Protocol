@@ -18,12 +18,12 @@ public class ClientboundUpdateSoundSerializer_v1001 implements BedrockPacketSeri
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ClientboundUpdateSoundDataPacket packet) {
         helper.writeServerSoundHandle(buffer, packet.getServerSoundHandle());
-        helper.writeString(buffer, packet.getSoundEvent().name());
+        buffer.writeIntLE(packet.getSoundEvent().ordinal());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ClientboundUpdateSoundDataPacket packet) {
         packet.setServerSoundHandle(helper.readServerSoundHandle(buffer));
-        packet.setSoundEvent(SoundDataEvent.valueOf(helper.readString(buffer).toUpperCase()));
+        packet.setSoundEvent(SoundDataEvent.from(buffer.readIntLE()));
     }
 }
