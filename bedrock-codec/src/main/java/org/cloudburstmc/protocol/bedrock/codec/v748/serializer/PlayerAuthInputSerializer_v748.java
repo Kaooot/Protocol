@@ -86,7 +86,7 @@ public class PlayerAuthInputSerializer_v748 extends PlayerAuthInputSerializer_v7
             packet.setItemStackRequest(helper.readItemStackRequest(buffer));
         }
         if (packet.getInputData().contains(PlayerAuthInputData.PERFORM_BLOCK_ACTIONS)) {
-            helper.readArray(buffer, packet.getPlayerActions(), VarInts::readInt, this::readPlayerBlockActionData, 32); // 32 is more than enough
+            helper.readArray(buffer, packet.getPlayerActions(), VarInts::readInt, this::readPlayerBlockActionData, helper.getEncodingSettings().maxPlayerBlockActionDataSize());
         }
         if (packet.getInputData().contains(PlayerAuthInputData.IS_IN_CLIENT_PREDICTED_VEHICLE)) {
             packet.setVehicleRotation(helper.readVector2f(buffer));
