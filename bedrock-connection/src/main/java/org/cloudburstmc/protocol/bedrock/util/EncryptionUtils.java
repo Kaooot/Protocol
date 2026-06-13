@@ -102,8 +102,8 @@ public class EncryptionUtils {
             if (connection.getResponseCode() != 200) {
                 throw new IOException("Failed to fetch discovery data: " + connection.getResponseMessage());
             }
-            try(InputStream stream = connection.getInputStream();
-                InputStreamReader reader = new InputStreamReader(stream, StandardCharsets.UTF_8)) {
+            try (InputStream stream = connection.getInputStream();
+                 InputStreamReader reader = new InputStreamReader(stream, StandardCharsets.UTF_8)) {
                 //noinspection unchecked
                 return (Map<String, Object>) JSON_PARSER.parse(reader);
             }
@@ -285,14 +285,23 @@ public class EncryptionUtils {
     }
 
     public static ChainValidationResult validateToken(PlayerAuthenticationType type, String token) throws InvalidJwtException, JoseException {
+
+        final ChainValidationResult result;
         if (type == PlayerAuthenticationType.FULL || type == PlayerAuthenticationType.GUEST) {
             JwtContext context = MOJANG_CONSUMER.process(token);
-            return new ChainValidationResult(true, context);
+            result = new ChainValidationResult(true, context);
         } else if (type == PlayerAuthenticationType.SELF_SIGNED) {
             JwtContext context = OFFLINE_CONSUMER.process(token);
-            return new ChainValidationResult(false, context);
+            result = new ChainValidationResult(false, context);
+        } else {
+            throw new JoseException("Unsupported AuthType: " + type);
         }
-        throw new JoseException("Unsupported AuthType: " + type);
+        if (type.equals(PlayerAuthenticationType.FULL) && (result.identityClaims().extraData == null ||
+                result.identityClaims().extraData.xuid == null ||
+                result.identityClaims().extraData.displayName == null)) {
+            throw new IllegalStateException("Missing extraData for PlayerAuthenticationType " + type.name());
+        }
+        return result;
     }
 
     /**
@@ -394,7 +403,8 @@ public class EncryptionUtils {
             Cipher cipher = Cipher.getInstance(transformation);
             cipher.init(encrypt ? Cipher.ENCRYPT_MODE : Cipher.DECRYPT_MODE, key, new IvParameterSpec(iv));
             return cipher;
-        } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | InvalidAlgorithmParameterException e) {
+        } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException |
+                 InvalidAlgorithmParameterException e) {
             throw new AssertionError("Unable to initialize required encryption", e);
         }
     }
