@@ -102,7 +102,7 @@ public class InventoryTransactionSerializer_v1001 extends InventoryTransactionSe
         buffer.writeByte(transaction.getTriggerType().ordinal());
         helper.writeVector3i(buffer, transaction.getPosition());
         buffer.writeByte(transaction.getFace());
-        VarInts.writeUnsignedInt(buffer, transaction.getSlot());
+        VarInts.writeInt(buffer, transaction.getSlot());
         helper.writeNetworkItemStackDescriptor(buffer, transaction.getItem());
         helper.writeVector3f(buffer, transaction.getFromPosition());
         helper.writeVector3f(buffer, transaction.getClickPosition());
