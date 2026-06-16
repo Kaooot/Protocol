@@ -89,7 +89,7 @@ public class Bedrock_v944 extends Bedrock_v924 {
             .registerPacket(ResourcePacksReadyForValidationPacket::new, ResourcePacksReadyForValidationSerializer_v944.INSTANCE, 340, PacketRecipient.SERVER)
             .registerPacket(LocatorBarPacket::new, LocatorBarSerializer_v944.INSTANCE, 341, PacketRecipient.CLIENT)
             .registerPacket(PartyChangedPacket::new, PartyChangedSerializer_v944.INSTANCE, 342, PacketRecipient.SERVER)
-            .registerPacket(ServerboundDataDrivenScreenClosedPacket::new, ServerboundDataDrivenScreenClosedSerializer_v944.INSTANCE, 343, PacketRecipient.CLIENT)
+            .registerPacket(ServerboundDataDrivenScreenClosedPacket::new, ServerboundDataDrivenScreenClosedSerializer_v944.INSTANCE, 343, PacketRecipient.SERVER)
             .registerPacket(SyncWorldClocksPacket::new, SyncWorldClocksSerializer_v944.INSTANCE, 344, PacketRecipient.CLIENT)
             .registerPacket(ClientboundAttributeLayerSyncPacket::new, ClientboundAttributeLayerSyncSerializer_v944.INSTANCE, 345, PacketRecipient.CLIENT)
             .build();
