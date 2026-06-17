@@ -17,7 +17,7 @@ public class ServerboundPackSettingChangeSerializer_v844 implements BedrockPacke
         helper.writeUuid(buffer, packet.getPackId());
         helper.writeString(buffer, packet.getPackSettingName());
 
-        VarInts.writeUnsignedInt(buffer, packet.getPackSettingDataType().ordinal()); // TODO check type
+        VarInts.writeUnsignedInt(buffer, packet.getPackSettingDataType().ordinal());
 
         final Object value = packet.getPackSettingValue();
         switch (packet.getPackSettingDataType()) {
