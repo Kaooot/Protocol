@@ -35,10 +35,11 @@ public class BedrockCodecHelper_v975 extends BedrockCodecHelper_v944 {
     }
 
     @Override
+    @SuppressWarnings("ALL")
     public void writeNetworkItemStackDescriptor(ByteBuf buffer, ItemData item) {
         requireNonNull(item, "item is null!");
 
-        ItemDefinition definition = item.getDefinition();
+        ItemDefinition definition = item.getDefinition() == null ? ItemDefinition.AIR : item.getDefinition();
         buffer.writeShortLE(definition.getRuntimeId());
         buffer.writeShortLE(item.getCount());
         VarInts.writeUnsignedInt(buffer, item.getDamage());
@@ -88,7 +89,7 @@ public class BedrockCodecHelper_v975 extends BedrockCodecHelper_v944 {
     @Override
     public ItemData readNetworkItemStackDescriptor(ByteBuf buffer) {
         int runtimeId = buffer.readShortLE();
-        ItemDefinition definition = this.getItemDefinitions().getDefinition(runtimeId);
+        ItemDefinition definition = runtimeId == 0 ? ItemDefinition.AIR : this.getItemDefinitions().getDefinition(runtimeId);
         int count = buffer.readUnsignedShortLE();
         int damage = VarInts.readUnsignedInt(buffer);
 

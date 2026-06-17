@@ -58,7 +58,7 @@ public class Bedrock_v1001 extends Bedrock_v975 {
             .updateSerializer(StartGamePacket.class, StartGameSerializer_v1001.INSTANCE)
             .updateSerializer(SubChunkRequestPacket.class, SubChunkRequestSerializer_v1001.INSTANCE)
             .registerPacket(ClientboundUpdateSoundDataPacket::new, ClientboundUpdateSoundSerializer_v1001.INSTANCE, 348, PacketRecipient.CLIENT)
-            .registerPacket(SendPartyDestinationCookiePacket::new, SendPartyDestinationCookieSerializer_v1001.INSTANCE, 349, PacketRecipient.SERVER)
-            .registerPacket(PartyDestinationCookieResponsePacket::new, PartyDestinationCookieResponseSerializer_v1001.INSTANCE, 350, PacketRecipient.CLIENT)
+            .registerPacket(SendPartyDestinationCookiePacket::new, SendPartyDestinationCookieSerializer_v1001.INSTANCE, 349, PacketRecipient.CLIENT)
+            .registerPacket(PartyDestinationCookieResponsePacket::new, PartyDestinationCookieResponseSerializer_v1001.INSTANCE, 350, PacketRecipient.SERVER)
             .build();
 }

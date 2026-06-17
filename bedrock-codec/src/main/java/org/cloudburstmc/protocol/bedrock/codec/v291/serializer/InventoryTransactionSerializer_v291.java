@@ -28,6 +28,7 @@ public class InventoryTransactionSerializer_v291 implements BedrockPacketSeriali
     }
 
     protected void writeInventoryTransactionVariant(ByteBuf buffer, BedrockCodecHelper helper, InventoryTransactionData transaction) {
+        VarInts.writeUnsignedInt(buffer, transaction.getType().ordinal());
         helper.writeInventoryTransactions(buffer, transaction.getActions());
 
         switch (transaction.getType()) {

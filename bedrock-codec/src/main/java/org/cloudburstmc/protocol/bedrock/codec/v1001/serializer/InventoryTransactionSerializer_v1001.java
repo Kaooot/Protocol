@@ -1,7 +1,6 @@
 package org.cloudburstmc.protocol.bedrock.codec.v1001.serializer;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufUtil;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
@@ -10,8 +9,6 @@ import org.cloudburstmc.protocol.bedrock.data.payload.inventory.transaction.*;
 import org.cloudburstmc.protocol.bedrock.data.payload.inventory.transaction.data.*;
 import org.cloudburstmc.protocol.bedrock.packet.InventoryTransactionPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
-
-import java.util.Arrays;
 
 /**
  * @author Kaooot
@@ -44,21 +41,18 @@ public class InventoryTransactionSerializer_v1001 extends InventoryTransactionSe
 
     protected void writeInventoryTransactionVariant(ByteBuf buffer, BedrockCodecHelper helper, InventoryTransactionData transaction) {
         helper.writeOptionalNull(buffer, transaction.getType().ordinal(), VarInts::writeUnsignedInt);
-        final boolean transactionDataHasValue = transaction.getActions() != null;
-        buffer.writeBoolean(transactionDataHasValue);
-        if (transactionDataHasValue) {
-            helper.writeInventoryTransactions(buffer, transaction.getActions());
-            switch (transaction.getType()) {
-                case ITEM_USE:
-                    this.writeItemUseInventoryTransaction(buffer, helper, ((ItemUseInventoryTransaction) transaction));
-                    break;
-                case ITEM_USE_ON_ACTOR:
-                    this.writeItemUseOnActorInventoryTransaction(buffer, helper, ((ItemUseOnActorInventoryTransaction) transaction));
-                    break;
-                case ITEM_RELEASE:
-                    this.writeItemReleaseInventoryTransaction(buffer, helper, ((ItemReleaseInventoryTransaction) transaction));
-                    break;
-            }
+        buffer.writeBoolean(true); // transactionDataHasValue
+        helper.writeInventoryTransactions(buffer, transaction.getActions());
+        switch (transaction.getType()) {
+            case ITEM_USE:
+                this.writeItemUseInventoryTransaction(buffer, helper, ((ItemUseInventoryTransaction) transaction));
+                break;
+            case ITEM_USE_ON_ACTOR:
+                this.writeItemUseOnActorInventoryTransaction(buffer, helper, ((ItemUseOnActorInventoryTransaction) transaction));
+                break;
+            case ITEM_RELEASE:
+                this.writeItemReleaseInventoryTransaction(buffer, helper, ((ItemReleaseInventoryTransaction) transaction));
+                break;
         }
     }
 
@@ -101,8 +95,8 @@ public class InventoryTransactionSerializer_v1001 extends InventoryTransactionSe
         VarInts.writeInt(buffer, transaction.getActionType().ordinal());
         buffer.writeByte(transaction.getTriggerType().ordinal());
         helper.writeVector3i(buffer, transaction.getPosition());
-        VarInts.writeInt(buffer, transaction.getFace());
-        VarInts.writeUnsignedInt(buffer, transaction.getSlot());
+        buffer.writeByte(transaction.getFace());
+        VarInts.writeInt(buffer, transaction.getSlot());
         helper.writeNetworkItemStackDescriptor(buffer, transaction.getItem());
         helper.writeVector3f(buffer, transaction.getFromPosition());
         helper.writeVector3f(buffer, transaction.getClickPosition());

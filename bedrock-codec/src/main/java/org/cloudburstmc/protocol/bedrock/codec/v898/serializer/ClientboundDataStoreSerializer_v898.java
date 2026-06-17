@@ -61,7 +61,7 @@ public class ClientboundDataStoreSerializer_v898 implements BedrockPacketSeriali
         helper.writeString(buffer, change.getDataStoreName());
         helper.writeString(buffer, change.getProperty());
         buffer.writeIntLE(change.getUpdateCount());
-        buffer.writeIntLE(change.getTheNewPropertyValue().getType().ordinal());
+        buffer.writeIntLE(change.getTheNewPropertyValue().getType().getId());
         this.writeTheNewPropertyValue(buffer, helper, change.getTheNewPropertyValue());
     }
 
@@ -83,7 +83,7 @@ public class ClientboundDataStoreSerializer_v898 implements BedrockPacketSeriali
                 VarInts.writeUnsignedInt(buffer, map.size());
                 for (Map.Entry<String, DataStorePropertyValue> entry : map.entrySet()) {
                     helper.writeString(buffer, entry.getKey());
-                    buffer.writeIntLE(entry.getValue().getType().ordinal());
+                    buffer.writeIntLE(entry.getValue().getType().getId());
                     this.writeTheNewPropertyValue(buffer, helper, entry.getValue());
                 }
                 break;

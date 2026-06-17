@@ -27,7 +27,7 @@ public class InventorySlotPacket implements BedrockPacket {
     /**
      * @since v748
      */
-    private ItemData storageItem = ItemData.AIR;
+    private ItemData storageItem;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {
