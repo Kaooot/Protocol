@@ -28,7 +28,7 @@ public class AddPlayerSerializer_v534 extends AddPlayerSerializer_v503 {
         helper.writeSerializedAbilitiesData(buffer, packet.getAbilitiesData());
         helper.writeArray(buffer, packet.getActorLinks(), helper::writeActorLink);
         helper.writeString(buffer, packet.getDeviceId());
-        buffer.writeIntLE(packet.getBuildPlatform().ordinal());
+        buffer.writeIntLE(packet.getBuildPlatform().getId());
     }
 
     @Override

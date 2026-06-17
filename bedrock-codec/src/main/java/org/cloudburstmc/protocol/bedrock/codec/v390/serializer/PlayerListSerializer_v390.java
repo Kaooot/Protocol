@@ -64,7 +64,7 @@ public class PlayerListSerializer_v390 implements BedrockPacketSerializer<Player
         helper.writeString(buffer, entry.getPlayerName());
         helper.writeString(buffer, entry.getXblXUID());
         helper.writeString(buffer, entry.getPlatformChatId());
-        buffer.writeIntLE(entry.getBuildPlatform().ordinal());
+        buffer.writeIntLE(entry.getBuildPlatform().getId());
         helper.writeSkin(buffer, entry.getSkin());
         buffer.writeBoolean(entry.isTeacher());
         buffer.writeBoolean(entry.isHost());
