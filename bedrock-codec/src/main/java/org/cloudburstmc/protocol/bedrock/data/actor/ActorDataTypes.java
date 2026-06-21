@@ -256,7 +256,6 @@ public class ActorDataTypes {
     /**
      * The seat offset value for a rider.
      */
-    @Deprecated
     public static final ActorDataType<Vector3f> SEAT_OFFSET = new ActorDataType<>(Vector3f.class, "SEAT_OFFSET");
     /**
      * Whether to lock the passenger rotation on a mounted actor

@@ -24,14 +24,31 @@ public class BedrockCodecHelper_v1001 extends BedrockCodecHelper_v975 {
     }
 
     @Override
+    protected void writeInventorySource(ByteBuf buffer, InventorySource source) {
+        VarInts.writeUnsignedInt(buffer, source.getSourceType().ordinal());
+        final boolean hasContainer = source.getSourceType().equals(InventorySourceType.CONTAINER_INVENTORY) ||
+                source.getSourceType().equals(InventorySourceType.NON_IMPLEMENTED_FEATURE_TODO);
+        buffer.writeBoolean(hasContainer);
+        if (hasContainer) {
+            this.writeOptionalNull(buffer, source.getContainerID(), ByteBuf::writeByte);
+        }
+        final boolean hasBitFlags = source.getBitFlags() != null;
+        buffer.writeBoolean(hasBitFlags);
+        if (hasBitFlags) {
+            this.writeOptionalNull(buffer, source.getBitFlags(),
+                    (buf, bitFlags) -> VarInts.writeUnsignedInt(buf, bitFlags.ordinal()));
+        }
+    }
+
+    @Override
     protected InventorySource readInventorySource(ByteBuf buffer) {
         final InventorySource source = new InventorySource();
         source.setSourceType(InventorySourceType.from(VarInts.readUnsignedInt(buffer)));
         if (buffer.readBoolean() && buffer.readBoolean()) {
-            source.setContainerID(buffer.readByte());
+            source.setContainerID(this.readOptional(buffer, null, (buf, helper) -> (int) buf.readByte()));
         }
         if (buffer.readBoolean() && buffer.readBoolean()) {
-            source.setBitFlags(InventorySourceFlags.from(VarInts.readUnsignedInt(buffer)));
+            source.setBitFlags(this.readOptional(buffer, null, (buf, helper) -> InventorySourceFlags.from(VarInts.readUnsignedInt(buf))));
         }
         return source;
     }
