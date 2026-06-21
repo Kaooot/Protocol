@@ -44,10 +44,10 @@ public class BedrockCodecHelper_v1001 extends BedrockCodecHelper_v975 {
     protected InventorySource readInventorySource(ByteBuf buffer) {
         final InventorySource source = new InventorySource();
         source.setSourceType(InventorySourceType.from(VarInts.readUnsignedInt(buffer)));
-        if (buffer.readBoolean() && buffer.readBoolean()) {
+        if (buffer.readBoolean()) {
             source.setContainerID(this.readOptional(buffer, null, (buf, helper) -> (int) buf.readByte()));
         }
-        if (buffer.readBoolean() && buffer.readBoolean()) {
+        if (buffer.readBoolean()) {
             source.setBitFlags(this.readOptional(buffer, null, (buf, helper) -> InventorySourceFlags.from(VarInts.readUnsignedInt(buf))));
         }
         return source;
