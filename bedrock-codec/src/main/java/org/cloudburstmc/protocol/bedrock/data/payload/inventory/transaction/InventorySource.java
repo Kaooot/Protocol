@@ -9,6 +9,6 @@ import lombok.Data;
 public class InventorySource {
 
     private InventorySourceType sourceType;
-    private int containerID;
+    private Integer containerID;
     private InventorySourceFlags bitFlags;
 }

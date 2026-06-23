@@ -60,6 +60,7 @@ public class PrimitiveShapesSerializer_v975 extends PrimitiveShapesSerializer_v9
         buffer.writeBoolean(payload.isShowTextBackface());
     }
 
+    @Override
     protected TextDataPayload readTextData(ByteBuf buffer, BedrockCodecHelper helper) {
         final TextDataPayload payload = new TextDataPayload();
         payload.setText(helper.readString(buffer));
