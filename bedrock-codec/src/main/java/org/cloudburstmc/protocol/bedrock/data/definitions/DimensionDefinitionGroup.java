@@ -4,11 +4,20 @@ import lombok.Value;
 import org.cloudburstmc.protocol.bedrock.data.GeneratorType;
 import org.cloudburstmc.protocol.bedrock.data.payload.common.DimensionType;
 
+import java.util.UUID;
+
 @Value
 public class DimensionDefinitionGroup {
     String name;
     int heightMaximum;
     int heightMinimum;
     GeneratorType generatorType;
+    /**
+     * @since v975
+     */
     DimensionType dimensionType;
+    /**
+     * @since v2164
+     */
+    UUID packId;
 }

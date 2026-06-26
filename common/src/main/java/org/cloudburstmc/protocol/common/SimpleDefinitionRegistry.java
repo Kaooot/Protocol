@@ -2,6 +2,8 @@ package org.cloudburstmc.protocol.common;
 
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -13,9 +15,17 @@ import static org.cloudburstmc.protocol.common.util.Preconditions.checkNotNull;
 public class SimpleDefinitionRegistry<D extends Definition> implements DefinitionRegistry<D> {
 
     private final Int2ObjectMap<D> runtimeMap;
+    private final Object2IntMap<String> object2RuntimeMap;
 
     private SimpleDefinitionRegistry(Int2ObjectMap<D> runtimeMap, Map<String, D> identifierMap) {
         this.runtimeMap = runtimeMap;
+        this.object2RuntimeMap = new Object2IntOpenHashMap<>();
+        for (final Int2ObjectMap.Entry<D> entry : this.runtimeMap.int2ObjectEntrySet()) {
+            if (!(entry.getValue() instanceof NamedDefinition)) {
+                break;
+            }
+            this.object2RuntimeMap.put(((NamedDefinition) entry.getValue()).getIdentifier(), entry.getIntKey());
+        }
     }
 
     public static <D extends Definition> Builder<D> builder() {
@@ -25,6 +35,11 @@ public class SimpleDefinitionRegistry<D extends Definition> implements Definitio
     @Override
     public D getDefinition(int runtimeId) {
         return this.runtimeMap.get(runtimeId);
+    }
+
+    @Override
+    public int getRuntimeIdByName(String name) {
+        return this.object2RuntimeMap.getInt(name);
     }
 
     @Override

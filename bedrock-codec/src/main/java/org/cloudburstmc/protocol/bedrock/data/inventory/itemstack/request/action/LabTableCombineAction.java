@@ -10,6 +10,6 @@ public class LabTableCombineAction implements ItemStackRequestAction {
 
     @Override
     public ItemStackRequestActionType getType() {
-        return ItemStackRequestActionType.LAB_TABLE_COMBINE;
+        return ItemStackRequestActionType.SCREEN_LAB_TABLE_COMBINE;
     }
 }

@@ -7,13 +7,13 @@ import lombok.Value;
  */
 @Value
 public class MineBlockAction implements ItemStackRequestAction {
-    int hotbarSlot;
+    int slot;
     int predictedDurability;
     int stackNetworkId;
 
     @Override
     public ItemStackRequestActionType getType() {
-        return ItemStackRequestActionType.MINE_BLOCK;
+        return ItemStackRequestActionType.SCREEN_HUD_MINE_BLOCK;
     }
 
 }

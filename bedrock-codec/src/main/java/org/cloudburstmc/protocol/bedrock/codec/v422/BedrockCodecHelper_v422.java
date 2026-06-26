@@ -9,6 +9,9 @@ import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestAction;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestActionType;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponseSlotInfo;
+import org.cloudburstmc.protocol.bedrock.data.payload.common.RedactableString;
+import org.cloudburstmc.protocol.bedrock.data.payload.crafting.RecipeNetId;
+import org.cloudburstmc.protocol.bedrock.data.payload.inventory.net.ItemStackNetId;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -52,7 +55,7 @@ public class BedrockCodecHelper_v422 extends BedrockCodecHelper_v419 {
     protected ItemStackRequestAction readRequestActionData(ByteBuf byteBuf, ItemStackRequestActionType type) {
         ItemStackRequestAction action;
         if (type == ItemStackRequestActionType.CRAFT_RECIPE_OPTIONAL) {
-            action = new CraftRecipeOptionalAction(VarInts.readUnsignedInt(byteBuf), byteBuf.readIntLE());
+            action = new CraftRecipeOptionalAction(new RecipeNetId(VarInts.readUnsignedInt(byteBuf)), byteBuf.readIntLE());
         } else {
             action = super.readRequestActionData(byteBuf, type);
         }
@@ -62,7 +65,7 @@ public class BedrockCodecHelper_v422 extends BedrockCodecHelper_v419 {
     @Override
     protected void writeRequestActionData(ByteBuf byteBuf, ItemStackRequestAction action) {
         if (action.getType() == ItemStackRequestActionType.CRAFT_RECIPE_OPTIONAL) {
-            VarInts.writeUnsignedInt(byteBuf, ((CraftRecipeOptionalAction) action).getRecipeNetworkId());
+            VarInts.writeUnsignedInt(byteBuf, ((CraftRecipeOptionalAction) action).getRecipeNetId().getRawId());
             byteBuf.writeIntLE(((CraftRecipeOptionalAction) action).getFilteredStringIndex());
         } else {
             super.writeRequestActionData(byteBuf, action);
@@ -75,15 +78,15 @@ public class BedrockCodecHelper_v422 extends BedrockCodecHelper_v419 {
                 buffer.readUnsignedByte(),
                 buffer.readUnsignedByte(),
                 buffer.readUnsignedByte(),
-                VarInts.readInt(buffer),
-                this.readString(buffer),
-                0,
-                "");
+                new ItemStackNetId(VarInts.readInt(buffer)),
+                new RedactableString(this.readString(buffer), ""),
+                0
+        );
     }
 
     @Override
     protected void writeItemEntry(ByteBuf buffer, ItemStackResponseSlotInfo itemEntry) {
         super.writeItemEntry(buffer, itemEntry);
-        this.writeString(buffer, itemEntry.getCustomName());
+        this.writeString(buffer, itemEntry.getCustomName().getUnredacted());
     }
 }

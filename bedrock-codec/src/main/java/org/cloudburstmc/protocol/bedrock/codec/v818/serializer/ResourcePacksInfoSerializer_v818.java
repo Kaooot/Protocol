@@ -9,7 +9,7 @@ public class ResourcePacksInfoSerializer_v818 extends ResourcePacksInfoSerialize
 
     public static final ResourcePacksInfoSerializer_v818 INSTANCE = new ResourcePacksInfoSerializer_v818();
 
-    @Override
+    /*@Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ResourcePacksInfoPacket packet) {
         buffer.writeBoolean(packet.isResourcePackRequired());
         buffer.writeBoolean(packet.isHasAddonPacks());
@@ -29,5 +29,5 @@ public class ResourcePacksInfoSerializer_v818 extends ResourcePacksInfoSerialize
         packet.setWorldTemplateUUID(helper.readUuid(buffer));
         packet.setWorldTemplateVersion(helper.readString(buffer));
         readPacks(buffer, packet.getResourcePacks(), helper, true);
-    }
+    }*/
 }

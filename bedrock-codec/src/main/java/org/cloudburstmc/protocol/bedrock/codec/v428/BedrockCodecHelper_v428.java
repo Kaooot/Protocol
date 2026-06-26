@@ -9,6 +9,8 @@ import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestActionType;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.MineBlockAction;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponseSlotInfo;
+import org.cloudburstmc.protocol.bedrock.data.payload.common.RedactableString;
+import org.cloudburstmc.protocol.bedrock.data.payload.inventory.net.ItemStackNetId;
 import org.cloudburstmc.protocol.bedrock.data.skin.*;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 import org.cloudburstmc.protocol.common.util.VarInts;
@@ -27,7 +29,7 @@ public class BedrockCodecHelper_v428 extends BedrockCodecHelper_v422 {
     @Override
     protected ItemStackRequestAction readRequestActionData(ByteBuf byteBuf, ItemStackRequestActionType type) {
         ItemStackRequestAction action;
-        if (type == ItemStackRequestActionType.MINE_BLOCK) {
+        if (type == ItemStackRequestActionType.SCREEN_HUD_MINE_BLOCK) {
             action = new MineBlockAction(VarInts.readInt(byteBuf), VarInts.readInt(byteBuf), VarInts.readInt(byteBuf));
         } else {
             action = super.readRequestActionData(byteBuf, type);
@@ -37,8 +39,8 @@ public class BedrockCodecHelper_v428 extends BedrockCodecHelper_v422 {
 
     @Override
     protected void writeRequestActionData(ByteBuf byteBuf, ItemStackRequestAction action) {
-        if (action.getType() == ItemStackRequestActionType.MINE_BLOCK) {
-            VarInts.writeInt(byteBuf, ((MineBlockAction) action).getHotbarSlot());
+        if (action.getType() == ItemStackRequestActionType.SCREEN_HUD_MINE_BLOCK) {
+            VarInts.writeInt(byteBuf, ((MineBlockAction) action).getSlot());
             VarInts.writeInt(byteBuf, ((MineBlockAction) action).getPredictedDurability());
             VarInts.writeInt(byteBuf, ((MineBlockAction) action).getStackNetworkId());
         } else {
@@ -147,10 +149,10 @@ public class BedrockCodecHelper_v428 extends BedrockCodecHelper_v422 {
                 buffer.readUnsignedByte(),
                 buffer.readUnsignedByte(),
                 buffer.readUnsignedByte(),
-                VarInts.readInt(buffer),
-                this.readString(buffer),
-                VarInts.readInt(buffer),
-                "");
+                new ItemStackNetId(VarInts.readInt(buffer)),
+                new RedactableString(this.readString(buffer), ""),
+                VarInts.readInt(buffer)
+        );
     }
 
     @Override

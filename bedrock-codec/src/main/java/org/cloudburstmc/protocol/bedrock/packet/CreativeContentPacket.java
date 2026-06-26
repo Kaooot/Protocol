@@ -4,8 +4,8 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.protocol.bedrock.data.inventory.CreativeItemData;
-import org.cloudburstmc.protocol.bedrock.data.inventory.CraftingCatalogGroup;
+import org.cloudburstmc.protocol.bedrock.data.payload.creative.CreativeGroupInfoPayload;
+import org.cloudburstmc.protocol.bedrock.data.payload.creative.CreativeItemEntryPayload;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 import java.util.List;
@@ -20,8 +20,8 @@ import java.util.List;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class CreativeContentPacket implements BedrockPacket {
-    private final List<CraftingCatalogGroup> groups = new ObjectArrayList<>();
-    private final List<CreativeItemData> contents = new ObjectArrayList<>();
+    private final List<CreativeGroupInfoPayload> groups = new ObjectArrayList<>();
+    private final List<CreativeItemEntryPayload> entries = new ObjectArrayList<>();
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

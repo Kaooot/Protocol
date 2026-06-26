@@ -1,22 +1,14 @@
 package org.cloudburstmc.protocol.bedrock.codec.v465.serializer;
 
-import io.netty.buffer.ByteBuf;
-import it.unimi.dsi.fastutil.objects.Object2IntMap;
-import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v407.serializer.CraftingDataSerializer_v407;
-import org.cloudburstmc.protocol.bedrock.data.definitions.ItemDefinition;
-import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.MaterialReducerDataEntry;
-import org.cloudburstmc.protocol.bedrock.packet.CraftingDataPacket;
-import org.cloudburstmc.protocol.common.util.VarInts;
 
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public class CraftingDataSerializer_v465 extends CraftingDataSerializer_v407 {
     public static final CraftingDataSerializer_v465 INSTANCE = new CraftingDataSerializer_v465();
 
-    @Override
+    /*@Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, CraftingDataPacket packet) {
         helper.writeArray(buffer, packet.getCraftingEntries(), this::writeEntry);
         helper.writeArray(buffer, packet.getPotionMixes(), this::writePotionMixData);
@@ -54,5 +46,5 @@ public class CraftingDataSerializer_v465 extends CraftingDataSerializer_v407 {
             definitions.put(helper.getItemDefinitions().getDefinition(VarInts.readInt(buffer)), VarInts.readInt(buffer));
         }
         return new MaterialReducerDataEntry(inputId, definitions);
-    }
+    }*/
 }

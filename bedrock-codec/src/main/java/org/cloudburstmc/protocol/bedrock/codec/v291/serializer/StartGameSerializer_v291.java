@@ -30,7 +30,7 @@ public class StartGameSerializer_v291 implements BedrockPacketSerializer<StartGa
 
         this.writeLevelSettings(buffer, helper, packet.getSettings());
 
-        helper.writeString(buffer, packet.getLevelId());
+        helper.writeString(buffer, packet.getLevelID());
         helper.writeString(buffer, packet.getLevelName());
         helper.writeString(buffer, packet.getTemplateContentIdentity());
         buffer.writeBoolean(packet.isTrial());
@@ -58,7 +58,7 @@ public class StartGameSerializer_v291 implements BedrockPacketSerializer<StartGa
 
         this.readLevelSettings(buffer, helper, packet.getSettings());
 
-        packet.setLevelId(helper.readString(buffer));
+        packet.setLevelID(helper.readString(buffer));
         packet.setLevelName(helper.readString(buffer));
         packet.setTemplateContentIdentity(helper.readString(buffer));
         packet.setTrial(buffer.readBoolean());
@@ -90,11 +90,11 @@ public class StartGameSerializer_v291 implements BedrockPacketSerializer<StartGa
         buffer.writeBoolean(settings.isAchievementsDisabled());
         VarInts.writeInt(buffer, settings.getDayCycleStopTime());
         buffer.writeBoolean(!settings.getEducationEditionOffer().equals(EducationEditionOffer.NONE)); // Is Education world
-        buffer.writeBoolean(settings.isAreEducationFeaturesEnabled());
+        buffer.writeBoolean(settings.isEducationFeaturesEnabled());
         buffer.writeFloatLE(settings.getRainLevel());
         buffer.writeFloatLE(settings.getLightningLevel());
-        buffer.writeBoolean(settings.isWasMultiplayerIntendedToBeEnabled());
-        buffer.writeBoolean(settings.isWasLANBroadcastingIntendedToBeEnabled());
+        buffer.writeBoolean(settings.isMultiplayerGameIntent());
+        buffer.writeBoolean(settings.isLanBroadcastIntent());
         buffer.writeBoolean(settings.getXboxLiveBroadcastSetting() != GamePublishSetting.NO_MULTI_PLAY);
         buffer.writeBoolean(settings.isCommandsEnabled());
         buffer.writeBoolean(settings.isTexturePacksRequired());
@@ -110,7 +110,7 @@ public class StartGameSerializer_v291 implements BedrockPacketSerializer<StartGa
         buffer.writeBoolean(settings.getXboxLiveBroadcastSetting() != GamePublishSetting.NO_MULTI_PLAY);
         buffer.writeBoolean(settings.isHasLockedBehaviorPack());
         buffer.writeBoolean(settings.isHasLockedResourcePack());
-        buffer.writeBoolean(settings.isFromLockedWorldTemplate());
+        buffer.writeBoolean(settings.isFromLockedTemplate());
         buffer.writeBoolean(settings.isUseMsaGamertagsOnly());
     }
 
@@ -124,11 +124,11 @@ public class StartGameSerializer_v291 implements BedrockPacketSerializer<StartGa
         settings.setAchievementsDisabled(buffer.readBoolean());
         settings.setDayCycleStopTime(VarInts.readInt(buffer));
         settings.setEducationEditionOffer(EducationEditionOffer.from(buffer.readUnsignedByte())); // Is Education world
-        settings.setAreEducationFeaturesEnabled(buffer.readBoolean());
+        settings.setEducationFeaturesEnabled(buffer.readBoolean());
         settings.setRainLevel(buffer.readFloatLE());
         settings.setLightningLevel(buffer.readFloatLE());
-        settings.setWasMultiplayerIntendedToBeEnabled(buffer.readBoolean());
-        settings.setWasLANBroadcastingIntendedToBeEnabled(buffer.readBoolean());
+        settings.setMultiplayerGameIntent(buffer.readBoolean());
+        settings.setLanBroadcastIntent(buffer.readBoolean());
         buffer.readBoolean(); // broadcasting to XBL
         settings.setCommandsEnabled(buffer.readBoolean());
         settings.setTexturePacksRequired(buffer.readBoolean());
@@ -144,7 +144,7 @@ public class StartGameSerializer_v291 implements BedrockPacketSerializer<StartGa
         buffer.readBoolean(); // Intent on XBL broadcast
         settings.setHasLockedBehaviorPack(buffer.readBoolean());
         settings.setHasLockedResourcePack(buffer.readBoolean());
-        settings.setFromLockedWorldTemplate(buffer.readBoolean());
+        settings.setFromLockedTemplate(buffer.readBoolean());
         settings.setUseMsaGamertagsOnly(buffer.readBoolean());
     }
 

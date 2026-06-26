@@ -7,29 +7,24 @@ import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
 import org.cloudburstmc.protocol.bedrock.packet.ResourcePacksInfoPacket;
 
-import java.util.Collection;
-import java.util.UUID;
-
-import static java.util.Objects.requireNonNull;
-
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ResourcePacksInfoSerializer_v291 implements BedrockPacketSerializer<ResourcePacksInfoPacket> {
     public static final ResourcePacksInfoSerializer_v291 INSTANCE = new ResourcePacksInfoSerializer_v291();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ResourcePacksInfoPacket packet) {
-        buffer.writeBoolean(packet.isResourcePackRequired());
+       /* buffer.writeBoolean(packet.isResourcePackRequired());
         writePacks(buffer, packet.getBehaviorPacks(), helper, false);
-        writePacks(buffer, packet.getResourcePacks(), helper, true);
+        writePacks(buffer, packet.getResourcePacks(), helper, true);*/
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ResourcePacksInfoPacket packet) {
-        packet.setResourcePackRequired(buffer.readBoolean());
+       /* packet.setResourcePackRequired(buffer.readBoolean());
         readPacks(buffer, packet.getBehaviorPacks(), helper, false);
-        readPacks(buffer, packet.getResourcePacks(), helper, true);
+        readPacks(buffer, packet.getResourcePacks(), helper, true);*/
     }
-
+/*
     protected ResourcePacksInfoPacket.Entry readEntry(ByteBuf buffer, BedrockCodecHelper helper, boolean resource) {
         UUID packId = UUID.fromString(helper.readString(buffer));
         String packVersion = helper.readString(buffer);
@@ -65,5 +60,5 @@ public class ResourcePacksInfoSerializer_v291 implements BedrockPacketSerializer
         for (ResourcePacksInfoPacket.Entry entry : array) {
             this.writeEntry(buffer, helper, entry, resource);
         }
-    }
+    }*/
 }

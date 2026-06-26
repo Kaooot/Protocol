@@ -7,29 +7,27 @@ import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.ResourcePacksInfoSerializer_v291;
 import org.cloudburstmc.protocol.bedrock.packet.ResourcePacksInfoPacket;
 
-import java.util.UUID;
-
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ResourcePacksInfoSerializer_v332 extends ResourcePacksInfoSerializer_v291 {
     public static final ResourcePacksInfoSerializer_v332 INSTANCE = new ResourcePacksInfoSerializer_v332();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ResourcePacksInfoPacket packet) {
-        buffer.writeBoolean(packet.isResourcePackRequired());
+      /*  buffer.writeBoolean(packet.isResourcePackRequired());
         buffer.writeBoolean(packet.isHasScripts());
         writePacks(buffer, packet.getBehaviorPacks(), helper, false);
-        writePacks(buffer, packet.getResourcePacks(), helper, true);
+        writePacks(buffer, packet.getResourcePacks(), helper, true);*/
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ResourcePacksInfoPacket packet) {
-        packet.setResourcePackRequired(buffer.readBoolean());
+   /*     packet.setResourcePackRequired(buffer.readBoolean());
         packet.setHasScripts(buffer.readBoolean());
         readPacks(buffer, packet.getBehaviorPacks(), helper, false);
-        readPacks(buffer, packet.getResourcePacks(), helper, true);
+        readPacks(buffer, packet.getResourcePacks(), helper, true);*/
     }
 
-    @Override
+    /*@Override
     public void writeEntry(ByteBuf buffer, BedrockCodecHelper helper, ResourcePacksInfoPacket.Entry entry,
                               boolean resource) {
         super.writeEntry(buffer, helper, entry, resource);
@@ -48,5 +46,5 @@ public class ResourcePacksInfoSerializer_v332 extends ResourcePacksInfoSerialize
         boolean isScripting = buffer.readBoolean();
         return new ResourcePacksInfoPacket.Entry(packId, packVersion, packSize, contentKey, subPackName, contentId,
                 isScripting, false, false, null);
-    }
+    }*/
 }

@@ -8,6 +8,8 @@ import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerEnumName;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.TextProcessingEventOrigin;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestActionType;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponseSlotInfo;
+import org.cloudburstmc.protocol.bedrock.data.payload.common.RedactableString;
+import org.cloudburstmc.protocol.bedrock.data.payload.inventory.net.ItemStackNetId;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -41,17 +43,35 @@ public class BedrockCodecHelper_v766 extends BedrockCodecHelper_v729 {
     }
 
     @Override
+    public void writeRedactableString(ByteBuf buffer, RedactableString string) {
+        this.writeString(buffer, string.getUnredacted());
+        this.writeString(buffer, string.getRedacted());
+    }
+
+    @Override
+    public RedactableString readRedactableString(ByteBuf buffer) {
+        final RedactableString string = new RedactableString();
+        string.setUnredacted(this.readString(buffer));
+        string.setRedacted(this.readString(buffer));
+        return string;
+    }
+
+    @Override
     protected ItemStackResponseSlotInfo readItemEntry(ByteBuf buffer) {
         int slot = buffer.readUnsignedByte();
-        int hotbarSlot = buffer.readUnsignedByte();
+        int requestedSlot = buffer.readUnsignedByte();
         int count = buffer.readUnsignedByte();
-        int stackNetworkId = VarInts.readInt(buffer);
-        String customName = this.readString(buffer);
-        String filteredCustomName = this.readString(buffer);
+        ItemStackNetId stackNetworkId = new ItemStackNetId(VarInts.readInt(buffer));
+        final RedactableString customName = this.readRedactableString(buffer);
         int durabilityCorrection = VarInts.readInt(buffer);
-        return new ItemStackResponseSlotInfo(slot, hotbarSlot, count, stackNetworkId,
-                customName, durabilityCorrection, filteredCustomName);
-
+        return new ItemStackResponseSlotInfo(
+                slot,
+                requestedSlot,
+                count,
+                stackNetworkId,
+                customName,
+                durabilityCorrection
+        );
     }
 
     @Override
@@ -59,9 +79,8 @@ public class BedrockCodecHelper_v766 extends BedrockCodecHelper_v729 {
         buffer.writeByte(itemEntry.getRequestedSlot());
         buffer.writeByte(itemEntry.getSlot());
         buffer.writeByte(itemEntry.getAmount());
-        VarInts.writeInt(buffer, itemEntry.getItemStackNetId());
-        this.writeString(buffer, itemEntry.getCustomName());
-        this.writeString(buffer, itemEntry.getFilteredCustomName());
+        VarInts.writeInt(buffer, itemEntry.getItemStackNetId().getID());
+        this.writeRedactableString(buffer, itemEntry.getCustomName());
         VarInts.writeInt(buffer, itemEntry.getDurabilityCorrection());
     }
 }

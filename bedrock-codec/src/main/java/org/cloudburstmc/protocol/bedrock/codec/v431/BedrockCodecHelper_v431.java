@@ -307,9 +307,10 @@ public class BedrockCodecHelper_v431 extends BedrockCodecHelper_v428 {
 
     @Override
     protected ItemStackRequestAction readRequestActionData(ByteBuf byteBuf, ItemStackRequestActionType type) {
-        if (type == ItemStackRequestActionType.CRAFT_RESULTS_DEPRECATED) {
+        if (type == ItemStackRequestActionType.CRAFT_RESULTS) {
             return new CraftResultsDeprecatedAction(
                     this.readArray(byteBuf, new ItemData[0], this::readItemInstance),
+                    null,
                     byteBuf.readUnsignedByte()
             );
         } else {
@@ -319,9 +320,9 @@ public class BedrockCodecHelper_v431 extends BedrockCodecHelper_v428 {
 
     @Override
     protected void writeRequestActionData(ByteBuf byteBuf, ItemStackRequestAction action) {
-        if (action.getType() == ItemStackRequestActionType.CRAFT_RESULTS_DEPRECATED) {
-            this.writeArray(byteBuf, ((CraftResultsDeprecatedAction) action).getResultItems(), this::writeItemInstance);
-            byteBuf.writeByte(((CraftResultsDeprecatedAction) action).getTimesCrafted());
+        if (action.getType() == ItemStackRequestActionType.CRAFT_RESULTS) {
+            this.writeArray(byteBuf, ((CraftResultsDeprecatedAction) action).getResultItemsDeprecated(), this::writeItemInstance);
+            byteBuf.writeByte(((CraftResultsDeprecatedAction) action).getNumCrafts());
         } else {
             super.writeRequestActionData(byteBuf, action);
         }

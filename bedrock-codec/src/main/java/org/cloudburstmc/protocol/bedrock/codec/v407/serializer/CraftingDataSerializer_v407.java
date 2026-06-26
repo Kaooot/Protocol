@@ -1,29 +1,14 @@
 package org.cloudburstmc.protocol.bedrock.codec.v407.serializer;
 
-import io.netty.buffer.ByteBuf;
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v388.serializer.CraftingDataSerializer_v388;
-import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
-import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.ContainerMixDataEntry;
-import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.CraftingDataEntryType;
-import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.PotionMixDataEntry;
-import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.recipe.*;
-import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.ItemDescriptorWithCount;
-import org.cloudburstmc.protocol.common.util.VarInts;
-
-import java.util.List;
-import java.util.UUID;
-
-import static org.cloudburstmc.protocol.common.util.Preconditions.checkNotNull;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CraftingDataSerializer_v407 extends CraftingDataSerializer_v388 {
     public static final CraftingDataSerializer_v407 INSTANCE = new CraftingDataSerializer_v407();
 
-    @Override
+    /*@Override
     protected CraftingDataEntry readEntry(ByteBuf buffer, BedrockCodecHelper helper) {
         int typeInt = VarInts.readInt(buffer);
         CraftingDataEntryType type = CraftingDataEntryType.byId(typeInt);
@@ -214,8 +199,8 @@ public class CraftingDataSerializer_v407 extends CraftingDataSerializer_v388 {
     protected void writeContainerMixData(ByteBuf buffer, BedrockCodecHelper helper, ContainerMixDataEntry data) {
         checkNotNull(data, "data is null");
 
-        VarInts.writeInt(buffer, data.getInputId());
-        VarInts.writeInt(buffer, data.getReagentId());
-        VarInts.writeInt(buffer, data.getOutputId());
-    }
+        VarInts.writeInt(buffer, data.getFromItemId());
+        VarInts.writeInt(buffer, data.getReagentItemId());
+        VarInts.writeInt(buffer, data.getOutputItemId());
+    }*/
 }

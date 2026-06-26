@@ -48,7 +48,7 @@ public class PlayerAuthInputPacket implements BedrockPacket {
      *
      * @since v428
      */
-    private final List<PlayerBlockActionData> playerActions = new ObjectArrayList<>();
+    private final List<PlayerBlockActionData> playerBlockActions = new ObjectArrayList<>();
     /**
      * @since v527
      */
@@ -64,7 +64,7 @@ public class PlayerAuthInputPacket implements BedrockPacket {
     /**
      * @since 649
      */
-    private long clientPredictedVehicle;
+    private Long clientPredictedVehicle;
     /**
      * @since 662
      */

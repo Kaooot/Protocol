@@ -25,7 +25,7 @@ public class LevelChunkPacket extends AbstractReferenceCounted implements Bedroc
     /**
      * @since v485
      */
-    private int clientRequestSubChunkLimit;
+    private Integer clientRequestSubChunkLimit;
 
     private final LongList cacheBlobs = new LongArrayList();
 

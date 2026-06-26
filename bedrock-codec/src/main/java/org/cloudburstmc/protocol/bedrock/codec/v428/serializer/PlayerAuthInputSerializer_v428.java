@@ -8,7 +8,6 @@ import org.cloudburstmc.protocol.bedrock.codec.v419.serializer.PlayerAuthInputSe
 import org.cloudburstmc.protocol.bedrock.data.PlayerActionType;
 import org.cloudburstmc.protocol.bedrock.data.PlayerAuthInputData;
 import org.cloudburstmc.protocol.bedrock.data.PlayerBlockActionData;
-import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerEnumName;
 import org.cloudburstmc.protocol.bedrock.data.payload.inventory.net.ItemStackLegacyRequestId;
 import org.cloudburstmc.protocol.bedrock.data.payload.inventory.transaction.ItemUseActionType;
 import org.cloudburstmc.protocol.bedrock.data.payload.inventory.transaction.LegacySetSlot;
@@ -27,7 +26,7 @@ public class PlayerAuthInputSerializer_v428 extends PlayerAuthInputSerializer_v4
         super.serialize(buffer, helper, packet);
 
         if (packet.getInputData().contains(PlayerAuthInputData.PERFORM_ITEM_INTERACTION)) {
-            this.writePackedLegacyItemUseTransaction(buffer, helper, packet.getItemUseTransaction());
+            this.writePackedLegacyItemUseInventoryTransaction(buffer, helper, packet.getItemUseTransaction());
         }
 
         if (packet.getInputData().contains(PlayerAuthInputData.PERFORM_ITEM_STACK_REQUEST)) {
@@ -35,8 +34,8 @@ public class PlayerAuthInputSerializer_v428 extends PlayerAuthInputSerializer_v4
         }
 
         if (packet.getInputData().contains(PlayerAuthInputData.PERFORM_BLOCK_ACTIONS)) {
-            VarInts.writeInt(buffer, packet.getPlayerActions().size());
-            for (PlayerBlockActionData actionData : packet.getPlayerActions()) {
+            VarInts.writeInt(buffer, packet.getPlayerBlockActions().size());
+            for (PlayerBlockActionData actionData : packet.getPlayerBlockActions()) {
                 writePlayerBlockActionData(buffer, helper, actionData);
             }
         }
@@ -47,7 +46,7 @@ public class PlayerAuthInputSerializer_v428 extends PlayerAuthInputSerializer_v4
         super.deserialize(buffer, helper, packet);
 
         if (packet.getInputData().contains(PlayerAuthInputData.PERFORM_ITEM_INTERACTION)) {
-            packet.setItemUseTransaction(this.readPackedLegacyItemUseTransaction(buffer, helper));
+            packet.setItemUseTransaction(this.readPackedLegacyItemUseInventoryTransaction(buffer, helper));
         }
 
         if (packet.getInputData().contains(PlayerAuthInputData.PERFORM_ITEM_STACK_REQUEST)) {
@@ -55,39 +54,39 @@ public class PlayerAuthInputSerializer_v428 extends PlayerAuthInputSerializer_v4
         }
 
         if (packet.getInputData().contains(PlayerAuthInputData.PERFORM_BLOCK_ACTIONS)) {
-            helper.readArray(buffer, packet.getPlayerActions(), VarInts::readInt, this::readPlayerBlockActionData, helper.getEncodingSettings().maxPlayerBlockActionDataSize());
+            helper.readArray(buffer, packet.getPlayerBlockActions(), VarInts::readInt, this::readPlayerBlockActionData, helper.getEncodingSettings().maxPlayerBlockActionDataSize());
         }
     }
 
     protected void writePlayerBlockActionData(ByteBuf buffer, BedrockCodecHelper helper, PlayerBlockActionData actionData) {
-        VarInts.writeInt(buffer, actionData.getAction().ordinal());
-        switch (actionData.getAction()) {
+        VarInts.writeInt(buffer, actionData.getPlayerActionType().ordinal());
+        switch (actionData.getPlayerActionType()) {
             case START_DESTROY_BLOCK:
             case ABORT_DESTROY_BLOCK:
             case CRACK_BLOCK:
             case PREDICT_DESTROY_BLOCK:
             case CONTINUE_DESTROY_BLOCK:
                 helper.writeVector3i(buffer, actionData.getBlockPosition());
-                VarInts.writeInt(buffer, actionData.getFace());
+                VarInts.writeInt(buffer, actionData.getFacing());
         }
     }
 
     protected PlayerBlockActionData readPlayerBlockActionData(ByteBuf buffer, BedrockCodecHelper helper) {
         PlayerBlockActionData actionData = new PlayerBlockActionData();
-        actionData.setAction(PlayerActionType.values()[VarInts.readInt(buffer)]);
-        switch (actionData.getAction()) {
+        actionData.setPlayerActionType(PlayerActionType.values()[VarInts.readInt(buffer)]);
+        switch (actionData.getPlayerActionType()) {
             case START_DESTROY_BLOCK:
             case ABORT_DESTROY_BLOCK:
             case CRACK_BLOCK:
             case PREDICT_DESTROY_BLOCK:
             case CONTINUE_DESTROY_BLOCK:
                 actionData.setBlockPosition(helper.readVector3i(buffer));
-                actionData.setFace(VarInts.readInt(buffer));
+                actionData.setFacing(VarInts.readInt(buffer));
         }
         return actionData;
     }
 
-    protected void writePackedLegacyItemUseTransaction(ByteBuf buffer, BedrockCodecHelper helper, PackedLegacyItemUseInventoryTransaction transaction) {
+    protected void writePackedLegacyItemUseInventoryTransaction(ByteBuf buffer, BedrockCodecHelper helper, PackedLegacyItemUseInventoryTransaction transaction) {
         this.writeLegacyRequestId(buffer, helper, transaction.getLegacyRequestID());
 
         if (transaction.getLegacyRequestID().getID() < -1 && (transaction.getLegacyRequestID().getID() & 1) == 0) {
@@ -96,7 +95,7 @@ public class PlayerAuthInputSerializer_v428 extends PlayerAuthInputSerializer_v4
         this.writeItemUseInventoryTransaction(buffer, helper, transaction.getTransaction());
     }
 
-    protected PackedLegacyItemUseInventoryTransaction readPackedLegacyItemUseTransaction(ByteBuf buffer, BedrockCodecHelper helper) {
+    protected PackedLegacyItemUseInventoryTransaction readPackedLegacyItemUseInventoryTransaction(ByteBuf buffer, BedrockCodecHelper helper) {
         PackedLegacyItemUseInventoryTransaction itemTransaction = new PackedLegacyItemUseInventoryTransaction();
         itemTransaction.setLegacyRequestID(this.readLegacyRequestId(buffer, helper));
 
@@ -117,13 +116,13 @@ public class PlayerAuthInputSerializer_v428 extends PlayerAuthInputSerializer_v4
     }
 
     protected void writeLegacySetSlot(ByteBuf buffer, BedrockCodecHelper helper, LegacySetSlot slot) {
-        buffer.writeByte(slot.getContainerEnum().ordinal());
+        helper.writeContainerEnumName(buffer, slot.getContainerEnum());
         helper.writeByteArray(buffer, slot.getSlots());
     }
 
     protected LegacySetSlot readLegacySetSlot(ByteBuf buffer, BedrockCodecHelper helper) {
         final LegacySetSlot slot = new LegacySetSlot();
-        slot.setContainerEnum(ContainerEnumName.values()[buffer.readByte()]);
+        slot.setContainerEnum(helper.readContainerEnumName(buffer));
         slot.setSlots(helper.readByteArray(buffer, 89));
         return slot;
     }
@@ -132,7 +131,7 @@ public class PlayerAuthInputSerializer_v428 extends PlayerAuthInputSerializer_v4
         helper.writeInventoryTransactions(buffer, transaction.getActions());
         VarInts.writeUnsignedInt(buffer, transaction.getActionType().ordinal());
         helper.writeVector3i(buffer, transaction.getPosition());
-       VarInts.writeInt(buffer, transaction.getFace());
+        VarInts.writeInt(buffer, transaction.getFace());
         VarInts.writeUnsignedInt(buffer, transaction.getSlot());
         helper.writeItem(buffer, transaction.getItem());
         helper.writeVector3f(buffer, transaction.getFromPosition());

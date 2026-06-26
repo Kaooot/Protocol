@@ -5,13 +5,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
-import org.cloudburstmc.protocol.bedrock.data.PlayerListPacketType;
-import org.cloudburstmc.protocol.bedrock.data.skin.ImageData;
-import org.cloudburstmc.protocol.bedrock.data.skin.SerializedSkin;
 import org.cloudburstmc.protocol.bedrock.packet.PlayerListPacket;
-import org.cloudburstmc.protocol.common.util.VarInts;
-
-import static org.cloudburstmc.protocol.bedrock.packet.PlayerListPacket.Entry;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PlayerListSerializer_v291 implements BedrockPacketSerializer<PlayerListPacket> {
@@ -20,7 +14,7 @@ public class PlayerListSerializer_v291 implements BedrockPacketSerializer<Player
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, PlayerListPacket packet) {
-        buffer.writeByte(packet.getAction().ordinal());
+       /* buffer.writeByte(packet.getAction().ordinal());
         VarInts.writeUnsignedInt(buffer, packet.getEntries().size());
 
         for (Entry entry : packet.getEntries()) {
@@ -40,12 +34,12 @@ public class PlayerListSerializer_v291 implements BedrockPacketSerializer<Player
                 helper.writeString(buffer, entry.getXblXUID());
                 helper.writeString(buffer, entry.getPlatformChatId());
             }
-        }
+        }*/
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, PlayerListPacket packet) {
-        PlayerListPacketType action = PlayerListPacketType.from(buffer.readUnsignedByte());
+      /*  PlayerListPacketType action = PlayerListPacketType.from(buffer.readUnsignedByte());
         packet.setAction(action);
         int length = VarInts.readUnsignedInt(buffer);
 
@@ -65,6 +59,6 @@ public class PlayerListSerializer_v291 implements BedrockPacketSerializer<Player
                 entry.setPlatformChatId(helper.readString(buffer));
             }
             packet.getEntries().add(entry);
-        }
+        }*/
     }
 }

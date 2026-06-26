@@ -41,9 +41,9 @@ public class PlayerAuthInputSerializer_v388 implements BedrockPacketSerializer<P
         VarInts.writeUnsignedInt(buffer, packet.getPlayMode().ordinal());
         writeInteractionModel(buffer, helper, packet);
 
-        if (packet.getPlayMode() == ClientPlayMode.REALITY) {
+       /* if (packet.getPlayMode() == ClientPlayMode.REALITY) {
             helper.writeVector3f(buffer, packet.getVrGazeDirection());
-        }
+        }*/
     }
 
     @Override
@@ -65,9 +65,9 @@ public class PlayerAuthInputSerializer_v388 implements BedrockPacketSerializer<P
         packet.setPlayMode(CLIENT_PLAY_MODES[VarInts.readUnsignedInt(buffer)]);
         readInteractionModel(buffer, helper, packet);
 
-        if (packet.getPlayMode() == ClientPlayMode.REALITY) {
+      /*  if (packet.getPlayMode() == ClientPlayMode.REALITY) {
             packet.setVrGazeDirection(helper.readVector3f(buffer));
-        }
+        }*/
     }
 
     protected void readInteractionModel(ByteBuf buffer, BedrockCodecHelper helper, PlayerAuthInputPacket packet) {

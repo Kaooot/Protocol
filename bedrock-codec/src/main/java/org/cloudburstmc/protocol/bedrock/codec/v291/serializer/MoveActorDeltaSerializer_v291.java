@@ -19,11 +19,11 @@ public class MoveActorDeltaSerializer_v291 implements BedrockPacketSerializer<Mo
             (buffer, helper, packet) -> packet.setDeltaZ(VarInts.readInt(buffer));
 
     protected static final TriConsumer<ByteBuf, BedrockCodecHelper, MoveActorDeltaPacket> READER_PITCH =
-            (buffer, helper, packet) -> packet.getData().setRotationX(helper.readByteAngle(buffer));
+            (buffer, helper, packet) -> packet.getMoveData().setRotationX(helper.readByteAngle(buffer));
     protected static final TriConsumer<ByteBuf, BedrockCodecHelper, MoveActorDeltaPacket> READER_YAW =
-            (buffer, helper, packet) -> packet.getData().setRotationY(helper.readByteAngle(buffer));
+            (buffer, helper, packet) -> packet.getMoveData().setRotationY(helper.readByteAngle(buffer));
     protected static final TriConsumer<ByteBuf, BedrockCodecHelper, MoveActorDeltaPacket> READER_HEAD_YAW =
-            (buffer, helper, packet) -> packet.getData().setRotationYHead(helper.readByteAngle(buffer));
+            (buffer, helper, packet) -> packet.getMoveData().setRotationYHead(helper.readByteAngle(buffer));
 
     protected static final TriConsumer<ByteBuf, BedrockCodecHelper, MoveActorDeltaPacket> WRITER_DELTA_X =
             (buffer, helper, packet) -> VarInts.writeInt(buffer, packet.getDeltaX());
@@ -33,11 +33,11 @@ public class MoveActorDeltaSerializer_v291 implements BedrockPacketSerializer<Mo
             (buffer, helper, packet) -> VarInts.writeInt(buffer, packet.getDeltaZ());
 
     protected static final TriConsumer<ByteBuf, BedrockCodecHelper, MoveActorDeltaPacket> WRITER_PITCH =
-            (buffer, helper, packet) -> helper.writeByteAngle(buffer, packet.getData().getRotationX());
+            (buffer, helper, packet) -> helper.writeByteAngle(buffer, packet.getMoveData().getRotationX());
     protected static final TriConsumer<ByteBuf, BedrockCodecHelper, MoveActorDeltaPacket> WRITER_YAW =
-            (buffer, helper, packet) -> helper.writeByteAngle(buffer, packet.getData().getRotationY());
+            (buffer, helper, packet) -> helper.writeByteAngle(buffer, packet.getMoveData().getRotationY());
     protected static final TriConsumer<ByteBuf, BedrockCodecHelper, MoveActorDeltaPacket> WRITER_HEAD_YAW =
-            (buffer, helper, packet) -> helper.writeByteAngle(buffer, packet.getData().getRotationYHead());
+            (buffer, helper, packet) -> helper.writeByteAngle(buffer, packet.getMoveData().getRotationYHead());
 
     protected static final MoveActorDeltaPacket.Flag[] FLAGS = MoveActorDeltaPacket.Flag.values();
 
@@ -64,7 +64,7 @@ public class MoveActorDeltaSerializer_v291 implements BedrockPacketSerializer<Mo
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, MoveActorDeltaPacket packet) {
-        VarInts.writeUnsignedLong(buffer, packet.getData().getActorRuntimeID());
+        VarInts.writeUnsignedLong(buffer, packet.getMoveData().getActorRuntimeID());
 
         int flagsIndex = buffer.writerIndex();
         buffer.writeByte(0); // flags
@@ -88,7 +88,7 @@ public class MoveActorDeltaSerializer_v291 implements BedrockPacketSerializer<Mo
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, MoveActorDeltaPacket packet) {
-        packet.getData().setActorRuntimeID(VarInts.readUnsignedLong(buffer));
+        packet.getMoveData().setActorRuntimeID(VarInts.readUnsignedLong(buffer));
         int flags = buffer.readUnsignedByte();
         Set<MoveActorDeltaPacket.Flag> flagSet = packet.getFlags();
 

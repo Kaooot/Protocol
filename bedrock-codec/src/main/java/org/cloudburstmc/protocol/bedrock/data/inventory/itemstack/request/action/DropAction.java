@@ -11,7 +11,7 @@ import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemSt
  */
 @Value
 public class DropAction implements ItemStackRequestAction {
-    int count;
+    int amount;
     ItemStackRequestSlotInfo source;
     boolean randomly; // ?? Perhaps deals with order of items being dropped? Normally false.
 

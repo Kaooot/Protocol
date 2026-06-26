@@ -6,6 +6,8 @@ import org.cloudburstmc.protocol.bedrock.codec.v407.BedrockCodecHelper_v407;
 import org.cloudburstmc.protocol.bedrock.data.Experiment;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerEnumName;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestActionType;
+import org.cloudburstmc.protocol.bedrock.data.payload.experiment.ExperimentToggle;
+import org.cloudburstmc.protocol.bedrock.data.payload.experiment.Experiments;
 import org.cloudburstmc.protocol.bedrock.data.skin.AnimatedTextureType;
 import org.cloudburstmc.protocol.bedrock.data.skin.AnimationData;
 import org.cloudburstmc.protocol.bedrock.data.skin.AnimationExpressionType;
@@ -24,24 +26,26 @@ public class BedrockCodecHelper_v419 extends BedrockCodecHelper_v407 {
     }
 
     @Override
-    public void readExperiments(ByteBuf buffer, List<Experiment> experiments) {
-        int count = buffer.readIntLE(); // Actually unsigned
-        for (int i = 0; i < count; i++) {
-            experiments.add(new Experiment(
-                    this.readString(buffer),
-                    buffer.readBoolean() // Hardcoded to true in 414
-            ));
+    public void writeExperiments(ByteBuf buffer, Experiments experiments) {
+        buffer.writeIntLE(experiments.getToggles().size());
+
+        for (ExperimentToggle experimentToggle : experiments.getToggles()) {
+            this.writeString(buffer, experimentToggle.getName());
+            buffer.writeBoolean(experimentToggle.isEnabled());
         }
     }
 
     @Override
-    public void writeExperiments(ByteBuf buffer, List<Experiment> experiments) {
-        buffer.writeIntLE(experiments.size());
-
-        for (Experiment experiment : experiments) {
-            this.writeString(buffer, experiment.getName());
-            buffer.writeBoolean(experiment.isEnabled());
+    public Experiments readExperiments(ByteBuf buffer) {
+        final Experiments experiments = new Experiments();
+        int count = buffer.readIntLE(); // Actually unsigned
+        for (int i = 0; i < count; i++) {
+            experiments.getToggles().add(new ExperimentToggle(
+                    this.readString(buffer),
+                    buffer.readBoolean() // Hardcoded to true in 414
+            ));
         }
+        return experiments;
     }
 
     @Override

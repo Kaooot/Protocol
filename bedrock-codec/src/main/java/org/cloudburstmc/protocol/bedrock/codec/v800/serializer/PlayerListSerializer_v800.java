@@ -11,7 +11,7 @@ public class PlayerListSerializer_v800 extends PlayerListSerializer_v649 {
 
     public static final PlayerListSerializer_v800 INSTANCE = new PlayerListSerializer_v800();
 
-    @Override
+    /*@Override
     protected void writeEntryBase(ByteBuf buffer, BedrockCodecHelper helper, PlayerListPacket.Entry entry) {
         super.writeEntryBase(buffer, helper, entry);
         buffer.writeIntLE(entry.getPlayerColor().getRGB());
@@ -22,5 +22,5 @@ public class PlayerListSerializer_v800 extends PlayerListSerializer_v649 {
         PlayerListPacket.Entry entry = super.readEntryBase(buffer, helper);
         entry.setPlayerColor(new Color(buffer.readIntLE(), true));
         return entry;
-    }
+    }*/
 }

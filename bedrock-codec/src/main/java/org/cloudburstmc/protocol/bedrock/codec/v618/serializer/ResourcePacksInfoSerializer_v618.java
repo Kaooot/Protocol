@@ -23,17 +23,17 @@ public class ResourcePacksInfoSerializer_v618 extends ResourcePacksInfoSerialize
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ResourcePacksInfoPacket packet) {
-        super.serialize(buffer, helper, packet);
-        this.writeCDNEntries(buffer, packet, helper);
+//        super.serialize(buffer, helper, packet);
+//        this.writeCDNEntries(buffer, packet, helper);
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ResourcePacksInfoPacket packet) {
-        super.deserialize(buffer, helper, packet);
-        this.readCDNEntries(buffer, packet, helper);
+//        super.deserialize(buffer, helper, packet);
+//        this.readCDNEntries(buffer, packet, helper);
     }
 
-    protected void writeCDNEntries(ByteBuf buffer, ResourcePacksInfoPacket packet, BedrockCodecHelper helper) {
+   /* protected void writeCDNEntries(ByteBuf buffer, ResourcePacksInfoPacket packet, BedrockCodecHelper helper) {
         ByteBuf byteBuf = buffer.alloc().ioBuffer();
         try {
             int size = 0;
@@ -79,5 +79,5 @@ public class ResourcePacksInfoSerializer_v618 extends ResourcePacksInfoSerialize
         if (log.isDebugEnabled() && !cdnUrls.isEmpty()) {
             log.debug("Found {} CDN URLs that do not match any resource pack", cdnUrls.size());
         }
-    }
+    }*/
 }

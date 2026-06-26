@@ -15,13 +15,13 @@ public class StartGameSerializer_v313 extends StartGameSerializer_v291 {
     protected void writeLevelSettings(ByteBuf buffer, BedrockCodecHelper helper, LevelSettings settings) {
         super.writeLevelSettings(buffer, helper, settings);
         buffer.writeBoolean(settings.isFromWorldTemplate());
-        buffer.writeBoolean(settings.isFromLockedWorldTemplate());
+        buffer.writeBoolean(settings.isFromLockedTemplate());
     }
 
     @Override
     protected void readLevelSettings(ByteBuf buffer, BedrockCodecHelper helper, LevelSettings settings) {
         super.readLevelSettings(buffer, helper, settings);
         settings.setFromWorldTemplate(buffer.readBoolean());
-        settings.setFromLockedWorldTemplate(buffer.readBoolean());
+        settings.setFromLockedTemplate(buffer.readBoolean());
     }
 }

@@ -6,6 +6,7 @@ import org.cloudburstmc.protocol.bedrock.codec.v407.serializer.ItemStackResponse
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponseInfo;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponseContainerInfo;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackNetResult;
+import org.cloudburstmc.protocol.bedrock.data.payload.inventory.net.ItemStackRequestId;
 import org.cloudburstmc.protocol.bedrock.packet.ItemStackResponsePacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -21,12 +22,12 @@ public class ItemStackResponseSerializer_v419 extends ItemStackResponseSerialize
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ItemStackResponsePacket packet) {
         helper.writeArray(buffer, packet.getResponses(), (buf, response) -> {
             buf.writeByte(response.getResult().ordinal());
-            VarInts.writeInt(buffer, response.getRequestId());
+            VarInts.writeInt(buffer, response.getClientRequestId().getID());
 
             if (response.getResult() != ItemStackNetResult.SUCCESS)
                 return;
 
-            helper.writeArray(buf, response.getContainerInfo(), helper::writeItemStackResponseContainer);
+            helper.writeArray(buf, response.getContainers(), helper::writeItemStackResponseContainer);
         });
     }
 
@@ -35,7 +36,7 @@ public class ItemStackResponseSerializer_v419 extends ItemStackResponseSerialize
         List<ItemStackResponseInfo> entries = packet.getResponses();
         helper.readArray(buffer, entries, buf -> {
             ItemStackNetResult result = ItemStackNetResult.from(buf.readByte());
-            int requestId = VarInts.readInt(buf);
+            ItemStackRequestId requestId = new ItemStackRequestId(VarInts.readInt(buf));
 
             if (result != ItemStackNetResult.SUCCESS)
                 return new ItemStackResponseInfo(result, requestId, Collections.emptyList());

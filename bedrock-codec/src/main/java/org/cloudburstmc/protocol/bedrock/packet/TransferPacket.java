@@ -17,7 +17,7 @@ public class TransferPacket implements BedrockPacket {
      */
     private boolean reloadWorld;
     /**
-     * @since v1011
+     * @since v2164
      */
     private GatheringsConfig gatheringsConfig;
 

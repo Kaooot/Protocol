@@ -1,12 +1,11 @@
 package org.cloudburstmc.protocol.bedrock.data;
 
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
 import lombok.ToString;
 import org.cloudburstmc.math.vector.Vector3i;
+import org.cloudburstmc.protocol.bedrock.data.payload.editor.ServerEditorConnectionPolicy;
+import org.cloudburstmc.protocol.bedrock.data.payload.experiment.Experiments;
 import org.cloudburstmc.protocol.common.util.OptionalBoolean;
-
-import java.util.List;
 
 /**
  * @author Kaooot
@@ -22,7 +21,7 @@ public class LevelSettings {
     /**
      * @since v671
      */
-    private boolean isHardcoreModeEnabled;
+    private boolean isHardcore;
     private Difficulty gameDifficulty;
     private Vector3i defaultSpawnBlockPosition;
     private boolean achievementsDisabled;
@@ -40,19 +39,19 @@ public class LevelSettings {
     private boolean isExportedFromEditor;
     private int dayCycleStopTime;
     private EducationEditionOffer educationEditionOffer;
-    private boolean areEducationFeaturesEnabled;
-    private String educationProductionId;
+    private boolean educationFeaturesEnabled;
+    private String educationProductID;
     private float rainLevel;
     private float lightningLevel;
     private boolean hasConfirmedPlatformLockedContent;
-    private boolean wasMultiplayerIntendedToBeEnabled;
-    private boolean wasLANBroadcastingIntendedToBeEnabled;
+    private boolean multiplayerGameIntent;
+    private boolean lanBroadcastIntent;
     private GamePublishSetting xboxLiveBroadcastSetting;
     private GamePublishSetting platformBroadcastSetting;
     private boolean commandsEnabled;
     private boolean texturePacksRequired;
     private final GameRulesChangedPacketData ruleData = new GameRulesChangedPacketData();
-    private final List<Experiment> experiments = new ObjectArrayList<>();
+    private Experiments experiments;
     private boolean wereAnyExperimentsEverToggled;
     private boolean hasBonusChestEnabled;
     private boolean trustingPlayers;
@@ -61,7 +60,7 @@ public class LevelSettings {
     private int serverChunkTickRange;
     private boolean hasLockedBehaviorPack;
     private boolean hasLockedResourcePack;
-    private boolean isFromLockedWorldTemplate;
+    private boolean isFromLockedTemplate;
     private boolean useMsaGamertagsOnly;
     private boolean isFromWorldTemplate;
     private boolean isWorldTemplateOptionLocked;
@@ -86,7 +85,7 @@ public class LevelSettings {
      * @since v465
      */
     private EduSharedUriResource eduSharedUriResource = EduSharedUriResource.EMPTY;
-    private OptionalBoolean forceExperimentalGameplay;
+    private OptionalBoolean overrideForceExperimentalGameplay;
     /**
      * @since 1.19.20
      */
@@ -118,7 +117,7 @@ public class LevelSettings {
     /**
      * @since v1001
      */
-    private int serverEditorConnectionPolicy;
+    private ServerEditorConnectionPolicy serverEditorConnectionPolicy;
     /**
      * @since v1001
      */

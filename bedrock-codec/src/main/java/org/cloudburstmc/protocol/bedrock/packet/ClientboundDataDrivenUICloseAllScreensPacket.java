@@ -10,6 +10,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
  * @deprecated since v944
  */
 @Data
+@Deprecated
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class ClientboundDataDrivenUICloseAllScreensPacket implements BedrockPacket {

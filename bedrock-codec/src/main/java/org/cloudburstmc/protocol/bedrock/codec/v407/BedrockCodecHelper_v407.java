@@ -9,14 +9,17 @@ import org.cloudburstmc.protocol.bedrock.data.actor.ActorLink;
 import org.cloudburstmc.protocol.bedrock.data.definitions.ItemDefinition;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerEnumName;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
-import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.DefaultDescriptor;
-import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.InvalidDescriptor;
-import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.ItemDescriptorWithCount;
+import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.NameDescriptor;
+import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.EmptyDescriptor;
+import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.RecipeIngredient;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequest;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequestSlotInfo;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.*;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponseContainerInfo;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponseSlotInfo;
+import org.cloudburstmc.protocol.bedrock.data.payload.common.RedactableString;
+import org.cloudburstmc.protocol.bedrock.data.payload.crafting.RecipeNetId;
+import org.cloudburstmc.protocol.bedrock.data.payload.inventory.net.ItemStackNetId;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -103,7 +106,7 @@ public class BedrockCodecHelper_v407 extends BedrockCodecHelper_v390 {
         switch (action.getType()) {
             case TAKE:
             case PLACE:
-                byteBuf.writeByte(((TransferItemStackRequestAction) action).getCount());
+                byteBuf.writeByte(((TransferItemStackRequestAction) action).getAmount());
                 writeStackRequestSlotInfo(byteBuf, ((TransferItemStackRequestAction) action).getSource());
                 writeStackRequestSlotInfo(byteBuf, ((TransferItemStackRequestAction) action).getDestination());
                 break;
@@ -112,39 +115,39 @@ public class BedrockCodecHelper_v407 extends BedrockCodecHelper_v390 {
                 writeStackRequestSlotInfo(byteBuf, ((SwapAction) action).getDestination());
                 break;
             case DROP:
-                byteBuf.writeByte(((DropAction) action).getCount());
+                byteBuf.writeByte(((DropAction) action).getAmount());
                 writeStackRequestSlotInfo(byteBuf, ((DropAction) action).getSource());
                 byteBuf.writeBoolean(((DropAction) action).isRandomly());
                 break;
             case DESTROY:
-                byteBuf.writeByte(((DestroyAction) action).getCount());
+                byteBuf.writeByte(((DestroyAction) action).getAmount());
                 writeStackRequestSlotInfo(byteBuf, ((DestroyAction) action).getSource());
                 break;
             case CONSUME:
-                byteBuf.writeByte(((ConsumeAction) action).getCount());
+                byteBuf.writeByte(((ConsumeAction) action).getAmount());
                 writeStackRequestSlotInfo(byteBuf, ((ConsumeAction) action).getSource());
                 break;
             case CREATE:
-                byteBuf.writeByte(((CreateAction) action).getSlot());
+                byteBuf.writeByte(((CreateAction) action).getResultsIndex());
                 break;
-            case LAB_TABLE_COMBINE:
+            case SCREEN_LAB_TABLE_COMBINE:
                 break;
-            case BEACON_PAYMENT:
-                VarInts.writeInt(byteBuf, ((BeaconPaymentAction) action).getPrimaryEffect());
-                VarInts.writeInt(byteBuf, ((BeaconPaymentAction) action).getSecondaryEffect());
+            case SCREEN_BEACON_PAYMENT:
+                VarInts.writeInt(byteBuf, ((BeaconPaymentAction) action).getPrimaryEffectId());
+                VarInts.writeInt(byteBuf, ((BeaconPaymentAction) action).getSecondaryEffectId());
                 break;
             case CRAFT_RECIPE:
             case CRAFT_RECIPE_AUTO:
-                VarInts.writeUnsignedInt(byteBuf, ((RecipeItemStackRequestAction) action).getRecipeNetworkId());
+                VarInts.writeUnsignedInt(byteBuf, ((RecipeItemStackRequestAction) action).getRecipeNetId().getRawId());
                 break;
             case CRAFT_CREATIVE:
-                VarInts.writeUnsignedInt(byteBuf, ((CraftCreativeAction) action).getCreativeItemNetworkId());
+                VarInts.writeUnsignedInt(byteBuf, ((CraftCreativeAction) action).getCreativeItemNetId());
                 break;
-            case CRAFT_NON_IMPLEMENTED_DEPRECATED:
+            case CRAFT_NON_IMPLEMENTED:
                 break;
-            case CRAFT_RESULTS_DEPRECATED:
-                this.writeArray(byteBuf, ((CraftResultsDeprecatedAction) action).getResultItems(), (buf2, item) -> this.writeItem(buf2, item));
-                byteBuf.writeByte(((CraftResultsDeprecatedAction) action).getTimesCrafted());
+            case CRAFT_RESULTS:
+                this.writeArray(byteBuf, ((CraftResultsDeprecatedAction) action).getResultItemsDeprecated(), (buf2, item) -> this.writeItem(buf2, item));
+                byteBuf.writeByte(((CraftResultsDeprecatedAction) action).getNumCrafts());
                 break;
             default:
                 throw new UnsupportedOperationException("Unhandled stack request action type: " + action.getType());
@@ -190,30 +193,31 @@ public class BedrockCodecHelper_v407 extends BedrockCodecHelper_v390 {
                 return new CreateAction(
                         byteBuf.readUnsignedByte()
                 );
-            case LAB_TABLE_COMBINE:
+            case SCREEN_LAB_TABLE_COMBINE:
                 return new LabTableCombineAction();
-            case BEACON_PAYMENT:
+            case SCREEN_BEACON_PAYMENT:
                 return new BeaconPaymentAction(
                         VarInts.readInt(byteBuf),
                         VarInts.readInt(byteBuf)
                 );
             case CRAFT_RECIPE:
                 return new CraftRecipeAction(
-                        VarInts.readUnsignedInt(byteBuf), 0
+                        new RecipeNetId(VarInts.readUnsignedInt(byteBuf)), 0
                 );
             case CRAFT_RECIPE_AUTO:
                 return new AutoCraftRecipeAction(
-                        VarInts.readUnsignedInt(byteBuf), 0, Collections.emptyList(), 0
+                        new RecipeNetId(VarInts.readUnsignedInt(byteBuf)), 0, Collections.emptyList(), 0
                 );
             case CRAFT_CREATIVE:
                 return new CraftCreativeAction(
                         VarInts.readUnsignedInt(byteBuf), 0
                 );
-            case CRAFT_NON_IMPLEMENTED_DEPRECATED:
+            case CRAFT_NON_IMPLEMENTED:
                 return new CraftNonImplementedAction();
-            case CRAFT_RESULTS_DEPRECATED:
+            case CRAFT_RESULTS:
                 return new CraftResultsDeprecatedAction(
                         this.readArray(byteBuf, new ItemData[0], this::readItem),
+                        null,
                         byteBuf.readUnsignedByte()
                 );
             default:
@@ -223,7 +227,7 @@ public class BedrockCodecHelper_v407 extends BedrockCodecHelper_v390 {
 
     protected ItemStackRequestSlotInfo readStackRequestSlotInfo(ByteBuf buffer) {
         return new ItemStackRequestSlotInfo(
-                this.readContainerSlotType(buffer),
+                this.readContainerEnumName(buffer),
                 buffer.readUnsignedByte(),
                 VarInts.readInt(buffer),
                 null
@@ -231,61 +235,61 @@ public class BedrockCodecHelper_v407 extends BedrockCodecHelper_v390 {
     }
 
     protected void writeStackRequestSlotInfo(ByteBuf buffer, ItemStackRequestSlotInfo data) {
-        this.writeContainerSlotType(buffer, data.getContainerEnumName());
+        this.writeContainerEnumName(buffer, data.getContainerEnumName());
         buffer.writeByte(data.getSlot());
         VarInts.writeInt(buffer, data.getStackNetworkId());
     }
 
     @Override
-    public ContainerEnumName readContainerSlotType(ByteBuf buffer) {
+    public ContainerEnumName readContainerEnumName(ByteBuf buffer) {
         return this.containerSlotTypes.getType(buffer.readByte());
     }
 
     @Override
-    public void writeContainerSlotType(ByteBuf buffer, ContainerEnumName slotType) {
+    public void writeContainerEnumName(ByteBuf buffer, ContainerEnumName slotType) {
         buffer.writeByte(this.containerSlotTypes.getId(slotType));
     }
 
     @Override
-    public ItemDescriptorWithCount readIngredient(ByteBuf buffer) {
+    public RecipeIngredient readIngredient(ByteBuf buffer) {
         int runtimeId = VarInts.readInt(buffer);
         if (runtimeId == 0 || runtimeId == -1) {
             // We don't need to read anything extra.
-            return ItemDescriptorWithCount.EMPTY;
+            return RecipeIngredient.EMPTY;
         }
         ItemDefinition definition = this.getItemDefinitions().getDefinition(runtimeId);
 
         int meta = fromAuxValue(VarInts.readInt(buffer));
         int count = VarInts.readInt(buffer);
 
-        return new ItemDescriptorWithCount(new DefaultDescriptor(definition, meta), count);
+        return new RecipeIngredient(new NameDescriptor(definition, meta), count);
     }
 
     @Override
-    public void writeIngredient(ByteBuf buffer, ItemDescriptorWithCount ingredient) {
+    public void writeIngredient(ByteBuf buffer, RecipeIngredient ingredient) {
         requireNonNull(ingredient, "ingredient is null");
-        if (ingredient == ItemDescriptorWithCount.EMPTY || ingredient.getDescriptor() == InvalidDescriptor.INSTANCE) {
+        if (ingredient == RecipeIngredient.EMPTY || ingredient.getDescriptor() == EmptyDescriptor.INSTANCE) {
             VarInts.writeInt(buffer, 0);
             return;
         }
 
-        checkArgument(ingredient.getDescriptor() instanceof DefaultDescriptor, "Descriptor must be of type DefaultDescriptor");
-        DefaultDescriptor descriptor = (DefaultDescriptor) ingredient.getDescriptor();
+        checkArgument(ingredient.getDescriptor() instanceof NameDescriptor, "Descriptor must be of type DefaultDescriptor");
+        NameDescriptor descriptor = (NameDescriptor) ingredient.getDescriptor();
 
         VarInts.writeInt(buffer, descriptor.getItemId().getRuntimeId());
         VarInts.writeInt(buffer, toAuxValue(descriptor.getAuxValue()));
-        VarInts.writeInt(buffer, ingredient.getCount());
+        VarInts.writeInt(buffer, ingredient.getStackSize());
     }
 
     @Override
     public void writeItemStackResponseContainer(ByteBuf buffer, ItemStackResponseContainerInfo container) {
-        this.writeContainerSlotType(buffer, container.getContainerEnumName());
+        this.writeContainerEnumName(buffer, container.getContainerEnumName());
         this.writeArray(buffer, container.getSlots(), this::writeItemEntry);
     }
 
     @Override
     public ItemStackResponseContainerInfo readItemStackResponseContainer(ByteBuf buffer) {
-        ContainerEnumName slotType = this.readContainerSlotType(buffer);
+        ContainerEnumName slotType = this.readContainerEnumName(buffer);
         List<ItemStackResponseSlotInfo> itemEntries = new ArrayList<>();
         this.readArray(buffer, itemEntries, this::readItemEntry);
         return new ItemStackResponseContainerInfo(slotType, itemEntries, null);
@@ -296,17 +300,17 @@ public class BedrockCodecHelper_v407 extends BedrockCodecHelper_v390 {
                 buffer.readUnsignedByte(),
                 buffer.readUnsignedByte(),
                 buffer.readUnsignedByte(),
-                VarInts.readInt(buffer),
-                "",
-                0,
-                "");
+                new ItemStackNetId(VarInts.readInt(buffer)),
+                new RedactableString("", ""),
+                0
+        );
     }
 
     protected void writeItemEntry(ByteBuf buffer, ItemStackResponseSlotInfo itemEntry) {
         buffer.writeByte(itemEntry.getRequestedSlot());
         buffer.writeByte(itemEntry.getSlot());
         buffer.writeByte(itemEntry.getAmount());
-        VarInts.writeInt(buffer, itemEntry.getItemStackNetId());
+        VarInts.writeInt(buffer, itemEntry.getItemStackNetId().getID());
     }
 
     protected int fromAuxValue(int value) {

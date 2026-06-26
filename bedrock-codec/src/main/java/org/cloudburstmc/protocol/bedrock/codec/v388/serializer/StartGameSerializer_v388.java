@@ -27,7 +27,7 @@ public class StartGameSerializer_v388 extends StartGameSerializer_v361 {
 
         this.writeLevelSettings(buffer, helper, packet.getSettings());
 
-        helper.writeString(buffer, packet.getLevelId());
+        helper.writeString(buffer, packet.getLevelID());
         helper.writeString(buffer, packet.getLevelName());
         helper.writeString(buffer, packet.getTemplateContentIdentity());
         buffer.writeBoolean(packet.isTrial());
@@ -55,7 +55,7 @@ public class StartGameSerializer_v388 extends StartGameSerializer_v361 {
 
         this.readLevelSettings(buffer, helper, packet.getSettings());
 
-        packet.setLevelId(helper.readString(buffer));
+        packet.setLevelID(helper.readString(buffer));
         packet.setLevelName(helper.readString(buffer));
         packet.setTemplateContentIdentity(helper.readString(buffer));
         packet.setTrial(buffer.readBoolean());

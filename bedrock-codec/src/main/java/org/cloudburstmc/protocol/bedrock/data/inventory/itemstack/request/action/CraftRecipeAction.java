@@ -1,6 +1,7 @@
 package org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action;
 
 import lombok.Value;
+import org.cloudburstmc.protocol.bedrock.data.payload.crafting.RecipeNetId;
 
 /**
  * CraftRecipeStackRequestActionData is sent by the client the moment it begins crafting an item. This is the
@@ -10,7 +11,7 @@ import lombok.Value;
  */
 @Value
 public class CraftRecipeAction implements RecipeItemStackRequestAction {
-    int recipeNetworkId;
+    RecipeNetId recipeNetId;
     /**
      * @since v712
      */

@@ -1,8 +1,6 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import lombok.*;
 import org.cloudburstmc.protocol.bedrock.data.event.EventData;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
@@ -23,39 +21,44 @@ public class LegacyTelemetryEventPacket implements BedrockPacket {
         return BedrockPacketType.LEGACY_TELEMETRY_EVENT;
     }
 
+    @Getter
+    @RequiredArgsConstructor
     public enum Type {
-        ACHIEVEMENT,
-        INTERACTION,
-        PORTAL_CREATED,
-        PORTAL_USED,
-        MOB_KILLED,
-        CAULDRON_USED,
-        PLAYER_DIED,
-        BOSS_KILLED,
-        AGENT_COMMAND_OBSOLETE,
-        AGENT_CREATED,
-        PATTERN_REMOVED_OBSOLETE,
-        SLASH_COMMAND,
-        FISH_BUCKETED_OBSOLETE,
-        MOB_BORN,
-        PET_DIED_OBSOLETE,
-        POI_CAULDRON_USED,
-        COMPOSTER_USED,
-        BELL_USED,
-        ACTOR_DEFINITION,
-        RAID_UPDATE,
-        PLAYER_MOVEMENT_ANOMALY_OBSOLETE,
-        PLAYER_MOVEMENT_CORRECTED_OBSOLETE,
-        HONEY_HARVESTED,
-        TARGET_BLOCK_HIT,
-        PIGLIN_BARTER,
-        PLAYER_WAXED_OR_UNWAXED_COPPER,
-        CODE_BUILDER_RUNTIME_ACTION,
-        CODE_BUILDER_SCOREBOARD,
-        STRIDER_RIDDEN_IN_LAVA_IN_OVERWORLD,
-        SNEAK_CLOSE_TO_SCULK_SENSOR,
-        CAREFUL_RESTORATION,
-        ITEM_USED;
+        ACHIEVEMENT(0),
+        INTERACTION(1),
+        PORTAL_CREATED(2),
+        PORTAL_USED(3),
+        MOB_KILLED(4),
+        CAULDRON_USED(5),
+        PLAYER_DIED(6),
+        BOSS_KILLED(7),
+        AGENT_COMMAND_OBSOLETE(-1),
+        AGENT_CREATED(-1),
+        PATTERN_REMOVED_OBSOLETE(-1),
+        SLASH_COMMAND(8),
+        FISH_BUCKETED_OBSOLETE(-1),
+        MOB_BORN(9),
+        PET_DIED_OBSOLETE(-1),
+        POI_CAULDRON_USED(10),
+        COMPOSTER_USED(11),
+        BELL_USED(12),
+        ACTOR_DEFINITION(13),
+        RAID_UPDATE(14),
+        PLAYER_MOVEMENT_ANOMALY_OBSOLETE(-1),
+        PLAYER_MOVEMENT_CORRECTED_OBSOLETE(-1),
+        HONEY_HARVESTED(-1),
+        TARGET_BLOCK_HIT(15),
+        PIGLIN_BARTER(16),
+        PLAYER_WAXED_OR_UNWAXED_COPPER(17),
+        CODE_BUILDER_RUNTIME_ACTION(18),
+        CODE_BUILDER_SCOREBOARD(19),
+        STRIDER_RIDDEN_IN_LAVA_IN_OVERWORLD(-1),
+        SNEAK_CLOSE_TO_SCULK_SENSOR(-1),
+        CAREFUL_RESTORATION(-1),
+        ITEM_USED(20),
+        EMPTY(21);
+
+        private final int newId; // used for the cereal variant type
 
         private static final Type[] VALUES = values();
 

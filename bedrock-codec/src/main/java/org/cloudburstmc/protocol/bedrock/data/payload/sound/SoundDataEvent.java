@@ -5,9 +5,15 @@ package org.cloudburstmc.protocol.bedrock.data.payload.sound;
  */
 public enum SoundDataEvent {
 
-    STOP;
+    STOP,
+    SET_VOLUME,
+    SET_PITCH,
+    FADE,
+    SEEK_TO,
+    PAUSE,
+    RESUME;
 
-    private static final SoundDataEvent[] VALUES = values();
+    public static final SoundDataEvent[] VALUES = values();
 
     public static SoundDataEvent from(int ordinal) {
         if (ordinal >= 0 && ordinal < VALUES.length) {

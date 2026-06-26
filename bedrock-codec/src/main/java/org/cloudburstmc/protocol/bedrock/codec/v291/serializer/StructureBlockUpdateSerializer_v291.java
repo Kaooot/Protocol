@@ -7,7 +7,8 @@ import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.math.vector.Vector3i;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
-import org.cloudburstmc.protocol.bedrock.data.structure.*;
+import org.cloudburstmc.protocol.bedrock.data.payload.common.RedactableString;
+import org.cloudburstmc.protocol.bedrock.data.payload.structure.*;
 import org.cloudburstmc.protocol.bedrock.packet.StructureBlockUpdatePacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -23,13 +24,13 @@ public class StructureBlockUpdateSerializer_v291 implements BedrockPacketSeriali
         helper.writeBlockPosition(buffer, packet.getBlockPosition());
         VarInts.writeUnsignedInt(buffer, editorData.getStructureBlockType().ordinal());
         // Structure Editor Data start
-        helper.writeString(buffer, editorData.getStructureName());
-        helper.writeString(buffer, editorData.getStructureName());
+        helper.writeString(buffer, editorData.getStructureName().getUnredacted());
+        helper.writeString(buffer, editorData.getStructureName().getRedacted());
         helper.writeBlockPosition(buffer, settings.getStructureOffset());
         helper.writeBlockPosition(buffer, settings.getStructureSize());
         buffer.writeBoolean(!settings.isShouldIgnoreEntities());
         buffer.writeBoolean(settings.isShouldIgnoreBlocks());
-        buffer.writeBoolean(editorData.isShouldPlayersBeIncluded());
+        buffer.writeBoolean(editorData.isShouldIncludePlayers());
         buffer.writeBoolean(false); // show air
         // Structure Settings start
         buffer.writeFloatLE(settings.getIntegrityValue());
@@ -77,7 +78,7 @@ public class StructureBlockUpdateSerializer_v291 implements BedrockPacketSeriali
         StructureSettings settings = new StructureSettings("", ignoreEntities, ignoreBlocks, true, size, offset,
                 -1, rotation, mirror, AnimationMode.NONE, 0f,
                 structureIntegrity, integritySeed, Vector3f.ZERO);
-        StructureEditorData editorData = new StructureEditorData(name, "", dataField, includePlayers, boundingBoxVisible,
+        StructureEditorData editorData = new StructureEditorData(new RedactableString(name, ""), dataField, includePlayers, boundingBoxVisible,
                 structureType, settings, StructureRedstoneSaveMode.SAVES_TO_DISK);
 
         packet.setStructureData(editorData);

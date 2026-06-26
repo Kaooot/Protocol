@@ -19,13 +19,13 @@ public class BedrockCodecHelper_v729 extends BedrockCodecHelper_v712 {
 
     @Override
     public void writeFullContainerName(ByteBuf buffer, FullContainerName containerName) {
-        this.writeContainerSlotType(buffer, containerName.getContainerName());
+        this.writeContainerEnumName(buffer, containerName.getContainerName());
         this.writeOptionalNull(buffer, containerName.getDynamicID(), ByteBuf::writeIntLE);
     }
 
     @Override
     public FullContainerName readFullContainerName(ByteBuf buffer) {
-        ContainerEnumName container = this.readContainerSlotType(buffer);
+        ContainerEnumName container = this.readContainerEnumName(buffer);
         Integer dynamicId = this.readOptional(buffer, null, ByteBuf::readIntLE);
         return new FullContainerName(container, dynamicId);
     }

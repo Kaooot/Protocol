@@ -5,11 +5,11 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
+import org.cloudburstmc.protocol.bedrock.data.payload.move.MovePlayerTeleportData;
+import org.cloudburstmc.protocol.bedrock.data.payload.move.PositionMode;
+import org.cloudburstmc.protocol.bedrock.data.payload.move.TeleportationCause;
 import org.cloudburstmc.protocol.bedrock.packet.MovePlayerPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
-
-import static org.cloudburstmc.protocol.bedrock.packet.MovePlayerPacket.PositionMode;
-import static org.cloudburstmc.protocol.bedrock.packet.MovePlayerPacket.TeleportationCause;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MovePlayerSerializer_v291 implements BedrockPacketSerializer<MovePlayerPacket> {
@@ -25,8 +25,7 @@ public class MovePlayerSerializer_v291 implements BedrockPacketSerializer<MovePl
         buffer.writeBoolean(packet.isOnGround());
         VarInts.writeUnsignedLong(buffer, packet.getRidingRuntimeID());
         if (packet.getPositionMode() == PositionMode.TELEPORT) {
-            buffer.writeIntLE(packet.getTeleportationCause().ordinal());
-            buffer.writeIntLE(packet.getSourceActorType());
+            this.writeMovePlayerTeleportData(buffer, packet.getTeleportData());
         }
     }
 
@@ -35,12 +34,23 @@ public class MovePlayerSerializer_v291 implements BedrockPacketSerializer<MovePl
         packet.setPlayerRuntimeID(VarInts.readUnsignedLong(buffer));
         packet.setPosition(helper.readVector3f(buffer));
         packet.setRotation(helper.readVector3f(buffer));
-        packet.setPositionMode(PositionMode.values()[buffer.readUnsignedByte()]);
+        packet.setPositionMode(PositionMode.from(buffer.readUnsignedByte()));
         packet.setOnGround(buffer.readBoolean());
         packet.setRidingRuntimeID(VarInts.readUnsignedLong(buffer));
         if (packet.getPositionMode() == PositionMode.TELEPORT) {
-            packet.setTeleportationCause(TeleportationCause.from(buffer.readIntLE()));
-            packet.setSourceActorType(buffer.readIntLE());
+            packet.setTeleportData(this.readMovePlayerTeleportData(buffer));
         }
+    }
+
+    protected void writeMovePlayerTeleportData(ByteBuf buffer, MovePlayerTeleportData data) {
+        buffer.writeIntLE(data.getTeleportationCause().ordinal());
+        buffer.writeIntLE(data.getSourceActorType());
+    }
+
+    protected MovePlayerTeleportData readMovePlayerTeleportData(ByteBuf buffer) {
+        final MovePlayerTeleportData data = new MovePlayerTeleportData();
+        data.setTeleportationCause(TeleportationCause.from(buffer.readIntLE()));
+        data.setSourceActorType(buffer.readIntLE());
+        return data;
     }
 }

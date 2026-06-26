@@ -1,18 +1,11 @@
 package org.cloudburstmc.protocol.bedrock.codec.v291.serializer;
 
 import io.netty.buffer.ByteBuf;
-import it.unimi.dsi.fastutil.longs.LongList;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
-import org.cloudburstmc.protocol.bedrock.data.MapDecoration;
-import org.cloudburstmc.protocol.bedrock.data.MapTrackedObject;
-import org.cloudburstmc.protocol.bedrock.data.payload.common.DimensionType;
 import org.cloudburstmc.protocol.bedrock.packet.ClientboundMapItemDataPacket;
-import org.cloudburstmc.protocol.common.util.VarInts;
-
-import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ClientboundMapItemDataSerializer_v291 implements BedrockPacketSerializer<ClientboundMapItemDataPacket> {
@@ -20,7 +13,7 @@ public class ClientboundMapItemDataSerializer_v291 implements BedrockPacketSeria
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ClientboundMapItemDataPacket packet) {
-        VarInts.writeLong(buffer, packet.getMapID());
+        /*VarInts.writeLong(buffer, packet.getMapID());
 
         int type = 0;
         int[] colors = packet.getPixels();
@@ -87,12 +80,12 @@ public class ClientboundMapItemDataSerializer_v291 implements BedrockPacketSeria
             for (int color : colors) {
                 VarInts.writeUnsignedInt(buffer, color);
             }
-        }
+        }*/
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ClientboundMapItemDataPacket packet) {
-        packet.setMapID(VarInts.readLong(buffer));
+        /*packet.setMapID(VarInts.readLong(buffer));
         int type = VarInts.readUnsignedInt(buffer);
         packet.setDimension(DimensionType.from(buffer.readUnsignedByte()));
 
@@ -148,6 +141,6 @@ public class ClientboundMapItemDataSerializer_v291 implements BedrockPacketSeria
                 colors[i] = VarInts.readUnsignedInt(buffer);
             }
             packet.setPixels(colors);
-        }
+        }*/
     }
 }

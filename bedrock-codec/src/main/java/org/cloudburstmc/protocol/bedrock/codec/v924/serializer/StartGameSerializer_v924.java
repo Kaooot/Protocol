@@ -8,6 +8,7 @@ import org.cloudburstmc.protocol.bedrock.codec.v818.serializer.StartGameSerializ
 import org.cloudburstmc.protocol.bedrock.data.*;
 import org.cloudburstmc.protocol.bedrock.data.gathering.GatheringsConfig;
 import org.cloudburstmc.protocol.bedrock.data.gathering.ServerJoinInfo;
+import org.cloudburstmc.protocol.bedrock.data.payload.ServerTelemetryData;
 import org.cloudburstmc.protocol.bedrock.packet.StartGamePacket;
 import org.cloudburstmc.protocol.common.util.OptionalBoolean;
 import org.cloudburstmc.protocol.common.util.VarInts;
@@ -24,15 +25,15 @@ public class StartGameSerializer_v924 extends StartGameSerializer_v818 {
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, StartGamePacket packet) {
         super.serialize(buffer, helper, packet);
-        helper.writeOptionalNull(buffer, packet.getServerJoinInfo(), this::writeServerJoinInfo);
-        this.writeAfterJoinInfo(buffer, helper, packet);
+        helper.writeOptionalNull(buffer, packet.getServerConfigurationJoinInfo(), this::writeServerJoinInfo);
+        this.writeServerTelemetryData(buffer, helper, packet.getServerTelemetryData());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, StartGamePacket packet) {
         super.deserialize(buffer, helper, packet);
-        packet.setServerJoinInfo(helper.readOptional(buffer, null, this::readServerJoinInfo));
-        this.readAfterJoinInfo(buffer, helper, packet);
+        packet.setServerConfigurationJoinInfo(helper.readOptional(buffer, null, this::readServerJoinInfo));
+        packet.setServerTelemetryData(this.readServerTelemetryData(buffer, helper));
     }
 
     @Override
@@ -41,7 +42,7 @@ public class StartGameSerializer_v924 extends StartGameSerializer_v818 {
         this.writeSpawnSettings(buffer, helper, settings.getSpawnSettings());
         VarInts.writeInt(buffer, settings.getGeneratorType().ordinal());
         VarInts.writeInt(buffer, settings.getGameType().ordinal());
-        buffer.writeBoolean(settings.isHardcoreModeEnabled());
+        buffer.writeBoolean(settings.isHardcore());
         VarInts.writeInt(buffer, settings.getGameDifficulty().ordinal());
         helper.writeBlockPosition(buffer, settings.getDefaultSpawnBlockPosition());
         buffer.writeBoolean(settings.isAchievementsDisabled());
@@ -50,13 +51,13 @@ public class StartGameSerializer_v924 extends StartGameSerializer_v818 {
         buffer.writeBoolean(settings.isExportedFromEditor());
         VarInts.writeInt(buffer, settings.getDayCycleStopTime());
         VarInts.writeInt(buffer, settings.getEducationEditionOffer().ordinal());
-        buffer.writeBoolean(settings.isAreEducationFeaturesEnabled());
-        helper.writeString(buffer, settings.getEducationProductionId());
+        buffer.writeBoolean(settings.isEducationFeaturesEnabled());
+        helper.writeString(buffer, settings.getEducationProductID());
         buffer.writeFloatLE(settings.getRainLevel());
         buffer.writeFloatLE(settings.getLightningLevel());
         buffer.writeBoolean(settings.isHasConfirmedPlatformLockedContent());
-        buffer.writeBoolean(settings.isWasMultiplayerIntendedToBeEnabled());
-        buffer.writeBoolean(settings.isWasLANBroadcastingIntendedToBeEnabled());
+        buffer.writeBoolean(settings.isMultiplayerGameIntent());
+        buffer.writeBoolean(settings.isLanBroadcastIntent());
         VarInts.writeInt(buffer, settings.getXboxLiveBroadcastSetting().ordinal());
         VarInts.writeInt(buffer, settings.getPlatformBroadcastSetting().ordinal());
         buffer.writeBoolean(settings.isCommandsEnabled());
@@ -70,7 +71,7 @@ public class StartGameSerializer_v924 extends StartGameSerializer_v818 {
         buffer.writeIntLE(settings.getServerChunkTickRange());
         buffer.writeBoolean(settings.isHasLockedBehaviorPack());
         buffer.writeBoolean(settings.isHasLockedResourcePack());
-        buffer.writeBoolean(settings.isFromLockedWorldTemplate());
+        buffer.writeBoolean(settings.isFromLockedTemplate());
         buffer.writeBoolean(settings.isUseMsaGamertagsOnly());
         buffer.writeBoolean(settings.isFromWorldTemplate());
         buffer.writeBoolean(settings.isWorldTemplateOptionLocked());
@@ -84,7 +85,7 @@ public class StartGameSerializer_v924 extends StartGameSerializer_v818 {
         buffer.writeBoolean(settings.isNetherType());
         helper.writeString(buffer, settings.getEduSharedUriResource().getButtonName());
         helper.writeString(buffer, settings.getEduSharedUriResource().getLinkUri());
-        helper.writeOptional(buffer, OptionalBoolean::isPresent, settings.getForceExperimentalGameplay(),
+        helper.writeOptional(buffer, OptionalBoolean::isPresent, settings.getOverrideForceExperimentalGameplay(),
                 (buf, optional) -> buf.writeBoolean(optional.getAsBoolean()));
         buffer.writeByte(settings.getChatRestrictionLevel().ordinal());
         buffer.writeBoolean(settings.isDisablePlayerInteractions());
@@ -96,7 +97,7 @@ public class StartGameSerializer_v924 extends StartGameSerializer_v818 {
         this.readSpawnSettings(buffer, helper, settings.getSpawnSettings());
         settings.setGeneratorType(GeneratorType.from(VarInts.readInt(buffer)));
         settings.setGameType(GameType.from(VarInts.readInt(buffer)));
-        settings.setHardcoreModeEnabled(buffer.readBoolean());
+        settings.setHardcore(buffer.readBoolean());
         settings.setGameDifficulty(Difficulty.from(VarInts.readInt(buffer)));
         settings.setDefaultSpawnBlockPosition(helper.readBlockPosition(buffer));
         settings.setAchievementsDisabled(buffer.readBoolean());
@@ -105,19 +106,19 @@ public class StartGameSerializer_v924 extends StartGameSerializer_v818 {
         settings.setExportedFromEditor(buffer.readBoolean());
         settings.setDayCycleStopTime(VarInts.readInt(buffer));
         settings.setEducationEditionOffer(EducationEditionOffer.from(VarInts.readInt(buffer)));
-        settings.setAreEducationFeaturesEnabled(buffer.readBoolean());
-        settings.setEducationProductionId(helper.readString(buffer));
+        settings.setEducationFeaturesEnabled(buffer.readBoolean());
+        settings.setEducationProductID(helper.readString(buffer));
         settings.setRainLevel(buffer.readFloatLE());
         settings.setLightningLevel(buffer.readFloatLE());
         settings.setHasConfirmedPlatformLockedContent(buffer.readBoolean());
-        settings.setWasMultiplayerIntendedToBeEnabled(buffer.readBoolean());
-        settings.setWasLANBroadcastingIntendedToBeEnabled(buffer.readBoolean());
+        settings.setMultiplayerGameIntent(buffer.readBoolean());
+        settings.setLanBroadcastIntent(buffer.readBoolean());
         settings.setXboxLiveBroadcastSetting(GamePublishSetting.from(VarInts.readInt(buffer)));
         settings.setPlatformBroadcastSetting(GamePublishSetting.from(VarInts.readInt(buffer)));
         settings.setCommandsEnabled(buffer.readBoolean());
         settings.setTexturePacksRequired(buffer.readBoolean());
         helper.readArray(buffer, settings.getRuleData().getRulesList(), helper::readGameRule);
-        helper.readExperiments(buffer, settings.getExperiments());
+        settings.setExperiments(helper.readExperiments(buffer));
         settings.setWereAnyExperimentsEverToggled(buffer.readBoolean());
         settings.setHasBonusChestEnabled(buffer.readBoolean());
         settings.setStartWithMapEnabled(buffer.readBoolean());
@@ -125,7 +126,7 @@ public class StartGameSerializer_v924 extends StartGameSerializer_v818 {
         settings.setServerChunkTickRange(buffer.readIntLE());
         settings.setHasLockedBehaviorPack(buffer.readBoolean());
         settings.setHasLockedResourcePack(buffer.readBoolean());
-        settings.setFromLockedWorldTemplate(buffer.readBoolean());
+        settings.setFromLockedTemplate(buffer.readBoolean());
         settings.setUseMsaGamertagsOnly(buffer.readBoolean());
         settings.setFromWorldTemplate(buffer.readBoolean());
         settings.setWorldTemplateOptionLocked(buffer.readBoolean());
@@ -138,7 +139,7 @@ public class StartGameSerializer_v924 extends StartGameSerializer_v818 {
         settings.setLimitedWorldDepth(buffer.readIntLE());
         settings.setNetherType(buffer.readBoolean());
         settings.setEduSharedUriResource(new EduSharedUriResource(helper.readString(buffer), helper.readString(buffer)));
-        settings.setForceExperimentalGameplay(helper.readOptional(buffer, OptionalBoolean.empty(), buf -> OptionalBoolean.of(buf.readBoolean())));
+        settings.setOverrideForceExperimentalGameplay(helper.readOptional(buffer, OptionalBoolean.empty(), buf -> OptionalBoolean.of(buf.readBoolean())));
         settings.setChatRestrictionLevel(ChatRestrictionLevel.from(buffer.readUnsignedByte()));
         settings.setDisablePlayerInteractions(buffer.readBoolean());
     }
@@ -185,17 +186,19 @@ public class StartGameSerializer_v924 extends StartGameSerializer_v818 {
         return config;
     }
 
-    protected void writeAfterJoinInfo(ByteBuf buffer, BedrockCodecHelper helper, StartGamePacket packet) {
-        helper.writeString(buffer, packet.getServerID());
-        helper.writeString(buffer, packet.getScenarioID());
-        helper.writeString(buffer, packet.getWorldID());
-        helper.writeString(buffer, packet.getOwnerID());
+    protected void writeServerTelemetryData(ByteBuf buffer, BedrockCodecHelper helper, ServerTelemetryData data) {
+        helper.writeString(buffer, data.getServerId());
+        helper.writeString(buffer, data.getScenarioId());
+        helper.writeString(buffer, data.getWorldId());
+        helper.writeString(buffer, data.getOwnerId());
     }
 
-    protected void readAfterJoinInfo(ByteBuf buffer, BedrockCodecHelper helper, StartGamePacket packet) {
-        packet.setServerID(helper.readString(buffer));
-        packet.setScenarioID(helper.readString(buffer));
-        packet.setWorldID(helper.readString(buffer));
-        packet.setOwnerID(helper.readString(buffer));
+    protected ServerTelemetryData readServerTelemetryData(ByteBuf buffer, BedrockCodecHelper helper) {
+        final ServerTelemetryData data = new ServerTelemetryData();
+        data.setServerId(helper.readString(buffer));
+        data.setScenarioId(helper.readString(buffer));
+        data.setWorldId(helper.readString(buffer));
+        data.setOwnerId(helper.readString(buffer));
+        return data;
     }
 }

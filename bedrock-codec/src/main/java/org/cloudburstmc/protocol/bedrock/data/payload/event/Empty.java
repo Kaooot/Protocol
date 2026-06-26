@@ -12,6 +12,6 @@ public class Empty implements EventData {
 
     @Override
     public LegacyTelemetryEventPacket.Type getType() {
-        return null;
+        return LegacyTelemetryEventPacket.Type.EMPTY;
     }
 }

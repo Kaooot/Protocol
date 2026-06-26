@@ -19,7 +19,7 @@ public class MoveActorDeltaSerializer_v388 extends MoveActorDeltaSerializer_v291
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, MoveActorDeltaPacket packet) {
-        VarInts.writeUnsignedLong(buffer, packet.getData().getActorRuntimeID());
+        VarInts.writeUnsignedLong(buffer, packet.getMoveData().getActorRuntimeID());
 
         int flagsIndex = buffer.writerIndex();
         buffer.writeShortLE(0); // flags
@@ -44,7 +44,7 @@ public class MoveActorDeltaSerializer_v388 extends MoveActorDeltaSerializer_v291
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, MoveActorDeltaPacket packet) {
-        packet.getData().setActorRuntimeID(VarInts.readUnsignedLong(buffer));
+        packet.getMoveData().setActorRuntimeID(VarInts.readUnsignedLong(buffer));
         int flags = buffer.readUnsignedShortLE();
         Set<Flag> flagSet = packet.getFlags();
 

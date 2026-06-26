@@ -8,10 +8,9 @@ import org.cloudburstmc.protocol.bedrock.codec.v340.BedrockCodecHelper_v340;
 import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataFormat;
 import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataMap;
 import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataType;
-import org.cloudburstmc.protocol.bedrock.data.structure.AnimationMode;
-import org.cloudburstmc.protocol.bedrock.data.structure.Mirror;
-import org.cloudburstmc.protocol.bedrock.data.structure.Rotation;
-import org.cloudburstmc.protocol.bedrock.data.structure.StructureSettings;
+import org.cloudburstmc.protocol.bedrock.data.payload.structure.Mirror;
+import org.cloudburstmc.protocol.bedrock.data.payload.structure.Rotation;
+import org.cloudburstmc.protocol.bedrock.data.payload.structure.StructureSettings;
 import org.cloudburstmc.protocol.bedrock.transformer.ActorDataTransformer;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 import org.cloudburstmc.protocol.common.util.VarInts;
@@ -148,20 +147,18 @@ public class BedrockCodecHelper_v361 extends BedrockCodecHelper_v340 {
 
     @Override
     public StructureSettings readStructureSettings(ByteBuf buffer) {
-        String paletteName = this.readString(buffer);
-        boolean ignoringEntities = buffer.readBoolean();
-        boolean ignoringBlocks = buffer.readBoolean();
-        Vector3i size = this.readBlockPosition(buffer);
-        Vector3i offset = this.readBlockPosition(buffer);
-        long lastEditedByEntityId = VarInts.readLong(buffer);
-        Rotation rotation = Rotation.from(buffer.readByte());
-        Mirror mirror = Mirror.from(buffer.readByte());
-        float integrityValue = buffer.readFloatLE();
-        int integritySeed = buffer.readIntLE();
-
-        return new StructureSettings(paletteName, ignoringEntities, ignoringBlocks, true, size, offset, lastEditedByEntityId,
-                rotation, mirror, AnimationMode.NONE, 0f, integrityValue, integritySeed,
-                Vector3f.ZERO);
+        final StructureSettings structureSettings = new StructureSettings();
+        structureSettings.setStructurePaletteName(this.readString(buffer));
+        structureSettings.setShouldIgnoreEntities(buffer.readBoolean());
+        structureSettings.setShouldIgnoreBlocks(buffer.readBoolean());
+        structureSettings.setStructureSize(this.readBlockPosition(buffer));
+        structureSettings.setStructureOffset(this.readBlockPosition(buffer));
+        structureSettings.setLastEditPlayer(VarInts.readLong(buffer));
+        structureSettings.setRotation(Rotation.from(buffer.readUnsignedByte()));
+        structureSettings.setMirror(Mirror.from(buffer.readUnsignedByte()));
+        structureSettings.setIntegrityValue(buffer.readFloatLE());
+        structureSettings.setIntegritySeed(buffer.readIntLE());
+        return structureSettings;
     }
 
     @Override

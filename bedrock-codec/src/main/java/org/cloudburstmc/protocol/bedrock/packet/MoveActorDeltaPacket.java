@@ -2,7 +2,7 @@ package org.cloudburstmc.protocol.bedrock.packet;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.cloudburstmc.protocol.bedrock.data.MoveActorDeltaData;
+import org.cloudburstmc.protocol.bedrock.data.payload.move.MoveActorDeltaData;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 import java.util.EnumSet;
@@ -12,9 +12,12 @@ import java.util.Set;
 @EqualsAndHashCode(doNotUseGetters = true)
 public class MoveActorDeltaPacket implements BedrockPacket {
 
+    /**
+     * @deprecated since v2164
+     */
     private final Set<Flag> flags = EnumSet.noneOf(Flag.class);
 
-    private MoveActorDeltaData data = new MoveActorDeltaData();
+    private MoveActorDeltaData moveData = new MoveActorDeltaData();
     /**
      * @deprecated since v419
      */
@@ -38,10 +41,13 @@ public class MoveActorDeltaPacket implements BedrockPacket {
     }
 
     public String toString() {
-        return "MoveActorDeltaPacket(data=" + this.data +
+        return "MoveActorDeltaPacket(data=" + this.moveData +
                 ", flags=" + flags + ", delta=(" + deltaX + ", " + deltaY + ", " + deltaZ + "))";
     }
 
+    /**
+     * @deprecated since v2164
+     */
     public enum Flag {
         HAS_X,
         HAS_Y,

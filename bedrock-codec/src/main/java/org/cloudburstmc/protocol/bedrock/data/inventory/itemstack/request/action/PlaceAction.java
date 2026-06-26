@@ -10,7 +10,7 @@ import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemSt
  */
 @Value
 public class PlaceAction implements TransferItemStackRequestAction {
-    int count;
+    int amount;
     ItemStackRequestSlotInfo source;
     ItemStackRequestSlotInfo destination;
 

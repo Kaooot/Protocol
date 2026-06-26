@@ -1,20 +1,14 @@
 package org.cloudburstmc.protocol.bedrock.codec.v388.serializer;
 
-import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v361.serializer.CraftingDataSerializer_v361;
-import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.ContainerMixDataEntry;
-import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.PotionMixDataEntry;
-import org.cloudburstmc.protocol.bedrock.packet.CraftingDataPacket;
-import org.cloudburstmc.protocol.common.util.VarInts;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CraftingDataSerializer_v388 extends CraftingDataSerializer_v361 {
     public static final CraftingDataSerializer_v388 INSTANCE = new CraftingDataSerializer_v388();
 
-    @Override
+   /* @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, CraftingDataPacket packet) {
         helper.writeArray(buffer, packet.getCraftingEntries(), this::writeEntry);
         // Changes start
@@ -55,8 +49,8 @@ public class CraftingDataSerializer_v388 extends CraftingDataSerializer_v361 {
     }
 
     protected void writeContainerMixData(ByteBuf buffer, BedrockCodecHelper helper, ContainerMixDataEntry containerMixDataEntry) {
-        VarInts.writeInt(buffer, containerMixDataEntry.getInputId());
-        VarInts.writeInt(buffer, containerMixDataEntry.getReagentId());
-        VarInts.writeInt(buffer, containerMixDataEntry.getOutputId());
-    }
+        VarInts.writeInt(buffer, containerMixDataEntry.getFromItemId());
+        VarInts.writeInt(buffer, containerMixDataEntry.getReagentItemId());
+        VarInts.writeInt(buffer, containerMixDataEntry.getOutputItemId());
+    }*/
 }

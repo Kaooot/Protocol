@@ -3,7 +3,7 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.math.vector.Vector3f;
+import org.cloudburstmc.protocol.bedrock.data.payload.location.PlayerLocation;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
@@ -11,9 +11,8 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @ToString(doNotUseGetters = true)
 public class PlayerLocationPacket implements BedrockPacket {
 
-    private Type type;
     private long targetActorID;
-    private Vector3f position;
+    private PlayerLocation location;
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {
@@ -32,10 +31,5 @@ public class PlayerLocationPacket implements BedrockPacket {
         } catch (CloneNotSupportedException e) {
             throw new AssertionError(e);
         }
-    }
-
-    public enum Type {
-        PLAYER_LOCATION_COORDINATES,
-        PLAYER_LOCATION_HIDE
     }
 }

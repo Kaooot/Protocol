@@ -8,11 +8,11 @@ import lombok.Value;
  */
 @Value
 public class BeaconPaymentAction implements ItemStackRequestAction {
-    int primaryEffect;
-    int secondaryEffect;
+    int primaryEffectId;
+    int secondaryEffectId;
 
     @Override
     public ItemStackRequestActionType getType() {
-        return ItemStackRequestActionType.BEACON_PAYMENT;
+        return ItemStackRequestActionType.SCREEN_BEACON_PAYMENT;
     }
 }

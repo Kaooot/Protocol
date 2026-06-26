@@ -8,10 +8,8 @@ import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerEnumName;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.TextProcessingEventOrigin;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestActionType;
 import org.cloudburstmc.protocol.bedrock.data.payload.configuration.PresenceConfiguration;
-import org.cloudburstmc.protocol.bedrock.data.payload.inventory.transaction.InventoryAction;
-import org.cloudburstmc.protocol.bedrock.data.payload.inventory.transaction.InventorySource;
-import org.cloudburstmc.protocol.bedrock.data.payload.inventory.transaction.InventorySourceFlags;
-import org.cloudburstmc.protocol.bedrock.data.payload.inventory.transaction.InventorySourceType;
+import org.cloudburstmc.protocol.bedrock.data.payload.inventory.transaction.*;
+import org.cloudburstmc.protocol.bedrock.data.payload.inventory.transaction.data.ItemUseInventoryTransaction;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -86,5 +84,37 @@ public class BedrockCodecHelper_v1001 extends BedrockCodecHelper_v975 {
         configuration.setWorldName(this.readOptional(buffer, null, this::readString));
         configuration.setRichPresenceId(this.readString(buffer));
         return configuration;
+    }
+
+    @Override
+    public void writeItemUseInventoryTransaction(ByteBuf buffer, ItemUseInventoryTransaction transaction) {
+        VarInts.writeInt(buffer, transaction.getActionType().ordinal());
+        buffer.writeByte(transaction.getTriggerType().ordinal());
+        this.writeVector3i(buffer, transaction.getPosition());
+        buffer.writeByte(transaction.getFace());
+        VarInts.writeInt(buffer, transaction.getSlot());
+        this.writeNetworkItemStackDescriptor(buffer, transaction.getItem());
+        this.writeVector3f(buffer, transaction.getFromPosition());
+        this.writeVector3f(buffer, transaction.getClickPosition());
+        VarInts.writeUnsignedInt(buffer, transaction.getTargetBlockId().getRuntimeId());
+        buffer.writeByte(transaction.getClientInteractPrediction().ordinal());
+        buffer.writeByte(transaction.getClientCooldownState().ordinal());
+    }
+
+    @Override
+    public ItemUseInventoryTransaction readItemUseInventoryTransaction(ByteBuf buffer) {
+        final ItemUseInventoryTransaction transaction = new ItemUseInventoryTransaction();
+        transaction.setActionType(ItemUseActionType.from(VarInts.readInt(buffer)));
+        transaction.setTriggerType(ItemUseTriggerType.from(buffer.readUnsignedByte()));
+        transaction.setPosition(this.readVector3i(buffer));
+        transaction.setFace(buffer.readByte());
+        transaction.setSlot(VarInts.readInt(buffer));
+        transaction.setItem(this.readNetworkItemStackDescriptor(buffer));
+        transaction.setFromPosition(this.readVector3f(buffer));
+        transaction.setClickPosition(this.readVector3f(buffer));
+        transaction.setTargetBlockId(this.getBlockDefinitions().getDefinition(VarInts.readUnsignedInt(buffer)));
+        transaction.setClientInteractPrediction(ItemUsePredictedResult.from(buffer.readUnsignedByte()));
+        transaction.setClientCooldownState(ItemUseClientCooldownState.from(buffer.readUnsignedByte()));
+        return transaction;
     }
 }

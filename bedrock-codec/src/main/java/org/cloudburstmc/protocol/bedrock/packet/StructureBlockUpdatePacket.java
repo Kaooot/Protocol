@@ -4,7 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.math.vector.Vector3i;
-import org.cloudburstmc.protocol.bedrock.data.structure.StructureEditorData;
+import org.cloudburstmc.protocol.bedrock.data.payload.structure.StructureEditorData;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data

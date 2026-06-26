@@ -1,22 +1,11 @@
 package org.cloudburstmc.protocol.bedrock.codec.v671.serializer;
 
-import io.netty.buffer.ByteBuf;
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v582.serializer.CraftingDataSerializer_v582;
-import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
-import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.CraftingDataEntryType;
-import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.recipe.ShapedRecipe;
-import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.ItemDescriptorWithCount;
-import org.cloudburstmc.protocol.common.util.VarInts;
-
-import java.util.List;
-import java.util.UUID;
 
 public class CraftingDataSerializer_v671 extends CraftingDataSerializer_v582 {
     public static final CraftingDataSerializer_v671 INSTANCE = new CraftingDataSerializer_v671();
 
-    @Override
+    /*@Override
     protected void writeShapedRecipe(ByteBuf buffer, BedrockCodecHelper helper, ShapedRecipe data) {
         helper.writeString(buffer, data.getRecipeUniqueId());
         VarInts.writeInt(buffer, data.getRecipeWidth());
@@ -52,5 +41,5 @@ public class CraftingDataSerializer_v671 extends CraftingDataSerializer_v582 {
         boolean assumeSymmetry = buffer.readBoolean();
         int networkId = VarInts.readUnsignedInt(buffer);
         return ShapedRecipe.of(type, recipeId, width, height, inputs, outputs, uuid, craftingTag, priority, networkId, assumeSymmetry);
-    }
+    }*/
 }

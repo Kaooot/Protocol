@@ -11,6 +11,7 @@ import org.cloudburstmc.nbt.NbtMap;
 import org.cloudburstmc.protocol.bedrock.data.*;
 import org.cloudburstmc.protocol.bedrock.data.definitions.ItemDefinition;
 import org.cloudburstmc.protocol.bedrock.data.gathering.ServerJoinInfo;
+import org.cloudburstmc.protocol.bedrock.data.payload.ServerTelemetryData;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 import java.util.List;
@@ -26,7 +27,7 @@ public class StartGamePacket implements BedrockPacket {
     private Vector3f position;
     private Vector2f rotation;
     private LevelSettings settings = new LevelSettings();
-    private String levelId;
+    private String levelID;
     private String levelName;
     private String templateContentIdentity;
     private boolean isTrial;
@@ -34,7 +35,7 @@ public class StartGamePacket implements BedrockPacket {
     private long levelCurrentTime;
     private int enchantmentSeed;
     private NbtList<NbtMap> blockPalette;
-    private final List<BlockPropertyData> blockProperties = new ObjectArrayList<>();
+    private final List<ServerBlockProperty> blockProperties = new ObjectArrayList<>();
     /**
      * @deprecated since v776. Use ItemComponentPacket instead.
      */
@@ -92,25 +93,14 @@ public class StartGamePacket implements BedrockPacket {
     /**
      * @since v924
      */
-    private ServerJoinInfo serverJoinInfo;
+    private ServerJoinInfo serverConfigurationJoinInfo;
     /**
      * @since v924
      */
-    private String serverID;
-    /**
-     * @since v924
-     */
-    private String scenarioID;
-    /**
-     * @since v924
-     */
-    private String worldID;
-    /**
-     * @since v924
-     */
-    private String ownerID;
+    private ServerTelemetryData serverTelemetryData;
     /**
      * @since v1001
+     * @deprecated since v2164
      */
     private boolean isChatLogging;
 

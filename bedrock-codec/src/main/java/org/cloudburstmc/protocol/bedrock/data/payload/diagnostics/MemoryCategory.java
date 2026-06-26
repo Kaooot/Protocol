@@ -17,7 +17,7 @@ public enum MemoryCategory {
     BLOCK_TICKING_QUEUES,
     BIOME_STORAGE,
     /**
-     * @since v1011
+     * @since v2164
      */
     BLOBS,
     CEREAL,
@@ -67,31 +67,31 @@ public enum MemoryCategory {
     MOLANG,
     ORE_UI,
     /**
-     * @deprecated since v1011
+     * @deprecated since v2164
      */
     PERSONA,
     /**
-     * @since v1011
+     * @since v2164
      */
     PERSONA_PIECES,
     /**
-     * @since v1011
+     * @since v2164
      */
     PERSONA_ANIMATIONS,
     /**
-     * @since v1011
+     * @since v2164
      */
     PERSONA_TEXTURES,
     /**
-     * @since v1011
+     * @since v2164
      */
     PERSONA_CHARACTERS,
     /**
-     * @since v1011
+     * @since v2164
      */
     PERSONA_SKIN_PACKS,
     /**
-     * @since v1011
+     * @since v2164
      */
     PERSONA_REPO,
     PLAYER,
@@ -100,32 +100,32 @@ public enum MemoryCategory {
     RENDER_CHUNK_VERTEX_BUFFER,
     RENDERING,
     /**
-     * @since v1011
+     * @since v2164
      */
     RENDERING_BGFX_INIT,
     /**
-     * @since v1011
+     * @since v2164
      */
     RENDERING_BGFX_START_FRAME,
     /**
-     * @since v1011
+     * @since v2164
      */
     RENDERING_BGFX_TESSELLATOR,
     /**
-     * @since v1011
+     * @since v2164
      */
     RENDERING_BGFX_END_FRAME,
     /**
-     * @since v1011
+     * @since v2164
      */
     RENDERING_BGFX_GRAPHICS_TASKS_INIT,
     RENDERING_LIBRARY,
     /**
-     * @since v1011
+     * @since v2164
      */
     RENDERING_POLYGON_OPERATOR_POOL,
     /**
-     * @since v1011
+     * @since v2164
      */
     RENDERING_PBR_TEXTURE_DATA,
     /**
@@ -133,11 +133,11 @@ public enum MemoryCategory {
      */
     RENDERING_RENDER_REGISTRY,
     /**
-     * @since v1011
+     * @since v2164
      */
     RENDERING_SETUP,
     /**
-     * @since v1011
+     * @since v2164
      */
     RENDERING_VERTICES,
     REQUEST_LOG,
@@ -156,7 +156,7 @@ public enum MemoryCategory {
     TASKS,
     TEST,
     /**
-     * @since v1011
+     * @since v2164
      */
     TEST_LOAD_TEST_FLAGS,
     SCRIPTING,
@@ -216,11 +216,11 @@ public enum MemoryCategory {
      */
     GAMEFACE_SCRIPT_ENGINE,
     /**
-     * @since v1011
+     * @since v2164
      */
     GAMEFACE_SCRIPT,
     /**
-     * @since v1011
+     * @since v2164
      */
     GAMEFACE_LAYOUT
 }

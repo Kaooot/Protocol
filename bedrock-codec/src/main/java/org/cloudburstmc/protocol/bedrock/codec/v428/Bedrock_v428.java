@@ -78,7 +78,7 @@ public class Bedrock_v428 extends Bedrock_v422 {
 
     protected static final TypeMap<ItemStackRequestActionType> ITEM_STACK_REQUEST_TYPES = Bedrock_v422.ITEM_STACK_REQUEST_TYPES.toBuilder()
             .shift(9, 1)
-            .insert(9, ItemStackRequestActionType.MINE_BLOCK)
+            .insert(9, ItemStackRequestActionType.SCREEN_HUD_MINE_BLOCK)
             .build();
 
     public static final BedrockCodec CODEC = Bedrock_v422.CODEC.toBuilder()

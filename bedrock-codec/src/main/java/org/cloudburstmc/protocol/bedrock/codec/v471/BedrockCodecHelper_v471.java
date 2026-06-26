@@ -8,6 +8,7 @@ import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.CraftLoomAction;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestAction;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestActionType;
+import org.cloudburstmc.protocol.bedrock.data.payload.crafting.RecipeNetId;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -22,7 +23,7 @@ public class BedrockCodecHelper_v471 extends BedrockCodecHelper_v465 {
     protected ItemStackRequestAction readRequestActionData(ByteBuf byteBuf, ItemStackRequestActionType type) {
         switch (type) {
             case CRAFT_REPAIR_AND_DISENCHANT:
-                return new CraftGrindstoneAction(VarInts.readUnsignedInt(byteBuf), 0, VarInts.readInt(byteBuf));
+                return new CraftGrindstoneAction(new RecipeNetId(VarInts.readUnsignedInt(byteBuf)), 0, VarInts.readInt(byteBuf));
             case CRAFT_LOOM:
                 return new CraftLoomAction(this.readString(byteBuf), 0);
             default:
@@ -35,11 +36,11 @@ public class BedrockCodecHelper_v471 extends BedrockCodecHelper_v465 {
         switch (action.getType()) {
             case CRAFT_REPAIR_AND_DISENCHANT:
                 CraftGrindstoneAction actionData = (CraftGrindstoneAction) action;
-                VarInts.writeUnsignedInt(byteBuf, actionData.getRecipeNetworkId());
+                VarInts.writeUnsignedInt(byteBuf, actionData.getRecipeNetId().getRawId());
                 VarInts.writeInt(byteBuf, actionData.getRepairCost());
                 return;
             case CRAFT_LOOM:
-                this.writeString(byteBuf, ((CraftLoomAction) action).getPatternId());
+                this.writeString(byteBuf, ((CraftLoomAction) action).getPatternNameId());
                 return;
             default:
                 super.writeRequestActionData(byteBuf, action);

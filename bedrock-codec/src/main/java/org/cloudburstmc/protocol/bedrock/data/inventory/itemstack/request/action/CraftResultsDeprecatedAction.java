@@ -2,6 +2,9 @@ package org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.actio
 
 import lombok.Value;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequestNetworkItemInstanceDescriptor;
+
+import java.util.List;
 
 /**
  * CraftResultsDeprecatedStackRequestAction is an additional, deprecated packet sent by the client after
@@ -11,11 +14,18 @@ import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
  */
 @Value
 public class CraftResultsDeprecatedAction implements ItemStackRequestAction {
-    ItemData[] resultItems;
-    int timesCrafted;
+    /**
+     * @deprecated since v2164
+     */
+    ItemData[] resultItemsDeprecated;
+    /**
+     * @since v2164
+     */
+    List<ItemStackRequestNetworkItemInstanceDescriptor> craftResults;
+    int numCrafts;
 
     @Override
     public ItemStackRequestActionType getType() {
-        return ItemStackRequestActionType.CRAFT_RESULTS_DEPRECATED;
+        return ItemStackRequestActionType.CRAFT_RESULTS;
     }
 }

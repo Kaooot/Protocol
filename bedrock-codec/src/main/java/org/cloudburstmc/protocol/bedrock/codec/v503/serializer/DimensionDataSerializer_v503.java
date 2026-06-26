@@ -32,6 +32,6 @@ public class DimensionDataSerializer_v503 implements BedrockPacketSerializer<Dim
         int maximumHeight = VarInts.readInt(buffer);
         int minimumHeight = VarInts.readInt(buffer);
         GeneratorType generatorType = GeneratorType.from(VarInts.readInt(buffer));
-        return new DimensionDefinitionGroup(id, maximumHeight, minimumHeight, generatorType, null);
+        return new DimensionDefinitionGroup(id, maximumHeight, minimumHeight, generatorType, null, null);
     }
 }

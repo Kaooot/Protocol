@@ -9,11 +9,12 @@ import org.cloudburstmc.protocol.bedrock.data.actor.PropertySyncData;
 import org.cloudburstmc.protocol.bedrock.data.actor.FloatEntityProperty;
 import org.cloudburstmc.protocol.bedrock.data.actor.IntEntityProperty;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerEnumName;
-import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.ItemDescriptorWithCount;
+import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.RecipeIngredient;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.TextProcessingEventOrigin;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.AutoCraftRecipeAction;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestAction;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestActionType;
+import org.cloudburstmc.protocol.bedrock.data.payload.crafting.RecipeNetId;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -58,10 +59,10 @@ public class BedrockCodecHelper_v557 extends BedrockCodecHelper_v554 {
         if (type == ItemStackRequestActionType.CRAFT_RECIPE_AUTO) {
             int recipeId = VarInts.readUnsignedInt(byteBuf);
             int timesCrafted = byteBuf.readUnsignedByte();
-            List<ItemDescriptorWithCount> ingredients = new ObjectArrayList<>();
+            List<RecipeIngredient> ingredients = new ObjectArrayList<>();
             readArray(byteBuf, ingredients, ByteBuf::readUnsignedByte, (buf, helper) -> helper.readIngredient(buf));
             return new AutoCraftRecipeAction(
-                    recipeId,
+                    new RecipeNetId(recipeId),
                     timesCrafted,
                     ingredients,
                     0
@@ -75,7 +76,7 @@ public class BedrockCodecHelper_v557 extends BedrockCodecHelper_v554 {
     protected void writeRequestActionData(ByteBuf byteBuf, ItemStackRequestAction action) {
         super.writeRequestActionData(byteBuf, action);
         if (action.getType() == ItemStackRequestActionType.CRAFT_RECIPE_AUTO) {
-            List<ItemDescriptorWithCount> ingredients = ((AutoCraftRecipeAction) action).getIngredients();
+            List<RecipeIngredient> ingredients = ((AutoCraftRecipeAction) action).getIngredients();
             byteBuf.writeByte(ingredients.size());
             writeArray(byteBuf, ingredients, this::writeIngredient);
         }

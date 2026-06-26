@@ -7,6 +7,7 @@ import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerEnumName;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.AutoCraftRecipeAction;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestAction;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestActionType;
+import org.cloudburstmc.protocol.bedrock.data.payload.crafting.RecipeNetId;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -22,7 +23,7 @@ public class BedrockCodecHelper_v448 extends BedrockCodecHelper_v440 {
     protected ItemStackRequestAction readRequestActionData(ByteBuf byteBuf, ItemStackRequestActionType type) {
         if (type == ItemStackRequestActionType.CRAFT_RECIPE_AUTO) {
             return new AutoCraftRecipeAction(
-                    VarInts.readUnsignedInt(byteBuf), byteBuf.readUnsignedByte(), Collections.emptyList(), 0
+                    new RecipeNetId(VarInts.readUnsignedInt(byteBuf)), byteBuf.readUnsignedByte(), Collections.emptyList(), 0
             );
         } else {
             return super.readRequestActionData(byteBuf, type);

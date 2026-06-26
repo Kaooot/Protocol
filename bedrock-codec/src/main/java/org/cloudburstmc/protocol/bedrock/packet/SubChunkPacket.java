@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.math.vector.Vector3i;
-import org.cloudburstmc.protocol.bedrock.data.SubChunkData;
+import org.cloudburstmc.protocol.bedrock.data.payload.chunk.SubChunkPacketData;
 import org.cloudburstmc.protocol.bedrock.data.payload.common.DimensionType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
@@ -22,7 +22,7 @@ public class SubChunkPacket extends AbstractReferenceCounted implements BedrockP
      * @since v485
      */
     private Vector3i centerPos;
-    private List<SubChunkData> subChunkDataList = new ObjectArrayList<>();
+    private List<SubChunkPacketData> subChunkData = new ObjectArrayList<>();
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {
@@ -35,13 +35,13 @@ public class SubChunkPacket extends AbstractReferenceCounted implements BedrockP
 
     @Override
     public SubChunkPacket touch(Object o) {
-        this.subChunkDataList.forEach(SubChunkData::touch);
+        this.subChunkData.forEach(SubChunkPacketData::touch);
         return this;
     }
 
     @Override
     protected void deallocate() {
-        this.subChunkDataList.forEach(SubChunkData::release);
+        this.subChunkData.forEach(SubChunkPacketData::release);
     }
 
     @Override
@@ -49,4 +49,3 @@ public class SubChunkPacket extends AbstractReferenceCounted implements BedrockP
         throw new UnsupportedOperationException("Can not clone reference counted packet");
     }
 }
-

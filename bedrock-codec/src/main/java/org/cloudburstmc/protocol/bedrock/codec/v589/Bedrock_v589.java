@@ -35,6 +35,7 @@ public class Bedrock_v589 extends Bedrock_v582 {
             .build();
 
     protected static final TypeMap<TextProcessingEventOrigin> TEXT_PROCESSING_ORIGINS = TypeMap.builder(TextProcessingEventOrigin.class)
+            .insert(-1, TextProcessingEventOrigin.UNKNOWN)
             .insert(0, TextProcessingEventOrigin.SERVER_CHAT_PUBLIC)
             .insert(1, TextProcessingEventOrigin.SERVER_CHAT_WHISPER)
             .insert(2, TextProcessingEventOrigin.SIGN_TEXT)

@@ -19,7 +19,6 @@ import org.cloudburstmc.nbt.NBTOutputStream;
 import org.cloudburstmc.nbt.NbtType;
 import org.cloudburstmc.nbt.NbtUtils;
 import org.cloudburstmc.protocol.bedrock.data.EncodingSettings;
-import org.cloudburstmc.protocol.bedrock.data.Experiment;
 import org.cloudburstmc.protocol.bedrock.data.ServerSoundHandle;
 import org.cloudburstmc.protocol.bedrock.data.actor.PropertySyncData;
 import org.cloudburstmc.protocol.bedrock.data.ddui.DataStoreUpdate;
@@ -30,16 +29,20 @@ import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerEnumName;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerId;
 import org.cloudburstmc.protocol.bedrock.data.inventory.FullContainerName;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
-import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.ItemDescriptorWithCount;
+import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.RecipeIngredient;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequest;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponseContainerInfo;
 import org.cloudburstmc.protocol.bedrock.data.payload.abilities.SerializedAbilitiesData;
+import org.cloudburstmc.protocol.bedrock.data.payload.common.RedactableString;
 import org.cloudburstmc.protocol.bedrock.data.payload.configuration.PresenceConfiguration;
+import org.cloudburstmc.protocol.bedrock.data.payload.experiment.ExperimentToggle;
+import org.cloudburstmc.protocol.bedrock.data.payload.experiment.Experiments;
 import org.cloudburstmc.protocol.bedrock.data.payload.inventory.transaction.*;
+import org.cloudburstmc.protocol.bedrock.data.payload.inventory.transaction.data.ItemUseInventoryTransaction;
+import org.cloudburstmc.protocol.bedrock.data.payload.structure.StructureSettings;
 import org.cloudburstmc.protocol.bedrock.data.skin.AnimationData;
 import org.cloudburstmc.protocol.bedrock.data.skin.ImageData;
 import org.cloudburstmc.protocol.bedrock.data.skin.SerializedSkin;
-import org.cloudburstmc.protocol.bedrock.data.structure.StructureSettings;
 import org.cloudburstmc.protocol.common.DefinitionRegistry;
 import org.cloudburstmc.protocol.common.NamedDefinition;
 import org.cloudburstmc.protocol.common.util.TriConsumer;
@@ -49,7 +52,6 @@ import org.cloudburstmc.protocol.common.util.VarInts;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.function.*;
@@ -62,7 +64,6 @@ import static org.cloudburstmc.protocol.common.util.Preconditions.checkNotNull;
 public abstract class BaseBedrockCodecHelper implements BedrockCodecHelper {
     protected static final InternalLogger log = InternalLoggerFactory.getInstance(BaseBedrockCodecHelper.class);
 
-    @Getter
     protected final ActorDataTypeMap actorData;
     protected final TypeMap<Class<?>> gameRuleType;
 
@@ -465,14 +466,6 @@ public abstract class BaseBedrockCodecHelper implements BedrockCodecHelper {
         return action;
     }
 
-    public void readExperiments(ByteBuf buffer, List<Experiment> experiments) {
-        throw new UnsupportedOperationException();
-    }
-
-    public void writeExperiments(ByteBuf buffer, List<Experiment> experiments) {
-        throw new UnsupportedOperationException();
-    }
-
     public ItemStackRequest readItemStackRequest(ByteBuf buffer) {
         throw new UnsupportedOperationException();
     }
@@ -534,22 +527,22 @@ public abstract class BaseBedrockCodecHelper implements BedrockCodecHelper {
     }
 
     @Override
-    public ItemDescriptorWithCount readIngredient(ByteBuf buffer) {
+    public RecipeIngredient readIngredient(ByteBuf buffer) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void writeIngredient(ByteBuf buffer, ItemDescriptorWithCount ingredient) {
+    public void writeIngredient(ByteBuf buffer, RecipeIngredient ingredient) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public ContainerEnumName readContainerSlotType(ByteBuf buffer) {
+    public ContainerEnumName readContainerEnumName(ByteBuf buffer) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void writeContainerSlotType(ByteBuf buffer, ContainerEnumName slotType) {
+    public void writeContainerEnumName(ByteBuf buffer, ContainerEnumName slotType) {
         throw new UnsupportedOperationException();
     }
 
@@ -650,6 +643,56 @@ public abstract class BaseBedrockCodecHelper implements BedrockCodecHelper {
 
     @Override
     public PresenceConfiguration readPresenceConfiguration(ByteBuf buffer) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void writeNetworkItemInstanceDescriptor(ByteBuf buffer, ItemData item) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public ItemData readNetworkItemInstanceDescriptor(ByteBuf buffer) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void writeRedactableString(ByteBuf buffer, RedactableString string) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public RedactableString readRedactableString(ByteBuf buffer) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void writeExperiments(ByteBuf buffer, Experiments experiments) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public Experiments readExperiments(ByteBuf buffer) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void writeExperimentToggle(ByteBuf buffer, ExperimentToggle toggle) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public ExperimentToggle readExperimentToggle(ByteBuf buffer) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void writeItemUseInventoryTransaction(ByteBuf buffer, ItemUseInventoryTransaction transaction) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public ItemUseInventoryTransaction readItemUseInventoryTransaction(ByteBuf buffer) {
         throw new UnsupportedOperationException();
     }
 }

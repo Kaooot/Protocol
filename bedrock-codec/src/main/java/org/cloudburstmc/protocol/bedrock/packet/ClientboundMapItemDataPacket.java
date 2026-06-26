@@ -1,15 +1,14 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
-import it.unimi.dsi.fastutil.longs.LongArrayList;
+import it.unimi.dsi.fastutil.ints.IntList;
 import it.unimi.dsi.fastutil.longs.LongList;
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.math.vector.Vector3i;
-import org.cloudburstmc.protocol.bedrock.data.MapDecoration;
-import org.cloudburstmc.protocol.bedrock.data.MapTrackedObject;
 import org.cloudburstmc.protocol.bedrock.data.payload.common.DimensionType;
+import org.cloudburstmc.protocol.bedrock.data.payload.map.MapDecoration;
+import org.cloudburstmc.protocol.bedrock.data.payload.map.MapItemTrackedActorUniqueId;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 import java.util.List;
@@ -18,24 +17,20 @@ import java.util.List;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class ClientboundMapItemDataPacket implements BedrockPacket {
-    private final LongList trackedEntityIds = new LongArrayList();
-    private final List<MapTrackedObject> trackedObjects = new ObjectArrayList<>();
-    private final List<MapDecoration> decorations = new ObjectArrayList<>();
+
     private long mapID;
     private DimensionType dimension;
-    private boolean isLockedMap;
-    /**
-     * The world-relative position of the map's origin.
-     *
-     * @since 1.19.20
-     */
+    private boolean isLocked;
     private Vector3i mapOrigin;
+    private LongList creationMapIDs;
     private int scale;
-    private int textureHeight;
-    private int textureWidth;
-    private int xTexCoordinate;
-    private int yTexCoordinate;
-    private int[] pixels;
+    private List<MapItemTrackedActorUniqueId> trackedActorIDs;
+    private List<MapDecoration> decorations;
+    private Integer width;
+    private Integer height;
+    private Integer startX;
+    private Integer startY;
+    private IntList pixels;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {
@@ -55,4 +50,3 @@ public class ClientboundMapItemDataPacket implements BedrockPacket {
         }
     }
 }
-

@@ -153,4 +153,17 @@ public enum PlayerAuthInputData {
      * @since v766
      */
     SNEAK_CURRENT_RAW,
+    /**
+     * @since v2164
+     */
+    INTERNAL_UPDATE;
+
+    private static final PlayerAuthInputData[] VALUES = values();
+
+    public static PlayerAuthInputData from(int ordinal) {
+        if (ordinal >= 0 && ordinal < VALUES.length) {
+            return VALUES[ordinal];
+        }
+        throw new UnsupportedOperationException("Detected unknown PlayerAuthInputData ID: " + ordinal);
+    }
 }

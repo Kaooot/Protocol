@@ -12,7 +12,7 @@ public class CraftCreativeAction implements ItemStackRequestAction {
      * creativeItemNetworkId is the network ID of the creative item that is being created. This is one of the
      * creative item network IDs sent in the CreativeContent packet.
      */
-    int creativeItemNetworkId;
+    int creativeItemNetId;
     /**
      * @since v712
      */

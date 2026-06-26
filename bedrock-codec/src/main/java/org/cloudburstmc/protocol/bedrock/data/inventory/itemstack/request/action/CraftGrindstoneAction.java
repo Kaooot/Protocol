@@ -1,10 +1,11 @@
 package org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action;
 
 import lombok.Value;
+import org.cloudburstmc.protocol.bedrock.data.payload.crafting.RecipeNetId;
 
 @Value
 public class CraftGrindstoneAction implements ItemStackRequestAction {
-    int recipeNetworkId;
+    RecipeNetId recipeNetId;
     /**
      * @since v712
      */

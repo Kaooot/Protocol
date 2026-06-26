@@ -1,0 +1,108 @@
+package org.cloudburstmc.protocol.bedrock.codec.v2164.serializer;
+
+import io.netty.buffer.ByteBuf;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+import org.cloudburstmc.math.vector.Vector2f;
+import org.cloudburstmc.math.vector.Vector3f;
+import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
+import org.cloudburstmc.protocol.bedrock.codec.v1001.serializer.PlayerAuthInputSerializer_v1001;
+import org.cloudburstmc.protocol.bedrock.data.*;
+import org.cloudburstmc.protocol.bedrock.packet.PlayerAuthInputPacket;
+import org.cloudburstmc.protocol.common.util.VarInts;
+
+/**
+ * @author Kaooot
+ */
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class PlayerAuthInputSerializer_v2164 extends PlayerAuthInputSerializer_v1001 {
+    public static final PlayerAuthInputSerializer_v2164 INSTANCE = new PlayerAuthInputSerializer_v2164();
+
+    @Override
+    public void serialize(ByteBuf buffer, BedrockCodecHelper helper, PlayerAuthInputPacket packet) {
+        buffer.writeFloatLE(packet.getPlayerRotation().getX());
+        buffer.writeFloatLE(packet.getPlayerRotation().getY());
+        helper.writeVector3f(buffer, packet.getPosition());
+        helper.writeVector2f(buffer, packet.getMoveVector());
+        buffer.writeFloatLE(packet.getPlayerRotation().getZ());
+        buffer.writeBoolean(true);
+        helper.writeArray(buffer, packet.getInputData(),
+                (buf, codecHelper, inputData) -> VarInts.writeInt(buf, inputData.ordinal()));
+        VarInts.writeUnsignedInt(buffer, packet.getInputMode().ordinal());
+        VarInts.writeUnsignedInt(buffer, packet.getPlayMode().ordinal());
+        VarInts.writeInt(buffer, packet.getNewInteractionModel().ordinal());
+        helper.writeVector2f(buffer, packet.getInteractRotation());
+        VarInts.writeUnsignedLong(buffer, packet.getClientTick());
+        helper.writeVector3f(buffer, packet.getPosDelta());
+        buffer.writeBoolean(true);
+        helper.writeOptionalNull(buffer, packet.getItemUseTransaction(), this::writePackedLegacyItemUseInventoryTransaction);
+        buffer.writeBoolean(true);
+        helper.writeOptionalNull(buffer, packet.getItemStackRequest(), helper::writeItemStackRequest);
+        final boolean hasPlayerBlockActions = !packet.getPlayerBlockActions().isEmpty();
+        buffer.writeBoolean(true);
+        buffer.writeBoolean(hasPlayerBlockActions);
+        if (hasPlayerBlockActions) {
+            helper.writeArray(buffer, packet.getPlayerBlockActions(), this::writePlayerBlockActionData);
+        }
+        buffer.writeBoolean(true);
+        helper.writeOptionalNull(buffer, packet.getVehicleRotation(), helper::writeVector2f);
+        buffer.writeBoolean(true);
+        helper.writeOptionalNull(buffer, packet.getClientPredictedVehicle(), VarInts::writeLong);
+        helper.writeVector2f(buffer, packet.getAnalogMoveVector());
+        helper.writeVector3f(buffer, packet.getCameraOrientation());
+        helper.writeVector2f(buffer, packet.getRawMoveVector());
+    }
+
+    @Override
+    public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, PlayerAuthInputPacket packet) {
+        final Vector2f playerRotation = helper.readVector2f(buffer);
+        packet.setPosition(helper.readVector3f(buffer));
+        packet.setMoveVector(helper.readVector2f(buffer));
+        final float playerHeadRotation = buffer.readFloatLE();
+        packet.setPlayerRotation(Vector3f.from(playerRotation.getX(), playerRotation.getY(), playerHeadRotation));
+        if (buffer.readBoolean()) {
+            helper.readArray(buffer, packet.getInputData(),
+                    (buf, codecHelper) -> PlayerAuthInputData.from(VarInts.readInt(buf)));
+        }
+        packet.setInputMode(InputMode.from(VarInts.readUnsignedInt(buffer)));
+        packet.setPlayMode(ClientPlayMode.from(VarInts.readUnsignedInt(buffer)));
+        packet.setNewInteractionModel(InputInteractionModel.from(VarInts.readInt(buffer)));
+        packet.setInteractRotation(helper.readVector2f(buffer));
+        packet.setClientTick(VarInts.readUnsignedLong(buffer));
+        packet.setPosDelta(helper.readVector3f(buffer));
+        if (buffer.readBoolean()) {
+            packet.setItemUseTransaction(helper.readOptional(buffer, null, this::readPackedLegacyItemUseInventoryTransaction));
+        }
+        if (buffer.readBoolean()) {
+            packet.setItemStackRequest(helper.readOptional(buffer, null, helper::readItemStackRequest));
+        }
+        if (buffer.readBoolean() && buffer.readBoolean()) {
+            helper.readArray(buffer, packet.getPlayerBlockActions(), this::readPlayerBlockActionData);
+        }
+        if (buffer.readBoolean()) {
+            packet.setVehicleRotation(helper.readOptional(buffer, null, helper::readVector2f));
+        }
+        if (buffer.readBoolean()) {
+            packet.setClientPredictedVehicle(helper.readOptional(buffer, null, VarInts::readLong));
+        }
+        packet.setAnalogMoveVector(helper.readVector2f(buffer));
+        packet.setCameraOrientation(helper.readVector3f(buffer));
+        packet.setRawMoveVector(helper.readVector2f(buffer));
+    }
+
+    @Override
+    protected void writePlayerBlockActionData(ByteBuf buffer, BedrockCodecHelper helper, PlayerBlockActionData data) {
+        VarInts.writeInt(buffer, data.getPlayerActionType().ordinal());
+        helper.writeBlockPosition(buffer, data.getBlockPosition());
+        VarInts.writeInt(buffer, data.getFacing());
+    }
+
+    @Override
+    protected PlayerBlockActionData readPlayerBlockActionData(ByteBuf buffer, BedrockCodecHelper helper) {
+        final PlayerBlockActionData data = new PlayerBlockActionData();
+        data.setPlayerActionType(PlayerActionType.from(VarInts.readInt(buffer)));
+        data.setBlockPosition(helper.readBlockPosition(buffer));
+        data.setFacing(VarInts.readInt(buffer));
+        return data;
+    }
+}

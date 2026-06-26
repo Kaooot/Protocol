@@ -41,13 +41,13 @@ public class StartGameSerializer_v407 extends StartGameSerializer_v388 {
         buffer.writeBoolean(settings.isAchievementsDisabled());
         VarInts.writeInt(buffer, settings.getDayCycleStopTime());
         VarInts.writeInt(buffer, settings.getEducationEditionOffer().ordinal());
-        buffer.writeBoolean(settings.isAreEducationFeaturesEnabled());
-        helper.writeString(buffer, settings.getEducationProductionId());
+        buffer.writeBoolean(settings.isEducationFeaturesEnabled());
+        helper.writeString(buffer, settings.getEducationProductID());
         buffer.writeFloatLE(settings.getRainLevel());
         buffer.writeFloatLE(settings.getLightningLevel());
         buffer.writeBoolean(settings.isHasConfirmedPlatformLockedContent());
-        buffer.writeBoolean(settings.isWasMultiplayerIntendedToBeEnabled());
-        buffer.writeBoolean(settings.isWasLANBroadcastingIntendedToBeEnabled());
+        buffer.writeBoolean(settings.isMultiplayerGameIntent());
+        buffer.writeBoolean(settings.isLanBroadcastIntent());
         VarInts.writeInt(buffer, settings.getXboxLiveBroadcastSetting().ordinal());
         VarInts.writeInt(buffer, settings.getPlatformBroadcastSetting().ordinal());
         buffer.writeBoolean(settings.isCommandsEnabled());
@@ -59,7 +59,7 @@ public class StartGameSerializer_v407 extends StartGameSerializer_v388 {
         buffer.writeIntLE(settings.getServerChunkTickRange());
         buffer.writeBoolean(settings.isHasLockedBehaviorPack());
         buffer.writeBoolean(settings.isHasLockedResourcePack());
-        buffer.writeBoolean(settings.isFromLockedWorldTemplate());
+        buffer.writeBoolean(settings.isFromLockedTemplate());
         buffer.writeBoolean(settings.isUseMsaGamertagsOnly());
         buffer.writeBoolean(settings.isFromWorldTemplate());
         buffer.writeBoolean(settings.isWorldTemplateOptionLocked());
@@ -68,7 +68,7 @@ public class StartGameSerializer_v407 extends StartGameSerializer_v388 {
         buffer.writeIntLE(settings.getLimitedWorldWidth());
         buffer.writeIntLE(settings.getLimitedWorldDepth());
         buffer.writeBoolean(settings.isNetherType());
-        helper.writeOptional(buffer, OptionalBoolean::isPresent, settings.getForceExperimentalGameplay(),
+        helper.writeOptional(buffer, OptionalBoolean::isPresent, settings.getOverrideForceExperimentalGameplay(),
                 (buf, optional) -> buf.writeBoolean(optional.getAsBoolean()));
     }
 
@@ -83,13 +83,13 @@ public class StartGameSerializer_v407 extends StartGameSerializer_v388 {
         settings.setAchievementsDisabled(buffer.readBoolean());
         settings.setDayCycleStopTime(VarInts.readInt(buffer));
         settings.setEducationEditionOffer(EducationEditionOffer.from(VarInts.readInt(buffer)));
-        settings.setAreEducationFeaturesEnabled(buffer.readBoolean());
-        settings.setEducationProductionId(helper.readString(buffer));
+        settings.setEducationFeaturesEnabled(buffer.readBoolean());
+        settings.setEducationProductID(helper.readString(buffer));
         settings.setRainLevel(buffer.readFloatLE());
         settings.setLightningLevel(buffer.readFloatLE());
         settings.setHasConfirmedPlatformLockedContent(buffer.readBoolean());
-        settings.setWasMultiplayerIntendedToBeEnabled(buffer.readBoolean());
-        settings.setWasLANBroadcastingIntendedToBeEnabled(buffer.readBoolean());
+        settings.setMultiplayerGameIntent(buffer.readBoolean());
+        settings.setLanBroadcastIntent(buffer.readBoolean());
         settings.setXboxLiveBroadcastSetting(GamePublishSetting.from(VarInts.readInt(buffer)));
         settings.setPlatformBroadcastSetting(GamePublishSetting.from(VarInts.readInt(buffer)));
         settings.setCommandsEnabled(buffer.readBoolean());
@@ -101,7 +101,7 @@ public class StartGameSerializer_v407 extends StartGameSerializer_v388 {
         settings.setServerChunkTickRange(buffer.readIntLE());
         settings.setHasLockedBehaviorPack(buffer.readBoolean());
         settings.setHasLockedResourcePack(buffer.readBoolean());
-        settings.setFromLockedWorldTemplate(buffer.readBoolean());
+        settings.setFromLockedTemplate(buffer.readBoolean());
         settings.setUseMsaGamertagsOnly(buffer.readBoolean());
         settings.setFromWorldTemplate(buffer.readBoolean());
         settings.setWorldTemplateOptionLocked(buffer.readBoolean());
@@ -110,7 +110,7 @@ public class StartGameSerializer_v407 extends StartGameSerializer_v388 {
         settings.setLimitedWorldWidth(buffer.readIntLE());
         settings.setLimitedWorldDepth(buffer.readIntLE());
         settings.setNetherType(buffer.readBoolean());
-        settings.setForceExperimentalGameplay(helper.readOptional(buffer, OptionalBoolean.empty(), buf -> OptionalBoolean.of(buf.readBoolean())));
+        settings.setOverrideForceExperimentalGameplay(helper.readOptional(buffer, OptionalBoolean.empty(), buf -> OptionalBoolean.of(buf.readBoolean())));
     }
 
     @Override

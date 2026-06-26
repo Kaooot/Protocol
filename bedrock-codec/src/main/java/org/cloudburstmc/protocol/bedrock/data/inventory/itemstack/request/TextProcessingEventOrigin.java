@@ -1,6 +1,7 @@
 package org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request;
 
 public enum TextProcessingEventOrigin {
+    UNKNOWN,
     SERVER_CHAT_PUBLIC,
     SERVER_CHAT_WHISPER,
     SIGN_TEXT,

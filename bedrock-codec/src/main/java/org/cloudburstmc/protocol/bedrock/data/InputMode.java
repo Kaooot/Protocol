@@ -4,11 +4,8 @@ public enum InputMode {
     UNDEFINED,
     MOUSE,
     TOUCH,
-    GAMEPAD,
-    /**
-     * @deprecated since v859
-     */
-    MOTION_CONTROLLER;
+    GAME_PAD,
+    COUNT;
 
     private static final InputMode[] VALUES = values();
 

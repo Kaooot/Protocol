@@ -11,7 +11,7 @@ import org.cloudburstmc.protocol.bedrock.packet.PlayerListPacket;
 public class PlayerListSerializer_v649 extends PlayerListSerializer_v390 {
     public static final PlayerListSerializer_v649 INSTANCE = new PlayerListSerializer_v649();
 
-    @Override
+    /*@Override
     protected void writeEntryBase(ByteBuf buffer, BedrockCodecHelper helper, PlayerListPacket.Entry entry) {
         super.writeEntryBase(buffer, helper, entry);
         buffer.writeBoolean(entry.isSubClient());
@@ -22,5 +22,5 @@ public class PlayerListSerializer_v649 extends PlayerListSerializer_v390 {
         PlayerListPacket.Entry entry = super.readEntryBase(buffer, helper);
         entry.setSubClient(buffer.readBoolean());
         return entry;
-    }
+    }*/
 }

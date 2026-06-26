@@ -13,7 +13,7 @@ import java.util.UUID;
 public class ResourcePacksInfoSerializer_v748 extends ResourcePacksInfoSerializer_v729 {
     public static final ResourcePacksInfoSerializer_v748 INSTANCE = new ResourcePacksInfoSerializer_v748();
 
-    @Override
+   /* @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ResourcePacksInfoPacket packet) {
         buffer.writeBoolean(packet.isResourcePackRequired());
         buffer.writeBoolean(packet.isHasAddonPacks());
@@ -49,5 +49,5 @@ public class ResourcePacksInfoSerializer_v748 extends ResourcePacksInfoSerialize
         String cdnUrl = helper.readString(buffer);
         return new ResourcePacksInfoPacket.Entry(packId, packVersion, packSize, contentKey, subPackName, contentId,
                 isScripting, raytracingCapable, isAddonPack, cdnUrl);
-    }
+    }*/
 }

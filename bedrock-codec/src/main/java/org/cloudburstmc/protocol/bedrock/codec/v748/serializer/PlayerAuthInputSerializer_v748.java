@@ -39,14 +39,14 @@ public class PlayerAuthInputSerializer_v748 extends PlayerAuthInputSerializer_v7
         VarInts.writeUnsignedLong(buffer, packet.getClientTick());
         helper.writeVector3f(buffer, packet.getPosDelta());
         if (packet.getInputData().contains(PlayerAuthInputData.PERFORM_ITEM_INTERACTION)) {
-            this.writePackedLegacyItemUseTransaction(buffer, helper, packet.getItemUseTransaction());
+            this.writePackedLegacyItemUseInventoryTransaction(buffer, helper, packet.getItemUseTransaction());
         }
         if (packet.getInputData().contains(PlayerAuthInputData.PERFORM_ITEM_STACK_REQUEST)) {
             helper.writeItemStackRequest(buffer, packet.getItemStackRequest());
         }
         if (packet.getInputData().contains(PlayerAuthInputData.PERFORM_BLOCK_ACTIONS)) {
-            VarInts.writeInt(buffer, packet.getPlayerActions().size());
-            for (PlayerBlockActionData actionData : packet.getPlayerActions()) {
+            VarInts.writeInt(buffer, packet.getPlayerBlockActions().size());
+            for (PlayerBlockActionData actionData : packet.getPlayerBlockActions()) {
                 writePlayerBlockActionData(buffer, helper, actionData);
             }
         }
@@ -80,13 +80,13 @@ public class PlayerAuthInputSerializer_v748 extends PlayerAuthInputSerializer_v7
         packet.setClientTick(VarInts.readUnsignedLong(buffer));
         packet.setPosDelta(helper.readVector3f(buffer));
         if (packet.getInputData().contains(PlayerAuthInputData.PERFORM_ITEM_INTERACTION)) {
-            packet.setItemUseTransaction(this.readPackedLegacyItemUseTransaction(buffer, helper));
+            packet.setItemUseTransaction(this.readPackedLegacyItemUseInventoryTransaction(buffer, helper));
         }
         if (packet.getInputData().contains(PlayerAuthInputData.PERFORM_ITEM_STACK_REQUEST)) {
             packet.setItemStackRequest(helper.readItemStackRequest(buffer));
         }
         if (packet.getInputData().contains(PlayerAuthInputData.PERFORM_BLOCK_ACTIONS)) {
-            helper.readArray(buffer, packet.getPlayerActions(), VarInts::readInt, this::readPlayerBlockActionData, helper.getEncodingSettings().maxPlayerBlockActionDataSize());
+            helper.readArray(buffer, packet.getPlayerBlockActions(), VarInts::readInt, this::readPlayerBlockActionData, helper.getEncodingSettings().maxPlayerBlockActionDataSize());
         }
         if (packet.getInputData().contains(PlayerAuthInputData.IS_IN_CLIENT_PREDICTED_VEHICLE)) {
             packet.setVehicleRotation(helper.readVector2f(buffer));

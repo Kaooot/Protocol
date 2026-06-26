@@ -1,6 +1,7 @@
 package org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action;
 
 import lombok.Value;
+import org.cloudburstmc.protocol.bedrock.data.payload.crafting.RecipeNetId;
 
 /**
  * Called when renaming an item in an anvil or cartography table. Uses the filter strings present in the request.
@@ -10,7 +11,7 @@ public class CraftRecipeOptionalAction implements ItemStackRequestAction {
     /**
      * For the cartography table, if a certain MULTI recipe is being called, this points to the network ID that was assigned.
      */
-    int recipeNetworkId;
+    RecipeNetId recipeNetId;
     /**
      * Most likely the index in the request's filter strings that this action is using
      */

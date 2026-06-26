@@ -4,10 +4,7 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.ContainerMixDataEntry;
-import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.MaterialReducerDataEntry;
-import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.PotionMixDataEntry;
-import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.recipe.CraftingDataEntry;
+import org.cloudburstmc.protocol.bedrock.data.payload.crafting.*;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 import java.util.List;
@@ -16,12 +13,17 @@ import java.util.List;
 @ToString(doNotUseGetters = true)
 @EqualsAndHashCode(doNotUseGetters = true)
 public class CraftingDataPacket implements BedrockPacket {
-    private final List<CraftingDataEntry> craftingEntries = new ObjectArrayList<>();
+
+    private final List<ShapedRecipePayload> shapedRecipes = new ObjectArrayList<>();
+    private final List<ShapelessRecipePayload> shapelessRecipes = new ObjectArrayList<>();
+    private final List<MultiRecipePayload> multiRecipes = new ObjectArrayList<>();
+    private final List<ShapelessRecipePayload> userDataShapelessRecipes = new ObjectArrayList<>();
+    private final List<ShapelessRecipePayload> shapelessChemistryRecipes = new ObjectArrayList<>();
+    private final List<ShapedRecipePayload> shapedChemistryRecipes = new ObjectArrayList<>();
+    private final List<SmithingTransformRecipePayload> smithingTransformRecipes = new ObjectArrayList<>();
+    private final List<SmithingTrimRecipePayload> smithingTrimRecipes = new ObjectArrayList<>();
     private final List<PotionMixDataEntry> potionMixes = new ObjectArrayList<>();
     private final List<ContainerMixDataEntry> containerMixes = new ObjectArrayList<>();
-    /**
-     * @since v465
-     */
     private final List<MaterialReducerDataEntry> materialReducers = new ObjectArrayList<>();
     private boolean clearRecipes;
 
@@ -43,4 +45,3 @@ public class CraftingDataPacket implements BedrockPacket {
         }
     }
 }
-

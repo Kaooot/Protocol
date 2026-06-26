@@ -2,18 +2,15 @@ package org.cloudburstmc.protocol.bedrock.codec.v388;
 
 import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import org.cloudburstmc.math.vector.Vector3f;
-import org.cloudburstmc.math.vector.Vector3i;
 import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v361.BedrockCodecHelper_v361;
+import org.cloudburstmc.protocol.bedrock.data.payload.structure.Mirror;
+import org.cloudburstmc.protocol.bedrock.data.payload.structure.Rotation;
+import org.cloudburstmc.protocol.bedrock.data.payload.structure.StructureSettings;
 import org.cloudburstmc.protocol.bedrock.data.skin.AnimatedTextureType;
 import org.cloudburstmc.protocol.bedrock.data.skin.AnimationData;
 import org.cloudburstmc.protocol.bedrock.data.skin.ImageData;
 import org.cloudburstmc.protocol.bedrock.data.skin.SerializedSkin;
-import org.cloudburstmc.protocol.bedrock.data.structure.AnimationMode;
-import org.cloudburstmc.protocol.bedrock.data.structure.Mirror;
-import org.cloudburstmc.protocol.bedrock.data.structure.Rotation;
-import org.cloudburstmc.protocol.bedrock.data.structure.StructureSettings;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -109,25 +106,33 @@ public class BedrockCodecHelper_v388 extends BedrockCodecHelper_v361 {
 
     @Override
     public StructureSettings readStructureSettings(ByteBuf buffer) {
-        String paletteName = this.readString(buffer);
-        boolean ignoringEntities = buffer.readBoolean();
-        boolean ignoringBlocks = buffer.readBoolean();
-        Vector3i size = this.readBlockPosition(buffer);
-        Vector3i offset = this.readBlockPosition(buffer);
-        long lastEditedByEntityId = VarInts.readLong(buffer);
-        Rotation rotation = Rotation.from(buffer.readByte());
-        Mirror mirror = Mirror.from(buffer.readByte());
-        float integrityValue = buffer.readFloatLE();
-        int integritySeed = buffer.readIntLE();
-        Vector3f pivot = this.readVector3f(buffer);
-
-        return new StructureSettings(paletteName, ignoringEntities, ignoringBlocks, true, size, offset, lastEditedByEntityId,
-                rotation, mirror, AnimationMode.NONE, 0f, integrityValue, integritySeed, pivot);
+        final StructureSettings structureSettings = new StructureSettings();
+        structureSettings.setStructurePaletteName(this.readString(buffer));
+        structureSettings.setShouldIgnoreEntities(buffer.readBoolean());
+        structureSettings.setShouldIgnoreBlocks(buffer.readBoolean());
+        structureSettings.setStructureSize(this.readBlockPosition(buffer));
+        structureSettings.setStructureOffset(this.readBlockPosition(buffer));
+        structureSettings.setLastEditPlayer(VarInts.readLong(buffer));
+        structureSettings.setRotation(Rotation.from(buffer.readUnsignedByte()));
+        structureSettings.setMirror(Mirror.from(buffer.readUnsignedByte()));
+        structureSettings.setIntegrityValue(buffer.readFloatLE());
+        structureSettings.setIntegritySeed(buffer.readIntLE());
+        structureSettings.setRotationPivot(this.readVector3f(buffer));
+        return structureSettings;
     }
 
     @Override
     public void writeStructureSettings(ByteBuf buffer, StructureSettings settings) {
-        super.writeStructureSettings(buffer, settings);
+        this.writeString(buffer, settings.getStructurePaletteName());
+        buffer.writeBoolean(settings.isShouldIgnoreEntities());
+        buffer.writeBoolean(settings.isShouldIgnoreBlocks());
+        this.writeBlockPosition(buffer, settings.getStructureSize());
+        this.writeBlockPosition(buffer, settings.getStructureOffset());
+        VarInts.writeLong(buffer, settings.getLastEditPlayer());
+        buffer.writeByte(settings.getRotation().ordinal());
+        buffer.writeByte(settings.getMirror().ordinal());
+        buffer.writeFloatLE(settings.getIntegrityValue());
+        buffer.writeIntLE(settings.getIntegritySeed());
         this.writeVector3f(buffer, settings.getRotationPivot());
     }
 }

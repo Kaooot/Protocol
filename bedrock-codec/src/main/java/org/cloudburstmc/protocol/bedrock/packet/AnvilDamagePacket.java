@@ -10,6 +10,9 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class AnvilDamagePacket implements BedrockPacket {
+    /**
+     * @deprecated since v2164
+     */
     private int damageAmount;
     private Vector3i blockPosition;
 

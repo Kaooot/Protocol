@@ -1,20 +1,11 @@
 package org.cloudburstmc.protocol.bedrock.codec.v291.serializer;
 
 import io.netty.buffer.ByteBuf;
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
-import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
-import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.CraftingDataEntryType;
-import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.recipe.*;
-import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.ItemDescriptorWithCount;
 import org.cloudburstmc.protocol.bedrock.packet.CraftingDataPacket;
-import org.cloudburstmc.protocol.common.util.VarInts;
-
-import java.util.List;
-import java.util.UUID;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CraftingDataSerializer_v291 implements BedrockPacketSerializer<CraftingDataPacket> {
@@ -22,17 +13,17 @@ public class CraftingDataSerializer_v291 implements BedrockPacketSerializer<Craf
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, CraftingDataPacket packet) {
-        helper.writeArray(buffer, packet.getCraftingEntries(), this::writeEntry);
-        buffer.writeBoolean(packet.isClearRecipes());
+       /* helper.writeArray(buffer, packet.getCraftingEntries(), this::writeEntry);
+        buffer.writeBoolean(packet.isClearRecipes());*/
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, CraftingDataPacket packet) {
-        helper.readArray(buffer, packet.getCraftingEntries(), this::readEntry);
-        packet.setClearRecipes(buffer.readBoolean());
+        /*helper.readArray(buffer, packet.getCraftingEntries(), this::readEntry);
+        packet.setClearRecipes(buffer.readBoolean());*/
     }
 
-    protected CraftingDataEntry readEntry(ByteBuf buffer, BedrockCodecHelper helper) {
+    /*protected CraftingDataEntry readEntry(ByteBuf buffer, BedrockCodecHelper helper) {
         int typeInt = VarInts.readInt(buffer);
         CraftingDataEntryType type = CraftingDataEntryType.byId(typeInt);
 
@@ -141,5 +132,5 @@ public class CraftingDataSerializer_v291 implements BedrockPacketSerializer<Craf
 
     protected void writeMultiRecipe(ByteBuf buffer, BedrockCodecHelper helper, MultiRecipe data) {
         helper.writeUuid(buffer, data.getRecipeID());
-    }
+    }*/
 }

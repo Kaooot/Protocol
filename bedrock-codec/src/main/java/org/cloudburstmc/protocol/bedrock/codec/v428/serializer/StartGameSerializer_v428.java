@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import org.cloudburstmc.nbt.NbtMap;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v419.serializer.StartGameSerializer_v419;
-import org.cloudburstmc.protocol.bedrock.data.BlockPropertyData;
+import org.cloudburstmc.protocol.bedrock.data.ServerBlockProperty;
 import org.cloudburstmc.protocol.bedrock.data.GameType;
 import org.cloudburstmc.protocol.bedrock.data.ServerAuthMovementMode;
 import org.cloudburstmc.protocol.bedrock.data.SyncedPlayerMovementSettings;
@@ -29,7 +29,7 @@ public class StartGameSerializer_v428 extends StartGameSerializer_v419 {
 
         this.writeLevelSettings(buffer, helper, packet.getSettings());
 
-        helper.writeString(buffer, packet.getLevelId());
+        helper.writeString(buffer, packet.getLevelID());
         helper.writeString(buffer, packet.getLevelName());
         helper.writeString(buffer, packet.getTemplateContentIdentity());
         buffer.writeBoolean(packet.isTrial());
@@ -58,7 +58,7 @@ public class StartGameSerializer_v428 extends StartGameSerializer_v419 {
 
         this.readLevelSettings(buffer, helper, packet.getSettings());
 
-        packet.setLevelId(helper.readString(buffer));
+        packet.setLevelID(helper.readString(buffer));
         packet.setLevelName(helper.readString(buffer));
         packet.setTemplateContentIdentity(helper.readString(buffer));
         packet.setTrial(buffer.readBoolean());
@@ -69,7 +69,7 @@ public class StartGameSerializer_v428 extends StartGameSerializer_v419 {
         helper.readArray(buffer, packet.getBlockProperties(), (buf, packetHelper) -> {
             String name = packetHelper.readString(buf);
             NbtMap properties = packetHelper.readTag(buf, NbtMap.class);
-            return new BlockPropertyData(name, properties);
+            return new ServerBlockProperty(name, properties);
         });
 
         this.readItemDefinitions(buffer, helper, packet.getItemDefinitions());

@@ -11,7 +11,7 @@ import java.util.UUID;
 public class ResourcePacksInfoSerializer_v712 extends ResourcePacksInfoSerializer_v622 {
     public static final ResourcePacksInfoSerializer_v712 INSTANCE = new ResourcePacksInfoSerializer_v712();
 
-    @Override
+    /*@Override
     public void writeEntry(ByteBuf buffer, BedrockCodecHelper helper, ResourcePacksInfoPacket.Entry entry, boolean resource) {
         Objects.requireNonNull(entry, "ResourcePacketInfoPacket entry was null");
 
@@ -41,5 +41,5 @@ public class ResourcePacksInfoSerializer_v712 extends ResourcePacksInfoSerialize
         boolean raytracingCapable = resource && buffer.readBoolean();
         return new ResourcePacksInfoPacket.Entry(packId, packVersion, packSize, contentKey, subPackName, contentId,
                 isScripting, raytracingCapable, isAddonPack, null);
-    }
+    }*/
 }

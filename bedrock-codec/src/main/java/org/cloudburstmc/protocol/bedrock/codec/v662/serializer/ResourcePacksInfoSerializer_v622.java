@@ -13,23 +13,23 @@ public class ResourcePacksInfoSerializer_v622 extends ResourcePacksInfoSerialize
     
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ResourcePacksInfoPacket packet) {
-        buffer.writeBoolean(packet.isResourcePackRequired());
-        buffer.writeBoolean(packet.isHasAddonPacks());
-        buffer.writeBoolean(packet.isHasScripts());
-        buffer.writeBoolean(packet.isForceServerPacksEnabled());
-        writePacks(buffer, packet.getBehaviorPacks(), helper, false);
-        writePacks(buffer, packet.getResourcePacks(), helper, true);
-        this.writeCDNEntries(buffer, packet, helper);
+/*//        buffer.writeBoolean(packet.isResourcePackRequired());
+//        buffer.writeBoolean(packet.isHasAddonPacks());
+//        buffer.writeBoolean(packet.isHasScripts());
+//        buffer.writeBoolean(packet.isForceServerPacksEnabled());
+//        writePacks(buffer, packet.getBehaviorPacks(), helper, false);
+//        writePacks(buffer, packet.getResourcePacks(), helper, true);
+//        this.writeCDNEntries(buffer, packet, helper);*/
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ResourcePacksInfoPacket packet) {
-        packet.setResourcePackRequired(buffer.readBoolean());
+        /*packet.setResourcePackRequired(buffer.readBoolean());
         packet.setHasAddonPacks(buffer.readBoolean());
         packet.setHasScripts(buffer.readBoolean());
         packet.setForceServerPacksEnabled(buffer.readBoolean());
         readPacks(buffer, packet.getBehaviorPacks(), helper, false);
         readPacks(buffer, packet.getResourcePacks(), helper, true);
-        this.readCDNEntries(buffer, packet, helper);
+        this.readCDNEntries(buffer, packet, helper);*/
     }
 }

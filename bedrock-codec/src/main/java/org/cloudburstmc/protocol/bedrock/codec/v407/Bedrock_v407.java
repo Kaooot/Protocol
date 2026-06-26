@@ -108,13 +108,13 @@ public class Bedrock_v407 extends Bedrock_v390 {
             .insert(4, ItemStackRequestActionType.DESTROY)
             .insert(5, ItemStackRequestActionType.CONSUME)
             .insert(6, ItemStackRequestActionType.CREATE)
-            .insert(7, ItemStackRequestActionType.LAB_TABLE_COMBINE)
-            .insert(8, ItemStackRequestActionType.BEACON_PAYMENT)
+            .insert(7, ItemStackRequestActionType.SCREEN_LAB_TABLE_COMBINE)
+            .insert(8, ItemStackRequestActionType.SCREEN_BEACON_PAYMENT)
             .insert(9, ItemStackRequestActionType.CRAFT_RECIPE)
             .insert(10, ItemStackRequestActionType.CRAFT_RECIPE_AUTO)
             .insert(11, ItemStackRequestActionType.CRAFT_CREATIVE)
-            .insert(12, ItemStackRequestActionType.CRAFT_NON_IMPLEMENTED_DEPRECATED)
-            .insert(13, ItemStackRequestActionType.CRAFT_RESULTS_DEPRECATED)
+            .insert(12, ItemStackRequestActionType.CRAFT_NON_IMPLEMENTED)
+            .insert(13, ItemStackRequestActionType.CRAFT_RESULTS)
             .build();
 
     protected static final TypeMap<ContainerEnumName> CONTAINER_SLOT_TYPES = TypeMap.builder(ContainerEnumName.class)
@@ -210,6 +210,6 @@ public class Bedrock_v407 extends Bedrock_v390 {
             .registerPacket(PositionTrackingDBServerBroadcastPacket::new, PositionTrackingDBServerBroadcastSerializer_v407.INSTANCE, 153, PacketRecipient.CLIENT)
             .registerPacket(PositionTrackingDBClientRequestPacket::new, PositionTrackingDBClientRequestSerializer_v407.INSTANCE, 154, PacketRecipient.SERVER)
             .registerPacket(DebugInfoPacket::new, DebugInfoSerializer_v407.INSTANCE, 155, PacketRecipient.BOTH)
-            .registerPacket(PacketViolationWarningPacket::new, PacketViolationWarningSerializer_v407.INSTANCE, 156, PacketRecipient.SERVER)
+            .registerPacket(PacketViolationWarningPacket::new, PacketViolationWarningSerializer_v407.INSTANCE, 156, PacketRecipient.BOTH)
             .build();
 }

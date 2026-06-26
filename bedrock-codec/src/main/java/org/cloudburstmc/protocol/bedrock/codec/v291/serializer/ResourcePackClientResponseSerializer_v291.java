@@ -21,7 +21,7 @@ public class ResourcePackClientResponseSerializer_v291 implements BedrockPacketS
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ResourcePackClientResponsePacket packet) {
-        packet.setResponse(ResourcePackResponse.from(buffer.readUnsignedByte()));
+        packet.setResponse(ResourcePackResponse.fromLegacy(buffer.readUnsignedByte()));
         helper.readArray(buffer, packet.getDownloadingPacks(), ByteBuf::readUnsignedShortLE, helper::readString);
     }
 }

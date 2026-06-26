@@ -11,6 +11,6 @@ public class CraftNonImplementedAction implements ItemStackRequestAction {
 
     @Override
     public ItemStackRequestActionType getType() {
-        return ItemStackRequestActionType.CRAFT_NON_IMPLEMENTED_DEPRECATED;
+        return ItemStackRequestActionType.CRAFT_NON_IMPLEMENTED;
     }
 }

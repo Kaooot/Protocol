@@ -4,6 +4,9 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.math.vector.Vector3f;
+import org.cloudburstmc.protocol.bedrock.data.payload.move.MovePlayerTeleportData;
+import org.cloudburstmc.protocol.bedrock.data.payload.move.PositionMode;
+import org.cloudburstmc.protocol.bedrock.data.payload.move.TeleportationCause;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
@@ -16,8 +19,7 @@ public class MovePlayerPacket implements BedrockPacket {
     private PositionMode positionMode;
     private boolean onGround;
     private long ridingRuntimeID;
-    private TeleportationCause teleportationCause;
-    private int sourceActorType;
+    private MovePlayerTeleportData teleportData;
     private long tick;
 
     @Override
@@ -27,39 +29,6 @@ public class MovePlayerPacket implements BedrockPacket {
 
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.MOVE_PLAYER;
-    }
-
-    public enum PositionMode {
-        NORMAL,
-        RESPAWN,
-        TELEPORT,
-        ONLY_HEAD_ROT;
-
-        private static final PositionMode[] VALUES = values();
-
-        public static PositionMode from(int ordinal) {
-            if (ordinal >= 0 && ordinal < VALUES.length) {
-                return VALUES[ordinal];
-            }
-            throw new UnsupportedOperationException("Detected unknown PositionMode ID: " + ordinal);
-        }
-    }
-
-    public enum TeleportationCause {
-        UNKNOWN,
-        PROJECTILE,
-        CHORUS_FRUIT,
-        COMMAND,
-        BEHAVIOR;
-
-        private static final TeleportationCause[] VALUES = values();
-
-        public static TeleportationCause from(int ordinal) {
-            if (ordinal >= 0 && ordinal < VALUES.length) {
-                return VALUES[ordinal];
-            }
-            throw new UnsupportedOperationException("Detected unknown TeleportationCause ID: " + ordinal);
-        }
     }
 
     @Override

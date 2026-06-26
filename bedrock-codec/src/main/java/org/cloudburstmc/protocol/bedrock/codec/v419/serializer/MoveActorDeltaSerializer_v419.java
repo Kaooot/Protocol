@@ -10,18 +10,18 @@ import org.cloudburstmc.protocol.common.util.TriConsumer;
 public class MoveActorDeltaSerializer_v419 extends MoveActorDeltaSerializer_v388 {
 
     protected static final TriConsumer<ByteBuf, BedrockCodecHelper, MoveActorDeltaPacket> READER_X =
-            (buffer, helper, packet) -> packet.getData().setNewPositionX(buffer.readFloatLE());
+            (buffer, helper, packet) -> packet.getMoveData().setNewPositionX(buffer.readFloatLE());
     protected static final TriConsumer<ByteBuf, BedrockCodecHelper, MoveActorDeltaPacket> READER_Y =
-            (buffer, helper, packet) -> packet.getData().setNewPositionY(buffer.readFloatLE());
+            (buffer, helper, packet) -> packet.getMoveData().setNewPositionY(buffer.readFloatLE());
     protected static final TriConsumer<ByteBuf, BedrockCodecHelper, MoveActorDeltaPacket> READER_Z =
-            (buffer, helper, packet) -> packet.getData().setNewPositionZ(buffer.readFloatLE());
+            (buffer, helper, packet) -> packet.getMoveData().setNewPositionZ(buffer.readFloatLE());
 
     protected static final TriConsumer<ByteBuf, BedrockCodecHelper, MoveActorDeltaPacket> WRITER_X =
-            (buffer, helper, packet) -> buffer.writeFloatLE(packet.getData().getNewPositionX());
+            (buffer, helper, packet) -> buffer.writeFloatLE(packet.getMoveData().getNewPositionX());
     protected static final TriConsumer<ByteBuf, BedrockCodecHelper, MoveActorDeltaPacket> WRITER_Y =
-            (buffer, helper, packet) -> buffer.writeFloatLE(packet.getData().getNewPositionY());
+            (buffer, helper, packet) -> buffer.writeFloatLE(packet.getMoveData().getNewPositionY());
     protected static final TriConsumer<ByteBuf, BedrockCodecHelper, MoveActorDeltaPacket> WRITER_Z =
-            (buffer, helper, packet) -> buffer.writeFloatLE(packet.getData().getNewPositionZ());
+            (buffer, helper, packet) -> buffer.writeFloatLE(packet.getMoveData().getNewPositionZ());
 
     public static final MoveActorDeltaSerializer_v419 INSTANCE = new MoveActorDeltaSerializer_v419();
 

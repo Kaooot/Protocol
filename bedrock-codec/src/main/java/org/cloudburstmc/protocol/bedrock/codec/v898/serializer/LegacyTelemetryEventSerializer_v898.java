@@ -23,7 +23,6 @@ public class LegacyTelemetryEventSerializer_v898 implements BedrockPacketSeriali
         VarInts.writeLong(buffer, packet.getTargetActorID());
         VarInts.writeInt(buffer, packet.getEventData().getType().ordinal());
         buffer.writeBoolean(packet.isUsePlayerID());
-        VarInts.writeUnsignedInt(buffer, packet.getEventData().getType().ordinal());
         this.writeEventData(buffer, helper, packet.getEventData());
     }
 
@@ -32,11 +31,11 @@ public class LegacyTelemetryEventSerializer_v898 implements BedrockPacketSeriali
         packet.setTargetActorID(VarInts.readLong(buffer));
         final LegacyTelemetryEventPacket.Type type = LegacyTelemetryEventPacket.Type.from(VarInts.readInt(buffer));
         packet.setUsePlayerID(buffer.readBoolean());
-        VarInts.readUnsignedInt(buffer);
         packet.setEventData(this.readEventData(buffer, helper, type));
     }
 
     protected void writeEventData(ByteBuf buffer, BedrockCodecHelper helper, EventData eventData) {
+        VarInts.writeUnsignedInt(buffer, eventData.getType().getNewId());
         switch (eventData.getType()) {
             case ACHIEVEMENT:
                 this.writeAchievement(buffer, helper, (Achievement) eventData);
@@ -101,6 +100,7 @@ public class LegacyTelemetryEventSerializer_v898 implements BedrockPacketSeriali
             case ITEM_USED:
                 this.writeItemUsed(buffer, helper, (ItemUsed) eventData);
                 break;
+            case AGENT_COMMAND_OBSOLETE:
             case AGENT_CREATED:
             case HONEY_HARVESTED:
             case STRIDER_RIDDEN_IN_LAVA_IN_OVERWORLD:
@@ -112,6 +112,7 @@ public class LegacyTelemetryEventSerializer_v898 implements BedrockPacketSeriali
     }
 
     protected EventData readEventData(ByteBuf buffer, BedrockCodecHelper helper, LegacyTelemetryEventPacket.Type type) {
+        VarInts.readUnsignedInt(buffer);
         switch (type) {
             case ACHIEVEMENT:
                 return this.readAchievement(buffer, helper);
@@ -155,6 +156,7 @@ public class LegacyTelemetryEventSerializer_v898 implements BedrockPacketSeriali
                 return this.readCodeBuilderScoreboard(buffer, helper);
             case ITEM_USED:
                 return this.readItemUsed(buffer, helper);
+            case AGENT_COMMAND_OBSOLETE:
             case AGENT_CREATED:
             case HONEY_HARVESTED:
             case STRIDER_RIDDEN_IN_LAVA_IN_OVERWORLD:

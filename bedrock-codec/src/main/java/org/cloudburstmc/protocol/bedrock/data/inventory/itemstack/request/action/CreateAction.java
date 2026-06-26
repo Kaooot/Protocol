@@ -12,7 +12,7 @@ import lombok.Value;
  */
 @Value
 public class CreateAction implements ItemStackRequestAction {
-    int slot;
+    int resultsIndex;
 
     @Override
     public ItemStackRequestActionType getType() {

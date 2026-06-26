@@ -1,15 +1,10 @@
 package org.cloudburstmc.protocol.bedrock.codec.v567.serializer;
 
-import io.netty.buffer.ByteBuf;
-import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v465.serializer.CraftingDataSerializer_v465;
-import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.CraftingDataEntryType;
-import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.recipe.*;
-import org.cloudburstmc.protocol.common.util.VarInts;
 
 public class CraftingDataSerializer_v567 extends CraftingDataSerializer_v465 {
 
-    @Override
+   /* @Override
     protected CraftingDataEntry readEntry(ByteBuf buffer, BedrockCodecHelper helper) {
         int typeInt = VarInts.readInt(buffer);
         CraftingDataEntryType type = CraftingDataEntryType.byId(typeInt);
@@ -83,5 +78,5 @@ public class CraftingDataSerializer_v567 extends CraftingDataSerializer_v465 {
         helper.writeItemInstance(buffer, data.getResult());
         helper.writeString(buffer, data.getRecipeTag());
         VarInts.writeUnsignedInt(buffer, data.getNetId());
-    }
+    }*/
 }

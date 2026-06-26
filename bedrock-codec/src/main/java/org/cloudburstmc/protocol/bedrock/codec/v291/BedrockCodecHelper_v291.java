@@ -23,6 +23,7 @@ import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataFormat;
 import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataMap;
 import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataType;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
+import org.cloudburstmc.protocol.bedrock.data.payload.common.RedactableString;
 import org.cloudburstmc.protocol.bedrock.transformer.ActorDataTransformer;
 import org.cloudburstmc.protocol.common.util.TriConsumer;
 import org.cloudburstmc.protocol.common.util.TypeMap;
@@ -413,5 +414,17 @@ public class BedrockCodecHelper_v291 extends BaseBedrockCodecHelper {
     @Override
     public <T> void writeOptionalNull(ByteBuf buffer, T object, TriConsumer<ByteBuf, BedrockCodecHelper, T> consumer) {
         this.writeOptional(buffer, Objects::nonNull, object, consumer);
+    }
+
+    @Override
+    public void writeRedactableString(ByteBuf buffer, RedactableString string) {
+        this.writeString(buffer, string.getUnredacted());
+    }
+
+    @Override
+    public RedactableString readRedactableString(ByteBuf buffer) {
+        final RedactableString string = new RedactableString();
+        string.setUnredacted(this.readString(buffer));
+        return string;
     }
 }

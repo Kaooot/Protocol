@@ -91,5 +91,18 @@ public enum PlayerActionType {
     /**
      * @since v748
      */
-    START_USING_ITEM
+    START_USING_ITEM,
+    /**
+     * @since v2164
+     */
+    INTERNAL_UPDATE;
+
+    private static final PlayerActionType[] VALUES = values();
+
+    public static PlayerActionType from(int ordinal) {
+        if (ordinal >= 0 && ordinal < VALUES.length) {
+            return VALUES[ordinal];
+        }
+        throw new UnsupportedOperationException("Detected unknown PlayerActionType ID: " + ordinal);
+    }
 }

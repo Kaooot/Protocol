@@ -1,6 +1,8 @@
 package org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response;
 
 import lombok.*;
+import org.cloudburstmc.protocol.bedrock.data.payload.common.RedactableString;
+import org.cloudburstmc.protocol.bedrock.data.payload.inventory.net.ItemStackNetId;
 
 /**
  * ItemEntry holds information on what item stack should be present in a specific slot.
@@ -16,21 +18,17 @@ public class ItemStackResponseSlotInfo {
     /**
      * itemStackNetId is the network ID of the new stack at a specific slot.
      */
-    private int itemStackNetId;
+    private ItemStackNetId itemStackNetId;
 
     /**
      * Holds the final custom name of a renamed item, if relevant.
      *
      * @since v422
      */
-    private @NonNull String customName;
+    private @NonNull RedactableString customName;
 
     /**
      * @since v428
      */
     private int durabilityCorrection;
-    /**
-     * @since v766
-     */
-    private String filteredCustomName = "";
 }

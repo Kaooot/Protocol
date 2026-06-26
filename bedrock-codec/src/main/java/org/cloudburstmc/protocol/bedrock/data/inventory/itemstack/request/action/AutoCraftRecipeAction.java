@@ -1,7 +1,8 @@
 package org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action;
 
 import lombok.Value;
-import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.ItemDescriptorWithCount;
+import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.RecipeIngredient;
+import org.cloudburstmc.protocol.bedrock.data.payload.crafting.RecipeNetId;
 
 import java.util.List;
 
@@ -11,7 +12,7 @@ import java.util.List;
  */
 @Value
 public class AutoCraftRecipeAction implements RecipeItemStackRequestAction {
-    int recipeNetworkId;
+    RecipeNetId recipeNetId;
     /**
      * @since v448
      */
@@ -20,7 +21,7 @@ public class AutoCraftRecipeAction implements RecipeItemStackRequestAction {
     /**
      * @since v557
      */
-    List<ItemDescriptorWithCount> ingredients;
+    List<RecipeIngredient> ingredients;
 
     /**
      * @since v712

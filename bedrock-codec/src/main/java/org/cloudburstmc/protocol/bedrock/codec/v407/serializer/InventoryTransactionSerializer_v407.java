@@ -1,18 +1,14 @@
 package org.cloudburstmc.protocol.bedrock.codec.v407.serializer;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufUtil;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v340.serializer.InventoryTransactionSerializer_v340;
-import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerEnumName;
 import org.cloudburstmc.protocol.bedrock.data.payload.inventory.net.ItemStackLegacyRequestId;
 import org.cloudburstmc.protocol.bedrock.data.payload.inventory.transaction.LegacySetSlot;
 import org.cloudburstmc.protocol.bedrock.packet.InventoryTransactionPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
-
-import java.util.Arrays;
 
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public class InventoryTransactionSerializer_v407 extends InventoryTransactionSerializer_v340 {
@@ -49,13 +45,13 @@ public class InventoryTransactionSerializer_v407 extends InventoryTransactionSer
     }
 
     protected void writeLegacySetSlot(ByteBuf buffer, BedrockCodecHelper helper, LegacySetSlot slot) {
-        buffer.writeByte(slot.getContainerEnum().ordinal());
+        helper.writeContainerEnumName(buffer, slot.getContainerEnum());
         helper.writeByteArray(buffer, slot.getSlots());
     }
 
     protected LegacySetSlot readLegacySetSlot(ByteBuf buffer, BedrockCodecHelper helper) {
         final LegacySetSlot slot = new LegacySetSlot();
-        slot.setContainerEnum(ContainerEnumName.values()[buffer.readUnsignedByte()]);
+        slot.setContainerEnum(helper.readContainerEnumName(buffer));
         slot.setSlots(helper.readByteArray(buffer));
         return slot;
     }

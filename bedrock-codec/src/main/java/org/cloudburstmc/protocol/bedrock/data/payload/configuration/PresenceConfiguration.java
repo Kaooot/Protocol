@@ -9,11 +9,11 @@ import lombok.Data;
 public class PresenceConfiguration {
 
     /**
-     * @deprecated since v1011
+     * @deprecated since v2164
      */
     private String experienceName;
     /**
-     * @deprecated since v1011
+     * @deprecated since v2164
      */
     private String worldName;
     /**

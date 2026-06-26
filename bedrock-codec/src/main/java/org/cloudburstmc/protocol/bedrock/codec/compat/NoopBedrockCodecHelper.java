@@ -9,13 +9,10 @@ import org.cloudburstmc.protocol.bedrock.data.command.CommandEnumData;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandOriginData;
 import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataMap;
 import org.cloudburstmc.protocol.bedrock.data.actor.ActorLink;
-import org.cloudburstmc.protocol.bedrock.data.ddui.DataStoreChange;
-import org.cloudburstmc.protocol.bedrock.data.ddui.DataStoreChangeInfo;
-import org.cloudburstmc.protocol.bedrock.data.ddui.DataStoreRemoval;
 import org.cloudburstmc.protocol.bedrock.data.ddui.DataStoreUpdate;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
+import org.cloudburstmc.protocol.bedrock.data.payload.structure.StructureSettings;
 import org.cloudburstmc.protocol.bedrock.data.skin.SerializedSkin;
-import org.cloudburstmc.protocol.bedrock.data.structure.StructureSettings;
 import org.cloudburstmc.protocol.common.util.TriConsumer;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 

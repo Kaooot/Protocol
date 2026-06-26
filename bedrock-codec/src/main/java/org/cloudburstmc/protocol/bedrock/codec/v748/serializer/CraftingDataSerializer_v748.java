@@ -1,26 +1,14 @@
 package org.cloudburstmc.protocol.bedrock.codec.v748.serializer;
 
-import io.netty.buffer.ByteBuf;
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v685.serializer.CraftingDataSerializer_v685;
-import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
-import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.CraftingDataEntryType;
-import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.RecipeUnlockingRequirement;
-import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.recipe.ShapelessRecipe;
-import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.ItemDescriptorWithCount;
-import org.cloudburstmc.protocol.common.util.VarInts;
-
-import java.util.List;
-import java.util.UUID;
 
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public class CraftingDataSerializer_v748 extends CraftingDataSerializer_v685 {
     public static final CraftingDataSerializer_v748 INSTANCE = new CraftingDataSerializer_v748();
 
-    @Override
+   /* @Override
     protected ShapelessRecipe readShapelessRecipe(ByteBuf buffer, BedrockCodecHelper helper, CraftingDataEntryType type) {
         String recipeId = helper.readString(buffer);
         List<ItemDescriptorWithCount> inputs = new ObjectArrayList<>();
@@ -56,5 +44,5 @@ public class CraftingDataSerializer_v748 extends CraftingDataSerializer_v685 {
             this.writeRequirement(buffer, helper, data);
         }
         VarInts.writeUnsignedInt(buffer, data.getNetId());
-    }
+    }*/
 }
