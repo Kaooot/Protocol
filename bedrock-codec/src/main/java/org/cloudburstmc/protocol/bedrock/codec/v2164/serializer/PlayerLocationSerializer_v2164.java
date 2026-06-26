@@ -21,12 +21,14 @@ public class PlayerLocationSerializer_v2164 extends PlayerLocationSerializer_v80
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, PlayerLocationPacket packet) {
-        super.serialize(buffer, helper, packet);
+        VarInts.writeLong(buffer, packet.getTargetActorID());
+        this.writeLocationVariant(buffer, helper, packet.getLocation());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, PlayerLocationPacket packet) {
-        super.deserialize(buffer, helper, packet);
+        packet.setTargetActorID(VarInts.readLong(buffer));
+        packet.setLocation(this.readLocationVariant(buffer, helper, null));
     }
 
     @Override

@@ -65,6 +65,7 @@ public class Bedrock_v2164 extends Bedrock_v1001 {
 
     // TODO scoreboard packets
     // TODO debug attributes issue
+    // TODO skins
     public static final BedrockCodec CODEC = Bedrock_v1001.CODEC.toBuilder()
             .raknetProtocolVersion(11)
             .protocolVersion(2164)
@@ -89,7 +90,7 @@ public class Bedrock_v2164 extends Bedrock_v1001 {
             .updateSerializer(PlayerUpdateEntityOverridesPacket.class, PlayerUpdateEntityOverridesSerializer_v2164.INSTANCE)
             .updateSerializer(PlaySoundPacket.class, PlaySoundSerializer_v2164.INSTANCE)
             .updateSerializer(ResourcePackClientResponsePacket.class, ResourcePackClientResponseSerializer_v2164.INSTANCE)
-            .updateSerializer(ResourcePacksInfoPacket.class, ResourcePacksInfoSerializer_v2164.INSTANCE)
+            .updateSerializer(ResourcePacksInfoPacket.class, ResourcePacksInfoSerializer_v2164.INSTANCE) // TODO backwards compatibility
             .updateSerializer(ServerboundDiagnosticsPacket.class, new ServerboundDiagnosticsSerializer_v2164(MEMORY_CATEGORY_TYPES))
             .updateSerializer(ServerPresenceInfoPacket.class, ServerPresenceInfoSerializer_v2164.INSTANCE)
             .updateSerializer(StartGamePacket.class, StartGameSerializer_v2164.INSTANCE)
