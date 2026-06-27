@@ -5,13 +5,12 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
-import org.cloudburstmc.protocol.bedrock.data.ScoreboardIdentityPacketType;
+import org.cloudburstmc.protocol.bedrock.data.payload.scoreboard.ScoreboardIdentityPacketInfo;
+import org.cloudburstmc.protocol.bedrock.data.payload.scoreboard.ScoreboardIdentityPacketType;
 import org.cloudburstmc.protocol.bedrock.packet.SetScoreboardIdentityPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
 import java.util.UUID;
-
-import static org.cloudburstmc.protocol.bedrock.packet.SetScoreboardIdentityPacket.Entry;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class SetScoreboardIdentitySerializer_v291 implements BedrockPacketSerializer<SetScoreboardIdentityPacket> {
@@ -22,10 +21,10 @@ public class SetScoreboardIdentitySerializer_v291 implements BedrockPacketSerial
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, SetScoreboardIdentityPacket packet) {
         ScoreboardIdentityPacketType scoreboardIdentityPacketType = packet.getScoreboardIdentityPacketType();
         buffer.writeByte(scoreboardIdentityPacketType.ordinal());
-        helper.writeArray(buffer, packet.getScoreboardIdentifyInfo(), (buf, entry) -> {
+        helper.writeArray(buffer, packet.getScoreboardIdentityInfo(), (buf, entry) -> {
             VarInts.writeLong(buffer, entry.getScoreboardId());
-            if (scoreboardIdentityPacketType == ScoreboardIdentityPacketType.ADD) {
-                helper.writeUuid(buffer, entry.getPlayerUniqueId());
+            if (scoreboardIdentityPacketType == ScoreboardIdentityPacketType.UPDATE) {
+                helper.writeUuid(buffer, entry.getUuid());
             }
         });
     }
@@ -34,13 +33,16 @@ public class SetScoreboardIdentitySerializer_v291 implements BedrockPacketSerial
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, SetScoreboardIdentityPacket packet) {
         ScoreboardIdentityPacketType scoreboardIdentityPacketType = ScoreboardIdentityPacketType.values()[buffer.readUnsignedByte()];
         packet.setScoreboardIdentityPacketType(scoreboardIdentityPacketType);
-        helper.readArray(buffer, packet.getScoreboardIdentifyInfo(), buf -> {
+        helper.readArray(buffer, packet.getScoreboardIdentityInfo(), buf -> {
             long scoreboardId = VarInts.readLong(buffer);
             UUID uuid = null;
-            if (scoreboardIdentityPacketType == ScoreboardIdentityPacketType.ADD) {
+            if (scoreboardIdentityPacketType == ScoreboardIdentityPacketType.UPDATE) {
                 uuid = helper.readUuid(buffer);
             }
-            return new Entry(scoreboardId, uuid);
+            final ScoreboardIdentityPacketInfo info = new ScoreboardIdentityPacketInfo();
+            info.setScoreboardId(scoreboardId);
+            info.setUuid(uuid);
+            return info;
         });
     }
 }

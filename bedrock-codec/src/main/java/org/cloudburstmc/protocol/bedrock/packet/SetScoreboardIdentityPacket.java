@@ -4,19 +4,19 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import lombok.Value;
-import org.cloudburstmc.protocol.bedrock.data.ScoreboardIdentityPacketType;
+import org.cloudburstmc.protocol.bedrock.data.payload.scoreboard.ScoreboardIdentityPacketInfo;
+import org.cloudburstmc.protocol.bedrock.data.payload.scoreboard.ScoreboardIdentityPacketType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 import java.util.List;
-import java.util.UUID;
 
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class SetScoreboardIdentityPacket implements BedrockPacket {
-    private final List<Entry> scoreboardIdentifyInfo = new ObjectArrayList<>();
+
     private ScoreboardIdentityPacketType scoreboardIdentityPacketType;
+    private final List<ScoreboardIdentityPacketInfo> scoreboardIdentityInfo = new ObjectArrayList<>();
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {
@@ -25,12 +25,6 @@ public class SetScoreboardIdentityPacket implements BedrockPacket {
 
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.SET_SCOREBOARD_IDENTITY;
-    }
-
-    @Value
-    public static class Entry {
-        private final long scoreboardId;
-        private final UUID playerUniqueId;
     }
 
     @Override
@@ -42,4 +36,3 @@ public class SetScoreboardIdentityPacket implements BedrockPacket {
         }
     }
 }
-

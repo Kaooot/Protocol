@@ -63,7 +63,7 @@ public class Bedrock_v2164 extends Bedrock_v1001 {
             .insert(17, ItemStackRequestActionType.CRAFT_RESULTS)
             .build();
 
-    // TODO scoreboard packets
+
     // TODO debug attributes issue
     // TODO skins
     public static final BedrockCodec CODEC = Bedrock_v1001.CODEC.toBuilder()
@@ -93,6 +93,8 @@ public class Bedrock_v2164 extends Bedrock_v1001 {
             .updateSerializer(ResourcePacksInfoPacket.class, ResourcePacksInfoSerializer_v2164.INSTANCE) // TODO backwards compatibility
             .updateSerializer(ServerboundDiagnosticsPacket.class, new ServerboundDiagnosticsSerializer_v2164(MEMORY_CATEGORY_TYPES))
             .updateSerializer(ServerPresenceInfoPacket.class, ServerPresenceInfoSerializer_v2164.INSTANCE)
+            .updateSerializer(SetScoreboardIdentityPacket.class, SetScoreboardIdentitySerializer_v2164.INSTANCE)
+            .updateSerializer(SetScorePacket.class, SetScoreSerializer_v2164.INSTANCE)
             .updateSerializer(StartGamePacket.class, StartGameSerializer_v2164.INSTANCE)
             .updateSerializer(StructureBlockUpdatePacket.class, StructureBlockUpdateSerializer_v2164.INSTANCE)
             .updateSerializer(SubChunkPacket.class, SubChunkSerializer_v2164.INSTANCE) // TODO backwards compatibility
