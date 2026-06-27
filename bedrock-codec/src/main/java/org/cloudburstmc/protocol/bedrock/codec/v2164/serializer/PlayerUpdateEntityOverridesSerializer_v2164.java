@@ -20,7 +20,7 @@ public class PlayerUpdateEntityOverridesSerializer_v2164 extends PlayerUpdateEnt
         VarInts.writeLong(buffer, packet.getTargetID());
         VarInts.writeUnsignedInt(buffer, packet.getPropertyIndex());
         VarInts.writeUnsignedInt(buffer, packet.getUpdateType().ordinal());
-        buffer.writeByte(packet.getUpdateType().ordinal());
+        helper.writeString(buffer, packet.getUpdateType().getId());
         if (packet.getUpdateType().equals(PlayerUpdateEntityOverridesPacket.UpdateType.SET_INT_OVERRIDE)) {
             buffer.writeIntLE(packet.getIntValue());
         } else if (packet.getUpdateType().equals(PlayerUpdateEntityOverridesPacket.UpdateType.SET_FLOAT_OVERRIDE)) {
@@ -33,7 +33,7 @@ public class PlayerUpdateEntityOverridesSerializer_v2164 extends PlayerUpdateEnt
         packet.setTargetID(VarInts.readLong(buffer));
         packet.setPropertyIndex(VarInts.readUnsignedInt(buffer));
         packet.setUpdateType(PlayerUpdateEntityOverridesPacket.UpdateType.values()[VarInts.readUnsignedInt(buffer)]);
-        buffer.readByte();
+        helper.readString(buffer);
         if (packet.getUpdateType().equals(PlayerUpdateEntityOverridesPacket.UpdateType.SET_INT_OVERRIDE)) {
             packet.setIntValue(buffer.readIntLE());
         } else if (packet.getUpdateType().equals(PlayerUpdateEntityOverridesPacket.UpdateType.SET_FLOAT_OVERRIDE)) {

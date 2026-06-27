@@ -1,8 +1,6 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import lombok.*;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
@@ -34,10 +32,25 @@ public class PlayerUpdateEntityOverridesPacket implements BedrockPacket {
         }
     }
 
+    @Getter
+    @RequiredArgsConstructor
     public enum UpdateType {
-        CLEAR_OVERRIDES,
-        REMOVE_OVERRIDE,
-        SET_INT_OVERRIDE,
-        SET_FLOAT_OVERRIDE
+        CLEAR_OVERRIDES("clearoverrides"),
+        REMOVE_OVERRIDE("removeoverride"),
+        SET_INT_OVERRIDE("setintoverride"),
+        SET_FLOAT_OVERRIDE("setfloatoverride");
+
+        private final String id;
+
+        private static final UpdateType[] VALUES = values();
+
+        public static UpdateType from(String value) {
+            for (UpdateType action : VALUES) {
+                if (action.getId().equalsIgnoreCase(value)) {
+                    return action;
+                }
+            }
+            throw new UnsupportedOperationException("Detected unknown UpdateType ID: " + value);
+        }
     }
 }
