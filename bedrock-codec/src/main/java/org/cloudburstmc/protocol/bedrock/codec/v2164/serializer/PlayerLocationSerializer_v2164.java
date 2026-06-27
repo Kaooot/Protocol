@@ -54,13 +54,13 @@ public class PlayerLocationSerializer_v2164 extends PlayerLocationSerializer_v80
 
     @Override
     protected void writeCoordinatesLocation(ByteBuf buffer, BedrockCodecHelper helper, CoordinatesLocation coordinatesLocation) {
-        buffer.writeByte(0);
+        VarInts.writeInt(buffer, 0);
         helper.writeVector3f(buffer, coordinatesLocation.getPosition());
     }
 
     @Override
     protected CoordinatesLocation readCoordinatesLocation(ByteBuf buffer, BedrockCodecHelper helper) {
-        buffer.readUnsignedByte();
+        VarInts.readInt(buffer);
         final CoordinatesLocation coordinatesLocation = new CoordinatesLocation();
         coordinatesLocation.setPosition(helper.readVector3f(buffer));
         return coordinatesLocation;
@@ -68,12 +68,12 @@ public class PlayerLocationSerializer_v2164 extends PlayerLocationSerializer_v80
 
     @Override
     protected void writeHiddenLocation(ByteBuf buffer, BedrockCodecHelper helper, HiddenLocation hiddenLocation) {
-        buffer.writeByte(0);
+        VarInts.writeInt(buffer, 0);
     }
 
     @Override
     protected HiddenLocation readHiddenLocation(ByteBuf buffer, BedrockCodecHelper helper) {
-        buffer.readUnsignedByte();
+        VarInts.readInt(buffer);
         return new HiddenLocation();
     }
 }
