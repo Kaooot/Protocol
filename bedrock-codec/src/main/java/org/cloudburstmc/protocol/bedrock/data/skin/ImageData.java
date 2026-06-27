@@ -7,6 +7,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.util.Objects;
 
+@Deprecated
 @Getter
 @ToString(exclude = {"image"})
 @EqualsAndHashCode(doNotUseGetters = true)

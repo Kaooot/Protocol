@@ -31,14 +31,15 @@ import org.cloudburstmc.protocol.bedrock.data.payload.experiment.ExperimentToggl
 import org.cloudburstmc.protocol.bedrock.data.payload.experiment.Experiments;
 import org.cloudburstmc.protocol.bedrock.data.payload.inventory.net.ItemStackNetId;
 import org.cloudburstmc.protocol.bedrock.data.payload.inventory.net.ItemStackRequestId;
+import org.cloudburstmc.protocol.bedrock.data.payload.skin.*;
 import org.cloudburstmc.protocol.bedrock.transformer.ActorDataTransformer;
+import org.cloudburstmc.protocol.common.util.Preconditions;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 import org.cloudburstmc.protocol.common.util.VarInts;
 import org.cloudburstmc.protocol.common.util.stream.LittleEndianByteBufInputStream;
 import org.cloudburstmc.protocol.common.util.stream.LittleEndianByteBufOutputStream;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -962,5 +963,158 @@ public class BedrockCodecHelper_v2164 extends BedrockCodecHelper_v1001 {
         this.readArray(buffer, craftResults, this::readItemStackRequestNetworkItemInstanceDescriptor);
         final int numCrafts = buffer.readUnsignedByte();
         return new CraftResultsDeprecatedAction(null, craftResults, numCrafts);
+    }
+
+    @Override
+    public void writeSerializedSkin(ByteBuf buffer, SerializedSkin serializedSkin) {
+        this.writeString(buffer, serializedSkin.getID());
+        this.writeString(buffer, serializedSkin.getPlayFabID());
+        this.writeString(buffer, serializedSkin.getResourcePatch());
+        this.writeSkinImage(buffer, serializedSkin.getImageData());
+        this.writeArray(buffer, serializedSkin.getAnimatedImageData(), this::writeAnimatedImageData);
+        this.writeSkinImage(buffer, serializedSkin.getCapeImageData());
+        this.writeString(buffer, serializedSkin.getGeometryData());
+        this.writeString(buffer, serializedSkin.getGeometryDataMinEngineVersion());
+        this.writeString(buffer, serializedSkin.getAnimationData());
+        this.writeString(buffer, serializedSkin.getCapeID());
+        this.writeString(buffer, serializedSkin.getFullID());
+        buffer.writeByte(serializedSkin.getArmSize().ordinal());
+        buffer.writeIntLE(serializedSkin.getSkinColor());
+        this.writeArray(buffer, serializedSkin.getPersonaPieces(), this::writeSerializedPersonaPieceHandle);
+        this.writePieceTintColors(buffer, serializedSkin.getPieceTintColors());
+        buffer.writeBoolean(serializedSkin.isPremium());
+        buffer.writeBoolean(serializedSkin.isPersona());
+        buffer.writeBoolean(serializedSkin.isPersonaCapeOnClassicSkin());
+        buffer.writeBoolean(serializedSkin.isPrimaryUser());
+        buffer.writeBoolean(serializedSkin.isOverridesPlayerAppearance());
+        this.writeString(buffer, serializedSkin.getTrustedSkinFlag().getId());
+    }
+
+    @Override
+    public SerializedSkin readSerializedSkin(ByteBuf buffer) {
+        final SerializedSkin serializedSkin = new SerializedSkin();
+        serializedSkin.setID(this.readString(buffer));
+        serializedSkin.setPlayFabID(this.readString(buffer));
+        serializedSkin.setResourcePatch(this.readString(buffer));
+        serializedSkin.setImageData(this.readSkinImage(buffer));
+        this.readArray(buffer, serializedSkin.getAnimatedImageData(), this::readAnimatedImageData);
+        serializedSkin.setCapeImageData(this.readSkinImage(buffer));
+        serializedSkin.setGeometryData(this.readString(buffer));
+        serializedSkin.setGeometryDataMinEngineVersion(this.readString(buffer));
+        serializedSkin.setAnimationData(this.readString(buffer));
+        serializedSkin.setCapeID(this.readString(buffer));
+        serializedSkin.setFullID(this.readString(buffer));
+        serializedSkin.setArmSize(ArmSizeType.from(buffer.readUnsignedByte()));
+        serializedSkin.setSkinColor(buffer.readIntLE());
+        this.readArray(buffer, serializedSkin.getPersonaPieces(), this::readSerializedPersonaPieceHandle);
+        this.readPieceTintColors(buffer, serializedSkin.getPieceTintColors());
+        serializedSkin.setPremium(buffer.readBoolean());
+        serializedSkin.setPersona(buffer.readBoolean());
+        serializedSkin.setPersonaCapeOnClassicSkin(buffer.readBoolean());
+        serializedSkin.setPrimaryUser(buffer.readBoolean());
+        serializedSkin.setOverridesPlayerAppearance(buffer.readBoolean());
+        serializedSkin.setTrustedSkinFlag(TrustedSkinFlag.from(this.readString(buffer)));
+        return serializedSkin;
+    }
+
+    protected void writeSkinImage(ByteBuf buffer, SkinImage skinImage) {
+        Preconditions.checkArgument(
+                this.encodingSettings.maxSkinImageWidth() < 0 || skinImage.getWidth() <= this.encodingSettings.maxSkinImageWidth(),
+                "The skin image exceeds the maximum image width" +
+                        "value: " + skinImage.getWidth() + ", max: " + this.encodingSettings.maxSkinImageWidth()
+        );
+        Preconditions.checkArgument(
+                this.encodingSettings.maxSkinImageHeight() < 0 || skinImage.getHeight() <= this.encodingSettings.maxSkinImageHeight(),
+                "The skin image exceeds the maximum image height, " +
+                        "value: " + skinImage.getHeight() + ", max: " + this.encodingSettings.maxSkinImageHeight()
+        );
+        Preconditions.checkArgument(
+                this.encodingSettings.maxSkinImageBytesLength() < 0 || skinImage.getImageBytes().length <= this.encodingSettings.maxSkinImageBytesLength(),
+                "The skin image exceeds the maximum image bytes length, value: " +
+                        skinImage.getImageBytes().length + ", max: " + this.encodingSettings.maxSkinImageBytesLength()
+        );
+        buffer.writeIntLE(skinImage.getWidth());
+        buffer.writeIntLE(skinImage.getHeight());
+        this.writeByteArray(buffer, skinImage.getImageBytes());
+    }
+
+    protected SkinImage readSkinImage(ByteBuf buffer) {
+        final int width = buffer.readIntLE();
+        Preconditions.checkArgument(
+                this.encodingSettings.maxSkinImageWidth() < 0 || width <= this.encodingSettings.maxSkinImageWidth(),
+                "The skin image exceeds the maximum image width" +
+                        "value: " + width + ", max: " + this.encodingSettings.maxSkinImageWidth()
+        );
+        final int height = buffer.readIntLE();
+        Preconditions.checkArgument(
+                this.encodingSettings.maxSkinImageHeight() < 0 || height <= this.encodingSettings.maxSkinImageHeight(),
+                "The skin image exceeds the maximum image height, " +
+                        "value: " + height + ", max: " + this.encodingSettings.maxSkinImageHeight()
+        );
+        final byte[] imageBytes = this.readByteArray(buffer, this.encodingSettings.maxSkinImageBytesLength());
+        return new SkinImage(width, height, imageBytes);
+    }
+
+    protected void writeAnimatedImageData(ByteBuf buffer, AnimatedImageData animatedImageData) {
+        this.writeSkinImage(buffer, animatedImageData.getSkinImage());
+        VarInts.writeUnsignedInt(buffer, animatedImageData.getAnimatedTextureType().ordinal());
+        buffer.writeFloatLE(animatedImageData.getFrames());
+        VarInts.writeUnsignedInt(buffer, animatedImageData.getAnimationExpression().ordinal());
+    }
+
+    protected AnimatedImageData readAnimatedImageData(ByteBuf buffer) {
+        final AnimatedImageData animatedImageData = new AnimatedImageData();
+        animatedImageData.setSkinImage(this.readSkinImage(buffer));
+        animatedImageData.setAnimatedTextureType(AnimatedTextureType.from(VarInts.readUnsignedInt(buffer)));
+        animatedImageData.setFrames(buffer.readFloatLE());
+        animatedImageData.setAnimationExpression(AnimationExpression.from(VarInts.readUnsignedInt(buffer)));
+        return animatedImageData;
+    }
+
+    protected void writeSerializedPersonaPieceHandle(ByteBuf buffer, SerializedPersonaPieceHandle handle) {
+        this.writeString(buffer, handle.getPieceId());
+        buffer.writeIntLE(handle.getPieceType().ordinal());
+        this.writeUuid(buffer, handle.getPackId());
+        buffer.writeBoolean(handle.isDefaultPiece());
+        this.writeString(buffer, handle.getProductId());
+    }
+
+    protected SerializedPersonaPieceHandle readSerializedPersonaPieceHandle(ByteBuf buffer) {
+        final SerializedPersonaPieceHandle handle = new SerializedPersonaPieceHandle();
+        handle.setPieceId(this.readString(buffer));
+        handle.setPieceType(PieceType.from(buffer.readIntLE()));
+        handle.setPackId(this.readUuid(buffer));
+        handle.setDefaultPiece(buffer.readBoolean());
+        handle.setProductId(this.readString(buffer));
+        return handle;
+    }
+
+    protected void writePieceTintColors(ByteBuf buffer, Map<PieceType, TintMapColor> pieceTintColors) {
+        VarInts.writeUnsignedInt(buffer, pieceTintColors.size());
+        for (Map.Entry<PieceType, TintMapColor> entry : pieceTintColors.entrySet()) {
+            this.writeString(buffer, entry.getKey().getId());
+            this.writeTintMapColor(buffer, entry.getValue());
+        }
+    }
+
+    protected void readPieceTintColors(ByteBuf buffer, Map<PieceType, TintMapColor> pieceTintColors) {
+        final int length = VarInts.readUnsignedInt(buffer);
+        for (int i = 0; i < length; i++) {
+            pieceTintColors.put(PieceType.from(this.readString(buffer)), this.readTintMapColor(buffer));
+        }
+    }
+
+    protected void writeTintMapColor(ByteBuf buffer, TintMapColor color) {
+        for (int i = 0; i < 4; i++) {
+            buffer.writeIntLE(color.getColors().get(i));
+        }
+    }
+
+    protected TintMapColor readTintMapColor(ByteBuf buffer) {
+        final TintMapColor color = new TintMapColor();
+        for (int i = 0; i < 4; i++) {
+            color.getColors().add(buffer.readIntLE());
+        }
+        return color;
     }
 }

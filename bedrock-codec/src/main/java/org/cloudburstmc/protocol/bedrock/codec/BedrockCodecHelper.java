@@ -30,8 +30,9 @@ import org.cloudburstmc.protocol.bedrock.data.payload.experiment.ExperimentToggl
 import org.cloudburstmc.protocol.bedrock.data.payload.experiment.Experiments;
 import org.cloudburstmc.protocol.bedrock.data.payload.inventory.transaction.InventoryTransaction;
 import org.cloudburstmc.protocol.bedrock.data.payload.inventory.transaction.data.ItemUseInventoryTransaction;
+import org.cloudburstmc.protocol.bedrock.data.payload.skin.SerializedSkin;
 import org.cloudburstmc.protocol.bedrock.data.payload.structure.StructureSettings;
-import org.cloudburstmc.protocol.bedrock.data.skin.SerializedSkin;
+import org.cloudburstmc.protocol.bedrock.data.skin.Skin;
 import org.cloudburstmc.protocol.common.DefinitionRegistry;
 import org.cloudburstmc.protocol.common.NamedDefinition;
 import org.cloudburstmc.protocol.common.util.TriConsumer;
@@ -142,9 +143,9 @@ public interface BedrockCodecHelper {
 
     void writeStructureSettings(ByteBuf buffer, StructureSettings settings);
 
-    SerializedSkin readSkin(ByteBuf buffer);
+    Skin readSkin(ByteBuf buffer);
 
-    void writeSkin(ByteBuf buffer, SerializedSkin skin);
+    void writeSkin(ByteBuf buffer, Skin skin);
 
     byte[] readByteArray(ByteBuf buffer);
 
@@ -291,4 +292,8 @@ public interface BedrockCodecHelper {
     void writeItemUseInventoryTransaction(ByteBuf buffer, ItemUseInventoryTransaction transaction);
 
     ItemUseInventoryTransaction readItemUseInventoryTransaction(ByteBuf buffer);
+
+    void writeSerializedSkin(ByteBuf buffer, SerializedSkin serializedSkin);
+
+    SerializedSkin readSerializedSkin(ByteBuf buffer);
 }

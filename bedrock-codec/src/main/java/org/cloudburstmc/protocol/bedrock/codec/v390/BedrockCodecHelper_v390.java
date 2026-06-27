@@ -18,7 +18,7 @@ public class BedrockCodecHelper_v390 extends BedrockCodecHelper_v388 {
     }
 
     @Override
-    public SerializedSkin readSkin(ByteBuf buffer) {
+    public Skin readSkin(ByteBuf buffer) {
         String skinId = this.readString(buffer);
         String skinResourcePatch = this.readString(buffer);
         ImageData skinData = this.readImage(buffer);
@@ -57,12 +57,12 @@ public class BedrockCodecHelper_v390 extends BedrockCodecHelper_v388 {
             }
             return new PersonaPieceTintData(pieceType, colors);
         });
-        return SerializedSkin.of(skinId, "", skinResourcePatch, skinData, animations, capeData, geometryData, animationData,
+        return Skin.of(skinId, "", skinResourcePatch, skinData, animations, capeData, geometryData, animationData,
                 premium, persona, capeOnClassic, capeId, fullSkinId, armSize, skinColor, personaPieces, tintColors);
     }
 
     @Override
-    public void writeSkin(ByteBuf buffer, SerializedSkin skin) {
+    public void writeSkin(ByteBuf buffer, Skin skin) {
         requireNonNull(skin, "Skin is null");
 
         this.writeString(buffer, skin.getSkinId());

@@ -50,7 +50,7 @@ public class BedrockCodecHelper_v428 extends BedrockCodecHelper_v422 {
 
     @SuppressWarnings("DuplicatedCode")
     @Override
-    public SerializedSkin readSkin(ByteBuf buffer) {
+    public Skin readSkin(ByteBuf buffer) {
         String skinId = this.readString(buffer);
         String playFabId = this.readString(buffer); // new for v428
         String skinResourcePatch = this.readString(buffer);
@@ -91,13 +91,13 @@ public class BedrockCodecHelper_v428 extends BedrockCodecHelper_v422 {
             return new PersonaPieceTintData(pieceType, colors);
         });
 
-        return SerializedSkin.of(skinId, playFabId, skinResourcePatch, skinData, animations, capeData, geometryData, animationData,
+        return Skin.of(skinId, playFabId, skinResourcePatch, skinData, animations, capeData, geometryData, animationData,
                 premium, persona, capeOnClassic, capeId, fullSkinId, armSize, skinColor, personaPieces, tintColors);
     }
 
     @SuppressWarnings("DuplicatedCode")
     @Override
-    public void writeSkin(ByteBuf buffer, SerializedSkin skin) {
+    public void writeSkin(ByteBuf buffer, Skin skin) {
         requireNonNull(skin, "Skin is null");
 
         this.writeString(buffer, skin.getSkinId());

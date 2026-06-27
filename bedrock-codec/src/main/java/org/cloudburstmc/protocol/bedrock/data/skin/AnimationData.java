@@ -3,6 +3,7 @@ package org.cloudburstmc.protocol.bedrock.data.skin;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 
+@Deprecated
 @Value
 @RequiredArgsConstructor
 public class AnimationData {

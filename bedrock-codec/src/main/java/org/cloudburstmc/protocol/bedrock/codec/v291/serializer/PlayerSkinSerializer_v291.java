@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
 import org.cloudburstmc.protocol.bedrock.data.skin.ImageData;
-import org.cloudburstmc.protocol.bedrock.data.skin.SerializedSkin;
+import org.cloudburstmc.protocol.bedrock.data.skin.Skin;
 import org.cloudburstmc.protocol.bedrock.packet.PlayerSkinPacket;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -16,10 +16,10 @@ public class PlayerSkinSerializer_v291 implements BedrockPacketSerializer<Player
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, PlayerSkinPacket packet) {
         helper.writeUuid(buffer, packet.getUuid());
-        SerializedSkin skin = packet.getSerializedSkin();
+        Skin skin = packet.getSkin();
         helper.writeString(buffer, skin.getSkinId());
-        helper.writeString(buffer, packet.getNewSkinName());
-        helper.writeString(buffer, packet.getOldSkinName());
+        helper.writeString(buffer, packet.getLocalizedNewSkinName());
+        helper.writeString(buffer, packet.getLocalizedOldSkinName());
         skin.getSkinData().checkLegacySkinSize();
         helper.writeByteArray(buffer, skin.getSkinData().getImage());
         skin.getCapeData().checkLegacyCapeSize();
@@ -33,13 +33,13 @@ public class PlayerSkinSerializer_v291 implements BedrockPacketSerializer<Player
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, PlayerSkinPacket packet) {
         packet.setUuid(helper.readUuid(buffer));
         String skinId = helper.readString(buffer);
-        packet.setNewSkinName(helper.readString(buffer));
-        packet.setOldSkinName(helper.readString(buffer));
+        packet.setLocalizedNewSkinName(helper.readString(buffer));
+        packet.setLocalizedOldSkinName(helper.readString(buffer));
         ImageData skinData = ImageData.of(helper.readByteArray(buffer, ImageData.SKIN_PERSONA_SIZE));
         ImageData capeData = ImageData.of(64, 32, helper.readByteArray(buffer, ImageData.SINGLE_SKIN_SIZE));
         String geometryName = helper.readString(buffer);
         String geometryData = helper.readString(buffer);
         boolean premium = buffer.readBoolean();
-        packet.setSerializedSkin(SerializedSkin.of(skinId, "", skinData, capeData, geometryName, geometryData, premium));
+        packet.setSkin(Skin.of(skinId, "", skinData, capeData, geometryName, geometryData, premium));
     }
 }

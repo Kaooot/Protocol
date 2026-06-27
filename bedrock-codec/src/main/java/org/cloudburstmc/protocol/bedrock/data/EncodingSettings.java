@@ -24,6 +24,9 @@ public class EncodingSettings {
             .maxItemStackTagLength(64)
             .maxInventoryActionsOrRequests(64)
             .maxPlayerBlockActionDataSize(32)
+            .maxSkinImageWidth(4096)
+            .maxSkinImageHeight(4096)
+            .maxSkinImageBytesLength(67108864)
             .build();
 
     /**
@@ -41,6 +44,9 @@ public class EncodingSettings {
             .maxItemStackTagLength(64)
             .maxInventoryActionsOrRequests(64)
             .maxPlayerBlockActionDataSize(32)
+            .maxSkinImageWidth(4096)
+            .maxSkinImageHeight(4096)
+            .maxSkinImageBytesLength(67108864)
             .build();
 
     /**
@@ -58,6 +64,9 @@ public class EncodingSettings {
             .maxItemStackTagLength(64)
             .maxInventoryActionsOrRequests(64)
             .maxPlayerBlockActionDataSize(32)
+            .maxSkinImageWidth(4096)
+            .maxSkinImageHeight(4096)
+            .maxSkinImageBytesLength(67108864)
             .build();
 
     /**
@@ -76,6 +85,9 @@ public class EncodingSettings {
             .maxGeometryDataSize(-1)
             .maxInventoryActionsOrRequests(-1)
             .maxPlayerBlockActionDataSize(-1)
+            .maxSkinImageWidth(-1)
+            .maxSkinImageHeight(-1)
+            .maxSkinImageBytesLength(-1)
             .build();
 
     private final int maxListSize;
@@ -87,4 +99,7 @@ public class EncodingSettings {
     private final int maxGeometryDataSize;
     private final int maxInventoryActionsOrRequests;
     private final int maxPlayerBlockActionDataSize;
+    private final int maxSkinImageWidth;
+    private final int maxSkinImageHeight;
+    private final int maxSkinImageBytesLength;
 }

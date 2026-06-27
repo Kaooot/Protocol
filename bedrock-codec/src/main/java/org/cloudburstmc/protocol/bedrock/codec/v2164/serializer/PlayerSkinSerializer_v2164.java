@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.codec.v388.serializer;
+package org.cloudburstmc.protocol.bedrock.codec.v2164.serializer;
 
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
@@ -7,23 +7,26 @@ import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
 import org.cloudburstmc.protocol.bedrock.packet.PlayerSkinPacket;
 
+/**
+ * @author Kaooot
+ */
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class PlayerSkinSerializer_v388 implements BedrockPacketSerializer<PlayerSkinPacket> {
-    public static final PlayerSkinSerializer_v388 INSTANCE = new PlayerSkinSerializer_v388();
+public class PlayerSkinSerializer_v2164 implements BedrockPacketSerializer<PlayerSkinPacket> {
+    public static final PlayerSkinSerializer_v2164 INSTANCE = new PlayerSkinSerializer_v2164();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, PlayerSkinPacket packet) {
         helper.writeUuid(buffer, packet.getUuid());
-        helper.writeSkin(buffer, packet.getSkin());
-        helper.writeString(buffer, packet.getLocalizedNewSkinName());
+        helper.writeSerializedSkin(buffer, packet.getSerializedSkin());
         helper.writeString(buffer, packet.getLocalizedOldSkinName());
+        helper.writeString(buffer, packet.getLocalizedNewSkinName());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, PlayerSkinPacket packet) {
         packet.setUuid(helper.readUuid(buffer));
-        packet.setSkin(helper.readSkin(buffer));
-        packet.setLocalizedNewSkinName(helper.readString(buffer));
+        packet.setSerializedSkin(helper.readSerializedSkin(buffer));
         packet.setLocalizedOldSkinName(helper.readString(buffer));
+        packet.setLocalizedNewSkinName(helper.readString(buffer));
     }
 }

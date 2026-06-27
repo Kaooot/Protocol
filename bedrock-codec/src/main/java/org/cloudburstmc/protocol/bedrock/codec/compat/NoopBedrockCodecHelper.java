@@ -12,7 +12,7 @@ import org.cloudburstmc.protocol.bedrock.data.actor.ActorLink;
 import org.cloudburstmc.protocol.bedrock.data.ddui.DataStoreUpdate;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
 import org.cloudburstmc.protocol.bedrock.data.payload.structure.StructureSettings;
-import org.cloudburstmc.protocol.bedrock.data.skin.SerializedSkin;
+import org.cloudburstmc.protocol.bedrock.data.skin.Skin;
 import org.cloudburstmc.protocol.common.util.TriConsumer;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 
@@ -119,12 +119,12 @@ public class NoopBedrockCodecHelper extends BaseBedrockCodecHelper {
     }
 
     @Override
-    public SerializedSkin readSkin(ByteBuf buffer) {
+    public Skin readSkin(ByteBuf buffer) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void writeSkin(ByteBuf buffer, SerializedSkin skin) {
+    public void writeSkin(ByteBuf buffer, Skin skin) {
         throw new UnsupportedOperationException();
     }
 

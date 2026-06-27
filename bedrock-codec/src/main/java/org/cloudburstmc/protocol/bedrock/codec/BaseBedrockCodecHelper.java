@@ -39,10 +39,11 @@ import org.cloudburstmc.protocol.bedrock.data.payload.experiment.ExperimentToggl
 import org.cloudburstmc.protocol.bedrock.data.payload.experiment.Experiments;
 import org.cloudburstmc.protocol.bedrock.data.payload.inventory.transaction.*;
 import org.cloudburstmc.protocol.bedrock.data.payload.inventory.transaction.data.ItemUseInventoryTransaction;
+import org.cloudburstmc.protocol.bedrock.data.payload.skin.SerializedSkin;
 import org.cloudburstmc.protocol.bedrock.data.payload.structure.StructureSettings;
 import org.cloudburstmc.protocol.bedrock.data.skin.AnimationData;
 import org.cloudburstmc.protocol.bedrock.data.skin.ImageData;
-import org.cloudburstmc.protocol.bedrock.data.skin.SerializedSkin;
+import org.cloudburstmc.protocol.bedrock.data.skin.Skin;
 import org.cloudburstmc.protocol.common.DefinitionRegistry;
 import org.cloudburstmc.protocol.common.NamedDefinition;
 import org.cloudburstmc.protocol.common.util.TriConsumer;
@@ -485,12 +486,12 @@ public abstract class BaseBedrockCodecHelper implements BedrockCodecHelper {
     }
 
     @Override
-    public SerializedSkin readSkin(ByteBuf buffer) {
+    public Skin readSkin(ByteBuf buffer) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void writeSkin(ByteBuf buffer, SerializedSkin skin) {
+    public void writeSkin(ByteBuf buffer, Skin skin) {
         throw new UnsupportedOperationException();
     }
 
@@ -693,6 +694,16 @@ public abstract class BaseBedrockCodecHelper implements BedrockCodecHelper {
 
     @Override
     public ItemUseInventoryTransaction readItemUseInventoryTransaction(ByteBuf buffer) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void writeSerializedSkin(ByteBuf buffer, SerializedSkin serializedSkin) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public SerializedSkin readSerializedSkin(ByteBuf buffer) {
         throw new UnsupportedOperationException();
     }
 }

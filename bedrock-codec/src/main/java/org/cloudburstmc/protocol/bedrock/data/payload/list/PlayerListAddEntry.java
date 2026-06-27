@@ -2,7 +2,7 @@ package org.cloudburstmc.protocol.bedrock.data.payload.list;
 
 import lombok.Data;
 import org.cloudburstmc.protocol.bedrock.data.BuildPlatform;
-import org.cloudburstmc.protocol.bedrock.data.skin.SerializedSkin;
+import org.cloudburstmc.protocol.bedrock.data.skin.Skin;
 
 import java.util.UUID;
 
@@ -18,7 +18,7 @@ public class PlayerListAddEntry implements PlayerListEntry {
     private String xblXUID;
     private String platformOnlineID;
     private BuildPlatform buildPlatform;
-    private SerializedSkin serializedSkin;
+    private Skin serializedSkin;
     private boolean isTeacher;
     private boolean isHost;
     private boolean isSubClient;

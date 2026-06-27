@@ -1,5 +1,6 @@
 package org.cloudburstmc.protocol.bedrock.data.skin;
 
+@Deprecated
 public enum AnimationExpressionType {
     LINEAR,
     BLINKING;

@@ -22,7 +22,7 @@ public class BedrockCodecHelper_v568 extends BedrockCodecHelper_v557 {
     }
 
     @Override
-    public SerializedSkin readSkin(ByteBuf buffer) {
+    public Skin readSkin(ByteBuf buffer) {
         String skinId = this.readString(buffer);
         String playFabId = this.readString(buffer);
         String skinResourcePatch = this.readString(buffer);
@@ -67,13 +67,13 @@ public class BedrockCodecHelper_v568 extends BedrockCodecHelper_v557 {
         boolean primaryUser = buffer.readBoolean();
         boolean overridingPlayerAppearance = buffer.readBoolean();
 
-        return SerializedSkin.of(skinId, playFabId, skinResourcePatch, skinData, animations, capeData, geometryData, geometryDataEngineVersion,
+        return Skin.of(skinId, playFabId, skinResourcePatch, skinData, animations, capeData, geometryData, geometryDataEngineVersion,
                 animationData, premium, persona, capeOnClassic, primaryUser, capeId, fullSkinId, armSize, skinColor, personaPieces, tintColors,
                 overridingPlayerAppearance);
     }
 
     @Override
-    public void writeSkin(ByteBuf buffer, SerializedSkin skin) {
+    public void writeSkin(ByteBuf buffer, Skin skin) {
         super.writeSkin(buffer, skin);
         buffer.writeBoolean(skin.isOverridingPlayerAppearance());
     }

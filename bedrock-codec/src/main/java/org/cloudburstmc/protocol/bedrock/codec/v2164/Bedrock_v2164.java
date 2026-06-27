@@ -63,9 +63,6 @@ public class Bedrock_v2164 extends Bedrock_v1001 {
             .insert(17, ItemStackRequestActionType.CRAFT_RESULTS)
             .build();
 
-
-    // TODO debug attributes issue
-    // TODO skins
     public static final BedrockCodec CODEC = Bedrock_v1001.CODEC.toBuilder()
             .raknetProtocolVersion(11)
             .protocolVersion(2164)
@@ -87,6 +84,7 @@ public class Bedrock_v2164 extends Bedrock_v1001 {
             .updateSerializer(PlayerAuthInputPacket.class, PlayerAuthInputSerializer_v2164.INSTANCE)
             .updateSerializer(PlayerListPacket.class, PlayerListSerializer_v2164.INSTANCE) // TODO fix, backwards compatibility
             .updateSerializer(PlayerLocationPacket.class, PlayerLocationSerializer_v2164.INSTANCE)
+            .updateSerializer(PlayerSkinPacket.class, PlayerSkinSerializer_v2164.INSTANCE)
             .updateSerializer(PlayerUpdateEntityOverridesPacket.class, PlayerUpdateEntityOverridesSerializer_v2164.INSTANCE)
             .updateSerializer(PlaySoundPacket.class, PlaySoundSerializer_v2164.INSTANCE)
             .updateSerializer(ResourcePackClientResponsePacket.class, ResourcePackClientResponseSerializer_v2164.INSTANCE)

@@ -2,6 +2,7 @@ package org.cloudburstmc.protocol.bedrock.data.skin;
 
 import lombok.Value;
 
+@Deprecated
 @Value
 public class PersonaPieceData {
     private final String id;

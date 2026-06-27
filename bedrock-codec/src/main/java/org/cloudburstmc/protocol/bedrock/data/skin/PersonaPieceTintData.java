@@ -4,6 +4,7 @@ import lombok.Value;
 
 import java.util.List;
 
+@Deprecated
 @Value
 public class PersonaPieceTintData {
     private final String type;

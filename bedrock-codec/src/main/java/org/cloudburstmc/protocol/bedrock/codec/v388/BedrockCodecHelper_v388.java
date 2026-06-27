@@ -10,7 +10,7 @@ import org.cloudburstmc.protocol.bedrock.data.payload.structure.StructureSetting
 import org.cloudburstmc.protocol.bedrock.data.skin.AnimatedTextureType;
 import org.cloudburstmc.protocol.bedrock.data.skin.AnimationData;
 import org.cloudburstmc.protocol.bedrock.data.skin.ImageData;
-import org.cloudburstmc.protocol.bedrock.data.skin.SerializedSkin;
+import org.cloudburstmc.protocol.bedrock.data.skin.Skin;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -27,7 +27,7 @@ public class BedrockCodecHelper_v388 extends BedrockCodecHelper_v361 {
     }
 
     @Override
-    public SerializedSkin readSkin(ByteBuf buffer) {
+    public Skin readSkin(ByteBuf buffer) {
         String skinId = this.readString(buffer);
         String skinResourcePatch = this.readString(buffer);
         ImageData skinData = this.readImage(buffer);
@@ -44,12 +44,12 @@ public class BedrockCodecHelper_v388 extends BedrockCodecHelper_v361 {
         String capeId = this.readString(buffer);
         String fullSkinId = this.readString(buffer);
 
-        return SerializedSkin.of(skinId, "", skinResourcePatch, skinData, animations, capeData, geometryData, animationData,
+        return Skin.of(skinId, "", skinResourcePatch, skinData, animations, capeData, geometryData, animationData,
                 premium, persona, capeOnClassic, capeId, fullSkinId);
     }
 
     @Override
-    public void writeSkin(ByteBuf buffer, SerializedSkin skin) {
+    public void writeSkin(ByteBuf buffer, Skin skin) {
         requireNonNull(skin, "Skin is null");
 
         this.writeString(buffer, skin.getSkinId());
