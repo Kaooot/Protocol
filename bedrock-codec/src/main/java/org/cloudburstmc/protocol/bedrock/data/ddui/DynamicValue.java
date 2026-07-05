@@ -6,8 +6,8 @@ import lombok.Value;
  * @author Kaooot
  */
 @Value
-public class DataStorePropertyValue {
+public class DynamicValue {
 
-    DataStorePropertyValueType type;
+    DynamicValueType type;
     Object value;
 }
