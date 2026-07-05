@@ -121,9 +121,9 @@ public class ClientboundDataStoreSerializer_v898 implements BedrockPacketSeriali
             case STRING:
                 return new DynamicValue(type, helper.readString(buffer));
             case ARRAY:
-                final List<DynamicValue> translationAttributes = new ObjectArrayList<>();
-                helper.readArray(buffer, translationAttributes, this::readDynamicValue);
-                return new DynamicValue(type, translationAttributes);
+                final List<DynamicValue> values = new ObjectArrayList<>();
+                helper.readArray(buffer, values, this::readDynamicValue);
+                return new DynamicValue(type, values);
             case OBJECT:
                 final int length = VarInts.readUnsignedInt(buffer);
                 final Map<String, DynamicValue> map = new HashMap<>();
