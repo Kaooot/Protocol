@@ -1,6 +1,7 @@
 package org.cloudburstmc.protocol.bedrock.codec.v898.serializer;
 
 import io.netty.buffer.ByteBuf;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
@@ -10,6 +11,7 @@ import org.cloudburstmc.protocol.bedrock.packet.ClientboundDataStorePacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -61,30 +63,36 @@ public class ClientboundDataStoreSerializer_v898 implements BedrockPacketSeriali
         helper.writeString(buffer, change.getDataStoreName());
         helper.writeString(buffer, change.getProperty());
         buffer.writeIntLE(change.getUpdateCount());
-        buffer.writeIntLE(change.getTheNewPropertyValue().getType().getId());
-        this.writeTheNewPropertyValue(buffer, helper, change.getTheNewPropertyValue());
+        this.writeDynamicValue(buffer, helper, change.getTheNewPropertyValue());
     }
 
-    protected void writeTheNewPropertyValue(ByteBuf buffer, BedrockCodecHelper helper, DataStorePropertyValue value) {
+    protected void writeDynamicValue(ByteBuf buffer, BedrockCodecHelper helper, DynamicValue value) {
+        buffer.writeIntLE(value.getType().ordinal());
         switch (value.getType()) {
-            case NONE:
+            case NULL:
                 break;
-            case BOOL:
+            case BOOLEAN:
                 buffer.writeBoolean((boolean) value.getValue());
                 break;
-            case INT64:
+            case INTEGER:
                 buffer.writeLongLE((long) value.getValue());
+                break;
+            case NUMBER:
+                buffer.writeDoubleLE((double) value.getValue());
                 break;
             case STRING:
                 helper.writeString(buffer, (String) value.getValue());
                 break;
-            case TYPE:
-                final Map<String, DataStorePropertyValue> map = (Map<String, DataStorePropertyValue>) value.getValue();
+            case ARRAY:
+                final List<DynamicValue> values = (List<DynamicValue>) value.getValue();
+                helper.writeArray(buffer, values, this::writeDynamicValue);
+                break;
+            case OBJECT:
+                final Map<String, DynamicValue> map = (Map<String, DynamicValue>) value.getValue();
                 VarInts.writeUnsignedInt(buffer, map.size());
-                for (Map.Entry<String, DataStorePropertyValue> entry : map.entrySet()) {
+                for (Map.Entry<String, DynamicValue> entry : map.entrySet()) {
                     helper.writeString(buffer, entry.getKey());
-                    buffer.writeIntLE(entry.getValue().getType().getId());
-                    this.writeTheNewPropertyValue(buffer, helper, entry.getValue());
+                    this.writeDynamicValue(buffer, helper, entry.getValue());
                 }
                 break;
         }
@@ -95,30 +103,35 @@ public class ClientboundDataStoreSerializer_v898 implements BedrockPacketSeriali
         change.setDataStoreName(helper.readString(buffer));
         change.setProperty(helper.readString(buffer));
         change.setUpdateCount(buffer.readIntLE());
-        final DataStorePropertyValueType valueType = DataStorePropertyValueType.from(buffer.readIntLE());
-        change.setTheNewPropertyValue(this.readTheNewPropertyValue(buffer, helper, valueType));
+        change.setTheNewPropertyValue(this.readDynamicValue(buffer, helper));
         return change;
     }
 
-    protected DataStorePropertyValue readTheNewPropertyValue(ByteBuf buffer, BedrockCodecHelper helper, DataStorePropertyValueType type) {
+    protected DynamicValue readDynamicValue(ByteBuf buffer, BedrockCodecHelper helper) {
+        final DynamicValueType type = DynamicValueType.from(buffer.readIntLE());
         switch (type) {
-            case NONE:
+            case NULL:
                 return null;
-            case BOOL:
-                return new DataStorePropertyValue(type, buffer.readBoolean());
-            case INT64:
-                return new DataStorePropertyValue(type, buffer.readLongLE());
+            case BOOLEAN:
+                return new DynamicValue(type, buffer.readBoolean());
+            case INTEGER:
+                return new DynamicValue(type, buffer.readLongLE());
+            case NUMBER:
+                return new DynamicValue(type, buffer.readDoubleLE());
             case STRING:
-                return new DataStorePropertyValue(type, helper.readString(buffer));
-            case TYPE:
+                return new DynamicValue(type, helper.readString(buffer));
+            case ARRAY:
+                final List<DynamicValue> translationAttributes = new ObjectArrayList<>();
+                helper.readArray(buffer, translationAttributes, this::readDynamicValue);
+                return new DynamicValue(type, translationAttributes);
+            case OBJECT:
                 final int length = VarInts.readUnsignedInt(buffer);
-                final Map<String, DataStorePropertyValue> map = new HashMap<>();
+                final Map<String, DynamicValue> map = new HashMap<>();
                 for (int i = 0; i < length; i++) {
                     final String key = helper.readString(buffer);
-                    final DataStorePropertyValueType valueType = DataStorePropertyValueType.from(buffer.readIntLE());
-                    map.put(key, this.readTheNewPropertyValue(buffer, helper, valueType));
+                    map.put(key, this.readDynamicValue(buffer, helper));
                 }
-                return new DataStorePropertyValue(type, map);
+                return new DynamicValue(type, map);
             default:
                 throw new IllegalStateException("Read invalid DataStorePropertyValueType");
         }
