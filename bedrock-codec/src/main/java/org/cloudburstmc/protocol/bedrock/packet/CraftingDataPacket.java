@@ -27,6 +27,11 @@ public class CraftingDataPacket implements BedrockPacket {
     private final List<MaterialReducerDataEntry> materialReducers = new ObjectArrayList<>();
     private boolean clearRecipes;
 
+    /**
+     * @deprecated since v975
+     */
+    private final List<FurnaceRecipePayload> furnaceRecipes = new ObjectArrayList<>();
+
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);

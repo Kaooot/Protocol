@@ -74,7 +74,7 @@ public class Bedrock_v2164 extends Bedrock_v1001 {
             .updateSerializer(AnvilDamagePacket.class, AnvilDamageSerializer_v2164.INSTANCE)
             .updateSerializer(ClientboundMapItemDataPacket.class, ClientboundMapItemDataSerializer_v2164.INSTANCE)
             .updateSerializer(ClientboundUpdateSoundDataPacket.class, ClientboundUpdateSoundDataSerializer_v2164.INSTANCE)
-            .updateSerializer(CraftingDataPacket.class, CraftingDataSerializer_v2164.INSTANCE) // TODO backwards compatibility
+            .updateSerializer(CraftingDataPacket.class, CraftingDataSerializer_v2164.INSTANCE)
             .updateSerializer(CreativeContentPacket.class, CreativeContentSerializer_v2164.INSTANCE)
             .updateSerializer(DimensionDataPacket.class, DimensionDataSerializer_v2164.INSTANCE)
             .updateSerializer(ItemStackResponsePacket.class, ItemStackResponseSerializer_v2164.INSTANCE)

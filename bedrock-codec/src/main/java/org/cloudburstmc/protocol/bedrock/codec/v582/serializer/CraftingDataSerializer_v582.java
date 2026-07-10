@@ -1,111 +1,106 @@
 package org.cloudburstmc.protocol.bedrock.codec.v582.serializer;
 
+import io.netty.buffer.ByteBuf;
+import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v567.serializer.CraftingDataSerializer_v567;
+import org.cloudburstmc.protocol.bedrock.data.payload.crafting.CraftingDataEntryType;
+import org.cloudburstmc.protocol.bedrock.data.payload.crafting.SmithingTransformRecipePayload;
+import org.cloudburstmc.protocol.bedrock.data.payload.crafting.SmithingTrimRecipePayload;
+import org.cloudburstmc.protocol.bedrock.packet.CraftingDataPacket;
+import org.cloudburstmc.protocol.common.util.VarInts;
 
 public class CraftingDataSerializer_v582 extends CraftingDataSerializer_v567 {
 
-    /*@Override
-    protected CraftingDataEntry readEntry(ByteBuf buffer, BedrockCodecHelper helper) {
-        int typeInt = VarInts.readInt(buffer);
-        CraftingDataEntryType type = CraftingDataEntryType.byId(typeInt);
+    @Override
+    protected void writeEntries(ByteBuf buffer, BedrockCodecHelper helper, CraftingDataPacket packet) {
+        super.writeEntries(buffer, helper, packet);
 
-        switch (type) {
-            case SHAPELESS_RECIPE:
-            case SHAPELESS_CHEMISTRY_RECIPE:
-            case USER_DATA_SHAPELESS_RECIPE:
-                return this.readShapelessRecipe(buffer, helper, type);
-            case SHAPED_RECIPE:
-            case SHAPED_CHEMISTRY_RECIPE:
-                return this.readShapedRecipe(buffer, helper, type);
-            case FURNACE_RECIPE:
-                return this.readFurnaceRecipe(buffer, helper, type);
-            case FURNACE_AUX_RECIPE:
-                return this.readFurnaceDataRecipe(buffer, helper, type);
-            case MULTI_RECIPE:
-                return this.readMultiRecipe(buffer, helper, type);
-            case SMITHING_TRANSFORM_RECIPE:
-                return this.readSmithingTransformRecipe(buffer, helper, type);
-            case SMITHING_TRIM_RECIPE:
-                return this.readSmithingTrimRecipe(buffer, helper, type);
-            default:
-                throw new IllegalArgumentException("Unhandled crafting data type: " + type);
+        for (final SmithingTrimRecipePayload payload : packet.getSmithingTrimRecipes()) {
+            VarInts.writeInt(buffer, CraftingDataEntryType.SMITHING_TRIM_RECIPE.ordinal());
+            this.writeSmithingTrimRecipePayload(buffer, helper, payload);
         }
     }
 
     @Override
-    protected void writeEntry(ByteBuf buffer, BedrockCodecHelper helper, CraftingDataEntry craftingData) {
-        VarInts.writeInt(buffer, craftingData.getType().ordinal());
-        switch (craftingData.getType()) {
-            case SHAPELESS_RECIPE:
-            case SHAPELESS_CHEMISTRY_RECIPE:
-            case USER_DATA_SHAPELESS_RECIPE:
-                this.writeShapelessRecipe(buffer, helper, (ShapelessRecipe) craftingData);
-                break;
-            case SHAPED_RECIPE:
-            case SHAPED_CHEMISTRY_RECIPE:
-                this.writeShapedRecipe(buffer, helper, (ShapedRecipe) craftingData);
-                break;
-            case FURNACE_RECIPE:
-                this.writeFurnaceRecipe(buffer, helper, (FurnaceRecipe) craftingData);
-                break;
-            case FURNACE_AUX_RECIPE:
-                this.writeFurnaceDataRecipe(buffer, helper, (FurnaceRecipe) craftingData);
-                break;
-            case MULTI_RECIPE:
-                this.writeMultiRecipe(buffer, helper, (MultiRecipe) craftingData);
-                break;
-            case SMITHING_TRANSFORM_RECIPE:
-                this.writeSmithingTransformRecipe(buffer, helper, (SmithingTransformRecipe) craftingData);
-                break;
-            case SMITHING_TRIM_RECIPE:
-                this.writeSmithingTrimRecipe(buffer, helper, (SmithingTrimRecipe) craftingData);
-                break;
+    protected void readEntries(ByteBuf buffer, BedrockCodecHelper helper, CraftingDataPacket packet) {
+        final int length = VarInts.readUnsignedInt(buffer);
+
+        for (int i = 0; i < length; i++) {
+            final CraftingDataEntryType type = CraftingDataEntryType.byId(VarInts.readInt(buffer));
+
+            switch (type) {
+                case SHAPED_RECIPE:
+                    packet.getShapedRecipes().add(this.readShapedRecipePayload(buffer, helper));
+                    break;
+                case SHAPED_CHEMISTRY_RECIPE:
+                    packet.getShapedChemistryRecipes().add(this.readShapedRecipePayload(buffer, helper));
+                    break;
+                case SHAPELESS_RECIPE:
+                    packet.getShapelessRecipes().add(this.readShapelessRecipePayload(buffer, helper));
+                    break;
+                case SHAPELESS_CHEMISTRY_RECIPE:
+                    packet.getShapelessChemistryRecipes().add(this.readShapelessRecipePayload(buffer, helper));
+                    break;
+                case USER_DATA_SHAPELESS_RECIPE:
+                    packet.getUserDataShapelessRecipes().add(this.readShapelessRecipePayload(buffer, helper));
+                    break;
+                case FURNACE_RECIPE:
+                    packet.getFurnaceRecipes().add(this.readFurnaceRecipePayload(buffer, helper, type));
+                    break;
+                case MULTI:
+                    packet.getMultiRecipes().add(this.readMultiRecipePayload(buffer, helper));
+                    break;
+                case SMITHING_TRANSFORM_RECIPE:
+                    packet.getSmithingTransformRecipes().add(this.readSmithingTransformRecipePayload(buffer, helper));
+                    break;
+                case SMITHING_TRIM_RECIPE:
+                    packet.getSmithingTrimRecipes().add(this.readSmithingTrimRecipePayload(buffer, helper));
+                    break;
+            }
         }
     }
 
-    protected SmithingTrimRecipe readSmithingTrimRecipe(ByteBuf buffer, BedrockCodecHelper helper, CraftingDataEntryType type) {
-        String id = helper.readString(buffer);
-        ItemDescriptorWithCount template = helper.readIngredient(buffer);
-        ItemDescriptorWithCount base = helper.readIngredient(buffer);
-        ItemDescriptorWithCount addition = helper.readIngredient(buffer);
-        return SmithingTrimRecipe.of(id, base, addition, template,
-                helper.readString(buffer), // Tag
-                VarInts.readUnsignedInt(buffer) // Net ID
-        );
-    }
-
-    protected void writeSmithingTrimRecipe(ByteBuf buffer, BedrockCodecHelper helper, SmithingTrimRecipe data) {
-        helper.writeString(buffer, data.getRecipeUniqueId());
-        helper.writeIngredient(buffer, data.getTemplateIngredient());
-        helper.writeIngredient(buffer, data.getBaseIngredient());
-        helper.writeIngredient(buffer, data.getAdditionIngredient());
-        helper.writeString(buffer, data.getRecipeTag());
-        VarInts.writeUnsignedInt(buffer, data.getNetId());
+    @Override
+    protected void writeSmithingTransformRecipePayload(ByteBuf buffer, BedrockCodecHelper helper, SmithingTransformRecipePayload payload) {
+        helper.writeString(buffer, payload.getRecipeId());
+        helper.writeIngredient(buffer, payload.getTemplateIngredient());
+        helper.writeIngredient(buffer, payload.getBaseIngredient());
+        helper.writeIngredient(buffer, payload.getAdditionIngredient());
+        helper.writeItemInstance(buffer, payload.getResult());
+        helper.writeString(buffer, payload.getTag());
+        this.writeRecipeNetId(buffer, payload.getNetId());
     }
 
     @Override
-    protected SmithingTransformRecipe readSmithingTransformRecipe(ByteBuf buffer, BedrockCodecHelper helper,
-                                                                  CraftingDataEntryType type) {
-        return SmithingTransformRecipe.of(
-                helper.readString(buffer), // ID
-                helper.readIngredient(buffer), // Template - new for 1.19.80
-                helper.readIngredient(buffer), // Base
-                helper.readIngredient(buffer), // Addition
-                helper.readItemInstance(buffer), // Result
-                helper.readString(buffer), // Tag
-                VarInts.readUnsignedInt(buffer) // Net ID
-        );
+    protected SmithingTransformRecipePayload readSmithingTransformRecipePayload(ByteBuf buffer, BedrockCodecHelper helper) {
+        final SmithingTransformRecipePayload payload = new SmithingTransformRecipePayload();
+        payload.setRecipeId(helper.readString(buffer));
+        payload.setTemplateIngredient(helper.readIngredient(buffer));
+        payload.setBaseIngredient(helper.readIngredient(buffer));
+        payload.setAdditionIngredient(helper.readIngredient(buffer));
+        payload.setResult(helper.readItemInstance(buffer));
+        payload.setTag(helper.readString(buffer));
+        payload.setNetId(this.readRecipeNetId(buffer));
+        return payload;
     }
 
-    @Override
-    protected void writeSmithingTransformRecipe(ByteBuf buffer, BedrockCodecHelper helper,
-                                                SmithingTransformRecipe data) {
-        helper.writeString(buffer, data.getRecipeUniqueId());
-        helper.writeIngredient(buffer, data.getTemplateIngredient());
-        helper.writeIngredient(buffer, data.getBaseIngredient());
-        helper.writeIngredient(buffer, data.getAdditionIngredient());
-        helper.writeItemInstance(buffer, data.getResult());
-        helper.writeString(buffer, data.getRecipeTag());
-        VarInts.writeUnsignedInt(buffer, data.getNetId());
-    }*/
+    protected void writeSmithingTrimRecipePayload(ByteBuf buffer, BedrockCodecHelper helper, SmithingTrimRecipePayload payload) {
+        helper.writeString(buffer, payload.getRecipeId());
+        helper.writeIngredient(buffer, payload.getTemplateIngredient());
+        helper.writeIngredient(buffer, payload.getBaseIngredient());
+        helper.writeIngredient(buffer, payload.getAdditionIngredient());
+        helper.writeString(buffer, payload.getTag());
+        this.writeRecipeNetId(buffer, payload.getNetId());
+    }
+
+    protected SmithingTrimRecipePayload readSmithingTrimRecipePayload(ByteBuf buffer, BedrockCodecHelper helper) {
+        final SmithingTrimRecipePayload payload = new SmithingTrimRecipePayload();
+        payload.setRecipeId(helper.readString(buffer));
+        payload.setTemplateIngredient(helper.readIngredient(buffer));
+        payload.setBaseIngredient(helper.readIngredient(buffer));
+        payload.setAdditionIngredient(helper.readIngredient(buffer));
+        payload.setTag(helper.readString(buffer));
+        payload.setNetId(this.readRecipeNetId(buffer));
+        return payload;
+    }
 }

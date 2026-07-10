@@ -1,45 +1,47 @@
 package org.cloudburstmc.protocol.bedrock.codec.v671.serializer;
 
+import io.netty.buffer.ByteBuf;
+import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v582.serializer.CraftingDataSerializer_v582;
+import org.cloudburstmc.protocol.bedrock.data.payload.crafting.ShapedRecipePayload;
+import org.cloudburstmc.protocol.common.util.VarInts;
 
 public class CraftingDataSerializer_v671 extends CraftingDataSerializer_v582 {
     public static final CraftingDataSerializer_v671 INSTANCE = new CraftingDataSerializer_v671();
 
-    /*@Override
-    protected void writeShapedRecipe(ByteBuf buffer, BedrockCodecHelper helper, ShapedRecipe data) {
-        helper.writeString(buffer, data.getRecipeUniqueId());
-        VarInts.writeInt(buffer, data.getRecipeWidth());
-        VarInts.writeInt(buffer, data.getRecipeHeight());
-        int count = data.getRecipeWidth() * data.getRecipeHeight();
-        List<ItemDescriptorWithCount> inputs = data.getIngredientList();
-        for (int i = 0; i < count; i++) {
-            helper.writeIngredient(buffer, inputs.get(i));
+    @Override
+    protected void writeShapedRecipePayload(ByteBuf buffer, BedrockCodecHelper helper, ShapedRecipePayload payload) {
+        helper.writeString(buffer, payload.getRecipeId());
+        VarInts.writeInt(buffer, payload.getWidth());
+        VarInts.writeInt(buffer, payload.getHeight());
+        final int length = payload.getWidth() * payload.getHeight();
+        for (int i = 0; i < length; i++) {
+            helper.writeIngredient(buffer, payload.getIngredients().get(i));
         }
-        helper.writeArray(buffer, data.getProductionList(), helper::writeItemInstance);
-        helper.writeUuid(buffer, data.getRecipeID());
-        helper.writeString(buffer, data.getRecipeTag());
-        VarInts.writeInt(buffer, data.getPriority());
-        buffer.writeBoolean(data.isAssumeSymmetry());
-        VarInts.writeUnsignedInt(buffer, data.getNetId());
+        helper.writeArray(buffer, payload.getResults(), helper::writeItemInstance);
+        helper.writeUuid(buffer, payload.getUuid());
+        helper.writeString(buffer, payload.getTag());
+        VarInts.writeInt(buffer, payload.getPriority());
+        buffer.writeBoolean(payload.isAssumeSymmetry());
+        this.writeRecipeNetId(buffer, payload.getNetId());
     }
 
     @Override
-    protected ShapedRecipe readShapedRecipe(ByteBuf buffer, BedrockCodecHelper helper, CraftingDataEntryType type) {
-        String recipeId = helper.readString(buffer);
-        int width = VarInts.readInt(buffer);
-        int height = VarInts.readInt(buffer);
-        int inputCount = width * height;
-        List<ItemDescriptorWithCount> inputs = new ObjectArrayList<>(inputCount);
-        for (int i = 0; i < inputCount; i++) {
-            inputs.add(helper.readIngredient(buffer));
+    protected ShapedRecipePayload readShapedRecipePayload(ByteBuf buffer, BedrockCodecHelper helper) {
+        final ShapedRecipePayload payload = new ShapedRecipePayload();
+        payload.setRecipeId(helper.readString(buffer));
+        payload.setWidth(VarInts.readInt(buffer));
+        payload.setHeight(VarInts.readInt(buffer));
+        final int length = payload.getWidth() * payload.getHeight();
+        for (int i = 0; i < length; i++) {
+            payload.getIngredients().add(helper.readIngredient(buffer));
         }
-        List<ItemData> outputs = new ObjectArrayList<>();
-        helper.readArray(buffer, outputs, helper::readItemInstance);
-        UUID uuid = helper.readUuid(buffer);
-        String craftingTag = helper.readString(buffer);
-        int priority = VarInts.readInt(buffer);
-        boolean assumeSymmetry = buffer.readBoolean();
-        int networkId = VarInts.readUnsignedInt(buffer);
-        return ShapedRecipe.of(type, recipeId, width, height, inputs, outputs, uuid, craftingTag, priority, networkId, assumeSymmetry);
-    }*/
+        helper.readArray(buffer, payload.getResults(), helper::readItemInstance);
+        payload.setUuid(helper.readUuid(buffer));
+        payload.setTag(helper.readString(buffer));
+        payload.setPriority(VarInts.readInt(buffer));
+        payload.setAssumeSymmetry(buffer.readBoolean());
+        payload.setNetId(this.readRecipeNetId(buffer));
+        return payload;
+    }
 }

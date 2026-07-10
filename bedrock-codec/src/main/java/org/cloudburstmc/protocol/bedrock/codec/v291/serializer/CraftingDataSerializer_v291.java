@@ -5,7 +5,10 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
+import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.RecipeIngredient;
+import org.cloudburstmc.protocol.bedrock.data.payload.crafting.*;
 import org.cloudburstmc.protocol.bedrock.packet.CraftingDataPacket;
+import org.cloudburstmc.protocol.common.util.VarInts;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CraftingDataSerializer_v291 implements BedrockPacketSerializer<CraftingDataPacket> {
@@ -13,124 +16,162 @@ public class CraftingDataSerializer_v291 implements BedrockPacketSerializer<Craf
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, CraftingDataPacket packet) {
-       /* helper.writeArray(buffer, packet.getCraftingEntries(), this::writeEntry);
-        buffer.writeBoolean(packet.isClearRecipes());*/
+        this.writeEntries(buffer, helper, packet);
+        buffer.writeBoolean(packet.isClearRecipes());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, CraftingDataPacket packet) {
-        /*helper.readArray(buffer, packet.getCraftingEntries(), this::readEntry);
-        packet.setClearRecipes(buffer.readBoolean());*/
+        this.readEntries(buffer, helper, packet);
+        packet.setClearRecipes(buffer.readBoolean());
     }
 
-    /*protected CraftingDataEntry readEntry(ByteBuf buffer, BedrockCodecHelper helper) {
-        int typeInt = VarInts.readInt(buffer);
-        CraftingDataEntryType type = CraftingDataEntryType.byId(typeInt);
+    protected void writeEntries(ByteBuf buffer, BedrockCodecHelper helper, CraftingDataPacket packet) {
+        final int length = packet.getShapedRecipes().size() +
+                packet.getShapedChemistryRecipes().size() +
+                packet.getShapelessRecipes().size() +
+                packet.getShapelessChemistryRecipes().size() +
+                packet.getUserDataShapelessRecipes().size() +
+                packet.getMultiRecipes().size() +
+                packet.getSmithingTransformRecipes().size() +
+                packet.getSmithingTrimRecipes().size();
 
-        switch (type) {
-            case SHAPELESS_RECIPE:
-            case SHAPELESS_CHEMISTRY_RECIPE:
-            case USER_DATA_SHAPELESS_RECIPE:
-                return this.readShapelessRecipe(buffer, helper, type);
-            case SHAPED_RECIPE:
-            case SHAPED_CHEMISTRY_RECIPE:
-                return this.readShapedRecipe(buffer, helper, type);
-            case FURNACE_RECIPE:
-            case FURNACE_AUX_RECIPE:
-                return this.readFurnaceRecipe(buffer, helper, type);
-            case MULTI_RECIPE:
-                return this.readMultiRecipe(buffer, helper, type);
-            default:
-                throw new IllegalArgumentException("Unhandled crafting data type: " + type);
+        VarInts.writeUnsignedInt(buffer, length);
+
+        for (final ShapedRecipePayload payload : packet.getShapedRecipes()) {
+            VarInts.writeInt(buffer, CraftingDataEntryType.SHAPED_RECIPE.ordinal());
+            this.writeShapedRecipePayload(buffer, helper, payload);
+        }
+
+        for (final ShapedRecipePayload payload : packet.getShapedChemistryRecipes()) {
+            VarInts.writeInt(buffer, CraftingDataEntryType.SHAPED_CHEMISTRY_RECIPE.ordinal());
+            this.writeShapedRecipePayload(buffer, helper, payload);
+        }
+
+        for (final ShapelessRecipePayload payload : packet.getShapelessRecipes()) {
+            VarInts.writeInt(buffer, CraftingDataEntryType.SHAPELESS_RECIPE.ordinal());
+            this.writeShapelessRecipePayload(buffer, helper, payload);
+        }
+
+        for (final ShapelessRecipePayload payload : packet.getShapelessChemistryRecipes()) {
+            VarInts.writeInt(buffer, CraftingDataEntryType.SHAPELESS_CHEMISTRY_RECIPE.ordinal());
+            this.writeShapelessRecipePayload(buffer, helper, payload);
+        }
+
+        for (final ShapelessRecipePayload payload : packet.getUserDataShapelessRecipes()) {
+            VarInts.writeInt(buffer, CraftingDataEntryType.USER_DATA_SHAPELESS_RECIPE.ordinal());
+            this.writeShapelessRecipePayload(buffer, helper, payload);
+        }
+
+        for (final FurnaceRecipePayload payload : packet.getFurnaceRecipes()) {
+            final CraftingDataEntryType type = payload.getAuxValue() != -1 ? CraftingDataEntryType.FURNACE_AUX_RECIPE : CraftingDataEntryType.FURNACE_RECIPE;
+            VarInts.writeInt(buffer, type.ordinal());
+            this.writeFurnaceRecipePayload(buffer, helper, payload, type);
+        }
+
+        for (final MultiRecipePayload multiRecipe : packet.getMultiRecipes()) {
+            VarInts.writeInt(buffer, CraftingDataEntryType.MULTI.ordinal());
+            this.writeMultiRecipePayload(buffer, helper, multiRecipe);
         }
     }
 
-    protected void writeEntry(ByteBuf buffer, BedrockCodecHelper helper, CraftingDataEntry craftingData) {
-        VarInts.writeInt(buffer, craftingData.getType().ordinal());
-        switch (craftingData.getType()) {
-            case SHAPELESS_RECIPE:
-            case SHAPELESS_CHEMISTRY_RECIPE:
-            case USER_DATA_SHAPELESS_RECIPE:
-                this.writeShapelessRecipe(buffer, helper, (ShapelessRecipe) craftingData);
-                break;
-            case SHAPED_RECIPE:
-            case SHAPED_CHEMISTRY_RECIPE:
-                this.writeShapedRecipe(buffer, helper, (ShapedRecipe) craftingData);
-                break;
-            case FURNACE_RECIPE:
-            case FURNACE_AUX_RECIPE:
-                this.writeFurnaceRecipe(buffer, helper, (FurnaceRecipe) craftingData);
-                break;
-            case MULTI_RECIPE:
-                this.writeMultiRecipe(buffer, helper, (MultiRecipe) craftingData);
-                break;
+    protected void readEntries(ByteBuf buffer, BedrockCodecHelper helper, CraftingDataPacket packet) {
+        final int length = VarInts.readUnsignedInt(buffer);
+
+        for (int i = 0; i < length; i++) {
+            final CraftingDataEntryType type = CraftingDataEntryType.byId(VarInts.readInt(buffer));
+
+            switch (type) {
+                case SHAPED_RECIPE:
+                    packet.getShapedRecipes().add(this.readShapedRecipePayload(buffer, helper));
+                    break;
+                case SHAPED_CHEMISTRY_RECIPE:
+                    packet.getShapedChemistryRecipes().add(this.readShapedRecipePayload(buffer, helper));
+                    break;
+                case SHAPELESS_RECIPE:
+                    packet.getShapelessRecipes().add(this.readShapelessRecipePayload(buffer, helper));
+                    break;
+                case SHAPELESS_CHEMISTRY_RECIPE:
+                    packet.getShapelessChemistryRecipes().add(this.readShapelessRecipePayload(buffer, helper));
+                    break;
+                case USER_DATA_SHAPELESS_RECIPE:
+                    packet.getUserDataShapelessRecipes().add(this.readShapelessRecipePayload(buffer, helper));
+                    break;
+                case FURNACE_RECIPE:
+                    packet.getFurnaceRecipes().add(this.readFurnaceRecipePayload(buffer, helper, type));
+                    break;
+                case MULTI:
+                    packet.getMultiRecipes().add(this.readMultiRecipePayload(buffer, helper));
+                    break;
+            }
         }
     }
 
-    protected ShapelessRecipe readShapelessRecipe(ByteBuf buffer, BedrockCodecHelper helper, CraftingDataEntryType type) {
-        List<ItemDescriptorWithCount> inputs = new ObjectArrayList<>();
-        helper.readArray(buffer, inputs, buf -> ItemDescriptorWithCount.fromItem(helper.readItem(buf)));
-
-        List<ItemData> outputs = new ObjectArrayList<>();
-        helper.readArray(buffer, outputs, helper::readItem);
-
-        UUID uuid = helper.readUuid(buffer);
-        return ShapelessRecipe.of(type, "", inputs, outputs, uuid, "", 0, -1);
-    }
-
-    protected void writeShapelessRecipe(ByteBuf buffer, BedrockCodecHelper helper, ShapelessRecipe data) {
-        helper.writeArray(buffer, data.getIngredientList(), (buf, item) -> helper.writeItem(buf, item.toItem()));
-        helper.writeArray(buffer, data.getProductionList(), helper::writeItem);
-        helper.writeUuid(buffer, data.getRecipeID());
-    }
-
-    protected ShapedRecipe readShapedRecipe(ByteBuf buffer, BedrockCodecHelper helper, CraftingDataEntryType type) {
-        int width = VarInts.readInt(buffer);
-        int height = VarInts.readInt(buffer);
-        int inputCount = width * height;
-        List<ItemDescriptorWithCount> inputs = new ObjectArrayList<>();
-        for (int i = 0; i < inputCount; i++) {
-            inputs.add(ItemDescriptorWithCount.fromItem(helper.readItem(buffer)));
+    protected void writeShapedRecipePayload(ByteBuf buffer, BedrockCodecHelper helper, ShapedRecipePayload payload) {
+        VarInts.writeInt(buffer, payload.getWidth());
+        VarInts.writeInt(buffer, payload.getHeight());
+        final int length = payload.getWidth() * payload.getHeight();
+        for (int i = 0; i < length; i++) {
+            helper.writeItem(buffer, payload.getIngredients().get(i).toItem());
         }
-        List<ItemData> outputs = new ObjectArrayList<>();
-        helper.readArray(buffer, outputs, helper::readItem);
-        UUID uuid = helper.readUuid(buffer);
-        return ShapedRecipe.of(type, "", width, height, inputs, outputs, uuid, "", 0, -1);
+        helper.writeArray(buffer, payload.getResults(), helper::writeItem);
+        helper.writeUuid(buffer, payload.getUuid());
     }
 
-    protected void writeShapedRecipe(ByteBuf buffer, BedrockCodecHelper helper, ShapedRecipe data) {
-        VarInts.writeInt(buffer, data.getRecipeWidth());
-        VarInts.writeInt(buffer, data.getRecipeHeight());
-        int count = data.getRecipeWidth() * data.getRecipeHeight();
-        List<ItemDescriptorWithCount> inputs = data.getIngredientList();
-        for (int i = 0; i < count; i++) {
-            helper.writeItem(buffer, inputs.get(i).toItem());
+    protected ShapedRecipePayload readShapedRecipePayload(ByteBuf buffer, BedrockCodecHelper helper) {
+        final ShapedRecipePayload payload = new ShapedRecipePayload();
+        payload.setWidth(VarInts.readInt(buffer));
+        payload.setHeight(VarInts.readInt(buffer));
+        helper.readArray(buffer, payload.getIngredients(), (buf, codecHelper) ->
+                RecipeIngredient.fromItem(codecHelper.readItem(buf)));
+        helper.readArray(buffer, payload.getResults(), helper::readItem);
+        payload.setUuid(helper.readUuid(buffer));
+        return payload;
+    }
+
+    protected void writeShapelessRecipePayload(ByteBuf buffer, BedrockCodecHelper helper, ShapelessRecipePayload payload) {
+        helper.writeArray(buffer, payload.getIngredients(), (buf, codecHelper, recipeIngredient) ->
+                codecHelper.writeItem(buf, recipeIngredient.toItem()));
+        helper.writeArray(buffer, payload.getResults(), helper::writeItem);
+        helper.writeUuid(buffer, payload.getUuid());
+    }
+
+    protected ShapelessRecipePayload readShapelessRecipePayload(ByteBuf buffer, BedrockCodecHelper helper) {
+        final ShapelessRecipePayload payload = new ShapelessRecipePayload();
+        helper.readArray(buffer, payload.getIngredients(), (buf, codecHelper) ->
+                RecipeIngredient.fromItem(codecHelper.readItem(buf)));
+        helper.readArray(buffer, payload.getResults(), helper::readItem);
+        payload.setUuid(helper.readUuid(buffer));
+        return payload;
+    }
+
+    protected void writeFurnaceRecipePayload(ByteBuf buffer, BedrockCodecHelper helper, FurnaceRecipePayload payload, CraftingDataEntryType type) {
+        VarInts.writeInt(buffer, payload.getInputId());
+        if (type.equals(CraftingDataEntryType.FURNACE_AUX_RECIPE)) {
+            VarInts.writeInt(buffer, payload.getAuxValue());
         }
-        helper.writeArray(buffer, data.getProductionList(), helper::writeItem);
-        helper.writeUuid(buffer, data.getRecipeID());
+        helper.writeItem(buffer, payload.getResult());
     }
 
-    protected FurnaceRecipe readFurnaceRecipe(ByteBuf buffer, BedrockCodecHelper helper, CraftingDataEntryType type) {
-        int inputId = VarInts.readInt(buffer);
-        int inputDamage = type == CraftingDataEntryType.FURNACE_AUX_RECIPE ? VarInts.readInt(buffer) : -1;
-        ItemData result = helper.readItem(buffer);
-        return FurnaceRecipe.of(type, inputId, inputDamage, result, "");
-    }
-
-    protected void writeFurnaceRecipe(ByteBuf buffer, BedrockCodecHelper helper, FurnaceRecipe data) {
-        VarInts.writeInt(buffer, data.getInputId());
-        if (data.getType() == CraftingDataEntryType.FURNACE_AUX_RECIPE) {
-            VarInts.writeInt(buffer, data.getInputData());
+    protected FurnaceRecipePayload readFurnaceRecipePayload(ByteBuf buffer, BedrockCodecHelper helper, CraftingDataEntryType type) {
+        final FurnaceRecipePayload payload = new FurnaceRecipePayload();
+        payload.setInputId(VarInts.readInt(buffer));
+        if (type.equals(CraftingDataEntryType.FURNACE_AUX_RECIPE)) {
+            payload.setAuxValue(VarInts.readInt(buffer));
+        } else {
+            payload.setAuxValue(-1);
         }
-        helper.writeItem(buffer, data.getResultItem());
+        payload.setResult(helper.readItem(buffer));
+        return payload;
     }
 
-    protected MultiRecipe readMultiRecipe(ByteBuf buffer, BedrockCodecHelper helper, CraftingDataEntryType type) {
-        UUID uuid = helper.readUuid(buffer);
-        return MultiRecipe.of(uuid, -1);
+    protected void writeMultiRecipePayload(ByteBuf buffer, BedrockCodecHelper helper, MultiRecipePayload payload) {
+        helper.writeUuid(buffer, payload.getMultiRecipeUUID());
     }
 
-    protected void writeMultiRecipe(ByteBuf buffer, BedrockCodecHelper helper, MultiRecipe data) {
-        helper.writeUuid(buffer, data.getRecipeID());
-    }*/
+    protected MultiRecipePayload readMultiRecipePayload(ByteBuf buffer, BedrockCodecHelper helper) {
+        final MultiRecipePayload payload = new MultiRecipePayload();
+        payload.setMultiRecipeUUID(helper.readUuid(buffer));
+        return payload;
+    }
 }
