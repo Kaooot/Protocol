@@ -17,10 +17,11 @@ public class PlayerListSerializer_v390 extends PlayerListSerializer_v388 {
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, PlayerListPacket packet) {
-        VarInts.writeUnsignedInt(buffer, packet.getEntries().get(0).getPacketType().ordinal());
+        final boolean add = packet.getEntries().get(0).getPacketType().equals(PlayerListPacketType.ADD);
+        VarInts.writeUnsignedInt(buffer, add ? 0 : 1);
         helper.writeArray(buffer, packet.getEntries(), this::writePlayerListEntryVariant);
 
-        if (packet.getEntries().get(0) instanceof PlayerListAddEntry) {
+        if (packet.getEntries().get(0).getPacketType().equals(PlayerListPacketType.ADD)) {
             for (PlayerListEntry entry : packet.getEntries()) {
                 buffer.writeBoolean(((PlayerListAddEntry) entry).isTrustedSkin());
             }
@@ -29,11 +30,12 @@ public class PlayerListSerializer_v390 extends PlayerListSerializer_v388 {
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, PlayerListPacket packet) {
-        final PlayerListPacketType packetType = PlayerListPacketType.from(VarInts.readUnsignedInt(buffer));
+        final int id = VarInts.readUnsignedInt(buffer);
+        final PlayerListPacketType packetType = id == 0 ? PlayerListPacketType.ADD : PlayerListPacketType.REMOVE;
         helper.readArray(buffer, packet.getEntries(), (buf, codecHelper) ->
                 this.readPlayerListEntryVariant(buf, codecHelper, packetType));
 
-        if (packet.getEntries().get(0) instanceof PlayerListAddEntry) {
+        if (packet.getEntries().get(0).getPacketType().equals(PlayerListPacketType.ADD)) {
             final int length = packet.getEntries().size();
             for (int i = 0; i < length && buffer.isReadable(); i++) {
                 ((PlayerListAddEntry) packet.getEntries().get(i)).setTrustedSkin(buffer.readBoolean());

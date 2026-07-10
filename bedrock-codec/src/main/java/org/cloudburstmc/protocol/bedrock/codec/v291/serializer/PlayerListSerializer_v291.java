@@ -21,23 +21,25 @@ public class PlayerListSerializer_v291 implements BedrockPacketSerializer<Player
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, PlayerListPacket packet) {
-        buffer.writeByte(packet.getEntries().get(0).getPacketType().ordinal());
+        final boolean add = packet.getEntries().get(0).getPacketType().equals(PlayerListPacketType.ADD);
+        buffer.writeByte(add ? 0 : 1);
         helper.writeArray(buffer, packet.getEntries(), this::writePlayerListEntryVariant);
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, PlayerListPacket packet) {
-        final PlayerListPacketType packetType = PlayerListPacketType.from(buffer.readUnsignedByte());
+        final int id = buffer.readUnsignedByte();
+        final PlayerListPacketType packetType = id == 0 ? PlayerListPacketType.ADD : PlayerListPacketType.REMOVE;
         helper.readArray(buffer, packet.getEntries(), (buf, codecHelper) ->
                 this.readPlayerListEntryVariant(buf, codecHelper, packetType));
     }
 
     protected void writePlayerListEntryVariant(ByteBuf buffer, BedrockCodecHelper helper, PlayerListEntry entry) {
         switch (entry.getPacketType()) {
-            case ADD:
+            case REMOVE:
                 this.writePlayerListRemoveEntry(buffer, helper, (PlayerListRemoveEntry) entry);
                 break;
-            case REMOVE:
+            case ADD:
                 this.writePlayerListAddEntry(buffer, helper, (PlayerListAddEntry) entry);
                 break;
         }
@@ -45,9 +47,9 @@ public class PlayerListSerializer_v291 implements BedrockPacketSerializer<Player
 
     protected PlayerListEntry readPlayerListEntryVariant(ByteBuf buffer, BedrockCodecHelper helper, PlayerListPacketType packetType) {
         switch (packetType) {
-            case ADD:
-                return this.readPlayerListRemoveEntry(buffer, helper);
             case REMOVE:
+                return this.readPlayerListRemoveEntry(buffer, helper);
+            case ADD:
                 return this.readPlayerListAddEntry(buffer, helper);
             default:
                 throw new IllegalStateException("Received invalid PlayerListPacketType");
