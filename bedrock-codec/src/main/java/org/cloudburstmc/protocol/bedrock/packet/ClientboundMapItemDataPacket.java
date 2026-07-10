@@ -23,7 +23,7 @@ public class ClientboundMapItemDataPacket implements BedrockPacket {
     private boolean isLocked;
     private Vector3i mapOrigin;
     private LongList creationMapIDs;
-    private int scale;
+    private Integer scale;
     private List<MapItemTrackedActorUniqueId> trackedActorIDs;
     private List<MapDecoration> decorations;
     private Integer width;

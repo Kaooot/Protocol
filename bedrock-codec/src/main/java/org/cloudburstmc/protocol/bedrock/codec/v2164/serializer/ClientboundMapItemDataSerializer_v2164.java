@@ -30,7 +30,7 @@ public class ClientboundMapItemDataSerializer_v2164 implements BedrockPacketSeri
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ClientboundMapItemDataPacket packet) {
-       /* VarInts.writeLong(buffer, packet.getMapID());
+        VarInts.writeLong(buffer, packet.getMapID());
         buffer.writeByte(packet.getDimension().getValue());
         buffer.writeBoolean(packet.isLocked());
         helper.writeBlockPosition(buffer, packet.getMapOrigin());
@@ -50,14 +50,13 @@ public class ClientboundMapItemDataSerializer_v2164 implements BedrockPacketSeri
         helper.writeOptionalNull(buffer, packet.getStartY(), VarInts::writeInt);
         helper.writeOptionalNull(buffer, packet.getPixels(),
                 (buf, codecHelper, decorations) ->
-                        codecHelper.writeArray(buf, decorations, ByteBuf::writeIntLE));*/
+                        codecHelper.writeArray(buf, decorations, ByteBuf::writeIntLE));
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ClientboundMapItemDataPacket packet) {
-       buffer.readBytes(buffer.readableBytes());
-       /* packet.setMapID(VarInts.readLong(buffer));
-        packet.setDimension(DimensionType.from(buffer.readByte()));
+        packet.setMapID(VarInts.readLong(buffer));
+        packet.setDimension(DimensionType.from(buffer.readUnsignedByte()));
         packet.setLocked(buffer.readBoolean());
         packet.setMapOrigin(helper.readBlockPosition(buffer));
         packet.setCreationMapIDs(helper.readOptional(buffer, null, (buf, codecHelper) -> {
@@ -65,7 +64,7 @@ public class ClientboundMapItemDataSerializer_v2164 implements BedrockPacketSeri
             codecHelper.readArray(buf, creationMapIds, VarInts::readLong);
             return creationMapIds;
         }));
-        packet.setScale(helper.readOptional(buffer, null, ByteBuf::readByte));
+        packet.setScale(helper.readOptional(buffer, null, (buf, codecHelper) -> (int) buf.readByte()));
         packet.setTrackedActorIDs(helper.readOptional(buffer, null, (buf, codecHelper) -> {
             final List<MapItemTrackedActorUniqueId> trackedActorIDs = new ObjectArrayList<>();
             codecHelper.readArray(buf, trackedActorIDs, this::readMapItemTrackedActorUniqueId);
@@ -84,18 +83,18 @@ public class ClientboundMapItemDataSerializer_v2164 implements BedrockPacketSeri
             final IntList pixels = new IntArrayList();
             codecHelper.readArray(buf, pixels, ByteBuf::readIntLE);
             return pixels;
-        }));*/
+        }));
     }
 
     private void writeMapItemTrackedActorUniqueId(ByteBuf buffer, BedrockCodecHelper helper, MapItemTrackedActorUniqueId uniqueId) {
-        VarInts.writeInt(buffer, uniqueId.getType().ordinal());
+        buffer.writeIntLE(uniqueId.getType().ordinal());
         helper.writeOptionalNull(buffer, uniqueId.getEntityID(), VarInts::writeLong);
         helper.writeOptionalNull(buffer, uniqueId.getBlockPosition(), helper::writeBlockPosition);
     }
 
     private MapItemTrackedActorUniqueId readMapItemTrackedActorUniqueId(ByteBuf buffer, BedrockCodecHelper helper) {
         final MapItemTrackedActorUniqueId uniqueId = new MapItemTrackedActorUniqueId();
-        uniqueId.setType(MapItemTrackedActorType.from(VarInts.readInt(buffer)));
+        uniqueId.setType(MapItemTrackedActorType.from(buffer.readIntLE()));
         uniqueId.setEntityID(helper.readOptional(buffer, null, VarInts::readLong));
         uniqueId.setBlockPosition(helper.readOptional(buffer, null, helper::readBlockPosition));
         return uniqueId;
@@ -119,14 +118,5 @@ public class ClientboundMapItemDataSerializer_v2164 implements BedrockPacketSeri
         mapDecoration.setLabel(helper.readString(buffer));
         mapDecoration.setColor(buffer.readIntLE());
         return mapDecoration;
-    }
-
-    private void dump(ByteBuf buffer) {
-        final ByteBuf copy = buffer.copy();
-        final byte[] data = new byte[buffer.readableBytes()];
-        copy.readBytes(data);
-        System.out.println(ByteBufUtil.hexDump(data));
-        System.out.println(Arrays.toString(data));
-        System.out.println(new String(data));
     }
 }

@@ -14,19 +14,19 @@ public class ResourcePacksInfoSerializer_v448 extends ResourcePacksInfoSerialize
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ResourcePacksInfoPacket packet) {
-      /*  buffer.writeBoolean(packet.isResourcePackRequired());
+        buffer.writeBoolean(packet.isResourcePackRequired());
         buffer.writeBoolean(packet.isHasScripts());
-        buffer.writeBoolean(packet.isForceServerPacksEnabled());
-        writePacks(buffer, packet.getBehaviorPacks(), helper, false);
-        writePacks(buffer, packet.getResourcePacks(), helper, true);*/
+        buffer.writeBoolean(false); // force server packs enabled
+        buffer.writeShortLE(0);
+        helper.writeArray(buffer, packet.getResourcePacks(), ByteBuf::writeShortLE, this::writePackInfoData);
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ResourcePacksInfoPacket packet) {
-      /*  packet.setResourcePackRequired(buffer.readBoolean());
+        packet.setResourcePackRequired(buffer.readBoolean());
         packet.setHasScripts(buffer.readBoolean());
-        packet.setForceServerPacksEnabled(buffer.readBoolean());
-        readPacks(buffer, packet.getBehaviorPacks(), helper, false);
-        readPacks(buffer, packet.getResourcePacks(), helper, true);*/
+        buffer.readBoolean();
+        buffer.readShortLE();
+        helper.readArray(buffer, packet.getResourcePacks(), ByteBuf::readShortLE, this::readPackInfoData);
     }
 }

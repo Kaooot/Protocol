@@ -26,7 +26,7 @@ public class SubChunkSerializer_v2164 extends SubChunkSerializer_v818 {
         buffer.writeBoolean(packet.isCacheEnabled());
         VarInts.writeInt(buffer, packet.getDimensionType().getValue());
         this.writeCenterPos(buffer, packet.getCenterPos());
-        helper.writeArray(buffer, packet.getSubChunkData(), this::writeSubChunkPacketData);
+        helper.writeArray(buffer, packet.getSubChunkData(), (buf, codecHelper, data) -> this.writeSubChunkPacketData(buffer, helper, data, packet));
     }
 
     @Override
@@ -34,11 +34,11 @@ public class SubChunkSerializer_v2164 extends SubChunkSerializer_v818 {
         packet.setCacheEnabled(buffer.readBoolean());
         packet.setDimensionType(DimensionType.from(VarInts.readInt(buffer)));
         packet.setCenterPos(this.readCenterPos(buffer));
-        helper.readArray(buffer, packet.getSubChunkData(), this::readSubChunkPacketData);
+        helper.readArray(buffer, packet.getSubChunkData(), (buf, codecHelper) -> this.readSubChunkPacketData(buffer, helper, packet));
     }
 
     @Override
-    protected void writeSubChunkPacketData(ByteBuf buffer, BedrockCodecHelper helper, SubChunkPacketData data) {
+    protected void writeSubChunkPacketData(ByteBuf buffer, BedrockCodecHelper helper, SubChunkPacketData data, SubChunkPacket packet) {
         this.writeSubChunkPosOffset(buffer, helper, data.getSubChunkPosOffset());
         buffer.writeByte(data.getSubChunkRequestResult().ordinal());
         helper.writeOptionalNull(buffer, data.getSerializedSubChunk(), helper::writeByteBuf);
@@ -47,7 +47,7 @@ public class SubChunkSerializer_v2164 extends SubChunkSerializer_v818 {
     }
 
     @Override
-    protected SubChunkPacketData readSubChunkPacketData(ByteBuf buffer, BedrockCodecHelper helper) {
+    protected SubChunkPacketData readSubChunkPacketData(ByteBuf buffer, BedrockCodecHelper helper, SubChunkPacket packet) {
         final SubChunkPacketData data = new SubChunkPacketData();
         data.setSubChunkPosOffset(this.readSubChunkPosOffset(buffer, helper));
         data.setSubChunkRequestResult(SubChunkRequestResult.from(buffer.readUnsignedByte()));

@@ -72,7 +72,7 @@ public class Bedrock_v2164 extends Bedrock_v1001 {
             .updateSerializer(AddItemActorPacket.class, AddItemActorSerializer_v2164.INSTANCE)
             .updateSerializer(AddPlayerPacket.class, AddPlayerSerializer_v2164.INSTANCE)
             .updateSerializer(AnvilDamagePacket.class, AnvilDamageSerializer_v2164.INSTANCE)
-            .updateSerializer(ClientboundMapItemDataPacket.class, ClientboundMapItemDataSerializer_v2164.INSTANCE) // TODO implement, backwards compatibility
+            .updateSerializer(ClientboundMapItemDataPacket.class, ClientboundMapItemDataSerializer_v2164.INSTANCE) // TODO backwards compatibility
             .updateSerializer(ClientboundUpdateSoundDataPacket.class, ClientboundUpdateSoundDataSerializer_v2164.INSTANCE)
             .updateSerializer(CraftingDataPacket.class, CraftingDataSerializer_v2164.INSTANCE) // TODO backwards compatibility
             .updateSerializer(CreativeContentPacket.class, CreativeContentSerializer_v2164.INSTANCE)
@@ -88,14 +88,14 @@ public class Bedrock_v2164 extends Bedrock_v1001 {
             .updateSerializer(PlayerUpdateEntityOverridesPacket.class, PlayerUpdateEntityOverridesSerializer_v2164.INSTANCE)
             .updateSerializer(PlaySoundPacket.class, PlaySoundSerializer_v2164.INSTANCE)
             .updateSerializer(ResourcePackClientResponsePacket.class, ResourcePackClientResponseSerializer_v2164.INSTANCE)
-            .updateSerializer(ResourcePacksInfoPacket.class, ResourcePacksInfoSerializer_v2164.INSTANCE) // TODO backwards compatibility
+            .updateSerializer(ResourcePacksInfoPacket.class, ResourcePacksInfoSerializer_v2164.INSTANCE)
             .updateSerializer(ServerboundDiagnosticsPacket.class, new ServerboundDiagnosticsSerializer_v2164(MEMORY_CATEGORY_TYPES))
             .updateSerializer(ServerPresenceInfoPacket.class, ServerPresenceInfoSerializer_v2164.INSTANCE)
             .updateSerializer(SetScoreboardIdentityPacket.class, SetScoreboardIdentitySerializer_v2164.INSTANCE)
             .updateSerializer(SetScorePacket.class, SetScoreSerializer_v2164.INSTANCE)
             .updateSerializer(StartGamePacket.class, StartGameSerializer_v2164.INSTANCE)
             .updateSerializer(StructureBlockUpdatePacket.class, StructureBlockUpdateSerializer_v2164.INSTANCE)
-            .updateSerializer(SubChunkPacket.class, SubChunkSerializer_v2164.INSTANCE) // TODO backwards compatibility
+            .updateSerializer(SubChunkPacket.class, SubChunkSerializer_v2164.INSTANCE)
             .updateSerializer(TransferPacket.class, TransferSerializer_v2164.INSTANCE)
             .build();
 }

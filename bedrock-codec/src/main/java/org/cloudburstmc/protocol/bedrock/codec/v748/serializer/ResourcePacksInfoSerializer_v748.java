@@ -5,20 +5,19 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v729.serializer.ResourcePacksInfoSerializer_v729;
+import org.cloudburstmc.protocol.bedrock.data.payload.pack.PackInfoData;
 import org.cloudburstmc.protocol.bedrock.packet.ResourcePacksInfoPacket;
-
-import java.util.UUID;
 
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public class ResourcePacksInfoSerializer_v748 extends ResourcePacksInfoSerializer_v729 {
     public static final ResourcePacksInfoSerializer_v748 INSTANCE = new ResourcePacksInfoSerializer_v748();
 
-   /* @Override
+    @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ResourcePacksInfoPacket packet) {
         buffer.writeBoolean(packet.isResourcePackRequired());
         buffer.writeBoolean(packet.isHasAddonPacks());
         buffer.writeBoolean(packet.isHasScripts());
-        writePacks(buffer, packet.getResourcePacks(), helper, true);
+        helper.writeArray(buffer, packet.getResourcePacks(), ByteBuf::writeShortLE, this::writePackInfoData);
     }
 
     @Override
@@ -26,28 +25,27 @@ public class ResourcePacksInfoSerializer_v748 extends ResourcePacksInfoSerialize
         packet.setResourcePackRequired(buffer.readBoolean());
         packet.setHasAddonPacks(buffer.readBoolean());
         packet.setHasScripts(buffer.readBoolean());
-        readPacks(buffer, packet.getResourcePacks(), helper, true);
+        helper.readArray(buffer, packet.getResourcePacks(), ByteBuf::readShortLE, this::readPackInfoData);
     }
 
     @Override
-    public void writeEntry(ByteBuf buffer, BedrockCodecHelper helper, ResourcePacksInfoPacket.Entry entry, boolean resource) {
-        super.writeEntry(buffer, helper, entry, resource);
-        helper.writeString(buffer, entry.getCdnUrl() == null ? "" : entry.getCdnUrl());
+    protected void writePackInfoData(ByteBuf buffer, BedrockCodecHelper helper, PackInfoData data) {
+        super.writePackInfoData(buffer, helper, data);
+        helper.writeString(buffer, data.getCdnUrl() == null ? "" : data.getCdnUrl());
     }
 
     @Override
-    public ResourcePacksInfoPacket.Entry readEntry(ByteBuf buffer, BedrockCodecHelper helper, boolean resource) {
-        UUID packId = UUID.fromString(helper.readString(buffer));
-        String packVersion = helper.readString(buffer);
-        long packSize = buffer.readLongLE();
-        String contentKey = helper.readString(buffer);
-        String subPackName = helper.readString(buffer);
-        String contentId = helper.readString(buffer);
-        boolean isScripting = buffer.readBoolean();
-        boolean isAddonPack = buffer.readBoolean();
-        boolean raytracingCapable = resource && buffer.readBoolean();
-        String cdnUrl = helper.readString(buffer);
-        return new ResourcePacksInfoPacket.Entry(packId, packVersion, packSize, contentKey, subPackName, contentId,
-                isScripting, raytracingCapable, isAddonPack, cdnUrl);
-    }*/
+    protected PackInfoData readPackInfoData(ByteBuf buffer, BedrockCodecHelper helper) {
+        final PackInfoData data = new PackInfoData();
+        data.setPackIdVersion(this.readPackIdVersion(buffer, helper));
+        data.setPackSize(buffer.readLongLE());
+        data.setContentKey(helper.readString(buffer));
+        data.setSubpackName(helper.readString(buffer));
+        data.setContentIdentity(helper.readString(buffer));
+        data.setHasScripts(buffer.readBoolean());
+        data.setAddonPack(buffer.readBoolean());
+        data.setRayTracingCapable(buffer.readBoolean());
+        data.setCdnUrl(helper.readString(buffer));
+        return data;
+    }
 }

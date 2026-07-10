@@ -24,24 +24,24 @@ public class SubChunkSerializer_v471 implements BedrockPacketSerializer<SubChunk
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, SubChunkPacket packet) {
         VarInts.writeInt(buffer, packet.getDimensionType().getValue());
         SubChunkPacketData subChunk = packet.getSubChunkData().get(0);
-        this.writeSubChunkPacketData(buffer, helper, subChunk);
+        this.writeSubChunkPacketData(buffer, helper, subChunk, packet);
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, SubChunkPacket packet) {
         packet.setDimensionType(DimensionType.from(VarInts.readInt(buffer)));
-        SubChunkPacketData subChunk = this.readSubChunkPacketData(buffer, helper);
+        SubChunkPacketData subChunk = this.readSubChunkPacketData(buffer, helper, packet);
         packet.getSubChunkData().add(subChunk);
     }
 
-    protected void writeSubChunkPacketData(ByteBuf buffer, BedrockCodecHelper helper, SubChunkPacketData data) {
+    protected void writeSubChunkPacketData(ByteBuf buffer, BedrockCodecHelper helper, SubChunkPacketData data, SubChunkPacket packet) {
         this.writeSubChunkPosOffset(buffer, helper, data.getSubChunkPosOffset());
         VarInts.writeInt(buffer, data.getSubChunkRequestResult().ordinal());
         helper.writeOptionalNull(buffer, data.getSerializedSubChunk(), helper::writeByteBuf);
         this.writeSubChunkHeightmapData(buffer, helper, data.getHeightMapData());
     }
 
-    protected SubChunkPacketData readSubChunkPacketData(ByteBuf buffer, BedrockCodecHelper helper) {
+    protected SubChunkPacketData readSubChunkPacketData(ByteBuf buffer, BedrockCodecHelper helper, SubChunkPacket packet) {
         final SubChunkPacketData data = new SubChunkPacketData();
         data.setSubChunkPosOffset(this.readSubChunkPosOffset(buffer, helper));
         data.setSubChunkRequestResult(SubChunkRequestResult.from(VarInts.readInt(buffer)));

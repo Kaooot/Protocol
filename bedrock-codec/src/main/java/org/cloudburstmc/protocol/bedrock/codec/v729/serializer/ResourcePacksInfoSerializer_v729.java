@@ -9,12 +9,12 @@ import org.cloudburstmc.protocol.bedrock.packet.ResourcePacksInfoPacket;
 public class ResourcePacksInfoSerializer_v729 extends ResourcePacksInfoSerializer_v712 {
     public static final ResourcePacksInfoSerializer_v729 INSTANCE = new ResourcePacksInfoSerializer_v729();
 
-    /*@Override
+    @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ResourcePacksInfoPacket packet) {
         buffer.writeBoolean(packet.isResourcePackRequired());
         buffer.writeBoolean(packet.isHasAddonPacks());
         buffer.writeBoolean(packet.isHasScripts());
-        this.writePacks(buffer, packet.getResourcePacks(), helper, true);
+        helper.writeArray(buffer, packet.getResourcePacks(), ByteBuf::writeShortLE, this::writePackInfoData);
         this.writeCDNEntries(buffer, packet, helper);
     }
 
@@ -23,7 +23,7 @@ public class ResourcePacksInfoSerializer_v729 extends ResourcePacksInfoSerialize
         packet.setResourcePackRequired(buffer.readBoolean());
         packet.setHasAddonPacks(buffer.readBoolean());
         packet.setHasScripts(buffer.readBoolean());
-        this.readPacks(buffer, packet.getResourcePacks(), helper, true);
+        helper.readArray(buffer, packet.getResourcePacks(), ByteBuf::readShortLE, this::readPackInfoData);
         this.readCDNEntries(buffer, packet, helper);
-    }*/
+    }
 }

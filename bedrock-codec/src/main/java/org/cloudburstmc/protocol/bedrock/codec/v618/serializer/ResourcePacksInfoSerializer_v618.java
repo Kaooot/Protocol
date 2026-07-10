@@ -7,6 +7,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v448.serializer.ResourcePacksInfoSerializer_v448;
+import org.cloudburstmc.protocol.bedrock.data.payload.pack.PackInfoData;
 import org.cloudburstmc.protocol.bedrock.packet.ResourcePacksInfoPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -23,23 +24,23 @@ public class ResourcePacksInfoSerializer_v618 extends ResourcePacksInfoSerialize
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ResourcePacksInfoPacket packet) {
-//        super.serialize(buffer, helper, packet);
-//        this.writeCDNEntries(buffer, packet, helper);
+        super.serialize(buffer, helper, packet);
+        this.writeCDNEntries(buffer, packet, helper);
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ResourcePacksInfoPacket packet) {
-//        super.deserialize(buffer, helper, packet);
-//        this.readCDNEntries(buffer, packet, helper);
+        super.deserialize(buffer, helper, packet);
+        this.readCDNEntries(buffer, packet, helper);
     }
 
-   /* protected void writeCDNEntries(ByteBuf buffer, ResourcePacksInfoPacket packet, BedrockCodecHelper helper) {
+    protected void writeCDNEntries(ByteBuf buffer, ResourcePacksInfoPacket packet, BedrockCodecHelper helper) {
         ByteBuf byteBuf = buffer.alloc().ioBuffer();
         try {
             int size = 0;
-            for (ResourcePacksInfoPacket.Entry info : packet.getResourcePacks()) {
+            for (PackInfoData info : packet.getResourcePacks()) {
                 if (info.getCdnUrl() != null) {
-                    helper.writeString(byteBuf, info.getPackId() + "_" + info.getPackVersion());
+                    helper.writeString(byteBuf, info.getPackIdVersion().getPackUUID() + "_" + info.getPackIdVersion().getPackVersion());
                     helper.writeString(byteBuf, info.getCdnUrl());
                     size++;
                 }
@@ -69,8 +70,8 @@ public class ResourcePacksInfoSerializer_v618 extends ResourcePacksInfoSerialize
             cdnUrls.put(idVersion, url);
         }
 
-        for (ResourcePacksInfoPacket.Entry info : packet.getResourcePacks()) {
-            String url = cdnUrls.remove(info.getPackId() + "_" + info.getPackVersion());
+        for (PackInfoData info : packet.getResourcePacks()) {
+            String url = cdnUrls.remove(info.getPackIdVersion().getPackUUID() + "_" + info.getPackIdVersion().getPackVersion());
             if (url != null) {
                 info.setCdnUrl(url);
             }
@@ -79,5 +80,5 @@ public class ResourcePacksInfoSerializer_v618 extends ResourcePacksInfoSerialize
         if (log.isDebugEnabled() && !cdnUrls.isEmpty()) {
             log.debug("Found {} CDN URLs that do not match any resource pack", cdnUrls.size());
         }
-    }*/
+    }
 }
