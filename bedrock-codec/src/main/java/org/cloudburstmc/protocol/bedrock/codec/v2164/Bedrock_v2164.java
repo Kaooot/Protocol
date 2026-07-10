@@ -72,7 +72,7 @@ public class Bedrock_v2164 extends Bedrock_v1001 {
             .updateSerializer(AddItemActorPacket.class, AddItemActorSerializer_v2164.INSTANCE)
             .updateSerializer(AddPlayerPacket.class, AddPlayerSerializer_v2164.INSTANCE)
             .updateSerializer(AnvilDamagePacket.class, AnvilDamageSerializer_v2164.INSTANCE)
-            .updateSerializer(ClientboundMapItemDataPacket.class, ClientboundMapItemDataSerializer_v2164.INSTANCE) // TODO backwards compatibility
+            .updateSerializer(ClientboundMapItemDataPacket.class, ClientboundMapItemDataSerializer_v2164.INSTANCE)
             .updateSerializer(ClientboundUpdateSoundDataPacket.class, ClientboundUpdateSoundDataSerializer_v2164.INSTANCE)
             .updateSerializer(CraftingDataPacket.class, CraftingDataSerializer_v2164.INSTANCE) // TODO backwards compatibility
             .updateSerializer(CreativeContentPacket.class, CreativeContentSerializer_v2164.INSTANCE)

@@ -1,7 +1,6 @@
 package org.cloudburstmc.protocol.bedrock.codec.v2164.serializer;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufUtil;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
 import it.unimi.dsi.fastutil.longs.LongArrayList;
@@ -18,7 +17,6 @@ import org.cloudburstmc.protocol.bedrock.data.payload.map.MapItemTrackedActorUni
 import org.cloudburstmc.protocol.bedrock.packet.ClientboundMapItemDataPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**
