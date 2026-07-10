@@ -34,10 +34,10 @@ public class PlayerListSerializer_v291 implements BedrockPacketSerializer<Player
 
     protected void writePlayerListEntryVariant(ByteBuf buffer, BedrockCodecHelper helper, PlayerListEntry entry) {
         switch (entry.getPacketType()) {
-            case REMOVE:
+            case ADD:
                 this.writePlayerListRemoveEntry(buffer, helper, (PlayerListRemoveEntry) entry);
                 break;
-            case ADD:
+            case REMOVE:
                 this.writePlayerListAddEntry(buffer, helper, (PlayerListAddEntry) entry);
                 break;
         }
@@ -45,9 +45,9 @@ public class PlayerListSerializer_v291 implements BedrockPacketSerializer<Player
 
     protected PlayerListEntry readPlayerListEntryVariant(ByteBuf buffer, BedrockCodecHelper helper, PlayerListPacketType packetType) {
         switch (packetType) {
-            case REMOVE:
-                return this.readPlayerListRemoveEntry(buffer, helper);
             case ADD:
+                return this.readPlayerListRemoveEntry(buffer, helper);
+            case REMOVE:
                 return this.readPlayerListAddEntry(buffer, helper);
             default:
                 throw new IllegalStateException("Received invalid PlayerListPacketType");

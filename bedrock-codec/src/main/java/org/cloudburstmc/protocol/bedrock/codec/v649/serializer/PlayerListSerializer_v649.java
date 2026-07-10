@@ -14,6 +14,7 @@ public class PlayerListSerializer_v649 extends PlayerListSerializer_v390 {
     @Override
     protected void writePlayerListAddEntry(ByteBuf buffer, BedrockCodecHelper helper, PlayerListAddEntry entry) {
         super.writePlayerListAddEntry(buffer, helper, entry);
+        buffer.writeBoolean(entry.isSubClient());
     }
 
     @Override

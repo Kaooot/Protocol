@@ -20,7 +20,7 @@ public class PlayerListSerializer_v390 extends PlayerListSerializer_v388 {
         VarInts.writeUnsignedInt(buffer, packet.getEntries().get(0).getPacketType().ordinal());
         helper.writeArray(buffer, packet.getEntries(), this::writePlayerListEntryVariant);
 
-        if (packet.getEntries().get(0).getPacketType().equals(PlayerListPacketType.ADD)) {
+        if (packet.getEntries().get(0) instanceof PlayerListAddEntry) {
             for (PlayerListEntry entry : packet.getEntries()) {
                 buffer.writeBoolean(((PlayerListAddEntry) entry).isTrustedSkin());
             }
@@ -33,8 +33,9 @@ public class PlayerListSerializer_v390 extends PlayerListSerializer_v388 {
         helper.readArray(buffer, packet.getEntries(), (buf, codecHelper) ->
                 this.readPlayerListEntryVariant(buf, codecHelper, packetType));
 
-        if (packetType.equals(PlayerListPacketType.ADD)) {
-            for (int i = 0; i < packet.getEntries().size() && buffer.isReadable(); i++) {
+        if (packet.getEntries().get(0) instanceof PlayerListAddEntry) {
+            final int length = packet.getEntries().size();
+            for (int i = 0; i < length && buffer.isReadable(); i++) {
                 ((PlayerListAddEntry) packet.getEntries().get(i)).setTrustedSkin(buffer.readBoolean());
             }
         }
