@@ -5,7 +5,6 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
-import org.cloudburstmc.protocol.bedrock.data.payload.configuration.PresenceConfiguration;
 import org.cloudburstmc.protocol.bedrock.packet.ServerPresenceInfoPacket;
 
 /**
@@ -17,23 +16,11 @@ public class ServerPresenceInfoSerializer_v975 implements BedrockPacketSerialize
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ServerPresenceInfoPacket packet) {
-        helper.writeOptionalNull(buffer, packet.getPresenceConfiguration(), this::writePresenceConfiguration);
+        helper.writeOptionalNull(buffer, packet.getPresenceConfiguration(), helper::writePresenceConfiguration);
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ServerPresenceInfoPacket packet) {
-        packet.setPresenceConfiguration(helper.readOptional(buffer, null, this::readPresenceConfiguration));
-    }
-
-    protected void writePresenceConfiguration(ByteBuf buffer, BedrockCodecHelper helper, PresenceConfiguration configuration) {
-        helper.writeString(buffer, configuration.getExperienceName());
-        helper.writeString(buffer, configuration.getWorldName());
-    }
-
-    protected PresenceConfiguration readPresenceConfiguration(ByteBuf buffer, BedrockCodecHelper helper) {
-        final PresenceConfiguration configuration = new PresenceConfiguration();
-        configuration.setExperienceName(helper.readString(buffer));
-        configuration.setWorldName(helper.readString(buffer));
-        return configuration;
+        packet.setPresenceConfiguration(helper.readOptional(buffer, null, helper::readPresenceConfiguration));
     }
 }

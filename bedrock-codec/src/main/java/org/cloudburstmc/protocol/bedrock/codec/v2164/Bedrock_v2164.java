@@ -90,7 +90,6 @@ public class Bedrock_v2164 extends Bedrock_v1001 {
             .updateSerializer(ResourcePackClientResponsePacket.class, ResourcePackClientResponseSerializer_v2164.INSTANCE)
             .updateSerializer(ResourcePacksInfoPacket.class, ResourcePacksInfoSerializer_v2164.INSTANCE)
             .updateSerializer(ServerboundDiagnosticsPacket.class, new ServerboundDiagnosticsSerializer_v2164(MEMORY_CATEGORY_TYPES))
-            .updateSerializer(ServerPresenceInfoPacket.class, ServerPresenceInfoSerializer_v2164.INSTANCE)
             .updateSerializer(SetScoreboardIdentityPacket.class, SetScoreboardIdentitySerializer_v2164.INSTANCE)
             .updateSerializer(SetScorePacket.class, SetScoreSerializer_v2164.INSTANCE)
             .updateSerializer(StartGamePacket.class, StartGameSerializer_v2164.INSTANCE)

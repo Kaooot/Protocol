@@ -81,13 +81,13 @@ public class BedrockCodecHelper_v2164 extends BedrockCodecHelper_v1001 {
 
     @Override
     public void writePresenceConfiguration(ByteBuf buffer, PresenceConfiguration configuration) {
-        this.writeString(buffer, configuration.getRichPresenceId());
+        this.writeOptionalNull(buffer, configuration.getRichPresenceId(), this::writeString);
     }
 
     @Override
     public PresenceConfiguration readPresenceConfiguration(ByteBuf buffer) {
         final PresenceConfiguration configuration = new PresenceConfiguration();
-        configuration.setRichPresenceId(this.readString(buffer));
+        configuration.setRichPresenceId(this.readOptional(buffer, null, this::readString));
         return configuration;
     }
 

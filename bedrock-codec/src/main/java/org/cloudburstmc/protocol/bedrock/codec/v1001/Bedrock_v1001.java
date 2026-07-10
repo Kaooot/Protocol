@@ -2,8 +2,8 @@ package org.cloudburstmc.protocol.bedrock.codec.v1001;
 
 import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
-import org.cloudburstmc.protocol.bedrock.codec.v975.Bedrock_v975;
 import org.cloudburstmc.protocol.bedrock.codec.v1001.serializer.*;
+import org.cloudburstmc.protocol.bedrock.codec.v975.Bedrock_v975;
 import org.cloudburstmc.protocol.bedrock.data.PacketRecipient;
 import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
 import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataTypes;
@@ -55,7 +55,6 @@ public class Bedrock_v1001 extends Bedrock_v975 {
             .updateSerializer(PlayerAuthInputPacket.class, PlayerAuthInputSerializer_v1001.INSTANCE)
             .updateSerializer(PrimitiveShapesPacket.class, PrimitiveShapesSerializer_v1001.INSTANCE)
             .updateSerializer(ServerboundDiagnosticsPacket.class, new ServerboundDiagnosticsSerializer_v1001(MEMORY_CATEGORY_TYPES))
-            .updateSerializer(ServerPresenceInfoPacket.class, ServerPresenceInfoSerializer_v1001.INSTANCE)
             .updateSerializer(StartGamePacket.class, StartGameSerializer_v1001.INSTANCE)
             .updateSerializer(SubChunkRequestPacket.class, SubChunkRequestSerializer_v1001.INSTANCE)
             .registerPacket(ClientboundUpdateSoundDataPacket::new, ClientboundUpdateSoundSerializer_v1001.INSTANCE, 348, PacketRecipient.CLIENT)
