@@ -82,7 +82,7 @@ public class Bedrock_v2164 extends Bedrock_v1001 {
             .updateSerializer(MoveActorDeltaPacket.class, MoveActorDeltaSerializer_v2164.INSTANCE)
             .updateSerializer(MovePlayerPacket.class, MovePlayerSerializer_v2164.INSTANCE)
             .updateSerializer(PlayerAuthInputPacket.class, PlayerAuthInputSerializer_v2164.INSTANCE)
-            .updateSerializer(PlayerListPacket.class, PlayerListSerializer_v2164.INSTANCE) // TODO fix, backwards compatibility
+            .updateSerializer(PlayerListPacket.class, PlayerListSerializer_v2164.INSTANCE) // TODO fix
             .updateSerializer(PlayerLocationPacket.class, PlayerLocationSerializer_v2164.INSTANCE)
             .updateSerializer(PlayerSkinPacket.class, PlayerSkinSerializer_v2164.INSTANCE)
             .updateSerializer(PlayerUpdateEntityOverridesPacket.class, PlayerUpdateEntityOverridesSerializer_v2164.INSTANCE)
