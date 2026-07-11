@@ -1,19 +1,17 @@
 package org.cloudburstmc.protocol.bedrock.codec.v2168.serializer;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufUtil;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
+import org.cloudburstmc.protocol.bedrock.data.BuildPlatform;
 import org.cloudburstmc.protocol.bedrock.data.payload.list.PlayerListAddEntry;
 import org.cloudburstmc.protocol.bedrock.data.payload.list.PlayerListEntry;
 import org.cloudburstmc.protocol.bedrock.data.payload.list.PlayerListPacketType;
 import org.cloudburstmc.protocol.bedrock.data.payload.list.PlayerListRemoveEntry;
 import org.cloudburstmc.protocol.bedrock.packet.PlayerListPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
-
-import java.util.Arrays;
 
 /**
  * @author Kaooot
@@ -40,6 +38,10 @@ public class PlayerListSerializer_v2168 implements BedrockPacketSerializer<Playe
                 this.writePlayerListRemoveEntry(buffer, helper, (PlayerListRemoveEntry) entry);
                 break;
             case ADD:
+                if (((PlayerListAddEntry) entry).getBuildPlatform() == null) {
+                    buffer.writerIndex(0);
+                    return;
+                }
                 this.writePlayerListAddEntry(buffer, helper, (PlayerListAddEntry) entry);
                 break;
         }
@@ -47,7 +49,7 @@ public class PlayerListSerializer_v2168 implements BedrockPacketSerializer<Playe
 
     protected PlayerListEntry readPlayerListEntryVariant(ByteBuf buffer, BedrockCodecHelper helper) {
         final PlayerListPacketType packetType = PlayerListPacketType.from(VarInts.readUnsignedInt(buffer));
-        final int constValue = buffer.readUnsignedByte();
+        buffer.readUnsignedByte();
         switch (packetType) {
             case REMOVE:
                 return this.readPlayerListRemoveEntry(buffer, helper);
@@ -73,7 +75,13 @@ public class PlayerListSerializer_v2168 implements BedrockPacketSerializer<Playe
         VarInts.writeLong(buffer, entry.getActorUniqueID());
         helper.writeString(buffer, entry.getPlayerName());
         helper.writeString(buffer, entry.getXblXUID());
-        buffer.writeBoolean(false);
+        helper.writeString(buffer, entry.getPlatformOnlineID());
+        buffer.writeIntLE(entry.getBuildPlatform().getId());
+        helper.writeSerializedSkin(buffer, entry.getSerializedSkin());
+        buffer.writeBoolean(entry.isTeacher());
+        buffer.writeBoolean(entry.isHost());
+        buffer.writeBoolean(entry.isSubClient());
+        buffer.writeIntLE(entry.getPlayerColor());
     }
 
     protected PlayerListAddEntry readPlayerListAddEntry(ByteBuf buffer, BedrockCodecHelper helper) {
@@ -82,16 +90,16 @@ public class PlayerListSerializer_v2168 implements BedrockPacketSerializer<Playe
         entry.setActorUniqueID(VarInts.readLong(buffer));
         entry.setPlayerName(helper.readString(buffer));
         entry.setXblXUID(helper.readString(buffer));
-        buffer.readBoolean();
+        entry.setPlatformOnlineID(helper.readString(buffer));
+        if (!buffer.isReadable()) {
+            return entry;
+        }
+        entry.setBuildPlatform(BuildPlatform.from(buffer.readIntLE()));
+        entry.setSerializedSkin(helper.readSerializedSkin(buffer));
+        entry.setTeacher(buffer.readBoolean());
+        entry.setHost(buffer.readBoolean());
+        entry.setSubClient(buffer.readBoolean());
+        entry.setPlayerColor(buffer.readIntLE());
         return entry;
-    }
-
-    private void dump(ByteBuf buffer) {
-        final ByteBuf copy = buffer.copy();
-        final byte[] data = new byte[buffer.readableBytes()];
-        copy.readBytes(data);
-        System.out.println(ByteBufUtil.hexDump(data));
-        System.out.println(Arrays.toString(data));
-        System.out.println(new String(data));
     }
 }
