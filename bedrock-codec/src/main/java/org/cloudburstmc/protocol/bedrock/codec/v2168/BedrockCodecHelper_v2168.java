@@ -988,6 +988,7 @@ public class BedrockCodecHelper_v2168 extends BedrockCodecHelper_v1001 {
         buffer.writeBoolean(serializedSkin.isPrimaryUser());
         buffer.writeBoolean(serializedSkin.isOverridesPlayerAppearance());
         this.writeString(buffer, serializedSkin.getTrustedSkinFlag().getId());
+        this.writeString(buffer, serializedSkin.getProfileHash());
     }
 
     @Override
@@ -1014,6 +1015,7 @@ public class BedrockCodecHelper_v2168 extends BedrockCodecHelper_v1001 {
         serializedSkin.setPrimaryUser(buffer.readBoolean());
         serializedSkin.setOverridesPlayerAppearance(buffer.readBoolean());
         serializedSkin.setTrustedSkinFlag(TrustedSkinFlag.from(this.readString(buffer)));
+        serializedSkin.setProfileHash(this.readString(buffer));
         return serializedSkin;
     }
 

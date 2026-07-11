@@ -34,4 +34,5 @@ public class SerializedSkin {
     private boolean isPrimaryUser;
     private boolean overridesPlayerAppearance;
     private TrustedSkinFlag trustedSkinFlag;
+    private String profileHash;
 }
