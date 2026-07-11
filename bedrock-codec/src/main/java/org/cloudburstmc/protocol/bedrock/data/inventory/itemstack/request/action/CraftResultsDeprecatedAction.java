@@ -15,11 +15,11 @@ import java.util.List;
 @Value
 public class CraftResultsDeprecatedAction implements ItemStackRequestAction {
     /**
-     * @deprecated since v2164
+     * @deprecated since v2168
      */
     ItemData[] resultItemsDeprecated;
     /**
-     * @since v2164
+     * @since v2168
      */
     List<ItemStackRequestNetworkItemInstanceDescriptor> craftResults;
     int numCrafts;

@@ -197,7 +197,7 @@ public enum ActorFlags {
      */
     NAMEPLATE_DEPTH_TESTED,
     /**
-     * @since v2164
+     * @since v2168
      */
     NOT_PICKABLE_FROM_INSIDE
 }

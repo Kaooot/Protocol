@@ -11,7 +11,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @ToString(doNotUseGetters = true)
 public class AnvilDamagePacket implements BedrockPacket {
     /**
-     * @deprecated since v2164
+     * @deprecated since v2168
      */
     private int damageAmount;
     private Vector3i blockPosition;

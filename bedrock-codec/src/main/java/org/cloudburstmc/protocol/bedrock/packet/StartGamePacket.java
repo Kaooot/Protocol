@@ -100,7 +100,7 @@ public class StartGamePacket implements BedrockPacket {
     private ServerTelemetryData serverTelemetryData;
     /**
      * @since v1001
-     * @deprecated since v2164
+     * @deprecated since v2168
      */
     private boolean isChatLogging;
 

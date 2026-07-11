@@ -20,14 +20,14 @@ public class PlayerListAddEntry implements PlayerListEntry {
     private String platformOnlineID;
     private BuildPlatform buildPlatform;
     /**
-     * @deprecated since v2164
+     * @deprecated since v2168
      */
     private Skin skin;
     private SerializedSkin serializedSkin;
     private boolean isTeacher;
     private boolean isHost;
     /**
-     * @deprecated since v2164
+     * @deprecated since v2168
      */
     private boolean isTrustedSkin;
     private boolean isSubClient;

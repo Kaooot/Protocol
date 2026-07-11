@@ -17,7 +17,7 @@ public class DimensionDefinitionGroup {
      */
     DimensionType dimensionType;
     /**
-     * @since v2164
+     * @since v2168
      */
     UUID packId;
 }

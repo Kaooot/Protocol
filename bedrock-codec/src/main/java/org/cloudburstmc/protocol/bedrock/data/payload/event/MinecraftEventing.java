@@ -89,7 +89,7 @@ public final class MinecraftEventing {
          */
         UH_OH(117),
         /**
-         * @since v2164
+         * @since v2168
          */
         GETTING_WOOD(118), // TODO check ids
         BENCH_MAKING(119),

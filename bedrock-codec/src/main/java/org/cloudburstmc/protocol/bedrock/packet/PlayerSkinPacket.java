@@ -15,7 +15,7 @@ import java.util.UUID;
 public class PlayerSkinPacket implements BedrockPacket {
     private UUID uuid;
     /**
-     * @deprecated since v2164
+     * @deprecated since v2168
      */
     private Skin skin;
     private SerializedSkin serializedSkin;

@@ -15,7 +15,7 @@ import java.util.List;
 public class SetScorePacket implements BedrockPacket {
 
     /**
-     * @deprecated since v2164
+     * @deprecated since v2168
      */
     private boolean remove;
     private final List<ScoreInfo> scoreInfo = new ObjectArrayList<>();

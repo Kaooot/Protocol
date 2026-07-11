@@ -93,7 +93,7 @@ public enum PlayerActionType {
      */
     START_USING_ITEM,
     /**
-     * @since v2164
+     * @since v2168
      */
     INTERNAL_UPDATE;
 

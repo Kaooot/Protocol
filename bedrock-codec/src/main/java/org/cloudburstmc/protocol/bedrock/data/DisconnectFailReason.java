@@ -219,27 +219,27 @@ public enum DisconnectFailReason {
      */
     EDITOR_JOIN_INTENT_POLICY_FAILURE,
     /**
-     * @since v2164
+     * @since v2168
      */
     NETHER_NET_IDENTITY_NOT_ALLOWED,
     /**
-     * @since v2164
+     * @since v2168
      */
     INVALID_NAME,
     /**
-     * @since v2164
+     * @since v2168
      */
     EXPIRED_TOKEN,
     /**
-     * @since v2164
+     * @since v2168
      */
     HOST_ACCEPTS_NO_TYPE_OF_AUTH,
     /**
-     * @since v2164
+     * @since v2168
      */
     NOT_AUTHENTICATED_FAST_FAIL,
     /**
-     * @since v2164
+     * @since v2168
      */
     EDITOR_NOT_ALLOWED
 }

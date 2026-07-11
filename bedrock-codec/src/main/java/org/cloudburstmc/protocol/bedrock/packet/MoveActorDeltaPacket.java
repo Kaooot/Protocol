@@ -13,7 +13,7 @@ import java.util.Set;
 public class MoveActorDeltaPacket implements BedrockPacket {
 
     /**
-     * @deprecated since v2164
+     * @deprecated since v2168
      */
     private final Set<Flag> flags = EnumSet.noneOf(Flag.class);
 
@@ -46,7 +46,7 @@ public class MoveActorDeltaPacket implements BedrockPacket {
     }
 
     /**
-     * @deprecated since v2164
+     * @deprecated since v2168
      */
     public enum Flag {
         HAS_X,
