@@ -573,6 +573,18 @@ public enum SoundEvent {
     BUCKET_EMPTY_LAND_ANIMAL("bucket.empty.land_animal"),
     GEYSER_CONTINUOUS_ERUPTION_START("geyser_continuous_eruption_start"),
     GEYSER_CONTINUOUS_ERUPTION_ACTIVE("geyser_continuous_eruption_active"),
+    /**
+     * @since v2168
+     */
+    MOUNT("mount"),
+    /**
+     * @since v2168
+     */
+    DISMOUNT("dismount"),
+    /**
+     * @since v2168
+     */
+    STRAW_BED_BREAK_LEAVE("straw_bed.break_leave"),
     UNDEFINED("undefined");
 
     private final String id;

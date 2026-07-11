@@ -6,6 +6,7 @@ import org.cloudburstmc.protocol.bedrock.codec.v1001.Bedrock_v1001;
 import org.cloudburstmc.protocol.bedrock.codec.v2168.serializer.*;
 import org.cloudburstmc.protocol.bedrock.data.LevelEventType;
 import org.cloudburstmc.protocol.bedrock.data.ParticleType;
+import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
 import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataTypes;
 import org.cloudburstmc.protocol.bedrock.data.actor.ActorFlags;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestActionType;
@@ -69,6 +70,13 @@ public class Bedrock_v2168 extends Bedrock_v1001 {
             .insert(15, ItemStackRequestActionType.CRAFT_LOOM)
             .insert(16, ItemStackRequestActionType.CRAFT_NON_IMPLEMENTED)
             .insert(17, ItemStackRequestActionType.CRAFT_RESULTS)
+            .build();
+
+    protected static final TypeMap<SoundEvent> SOUND_EVENTS = Bedrock_v1001.SOUND_EVENTS.toBuilder()
+            .replace(611, SoundEvent.MOUNT)
+            .insert(612, SoundEvent.DISMOUNT)
+            .insert(613, SoundEvent.STRAW_BED_BREAK_LEAVE)
+            .insert(614, SoundEvent.UNDEFINED)
             .build();
 
     protected static final TypeMap<ParticleType> PARTICLE_TYPES = Bedrock_v1001.PARTICLE_TYPES.toBuilder()
