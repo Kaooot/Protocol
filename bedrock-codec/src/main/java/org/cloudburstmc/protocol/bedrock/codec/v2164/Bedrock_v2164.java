@@ -1,11 +1,18 @@
 package org.cloudburstmc.protocol.bedrock.codec.v2164;
 
+import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
 import org.cloudburstmc.protocol.bedrock.codec.v1001.Bedrock_v1001;
 import org.cloudburstmc.protocol.bedrock.codec.v2164.serializer.*;
+import org.cloudburstmc.protocol.bedrock.data.LevelEventType;
+import org.cloudburstmc.protocol.bedrock.data.ParticleType;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataTypes;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorFlags;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestActionType;
 import org.cloudburstmc.protocol.bedrock.data.payload.diagnostics.MemoryCategory;
 import org.cloudburstmc.protocol.bedrock.packet.*;
+import org.cloudburstmc.protocol.bedrock.transformer.FlagTransformer;
+import org.cloudburstmc.protocol.bedrock.transformer.TypeMapTransformer;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 
 /**
@@ -61,6 +68,29 @@ public class Bedrock_v2164 extends Bedrock_v1001 {
             .insert(15, ItemStackRequestActionType.CRAFT_LOOM)
             .insert(16, ItemStackRequestActionType.CRAFT_NON_IMPLEMENTED)
             .insert(17, ItemStackRequestActionType.CRAFT_RESULTS)
+            .build();
+
+    protected static final TypeMap<ParticleType> PARTICLE_TYPES = Bedrock_v1001.PARTICLE_TYPES.toBuilder()
+            .insert(102, ParticleType.ORANGE_POPLAR_LEAVES)
+            .insert(103, ParticleType.RED_POPLAR_LEAVES)
+            .insert(104, ParticleType.YELLOW_POPLAR_LEAVES)
+            .build();
+
+    protected static final TypeMap<LevelEventType> LEVEL_EVENTS = Bedrock_v1001.LEVEL_EVENTS.toBuilder()
+            .insert(LEVEL_EVENT_PARTICLE_TYPE, PARTICLE_TYPES)
+            .build();
+
+    protected static final TypeMap<ActorFlags> ACTOR_FLAGS = Bedrock_v1001.ACTOR_FLAGS
+            .toBuilder()
+            .insert(130, ActorFlags.NOT_PICKABLE_FROM_INSIDE)
+            .build();
+
+    protected static final ActorDataTypeMap ACTOR_DATA = Bedrock_v1001.ACTOR_DATA
+            .toBuilder()
+            .update(ActorDataTypes.FLAGS, new FlagTransformer(ACTOR_FLAGS, 0))
+            .update(ActorDataTypes.FLAGS_2, new FlagTransformer(ACTOR_FLAGS, 1))
+            .update(ActorDataTypes.HEARTBEAT_SOUND_EVENT, new TypeMapTransformer<>(SOUND_EVENTS))
+            .update(ActorDataTypes.DATA_PARTICLE, new TypeMapTransformer<>(PARTICLE_TYPES))
             .build();
 
     public static final BedrockCodec CODEC = Bedrock_v1001.CODEC.toBuilder()
