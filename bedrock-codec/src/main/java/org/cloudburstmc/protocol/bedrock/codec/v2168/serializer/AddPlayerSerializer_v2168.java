@@ -32,7 +32,7 @@ public class AddPlayerSerializer_v2168 extends AddPlayerSerializer_v557 {
         helper.writeSerializedAbilitiesData(buffer, packet.getAbilitiesData());
         helper.writeArray(buffer, packet.getActorLinks(), helper::writeActorLink);
         helper.writeString(buffer, packet.getDeviceId());
-        buffer.writeIntLE(packet.getBuildPlatform().getId()); // TODO check BuildPlatform enum
+        buffer.writeIntLE(packet.getBuildPlatform().getId());
     }
 
     @Override
