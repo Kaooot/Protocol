@@ -32,7 +32,7 @@ public class PlayerListSerializer_v2168 implements BedrockPacketSerializer<Playe
 
     protected void writePlayerListEntryVariant(ByteBuf buffer, BedrockCodecHelper helper, PlayerListEntry entry) {
         VarInts.writeUnsignedInt(buffer, entry.getPacketType().ordinal());
-        buffer.writeByte(0);
+        buffer.writeByte(entry.getPacketType().getLegacyId());
         switch (entry.getPacketType()) {
             case REMOVE:
                 this.writePlayerListRemoveEntry(buffer, helper, (PlayerListRemoveEntry) entry);

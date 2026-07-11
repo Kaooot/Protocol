@@ -21,15 +21,13 @@ public class PlayerListSerializer_v291 implements BedrockPacketSerializer<Player
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, PlayerListPacket packet) {
-        final boolean add = packet.getEntries().get(0).getPacketType().equals(PlayerListPacketType.ADD);
-        buffer.writeByte(add ? 0 : 1);
+        buffer.writeByte(packet.getEntries().get(0).getPacketType().getLegacyId());
         helper.writeArray(buffer, packet.getEntries(), this::writePlayerListEntryVariant);
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, PlayerListPacket packet) {
-        final int id = buffer.readUnsignedByte();
-        final PlayerListPacketType packetType = id == 0 ? PlayerListPacketType.ADD : PlayerListPacketType.REMOVE;
+        final PlayerListPacketType packetType = PlayerListPacketType.fromLegacy(buffer.readUnsignedByte());
         helper.readArray(buffer, packet.getEntries(), (buf, codecHelper) ->
                 this.readPlayerListEntryVariant(buf, codecHelper, packetType));
     }
