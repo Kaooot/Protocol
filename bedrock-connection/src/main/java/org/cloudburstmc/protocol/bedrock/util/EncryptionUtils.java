@@ -2,6 +2,7 @@ package org.cloudburstmc.protocol.bedrock.util;
 
 import lombok.experimental.UtilityClass;
 import org.cloudburstmc.protocol.bedrock.data.auth.PlayerAuthenticationType;
+import org.cloudburstmc.protocol.bedrock.packet.LoginPacket;
 import org.jose4j.json.JsonUtil;
 import org.jose4j.json.internal.json_simple.parser.JSONParser;
 import org.jose4j.json.internal.json_simple.parser.ParseException;
@@ -220,26 +221,22 @@ public class EncryptionUtils {
         return clientData.getUnverifiedPayloadBytes();
     }
 
-    /*public static ChainValidationResult validatePayload(AuthPayload payload)
+    public static ChainValidationResult validatePayload(LoginPacket packet)
             throws JoseException, NoSuchAlgorithmException, InvalidKeySpecException, InvalidJwtException {
-        if (payload instanceof CertificateChainPayload) {
-            CertificateChainPayload chainPayload = (CertificateChainPayload) payload;
-            List<String> chain = chainPayload.getChain();
+        if (packet.getToken() == null) {
+            List<String> chain = packet.getChain();
             if (chain == null || chain.isEmpty()) {
                 throw new IllegalStateException("Certificate chain is empty");
             }
             return validateChain(chain);
-        } else if (payload instanceof TokenPayload) {
-            TokenPayload tokenPayload = (TokenPayload) payload;
-            String token = tokenPayload.getToken();
-            if (token == null || token.isEmpty()) {
+        } else {
+            String token = packet.getToken();
+            if (token.isEmpty()) {
                 throw new IllegalStateException("Token is empty");
             }
-            return validateToken(payload.getAuthType(), token);
-        } else {
-            throw new IllegalArgumentException("Unsupported AuthPayload type: " + payload.getClass().getName());
+            return validateToken(packet.getAuthenticationType(), token);
         }
-    }*/
+    }
 
     public static ChainValidationResult validateChain(List<String> chain)
             throws JoseException, NoSuchAlgorithmException, InvalidKeySpecException {

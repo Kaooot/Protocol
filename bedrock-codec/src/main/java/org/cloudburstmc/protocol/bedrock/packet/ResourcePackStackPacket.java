@@ -15,9 +15,13 @@ import java.util.List;
 @ToString(doNotUseGetters = true)
 public class ResourcePackStackPacket implements BedrockPacket {
     private boolean texturePackRequired;
+    /**
+     * @deprecated
+     */
+    private final List<PackInstanceId> addonList = new ObjectArrayList<>();
     private final List<PackInstanceId> texturePackList = new ObjectArrayList<>();
     private String baseGameVersion;
-    private Experiments experiments;
+    private Experiments experiments = new Experiments();
     /**
      * @since v671
      */

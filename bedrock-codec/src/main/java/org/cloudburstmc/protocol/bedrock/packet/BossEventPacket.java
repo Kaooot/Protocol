@@ -15,15 +15,15 @@ public class BossEventPacket implements BedrockPacket {
     private long targetActorID;
     private BossEventUpdateType eventType;
     private long playerID;
-    private String name;
+    private String name = "";
     private String filteredName = "";
     private float healthPercent;
     /**
      * @deprecated since v1001
      */
     private int darkenScreen;
-    private BossBarColor color;
-    private BossBarOverlay overlay;
+    private BossBarColor color = BossBarColor.PINK;
+    private BossBarOverlay overlay = BossBarOverlay.PROGRESS;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {
