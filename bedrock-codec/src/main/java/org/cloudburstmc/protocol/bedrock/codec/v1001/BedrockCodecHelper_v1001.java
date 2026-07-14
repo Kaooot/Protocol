@@ -61,7 +61,7 @@ public class BedrockCodecHelper_v1001 extends BedrockCodecHelper_v975 {
     }
 
     @Override
-    protected InventoryAction readInventoryAction(ByteBuf buffer) {
+    public InventoryAction readInventoryAction(ByteBuf buffer) {
         final InventoryAction action = new InventoryAction();
         action.setSource(this.readInventorySource(buffer));
         action.setSlot(VarInts.readUnsignedInt(buffer));
