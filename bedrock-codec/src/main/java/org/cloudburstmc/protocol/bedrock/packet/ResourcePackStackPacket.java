@@ -17,7 +17,7 @@ public class ResourcePackStackPacket implements BedrockPacket {
     private boolean texturePackRequired;
     private final List<PackInstanceId> texturePackList = new ObjectArrayList<>();
     private String baseGameVersion;
-    private Experiments experiments;
+    private Experiments experiments = new Experiments();
     /**
      * @since v671
      */
