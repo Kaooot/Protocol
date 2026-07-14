@@ -38,10 +38,6 @@ public class PlayerListSerializer_v2168 implements BedrockPacketSerializer<Playe
                 this.writePlayerListRemoveEntry(buffer, helper, (PlayerListRemoveEntry) entry);
                 break;
             case ADD:
-                if (((PlayerListAddEntry) entry).getBuildPlatform() == null) {
-                    buffer.writerIndex(0);
-                    return;
-                }
                 this.writePlayerListAddEntry(buffer, helper, (PlayerListAddEntry) entry);
                 break;
         }
@@ -91,9 +87,6 @@ public class PlayerListSerializer_v2168 implements BedrockPacketSerializer<Playe
         entry.setPlayerName(helper.readString(buffer));
         entry.setXblXUID(helper.readString(buffer));
         entry.setPlatformOnlineID(helper.readString(buffer));
-        if (!buffer.isReadable()) {
-            return entry;
-        }
         entry.setBuildPlatform(BuildPlatform.from(buffer.readIntLE()));
         entry.setSerializedSkin(helper.readSerializedSkin(buffer));
         entry.setTeacher(buffer.readBoolean());
