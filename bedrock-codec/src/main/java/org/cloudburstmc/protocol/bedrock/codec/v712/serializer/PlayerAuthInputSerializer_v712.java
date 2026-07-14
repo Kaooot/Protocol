@@ -14,7 +14,6 @@ public class PlayerAuthInputSerializer_v712 extends PlayerAuthInputSerializer_v6
 
     @Override
     protected void writeItemUseInventoryTransaction(ByteBuf buffer, BedrockCodecHelper helper, ItemUseInventoryTransaction transaction) {
-        helper.writeInventoryTransactions(buffer, transaction.getActions());
         VarInts.writeUnsignedInt(buffer, transaction.getActionType().ordinal());
         buffer.writeByte(transaction.getTriggerType().ordinal());
         helper.writeBlockPosition(buffer, transaction.getPosition());
@@ -30,7 +29,6 @@ public class PlayerAuthInputSerializer_v712 extends PlayerAuthInputSerializer_v6
     @Override
     protected ItemUseInventoryTransaction readItemUseInventoryTransaction(ByteBuf buffer, BedrockCodecHelper helper) {
         final ItemUseInventoryTransaction transaction = new ItemUseInventoryTransaction();
-        helper.readInventoryTransactions(buffer, transaction.getActions());
         transaction.setActionType(ItemUseActionType.from(VarInts.readUnsignedInt(buffer)));
         transaction.setTriggerType(ItemUseTriggerType.from(buffer.readUnsignedByte()));
         transaction.setPosition(helper.readBlockPosition(buffer));
