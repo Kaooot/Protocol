@@ -121,7 +121,7 @@ public class Bedrock_v2168 extends Bedrock_v1001 {
             .updateSerializer(MoveActorDeltaPacket.class, MoveActorDeltaSerializer_v2168.INSTANCE)
             .updateSerializer(MovePlayerPacket.class, MovePlayerSerializer_v2168.INSTANCE)
             .updateSerializer(PlayerAuthInputPacket.class, PlayerAuthInputSerializer_v2168.INSTANCE)
-            .updateSerializer(PlayerListPacket.class, PlayerListSerializer_v2168.INSTANCE) // TODO fix incomplete entry
+            .updateSerializer(PlayerListPacket.class, PlayerListSerializer_v2168.INSTANCE)
             .updateSerializer(PlayerLocationPacket.class, PlayerLocationSerializer_v2168.INSTANCE)
             .updateSerializer(PlayerSkinPacket.class, PlayerSkinSerializer_v2168.INSTANCE)
             .updateSerializer(PlayerUpdateEntityOverridesPacket.class, PlayerUpdateEntityOverridesSerializer_v2168.INSTANCE)
