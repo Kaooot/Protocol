@@ -64,6 +64,7 @@ public class PlayerAuthInputSerializer_v428 extends PlayerAuthInputSerializer_v4
         VarInts.writeInt(buffer, actionData.getPlayerActionType().ordinal());
         switch (actionData.getPlayerActionType()) {
             case START_DESTROY_BLOCK:
+            case STOP_DESTROY_BLOCK:
             case ABORT_DESTROY_BLOCK:
             case CRACK_BLOCK:
             case PREDICT_DESTROY_BLOCK:
@@ -78,6 +79,7 @@ public class PlayerAuthInputSerializer_v428 extends PlayerAuthInputSerializer_v4
         actionData.setPlayerActionType(PlayerActionType.values()[VarInts.readInt(buffer)]);
         switch (actionData.getPlayerActionType()) {
             case START_DESTROY_BLOCK:
+            case STOP_DESTROY_BLOCK:
             case ABORT_DESTROY_BLOCK:
             case CRACK_BLOCK:
             case PREDICT_DESTROY_BLOCK:
