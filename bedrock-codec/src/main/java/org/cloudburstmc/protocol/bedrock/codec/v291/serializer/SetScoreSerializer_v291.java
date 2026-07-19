@@ -56,38 +56,39 @@ public class SetScoreSerializer_v291 implements BedrockPacketSerializer<SetScore
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, SetScorePacket packet) {
         final boolean remove = buffer.readBoolean();
         helper.readArray(buffer, packet.getScoreInfo(), (buf, codecHelper) -> {
-            long scoreboardId = VarInts.readLong(buf);
-            String objectiveId = helper.readString(buf);
-            int score = buf.readIntLE();
+            final long scoreboardId = VarInts.readLong(buf);
+            final String objectiveName = helper.readString(buf);
+            final int scoreValue = buf.readIntLE();
             if (!remove) {
                 final ScorePacketEntryAction action = ScorePacketEntryAction.from(buf.readUnsignedByte());
                 switch (action) {
                     case CHANGE_PLAYER:
                         final ChangePlayerScore changePlayerScore = new ChangePlayerScore();
                         changePlayerScore.setScoreboardId(scoreboardId);
-                        changePlayerScore.setObjectiveName(objectiveId);
-                        changePlayerScore.setScoreValue(score);
+                        changePlayerScore.setObjectiveName(objectiveName);
+                        changePlayerScore.setScoreValue(scoreValue);
                         changePlayerScore.setPlayerUniqueId(VarInts.readLong(buf));
                         return changePlayerScore;
                     case CHANGE_ENTITY:
                         final ChangeEntityScore changeEntityScore = new ChangeEntityScore();
                         changeEntityScore.setScoreboardId(scoreboardId);
-                        changeEntityScore.setObjectiveName(objectiveId);
-                        changeEntityScore.setScoreValue(score);
+                        changeEntityScore.setObjectiveName(objectiveName);
+                        changeEntityScore.setScoreValue(scoreValue);
                         changeEntityScore.setActorId(VarInts.readLong(buf));
                         return changeEntityScore;
                     case CHANGE_FAKE_PLAYER:
                         final ChangeFakePlayerScore changeFakePlayerScore = new ChangeFakePlayerScore();
                         changeFakePlayerScore.setScoreboardId(scoreboardId);
-                        changeFakePlayerScore.setObjectiveName(objectiveId);
-                        changeFakePlayerScore.setScoreValue(score);
+                        changeFakePlayerScore.setObjectiveName(objectiveName);
+                        changeFakePlayerScore.setScoreValue(scoreValue);
                         changeFakePlayerScore.setFakePlayerName(helper.readString(buf));
-                        break;
+                        return changeFakePlayerScore;
                 }
             } else {
                 final RemoveScore removeScore = new RemoveScore();
                 removeScore.setScoreboardId(scoreboardId);
-                removeScore.setObjectiveName(objectiveId);
+                removeScore.setObjectiveName(objectiveName);
+                removeScore.setScoreValue(scoreValue);
                 return removeScore;
             }
             return null;
