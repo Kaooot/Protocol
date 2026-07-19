@@ -24,7 +24,7 @@ public enum ItemUseActionType {
   /**
    * Use As Attack
    */
-  USE AS ATTACK;
+  USE_AS_ATTACK;
 
   private static final ItemUseActionType[] VALUES = values();
 

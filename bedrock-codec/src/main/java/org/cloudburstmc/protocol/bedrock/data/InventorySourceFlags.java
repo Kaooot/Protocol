@@ -9,12 +9,12 @@ public enum InventorySourceFlags {
   /**
    * No Flag
    */
-  NO FLAG,
+  NO_FLAG,
 
   /**
    * World Interaction Random
    */
-  WORLD INTERACTION RANDOM;
+  WORLD_INTERACTION_RANDOM;
 
   private static final InventorySourceFlags[] VALUES = values();
 

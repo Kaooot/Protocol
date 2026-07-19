@@ -14,12 +14,12 @@ public enum ItemUseTriggerType {
   /**
    * Player Input
    */
-  PLAYER INPUT,
+  PLAYER_INPUT,
 
   /**
    * Simulation Tick
    */
-  SIMULATION TICK;
+  SIMULATION_TICK;
 
   private static final ItemUseTriggerType[] VALUES = values();
 

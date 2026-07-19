@@ -9,27 +9,27 @@ public enum InventorySourceType {
   /**
    * Container Inventory
    */
-  CONTAINER INVENTORY,
+  CONTAINER_INVENTORY,
 
   /**
    * Global Inventory
    */
-  GLOBAL INVENTORY,
+  GLOBAL_INVENTORY,
 
   /**
    * World Interaction
    */
-  WORLD INTERACTION,
+  WORLD_INTERACTION,
 
   /**
    * Creative Inventory
    */
-  CREATIVE INVENTORY,
+  CREATIVE_INVENTORY,
 
   /**
    * Non Implemented Feature TODO
    */
-  NON IMPLEMENTED FEATURE TODO;
+  NON_IMPLEMENTED_FEATURE_TODO;
 
   private static final InventorySourceType[] VALUES = values();
 
