@@ -1,45 +1,48 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import java.lang.AssertionError;
+import java.lang.CloneNotSupportedException;
+import java.lang.Override;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.checkerframework.checker.nullness.qual.Nullable;
-import org.cloudburstmc.protocol.bedrock.data.command.CommandOriginData;
-import org.cloudburstmc.protocol.bedrock.data.command.CommandOutputMessage;
-import org.cloudburstmc.protocol.bedrock.data.command.CommandOutputType;
+import org.cloudburstmc.protocol.bedrock.data.CommandOriginData;
+import org.cloudburstmc.protocol.bedrock.data.CommandOutput;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-import java.util.List;
-
-
+/**
+ * Auto generated from 1.26.40-beta.31 (v2168)
+ *
+ * Packet ID: 79 (0x4f)
+ */
 @Data
-@EqualsAndHashCode(doNotUseGetters = true)
-@ToString(doNotUseGetters = true)
+@EqualsAndHashCode(
+    doNotUseGetters = true
+)
+@ToString(
+    doNotUseGetters = true
+)
 public class CommandOutputPacket implements BedrockPacket {
-    private final List<CommandOutputMessage> messages = new ObjectArrayList<>();
-    private CommandOriginData commandOriginData;
-    private CommandOutputType type;
-    private int successCount;
-    @Nullable
-    private String data;
+  private CommandOriginData OriginData;
 
-    @Override
-    public final PacketSignal handle(BedrockPacketHandler handler) {
-        return handler.handle(this);
-    }
+  private CommandOutput Output;
 
-    public BedrockPacketType getPacketType() {
-        return BedrockPacketType.COMMAND_OUTPUT;
-    }
+  @Override
+  public final PacketSignal handle(BedrockPacketHandler handler) {
+    return handler.handle(this);
+  }
 
-    @Override
-    public CommandOutputPacket clone() {
-        try {
-            return (CommandOutputPacket) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError(e);
-        }
+  @Override
+  public BedrockPacketType getPacketType() {
+    return BedrockPacketType.COMMAND_OUTPUT;
+  }
+
+  @Override
+  public CommandOutputPacket clone() {
+    try {
+      return (CommandOutputPacket) super.clone();
+    } catch (CloneNotSupportedException e) {
+      throw new AssertionError(e);
     }
+  }
 }
-

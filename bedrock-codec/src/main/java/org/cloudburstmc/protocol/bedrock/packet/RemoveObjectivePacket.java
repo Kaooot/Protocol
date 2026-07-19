@@ -1,32 +1,46 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
+import java.lang.AssertionError;
+import java.lang.CloneNotSupportedException;
+import java.lang.Override;
+import java.lang.String;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
+/**
+ * Auto generated from 1.26.40-beta.31 (v2168)
+ *
+ * Packet ID: 106 (0x6a)
+ * This is just the name of the objective.
+ */
 @Data
-@EqualsAndHashCode(doNotUseGetters = true)
-@ToString(doNotUseGetters = true)
+@EqualsAndHashCode(
+    doNotUseGetters = true
+)
+@ToString(
+    doNotUseGetters = true
+)
 public class RemoveObjectivePacket implements BedrockPacket {
-    private String objectiveId;
+  private String ObjectiveName;
 
-    @Override
-    public final PacketSignal handle(BedrockPacketHandler handler) {
-        return handler.handle(this);
-    }
+  @Override
+  public final PacketSignal handle(BedrockPacketHandler handler) {
+    return handler.handle(this);
+  }
 
-    public BedrockPacketType getPacketType() {
-        return BedrockPacketType.REMOVE_OBJECTIVE;
-    }
+  @Override
+  public BedrockPacketType getPacketType() {
+    return BedrockPacketType.REMOVE_OBJECTIVE;
+  }
 
-    @Override
-    public RemoveObjectivePacket clone() {
-        try {
-            return (RemoveObjectivePacket) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError(e);
-        }
+  @Override
+  public RemoveObjectivePacket clone() {
+    try {
+      return (RemoveObjectivePacket) super.clone();
+    } catch (CloneNotSupportedException e) {
+      throw new AssertionError(e);
     }
+  }
 }
-

@@ -1,52 +1,54 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import java.lang.AssertionError;
+import java.lang.CloneNotSupportedException;
+import java.lang.Override;
+import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerSlotType;
-import org.cloudburstmc.protocol.bedrock.data.inventory.FullContainerName;
-import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
+import org.cloudburstmc.protocol.bedrock.data.FullContainerName;
+import org.cloudburstmc.protocol.bedrock.data.NetworkItemStackDescriptor;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-import java.util.List;
-
+/**
+ * Auto generated from 1.26.40-beta.31 (v2168)
+ *
+ * Packet ID: 49 (0x31)
+ */
 @Data
-@EqualsAndHashCode(doNotUseGetters = true)
-@ToString(doNotUseGetters = true)
+@EqualsAndHashCode(
+    doNotUseGetters = true
+)
+@ToString(
+    doNotUseGetters = true
+)
 public class InventoryContentPacket implements BedrockPacket {
-    private List<ItemData> contents = new ObjectArrayList<>();
-    private int containerId;
-    /**
-     * @since v712
-     */
-    private FullContainerName containerNameData = new FullContainerName(ContainerSlotType.ANVIL_INPUT, null);
-    /**
-     * @since v729
-     * @deprecated since v748. Use storageItem ItemData size instead.
-     */
-    private int dynamicContainerSize;
-    /**
-     * @since v748
-     */
-    private ItemData storageItem = ItemData.AIR;
+  private int ContainerId;
 
-    @Override
-    public final PacketSignal handle(BedrockPacketHandler handler) {
-        return handler.handle(this);
-    }
+  private final List<NetworkItemStackDescriptor> Slots = new ObjectArrayList<>();
 
-    public BedrockPacketType getPacketType() {
-        return BedrockPacketType.INVENTORY_CONTENT;
-    }
+  private FullContainerName FullContainerName;
 
-    @Override
-    public InventoryContentPacket clone() {
-        try {
-            return (InventoryContentPacket) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError(e);
-        }
+  private NetworkItemStackDescriptor StorageItem;
+
+  @Override
+  public final PacketSignal handle(BedrockPacketHandler handler) {
+    return handler.handle(this);
+  }
+
+  @Override
+  public BedrockPacketType getPacketType() {
+    return BedrockPacketType.INVENTORY_CONTENT;
+  }
+
+  @Override
+  public InventoryContentPacket clone() {
+    try {
+      return (InventoryContentPacket) super.clone();
+    } catch (CloneNotSupportedException e) {
+      throw new AssertionError(e);
     }
+  }
 }
-

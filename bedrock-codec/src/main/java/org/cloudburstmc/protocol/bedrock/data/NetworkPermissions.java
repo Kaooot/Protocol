@@ -1,10 +1,15 @@
 package org.cloudburstmc.protocol.bedrock.data;
 
-import lombok.Value;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Value
+/**
+ * Auto generated from 1.26.40-beta.31 (v2168)
+ */
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class NetworkPermissions {
-    public static final NetworkPermissions DEFAULT = new NetworkPermissions(false);
-
-    boolean serverAuthSounds;
+  private boolean ServerAuthSoundEnabled;
 }

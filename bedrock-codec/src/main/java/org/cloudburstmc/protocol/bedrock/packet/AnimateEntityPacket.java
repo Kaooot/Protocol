@@ -1,96 +1,67 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
-import it.unimi.dsi.fastutil.longs.LongArrayList;
-import it.unimi.dsi.fastutil.longs.LongList;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import java.lang.AssertionError;
+import java.lang.CloneNotSupportedException;
+import java.lang.Long;
+import java.lang.Override;
+import java.lang.String;
+import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
- * Used to trigger an entity animation on the specified runtime IDs to the client that receives it.
+ * Auto generated from 1.26.40-beta.31 (v2168)
+ *
+ * Packet ID: 158 (0x9e)
+ * Several properties can be specified in the following order:</br>
+ * - The name of the animation (a string) that the specified entities are to play.</br>
+ * - The next state to transition to (a string) once the specified animation is finished playing.</br>
+ * - The stop expression (a string), the condition that determines when to transition to the next state.</br>
+ * - The name of an animation controller (a string) that you would like to use.</br>
+ * - The blend out time (a float), the amount of time to blend out of this animation.</br>
+ * - A vector of ActorRuntimeIds of the entities that will play the specified animation.
  */
 @Data
-@EqualsAndHashCode(doNotUseGetters = true)
-@ToString(doNotUseGetters = true)
+@EqualsAndHashCode(
+    doNotUseGetters = true
+)
+@ToString(
+    doNotUseGetters = true
+)
 public class AnimateEntityPacket implements BedrockPacket {
+  private String mAnimation;
 
-    /**
-     * Name of the to play on the entities specified in {@link #runtimeEntityIds}
-     *
-     * @param animation entity animation
-     * @return entity animation
-     */
-    private String animation;
+  private String mNextState;
 
-    /**
-     * The entity state to move to when the animation has finished playing.
-     *
-     * @param nextState state after animation has finished
-     * @return state after animation has finished
-     */
-    private String nextState;
+  private String mStopExpression;
 
-    /**
-     * Expression to check if the animation needs to stop.
-     *
-     * @param stopExpression molang expression (???)
-     * @return molang expression (???)
-     */
-    private String stopExpression;
+  private int mStopExpressionVersion;
 
-    /**
-     * The molang stop expression version
-     *
-     * @param stopExpressionVersion the stop expression version
-     * @return molang stop expression version
-     *
-     * @since v465
-     */
-    private int stopExpressionVersion;
+  private String mController;
 
+  private float mBlendOutTime;
 
-    /**
-     * Name of the animation controller to use.
-     *
-     * @param controller controller name
-     * @return controller name
-     */
-    private String controller;
+  private final List<Long> mRuntimeIds = new ObjectArrayList<>();
 
-    /**
-     * Time taken to blend out of the specified animation.
-     *
-     * @param blendOutTime time
-     * @return time
-     */
-    private float blendOutTime;
+  @Override
+  public final PacketSignal handle(BedrockPacketHandler handler) {
+    return handler.handle(this);
+  }
 
-    /**
-     * Entity runtime IDs to run the animation on when sent to the client.
-     *
-     * @param runtimeEntityIds runtime entity IDs list
-     * @return runtime entity IDs list
-     */
-    private final LongList runtimeEntityIds = new LongArrayList();
+  @Override
+  public BedrockPacketType getPacketType() {
+    return BedrockPacketType.ANIMATE_ENTITY;
+  }
 
-    @Override
-    public PacketSignal handle(BedrockPacketHandler handler) {
-        return handler.handle(this);
+  @Override
+  public AnimateEntityPacket clone() {
+    try {
+      return (AnimateEntityPacket) super.clone();
+    } catch (CloneNotSupportedException e) {
+      throw new AssertionError(e);
     }
-
-    @Override
-    public BedrockPacketType getPacketType() {
-        return BedrockPacketType.ANIMATE_ENTITY;
-    }
-
-    @Override
-    public AnimateEntityPacket clone() {
-        try {
-            return (AnimateEntityPacket) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError(e);
-        }
-    }
+  }
 }
-

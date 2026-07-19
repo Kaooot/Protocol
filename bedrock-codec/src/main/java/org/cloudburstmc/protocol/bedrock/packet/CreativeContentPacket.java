@@ -1,46 +1,51 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import java.lang.AssertionError;
+import java.lang.CloneNotSupportedException;
+import java.lang.Override;
+import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.protocol.bedrock.data.inventory.CreativeItemData;
-import org.cloudburstmc.protocol.bedrock.data.inventory.CreativeItemGroup;
-import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
+import org.cloudburstmc.protocol.bedrock.data.CreativeGroupInfoPayload;
+import org.cloudburstmc.protocol.bedrock.data.CreativeItemEntryPayload;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-import java.util.List;
-
-
 /**
- * CreativeContent is a packet sent by the server to set the creative inventory's content for a player.
- * Introduced in 1.16, this packet replaces the previous method - sending an InventoryContent packet with
- * creative inventory window ID.
+ * Auto generated from 1.26.40-beta.31 (v2168)
+ *
+ * Packet ID: 145 (0x91)
+ * Sent once by the server on startup to tell clients all of the items that can show up in the creative menu and recipe book.
  */
 @Data
-@EqualsAndHashCode(doNotUseGetters = true)
-@ToString(doNotUseGetters = true)
+@EqualsAndHashCode(
+    doNotUseGetters = true
+)
+@ToString(
+    doNotUseGetters = true
+)
 public class CreativeContentPacket implements BedrockPacket {
-    private final List<CreativeItemGroup> groups = new ObjectArrayList<>();
-    private final List<CreativeItemData> contents = new ObjectArrayList<>();
+  private final List<CreativeGroupInfoPayload> Groups = new ObjectArrayList<>();
 
-    @Override
-    public PacketSignal handle(BedrockPacketHandler handler) {
-        return handler.handle(this);
-    }
+  private final List<CreativeItemEntryPayload> Entries = new ObjectArrayList<>();
 
-    @Override
-    public BedrockPacketType getPacketType() {
-        return BedrockPacketType.CREATIVE_CONTENT;
-    }
+  @Override
+  public final PacketSignal handle(BedrockPacketHandler handler) {
+    return handler.handle(this);
+  }
 
-    @Override
-    public CreativeContentPacket clone() {
-        try {
-            return (CreativeContentPacket) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError(e);
-        }
+  @Override
+  public BedrockPacketType getPacketType() {
+    return BedrockPacketType.CREATIVE_CONTENT;
+  }
+
+  @Override
+  public CreativeContentPacket clone() {
+    try {
+      return (CreativeContentPacket) super.clone();
+    } catch (CloneNotSupportedException e) {
+      throw new AssertionError(e);
     }
+  }
 }
-

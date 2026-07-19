@@ -1,33 +1,47 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
+import java.lang.AssertionError;
+import java.lang.CloneNotSupportedException;
+import java.lang.Override;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
+/**
+ * Auto generated from 1.26.40-beta.31 (v2168)
+ *
+ * Packet ID: 115 (0x73)
+ * DEPRECATED. Was for testing/debug/telemetry: Used to provide ping time to in game debug graph, also for realms telemetry of actual in game latency.  Sent from both client & server.
+ */
 @Data
-@EqualsAndHashCode(doNotUseGetters = true)
-@ToString(doNotUseGetters = true)
+@EqualsAndHashCode(
+    doNotUseGetters = true
+)
+@ToString(
+    doNotUseGetters = true
+)
 public class NetworkStackLatencyPacket implements BedrockPacket {
-    private long timestamp;
-    private boolean fromServer;
+  private long CreationTime;
 
-    @Override
-    public final PacketSignal handle(BedrockPacketHandler handler) {
-        return handler.handle(this);
-    }
+  private boolean IsFromServer;
 
-    public BedrockPacketType getPacketType() {
-        return BedrockPacketType.NETWORK_STACK_LATENCY;
-    }
+  @Override
+  public final PacketSignal handle(BedrockPacketHandler handler) {
+    return handler.handle(this);
+  }
 
-    @Override
-    public NetworkStackLatencyPacket clone() {
-        try {
-            return (NetworkStackLatencyPacket) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError(e);
-        }
+  @Override
+  public BedrockPacketType getPacketType() {
+    return BedrockPacketType.NETWORK_STACK_LATENCY;
+  }
+
+  @Override
+  public NetworkStackLatencyPacket clone() {
+    try {
+      return (NetworkStackLatencyPacket) super.clone();
+    } catch (CloneNotSupportedException e) {
+      throw new AssertionError(e);
     }
+  }
 }
-

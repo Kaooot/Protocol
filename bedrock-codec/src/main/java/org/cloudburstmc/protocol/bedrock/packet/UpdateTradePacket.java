@@ -1,52 +1,64 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
+import java.lang.AssertionError;
+import java.lang.CloneNotSupportedException;
+import java.lang.Override;
+import java.lang.String;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.nbt.NbtMap;
-import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
+/**
+ * Auto generated from 1.26.40-beta.31 (v2168)
+ *
+ * Packet ID: 80 (0x50)
+ */
 @Data
-@EqualsAndHashCode(doNotUseGetters = true)
-@ToString(doNotUseGetters = true)
+@EqualsAndHashCode(
+    doNotUseGetters = true
+)
+@ToString(
+    doNotUseGetters = true
+)
 public class UpdateTradePacket implements BedrockPacket {
-    private int containerId;
-    private ContainerType containerType;
-    private int size; // Hardcoded to 0
-    private int tradeTier;
-    private long traderUniqueEntityId;
-    private long playerUniqueEntityId;
-    private CharSequence displayName;
-    private NbtMap offers;
-    private boolean newTradingUi;
-    private boolean recipeAddedOnUpdate;
-    private boolean usingEconomyTrade;
+  private int ContainerId;
 
-    @Override
-    public final PacketSignal handle(BedrockPacketHandler handler) {
-        return handler.handle(this);
-    }
+  private int Type;
 
-    public BedrockPacketType getPacketType() {
-        return BedrockPacketType.UPDATE_TRADE;
-    }
+  private int Size;
 
-    @Override
-    public UpdateTradePacket clone() {
-        try {
-            return (UpdateTradePacket) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError(e);
-        }
-    }
+  private int TraderTier;
 
-    public String getDisplayName() {
-        return getDisplayName(String.class);
-    }
+  private long EntityUniqueId;
 
-    public <T extends CharSequence> T getDisplayName(Class<T> type) {
-        return type.cast(displayName);
+  private long LastTradingPlayer;
+
+  private String DisplayName;
+
+  private boolean UseNewTradeScreen;
+
+  private boolean UsingEconomyTrade;
+
+  private NbtMap Data;
+
+  @Override
+  public final PacketSignal handle(BedrockPacketHandler handler) {
+    return handler.handle(this);
+  }
+
+  @Override
+  public BedrockPacketType getPacketType() {
+    return BedrockPacketType.UPDATE_TRADE;
+  }
+
+  @Override
+  public UpdateTradePacket clone() {
+    try {
+      return (UpdateTradePacket) super.clone();
+    } catch (CloneNotSupportedException e) {
+      throw new AssertionError(e);
     }
+  }
 }
-

@@ -1,76 +1,63 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
+import java.lang.AssertionError;
+import java.lang.CloneNotSupportedException;
+import java.lang.Override;
+import java.lang.String;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.cloudburstmc.protocol.bedrock.data.SetTitlePacketTitleType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
+/**
+ * Auto generated from 1.26.40-beta.31 (v2168)
+ *
+ * Packet ID: 88 (0x58)
+ * There are 2 commands associated with it: title and titleraw.
+ * Both of which have functionality to change fade in/out time for titles, sub titles, and action bar text.
+ * titleraw is using json to format so it will be bigger (i don't have an example)
+ */
 @Data
-@EqualsAndHashCode(doNotUseGetters = true)
-@ToString(doNotUseGetters = true)
+@EqualsAndHashCode(
+    doNotUseGetters = true
+)
+@ToString(
+    doNotUseGetters = true
+)
 public class SetTitlePacket implements BedrockPacket {
-    private Type type;
-    private CharSequence text;
-    private int fadeInTime;
-    private int stayTime;
-    private int fadeOutTime;
-    /**
-     * @since v448
-     */
-    private String xuid;
-    /**
-     * @since v448
-     */
-    private String platformOnlineId;
-    /**
-     * @since v712
-     */
-    private CharSequence filteredTitleText = "";
+  private SetTitlePacketTitleType TitleType;
 
-    @Override
-    public final PacketSignal handle(BedrockPacketHandler handler) {
-        return handler.handle(this);
-    }
+  private String TitleText;
 
-    public BedrockPacketType getPacketType() {
-        return BedrockPacketType.SET_TITLE;
-    }
+  private int FadeInTime;
 
-    public enum Type {
-        CLEAR,
-        RESET,
-        TITLE,
-        SUBTITLE,
-        ACTIONBAR,
-        TIMES,
-        TITLE_JSON,
-        SUBTITLE_JSON,
-        ACTIONBAR_JSON
-    }
+  private int StayTime;
 
-    @Override
-    public SetTitlePacket clone() {
-        try {
-            return (SetTitlePacket) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError(e);
-        }
-    }
+  private int FadeOutTime;
 
-    public String getText() {
-        return getText(String.class);
-    }
+  private String Xuid;
 
-    public <T extends CharSequence> T getText(Class<T> type) {
-        return type.cast(text);
-    }
+  private String PlatformOnlineId;
 
-    public String getFilteredTitleText() {
-        return getFilteredTitleText(String.class);
-    }
+  private String FilteredTitleMessage;
 
-    public <T extends CharSequence> T getFilteredTitleText(Class<T> type) {
-        return type.cast(filteredTitleText);
+  @Override
+  public final PacketSignal handle(BedrockPacketHandler handler) {
+    return handler.handle(this);
+  }
+
+  @Override
+  public BedrockPacketType getPacketType() {
+    return BedrockPacketType.SET_TITLE;
+  }
+
+  @Override
+  public SetTitlePacket clone() {
+    try {
+      return (SetTitlePacket) super.clone();
+    } catch (CloneNotSupportedException e) {
+      throw new AssertionError(e);
     }
+  }
 }
-

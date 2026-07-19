@@ -1,57 +1,54 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
+import java.lang.AssertionError;
+import java.lang.CloneNotSupportedException;
+import java.lang.Override;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.math.vector.Vector3i;
+import org.cloudburstmc.protocol.bedrock.data.DimensionType;
+import org.cloudburstmc.protocol.bedrock.data.SpawnPositionType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
+/**
+ * Auto generated from 1.26.40-beta.31 (v2168)
+ *
+ * Packet ID: 43 (0x2b)
+ * see RespawnPacket
+ */
 @Data
-@EqualsAndHashCode(doNotUseGetters = true)
-@ToString(doNotUseGetters = true)
+@EqualsAndHashCode(
+    doNotUseGetters = true
+)
+@ToString(
+    doNotUseGetters = true
+)
 public class SetSpawnPositionPacket implements BedrockPacket {
-    // spawnType is the type of spawn to set. It is either PLAYER_SPAWN or WORLD_SPAWN, and specifies
-    // the behaviour of the spawn set. If WORLD_SPAWN is set, the position to which compasses will point is
-    // also changed.
-    private Type spawnType;
+  private SpawnPositionType SpawnPositionType;
 
-    // blockPosition is the new position of the spawn that was set. If spawnType is WORLD_SPAWN, compasses will
-    // point to this position. As of 1.16, blockPosition is always the position of the player.
-    private Vector3i blockPosition;
+  private Vector3i BlockPosition;
 
-    // dimensionId is the ID of the dimension that had its spawn updated. This is specifically relevant for
-    // behaviour added in 1.16 such as the respawn anchor, which allows setting the spawn in a specific
-    // dimension.
-    private int dimensionId;
+  private DimensionType Dimensiontype;
 
-    // SpawnPosition is a new field added in 1.16. It holds the spawn position of the world. This spawn
-    // position is {-2147483648, -2147483648, -2147483648} for a default spawn position.
-    private Vector3i spawnPosition = Vector3i.from(-2147483648, -2147483648, -2147483648);
+  private Vector3i SpawnBlockPos;
 
-    @Deprecated
-    private boolean spawnForced;
+  @Override
+  public final PacketSignal handle(BedrockPacketHandler handler) {
+    return handler.handle(this);
+  }
 
-    @Override
-    public final PacketSignal handle(BedrockPacketHandler handler) {
-        return handler.handle(this);
+  @Override
+  public BedrockPacketType getPacketType() {
+    return BedrockPacketType.SET_SPAWN_POSITION;
+  }
+
+  @Override
+  public SetSpawnPositionPacket clone() {
+    try {
+      return (SetSpawnPositionPacket) super.clone();
+    } catch (CloneNotSupportedException e) {
+      throw new AssertionError(e);
     }
-
-    public BedrockPacketType getPacketType() {
-        return BedrockPacketType.SET_SPAWN_POSITION;
-    }
-
-    public enum Type {
-        PLAYER_SPAWN,
-        WORLD_SPAWN
-    }
-
-    @Override
-    public SetSpawnPositionPacket clone() {
-        try {
-            return (SetSpawnPositionPacket) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError(e);
-        }
-    }
+  }
 }
-

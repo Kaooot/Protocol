@@ -1,13 +1,32 @@
 package org.cloudburstmc.protocol.bedrock.data;
 
+import java.lang.UnsupportedOperationException;
+
+/**
+ * Auto generated from 1.26.40-beta.31 (v2168)
+ */
 public enum PhotoType {
-    PORTFOLIO,
-    PHOTO_ITEM,
-    BOOK;
+  /**
+   * Portfolio
+   */
+  PORTFOLIO,
 
-    private static final PhotoType[] VALUES = values();
+  /**
+   * PhotoItem
+   */
+  PHOTO_ITEM,
 
-    public static PhotoType from(int id) {
-        return id >= 0 && id < VALUES.length ? VALUES[id] : null;
+  /**
+   * Book
+   */
+  BOOK;
+
+  private static final PhotoType[] VALUES = values();
+
+  public static PhotoType from(int ordinal) {
+    if (ordinal >= 0 && ordinal < VALUES.length) {
+      return VALUES[ordinal];
     }
+    throw new UnsupportedOperationException("Detected unknown PhotoType ID: " + ordinal);
+  }
 }

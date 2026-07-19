@@ -1,53 +1,52 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
+import java.lang.AssertionError;
+import java.lang.CloneNotSupportedException;
+import java.lang.Override;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.math.vector.Vector3i;
-import org.cloudburstmc.protocol.bedrock.data.definitions.BlockDefinition;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.Set;
-
+/**
+ * Auto generated from 1.26.40-beta.31 (v2168)
+ *
+ * Packet ID: 21 (0x15)
+ * This happens often. Luckily, the packets are small.
+ */
 @Data
-@EqualsAndHashCode(doNotUseGetters = true)
-@ToString(doNotUseGetters = true)
+@EqualsAndHashCode(
+    doNotUseGetters = true
+)
+@ToString(
+    doNotUseGetters = true
+)
 public class UpdateBlockPacket implements BedrockPacket {
-    public static final Set<Flag> FLAG_ALL = Collections.unmodifiableSet(EnumSet.of(Flag.NEIGHBORS, Flag.NETWORK));
-    public static final Set<Flag> FLAG_ALL_PRIORITY = Collections.unmodifiableSet(
-            EnumSet.of(Flag.NEIGHBORS, Flag.NETWORK, Flag.PRIORITY));
+  private Vector3i BlockPosition;
 
-    final Set<Flag> flags = EnumSet.noneOf(Flag.class);
-    Vector3i blockPosition;
-    BlockDefinition definition;
-    int dataLayer;
+  private int BlockRuntimeID;
 
-    @Override
-    public PacketSignal handle(BedrockPacketHandler handler) {
-        return handler.handle(this);
+  private int Flags;
+
+  private int Layer;
+
+  @Override
+  public final PacketSignal handle(BedrockPacketHandler handler) {
+    return handler.handle(this);
+  }
+
+  @Override
+  public BedrockPacketType getPacketType() {
+    return BedrockPacketType.UPDATE_BLOCK;
+  }
+
+  @Override
+  public UpdateBlockPacket clone() {
+    try {
+      return (UpdateBlockPacket) super.clone();
+    } catch (CloneNotSupportedException e) {
+      throw new AssertionError(e);
     }
-
-    public BedrockPacketType getPacketType() {
-        return BedrockPacketType.UPDATE_BLOCK;
-    }
-
-    public enum Flag {
-        NEIGHBORS,
-        NETWORK,
-        NO_GRAPHIC,
-        UNUSED,
-        PRIORITY
-    }
-
-    @Override
-    public UpdateBlockPacket clone() {
-        try {
-            return (UpdateBlockPacket) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError(e);
-        }
-    }
+  }
 }
-

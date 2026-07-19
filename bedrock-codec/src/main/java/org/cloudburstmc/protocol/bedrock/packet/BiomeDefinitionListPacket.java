@@ -1,45 +1,53 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
+import java.lang.AssertionError;
+import java.lang.CloneNotSupportedException;
+import java.lang.Integer;
+import java.lang.Override;
+import java.util.HashMap;
+import java.util.Map;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.nbt.NbtMap;
-import org.cloudburstmc.protocol.bedrock.data.biome.BiomeDefinitionData;
-import org.cloudburstmc.protocol.bedrock.data.biome.BiomeDefinitions;
+import org.cloudburstmc.protocol.bedrock.data.BiomeDefinitionData;
+import org.cloudburstmc.protocol.bedrock.data.BiomeStringList;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-import java.util.Map;
-import java.util.Set;
-
+/**
+ * Auto generated from 1.26.40-beta.31 (v2168)
+ *
+ * Packet ID: 122 (0x7a)
+ * - mBiomeData: map of biome string indices to biome definition data.
+ * - mStringList: list of biome name strings.
+ */
 @Data
-@EqualsAndHashCode(doNotUseGetters = true)
-@ToString(doNotUseGetters = true)
+@EqualsAndHashCode(
+    doNotUseGetters = true
+)
+@ToString(
+    doNotUseGetters = true
+)
 public class BiomeDefinitionListPacket implements BedrockPacket {
-    /**
-     * @deprecated As of v800 (1.21.80) the biomes are no longer sent as NBT. Use {@link #biomes} instead.
-     */
-    private NbtMap definitions;
-    /**
-     * @since v800 (1.21.80)
-     */
-    private BiomeDefinitions biomes;
+  private final Map<Integer, BiomeDefinitionData> MapofBiomenamestodata = new HashMap<>();
 
-    @Override
-    public PacketSignal handle(BedrockPacketHandler handler) {
-        return handler.handle(this);
-    }
+  private BiomeStringList Stringlist;
 
-    public BedrockPacketType getPacketType() {
-        return BedrockPacketType.BIOME_DEFINITIONS_LIST;
-    }
+  @Override
+  public final PacketSignal handle(BedrockPacketHandler handler) {
+    return handler.handle(this);
+  }
 
-    @Override
-    public BiomeDefinitionListPacket clone() {
-        try {
-            return (BiomeDefinitionListPacket) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError(e);
-        }
+  @Override
+  public BedrockPacketType getPacketType() {
+    return BedrockPacketType.BIOME_DEFINITION_LIST;
+  }
+
+  @Override
+  public BiomeDefinitionListPacket clone() {
+    try {
+      return (BiomeDefinitionListPacket) super.clone();
+    } catch (CloneNotSupportedException e) {
+      throw new AssertionError(e);
     }
+  }
 }
-

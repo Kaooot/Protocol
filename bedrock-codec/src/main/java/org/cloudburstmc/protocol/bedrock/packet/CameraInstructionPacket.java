@@ -1,69 +1,45 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
+import java.lang.AssertionError;
+import java.lang.CloneNotSupportedException;
+import java.lang.Override;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.protocol.bedrock.data.camera.*;
+import org.cloudburstmc.protocol.bedrock.data.CameraInstruction;
 import org.cloudburstmc.protocol.common.PacketSignal;
-import org.cloudburstmc.protocol.common.util.OptionalBoolean;
 
+/**
+ * Auto generated from 1.26.40-beta.31 (v2168)
+ *
+ * Packet ID: 300 (0x12c)
+ */
 @Data
-@EqualsAndHashCode(doNotUseGetters = true)
-@ToString(doNotUseGetters = true)
+@EqualsAndHashCode(
+    doNotUseGetters = true
+)
+@ToString(
+    doNotUseGetters = true
+)
 public class CameraInstructionPacket implements BedrockPacket {
-    private CameraSetInstruction setInstruction;
-    private CameraFadeInstruction fadeInstruction;
-    private OptionalBoolean clear = OptionalBoolean.empty();
-    /**
-     * @since v712
-     */
-    private CameraTargetInstruction targetInstruction;
-    /**
-     * @since v712
-     */
-    private OptionalBoolean removeTarget = OptionalBoolean.empty();
-    /**
-     * @since v827
-     */
-    private CameraFovInstruction fovInstruction;
-    /**
-     * @since v859
-     */
-    private CameraSplineInstruction splineInstruction;
-    /**
-     * @since v859
-     */
-    private CameraAttachToEntityInstruction attachInstruction;
-    /**
-     * @since v859
-     */
-    private OptionalBoolean detachFromEntity = OptionalBoolean.empty();
+  private CameraInstruction CameraInstruction;
 
-    @Override
-    public PacketSignal handle(BedrockPacketHandler handler) {
-        return handler.handle(this);
-    }
+  @Override
+  public final PacketSignal handle(BedrockPacketHandler handler) {
+    return handler.handle(this);
+  }
 
-    @Override
-    public BedrockPacketType getPacketType() {
-        return BedrockPacketType.CAMERA_INSTRUCTION;
-    }
+  @Override
+  public BedrockPacketType getPacketType() {
+    return BedrockPacketType.CAMERA_INSTRUCTION;
+  }
 
-    public void setClear(boolean value) {
-        this.clear = OptionalBoolean.of(value);
+  @Override
+  public CameraInstructionPacket clone() {
+    try {
+      return (CameraInstructionPacket) super.clone();
+    } catch (CloneNotSupportedException e) {
+      throw new AssertionError(e);
     }
-
-    public void setClear(OptionalBoolean clear) {
-        this.clear = clear;
-    }
-
-    @Override
-    public CameraInstructionPacket clone() {
-        try {
-            return (CameraInstructionPacket) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError(e);
-        }
-    }
+  }
 }
-

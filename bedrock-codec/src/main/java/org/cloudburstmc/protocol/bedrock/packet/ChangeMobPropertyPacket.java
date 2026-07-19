@@ -1,43 +1,55 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
+import java.lang.AssertionError;
+import java.lang.CloneNotSupportedException;
+import java.lang.Override;
+import java.lang.String;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
- * Server-bound packet to change the properties of a mob.
+ * Auto generated from 1.26.40-beta.31 (v2168)
  *
- * @since v503
+ * Packet ID: 182 (0xb6)
  */
 @Data
-@EqualsAndHashCode(doNotUseGetters = true)
-@ToString(doNotUseGetters = true)
+@EqualsAndHashCode(
+    doNotUseGetters = true
+)
+@ToString(
+    doNotUseGetters = true
+)
 public class ChangeMobPropertyPacket implements BedrockPacket {
-    private long uniqueEntityId;
-    private String property;
-    private boolean boolValue;
-    private String stringValue;
-    private int intValue;
-    private float floatValue;
+  private long ActorId;
 
-    @Override
-    public PacketSignal handle(BedrockPacketHandler handler) {
-        return handler.handle(this);
-    }
+  private String PropertyName;
 
-    @Override
-    public BedrockPacketType getPacketType() {
-        return BedrockPacketType.CHANGE_MOB_PROPERTY;
-    }
+  private boolean BoolComponentValue;
 
-    @Override
-    public ChangeMobPropertyPacket clone() {
-        try {
-            return (ChangeMobPropertyPacket) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError(e);
-        }
+  private String StringComponentValue;
+
+  private int IntComponentValue;
+
+  private float FloatComponentValue;
+
+  @Override
+  public final PacketSignal handle(BedrockPacketHandler handler) {
+    return handler.handle(this);
+  }
+
+  @Override
+  public BedrockPacketType getPacketType() {
+    return BedrockPacketType.CHANGE_MOB_PROPERTY;
+  }
+
+  @Override
+  public ChangeMobPropertyPacket clone() {
+    try {
+      return (ChangeMobPropertyPacket) super.clone();
+    } catch (CloneNotSupportedException e) {
+      throw new AssertionError(e);
     }
+  }
 }
-

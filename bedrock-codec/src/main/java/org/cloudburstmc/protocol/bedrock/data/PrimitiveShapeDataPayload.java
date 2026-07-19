@@ -1,0 +1,40 @@
+package org.cloudburstmc.protocol.bedrock.data;
+
+import java.awt.Color;
+import java.lang.Float;
+import java.lang.Long;
+import java.lang.Object;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.cloudburstmc.math.vector.Vector3f;
+
+/**
+ * Auto generated from 1.26.40-beta.31 (v2168)
+ */
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class PrimitiveShapeDataPayload {
+  private long NetworkId;
+
+  private ScriptModuleMinecraftScriptPrimitiveShapeType ShapeType;
+
+  private Vector3f Location;
+
+  private Float Scale;
+
+  private Vector3f Rotation;
+
+  private Float TotalTimeLeft;
+
+  private Float MaximumRenderDistance;
+
+  private Color Color;
+
+  private DimensionType DimensionID;
+
+  private Long AttachedToEntityID;
+
+  private Object ExtraShapeData;
+}

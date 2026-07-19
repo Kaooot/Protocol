@@ -1,42 +1,47 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import java.lang.AssertionError;
+import java.lang.CloneNotSupportedException;
+import java.lang.Override;
+import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.protocol.bedrock.data.definitions.FeatureDefinition;
+import org.cloudburstmc.protocol.bedrock.data.FeatureRegistryFeatureBinaryJsonFormat;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-import java.util.List;
-
 /**
- * World generation features used for client-side chunk generation.
+ * Auto generated from 1.26.40-beta.31 (v2168)
  *
- * @since 1.19.20
+ * Packet ID: 191 (0xbf)
  */
 @Data
-@EqualsAndHashCode(doNotUseGetters = true)
-@ToString(doNotUseGetters = true)
+@EqualsAndHashCode(
+    doNotUseGetters = true
+)
+@ToString(
+    doNotUseGetters = true
+)
 public class FeatureRegistryPacket implements BedrockPacket {
-    private final List<FeatureDefinition> features = new ObjectArrayList<>();
+  private final List<FeatureRegistryFeatureBinaryJsonFormat> FeaturesDataList = new ObjectArrayList<>();
 
-    @Override
-    public PacketSignal handle(BedrockPacketHandler handler) {
-        return handler.handle(this);
-    }
+  @Override
+  public final PacketSignal handle(BedrockPacketHandler handler) {
+    return handler.handle(this);
+  }
 
-    @Override
-    public BedrockPacketType getPacketType() {
-        return BedrockPacketType.FEATURE_REGISTRY;
-    }
+  @Override
+  public BedrockPacketType getPacketType() {
+    return BedrockPacketType.FEATURE_REGISTRY;
+  }
 
-    @Override
-    public FeatureRegistryPacket clone() {
-        try {
-            return (FeatureRegistryPacket) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError(e);
-        }
+  @Override
+  public FeatureRegistryPacket clone() {
+    try {
+      return (FeatureRegistryPacket) super.clone();
+    } catch (CloneNotSupportedException e) {
+      throw new AssertionError(e);
     }
+  }
 }
-

@@ -1,36 +1,47 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
+import java.lang.AssertionError;
+import java.lang.CloneNotSupportedException;
+import java.lang.Override;
+import java.lang.String;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-import java.util.UUID;
-
+/**
+ * Auto generated from 1.26.40-beta.31 (v2168)
+ *
+ * Packet ID: 84 (0x54)
+ */
 @Data
-@EqualsAndHashCode(doNotUseGetters = true)
-@ToString(doNotUseGetters = true)
+@EqualsAndHashCode(
+    doNotUseGetters = true
+)
+@ToString(
+    doNotUseGetters = true
+)
 public class ResourcePackChunkRequestPacket implements BedrockPacket {
-    private UUID packId;
-    private String packVersion;
-    private int chunkIndex;
+  private String ResourceName;
 
-    @Override
-    public final PacketSignal handle(BedrockPacketHandler handler) {
-        return handler.handle(this);
-    }
+  private int Chunk;
 
-    public BedrockPacketType getPacketType() {
-        return BedrockPacketType.RESOURCE_PACK_CHUNK_REQUEST;
-    }
+  @Override
+  public final PacketSignal handle(BedrockPacketHandler handler) {
+    return handler.handle(this);
+  }
 
-    @Override
-    public ResourcePackChunkRequestPacket clone() {
-        try {
-            return (ResourcePackChunkRequestPacket) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError(e);
-        }
+  @Override
+  public BedrockPacketType getPacketType() {
+    return BedrockPacketType.RESOURCE_PACK_CHUNK_REQUEST;
+  }
+
+  @Override
+  public ResourcePackChunkRequestPacket clone() {
+    try {
+      return (ResourcePackChunkRequestPacket) super.clone();
+    } catch (CloneNotSupportedException e) {
+      throw new AssertionError(e);
     }
+  }
 }
-

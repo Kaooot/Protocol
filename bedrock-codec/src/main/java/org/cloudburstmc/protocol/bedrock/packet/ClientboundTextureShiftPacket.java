@@ -1,54 +1,62 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import java.lang.AssertionError;
+import java.lang.CloneNotSupportedException;
+import java.lang.Override;
+import java.lang.String;
+import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.cloudburstmc.protocol.bedrock.data.ClientboundTextureShiftPacketPayloadAction;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-import java.util.List;
-
 /**
- * Sends a set of update properties for the texture shift system from the server to the client.
+ * Auto generated from 1.26.40-beta.31 (v2168)
  *
- * @since v924
+ * Packet ID: 336 (0x150)
  */
 @Data
-@EqualsAndHashCode(doNotUseGetters = true)
-@ToString(doNotUseGetters = true)
+@EqualsAndHashCode(
+    doNotUseGetters = true
+)
+@ToString(
+    doNotUseGetters = true
+)
 public class ClientboundTextureShiftPacket implements BedrockPacket {
+  private ClientboundTextureShiftPacketPayloadAction ActionID;
 
-    private Action action;
-    private String collectionName;
-    private String fromStep;
-    private String toStep;
-    private List<String> allSteps;
-    private long currentLengthTicks;
-    private long totalLengthTicks;
-    private boolean enabled;
+  private String CollectionName;
 
-    @Override
-    public final PacketSignal handle(BedrockPacketHandler handler) {
-        return handler.handle(this);
+  private String FromStep;
+
+  private String ToStep;
+
+  private final List<String> AllSteps = new ObjectArrayList<>();
+
+  private long CurrentLengthInTicks;
+
+  private long TotalLengthInTicks;
+
+  private boolean Enabled;
+
+  @Override
+  public final PacketSignal handle(BedrockPacketHandler handler) {
+    return handler.handle(this);
+  }
+
+  @Override
+  public BedrockPacketType getPacketType() {
+    return BedrockPacketType.CLIENTBOUND_TEXTURE_SHIFT;
+  }
+
+  @Override
+  public ClientboundTextureShiftPacket clone() {
+    try {
+      return (ClientboundTextureShiftPacket) super.clone();
+    } catch (CloneNotSupportedException e) {
+      throw new AssertionError(e);
     }
-
-    public BedrockPacketType getPacketType() {
-        return BedrockPacketType.CLIENTBOUND_TEXTURE_SHIFT;
-    }
-
-    @Override
-    public ClientboundTextureShiftPacket clone() {
-        try {
-            return (ClientboundTextureShiftPacket) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError(e);
-        }
-    }
-
-    public enum Action {
-        INVALID,
-        INITIALIZE,
-        START,
-        SET_ENABLED,
-        SYNC
-    }
+  }
 }

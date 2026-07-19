@@ -1,0 +1,82 @@
+package org.cloudburstmc.protocol.bedrock.data;
+
+import java.lang.String;
+import java.util.HashMap;
+import java.util.Map;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+/**
+ * Auto generated from 1.26.40-beta.31 (v2168)
+ */
+@Getter
+@RequiredArgsConstructor
+public enum personaPieceType {
+  SKELETON("skeleton"),
+
+  BODY("body"),
+
+  SKIN("skin"),
+
+  BOTTOM("bottom"),
+
+  FEET("feet"),
+
+  DRESS("dress"),
+
+  TOP("top"),
+
+  HIGH_PANTS("high_pants"),
+
+  HANDS("hands"),
+
+  OUTERWEAR("outerwear"),
+
+  FACIAL_HAIR("facialhair"),
+
+  MOUTH("mouth"),
+
+  EYES("eyes"),
+
+  HAIR("hair"),
+
+  HOOD("hood"),
+
+  BACK("back"),
+
+  FACE_ACCESSORY("faceaccessory"),
+
+  HEAD("head"),
+
+  LEGS("legs"),
+
+  LEFT_LEG("leftleg"),
+
+  RIGHT_LEG("rightleg"),
+
+  ARMS("arms"),
+
+  LEFT_ARM("leftarm"),
+
+  RIGHT_ARM("rightarm"),
+
+  CAPES("capes"),
+
+  CLASSIC_SKIN("classicskin"),
+
+  EMOTE("emote");
+
+  private static final Map<String, personaPieceType> SERIALIZE_NAMES = new HashMap<>(values().length);
+
+  static {
+    for (personaPieceType value : values()) {
+      SERIALIZE_NAMES.put(value.getSerializeName(), value);
+    }
+  }
+
+  private final String serializeName;
+
+  public static personaPieceType fromName(String serializeName) {
+    return SERIALIZE_NAMES.get(serializeName);
+  }
+}

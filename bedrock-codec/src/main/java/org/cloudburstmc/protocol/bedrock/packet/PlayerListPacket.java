@@ -1,72 +1,48 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import java.lang.AssertionError;
+import java.lang.CloneNotSupportedException;
+import java.lang.Object;
+import java.lang.Override;
+import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.protocol.bedrock.data.BuildPlatform;
-import org.cloudburstmc.protocol.bedrock.data.skin.SerializedSkin;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-import java.awt.*;
-import java.util.List;
-import java.util.UUID;
-
+/**
+ * Auto generated from 1.26.40-beta.31 (v2168)
+ *
+ * Packet ID: 63 (0x3f)
+ * Sent from the Server at the start of the game or when a player is added to all clients. Lists the players.
+ */
 @Data
-@EqualsAndHashCode(doNotUseGetters = true)
-@ToString(doNotUseGetters = true)
+@EqualsAndHashCode(
+    doNotUseGetters = true
+)
+@ToString(
+    doNotUseGetters = true
+)
 public class PlayerListPacket implements BedrockPacket {
-    private final List<Entry> entries = new ObjectArrayList<>();
-    private Action action;
+  private final List<Object> Entries = new ObjectArrayList<>();
 
-    @Override
-    public final PacketSignal handle(BedrockPacketHandler handler) {
-        return handler.handle(this);
+  @Override
+  public final PacketSignal handle(BedrockPacketHandler handler) {
+    return handler.handle(this);
+  }
+
+  @Override
+  public BedrockPacketType getPacketType() {
+    return BedrockPacketType.PLAYER_LIST;
+  }
+
+  @Override
+  public PlayerListPacket clone() {
+    try {
+      return (PlayerListPacket) super.clone();
+    } catch (CloneNotSupportedException e) {
+      throw new AssertionError(e);
     }
-
-    public BedrockPacketType getPacketType() {
-        return BedrockPacketType.PLAYER_LIST;
-    }
-
-    public enum Action {
-        ADD,
-        REMOVE
-    }
-
-
-    @Data
-    @ToString(doNotUseGetters = true)
-    @EqualsAndHashCode(doNotUseGetters = true)
-    public final static class Entry {
-        private final UUID uuid;
-        private long entityId;
-        private CharSequence name;
-        private String xuid;
-        private String platformChatId;
-        private BuildPlatform buildPlatform = BuildPlatform.UNKNOWN;
-        private SerializedSkin skin;
-        private boolean teacher;
-        private boolean host;
-        private boolean trustedSkin;
-        private boolean subClient;
-        private Color color;
-
-        public String getName() {
-            return getName(String.class);
-        }
-
-        public <T extends CharSequence> T getName(Class<T> type) {
-            return type.cast(name);
-        }
-    }
-
-    @Override
-    public PlayerListPacket clone() {
-        try {
-            return (PlayerListPacket) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError(e);
-        }
-    }
+  }
 }
-

@@ -1,33 +1,46 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
+import java.lang.AssertionError;
+import java.lang.CloneNotSupportedException;
+import java.lang.Override;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.protocol.bedrock.data.SimpleEventType;
+import org.cloudburstmc.protocol.bedrock.data.Subtype;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
+/**
+ * Auto generated from 1.26.40-beta.31 (v2168)
+ *
+ * Packet ID: 64 (0x40)
+ * This is fired from the client to the server and a SetCommandsEnabledPacket is sent back when enabling commands.
+ */
 @Data
-@EqualsAndHashCode(doNotUseGetters = true)
-@ToString(doNotUseGetters = true)
+@EqualsAndHashCode(
+    doNotUseGetters = true
+)
+@ToString(
+    doNotUseGetters = true
+)
 public class SimpleEventPacket implements BedrockPacket {
-    private SimpleEventType event;
+  private Subtype Type;
 
-    @Override
-    public final PacketSignal handle(BedrockPacketHandler handler) {
-        return handler.handle(this);
-    }
+  @Override
+  public final PacketSignal handle(BedrockPacketHandler handler) {
+    return handler.handle(this);
+  }
 
-    public BedrockPacketType getPacketType() {
-        return BedrockPacketType.SIMPLE_EVENT;
-    }
+  @Override
+  public BedrockPacketType getPacketType() {
+    return BedrockPacketType.SIMPLE_EVENT;
+  }
 
-    @Override
-    public SimpleEventPacket clone() {
-        try {
-            return (SimpleEventPacket) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError(e);
-        }
+  @Override
+  public SimpleEventPacket clone() {
+    try {
+      return (SimpleEventPacket) super.clone();
+    } catch (CloneNotSupportedException e) {
+      throw new AssertionError(e);
     }
+  }
 }
-

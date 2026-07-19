@@ -1,39 +1,49 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import java.lang.AssertionError;
+import java.lang.CloneNotSupportedException;
+import java.lang.Override;
+import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.protocol.bedrock.data.inventory.FullContainerName;
+import org.cloudburstmc.protocol.bedrock.data.FullContainerName;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-import java.util.List;
-
+/**
+ * Auto generated from 1.26.40-beta.31 (v2168)
+ *
+ * Packet ID: 317 (0x13d)
+ * Whenever the serverside ContainerRegistry does a clean, identifiers for the removed containers are gathered in a ContainerRegistryCleanUp
+ * packet and sent to the client so that the clientside container registry can remove those same containers.
+ */
 @Data
-@EqualsAndHashCode(doNotUseGetters = true)
-@ToString(doNotUseGetters = true)
+@EqualsAndHashCode(
+    doNotUseGetters = true
+)
+@ToString(
+    doNotUseGetters = true
+)
 public class ContainerRegistryCleanupPacket implements BedrockPacket {
-    /**
-     * A list of full containers to cleanup.
-     */
-    private final List<FullContainerName> containers = new ObjectArrayList<>();
+  private final List<FullContainerName> RemovedContainers = new ObjectArrayList<>();
 
-    @Override
-    public PacketSignal handle(BedrockPacketHandler handler) {
-        return handler.handle(this);
-    }
+  @Override
+  public final PacketSignal handle(BedrockPacketHandler handler) {
+    return handler.handle(this);
+  }
 
-    @Override
-    public BedrockPacketType getPacketType() {
-        return BedrockPacketType.CONTAINER_REGISTRY_CLEANUP;
-    }
+  @Override
+  public BedrockPacketType getPacketType() {
+    return BedrockPacketType.CONTAINER_REGISTRY_CLEANUP;
+  }
 
-    @Override
-    public ContainerRegistryCleanupPacket clone() {
-        try {
-            return (ContainerRegistryCleanupPacket) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError(e);
-        }
+  @Override
+  public ContainerRegistryCleanupPacket clone() {
+    try {
+      return (ContainerRegistryCleanupPacket) super.clone();
+    } catch (CloneNotSupportedException e) {
+      throw new AssertionError(e);
     }
+  }
 }

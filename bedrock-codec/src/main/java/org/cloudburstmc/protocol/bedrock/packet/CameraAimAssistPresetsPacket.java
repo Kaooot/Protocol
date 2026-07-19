@@ -1,51 +1,55 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import java.lang.AssertionError;
+import java.lang.CloneNotSupportedException;
+import java.lang.Override;
+import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.protocol.bedrock.data.camera.CameraAimAssistCategories;
-import org.cloudburstmc.protocol.bedrock.data.camera.CameraAimAssistCategory;
-import org.cloudburstmc.protocol.bedrock.data.camera.CameraAimAssistOperation;
-import org.cloudburstmc.protocol.bedrock.data.camera.CameraAimAssistPresetDefinition;
+import org.cloudburstmc.protocol.bedrock.data.CameraAimAssistCategoryDefinition;
+import org.cloudburstmc.protocol.bedrock.data.CameraAimAssistPresetDefinition;
+import org.cloudburstmc.protocol.bedrock.data.CameraAimAssistPresetsPacketOperation;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-import java.util.List;
-
+/**
+ * Auto generated from 1.26.40-beta.31 (v2168)
+ *
+ * Packet ID: 320 (0x140)
+ * Sent by the server to clients for initializing and updating the client aim-assist registry.
+ * AddToExisting operations are sent by the server when new presets/categories are added to the registry through creator facing APIs.
+ */
 @Data
-@EqualsAndHashCode(doNotUseGetters = true)
-@ToString(doNotUseGetters = true)
+@EqualsAndHashCode(
+    doNotUseGetters = true
+)
+@ToString(
+    doNotUseGetters = true
+)
 public class CameraAimAssistPresetsPacket implements BedrockPacket {
-    /**
-     * @deprecated since v800 (1.21.80). Use {@link #categoryDefinitions} instead.
-     */
-    private final List<CameraAimAssistCategories> categories = new ObjectArrayList<>();
-    /**
-     * @since v800 (1.21.80)
-     */
-    private final List<CameraAimAssistCategory> categoryDefinitions = new ObjectArrayList<>();
-    private final List<CameraAimAssistPresetDefinition> presets = new ObjectArrayList<>();
-    /**
-     * @since v776
-     */
-    private CameraAimAssistOperation operation;
+  private final List<CameraAimAssistCategoryDefinition> CameraAimAssistPresets = new ObjectArrayList<>();
 
-    @Override
-    public PacketSignal handle(BedrockPacketHandler handler) {
-        return handler.handle(this);
-    }
+  private final List<CameraAimAssistPresetDefinition> CameraAimAssistCategories = new ObjectArrayList<>();
 
-    @Override
-    public BedrockPacketType getPacketType() {
-        return BedrockPacketType.CAMERA_AIM_ASSIST_PRESETS;
-    }
+  private CameraAimAssistPresetsPacketOperation Operation;
 
-    @Override
-    public CameraAimAssistPresetsPacket clone() {
-        try {
-            return (CameraAimAssistPresetsPacket) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError(e);
-        }
+  @Override
+  public final PacketSignal handle(BedrockPacketHandler handler) {
+    return handler.handle(this);
+  }
+
+  @Override
+  public BedrockPacketType getPacketType() {
+    return BedrockPacketType.CAMERA_AIM_ASSIST_PRESETS;
+  }
+
+  @Override
+  public CameraAimAssistPresetsPacket clone() {
+    try {
+      return (CameraAimAssistPresetsPacket) super.clone();
+    } catch (CloneNotSupportedException e) {
+      throw new AssertionError(e);
     }
+  }
 }

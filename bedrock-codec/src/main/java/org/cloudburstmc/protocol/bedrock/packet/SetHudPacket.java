@@ -1,6 +1,10 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
-import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import java.lang.AssertionError;
+import java.lang.CloneNotSupportedException;
+import java.lang.Override;
+import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -8,35 +12,40 @@ import org.cloudburstmc.protocol.bedrock.data.HudElement;
 import org.cloudburstmc.protocol.bedrock.data.HudVisibility;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-import java.util.Set;
-
 /**
- * @since v649
+ * Auto generated from 1.26.40-beta.31 (v2168)
+ *
+ * Packet ID: 308 (0x134)
+ * This packet will toggle the HUD visibility.
  */
 @Data
-@EqualsAndHashCode(doNotUseGetters = true)
-@ToString(doNotUseGetters = true)
+@EqualsAndHashCode(
+    doNotUseGetters = true
+)
+@ToString(
+    doNotUseGetters = true
+)
 public class SetHudPacket implements BedrockPacket {
-    private final Set<HudElement> elements = new ObjectOpenHashSet<>();
-    private HudVisibility visibility;
+  private final List<HudElement> HudElement = new ObjectArrayList<>();
 
-    @Override
-    public PacketSignal handle(BedrockPacketHandler handler) {
-        return handler.handle(this);
-    }
+  private HudVisibility HudVisible;
 
-    @Override
-    public BedrockPacketType getPacketType() {
-        return BedrockPacketType.SET_HUD;
-    }
+  @Override
+  public final PacketSignal handle(BedrockPacketHandler handler) {
+    return handler.handle(this);
+  }
 
-    @Override
-    public SetHudPacket clone() {
-        try {
-            return (SetHudPacket) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError(e);
-        }
+  @Override
+  public BedrockPacketType getPacketType() {
+    return BedrockPacketType.SET_HUD;
+  }
+
+  @Override
+  public SetHudPacket clone() {
+    try {
+      return (SetHudPacket) super.clone();
+    } catch (CloneNotSupportedException e) {
+      throw new AssertionError(e);
     }
+  }
 }
-

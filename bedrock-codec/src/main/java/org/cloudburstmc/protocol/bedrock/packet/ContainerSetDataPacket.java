@@ -1,45 +1,48 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
+import java.lang.AssertionError;
+import java.lang.CloneNotSupportedException;
+import java.lang.Override;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
+/**
+ * Auto generated from 1.26.40-beta.31 (v2168)
+ *
+ * Packet ID: 51 (0x33)
+ */
 @Data
-@EqualsAndHashCode(doNotUseGetters = true)
-@ToString(doNotUseGetters = true)
+@EqualsAndHashCode(
+    doNotUseGetters = true
+)
+@ToString(
+    doNotUseGetters = true
+)
 public class ContainerSetDataPacket implements BedrockPacket {
+  private int ContainerID;
 
-    public static final int FURNACE_TICK_COUNT = 0;
-    public static final int FURNACE_LIT_TIME = 1;
-    public static final int FURNACE_LIT_DURATION = 2;
-    public static final int FURNACE_STORED_XP = 3;
-    public static final int FURNACE_FUEL_AUX = 4;
+  private int ID;
 
-    public static final int BREWING_STAND_BREW_TIME = 0;
-    public static final int BREWING_STAND_FUEL_AMOUNT = 1;
-    public static final int BREWING_STAND_FUEL_TOTAL = 2;
+  private int Value;
 
-    private byte windowId;
-    private int property;
-    private int value;
+  @Override
+  public final PacketSignal handle(BedrockPacketHandler handler) {
+    return handler.handle(this);
+  }
 
-    @Override
-    public final PacketSignal handle(BedrockPacketHandler handler) {
-        return handler.handle(this);
+  @Override
+  public BedrockPacketType getPacketType() {
+    return BedrockPacketType.CONTAINER_SET_DATA;
+  }
+
+  @Override
+  public ContainerSetDataPacket clone() {
+    try {
+      return (ContainerSetDataPacket) super.clone();
+    } catch (CloneNotSupportedException e) {
+      throw new AssertionError(e);
     }
-
-    public BedrockPacketType getPacketType() {
-        return BedrockPacketType.CONTAINER_SET_DATA;
-    }
-
-    @Override
-    public ContainerSetDataPacket clone() {
-        try {
-            return (ContainerSetDataPacket) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError(e);
-        }
-    }
+  }
 }
-

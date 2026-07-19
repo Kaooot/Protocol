@@ -1,57 +1,47 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import java.lang.AssertionError;
+import java.lang.CloneNotSupportedException;
+import java.lang.Override;
+import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import lombok.Value;
-import org.cloudburstmc.protocol.bedrock.data.LocatorBarWaypoint;
+import org.cloudburstmc.protocol.bedrock.data.LocatorBarWaypointPayload;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
 /**
- * Syncs LocatorBar changes on the server with the client.
+ * Auto generated from 1.26.40-beta.31 (v2168)
  *
- * @since v944
+ * Packet ID: 341 (0x155)
  */
 @Data
-@EqualsAndHashCode(doNotUseGetters = true)
-@ToString(doNotUseGetters = true)
+@EqualsAndHashCode(
+    doNotUseGetters = true
+)
+@ToString(
+    doNotUseGetters = true
+)
 public class LocatorBarPacket implements BedrockPacket {
+  private final List<LocatorBarWaypointPayload> Waypoints = new ObjectArrayList<>();
 
-    private List<Payload> waypoints = new ArrayList<>();
+  @Override
+  public final PacketSignal handle(BedrockPacketHandler handler) {
+    return handler.handle(this);
+  }
 
-    @Override
-    public final PacketSignal handle(BedrockPacketHandler handler) {
-        return handler.handle(this);
+  @Override
+  public BedrockPacketType getPacketType() {
+    return BedrockPacketType.LOCATOR_BAR;
+  }
+
+  @Override
+  public LocatorBarPacket clone() {
+    try {
+      return (LocatorBarPacket) super.clone();
+    } catch (CloneNotSupportedException e) {
+      throw new AssertionError(e);
     }
-
-    public BedrockPacketType getPacketType() {
-        return BedrockPacketType.LOCATOR_BAR;
-    }
-
-    @Override
-    public LocatorBarPacket clone() {
-        try {
-            return (LocatorBarPacket) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError(e);
-        }
-    }
-
-    @Value
-    public static class Payload {
-        Action actionFlag;
-        UUID groupHandle;
-        LocatorBarWaypoint waypoint;
-    }
-
-    public enum Action {
-        NONE,
-        ADD,
-        REMOVE,
-        UPDATE
-    }
+  }
 }

@@ -1,54 +1,58 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import java.lang.AssertionError;
+import java.lang.CloneNotSupportedException;
+import java.lang.Override;
+import java.lang.String;
+import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import lombok.Value;
-import org.cloudburstmc.protocol.bedrock.data.ExperimentData;
+import org.cloudburstmc.protocol.bedrock.data.Experiments;
+import org.cloudburstmc.protocol.bedrock.data.PackInstanceId;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-import java.util.List;
-
+/**
+ * Auto generated from 1.26.40-beta.31 (v2168)
+ *
+ * Packet ID: 7 (0x7)
+ * Sent to client in response to ResourcePackClientResponsePacket with info on current resource pack stack.
+ */
 @Data
-@EqualsAndHashCode(doNotUseGetters = true)
-@ToString(doNotUseGetters = true)
+@EqualsAndHashCode(
+    doNotUseGetters = true
+)
+@ToString(
+    doNotUseGetters = true
+)
 public class ResourcePackStackPacket implements BedrockPacket {
-    private boolean forcedToAccept;
-    private final List<Entry> behaviorPacks = new ObjectArrayList<>();
-    private final List<Entry> resourcePacks = new ObjectArrayList<>();
-    private String gameVersion;
-    private final List<ExperimentData> experiments = new ObjectArrayList<>();
-    private boolean experimentsPreviouslyToggled;
-    /**
-     * @since v671
-     */
-    private boolean hasEditorPacks;
+  private boolean TexturePackRequired;
 
+  private final List<PackInstanceId> TexturePackList = new ObjectArrayList<>();
 
-    @Override
-    public final PacketSignal handle(BedrockPacketHandler handler) {
-        return handler.handle(this);
+  private String BaseGameVersion;
+
+  private Experiments Experiments;
+
+  private boolean IncludeEditorPacks;
+
+  @Override
+  public final PacketSignal handle(BedrockPacketHandler handler) {
+    return handler.handle(this);
+  }
+
+  @Override
+  public BedrockPacketType getPacketType() {
+    return BedrockPacketType.RESOURCE_PACK_STACK;
+  }
+
+  @Override
+  public ResourcePackStackPacket clone() {
+    try {
+      return (ResourcePackStackPacket) super.clone();
+    } catch (CloneNotSupportedException e) {
+      throw new AssertionError(e);
     }
-
-    public BedrockPacketType getPacketType() {
-        return BedrockPacketType.RESOURCE_PACK_STACK;
-    }
-
-    @Value
-    public static class Entry {
-        private final String packId;
-        private final String packVersion;
-        private final String subPackName;
-    }
-
-    @Override
-    public ResourcePackStackPacket clone() {
-        try {
-            return (ResourcePackStackPacket) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError(e);
-        }
-    }
+  }
 }
-

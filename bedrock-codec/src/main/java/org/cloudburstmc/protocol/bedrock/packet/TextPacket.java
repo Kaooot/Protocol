@@ -1,79 +1,55 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import java.lang.AssertionError;
+import java.lang.CloneNotSupportedException;
+import java.lang.Object;
+import java.lang.Override;
+import java.lang.String;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-import java.util.List;
-
+/**
+ * Auto generated from 1.26.40-beta.31 (v2168)
+ *
+ * Packet ID: 9 (0x9)
+ * Used for commands, messages, and other info printed to the screen. Most of which are server->client or server broadcasted to all clients, but some cases have a client to other client via the server
+ */
 @Data
-@EqualsAndHashCode(doNotUseGetters = true)
-@ToString(doNotUseGetters = true)
+@EqualsAndHashCode(
+    doNotUseGetters = true
+)
+@ToString(
+    doNotUseGetters = true
+)
 public class TextPacket implements BedrockPacket {
-    private Type type;
-    private String sourceName;
-    private CharSequence message;
-    private List<String> parameters = new ObjectArrayList<>();
-    private boolean needsTranslation;
-    private String xuid;
-    private String platformChatId = "";
-    /**
-     * @since v685
-     */
-    private CharSequence filteredMessage = "";
+  private boolean Localize;
 
-    @Override
-    public final PacketSignal handle(BedrockPacketHandler handler) {
-        return handler.handle(this);
-    }
+  private Object Body;
 
-    public BedrockPacketType getPacketType() {
-        return BedrockPacketType.TEXT;
-    }
+  private String SendersXUID;
 
-    public enum Type {
-        RAW,
-        CHAT,
-        TRANSLATION,
-        POPUP,
-        JUKEBOX_POPUP,
-        TIP,
-        SYSTEM,
-        WHISPER,
-        ANNOUNCEMENT,
-        WHISPER_JSON,
-        JSON,
-        /**
-         * @since v553
-         */
-        ANNOUNCEMENT_JSON
-    }
+  private String PlatformId;
 
-    @Override
-    public TextPacket clone() {
-        try {
-            return (TextPacket) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError(e);
-        }
-    }
+  private String FilteredMessage;
 
-    public String getMessage() {
-        return getMessage(String.class);
-    }
+  @Override
+  public final PacketSignal handle(BedrockPacketHandler handler) {
+    return handler.handle(this);
+  }
 
-    public <T extends CharSequence> T getMessage(Class<T> type) {
-        return type.cast(message);
-    }
+  @Override
+  public BedrockPacketType getPacketType() {
+    return BedrockPacketType.TEXT;
+  }
 
-    public String getFilteredMessage() {
-        return getFilteredMessage(String.class);
+  @Override
+  public TextPacket clone() {
+    try {
+      return (TextPacket) super.clone();
+    } catch (CloneNotSupportedException e) {
+      throw new AssertionError(e);
     }
-
-    public <T extends CharSequence> T getFilteredMessage(Class<T> type) {
-        return type.cast(filteredMessage);
-    }
+  }
 }
-

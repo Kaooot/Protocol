@@ -1,49 +1,45 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
+import java.lang.AssertionError;
+import java.lang.CloneNotSupportedException;
+import java.lang.Override;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import lombok.Value;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.cloudburstmc.protocol.bedrock.data.PlayerPartyInfo;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
- * Sent by the client to provide additional client metadata.
+ * Auto generated from 1.26.40-beta.31 (v2168)
  *
- * @since v944
+ * Packet ID: 342 (0x156)
  */
 @Data
-@EqualsAndHashCode(doNotUseGetters = true)
-@ToString(doNotUseGetters = true)
+@EqualsAndHashCode(
+    doNotUseGetters = true
+)
+@ToString(
+    doNotUseGetters = true
+)
 public class PartyChangedPacket implements BedrockPacket {
+  private PlayerPartyInfo partyinfo;
 
-    @Nullable
-    private PartyInfo party;
+  @Override
+  public final PacketSignal handle(BedrockPacketHandler handler) {
+    return handler.handle(this);
+  }
 
-    @Value
-    public static class PartyInfo {
-        String partyId;
-        /**
-         * @since v975
-         */
-        boolean isPartyLeader;
+  @Override
+  public BedrockPacketType getPacketType() {
+    return BedrockPacketType.PARTY_CHANGED;
+  }
+
+  @Override
+  public PartyChangedPacket clone() {
+    try {
+      return (PartyChangedPacket) super.clone();
+    } catch (CloneNotSupportedException e) {
+      throw new AssertionError(e);
     }
-
-    @Override
-    public final PacketSignal handle(BedrockPacketHandler handler) {
-        return handler.handle(this);
-    }
-
-    public BedrockPacketType getPacketType() {
-        return BedrockPacketType.PARTY_CHANGED;
-    }
-
-    @Override
-    public PartyChangedPacket clone() {
-        try {
-            return (PartyChangedPacket) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError(e);
-        }
-    }
+  }
 }

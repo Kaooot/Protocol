@@ -1,41 +1,48 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
+import java.lang.AssertionError;
+import java.lang.CloneNotSupportedException;
+import java.lang.Override;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.checkerframework.checker.nullness.qual.Nullable;
 import org.cloudburstmc.protocol.bedrock.data.GraphicsMode;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
+/**
+ * Auto generated from 1.26.40-beta.31 (v2168)
+ *
+ * Packet ID: 323 (0x143)
+ * The values in this packet are originally synced through the Connection Request and then updated via this packet.
+ */
 @Data
-@EqualsAndHashCode(doNotUseGetters = true)
-@ToString(doNotUseGetters = true)
+@EqualsAndHashCode(
+    doNotUseGetters = true
+)
+@ToString(
+    doNotUseGetters = true
+)
 public class UpdateClientOptionsPacket implements BedrockPacket {
+  private GraphicsMode GraphicsModeChange;
 
-    @Nullable
-    private GraphicsMode graphicsMode;
-    /**
-     * @since v975
-     */
-    @Nullable
-    private Boolean filterProfanityChange;
+  private boolean FilterProfanityChange;
 
-    @Override
-    public PacketSignal handle(BedrockPacketHandler handler) {
-        return handler.handle(this);
+  @Override
+  public final PacketSignal handle(BedrockPacketHandler handler) {
+    return handler.handle(this);
+  }
+
+  @Override
+  public BedrockPacketType getPacketType() {
+    return BedrockPacketType.UPDATE_CLIENT_OPTIONS;
+  }
+
+  @Override
+  public UpdateClientOptionsPacket clone() {
+    try {
+      return (UpdateClientOptionsPacket) super.clone();
+    } catch (CloneNotSupportedException e) {
+      throw new AssertionError(e);
     }
-
-    @Override
-    public BedrockPacketType getPacketType() {
-        return BedrockPacketType.UPDATE_CLIENT_OPTIONS;
-    }
-
-    @Override
-    public BedrockPacket clone() {
-        try {
-            return (UpdateClientOptionsPacket) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError(e);
-        }
-    }
+  }
 }

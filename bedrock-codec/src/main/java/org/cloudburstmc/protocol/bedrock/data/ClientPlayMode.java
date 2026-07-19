@@ -1,28 +1,42 @@
 package org.cloudburstmc.protocol.bedrock.data;
 
+import java.lang.UnsupportedOperationException;
+
+/**
+ * Auto generated from 1.26.40-beta.31 (v2168)
+ */
 public enum ClientPlayMode {
-    NORMAL,
-    TEASER,
-    SCREEN,
-    /**
-     * @deprecated since v859
-     */
-    VIEWER,
-    /**
-     * @deprecated since v859
-     */
-    REALITY,
-    /**
-     * @deprecated since v859
-     */
-    PLACEMENT,
-    /**
-     * @deprecated since v859
-     */
-    LIVING_ROOM,
-    EXIT_LEVEL,
-    /**
-     * @deprecated since v859
-     */
-    EXIT_LEVEL_LIVING_ROOM
+  /**
+   * Normal
+   */
+  NORMAL,
+
+  /**
+   * Teaser
+   */
+  TEASER,
+
+  /**
+   * Screen
+   */
+  SCREEN,
+
+  /**
+   * ExitLevel
+   */
+  EXIT_LEVEL,
+
+  /**
+   * NumModes
+   */
+  NUM_MODES;
+
+  private static final ClientPlayMode[] VALUES = values();
+
+  public static ClientPlayMode from(int ordinal) {
+    if (ordinal >= 0 && ordinal < VALUES.length) {
+      return VALUES[ordinal];
+    }
+    throw new UnsupportedOperationException("Detected unknown ClientPlayMode ID: " + ordinal);
+  }
 }

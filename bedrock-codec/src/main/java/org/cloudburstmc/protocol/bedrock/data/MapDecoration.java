@@ -1,15 +1,27 @@
 package org.cloudburstmc.protocol.bedrock.data;
 
-import lombok.EqualsAndHashCode;
-import lombok.Value;
+import java.awt.Color;
+import java.lang.String;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Value
-@EqualsAndHashCode
+/**
+ * Auto generated from 1.26.40-beta.31 (v2168)
+ */
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class MapDecoration {
-    private final int image;
-    private final int rotation;
-    private final int xOffset;
-    private final int yOffset;
-    private final String label;
-    private final int color;
+  private MapDecorationType ImageType;
+
+  private int Rotation;
+
+  private int X;
+
+  private int Y;
+
+  private String Label;
+
+  private Color Color;
 }

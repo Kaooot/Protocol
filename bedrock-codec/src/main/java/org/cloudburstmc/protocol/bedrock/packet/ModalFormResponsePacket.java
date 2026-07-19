@@ -1,43 +1,51 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
+import java.lang.AssertionError;
+import java.lang.CloneNotSupportedException;
+import java.lang.Override;
+import java.lang.String;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.protocol.bedrock.data.ModalFormCancelReason;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-import java.util.Optional;
-
+/**
+ * Auto generated from 1.26.40-beta.31 (v2168)
+ *
+ * Packet ID: 101 (0x65)
+ * see ModalFormRequestPacket
+ */
 @Data
-@EqualsAndHashCode(doNotUseGetters = true)
-@ToString(doNotUseGetters = true)
+@EqualsAndHashCode(
+    doNotUseGetters = true
+)
+@ToString(
+    doNotUseGetters = true
+)
 public class ModalFormResponsePacket implements BedrockPacket {
-    private int formId;
-    private String formData;
-    /**
-     * The reason for why the form response was cancelled.
-     *
-     * @since 1.19.20
-     */
-    @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
-    private Optional<ModalFormCancelReason> cancelReason;
+  private int FormID;
 
-    @Override
-    public final PacketSignal handle(BedrockPacketHandler handler) {
-        return handler.handle(this);
-    }
+  private String JsonValue;
 
-    public BedrockPacketType getPacketType() {
-        return BedrockPacketType.MODAL_FORM_RESPONSE;
-    }
+  private ModalFormCancelReason FormCancelReason;
 
-    @Override
-    public ModalFormResponsePacket clone() {
-        try {
-            return (ModalFormResponsePacket) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError(e);
-        }
+  @Override
+  public final PacketSignal handle(BedrockPacketHandler handler) {
+    return handler.handle(this);
+  }
+
+  @Override
+  public BedrockPacketType getPacketType() {
+    return BedrockPacketType.MODAL_FORM_RESPONSE;
+  }
+
+  @Override
+  public ModalFormResponsePacket clone() {
+    try {
+      return (ModalFormResponsePacket) super.clone();
+    } catch (CloneNotSupportedException e) {
+      throw new AssertionError(e);
     }
+  }
 }
-

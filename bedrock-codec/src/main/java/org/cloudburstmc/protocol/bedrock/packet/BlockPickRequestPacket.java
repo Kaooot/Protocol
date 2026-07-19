@@ -1,35 +1,49 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
+import java.lang.AssertionError;
+import java.lang.CloneNotSupportedException;
+import java.lang.Override;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.math.vector.Vector3i;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
+/**
+ * Auto generated from 1.26.40-beta.31 (v2168)
+ *
+ * Packet ID: 34 (0x22)
+ */
 @Data
-@EqualsAndHashCode(doNotUseGetters = true)
-@ToString(doNotUseGetters = true)
+@EqualsAndHashCode(
+    doNotUseGetters = true
+)
+@ToString(
+    doNotUseGetters = true
+)
 public class BlockPickRequestPacket implements BedrockPacket {
-    private Vector3i blockPosition;
-    private boolean addUserData;
-    private int hotbarSlot;
+  private Vector3i Position;
 
-    @Override
-    public final PacketSignal handle(BedrockPacketHandler handler) {
-        return handler.handle(this);
-    }
+  private boolean WithData;
 
-    public BedrockPacketType getPacketType() {
-        return BedrockPacketType.BLOCK_PICK_REQUEST;
-    }
+  private int MaxSlots;
 
-    @Override
-    public BlockPickRequestPacket clone() {
-        try {
-            return (BlockPickRequestPacket) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError(e);
-        }
+  @Override
+  public final PacketSignal handle(BedrockPacketHandler handler) {
+    return handler.handle(this);
+  }
+
+  @Override
+  public BedrockPacketType getPacketType() {
+    return BedrockPacketType.BLOCK_PICK_REQUEST;
+  }
+
+  @Override
+  public BlockPickRequestPacket clone() {
+    try {
+      return (BlockPickRequestPacket) super.clone();
+    } catch (CloneNotSupportedException e) {
+      throw new AssertionError(e);
     }
+  }
 }
-

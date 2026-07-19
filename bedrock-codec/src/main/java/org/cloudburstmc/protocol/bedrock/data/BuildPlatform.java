@@ -1,50 +1,69 @@
 package org.cloudburstmc.protocol.bedrock.data;
 
+import java.lang.UnsupportedOperationException;
+
+/**
+ * Auto generated from 1.26.40-beta.31 (v2168)
+ */
 public enum BuildPlatform {
-    UNKNOWN,
-    /**
-     * Android
-     */
-    GOOGLE,
-    IOS,
-    /**
-     * macOS
-     */
-    OSX,
-    /**
-     * Kindle, FireTV
-     */
-    AMAZON,
-    GEAR_VR,
-    HOLOLENS,
-    /**
-     * Windows Store version
-     */
-    UWP,
-    /**
-     * Education Edition
-     */
-    WIN32,
-    DEDICATED,
-    /**
-     * Apple TV
-     */
-    TV_OS,
-    /**
-     * PlayStation
-     */
-    SONY,
-    /**
-     * Nintendo Switch
-     */
-    NX,
-    XBOX,
-    WINDOWS_PHONE,
-    LINUX;
+  /**
+   * Google
+   */
+  GOOGLE,
 
-    private static final BuildPlatform[] VALUES = values();
+  /**
+   * iOS
+   */
+  I_OS,
 
-    public static BuildPlatform from(int id) {
-        return id > 0 && id < VALUES.length ? VALUES[id] : VALUES[0];
+  OSX,
+
+  /**
+   * Amazon
+   */
+  AMAZON,
+
+  /**
+   * Win32
+   */
+  WIN32,
+
+  /**
+   * Dedicated
+   */
+  DEDICATED,
+
+  /**
+   * Sony
+   */
+  SONY,
+
+  /**
+   * Nx
+   */
+  NX,
+
+  /**
+   * Xbox
+   */
+  XBOX,
+
+  /**
+   * Linux
+   */
+  LINUX,
+
+  /**
+   * Unknown
+   */
+  UNKNOWN;
+
+  private static final BuildPlatform[] VALUES = values();
+
+  public static BuildPlatform from(int ordinal) {
+    if (ordinal >= 0 && ordinal < VALUES.length) {
+      return VALUES[ordinal];
     }
+    throw new UnsupportedOperationException("Detected unknown BuildPlatform ID: " + ordinal);
+  }
 }

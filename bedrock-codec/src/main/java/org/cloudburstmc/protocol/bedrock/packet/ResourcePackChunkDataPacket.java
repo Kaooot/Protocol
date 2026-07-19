@@ -1,47 +1,52 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
-import io.netty.buffer.ByteBuf;
-import io.netty.util.AbstractReferenceCounted;
+import java.lang.AssertionError;
+import java.lang.CloneNotSupportedException;
+import java.lang.Override;
+import java.lang.String;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-import java.util.UUID;
-
+/**
+ * Auto generated from 1.26.40-beta.31 (v2168)
+ *
+ * Packet ID: 83 (0x53)
+ * (only one marked for uncompressed) realms resource pack download
+ */
 @Data
-@EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
-@ToString(doNotUseGetters = true, exclude = {"data"})
-public class ResourcePackChunkDataPacket extends AbstractReferenceCounted implements BedrockPacket {
-    private UUID packId;
-    private String packVersion;
-    private int chunkIndex;
-    private long progress;
-    private ByteBuf data;
+@EqualsAndHashCode(
+    doNotUseGetters = true
+)
+@ToString(
+    doNotUseGetters = true
+)
+public class ResourcePackChunkDataPacket implements BedrockPacket {
+  private String ResourceName;
 
-    @Override
-    public final PacketSignal handle(BedrockPacketHandler handler) {
-        return handler.handle(this);
-    }
+  private int ChunkID;
 
-    public BedrockPacketType getPacketType() {
-        return BedrockPacketType.RESOURCE_PACK_CHUNK_DATA;
-    }
+  private long ByteOffset;
 
-    @Override
-    protected void deallocate() {
-        this.data.release();
-    }
+  private String ChunkData;
 
-    @Override
-    public ResourcePackChunkDataPacket touch(Object hint) {
-        data.touch(hint);
-        return this;
-    }
+  @Override
+  public final PacketSignal handle(BedrockPacketHandler handler) {
+    return handler.handle(this);
+  }
 
-    @Override
-    public ResourcePackChunkDataPacket clone() {
-        throw new UnsupportedOperationException("Can not clone reference counted packet");
+  @Override
+  public BedrockPacketType getPacketType() {
+    return BedrockPacketType.RESOURCE_PACK_CHUNK_DATA;
+  }
+
+  @Override
+  public ResourcePackChunkDataPacket clone() {
+    try {
+      return (ResourcePackChunkDataPacket) super.clone();
+    } catch (CloneNotSupportedException e) {
+      throw new AssertionError(e);
     }
+  }
 }
-

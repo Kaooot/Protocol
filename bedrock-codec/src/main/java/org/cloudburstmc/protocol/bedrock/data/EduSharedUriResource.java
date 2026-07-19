@@ -1,11 +1,18 @@
 package org.cloudburstmc.protocol.bedrock.data;
 
-import lombok.Value;
+import java.lang.String;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Value
+/**
+ * Auto generated from 1.26.40-beta.31 (v2168)
+ */
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class EduSharedUriResource {
-    public static final EduSharedUriResource EMPTY = new EduSharedUriResource("", "");
+  private String ButtonName;
 
-    String buttonName;
-    String linkUri;
+  private String LinkUri;
 }

@@ -1,40 +1,48 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
+import java.lang.AssertionError;
+import java.lang.CloneNotSupportedException;
+import java.lang.Object;
+import java.lang.Override;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
+/**
+ * Auto generated from 1.26.40-beta.31 (v2168)
+ *
+ * Packet ID: 324 (0x144)
+ * Internal
+ */
 @Data
-@EqualsAndHashCode(doNotUseGetters = true)
-@ToString(doNotUseGetters = true)
+@EqualsAndHashCode(
+    doNotUseGetters = true
+)
+@ToString(
+    doNotUseGetters = true
+)
 public class PlayerVideoCapturePacket implements BedrockPacket {
-    private Action action;
-    private int frameRate;
-    private String filePrefix;
+  private Object StartVideoCapture;
 
-    @Override
-    public PacketSignal handle(BedrockPacketHandler handler) {
-        return handler.handle(this);
-    }
+  private Object StopVideoCapture;
 
-    @Override
-    public BedrockPacketType getPacketType() {
-        return BedrockPacketType.PLAYER_VIDEO_CAPTURE;
-    }
+  @Override
+  public final PacketSignal handle(BedrockPacketHandler handler) {
+    return handler.handle(this);
+  }
 
-    @Override
-    public BedrockPacket clone() {
-        try {
-            return (PlayerVideoCapturePacket) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError(e);
-        }
-    }
+  @Override
+  public BedrockPacketType getPacketType() {
+    return BedrockPacketType.PLAYER_VIDEO_CAPTURE;
+  }
 
-    public enum Action {
-        STOP_VIDEO_CAPTURE,
-        START_VIDEO_CAPTURE,
-        UNKNOWN
+  @Override
+  public PlayerVideoCapturePacket clone() {
+    try {
+      return (PlayerVideoCapturePacket) super.clone();
+    } catch (CloneNotSupportedException e) {
+      throw new AssertionError(e);
     }
+  }
 }

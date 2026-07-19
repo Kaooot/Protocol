@@ -1,156 +1,154 @@
 package org.cloudburstmc.protocol.bedrock.data;
 
+import java.lang.String;
+import java.util.HashMap;
+import java.util.Map;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+/**
+ * Auto generated from 1.26.40-beta.31 (v2168)
+ */
+@Getter
+@RequiredArgsConstructor
 public enum PlayerAuthInputData {
-    ASCEND,
-    DESCEND,
-    /**
-     * @deprecated since v685
-     */
-    NORTH_JUMP,
-    JUMP_DOWN,
-    SPRINT_DOWN,
-    CHANGE_HEIGHT,
-    JUMPING,
-    AUTO_JUMPING_IN_WATER,
-    SNEAKING,
-    SNEAK_DOWN,
-    UP,
-    DOWN,
-    LEFT,
-    RIGHT,
-    UP_LEFT,
-    UP_RIGHT,
-    WANT_UP,
-    WANT_DOWN,
-    WANT_DOWN_SLOW,
-    WANT_UP_SLOW,
-    SPRINTING,
-    ASCEND_BLOCK,
-    DESCEND_BLOCK,
-    SNEAK_TOGGLE_DOWN,
-    PERSIST_SNEAK,
-    START_SPRINTING,
-    STOP_SPRINTING,
-    START_SNEAKING,
-    STOP_SNEAKING,
-    START_SWIMMING,
-    STOP_SWIMMING,
-    START_JUMPING,
-    START_GLIDING,
-    STOP_GLIDING,
-    PERFORM_ITEM_INTERACTION,
-    PERFORM_BLOCK_ACTIONS,
-    PERFORM_ITEM_STACK_REQUEST,
-    /**
-     * @since v567
-     */
-    HANDLE_TELEPORT,
-    /**
-     * @since v575
-     */
-    EMOTING,
-    /**
-     * @since v594
-     */
-    MISSED_SWING,
-    /**
-     * @since v594
-     */
-    START_CRAWLING,
-    /**
-     * @since v594
-     */
-    STOP_CRAWLING,
-    /**
-     * @since v618
-     */
-    START_FLYING,
-    /**
-     * @since v618
-     */
-    STOP_FLYING,
-    /**
-     * @since v622
-     */
-    RECEIVED_SERVER_DATA,
-    /**
-     * @since v649
-     */
-    IN_CLIENT_PREDICTED_IN_VEHICLE,
-    /**
-     * @since v662
-     */
-    PADDLE_LEFT,
-    /**
-     * @since v662
-     */
-    PADDLE_RIGHT,
-    /**
-     * @since v685
-     */
-    BLOCK_BREAKING_DELAY_ENABLED,
-    /**
-     * @since v729
-     */
-    HORIZONTAL_COLLISION,
-    /**
-     * @since v729
-     */
-    VERTICAL_COLLISION,
-    /**
-     * @since v729
-     */
-    DOWN_LEFT,
-    /**
-     * @since v729
-     */
-    DOWN_RIGHT,
-    /**
-     * @since v748
-     */
-    START_USING_ITEM,
-    /**
-     * @since v748
-     */
-    CAMERA_RELATIVE_MOVEMENT_ENABLED,
-    /**
-     * @since v748
-     */
-    ROT_CONTROLLED_BY_MOVE_DIRECTION,
-    /**
-     * @since v748
-     */
-    START_SPIN_ATTACK,
-    /**
-     * @since v748
-     */
-    STOP_SPIN_ATTACK,
-    /**
-     * @since v766
-     */
-    HOTBAR_ONLY_TOUCH,
-    /**
-     * @since v766
-     */
-    JUMP_RELEASED_RAW,
-    /**
-     * @since v766
-     */
-    JUMP_PRESSED_RAW,
-    /**
-     * @since v766
-     */
-    JUMP_CURRENT_RAW,
-    /**
-     * @since v766
-     */
-    SNEAK_RELEASED_RAW,
-    /**
-     * @since v766
-     */
-    SNEAK_PRESSED_RAW,
-    /**
-     * @since v766
-     */
-    SNEAK_CURRENT_RAW,
+  ASCEND("ascend"),
+
+  DESCEND("descend"),
+
+  JUMP_DOWN("jumpdown"),
+
+  SPRINT_DOWN("sprintdown"),
+
+  CHANGE_HEIGHT("changeheight"),
+
+  JUMPING("jumping"),
+
+  AUTO_JUMPING_IN_WATER("autojumpinginwater"),
+
+  SNEAKING("sneaking"),
+
+  SNEAK_DOWN("sneakdown"),
+
+  UP("up"),
+
+  DOWN("down"),
+
+  LEFT("left"),
+
+  RIGHT("right"),
+
+  UP_LEFT("upleft"),
+
+  UP_RIGHT("upright"),
+
+  WANT_UP("wantup"),
+
+  WANT_DOWN("wantdown"),
+
+  WANT_DOWN_SLOW("wantdownslow"),
+
+  WANT_UP_SLOW("wantupslow"),
+
+  SPRINTING("sprinting"),
+
+  ASCEND_BLOCK("ascendblock"),
+
+  DESCEND_BLOCK("descendblock"),
+
+  SNEAK_TOGGLE_DOWN("sneaktoggledown"),
+
+  PERSIST_SNEAK("persistsneak"),
+
+  START_SPRINTING("startsprinting"),
+
+  STOP_SPRINTING("stopsprinting"),
+
+  START_SNEAKING("startsneaking"),
+
+  STOP_SNEAKING("stopsneaking"),
+
+  START_SWIMMING("startswimming"),
+
+  STOP_SWIMMING("stopswimming"),
+
+  START_JUMPING("startjumping"),
+
+  START_GLIDING("startgliding"),
+
+  STOP_GLIDING("stopgliding"),
+
+  PERFORM_ITEM_INTERACTION("performiteminteraction"),
+
+  PERFORM_BLOCK_ACTIONS("performblockactions"),
+
+  PERFORM_ITEM_STACK_REQUEST("performitemstackrequest"),
+
+  HANDLED_TELEPORT("handledteleport"),
+
+  EMOTING("emoting"),
+
+  MISSED_SWING("missedswing"),
+
+  START_CRAWLING("startcrawling"),
+
+  STOP_CRAWLING("stopcrawling"),
+
+  START_FLYING("startflying"),
+
+  STOP_FLYING("stopflying"),
+
+  CLIENT_ACK_SERVER_DATA("clientackserverdata"),
+
+  IS_IN_CLIENT_PREDICTED_VEHICLE("isinclientpredictedvehicle"),
+
+  PADDLING_LEFT("paddlingleft"),
+
+  PADDLING_RIGHT("paddlingright"),
+
+  BLOCK_BREAKING_DELAY_ENABLED("blockbreakingdelayenabled"),
+
+  HORIZONTAL_COLLISION("horizontalcollision"),
+
+  VERTICAL_COLLISION("verticalcollision"),
+
+  DOWN_LEFT("downleft"),
+
+  DOWN_RIGHT("downright"),
+
+  START_USING_ITEM("startusingitem"),
+
+  START_SPIN_ATTACK("startspinattack"),
+
+  STOP_SPIN_ATTACK("stopspinattack"),
+
+  IS_HOTBAR_ONLY_TOUCH("ishotbaronlytouch"),
+
+  JUMP_RELEASED_RAW("jumpreleasedraw"),
+
+  JUMP_PRESSED_RAW("jumppressedraw"),
+
+  JUMP_CURRENT_RAW("jumpcurrentraw"),
+
+  SNEAK_RELEASED_RAW("sneakreleasedraw"),
+
+  SNEAK_PRESSED_RAW("sneakpressedraw"),
+
+  SNEAK_CURRENT_RAW("sneakcurrentraw"),
+
+  INTERNAL_UPDATE("internalupdate");
+
+  private static final Map<String, PlayerAuthInputData> SERIALIZE_NAMES = new HashMap<>(values().length);
+
+  static {
+    for (PlayerAuthInputData value : values()) {
+      SERIALIZE_NAMES.put(value.getSerializeName(), value);
+    }
+  }
+
+  private final String serializeName;
+
+  public static PlayerAuthInputData fromName(String serializeName) {
+    return SERIALIZE_NAMES.get(serializeName);
+  }
 }

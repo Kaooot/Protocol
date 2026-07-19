@@ -1,46 +1,52 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
+import java.lang.AssertionError;
+import java.lang.CloneNotSupportedException;
+import java.lang.Override;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.math.vector.Vector3i;
-import org.cloudburstmc.protocol.bedrock.data.structure.StructureEditorData;
+import org.cloudburstmc.protocol.bedrock.data.StructureEditorData;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
+/**
+ * Auto generated from 1.26.40-beta.31 (v2168)
+ *
+ * Packet ID: 90 (0x5a)
+ */
 @Data
-@EqualsAndHashCode(doNotUseGetters = true)
-@ToString(doNotUseGetters = true)
+@EqualsAndHashCode(
+    doNotUseGetters = true
+)
+@ToString(
+    doNotUseGetters = true
+)
 public class StructureBlockUpdatePacket implements BedrockPacket {
-    private Vector3i blockPosition;
-    private StructureEditorData editorData;
-    private boolean powered;
-    /**
-     * @since v553
-     */
-    private boolean waterlogged;
+  private Vector3i BlockPosition;
 
-    @Override
-    public final PacketSignal handle(BedrockPacketHandler handler) {
-        return handler.handle(this);
-    }
+  private StructureEditorData StructureData;
 
-    public BedrockPacketType getPacketType() {
-        return BedrockPacketType.STRUCTURE_BLOCK_UPDATE;
-    }
+  private boolean Trigger;
 
-    public enum Type {
-        NONE,
-        SAVE,
-        LOAD,
-    }
+  private boolean IsWaterlogged;
 
-    @Override
-    public StructureBlockUpdatePacket clone() {
-        try {
-            return (StructureBlockUpdatePacket) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError(e);
-        }
+  @Override
+  public final PacketSignal handle(BedrockPacketHandler handler) {
+    return handler.handle(this);
+  }
+
+  @Override
+  public BedrockPacketType getPacketType() {
+    return BedrockPacketType.STRUCTURE_BLOCK_UPDATE;
+  }
+
+  @Override
+  public StructureBlockUpdatePacket clone() {
+    try {
+      return (StructureBlockUpdatePacket) super.clone();
+    } catch (CloneNotSupportedException e) {
+      throw new AssertionError(e);
     }
+  }
 }
-

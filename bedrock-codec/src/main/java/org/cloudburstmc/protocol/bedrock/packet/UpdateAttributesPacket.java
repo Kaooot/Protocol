@@ -1,38 +1,53 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import java.lang.AssertionError;
+import java.lang.CloneNotSupportedException;
+import java.lang.Override;
+import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.protocol.bedrock.data.AttributeData;
+import org.cloudburstmc.protocol.bedrock.data.PlayerInputTick;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-import java.util.List;
-
+/**
+ * Auto generated from 1.26.40-beta.31 (v2168)
+ *
+ * Packet ID: 29 (0x1d)
+ * Occasionally updating player attributes (buffs/debuffs, health, etc)
+ */
 @Data
-@EqualsAndHashCode(doNotUseGetters = true)
-@ToString(doNotUseGetters = true)
+@EqualsAndHashCode(
+    doNotUseGetters = true
+)
+@ToString(
+    doNotUseGetters = true
+)
 public class UpdateAttributesPacket implements BedrockPacket {
-    private long runtimeEntityId;
-    private List<AttributeData> attributes = new ObjectArrayList<>();
-    private long tick;
+  private long TargetRuntimeID;
 
-    @Override
-    public final PacketSignal handle(BedrockPacketHandler handler) {
-        return handler.handle(this);
-    }
+  private final List<AttributeData> AttributeList = new ObjectArrayList<>();
 
-    public BedrockPacketType getPacketType() {
-        return BedrockPacketType.UPDATE_ATTRIBUTES;
-    }
+  private PlayerInputTick Tick;
 
-    @Override
-    public UpdateAttributesPacket clone() {
-        try {
-            return (UpdateAttributesPacket) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError(e);
-        }
+  @Override
+  public final PacketSignal handle(BedrockPacketHandler handler) {
+    return handler.handle(this);
+  }
+
+  @Override
+  public BedrockPacketType getPacketType() {
+    return BedrockPacketType.UPDATE_ATTRIBUTES;
+  }
+
+  @Override
+  public UpdateAttributesPacket clone() {
+    try {
+      return (UpdateAttributesPacket) super.clone();
+    } catch (CloneNotSupportedException e) {
+      throw new AssertionError(e);
     }
+  }
 }
-

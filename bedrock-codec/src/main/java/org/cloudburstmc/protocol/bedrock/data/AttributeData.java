@@ -1,33 +1,32 @@
 package org.cloudburstmc.protocol.bedrock.data;
 
-import lombok.AllArgsConstructor;
-import lombok.Value;
-import org.cloudburstmc.protocol.bedrock.data.attribute.AttributeModifierData;
-
-import java.util.Collections;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import java.lang.String;
 import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Value
+/**
+ * Auto generated from 1.26.40-beta.31 (v2168)
+ */
+@Data
+@NoArgsConstructor
 @AllArgsConstructor
 public class AttributeData {
-    String name;
-    float minimum;
-    float maximum;
-    float value;
-    float defaultMinimum;
-    float defaultMaximum;
-    float defaultValue;
-    List<AttributeModifierData> modifiers;
+  private float MinValue;
 
-    public AttributeData(String name, float minimum, float maximum, float value) {
-        this(name, minimum, maximum, value, maximum, Collections.emptyList());
-    }
+  private float MaxValue;
 
-    public AttributeData(String name, float minimum, float maximum, float value, float defaultValue) {
-        this(name, minimum, maximum, value, defaultValue, Collections.emptyList());
-    }
+  private float CurrentValue;
 
-    public AttributeData(String name, float minimum, float maximum, float value, float defaultValue, List<AttributeModifierData> modifiers) {
-        this(name, minimum, maximum, value, minimum, maximum, defaultValue, modifiers);
-    }
+  private float DefaultMinValue;
+
+  private float DefaultMaxValue;
+
+  private float DefaultValue;
+
+  private String hashedstring;
+
+  private final List<AttributeModifier> Modifiers = new ObjectArrayList<>();
 }

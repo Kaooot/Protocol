@@ -1,38 +1,47 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
+import java.lang.AssertionError;
+import java.lang.CloneNotSupportedException;
+import java.lang.Override;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
+/**
+ * Auto generated from 1.26.40-beta.31 (v2168)
+ *
+ * Packet ID: 75 (0x4b)
+ * That packet is sent to the client.  When the credits have concluded, a packet is sent back to the server to let it know to reinstate the player watching the credits.
+ */
 @Data
-@EqualsAndHashCode(doNotUseGetters = true)
-@ToString(doNotUseGetters = true)
+@EqualsAndHashCode(
+    doNotUseGetters = true
+)
+@ToString(
+    doNotUseGetters = true
+)
 public class ShowCreditsPacket implements BedrockPacket {
-    private long runtimeEntityId;
-    private Status status;
+  private long PlayerRuntimeID;
 
-    @Override
-    public final PacketSignal handle(BedrockPacketHandler handler) {
-        return handler.handle(this);
-    }
+  private int CreditsState;
 
-    public BedrockPacketType getPacketType() {
-        return BedrockPacketType.SHOW_CREDITS;
-    }
+  @Override
+  public final PacketSignal handle(BedrockPacketHandler handler) {
+    return handler.handle(this);
+  }
 
-    public enum Status {
-        START_CREDITS,
-        END_CREDITS
-    }
+  @Override
+  public BedrockPacketType getPacketType() {
+    return BedrockPacketType.SHOW_CREDITS;
+  }
 
-    @Override
-    public ShowCreditsPacket clone() {
-        try {
-            return (ShowCreditsPacket) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError(e);
-        }
+  @Override
+  public ShowCreditsPacket clone() {
+    try {
+      return (ShowCreditsPacket) super.clone();
+    } catch (CloneNotSupportedException e) {
+      throw new AssertionError(e);
     }
+  }
 }
-

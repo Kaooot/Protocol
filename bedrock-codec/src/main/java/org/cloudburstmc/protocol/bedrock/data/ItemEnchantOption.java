@@ -1,0 +1,22 @@
+package org.cloudburstmc.protocol.bedrock.data;
+
+import java.lang.String;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+/**
+ * Auto generated from 1.26.40-beta.31 (v2168)
+ */
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class ItemEnchantOption {
+  private int Cost;
+
+  private ItemEnchants Enchants;
+
+  private String EnchantName;
+
+  private RecipeNetId EnchantNetId;
+}

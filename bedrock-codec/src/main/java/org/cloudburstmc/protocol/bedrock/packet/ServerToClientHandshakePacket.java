@@ -1,35 +1,46 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
+import java.lang.AssertionError;
+import java.lang.CloneNotSupportedException;
+import java.lang.Override;
+import java.lang.String;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.protocol.bedrock.annotation.NoEncryption;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-
+/**
+ * Auto generated from 1.26.40-beta.31 (v2168)
+ *
+ * Packet ID: 3 (0x3)
+ * Sent from the server at the end of the login packet
+ */
 @Data
-@EqualsAndHashCode(doNotUseGetters = true)
-@ToString(doNotUseGetters = true)
-@NoEncryption // This is sent in plain text to complete the Diffie Hellman key exchange.
+@EqualsAndHashCode(
+    doNotUseGetters = true
+)
+@ToString(
+    doNotUseGetters = true
+)
 public class ServerToClientHandshakePacket implements BedrockPacket {
-    private String jwt;
+  private String HandshakeWebToken;
 
-    @Override
-    public final PacketSignal handle(BedrockPacketHandler handler) {
-        return handler.handle(this);
-    }
+  @Override
+  public final PacketSignal handle(BedrockPacketHandler handler) {
+    return handler.handle(this);
+  }
 
-    public BedrockPacketType getPacketType() {
-        return BedrockPacketType.SERVER_TO_CLIENT_HANDSHAKE;
-    }
+  @Override
+  public BedrockPacketType getPacketType() {
+    return BedrockPacketType.SERVER_TO_CLIENT_HANDSHAKE;
+  }
 
-    @Override
-    public ServerToClientHandshakePacket clone() {
-        try {
-            return (ServerToClientHandshakePacket) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError(e);
-        }
+  @Override
+  public ServerToClientHandshakePacket clone() {
+    try {
+      return (ServerToClientHandshakePacket) super.clone();
+    } catch (CloneNotSupportedException e) {
+      throw new AssertionError(e);
     }
+  }
 }
-

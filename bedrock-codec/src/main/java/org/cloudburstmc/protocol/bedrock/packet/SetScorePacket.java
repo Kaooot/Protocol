@@ -1,42 +1,48 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import java.lang.AssertionError;
+import java.lang.CloneNotSupportedException;
+import java.lang.Object;
+import java.lang.Override;
+import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.protocol.bedrock.data.ScoreInfo;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-import java.util.List;
-
+/**
+ * Auto generated from 1.26.40-beta.31 (v2168)
+ *
+ * Packet ID: 108 (0x6c)
+ * Sets the scoreboard which is used for 3rd party content.
+ */
 @Data
-@EqualsAndHashCode(doNotUseGetters = true)
-@ToString(doNotUseGetters = true)
+@EqualsAndHashCode(
+    doNotUseGetters = true
+)
+@ToString(
+    doNotUseGetters = true
+)
 public class SetScorePacket implements BedrockPacket {
-    private Action action;
-    private List<ScoreInfo> infos = new ObjectArrayList<>();
+  private final List<Object> ScoreInfo = new ObjectArrayList<>();
 
-    @Override
-    public final PacketSignal handle(BedrockPacketHandler handler) {
-        return handler.handle(this);
-    }
+  @Override
+  public final PacketSignal handle(BedrockPacketHandler handler) {
+    return handler.handle(this);
+  }
 
-    public BedrockPacketType getPacketType() {
-        return BedrockPacketType.SET_SCORE;
-    }
+  @Override
+  public BedrockPacketType getPacketType() {
+    return BedrockPacketType.SET_SCORE;
+  }
 
-    public enum Action {
-        SET,
-        REMOVE
+  @Override
+  public SetScorePacket clone() {
+    try {
+      return (SetScorePacket) super.clone();
+    } catch (CloneNotSupportedException e) {
+      throw new AssertionError(e);
     }
-
-    @Override
-    public SetScorePacket clone() {
-        try {
-            return (SetScorePacket) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError(e);
-        }
-    }
+  }
 }
-

@@ -1,41 +1,48 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
+import java.lang.AssertionError;
+import java.lang.CloneNotSupportedException;
+import java.lang.Object;
+import java.lang.Override;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
+/**
+ * Auto generated from 1.26.40-beta.31 (v2168)
+ *
+ * Packet ID: 326 (0x146)
+ * Sent by PlayerLocationSender when a player position changes beyond a certain angle.
+ */
 @Data
-@EqualsAndHashCode(doNotUseGetters = true)
-@ToString(doNotUseGetters = true)
+@EqualsAndHashCode(
+    doNotUseGetters = true
+)
+@ToString(
+    doNotUseGetters = true
+)
 public class PlayerLocationPacket implements BedrockPacket {
+  private long TargetActorID;
 
-    private Type type;
-    private long targetEntityId;
-    private Vector3f position;
+  private Object Location;
 
-    @Override
-    public PacketSignal handle(BedrockPacketHandler handler) {
-        return handler.handle(this);
+  @Override
+  public final PacketSignal handle(BedrockPacketHandler handler) {
+    return handler.handle(this);
+  }
+
+  @Override
+  public BedrockPacketType getPacketType() {
+    return BedrockPacketType.PLAYER_LOCATION;
+  }
+
+  @Override
+  public PlayerLocationPacket clone() {
+    try {
+      return (PlayerLocationPacket) super.clone();
+    } catch (CloneNotSupportedException e) {
+      throw new AssertionError(e);
     }
-
-    @Override
-    public BedrockPacketType getPacketType() {
-        return BedrockPacketType.PLAYER_LOCATION;
-    }
-
-    @Override
-    public BedrockPacket clone() {
-        try {
-            return (PlayerLocationPacket) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError(e);
-        }
-    }
-
-    public enum Type {
-        COORDINATES,
-        HIDE
-    }
+  }
 }

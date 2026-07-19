@@ -1,38 +1,47 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import java.lang.AssertionError;
+import java.lang.CloneNotSupportedException;
+import java.lang.Override;
+import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.protocol.bedrock.data.PlayerArmorDamageFlag;
+import org.cloudburstmc.protocol.bedrock.data.ArmorSlotAndDamagePair;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-import java.util.EnumSet;
-import java.util.Set;
-
+/**
+ * Auto generated from 1.26.40-beta.31 (v2168)
+ *
+ * Packet ID: 149 (0x95)
+ */
 @Data
-@EqualsAndHashCode(doNotUseGetters = true)
-@ToString(doNotUseGetters = true)
+@EqualsAndHashCode(
+    doNotUseGetters = true
+)
+@ToString(
+    doNotUseGetters = true
+)
 public class PlayerArmorDamagePacket implements BedrockPacket {
-    private final Set<PlayerArmorDamageFlag> flags = EnumSet.noneOf(PlayerArmorDamageFlag.class);
-    private final int[] damage = new int[5];
+  private final List<ArmorSlotAndDamagePair> ArmorSlotandDamagePairs = new ObjectArrayList<>();
 
-    @Override
-    public PacketSignal handle(BedrockPacketHandler handler) {
-        return handler.handle(this);
-    }
+  @Override
+  public final PacketSignal handle(BedrockPacketHandler handler) {
+    return handler.handle(this);
+  }
 
-    @Override
-    public BedrockPacketType getPacketType() {
-        return BedrockPacketType.PLAYER_ARMOR_DAMAGE;
-    }
+  @Override
+  public BedrockPacketType getPacketType() {
+    return BedrockPacketType.PLAYER_ARMOR_DAMAGE;
+  }
 
-    @Override
-    public PlayerArmorDamagePacket clone() {
-        try {
-            return (PlayerArmorDamagePacket) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError(e);
-        }
+  @Override
+  public PlayerArmorDamagePacket clone() {
+    try {
+      return (PlayerArmorDamagePacket) super.clone();
+    } catch (CloneNotSupportedException e) {
+      throw new AssertionError(e);
     }
+  }
 }
-

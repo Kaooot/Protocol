@@ -1,89 +1,65 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
+import java.lang.AssertionError;
+import java.lang.CloneNotSupportedException;
+import java.lang.Float;
+import java.lang.Override;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.math.vector.Vector2f;
 import org.cloudburstmc.math.vector.Vector3f;
-import org.cloudburstmc.protocol.bedrock.data.PredictionType;
+import org.cloudburstmc.protocol.bedrock.data.PlayerInputTick;
+import org.cloudburstmc.protocol.bedrock.data.RewindType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
- * Sent to the client when the server's movement prediction system does not match what the client is sending.
+ * Auto generated from 1.26.40-beta.31 (v2168)
+ *
+ * Packet ID: 161 (0xa1)
+ * Used only in server authoritative movement mode, see ServerAuthMovementMode documentation.<br>
+ * Since it is sent to the specified client the target player is implied to be the receiver.<br>
+ * It is an optional part of the server authoritative protocol. A server could choose to never send this or do all corrections
+ * through MovePlayerPacket, although doing so would likely provide less smooth results.
  */
 @Data
-@EqualsAndHashCode(doNotUseGetters = true)
-@ToString(doNotUseGetters = true)
+@EqualsAndHashCode(
+    doNotUseGetters = true
+)
+@ToString(
+    doNotUseGetters = true
+)
 public class CorrectPlayerMovePredictionPacket implements BedrockPacket {
+  private RewindType PredictionType;
 
-    /**
-     * Client's reported position by the server
-     *
-     * @param position reported position
-     * @return reported position
-     */
-    private Vector3f position;
+  private Vector3f Pos;
 
-    /**
-     * Difference in client and server prediction
-     *
-     * @param delta position difference
-     * @return position difference
-     */
-    private Vector3f delta;
+  private Vector3f PosDelta;
 
-    /**
-     * If the client is on the ground. (Not falling or jumping)
-     *
-     * @param onGround is client on the ground
-     * @return is client on the ground
-     */
-    private boolean onGround;
+  private Vector2f Rotation;
 
-    /**
-     * The tick which is being corrected by the server.
-     *
-     * @param tick to be corrected
-     * @return to be corrected
-     */
-    private long tick;
+  private Float VehicleAngularVelocity;
 
-    /**
-     * @since 649
-     *
-     * The type of prediction player sends.
-     */
-    private PredictionType predictionType = PredictionType.PLAYER;
+  private boolean OnGround;
 
-    /**
-     * @since 671
-     *
-     * The rotation of the vehicle.
-     */
-    private Vector2f vehicleRotation;
+  private PlayerInputTick Tick;
 
-    /**
-     * @since v712
-     */
-    private Float vehicleAngularVelocity;
+  @Override
+  public final PacketSignal handle(BedrockPacketHandler handler) {
+    return handler.handle(this);
+  }
 
-    @Override
-    public PacketSignal handle(BedrockPacketHandler handler) {
-        return handler.handle(this);
+  @Override
+  public BedrockPacketType getPacketType() {
+    return BedrockPacketType.CORRECT_PLAYER_MOVE_PREDICTION;
+  }
+
+  @Override
+  public CorrectPlayerMovePredictionPacket clone() {
+    try {
+      return (CorrectPlayerMovePredictionPacket) super.clone();
+    } catch (CloneNotSupportedException e) {
+      throw new AssertionError(e);
     }
-
-    @Override
-    public BedrockPacketType getPacketType() {
-        return BedrockPacketType.CORRECT_PLAYER_MOVE_PREDICTION;
-    }
-
-    @Override
-    public CorrectPlayerMovePredictionPacket clone() {
-        try {
-            return (CorrectPlayerMovePredictionPacket) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError(e);
-        }
-    }
+  }
 }
-

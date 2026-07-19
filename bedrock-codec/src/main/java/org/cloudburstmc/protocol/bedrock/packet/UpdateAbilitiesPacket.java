@@ -1,42 +1,45 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import java.lang.AssertionError;
+import java.lang.CloneNotSupportedException;
+import java.lang.Override;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.protocol.bedrock.data.AbilityLayer;
-import org.cloudburstmc.protocol.bedrock.data.PlayerAbilityHolder;
-import org.cloudburstmc.protocol.bedrock.data.PlayerPermission;
-import org.cloudburstmc.protocol.bedrock.data.command.CommandPermission;
+import org.cloudburstmc.protocol.bedrock.data.SerializedAbilitiesData;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-import java.util.List;
-
+/**
+ * Auto generated from 1.26.40-beta.31 (v2168)
+ *
+ * Packet ID: 187 (0xbb)
+ */
 @Data
-@EqualsAndHashCode(doNotUseGetters = true)
-@ToString(doNotUseGetters = true)
-public class UpdateAbilitiesPacket implements BedrockPacket, PlayerAbilityHolder {
-    private long uniqueEntityId;
-    private PlayerPermission playerPermission;
-    private CommandPermission commandPermission;
-    private List<AbilityLayer> abilityLayers = new ObjectArrayList<>();
+@EqualsAndHashCode(
+    doNotUseGetters = true
+)
+@ToString(
+    doNotUseGetters = true
+)
+public class UpdateAbilitiesPacket implements BedrockPacket {
+  private SerializedAbilitiesData Data;
 
-    @Override
-    public final PacketSignal handle(BedrockPacketHandler handler) {
-        return handler.handle(this);
-    }
+  @Override
+  public final PacketSignal handle(BedrockPacketHandler handler) {
+    return handler.handle(this);
+  }
 
-    public BedrockPacketType getPacketType() {
-        return BedrockPacketType.UPDATE_ABILITIES;
-    }
+  @Override
+  public BedrockPacketType getPacketType() {
+    return BedrockPacketType.UPDATE_ABILITIES;
+  }
 
-    @Override
-    public UpdateAbilitiesPacket clone() {
-        try {
-            return (UpdateAbilitiesPacket) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError(e);
-        }
+  @Override
+  public UpdateAbilitiesPacket clone() {
+    try {
+      return (UpdateAbilitiesPacket) super.clone();
+    } catch (CloneNotSupportedException e) {
+      throw new AssertionError(e);
     }
+  }
 }
-

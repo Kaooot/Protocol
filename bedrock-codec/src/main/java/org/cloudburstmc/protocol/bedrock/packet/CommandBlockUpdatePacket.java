@@ -1,46 +1,61 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
+import java.lang.AssertionError;
+import java.lang.CloneNotSupportedException;
+import java.lang.Object;
+import java.lang.Override;
+import java.lang.String;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.math.vector.Vector3i;
-import org.cloudburstmc.protocol.bedrock.data.CommandBlockMode;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
+/**
+ * Auto generated from 1.26.40-beta.31 (v2168)
+ *
+ * Packet ID: 78 (0x4e)
+ * Sent when you close the command block screen on the client.
+ */
 @Data
-@EqualsAndHashCode(doNotUseGetters = true)
-@ToString(doNotUseGetters = true)
+@EqualsAndHashCode(
+    doNotUseGetters = true
+)
+@ToString(
+    doNotUseGetters = true
+)
 public class CommandBlockUpdatePacket implements BedrockPacket {
-    private boolean block;
-    private Vector3i blockPosition;
-    private CommandBlockMode mode;
-    private boolean redstoneMode;
-    private boolean conditional;
-    private long minecartRuntimeEntityId;
-    private String command;
-    private String lastOutput;
-    private String name;
-    private String filteredName;
-    private boolean outputTracked;
-    private long tickDelay;
-    private boolean executingOnFirstTick;
+  private Object Target;
 
-    @Override
-    public final PacketSignal handle(BedrockPacketHandler handler) {
-        return handler.handle(this);
-    }
+  private String Command;
 
-    public BedrockPacketType getPacketType() {
-        return BedrockPacketType.COMMAND_BLOCK_UPDATE;
-    }
+  private String LastOutput;
 
-    @Override
-    public CommandBlockUpdatePacket clone() {
-        try {
-            return (CommandBlockUpdatePacket) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError(e);
-        }
+  private String Name;
+
+  private String FilteredName;
+
+  private boolean TrackOutput;
+
+  private int TickDelay;
+
+  private boolean ExecuteOnFirstTick;
+
+  @Override
+  public final PacketSignal handle(BedrockPacketHandler handler) {
+    return handler.handle(this);
+  }
+
+  @Override
+  public BedrockPacketType getPacketType() {
+    return BedrockPacketType.COMMAND_BLOCK_UPDATE;
+  }
+
+  @Override
+  public CommandBlockUpdatePacket clone() {
+    try {
+      return (CommandBlockUpdatePacket) super.clone();
+    } catch (CloneNotSupportedException e) {
+      throw new AssertionError(e);
     }
+  }
 }
-

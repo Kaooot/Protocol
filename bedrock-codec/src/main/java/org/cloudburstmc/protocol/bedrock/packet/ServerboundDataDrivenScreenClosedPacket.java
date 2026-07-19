@@ -1,46 +1,48 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
+import java.lang.AssertionError;
+import java.lang.CloneNotSupportedException;
+import java.lang.Integer;
+import java.lang.Override;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.cloudburstmc.protocol.bedrock.data.DataDrivenScreenClosedReason;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
- * Sent from the client to the server when a data driven screen is closed.
+ * Auto generated from 1.26.40-beta.31 (v2168)
  *
- * @since v944
+ * Packet ID: 343 (0x157)
  */
 @Data
-@EqualsAndHashCode(doNotUseGetters = true)
-@ToString(doNotUseGetters = true)
+@EqualsAndHashCode(
+    doNotUseGetters = true
+)
+@ToString(
+    doNotUseGetters = true
+)
 public class ServerboundDataDrivenScreenClosedPacket implements BedrockPacket {
+  private Integer FormId;
 
-    private Integer formId;
-    private CloseReason closeReason;
+  private DataDrivenScreenClosedReason CloseReason;
 
-    @Override
-    public final PacketSignal handle(BedrockPacketHandler handler) {
-        return handler.handle(this);
+  @Override
+  public final PacketSignal handle(BedrockPacketHandler handler) {
+    return handler.handle(this);
+  }
+
+  @Override
+  public BedrockPacketType getPacketType() {
+    return BedrockPacketType.SERVERBOUND_DATA_DRIVEN_SCREEN_CLOSED;
+  }
+
+  @Override
+  public ServerboundDataDrivenScreenClosedPacket clone() {
+    try {
+      return (ServerboundDataDrivenScreenClosedPacket) super.clone();
+    } catch (CloneNotSupportedException e) {
+      throw new AssertionError(e);
     }
-
-    public BedrockPacketType getPacketType() {
-        return BedrockPacketType.SERVERBOUND_DATA_DRIVEN_SCREEN_CLOSED;
-    }
-
-    @Override
-    public ServerboundDataDrivenScreenClosedPacket clone() {
-        try {
-            return (ServerboundDataDrivenScreenClosedPacket) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError(e);
-        }
-    }
-
-    public enum CloseReason {
-        PROGRAMMATIC_CLOSE,
-        PROGRAMMATIC_CLOSE_ALL,
-        CLIENT_CANCELED,
-        USER_BUSY,
-        INVALID_FORM,
-    }
+  }
 }

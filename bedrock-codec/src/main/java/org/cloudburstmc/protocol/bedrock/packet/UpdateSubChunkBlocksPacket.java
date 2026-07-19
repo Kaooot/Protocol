@@ -1,41 +1,48 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import java.lang.AssertionError;
+import java.lang.CloneNotSupportedException;
+import java.lang.Override;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.math.vector.Vector3i;
-import org.cloudburstmc.protocol.bedrock.data.BlockChangeEntry;
+import org.cloudburstmc.protocol.bedrock.data.UpdateSubChunkBlocksChangedInfo;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-import java.util.List;
-
+/**
+ * Auto generated from 1.26.40-beta.31 (v2168)
+ *
+ * Packet ID: 172 (0xac)
+ */
 @Data
-@EqualsAndHashCode(doNotUseGetters = true)
-@ToString(doNotUseGetters = true)
+@EqualsAndHashCode(
+    doNotUseGetters = true
+)
+@ToString(
+    doNotUseGetters = true
+)
 public class UpdateSubChunkBlocksPacket implements BedrockPacket {
-    private Vector3i position;
+  private Vector3i SubChunkBlockPosition;
 
-    private final List<BlockChangeEntry> standardBlocks = new ObjectArrayList<>();
-    private final List<BlockChangeEntry> extraBlocks = new ObjectArrayList<>();
+  private UpdateSubChunkBlocksChangedInfo BlocksChanged;
 
-    @Override
-    public PacketSignal handle(BedrockPacketHandler handler) {
-        return handler.handle(this);
+  @Override
+  public final PacketSignal handle(BedrockPacketHandler handler) {
+    return handler.handle(this);
+  }
+
+  @Override
+  public BedrockPacketType getPacketType() {
+    return BedrockPacketType.UPDATE_SUB_CHUNK_BLOCKS;
+  }
+
+  @Override
+  public UpdateSubChunkBlocksPacket clone() {
+    try {
+      return (UpdateSubChunkBlocksPacket) super.clone();
+    } catch (CloneNotSupportedException e) {
+      throw new AssertionError(e);
     }
-
-    @Override
-    public BedrockPacketType getPacketType() {
-        return BedrockPacketType.UPDATE_SUB_CHUNK_BLOCKS;
-    }
-
-    @Override
-    public UpdateSubChunkBlocksPacket clone() {
-        try {
-            return (UpdateSubChunkBlocksPacket) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError(e);
-        }
-    }
+  }
 }
-

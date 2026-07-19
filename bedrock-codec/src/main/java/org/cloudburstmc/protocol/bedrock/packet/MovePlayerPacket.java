@@ -1,70 +1,65 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
-import io.netty.util.internal.logging.InternalLogger;
-import io.netty.util.internal.logging.InternalLoggerFactory;
+import java.lang.AssertionError;
+import java.lang.CloneNotSupportedException;
+import java.lang.Override;
+import java.lang.String;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.cloudburstmc.math.vector.Vector2f;
 import org.cloudburstmc.math.vector.Vector3f;
+import org.cloudburstmc.protocol.bedrock.data.MovePlayerTeleportData;
+import org.cloudburstmc.protocol.bedrock.data.PlayerInputTick;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
+/**
+ * Auto generated from 1.26.40-beta.31 (v2168)
+ *
+ * Packet ID: 19 (0x13)
+ */
 @Data
-@EqualsAndHashCode(doNotUseGetters = true)
-@ToString(doNotUseGetters = true)
+@EqualsAndHashCode(
+    doNotUseGetters = true
+)
+@ToString(
+    doNotUseGetters = true
+)
 public class MovePlayerPacket implements BedrockPacket {
-    private long runtimeEntityId;
-    private Vector3f position;
-    private Vector3f rotation;
-    private Mode mode;
-    private boolean onGround;
-    private long ridingRuntimeEntityId;
-    private TeleportationCause teleportationCause;
-    private int entityType;
-    private long tick;
+  private long PlayerRuntimeID;
 
-    @Override
-    public final PacketSignal handle(BedrockPacketHandler handler) {
-        return handler.handle(this);
+  private Vector3f Position;
+
+  private Vector2f Rotation;
+
+  private float YHeadRotation;
+
+  private String PositionMode;
+
+  private boolean OnGround;
+
+  private long RidingRuntimeID;
+
+  private MovePlayerTeleportData TeleportData;
+
+  private PlayerInputTick Tick;
+
+  @Override
+  public final PacketSignal handle(BedrockPacketHandler handler) {
+    return handler.handle(this);
+  }
+
+  @Override
+  public BedrockPacketType getPacketType() {
+    return BedrockPacketType.MOVE_PLAYER;
+  }
+
+  @Override
+  public MovePlayerPacket clone() {
+    try {
+      return (MovePlayerPacket) super.clone();
+    } catch (CloneNotSupportedException e) {
+      throw new AssertionError(e);
     }
-
-    public BedrockPacketType getPacketType() {
-        return BedrockPacketType.MOVE_PLAYER;
-    }
-
-    public enum Mode {
-        NORMAL,
-        RESPAWN,
-        TELEPORT,
-        HEAD_ROTATION
-    }
-
-    public enum TeleportationCause {
-        UNKNOWN,
-        PROJECTILE,
-        CHORUS_FRUIT,
-        COMMAND,
-        BEHAVIOR;
-
-        private static final InternalLogger log = InternalLoggerFactory.getInstance(TeleportationCause.class);
-
-        private static final TeleportationCause[] VALUES = values();
-
-        public static TeleportationCause byId(int id) {
-            if (id >= 0 && id < VALUES.length) {
-                return VALUES[id];
-            }
-            log.debug("Unknown teleportation cause ID: {}", id);
-            return UNKNOWN;
-        }
-    }
-
-    @Override
-    public MovePlayerPacket clone() {
-        try {
-            return (MovePlayerPacket) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError(e);
-        }
-    }
+  }
 }
-

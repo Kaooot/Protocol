@@ -1,51 +1,50 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
+import java.lang.AssertionError;
+import java.lang.CloneNotSupportedException;
+import java.lang.Integer;
+import java.lang.Override;
+import java.lang.String;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.checkerframework.checker.nullness.qual.Nullable;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
- * Allows the server to tell the client to show a Data Driven UI screen.
+ * Auto generated from 1.26.40-beta.31 (v2168)
  *
- * @since v924
+ * Packet ID: 333 (0x14d)
  */
 @Data
-@EqualsAndHashCode(doNotUseGetters = true)
-@ToString(doNotUseGetters = true)
+@EqualsAndHashCode(
+    doNotUseGetters = true
+)
+@ToString(
+    doNotUseGetters = true
+)
 public class ClientboundDataDrivenUIShowScreenPacket implements BedrockPacket {
+  private String ScreenId;
 
-    private String screenId;
+  private int FormId;
 
-    /**
-     * The unique id of this instance of the form for tracking in scripting
-     * @since v944
-     */
-    private int formId;
+  private Integer DataInstanceId;
 
-    /**
-     * The optional id of the data associated with this screen
-     * @since v944
-     */
-    @Nullable
-    private Integer dataInstanceId;
+  @Override
+  public final PacketSignal handle(BedrockPacketHandler handler) {
+    return handler.handle(this);
+  }
 
-    @Override
-    public final PacketSignal handle(BedrockPacketHandler handler) {
-        return handler.handle(this);
+  @Override
+  public BedrockPacketType getPacketType() {
+    return BedrockPacketType.CLIENTBOUND_DATA_DRIVEN_U_I_SHOW_SCREEN;
+  }
+
+  @Override
+  public ClientboundDataDrivenUIShowScreenPacket clone() {
+    try {
+      return (ClientboundDataDrivenUIShowScreenPacket) super.clone();
+    } catch (CloneNotSupportedException e) {
+      throw new AssertionError(e);
     }
-
-    public BedrockPacketType getPacketType() {
-        return BedrockPacketType.CLIENTBOUND_DATA_DRIVEN_UI_SHOW_SCREEN;
-    }
-
-    @Override
-    public ClientboundDataDrivenUIShowScreenPacket clone() {
-        try {
-            return (ClientboundDataDrivenUIShowScreenPacket) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError(e);
-        }
-    }
+  }
 }

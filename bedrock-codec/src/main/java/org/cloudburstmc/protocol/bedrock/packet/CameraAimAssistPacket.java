@@ -1,50 +1,58 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
+import java.lang.AssertionError;
+import java.lang.CloneNotSupportedException;
+import java.lang.Override;
+import java.lang.String;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.math.vector.Vector2f;
-import org.cloudburstmc.protocol.bedrock.data.camera.AimAssistAction;
+import org.cloudburstmc.protocol.bedrock.data.CameraAimAssistPacketPayloadAction;
+import org.cloudburstmc.protocol.bedrock.data.CameraAimAssistPacketPayloadTargetMode;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
+/**
+ * Auto generated from 1.26.40-beta.31 (v2168)
+ *
+ * Packet ID: 316 (0x13c)
+ */
 @Data
-@EqualsAndHashCode(doNotUseGetters = true)
-@ToString(doNotUseGetters = true)
+@EqualsAndHashCode(
+    doNotUseGetters = true
+)
+@ToString(
+    doNotUseGetters = true
+)
 public class CameraAimAssistPacket implements BedrockPacket {
-    private Vector2f viewAngle;
-    private float distance;
-    private TargetMode targetMode;
-    private AimAssistAction action;
-    /**
-     * @since v766
-     */
-    private String presetId;
-    /**
-     * @since v827
-     */
-    private boolean showDebugRender;
+  private String PresetId;
 
-    @Override
-    public PacketSignal handle(BedrockPacketHandler handler) {
-        return handler.handle(this);
-    }
+  private Vector2f ViewAngle;
 
-    @Override
-    public BedrockPacketType getPacketType() {
-        return BedrockPacketType.CAMERA_AIM_ASSIST;
-    }
+  private float Distance;
 
-    @Override
-    public CameraAimAssistPacket clone() {
-        try {
-            return (CameraAimAssistPacket) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError(e);
-        }
-    }
+  private CameraAimAssistPacketPayloadTargetMode TargetMode;
 
-    public enum TargetMode {
-        ANGLE,
-        DISTANCE
+  private CameraAimAssistPacketPayloadAction Action;
+
+  private boolean ShowDebugRender;
+
+  @Override
+  public final PacketSignal handle(BedrockPacketHandler handler) {
+    return handler.handle(this);
+  }
+
+  @Override
+  public BedrockPacketType getPacketType() {
+    return BedrockPacketType.CAMERA_AIM_ASSIST;
+  }
+
+  @Override
+  public CameraAimAssistPacket clone() {
+    try {
+      return (CameraAimAssistPacket) super.clone();
+    } catch (CloneNotSupportedException e) {
+      throw new AssertionError(e);
     }
+  }
 }

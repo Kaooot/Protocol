@@ -1,37 +1,47 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
+import java.lang.AssertionError;
+import java.lang.CloneNotSupportedException;
+import java.lang.Override;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
- * Stats sent to the client regarding the server's network performance
- * that are used for telemetry.
+ * Auto generated from 1.26.40-beta.31 (v2168)
+ *
+ * Packet ID: 192 (0xc0)
+ * Sent from server.
  */
 @Data
-@EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
-@ToString(doNotUseGetters = true)
+@EqualsAndHashCode(
+    doNotUseGetters = true
+)
+@ToString(
+    doNotUseGetters = true
+)
 public class ServerStatsPacket implements BedrockPacket {
-    private float serverTime;
-    private float networkTime;
+  private float ServerTime;
 
-    @Override
-    public PacketSignal handle(BedrockPacketHandler handler) {
-        return handler.handle(this);
-    }
+  private float NetworkTime;
 
-    @Override
-    public BedrockPacketType getPacketType() {
-        return BedrockPacketType.SERVER_STATS;
-    }
+  @Override
+  public final PacketSignal handle(BedrockPacketHandler handler) {
+    return handler.handle(this);
+  }
 
-    @Override
-    public ServerStatsPacket clone() {
-        try {
-            return (ServerStatsPacket) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError(e);
-        }
+  @Override
+  public BedrockPacketType getPacketType() {
+    return BedrockPacketType.SERVER_STATS;
+  }
+
+  @Override
+  public ServerStatsPacket clone() {
+    try {
+      return (ServerStatsPacket) super.clone();
+    } catch (CloneNotSupportedException e) {
+      throw new AssertionError(e);
     }
+  }
 }

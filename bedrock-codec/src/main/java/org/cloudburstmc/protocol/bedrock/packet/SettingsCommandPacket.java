@@ -1,33 +1,48 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
+import java.lang.AssertionError;
+import java.lang.CloneNotSupportedException;
+import java.lang.Override;
+import java.lang.String;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
+/**
+ * Auto generated from 1.26.40-beta.31 (v2168)
+ *
+ * Packet ID: 140 (0x8c)
+ * Used when the player changes the world settings like doDayNightCycle or WeatherCycle via the world settings menu
+ */
 @Data
-@EqualsAndHashCode(doNotUseGetters = true)
-@ToString(doNotUseGetters = true)
+@EqualsAndHashCode(
+    doNotUseGetters = true
+)
+@ToString(
+    doNotUseGetters = true
+)
 public class SettingsCommandPacket implements BedrockPacket {
-    private String command;
-    private boolean suppressingOutput;
+  private String Command;
 
-    @Override
-    public PacketSignal handle(BedrockPacketHandler handler) {
-        return handler.handle(this);
-    }
+  private boolean SuppressOutput;
 
-    public BedrockPacketType getPacketType() {
-        return BedrockPacketType.SETTINGS_COMMAND;
-    }
+  @Override
+  public final PacketSignal handle(BedrockPacketHandler handler) {
+    return handler.handle(this);
+  }
 
-    @Override
-    public SettingsCommandPacket clone() {
-        try {
-            return (SettingsCommandPacket) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError(e);
-        }
+  @Override
+  public BedrockPacketType getPacketType() {
+    return BedrockPacketType.SETTINGS_COMMAND;
+  }
+
+  @Override
+  public SettingsCommandPacket clone() {
+    try {
+      return (SettingsCommandPacket) super.clone();
+    } catch (CloneNotSupportedException e) {
+      throw new AssertionError(e);
     }
+  }
 }
-

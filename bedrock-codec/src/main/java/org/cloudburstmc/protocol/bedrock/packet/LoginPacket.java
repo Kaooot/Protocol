@@ -1,47 +1,47 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
+import java.lang.AssertionError;
+import java.lang.CloneNotSupportedException;
+import java.lang.Override;
+import java.lang.String;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.protocol.bedrock.data.auth.AuthPayload;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-import java.util.ArrayList;
-import java.util.List;
-
+/**
+ * Auto generated from 1.26.40-beta.31 (v2168)
+ *
+ * Packet ID: 1 (0x1)
+ */
 @Data
-@EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
-@ToString(doNotUseGetters = true)
+@EqualsAndHashCode(
+    doNotUseGetters = true
+)
+@ToString(
+    doNotUseGetters = true
+)
 public class LoginPacket implements BedrockPacket {
-    private int protocolVersion;
-    /**
-     * The JWT payload signed by Minecraft's authentication server.
-     * Assuming this is a valid signature, it can be trusted to contain the player's identity and other information.
-     */
-    private AuthPayload authPayload;
-    /**
-     * The JWT payload signed by the client.
-     * The client can modify this, so it should not be trusted.
-     */
-    private String clientJwt;
+  private int ClientNetworkVersion;
 
-    @Override
-    public final PacketSignal handle(BedrockPacketHandler handler) {
-        return handler.handle(this);
-    }
+  private String ConnectionRequest;
 
-    @Override
-    public BedrockPacketType getPacketType() {
-        return BedrockPacketType.LOGIN;
-    }
+  @Override
+  public final PacketSignal handle(BedrockPacketHandler handler) {
+    return handler.handle(this);
+  }
 
-    @Override
-    public LoginPacket clone() {
-        try {
-            return (LoginPacket) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError(e);
-        }
+  @Override
+  public BedrockPacketType getPacketType() {
+    return BedrockPacketType.LOGIN;
+  }
+
+  @Override
+  public LoginPacket clone() {
+    try {
+      return (LoginPacket) super.clone();
+    } catch (CloneNotSupportedException e) {
+      throw new AssertionError(e);
     }
+  }
 }
-

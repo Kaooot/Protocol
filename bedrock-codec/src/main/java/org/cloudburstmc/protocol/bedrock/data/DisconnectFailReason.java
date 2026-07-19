@@ -1,224 +1,757 @@
 package org.cloudburstmc.protocol.bedrock.data;
 
+import java.lang.UnsupportedOperationException;
+
+/**
+ * Auto generated from 1.26.40-beta.31 (v2168)
+ */
 public enum DisconnectFailReason {
-    UNKNOWN,
-    CANT_CONNECT_NO_INTERNET,
-    NO_PERMISSIONS,
-    UNRECOVERABLE_ERROR,
-    THIRD_PARTY_BLOCKED,
-    THIRD_PARTY_NO_INTERNET,
-    THIRD_PARTY_BAD_IP,
-    THIRD_PARTY_NO_SERVER_OR_SERVER_LOCKED,
-    VERSION_MISMATCH,
-    SKIN_ISSUE,
-    INVITE_SESSION_NOT_FOUND,
-    EDU_LEVEL_SETTINGS_MISSING,
-    LOCAL_SERVER_NOT_FOUND,
-    LEGACY_DISCONNECT,
-    USER_LEAVE_GAME_ATTEMPTED,
-    PLATFORM_LOCKED_SKINS_ERROR,
-    REALMS_WORLD_UNASSIGNED,
-    REALMS_SERVER_CANT_CONNECT,
-    REALMS_SERVER_HIDDEN,
-    REALMS_SERVER_DISABLED_BETA,
-    REALMS_SERVER_DISABLED,
-    CROSS_PLATFORM_DISABLED,
-    CANT_CONNECT,
-    SESSION_NOT_FOUND,
-    CLIENT_SETTINGS_INCOMPATIBLE_WITH_SERVER,
-    SERVER_FULL,
-    INVALID_PLATFORM_SKIN,
-    EDITION_VERSION_MISMATCH,
-    EDITION_MISMATCH,
-    LEVEL_NEWER_THAN_EXE_VERSION,
-    NO_FAIL_OCCURRED,
-    BANNED_SKIN,
-    TIMEOUT,
-    SERVER_NOT_FOUND,
-    OUTDATED_SERVER,
-    OUTDATED_CLIENT,
-    NO_PREMIUM_PLATFORM,
-    MULTIPLAYER_DISABLED,
-    NO_WIFI,
-    WORLD_CORRUPTION,
-    NO_REASON,
-    DISCONNECTED,
-    INVALID_PLAYER,
-    LOGGED_IN_OTHER_LOCATION,
-    SERVER_ID_CONFLICT,
-    NOT_ALLOWED,
-    NOT_AUTHENTICATED,
-    INVALID_TENANT,
-    UNKNOWN_PACKET,
-    UNEXPECTED_PACKET,
-    INVALID_COMMAND_REQUEST_PACKET,
-    HOST_SUSPENDED,
-    LOGIN_PACKET_NO_REQUEST,
-    LOGIN_PACKET_NO_CERT,
-    MISSING_CLIENT,
-    KICKED,
-    KICKED_FOR_EXPLOIT,
-    KICKED_FOR_IDLE,
-    RESOURCE_PACK_PROBLEM,
-    INCOMPATIBLE_PACK,
-    OUT_OF_STORAGE,
-    INVALID_LEVEL,
-    DISCONNECT_PACKET_DEPRECATED,
-    BLOCK_MISMATCH,
-    INVALID_HEIGHTS,
-    INVALID_WIDTHS,
-    CONNECTION_LOST,
-    ZOMBIE_CONNECTION,
-    SHUTDOWN,
-    REASON_NOT_SET,
-    LOADING_STATE_TIMEOUT,
-    RESOURCE_PACK_LOADING_FAILED,
-    SEARCHING_FOR_SESSION_LOADING_SCREEN_FAILED,
-    CONN_PROTOCOL_VERSION,
-    SUBSYSTEM_STATUS_ERROR,
-    EMPTY_AUTH_FROM_DISCOVERY,
-    EMPTY_URL_FROM_DISCOVERY,
-    EXPIRED_AUTH_FROM_DISCOVERY,
-    UNKNOWN_SIGNAL_SERVICE_SIGN_IN_FAILURE,
-    XBL_JOIN_LOBBY_FAILURE,
-    UNSPECIFIED_CLIENT_INSTANCE_DISCONNECTION,
-    CONN_SESSION_NOT_FOUND,
-    CONN_CREATE_PEER_CONNECTION,
-    CONN_ICE,
-    CONN_CONNECT_REQUEST,
-    CONN_CONNECT_RESPONSE,
-    CONN_NEGOTIATION_TIMEOUT,
-    CONN_INACTIVITY_TIMEOUT,
-    STALE_CONNECTION_BEING_REPLACED,
-    /**
-     * @deprecated since v685
-     */
-    REALMS_SESSION_NOT_FOUND_DEPRECATED,
-    BAD_PACKET,    
-    CONN_FAILED_TO_CREATE_OFFER,
-    CONN_FAILED_TO_CREATE_ANSWER,
-    CONN_FAILED_TO_SET_LOCAL_DESCRIPTION,
-    CONN_FAILED_TO_SET_REMOTE_DESCRIPTION,
-    CONN_NEGOTIATION_TIMEOUT_WAITING_FOR_RESPONSE,
-    CONN_NEGOTIATION_TIMEOUT_WAITING_FOR_ACCEPT,
-    CONN_INCOMING_CONNECTION_IGNORED,
-    CONN_SIGNALING_PARSING_FAILURE,
-    CONN_SIGNALING_UNKNOWN_ERROR,
-    CONN_SIGNALING_UNICAST_DELIVERY_FAILED,
-    CONN_SIGNALING_BROADCAST_DELIVERY_FAILED,
-    CONN_SIGNALING_GENERIC_DELIVERY_FAILED,
-    EDITOR_MISMATCH_EDITOR_WORLD,
-    EDITOR_MISMATCH_VANILLA_WORLD,
-    WORLD_TRANSFER_NOT_PRIMARY_CLIENT,
-    SERVER_SHUTDOWN,
-    GAME_SETUP_CANCELLED,
-    GAME_SETUP_FAILED,
-    NO_VENUE,
-    CONN_SIGNALING_SIGN_IN_FAILED,
-    SESSION_ACCESS_DENIED,
-    SERVICE_SIGN_IN_ISSUE,
-    CONN_NO_SIGNALING_CHANNEL,
-    CONN_NOT_LOGGED_IN,
-    CONN_CLIENT_SIGNALING_ERROR,
-    SUB_CLIENT_LOGIN_DISABLED,
-    /**
-     * @since v729
-     */
-    DEEP_LINK_TRYING_TO_OPEN_DEMO_WORLD_WHILE_SIGNED_IN,
-    /**
-     * @since v800
-     */
-    ASYNC_JOIN_TASK_DENIED,
-    /**
-     * @since v818
-     */
-    REALMS_TIMELINE_REQUIRED,
-    /**
-     * @since v818
-     */
-    GUEST_WITHOUT_HOST,
-    /**
-     * @since v818
-     */
-    FAILED_TO_JOIN_EXPERIENCE,
-    /**
-     * @since v827
-     */
-    NETHER_NET_DATA_CHANNEL_CLOSED,
-    /**
-     * @since v859
-     */
-    DISCOVERY_ENVIRONMENT_MISMATCH,
-    /**
-     * @since v859
-     */
-    HOST_WITHOUT_KEYS,
-    /**
-     * @since v924
-     */
-    HOST_SIGNED_OUT,
-    /**
-     * @since v924
-     */
-    SCRIPT_WATCHDOG_EXCEPTION,
-    /**
-     * @since v924
-     */
-    SCRIPT_MEMORY_LIMIT_EXCEEDED,
-    /**
-     * @since v924
-     */
-    STORAGE_LOW_DURING_GAMEPLAY,
-    /**
-     * @since v924
-     */
-    STORAGE_FULL_DURING_GAMEPLAY,
-    /**
-     * @since v924
-     */
-    LEVEL_STORAGE_CORRUPTION,
-    /**
-     * @since v924
-     */
-    EDITION_MISMATCH_VANILLA_TO_EDU,
-    /**
-     * @since v924
-     */
-    EDITION_MISMATCH_EDU_TO_VANILLA,
-    /**
-     * @since v924
-     */
-    EDITOR_MISMATCH_EDITOR_TO_VANILLA,
-    /**
-     * @since v924
-     */
-    EDITOR_MISMATCH_VANILLA_TO_EDITOR,
-    /**
-     * @since v924
-     */
-    DENY_LISTED,
-    /**
-     * @since v975
-     */
-    NONCE_MISSING,
-    /**
-     * @since v975
-     */
-    NONCE_NOT_FOUND,
-    /**
-     * @since v975
-     */
-    NONCE_EXPIRED,
-    /**
-     * @since v975
-     */
-    NONCE_NOT_VALID,
-    /**
-     * @since v1001
-     */
-    HOST_DISCONNECTED,
-    /**
-     * @since v1001
-     */
-    EDITOR_JOIN_INTENT_POLICY_FAILURE,
+  /**
+   * Unknown
+   */
+  UNKNOWN,
+
+  /**
+   * CantConnectNoInternet
+   */
+  CANT_CONNECT_NO_INTERNET,
+
+  /**
+   * NoPermissions
+   */
+  NO_PERMISSIONS,
+
+  /**
+   * UnrecoverableError
+   */
+  UNRECOVERABLE_ERROR,
+
+  /**
+   * ThirdPartyBlocked
+   */
+  THIRD_PARTY_BLOCKED,
+
+  /**
+   * ThirdPartyNoInternet
+   */
+  THIRD_PARTY_NO_INTERNET,
+
+  /**
+   * ThirdPartyBadIP
+   */
+  THIRD_PARTY_BAD_IP,
+
+  /**
+   * ThirdPartyNoServerOrServerLocked
+   */
+  THIRD_PARTY_NO_SERVER_OR_SERVER_LOCKED,
+
+  /**
+   * VersionMismatch
+   */
+  VERSION_MISMATCH,
+
+  /**
+   * SkinIssue
+   */
+  SKIN_ISSUE,
+
+  /**
+   * InviteSessionNotFound
+   */
+  INVITE_SESSION_NOT_FOUND,
+
+  /**
+   * EduLevelSettingsMissing
+   */
+  EDU_LEVEL_SETTINGS_MISSING,
+
+  /**
+   * LocalServerNotFound
+   */
+  LOCAL_SERVER_NOT_FOUND,
+
+  /**
+   * LegacyDisconnect
+   */
+  LEGACY_DISCONNECT,
+
+  /**
+   * INTERNAL_UserLeaveGameAttempted
+   */
+  INTERNAL_USER_LEAVE_GAME_ATTEMPTED,
+
+  /**
+   * PlatformLockedSkinsError
+   */
+  PLATFORM_LOCKED_SKINS_ERROR,
+
+  /**
+   * RealmsWorldUnassigned
+   */
+  REALMS_WORLD_UNASSIGNED,
+
+  /**
+   * RealmsServerCantConnect
+   */
+  REALMS_SERVER_CANT_CONNECT,
+
+  /**
+   * RealmsServerHidden
+   */
+  REALMS_SERVER_HIDDEN,
+
+  /**
+   * RealmsServerDisabledBeta
+   */
+  REALMS_SERVER_DISABLED_BETA,
+
+  /**
+   * RealmsServerDisabled
+   */
+  REALMS_SERVER_DISABLED,
+
+  /**
+   * CrossPlatformDisabled
+   */
+  CROSS_PLATFORM_DISABLED,
+
+  /**
+   * TESTONLY_CantConnect
+   */
+  TESTONLY_CANT_CONNECT,
+
+  /**
+   * SessionNotFound
+   */
+  SESSION_NOT_FOUND,
+
+  /**
+   * ClientSettingsIncompatibleWithServer
+   */
+  CLIENT_SETTINGS_INCOMPATIBLE_WITH_SERVER,
+
+  /**
+   * ServerFull
+   */
+  SERVER_FULL,
+
+  /**
+   * InvalidPlatformSkin
+   */
+  INVALID_PLATFORM_SKIN,
+
+  /**
+   * EditionVersionMismatch
+   */
+  EDITION_VERSION_MISMATCH,
+
+  /**
+   * EditionMismatch
+   */
+  EDITION_MISMATCH,
+
+  /**
+   * LevelNewerThanExeVersion
+   */
+  LEVEL_NEWER_THAN_EXE_VERSION,
+
+  /**
+   * INTERNAL_NoFailOccurred
+   */
+  INTERNAL_NO_FAIL_OCCURRED,
+
+  /**
+   * BannedSkin
+   */
+  BANNED_SKIN,
+
+  /**
+   * Timeout
+   */
+  TIMEOUT,
+
+  /**
+   * ServerNotFound
+   */
+  SERVER_NOT_FOUND,
+
+  /**
+   * OutdatedServer
+   */
+  OUTDATED_SERVER,
+
+  /**
+   * OutdatedClient
+   */
+  OUTDATED_CLIENT,
+
+  /**
+   * NoPremiumPlatform
+   */
+  NO_PREMIUM_PLATFORM,
+
+  /**
+   * MultiplayerDisabled
+   */
+  MULTIPLAYER_DISABLED,
+
+  /**
+   * NoWiFi
+   */
+  NO_WI_FI,
+
+  /**
+   * WorldCorruption
+   */
+  WORLD_CORRUPTION,
+
+  /**
+   * NoReason
+   */
+  NO_REASON,
+
+  /**
+   * Disconnected
+   */
+  DISCONNECTED,
+
+  /**
+   * InvalidPlayer
+   */
+  INVALID_PLAYER,
+
+  /**
+   * LoggedInOtherLocation
+   */
+  LOGGED_IN_OTHER_LOCATION,
+
+  /**
+   * ServerIdConflict
+   */
+  SERVER_ID_CONFLICT,
+
+  /**
+   * NotAllowed
+   */
+  NOT_ALLOWED,
+
+  /**
+   * NotAuthenticated
+   */
+  NOT_AUTHENTICATED,
+
+  /**
+   * InvalidTenant
+   */
+  INVALID_TENANT,
+
+  /**
+   * UnknownPacket
+   */
+  UNKNOWN_PACKET,
+
+  /**
+   * UnexpectedPacket
+   */
+  UNEXPECTED_PACKET,
+
+  /**
+   * InvalidCommandRequestPacket
+   */
+  INVALID_COMMAND_REQUEST_PACKET,
+
+  /**
+   * HostSuspended
+   */
+  HOST_SUSPENDED,
+
+  /**
+   * LoginPacketNoRequest
+   */
+  LOGIN_PACKET_NO_REQUEST,
+
+  /**
+   * LoginPacketNoCert
+   */
+  LOGIN_PACKET_NO_CERT,
+
+  /**
+   * MissingClient
+   */
+  MISSING_CLIENT,
+
+  /**
+   * Kicked
+   */
+  KICKED,
+
+  /**
+   * KickedForExploit
+   */
+  KICKED_FOR_EXPLOIT,
+
+  /**
+   * KickedForIdle
+   */
+  KICKED_FOR_IDLE,
+
+  /**
+   * ResourcePackProblem
+   */
+  RESOURCE_PACK_PROBLEM,
+
+  /**
+   * IncompatiblePack
+   */
+  INCOMPATIBLE_PACK,
+
+  /**
+   * OutOfStorage
+   */
+  OUT_OF_STORAGE,
+
+  /**
+   * InvalidLevel
+   */
+  INVALID_LEVEL,
+
+  /**
+   * DisconnectPacket
+   */
+  DISCONNECT_PACKET,
+
+  /**
+   * BlockMismatch
+   */
+  BLOCK_MISMATCH,
+
+  /**
+   * InvalidHeights
+   */
+  INVALID_HEIGHTS,
+
+  /**
+   * InvalidWidths
+   */
+  INVALID_WIDTHS,
+
+  /**
+   * ConnectionLost
+   */
+  CONNECTION_LOST,
+
+  /**
+   * ZombieConnection
+   */
+  ZOMBIE_CONNECTION,
+
+  /**
+   * Shutdown
+   */
+  SHUTDOWN,
+
+  /**
+   * ReasonNotSet
+   */
+  REASON_NOT_SET,
+
+  /**
+   * LoadingStateTimeout
+   */
+  LOADING_STATE_TIMEOUT,
+
+  /**
+   * ResourcePackLoadingFailed
+   */
+  RESOURCE_PACK_LOADING_FAILED,
+
+  /**
+   * SearchingForSessionLoadingScreenFailed
+   */
+  SEARCHING_FOR_SESSION_LOADING_SCREEN_FAILED,
+
+  /**
+   * NetherNetProtocolVersion
+   */
+  NETHER_NET_PROTOCOL_VERSION,
+
+  /**
+   * SubsystemStatusError
+   */
+  SUBSYSTEM_STATUS_ERROR,
+
+  /**
+   * EmptyAuthFromDiscovery
+   */
+  EMPTY_AUTH_FROM_DISCOVERY,
+
+  /**
+   * EmptyUrlFromDiscovery
+   */
+  EMPTY_URL_FROM_DISCOVERY,
+
+  /**
+   * ExpiredAuthFromDiscovery
+   */
+  EXPIRED_AUTH_FROM_DISCOVERY,
+
+  /**
+   * UnknownSignalServiceSignInFailure
+   */
+  UNKNOWN_SIGNAL_SERVICE_SIGN_IN_FAILURE,
+
+  /**
+   * XBLJoinLobbyFailure
+   */
+  XBLJOIN_LOBBY_FAILURE,
+
+  /**
+   * UnspecifiedClientInstanceDisconnection
+   */
+  UNSPECIFIED_CLIENT_INSTANCE_DISCONNECTION,
+
+  /**
+   * NetherNetSessionNotFound
+   */
+  NETHER_NET_SESSION_NOT_FOUND,
+
+  /**
+   * NetherNetCreatePeerConnection
+   */
+  NETHER_NET_CREATE_PEER_CONNECTION,
+
+  /**
+   * NetherNetICE
+   */
+  NETHER_NET_ICE,
+
+  /**
+   * NetherNetConnectRequest
+   */
+  NETHER_NET_CONNECT_REQUEST,
+
+  /**
+   * NetherNetConnectResponse
+   */
+  NETHER_NET_CONNECT_RESPONSE,
+
+  /**
+   * NetherNetNegotiationTimeout
+   */
+  NETHER_NET_NEGOTIATION_TIMEOUT,
+
+  /**
+   * NetherNetInactivityTimeout
+   */
+  NETHER_NET_INACTIVITY_TIMEOUT,
+
+  /**
+   * StaleConnectionBeingReplaced
+   */
+  STALE_CONNECTION_BEING_REPLACED,
+
+  /**
+   * RealmsSessionNotFound
+   */
+  REALMS_SESSION_NOT_FOUND,
+
+  /**
+   * BadPacket
+   */
+  BAD_PACKET,
+
+  /**
+   * NetherNetFailedToCreateOffer
+   */
+  NETHER_NET_FAILED_TO_CREATE_OFFER,
+
+  /**
+   * NetherNetFailedToCreateAnswer
+   */
+  NETHER_NET_FAILED_TO_CREATE_ANSWER,
+
+  /**
+   * NetherNetFailedToSetLocalDescription
+   */
+  NETHER_NET_FAILED_TO_SET_LOCAL_DESCRIPTION,
+
+  /**
+   * NetherNetFailedToSetRemoteDescription
+   */
+  NETHER_NET_FAILED_TO_SET_REMOTE_DESCRIPTION,
+
+  /**
+   * NetherNetNegotiationTimeoutWaitingForResponse
+   */
+  NETHER_NET_NEGOTIATION_TIMEOUT_WAITING_FOR_RESPONSE,
+
+  /**
+   * NetherNetNegotiationTimeoutWaitingForAccept
+   */
+  NETHER_NET_NEGOTIATION_TIMEOUT_WAITING_FOR_ACCEPT,
+
+  /**
+   * NetherNetIncomingConnectionIgnored
+   */
+  NETHER_NET_INCOMING_CONNECTION_IGNORED,
+
+  /**
+   * NetherNetSignalingParsingFailure
+   */
+  NETHER_NET_SIGNALING_PARSING_FAILURE,
+
+  /**
+   * NetherNetSignalingUnknownError
+   */
+  NETHER_NET_SIGNALING_UNKNOWN_ERROR,
+
+  /**
+   * NetherNetSignalingUnicastDeliveryFailed
+   */
+  NETHER_NET_SIGNALING_UNICAST_DELIVERY_FAILED,
+
+  /**
+   * NetherNetSignalingBroadcastDeliveryFailed
+   */
+  NETHER_NET_SIGNALING_BROADCAST_DELIVERY_FAILED,
+
+  /**
+   * NetherNetSignalingGenericDeliveryFailed
+   */
+  NETHER_NET_SIGNALING_GENERIC_DELIVERY_FAILED,
+
+  /**
+   * EditorMismatchEditorWorld
+   */
+  EDITOR_MISMATCH_EDITOR_WORLD,
+
+  /**
+   * EditorMismatchVanillaWorld
+   */
+  EDITOR_MISMATCH_VANILLA_WORLD,
+
+  /**
+   * WorldTransferNotPrimaryClient
+   */
+  WORLD_TRANSFER_NOT_PRIMARY_CLIENT,
+
+  /**
+   * INTERNAL_RequestServerShutdown
+   */
+  INTERNAL_REQUEST_SERVER_SHUTDOWN,
+
+  /**
+   * ClientGameSetupCancelled
+   */
+  CLIENT_GAME_SETUP_CANCELLED,
+
+  /**
+   * ClientGameSetupFailed
+   */
+  CLIENT_GAME_SETUP_FAILED,
+
+  /**
+   * NoVenue
+   */
+  NO_VENUE,
+
+  /**
+   * NetherNetSignalingSigninFailed
+   */
+  NETHER_NET_SIGNALING_SIGNIN_FAILED,
+
+  /**
+   * SessionAccessDenied
+   */
+  SESSION_ACCESS_DENIED,
+
+  /**
+   * ServiceSigninIssue
+   */
+  SERVICE_SIGNIN_ISSUE,
+
+  /**
+   * NetherNetNoSignalingChannel
+   */
+  NETHER_NET_NO_SIGNALING_CHANNEL,
+
+  /**
+   * NetherNetNotLoggedIn
+   */
+  NETHER_NET_NOT_LOGGED_IN,
+
+  /**
+   * NetherNetClientSignalingError
+   */
+  NETHER_NET_CLIENT_SIGNALING_ERROR,
+
+  /**
+   * SubClientLoginDisabled
+   */
+  SUB_CLIENT_LOGIN_DISABLED,
+
+  /**
+   * DeepLinkTryingToOpenDemoWorldWhileSignedIn
+   */
+  DEEP_LINK_TRYING_TO_OPEN_DEMO_WORLD_WHILE_SIGNED_IN,
+
+  /**
+   * AsyncJoinTaskDenied
+   */
+  ASYNC_JOIN_TASK_DENIED,
+
+  /**
+   * RealmsTimelineRequired
+   */
+  REALMS_TIMELINE_REQUIRED,
+
+  /**
+   * GuestWithoutHost
+   */
+  GUEST_WITHOUT_HOST,
+
+  /**
+   * FailedToJoinExperience
+   */
+  FAILED_TO_JOIN_EXPERIENCE,
+
+  /**
+   * NetherNetDataChannelClosed
+   */
+  NETHER_NET_DATA_CHANNEL_CLOSED,
+
+  /**
+   * DiscoveryEnvironmentMismatch
+   */
+  DISCOVERY_ENVIRONMENT_MISMATCH,
+
+  /**
+   * HostWithoutKeys
+   */
+  HOST_WITHOUT_KEYS,
+
+  /**
+   * HostSignedOut
+   */
+  HOST_SIGNED_OUT,
+
+  /**
+   * ScriptWatchdogException
+   */
+  SCRIPT_WATCHDOG_EXCEPTION,
+
+  /**
+   * ScriptMemoryLimitExceeded
+   */
+  SCRIPT_MEMORY_LIMIT_EXCEEDED,
+
+  /**
+   * StorageLowDuringGameplay
+   */
+  STORAGE_LOW_DURING_GAMEPLAY,
+
+  /**
+   * StorageFullDuringGameplay
+   */
+  STORAGE_FULL_DURING_GAMEPLAY,
+
+  /**
+   * LevelStorageCorruption
+   */
+  LEVEL_STORAGE_CORRUPTION,
+
+  /**
+   * EditionMismatchVanillaToEdu
+   */
+  EDITION_MISMATCH_VANILLA_TO_EDU,
+
+  /**
+   * EditionMismatchEduToVanilla
+   */
+  EDITION_MISMATCH_EDU_TO_VANILLA,
+
+  /**
+   * EditorMismatchEditorToVanilla
+   */
+  EDITOR_MISMATCH_EDITOR_TO_VANILLA,
+
+  /**
+   * EditorMismatchVanillaToEditor
+   */
+  EDITOR_MISMATCH_VANILLA_TO_EDITOR,
+
+  /**
+   * DenyListed
+   */
+  DENY_LISTED,
+
+  /**
+   * NonceMissing
+   */
+  NONCE_MISSING,
+
+  /**
+   * NonceNotFound
+   */
+  NONCE_NOT_FOUND,
+
+  /**
+   * NonceExpired
+   */
+  NONCE_EXPIRED,
+
+  /**
+   * NonceNotValid
+   */
+  NONCE_NOT_VALID,
+
+  /**
+   * HostDisconnected
+   */
+  HOST_DISCONNECTED,
+
+  /**
+   * EditorJoinIntentPolicyFailure
+   */
+  EDITOR_JOIN_INTENT_POLICY_FAILURE,
+
+  /**
+   * NetherNetIdentityNotAllowed
+   */
+  NETHER_NET_IDENTITY_NOT_ALLOWED,
+
+  /**
+   * InvalidName
+   */
+  INVALID_NAME,
+
+  /**
+   * ExpiredToken
+   */
+  EXPIRED_TOKEN,
+
+  /**
+   * HostAcceptsNoTypeOfAuth
+   */
+  HOST_ACCEPTS_NO_TYPE_OF_AUTH,
+
+  /**
+   * NotAuthenticatedFastFail
+   */
+  NOT_AUTHENTICATED_FAST_FAIL,
+
+  /**
+   * EditorNotAllowed
+   */
+  EDITOR_NOT_ALLOWED;
+
+  private static final DisconnectFailReason[] VALUES = values();
+
+  public static DisconnectFailReason from(int ordinal) {
+    if (ordinal >= 0 && ordinal < VALUES.length) {
+      return VALUES[ordinal];
+    }
+    throw new UnsupportedOperationException("Detected unknown DisconnectFailReason ID: " + ordinal);
+  }
 }

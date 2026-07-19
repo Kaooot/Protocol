@@ -1,37 +1,52 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
+import java.lang.AssertionError;
+import java.lang.CloneNotSupportedException;
+import java.lang.Override;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.math.vector.Vector3i;
-import org.cloudburstmc.protocol.bedrock.data.inventory.LabTableReactionType;
-import org.cloudburstmc.protocol.bedrock.data.inventory.LabTableType;
+import org.cloudburstmc.protocol.bedrock.data.LabTablePacketPayloadType;
+import org.cloudburstmc.protocol.bedrock.data.LabTableReactionType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
+/**
+ * Auto generated from 1.26.40-beta.31 (v2168)
+ *
+ * Packet ID: 109 (0x6d)
+ * The packet can be fired from the client through the UI or from the server during updates.
+ */
 @Data
-@EqualsAndHashCode(doNotUseGetters = true)
-@ToString(doNotUseGetters = true)
+@EqualsAndHashCode(
+    doNotUseGetters = true
+)
+@ToString(
+    doNotUseGetters = true
+)
 public class LabTablePacket implements BedrockPacket {
-    private LabTableType type;
-    private Vector3i position;
-    private LabTableReactionType reactionType;
+  private LabTablePacketPayloadType Type;
 
-    @Override
-    public final PacketSignal handle(BedrockPacketHandler handler) {
-        return handler.handle(this);
-    }
+  private Vector3i Position;
 
-    public BedrockPacketType getPacketType() {
-        return BedrockPacketType.LAB_TABLE;
-    }
+  private LabTableReactionType Reaction;
 
-    @Override
-    public LabTablePacket clone() {
-        try {
-            return (LabTablePacket) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError(e);
-        }
+  @Override
+  public final PacketSignal handle(BedrockPacketHandler handler) {
+    return handler.handle(this);
+  }
+
+  @Override
+  public BedrockPacketType getPacketType() {
+    return BedrockPacketType.LAB_TABLE;
+  }
+
+  @Override
+  public LabTablePacket clone() {
+    try {
+      return (LabTablePacket) super.clone();
+    } catch (CloneNotSupportedException e) {
+      throw new AssertionError(e);
     }
+  }
 }
-

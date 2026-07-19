@@ -1,46 +1,50 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import java.lang.AssertionError;
+import java.lang.CloneNotSupportedException;
+import java.lang.Override;
+import java.lang.String;
+import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.nbt.NbtMap;
+import org.cloudburstmc.protocol.bedrock.data.UnlockedRecipesPacketPayloadPacketType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-import java.util.List;
-
+/**
+ * Auto generated from 1.26.40-beta.31 (v2168)
+ *
+ * Packet ID: 199 (0xc7)
+ */
 @Data
-@EqualsAndHashCode(doNotUseGetters = true)
-@ToString(doNotUseGetters = true)
+@EqualsAndHashCode(
+    doNotUseGetters = true
+)
+@ToString(
+    doNotUseGetters = true
+)
 public class UnlockedRecipesPacket implements BedrockPacket {
-    private ActionType action;
-    private final List<String> unlockedRecipes = new ObjectArrayList<>();
+  private UnlockedRecipesPacketPayloadPacketType PacketType;
 
-    @Override
-    public PacketSignal handle(BedrockPacketHandler handler) {
-        return handler.handle(this);
-    }
+  private final List<String> UnlockedRecipesList = new ObjectArrayList<>();
 
-    @Override
-    public BedrockPacketType getPacketType() {
-        return BedrockPacketType.UNLOCKED_RECIPES;
-    }
+  @Override
+  public final PacketSignal handle(BedrockPacketHandler handler) {
+    return handler.handle(this);
+  }
 
-    public enum ActionType {
-        EMPTY,
-        INITIALLY_UNLOCKED,
-        NEWLY_UNLOCKED,
-        REMOVE_UNLOCKED,
-        REMOVE_ALL
-    }
+  @Override
+  public BedrockPacketType getPacketType() {
+    return BedrockPacketType.UNLOCKED_RECIPES;
+  }
 
-    @Override
-    public UnlockedRecipesPacket clone() {
-        try {
-            return (UnlockedRecipesPacket) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError(e);
-        }
+  @Override
+  public UnlockedRecipesPacket clone() {
+    try {
+      return (UnlockedRecipesPacket) super.clone();
+    } catch (CloneNotSupportedException e) {
+      throw new AssertionError(e);
     }
+  }
 }
-

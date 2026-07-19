@@ -1,55 +1,48 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
+import java.lang.AssertionError;
+import java.lang.CloneNotSupportedException;
+import java.lang.Object;
+import java.lang.Override;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.protocol.bedrock.data.DisconnectFailReason;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
+/**
+ * Auto generated from 1.26.40-beta.31 (v2168)
+ *
+ * Packet ID: 5 (0x5)
+ */
 @Data
-@EqualsAndHashCode(doNotUseGetters = true)
-@ToString(doNotUseGetters = true)
+@EqualsAndHashCode(
+    doNotUseGetters = true
+)
+@ToString(
+    doNotUseGetters = true
+)
 public class DisconnectPacket implements BedrockPacket {
-    private DisconnectFailReason reason = DisconnectFailReason.UNKNOWN;
-    private boolean messageSkipped;
-    private CharSequence kickMessage;
-    /**
-     * @since v712
-     */
-    private CharSequence filteredMessage = "";
+  private DisconnectFailReason Reason;
 
-    @Override
-    public final PacketSignal handle(BedrockPacketHandler handler) {
-        return handler.handle(this);
-    }
+  private Object Messages;
 
-    public BedrockPacketType getPacketType() {
-        return BedrockPacketType.DISCONNECT;
-    }
+  @Override
+  public final PacketSignal handle(BedrockPacketHandler handler) {
+    return handler.handle(this);
+  }
 
-    @Override
-    public DisconnectPacket clone() {
-        try {
-            return (DisconnectPacket) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError(e);
-        }
-    }
+  @Override
+  public BedrockPacketType getPacketType() {
+    return BedrockPacketType.DISCONNECT;
+  }
 
-    public String getKickMessage() {
-        return getKickMessage(String.class);
+  @Override
+  public DisconnectPacket clone() {
+    try {
+      return (DisconnectPacket) super.clone();
+    } catch (CloneNotSupportedException e) {
+      throw new AssertionError(e);
     }
-
-    public <T extends CharSequence> T getKickMessage(Class<T> type) {
-        return type.cast(kickMessage);
-    }
-
-    public String getFilteredMessage() {
-        return getFilteredMessage(String.class);
-    }
-
-    public <T extends CharSequence> T getFilteredMessage(Class<T> type) {
-        return type.cast(filteredMessage);
-    }
+  }
 }
-

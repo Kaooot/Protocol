@@ -1,39 +1,52 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import java.lang.AssertionError;
+import java.lang.CloneNotSupportedException;
+import java.lang.Override;
+import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.nbt.NbtMap;
 import org.cloudburstmc.protocol.bedrock.data.TrimMaterial;
 import org.cloudburstmc.protocol.bedrock.data.TrimPattern;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-import java.util.List;
-
+/**
+ * Auto generated from 1.26.40-beta.31 (v2168)
+ *
+ * Packet ID: 302 (0x12e)
+ * - mTrimPatterns: vector of TrimPattern
+ * - mTrimMaterials: vector of TrimMaterial
+ */
 @Data
-@EqualsAndHashCode(doNotUseGetters = true)
-@ToString(doNotUseGetters = true)
+@EqualsAndHashCode(
+    doNotUseGetters = true
+)
+@ToString(
+    doNotUseGetters = true
+)
 public class TrimDataPacket implements BedrockPacket {
-    private final List<TrimPattern> patterns = new ObjectArrayList<>();
-    private final List<TrimMaterial> materials = new ObjectArrayList<>();
+  private final List<TrimPattern> TrimPatternList = new ObjectArrayList<>();
 
-    @Override
-    public PacketSignal handle(BedrockPacketHandler handler) {
-        return handler.handle(this);
-    }
+  private final List<TrimMaterial> TrimMaterialList = new ObjectArrayList<>();
 
-    public BedrockPacketType getPacketType() {
-        return BedrockPacketType.TRIM_DATA;
-    }
+  @Override
+  public final PacketSignal handle(BedrockPacketHandler handler) {
+    return handler.handle(this);
+  }
 
-    @Override
-    public TrimDataPacket clone() {
-        try {
-            return (TrimDataPacket) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError(e);
-        }
+  @Override
+  public BedrockPacketType getPacketType() {
+    return BedrockPacketType.TRIM_DATA;
+  }
+
+  @Override
+  public TrimDataPacket clone() {
+    try {
+      return (TrimDataPacket) super.clone();
+    } catch (CloneNotSupportedException e) {
+      throw new AssertionError(e);
     }
+  }
 }
-

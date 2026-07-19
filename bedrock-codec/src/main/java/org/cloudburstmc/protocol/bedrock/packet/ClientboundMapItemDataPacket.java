@@ -1,57 +1,75 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
-import it.unimi.dsi.fastutil.longs.LongArrayList;
-import it.unimi.dsi.fastutil.longs.LongList;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import java.lang.AssertionError;
+import java.lang.CloneNotSupportedException;
+import java.lang.Integer;
+import java.lang.Long;
+import java.lang.Override;
+import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.math.vector.Vector3i;
 import org.cloudburstmc.protocol.bedrock.data.MapDecoration;
-import org.cloudburstmc.protocol.bedrock.data.MapTrackedObject;
+import org.cloudburstmc.protocol.bedrock.data.MapItemTrackedActorUniqueId;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-import java.util.List;
-
+/**
+ * Auto generated from 1.26.40-beta.31 (v2168)
+ *
+ * Packet ID: 67 (0x43)
+ */
 @Data
-@EqualsAndHashCode(doNotUseGetters = true)
-@ToString(doNotUseGetters = true)
+@EqualsAndHashCode(
+    doNotUseGetters = true
+)
+@ToString(
+    doNotUseGetters = true
+)
 public class ClientboundMapItemDataPacket implements BedrockPacket {
-    private final LongList trackedEntityIds = new LongArrayList();
-    private final List<MapTrackedObject> trackedObjects = new ObjectArrayList<>();
-    private final List<MapDecoration> decorations = new ObjectArrayList<>();
-    private long uniqueMapId;
-    private int dimensionId;
-    private boolean locked;
-    /**
-     * The world-relative position of the map's origin.
-     *
-     * @since 1.19.20
-     */
-    private Vector3i origin;
-    private int scale;
-    private int height;
-    private int width;
-    private int xOffset;
-    private int yOffset;
-    private int[] colors;
+  private long MapID;
 
-    @Override
-    public final PacketSignal handle(BedrockPacketHandler handler) {
-        return handler.handle(this);
-    }
+  private int Dimension;
 
-    public BedrockPacketType getPacketType() {
-        return BedrockPacketType.CLIENTBOUND_MAP_ITEM_DATA;
-    }
+  private boolean IsLocked;
 
-    @Override
-    public ClientboundMapItemDataPacket clone() {
-        try {
-            return (ClientboundMapItemDataPacket) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError(e);
-        }
+  private Vector3i MapOrigin;
+
+  private final List<Long> CreationMapIDs = new ObjectArrayList<>();
+
+  private Integer Scale;
+
+  private final List<MapItemTrackedActorUniqueId> TrackedActorIDs = new ObjectArrayList<>();
+
+  private final List<MapDecoration> Decorations = new ObjectArrayList<>();
+
+  private Integer Width;
+
+  private Integer Height;
+
+  private Integer StartX;
+
+  private Integer StartY;
+
+  private final List<Integer> Pixels = new ObjectArrayList<>();
+
+  @Override
+  public final PacketSignal handle(BedrockPacketHandler handler) {
+    return handler.handle(this);
+  }
+
+  @Override
+  public BedrockPacketType getPacketType() {
+    return BedrockPacketType.CLIENTBOUND_MAP_ITEM_DATA;
+  }
+
+  @Override
+  public ClientboundMapItemDataPacket clone() {
+    try {
+      return (ClientboundMapItemDataPacket) super.clone();
+    } catch (CloneNotSupportedException e) {
+      throw new AssertionError(e);
     }
+  }
 }
-

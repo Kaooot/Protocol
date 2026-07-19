@@ -1,51 +1,56 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
-import io.netty.util.AbstractReferenceCounted;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import java.lang.AssertionError;
+import java.lang.CloneNotSupportedException;
+import java.lang.Override;
+import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.math.vector.Vector3i;
-import org.cloudburstmc.protocol.bedrock.data.SubChunkData;
+import org.cloudburstmc.protocol.bedrock.data.DimensionType;
+import org.cloudburstmc.protocol.bedrock.data.SubChunkPacketData;
+import org.cloudburstmc.protocol.bedrock.data.SubChunkPos;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-import java.util.List;
-
+/**
+ * Auto generated from 1.26.40-beta.31 (v2168)
+ *
+ * Packet ID: 174 (0xae)
+ * Contains subchunk terrain data, heightmaps, and optional blob cache IDs.
+ */
 @Data
-@EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
-@ToString(doNotUseGetters = true)
-public class SubChunkPacket extends AbstractReferenceCounted implements BedrockPacket {
-    private int dimension;
-    private boolean cacheEnabled;
-    /**
-     * @since v485
-     */
-    private Vector3i centerPosition;
-    private List<SubChunkData> subChunks = new ObjectArrayList<>();
+@EqualsAndHashCode(
+    doNotUseGetters = true
+)
+@ToString(
+    doNotUseGetters = true
+)
+public class SubChunkPacket implements BedrockPacket {
+  private boolean CacheEnabled;
 
-    @Override
-    public final PacketSignal handle(BedrockPacketHandler handler) {
-        return handler.handle(this);
-    }
+  private DimensionType DimensionType;
 
-    public BedrockPacketType getPacketType() {
-        return BedrockPacketType.SUB_CHUNK;
-    }
+  private SubChunkPos CenterPos;
 
-    @Override
-    public SubChunkPacket touch(Object o) {
-        this.subChunks.forEach(SubChunkData::touch);
-        return this;
-    }
+  private final List<SubChunkPacketData> SubChunkData = new ObjectArrayList<>();
 
-    @Override
-    protected void deallocate() {
-        this.subChunks.forEach(SubChunkData::release);
-    }
+  @Override
+  public final PacketSignal handle(BedrockPacketHandler handler) {
+    return handler.handle(this);
+  }
 
-    @Override
-    public SubChunkPacket clone() {
-        throw new UnsupportedOperationException("Can not clone reference counted packet");
+  @Override
+  public BedrockPacketType getPacketType() {
+    return BedrockPacketType.SUB_CHUNK;
+  }
+
+  @Override
+  public SubChunkPacket clone() {
+    try {
+      return (SubChunkPacket) super.clone();
+    } catch (CloneNotSupportedException e) {
+      throw new AssertionError(e);
     }
+  }
 }
-

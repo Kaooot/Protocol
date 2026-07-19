@@ -1,44 +1,48 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
-import io.netty.buffer.ByteBuf;
-import io.netty.util.AbstractReferenceCounted;
-import io.netty.util.ReferenceCounted;
-import it.unimi.dsi.fastutil.longs.Long2ObjectLinkedOpenHashMap;
-import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import java.lang.AssertionError;
+import java.lang.CloneNotSupportedException;
+import java.lang.Override;
+import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.cloudburstmc.protocol.bedrock.data.MissingBlobData;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
+/**
+ * Auto generated from 1.26.40-beta.31 (v2168)
+ *
+ * Packet ID: 136 (0x88)
+ * Any missing blob should just be thrown into one of these packet ASAP and sent. This is actually how chunk data gets to the client the first time.
+ */
 @Data
-@EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
-@ToString(doNotUseGetters = true)
-public class ClientCacheMissResponsePacket extends AbstractReferenceCounted implements BedrockPacket {
-    private final Long2ObjectMap<ByteBuf> blobs = new Long2ObjectLinkedOpenHashMap<>();
+@EqualsAndHashCode(
+    doNotUseGetters = true
+)
+@ToString(
+    doNotUseGetters = true
+)
+public class ClientCacheMissResponsePacket implements BedrockPacket {
+  private final List<MissingBlobData> MissingBlobs = new ObjectArrayList<>();
 
-    @Override
-    public PacketSignal handle(BedrockPacketHandler handler) {
-        return handler.handle(this);
-    }
+  @Override
+  public final PacketSignal handle(BedrockPacketHandler handler) {
+    return handler.handle(this);
+  }
 
-    public BedrockPacketType getPacketType() {
-        return BedrockPacketType.CLIENT_CACHE_MISS_RESPONSE;
-    }
+  @Override
+  public BedrockPacketType getPacketType() {
+    return BedrockPacketType.CLIENT_CACHE_MISS_RESPONSE;
+  }
 
-    @Override
-    protected void deallocate() {
-        this.blobs.values().forEach(ReferenceCounted::release);
+  @Override
+  public ClientCacheMissResponsePacket clone() {
+    try {
+      return (ClientCacheMissResponsePacket) super.clone();
+    } catch (CloneNotSupportedException e) {
+      throw new AssertionError(e);
     }
-
-    @Override
-    public ClientCacheMissResponsePacket touch(Object hint) {
-        this.blobs.values().forEach(byteBuf -> byteBuf.touch(hint));
-        return this;
-    }
-
-    @Override
-    public ClientCacheMissResponsePacket clone() {
-        throw new UnsupportedOperationException("Can not clone reference counted packet");
-    }
+  }
 }
-

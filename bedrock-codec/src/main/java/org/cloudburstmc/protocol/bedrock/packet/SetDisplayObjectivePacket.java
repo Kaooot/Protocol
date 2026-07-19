@@ -1,44 +1,53 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
+import java.lang.AssertionError;
+import java.lang.CloneNotSupportedException;
+import java.lang.Override;
+import java.lang.String;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
+/**
+ * Auto generated from 1.26.40-beta.31 (v2168)
+ *
+ * Packet ID: 107 (0x6b)
+ */
 @Data
-@EqualsAndHashCode(doNotUseGetters = true)
-@ToString(doNotUseGetters = true)
+@EqualsAndHashCode(
+    doNotUseGetters = true
+)
+@ToString(
+    doNotUseGetters = true
+)
 public class SetDisplayObjectivePacket implements BedrockPacket {
-    private String displaySlot;
-    private String objectiveId;
-    private CharSequence displayName;
-    private String criteria;
-    private int sortOrder;
+  private String DisplaySlotName;
 
-    @Override
-    public final PacketSignal handle(BedrockPacketHandler handler) {
-        return handler.handle(this);
-    }
+  private String ObjectiveName;
 
-    public BedrockPacketType getPacketType() {
-        return BedrockPacketType.SET_DISPLAY_OBJECTIVE;
-    }
+  private String ObjectiveDisplayName;
 
-    @Override
-    public SetDisplayObjectivePacket clone() {
-        try {
-            return (SetDisplayObjectivePacket) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError(e);
-        }
-    }
+  private String CriteriaName;
 
-    public String getDisplayName() {
-        return getDisplayName(String.class);
-    }
+  private int SortOrder;
 
-    public <T extends CharSequence> T getDisplayName(Class<T> type) {
-        return type.cast(displayName);
+  @Override
+  public final PacketSignal handle(BedrockPacketHandler handler) {
+    return handler.handle(this);
+  }
+
+  @Override
+  public BedrockPacketType getPacketType() {
+    return BedrockPacketType.SET_DISPLAY_OBJECTIVE;
+  }
+
+  @Override
+  public SetDisplayObjectivePacket clone() {
+    try {
+      return (SetDisplayObjectivePacket) super.clone();
+    } catch (CloneNotSupportedException e) {
+      throw new AssertionError(e);
     }
+  }
 }
-

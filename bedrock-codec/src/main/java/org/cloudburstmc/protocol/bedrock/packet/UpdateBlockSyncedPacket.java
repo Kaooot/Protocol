@@ -1,37 +1,56 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
+import java.lang.AssertionError;
+import java.lang.CloneNotSupportedException;
+import java.lang.Override;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.cloudburstmc.protocol.bedrock.data.BlockSyncType;
+import lombok.ToString;
+import org.cloudburstmc.math.vector.Vector3i;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
+/**
+ * Auto generated from 1.26.40-beta.31 (v2168)
+ *
+ * Packet ID: 110 (0x6e)
+ * Variation of UpdateBlockSyncedPacket that includes information to sync entities with renderchunk generation. Occasionally when blocks change a sync message is sent and during the change on the dimension, this packet is sent to the client to alert the update flags and sync info at a specific position.
+ */
 @Data
-@EqualsAndHashCode(doNotUseGetters = true, callSuper = true)
-public class UpdateBlockSyncedPacket extends UpdateBlockPacket {
-    private long runtimeEntityId;
-    private BlockSyncType entityBlockSyncType;
+@EqualsAndHashCode(
+    doNotUseGetters = true
+)
+@ToString(
+    doNotUseGetters = true
+)
+public class UpdateBlockSyncedPacket implements BedrockPacket {
+  private Vector3i BlockPosition;
 
-    @Override
-    public final PacketSignal handle(BedrockPacketHandler handler) {
-        return handler.handle(this);
-    }
+  private int BlockRuntimeID;
 
-    public BedrockPacketType getPacketType() {
-        return BedrockPacketType.UPDATE_BLOCK_SYNCED;
-    }
+  private int Flags;
 
-    public String toString() {
-        return "UpdateBlockSyncedPacket(runtimeEntityId=" + this.runtimeEntityId +
-                ", entityBlockSyncType=" + this.entityBlockSyncType +
-                ", flags=" + this.flags +
-                ", blockPosition=" + this.blockPosition +
-                ", definition=" + this.definition +
-                ", dataLayer=" + this.dataLayer +
-                ")";
-    }
+  private int Layer;
 
-    @Override
-    public UpdateBlockSyncedPacket clone() {
-        return (UpdateBlockSyncedPacket) super.clone();
+  private long UniqueActorId;
+
+  private long ActorSyncMessage;
+
+  @Override
+  public final PacketSignal handle(BedrockPacketHandler handler) {
+    return handler.handle(this);
+  }
+
+  @Override
+  public BedrockPacketType getPacketType() {
+    return BedrockPacketType.UPDATE_BLOCK_SYNCED;
+  }
+
+  @Override
+  public UpdateBlockSyncedPacket clone() {
+    try {
+      return (UpdateBlockSyncedPacket) super.clone();
+    } catch (CloneNotSupportedException e) {
+      throw new AssertionError(e);
     }
+  }
 }

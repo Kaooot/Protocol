@@ -1,6 +1,8 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
-
+import java.lang.AssertionError;
+import java.lang.CloneNotSupportedException;
+import java.lang.Override;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -8,54 +10,41 @@ import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
- * Extension of the {@link SetEntityMotionPacket} which adds the {@link #onGround} field.
+ * Auto generated from 1.26.40-beta.31 (v2168)
+ *
+ * Packet ID: 157 (0x9d)
+ * This is from the server when spatial optimizations are enabled and the server does not send a spatial update.
  */
 @Data
-@EqualsAndHashCode(doNotUseGetters = true)
-@ToString(doNotUseGetters = true)
+@EqualsAndHashCode(
+    doNotUseGetters = true
+)
+@ToString(
+    doNotUseGetters = true
+)
 public class MotionPredictionHintsPacket implements BedrockPacket {
+  private long mRuntimeId;
 
-    /**
-     * The runtime ID of the entity to set motion.
-     *
-     * @param runtimeEntityId runtime ID
-     * @return runtime ID
-     */
-    private long runtimeEntityId;
+  private Vector3f mMotion;
 
-    /**
-     * Motion to set onto the specified entity
-     *
-     * @param motion motion of entity
-     * @return motion of entity
-     */
-    private Vector3f motion;
+  private boolean mOnGround;
 
-    /**
-     * If the entity is on the ground. (Not falling or jumping)
-     *
-     * @param onGround is entity on the ground
-     * @return is entity on the ground
-     */
-    private boolean onGround;
+  @Override
+  public final PacketSignal handle(BedrockPacketHandler handler) {
+    return handler.handle(this);
+  }
 
-    @Override
-    public PacketSignal handle(BedrockPacketHandler handler) {
-        return handler.handle(this);
+  @Override
+  public BedrockPacketType getPacketType() {
+    return BedrockPacketType.MOTION_PREDICTION_HINTS;
+  }
+
+  @Override
+  public MotionPredictionHintsPacket clone() {
+    try {
+      return (MotionPredictionHintsPacket) super.clone();
+    } catch (CloneNotSupportedException e) {
+      throw new AssertionError(e);
     }
-
-    @Override
-    public BedrockPacketType getPacketType() {
-        return BedrockPacketType.SET_ENTITY_MOTION_PLUS;
-    }
-
-    @Override
-    public MotionPredictionHintsPacket clone() {
-        try {
-            return (MotionPredictionHintsPacket) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError(e);
-        }
-    }
+  }
 }
-

@@ -1,38 +1,49 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import java.lang.AssertionError;
+import java.lang.CloneNotSupportedException;
+import java.lang.Override;
+import java.util.List;
+import java.util.UUID;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-import java.util.List;
-import java.util.UUID;
-
+/**
+ * Auto generated from 1.26.40-beta.31 (v2168)
+ *
+ * Packet ID: 152 (0x98)
+ */
 @Data
-@EqualsAndHashCode(doNotUseGetters = true)
-@ToString(doNotUseGetters = true)
+@EqualsAndHashCode(
+    doNotUseGetters = true
+)
+@ToString(
+    doNotUseGetters = true
+)
 public class EmoteListPacket implements BedrockPacket {
-    private long runtimeEntityId;
-    private final List<UUID> pieceIds = new ObjectArrayList<>();
+  private long Runtimeid;
 
-    @Override
-    public PacketSignal handle(BedrockPacketHandler handler) {
-        return handler.handle(this);
-    }
+  private final List<UUID> Emotepieceids = new ObjectArrayList<>();
 
-    @Override
-    public BedrockPacketType getPacketType() {
-        return BedrockPacketType.EMOTE_LIST;
-    }
+  @Override
+  public final PacketSignal handle(BedrockPacketHandler handler) {
+    return handler.handle(this);
+  }
 
-    @Override
-    public EmoteListPacket clone() {
-        try {
-            return (EmoteListPacket) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError(e);
-        }
+  @Override
+  public BedrockPacketType getPacketType() {
+    return BedrockPacketType.EMOTE_LIST;
+  }
+
+  @Override
+  public EmoteListPacket clone() {
+    try {
+      return (EmoteListPacket) super.clone();
+    } catch (CloneNotSupportedException e) {
+      throw new AssertionError(e);
     }
+  }
 }
-

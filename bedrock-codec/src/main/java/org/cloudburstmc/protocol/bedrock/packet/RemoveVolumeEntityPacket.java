@@ -1,35 +1,48 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
+import java.lang.AssertionError;
+import java.lang.CloneNotSupportedException;
+import java.lang.Override;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import org.cloudburstmc.protocol.bedrock.data.DimensionType;
+import org.cloudburstmc.protocol.bedrock.data.EntityNetId;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
+/**
+ * Auto generated from 1.26.40-beta.31 (v2168)
+ *
+ * Packet ID: 167 (0xa7)
+ */
 @Data
-@EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
+@EqualsAndHashCode(
+    doNotUseGetters = true
+)
+@ToString(
+    doNotUseGetters = true
+)
 public class RemoveVolumeEntityPacket implements BedrockPacket {
-    private int id;
-    /**
-     * @since v503
-     */
-    private int dimension;
+  private EntityNetId EntityNetworkId;
 
-    @Override
-    public PacketSignal handle(BedrockPacketHandler handler) {
-        return handler.handle(this);
-    }
+  private DimensionType DimensionType;
 
-    @Override
-    public BedrockPacketType getPacketType() {
-        return BedrockPacketType.REMOVE_VOLUME_ENTITY;
-    }
+  @Override
+  public final PacketSignal handle(BedrockPacketHandler handler) {
+    return handler.handle(this);
+  }
 
-    @Override
-    public RemoveVolumeEntityPacket clone() {
-        try {
-            return (RemoveVolumeEntityPacket) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError(e);
-        }
+  @Override
+  public BedrockPacketType getPacketType() {
+    return BedrockPacketType.REMOVE_VOLUME_ENTITY;
+  }
+
+  @Override
+  public RemoveVolumeEntityPacket clone() {
+    try {
+      return (RemoveVolumeEntityPacket) super.clone();
+    } catch (CloneNotSupportedException e) {
+      throw new AssertionError(e);
     }
+  }
 }
-

@@ -1,72 +1,47 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
+import java.lang.AssertionError;
+import java.lang.CloneNotSupportedException;
+import java.lang.Object;
+import java.lang.Override;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
+/**
+ * Auto generated from 1.26.40-beta.31 (v2168)
+ *
+ * Packet ID: 97 (0x61)
+ */
 @Data
-@EqualsAndHashCode(doNotUseGetters = true)
-@ToString(doNotUseGetters = true)
+@EqualsAndHashCode(
+    doNotUseGetters = true
+)
+@ToString(
+    doNotUseGetters = true
+)
 public class BookEditPacket implements BedrockPacket {
-    private Action action;
-    private int inventorySlot;
-    private int pageNumber;
-    private int secondaryPageNumber;
-    private CharSequence text;
-    private String photoName;
-    private CharSequence title;
-    private CharSequence author;
-    private String xuid;
+  private int BookSlot;
 
-    @Override
-    public final PacketSignal handle(BedrockPacketHandler handler) {
-        return handler.handle(this);
-    }
+  private Object Operation;
 
-    public BedrockPacketType getPacketType() {
-        return BedrockPacketType.BOOK_EDIT;
-    }
+  @Override
+  public final PacketSignal handle(BedrockPacketHandler handler) {
+    return handler.handle(this);
+  }
 
-    public enum Action {
-        REPLACE_PAGE,
-        ADD_PAGE,
-        DELETE_PAGE,
-        SWAP_PAGES,
-        SIGN_BOOK
-    }
+  @Override
+  public BedrockPacketType getPacketType() {
+    return BedrockPacketType.BOOK_EDIT;
+  }
 
-    @Override
-    public BookEditPacket clone() {
-        try {
-            return (BookEditPacket) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError(e);
-        }
+  @Override
+  public BookEditPacket clone() {
+    try {
+      return (BookEditPacket) super.clone();
+    } catch (CloneNotSupportedException e) {
+      throw new AssertionError(e);
     }
-
-    public String getText() {
-        return getText(String.class);
-    }
-
-    public <T extends CharSequence> T getText(Class<T> type) {
-        return type.cast(text);
-    }
-
-    public String getTitle() {
-        return getTitle(String.class);
-    }
-
-    public <T extends CharSequence> T getTitle(Class<T> type) {
-        return type.cast(title);
-    }
-
-    public String getAuthor() {
-        return getAuthor(String.class);
-    }
-
-    public <T extends CharSequence> T getAuthor(Class<T> type) {
-        return type.cast(author);
-    }
+  }
 }
-

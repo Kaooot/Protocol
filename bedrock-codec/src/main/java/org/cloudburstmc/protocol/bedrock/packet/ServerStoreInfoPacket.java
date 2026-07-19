@@ -1,40 +1,45 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
+import java.lang.AssertionError;
+import java.lang.CloneNotSupportedException;
+import java.lang.Override;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.checkerframework.checker.nullness.qual.Nullable;
-import org.cloudburstmc.protocol.bedrock.data.ClientStoreEntrypointConfiguration;
+import org.cloudburstmc.protocol.bedrock.data.clientStoreEntryPointConfig;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
- * Sent by the server to provide ClientStoreEntryPointConfiguration to the client.
+ * Auto generated from 1.26.40-beta.31 (v2168)
  *
- * @since v975
+ * Packet ID: 346 (0x15a)
  */
 @Data
-@EqualsAndHashCode(doNotUseGetters = true)
-@ToString(doNotUseGetters = true)
+@EqualsAndHashCode(
+    doNotUseGetters = true
+)
+@ToString(
+    doNotUseGetters = true
+)
 public class ServerStoreInfoPacket implements BedrockPacket {
+  private clientStoreEntryPointConfig clientstoreentrypointconfiguration;
 
-    @Nullable
-    private ClientStoreEntrypointConfiguration store;
+  @Override
+  public final PacketSignal handle(BedrockPacketHandler handler) {
+    return handler.handle(this);
+  }
 
-    @Override
-    public final PacketSignal handle(BedrockPacketHandler handler) {
-        return handler.handle(this);
+  @Override
+  public BedrockPacketType getPacketType() {
+    return BedrockPacketType.SERVER_STORE_INFO;
+  }
+
+  @Override
+  public ServerStoreInfoPacket clone() {
+    try {
+      return (ServerStoreInfoPacket) super.clone();
+    } catch (CloneNotSupportedException e) {
+      throw new AssertionError(e);
     }
-
-    public BedrockPacketType getPacketType() {
-        return BedrockPacketType.SERVER_STORE_INFO;
-    }
-
-    @Override
-    public ServerStoreInfoPacket clone() {
-        try {
-            return (ServerStoreInfoPacket) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError(e);
-        }
-    }
+  }
 }

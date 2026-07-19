@@ -1,30 +1,23 @@
 package org.cloudburstmc.protocol.bedrock.data;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import java.lang.UnsupportedOperationException;
 
-@Getter
-@RequiredArgsConstructor
+/**
+ * Auto generated from 1.26.40-beta.31 (v2168)
+ */
 public enum MovementEffectType {
+  GLIDE_BOOST,
 
-    INVALID(-1),
-    GLIDE_BOOST(0),
-    DOLPHIN_BOOST(1),
-    /**
-     * @since v1001
-     */
-    GEYSER_BOOST(2);
+  DOLPHIN_BOOST,
 
-    private final int id;
+  GEYSER_BOOST;
 
-    private static final MovementEffectType[] VALUES = values();
+  private static final MovementEffectType[] VALUES = values();
 
-    public static MovementEffectType byId(int id) {
-        for (MovementEffectType type : VALUES) {
-            if (type.getId() == id) {
-                return type;
-            }
-        }
-        return null;
+  public static MovementEffectType from(int ordinal) {
+    if (ordinal >= 0 && ordinal < VALUES.length) {
+      return VALUES[ordinal];
     }
+    throw new UnsupportedOperationException("Detected unknown MovementEffectType ID: " + ordinal);
+  }
 }
