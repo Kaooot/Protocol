@@ -32,21 +32,24 @@ public class SetScoreSerializer_v291 implements BedrockPacketSerializer<SetScore
                     VarInts.writeLong(buf, changePlayerScore.getScoreboardId());
                     helper.writeString(buf, changePlayerScore.getObjectiveName());
                     buf.writeIntLE(changePlayerScore.getScoreValue());
+                    buf.writeByte(ScorePacketEntryAction.CHANGE_PLAYER.ordinal());
                     VarInts.writeLong(buf, changePlayerScore.getPlayerUniqueId());
                     break;
                 case CHANGE_ENTITY:
                     final ChangeEntityScore changeEntityScore = (ChangeEntityScore) scoreInfo;
-                    VarInts.writeLong(buffer, changeEntityScore.getScoreboardId());
-                    helper.writeString(buffer, changeEntityScore.getObjectiveName());
-                    buffer.writeIntLE(changeEntityScore.getScoreValue());
-                    VarInts.writeLong(buffer, changeEntityScore.getActorId());
+                    VarInts.writeLong(buf, changeEntityScore.getScoreboardId());
+                    helper.writeString(buf, changeEntityScore.getObjectiveName());
+                    buf.writeIntLE(changeEntityScore.getScoreValue());
+                    buf.writeByte(ScorePacketEntryAction.CHANGE_ENTITY.ordinal());
+                    VarInts.writeLong(buf, changeEntityScore.getActorId());
                     break;
                 case CHANGE_FAKE_PLAYER:
                     final ChangeFakePlayerScore changeFakePlayerScore = (ChangeFakePlayerScore) scoreInfo;
-                    VarInts.writeLong(buffer, changeFakePlayerScore.getScoreboardId());
-                    helper.writeString(buffer, changeFakePlayerScore.getObjectiveName());
-                    buffer.writeIntLE(changeFakePlayerScore.getScoreValue());
-                    helper.writeString(buffer, changeFakePlayerScore.getFakePlayerName());
+                    VarInts.writeLong(buf, changeFakePlayerScore.getScoreboardId());
+                    helper.writeString(buf, changeFakePlayerScore.getObjectiveName());
+                    buf.writeIntLE(changeFakePlayerScore.getScoreValue());
+                    buf.writeByte(ScorePacketEntryAction.CHANGE_FAKE_PLAYER.ordinal());
+                    helper.writeString(buf, changeFakePlayerScore.getFakePlayerName());
                     break;
             }
         });
@@ -82,7 +85,7 @@ public class SetScoreSerializer_v291 implements BedrockPacketSerializer<SetScore
                         changeFakePlayerScore.setObjectiveName(objectiveId);
                         changeFakePlayerScore.setScoreValue(score);
                         changeFakePlayerScore.setFakePlayerName(helper.readString(buf));
-                        break;
+                        return changeFakePlayerScore;
                 }
             } else {
                 final RemoveScore removeScore = new RemoveScore();
