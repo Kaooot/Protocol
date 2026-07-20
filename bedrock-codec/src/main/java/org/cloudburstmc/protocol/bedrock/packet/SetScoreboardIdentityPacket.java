@@ -4,12 +4,12 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import java.lang.AssertionError;
 import java.lang.CloneNotSupportedException;
 import java.lang.Override;
-import java.lang.String;
 import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.protocol.bedrock.data.ScoreboardIdentityPacketInfo;
+import org.cloudburstmc.protocol.bedrock.data.ScoreboardIdentityPacketType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
@@ -26,7 +26,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class SetScoreboardIdentityPacket implements BedrockPacket {
-  private String scoreboardIdentityPacketType;
+  private ScoreboardIdentityPacketType scoreboardIdentityPacketType;
 
   private final List<ScoreboardIdentityPacketInfo> scoreboardIdentityInfo = new ObjectArrayList<>();
 

@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreativeGroupInfoPayload {
-  private String creativeCategory;
+  private CreativeCategory creativeCategory;
 
   private String name;
 

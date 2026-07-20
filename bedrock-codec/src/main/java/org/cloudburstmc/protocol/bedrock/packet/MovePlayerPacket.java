@@ -3,7 +3,6 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import java.lang.AssertionError;
 import java.lang.CloneNotSupportedException;
 import java.lang.Override;
-import java.lang.String;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -11,6 +10,7 @@ import org.cloudburstmc.math.vector.Vector2f;
 import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.protocol.bedrock.data.MovePlayerTeleportData;
 import org.cloudburstmc.protocol.bedrock.data.PlayerInputTick;
+import org.cloudburstmc.protocol.bedrock.data.PositionMode;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
@@ -34,7 +34,7 @@ public class MovePlayerPacket implements BedrockPacket {
 
   private float yHeadRotation;
 
-  private String positionMode;
+  private PositionMode positionMode;
 
   private boolean onGround;
 

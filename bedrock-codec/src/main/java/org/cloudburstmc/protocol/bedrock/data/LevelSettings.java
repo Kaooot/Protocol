@@ -18,19 +18,19 @@ public class LevelSettings {
 
   private SpawnSettings spawnSettings;
 
-  private String generatorType;
+  private GeneratorType generatorType;
 
-  private String gameType;
+  private GameType gameType;
 
   private boolean isHardcore;
 
-  private String gameDifficulty;
+  private Difficulty gameDifficulty;
 
   private Vector3i defaultSpawnBlockPosition;
 
   private boolean achievementsDisabled;
 
-  private String editorWorldType;
+  private EditorWorldType editorWorldType;
 
   private boolean isCreatedInEditor;
 
@@ -38,7 +38,7 @@ public class LevelSettings {
 
   private int dayCycleStopTime;
 
-  private String educationEditionOffer;
+  private EducationEditionOffer educationEditionOffer;
 
   private boolean educationFeaturesEnabled;
 
@@ -54,9 +54,9 @@ public class LevelSettings {
 
   private boolean lanBroadcastIntent;
 
-  private String xboxLiveBroadcastSetting;
+  private GamePublishSetting xboxLiveBroadcastSetting;
 
-  private String platformBroadcastSetting;
+  private GamePublishSetting platformBroadcastSetting;
 
   private boolean commandsEnabled;
 
@@ -70,7 +70,7 @@ public class LevelSettings {
 
   private boolean startWithMapEnabled;
 
-  private String playerPermissions;
+  private PlayerPermissionLevel playerPermissions;
 
   private int serverChunkTickRange;
 
@@ -106,11 +106,11 @@ public class LevelSettings {
 
   private OptionalBoolean overrideForceExperimentalGameplay = OptionalBoolean.empty();
 
-  private String chatRestrictionLevel;
+  private ChatRestrictionLevel chatRestrictionLevel;
 
   private boolean disablePlayerInteractions;
 
-  private String serverEditorConnectionPolicy;
+  private ServerEditorConnectionPolicy serverEditorConnectionPolicy;
 
   private boolean allowAnonymousBlockDropsInEditorWorlds;
 }

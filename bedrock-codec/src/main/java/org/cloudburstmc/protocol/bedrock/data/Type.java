@@ -1,0 +1,36 @@
+package org.cloudburstmc.protocol.bedrock.data;
+
+import java.lang.String;
+import java.util.HashMap;
+import java.util.Map;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+/**
+ * Auto generated from 1.26.40-beta.31 (v2168)
+ */
+@Getter
+@RequiredArgsConstructor
+public enum Type {
+  PLAYER("player"),
+
+  DEV_CONSOLE("devconsole"),
+
+  TEST("test"),
+
+  AUTOMATION_PLAYER("automationplayer");
+
+  private static final Map<String, Type> SERIALIZE_NAMES = new HashMap<>(values().length);
+
+  static {
+    for (Type value : values()) {
+      SERIALIZE_NAMES.put(value.getSerializeName(), value);
+    }
+  }
+
+  private final String serializeName;
+
+  public static Type fromName(String serializeName) {
+    return SERIALIZE_NAMES.get(serializeName);
+  }
+}

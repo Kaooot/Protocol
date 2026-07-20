@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SpawnSettings {
-  private String spawnBiomeType;
+  private SpawnBiomeType spawnBiomeType;
 
   private String userDefinedBiomeName;
 

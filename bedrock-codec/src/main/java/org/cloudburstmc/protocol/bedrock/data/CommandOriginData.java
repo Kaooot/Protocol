@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CommandOriginData {
-  private String type;
+  private Type type;
 
   private UUID uuid;
 

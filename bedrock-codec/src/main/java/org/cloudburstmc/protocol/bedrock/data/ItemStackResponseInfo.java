@@ -1,7 +1,6 @@
 package org.cloudburstmc.protocol.bedrock.data;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import java.lang.String;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ItemStackResponseInfo {
-  private String result;
+  private ItemStackNetResult result;
 
   private ItemStackRequestId clientRequestId;
 

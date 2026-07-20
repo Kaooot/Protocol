@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 public class SubChunkPacketData {
   private SubChunkPosOffset subChunkPosOffset;
 
-  private String subChunkRequestResult;
+  private SubChunkRequestResult subChunkRequestResult;
 
   private String serializedSubChunk;
 

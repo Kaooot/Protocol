@@ -3,10 +3,10 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import java.lang.AssertionError;
 import java.lang.CloneNotSupportedException;
 import java.lang.Override;
-import java.lang.String;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.cloudburstmc.protocol.bedrock.data.DefaultGameType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
@@ -22,7 +22,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class SetDefaultGameTypePacket implements BedrockPacket {
-  private String defaultGameType;
+  private DefaultGameType defaultGameType;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

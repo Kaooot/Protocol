@@ -13,6 +13,7 @@ import lombok.ToString;
 import org.cloudburstmc.math.vector.Vector2f;
 import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.nbt.NbtMap;
+import org.cloudburstmc.protocol.bedrock.data.GameType;
 import org.cloudburstmc.protocol.bedrock.data.LevelSettings;
 import org.cloudburstmc.protocol.bedrock.data.NetworkPermissions;
 import org.cloudburstmc.protocol.bedrock.data.ServerBlockProperty;
@@ -39,7 +40,7 @@ public class StartGamePacket implements BedrockPacket {
 
   private long runtimeID;
 
-  private String gameType;
+  private GameType gameType;
 
   private Vector3f position;
 

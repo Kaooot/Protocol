@@ -3,10 +3,10 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import java.lang.AssertionError;
 import java.lang.CloneNotSupportedException;
 import java.lang.Override;
-import java.lang.String;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.cloudburstmc.protocol.bedrock.data.LoadingScreenPacketType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
@@ -27,7 +27,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class ServerboundLoadingScreenPacket implements BedrockPacket {
-  private String loadingScreenPacketType;
+  private LoadingScreenPacketType loadingScreenPacketType;
 
   private int loadingScreenId;
 
