@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MultiRecipePayload {
-  private UUID multiRecipeUuid;
+  private UUID multiRecipeUUID;
 
   private RecipeNetId netId;
 }
