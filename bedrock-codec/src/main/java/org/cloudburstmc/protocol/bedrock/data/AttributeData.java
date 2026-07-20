@@ -26,7 +26,7 @@ public class AttributeData {
 
   private float defaultValue;
 
-  private String hashedString;
+  private String name;
 
   private final List<AttributeModifier> modifiers = new ObjectArrayList<>();
 }

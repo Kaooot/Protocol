@@ -13,7 +13,7 @@ import org.cloudburstmc.nbt.NbtMap;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ItemData {
-  private String hashedString;
+  private String itemName;
 
   private int itemId;
 

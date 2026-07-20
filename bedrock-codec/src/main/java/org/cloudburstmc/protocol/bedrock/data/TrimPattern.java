@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TrimPattern {
-  private String hashedString;
+  private String itemName;
 
-  private String hashedString;
+  private String patternId;
 }
