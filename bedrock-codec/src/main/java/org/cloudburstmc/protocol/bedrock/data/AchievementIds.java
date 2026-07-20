@@ -1,0 +1,181 @@
+package org.cloudburstmc.protocol.bedrock.data;
+
+import java.lang.UnsupportedOperationException;
+
+/**
+ * Auto generated from 1.26.40-beta.31 (v2168)
+ */
+public enum AchievementIds {
+  CHEST_FULL_OF_COBBLESTONE,
+
+  DIAMOND_FOR_YOU,
+
+  IRON_BELLY,
+
+  IRON_MAN,
+
+  ON_ARAIL,
+
+  OVERKILL,
+
+  RETURN_TO_SENDER,
+
+  SNIPER_DUEL,
+
+  STAYIN_FROSTY,
+
+  TAKE_INVENTORY,
+
+  MAP_ROOM,
+
+  FREIGHT_STATION,
+
+  SMELT_EVERYTHING,
+
+  TASTE_OF_YOUR_OWN_MEDICINE,
+
+  WHEN_PIGS_FLY,
+
+  INCEPTION,
+
+  ARTIFICIAL_SELECTION,
+
+  FREE_DIVER,
+
+  SPAWN_THE_WITHER,
+
+  BEACONATOR,
+
+  GREAT_VIEW,
+
+  SUPER_SONIC,
+
+  THE_END_AGAIN,
+
+  TREASURE_HUNTER,
+
+  SHOOTING_STAR,
+
+  FASHION_SHOW,
+
+  SELF_PUBLISHED_AUTHOR,
+
+  ALTERNATIVE_FUEL,
+
+  SLEEP_WITH_THE_FISHES,
+
+  CASTAWAY,
+
+  IM_AMARINE_BIOLOGIST,
+
+  SAIL_THE7SEAS,
+
+  ME_GOLD,
+
+  AHOY,
+
+  ATLANTIS,
+
+  ONE_PICKLE_TWO_PICKLE_SEA_PICKLE_FOUR,
+
+  DOA_BARREL_ROLL,
+
+  MOSKSTRAUMEN,
+
+  ECHOLOCATION,
+
+  WHERE_HAVE_YOU_BEEN,
+
+  TOP_OF_THE_WORLD,
+
+  FRUIT_ON_THE_LOOM,
+
+  SOUND_THE_ALARM,
+
+  BUY_LOW_SELL_HIGH,
+
+  DISENCHANTED,
+
+  TIME_FOR_STEW,
+
+  BEE_OUR_GUEST,
+
+  TOTAL_BEE_LOCATION,
+
+  STICKY_SITUATION,
+
+  COVER_ME_IN_DEBRIS,
+
+  FLOAT_YOUR_GOAT,
+
+  FRIEND,
+
+  WAX_ON_WAX_OFF,
+
+  STRIDER_RIDDEN_IN_LAVA_IN_OVERWORLD,
+
+  GOAT_HORN_ACQUIRED,
+
+  JUKEBOX_USED_IN_MEADOWS,
+
+  TRADED_AT_WORLD_HEIGHT,
+
+  SURVIVED_FALL_FROM_WORLD_HEIGHT,
+
+  SNEAK_CLOSE_TO_SCULK_SENSOR,
+
+  IT_SPREADS,
+
+  BIRTHDAY_SONG,
+
+  WITH_OUR_POWERS_COMBINED,
+
+  PLANTING_THE_PAST,
+
+  CAREFUL_RESTORATION,
+
+  REVAULTING,
+
+  CRAFTERS_CRAFTING_CRAFTERS,
+
+  WHO_NEEDS_ROCKETS,
+
+  OVER_OVERKILL,
+
+  HEART_TRANSPLANTER,
+
+  STAY_HYDRATED,
+
+  MOB_KABOB,
+
+  ADVENTURING_TIME,
+
+  UH_OH,
+
+  GETTING_WOOD,
+
+  BENCH_MAKING,
+
+  TIME_TO_MINE,
+
+  HOT_TOPIC,
+
+  ACQUIRE_HARDWARE,
+
+  GETTING_AN_UPGRADE,
+
+  MONSTER_HUNTER,
+
+  DIAMONDS,
+
+  PLETHORA_OF_CATS;
+
+  private static final AchievementIds[] VALUES = values();
+
+  public static AchievementIds from(int ordinal) {
+    if (ordinal >= 0 && ordinal < VALUES.length) {
+      return VALUES[ordinal];
+    }
+    throw new UnsupportedOperationException("Detected unknown AchievementIds ID: " + ordinal);
+  }
+}
