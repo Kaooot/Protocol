@@ -8,7 +8,7 @@ import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.protocol.bedrock.data.anonymousnamespaceMapInfoRequestPacketAnonClientPixelsProxy;
+import org.cloudburstmc.protocol.bedrock.data.ClientPixelsProxy;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
@@ -31,9 +31,9 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class MapInfoRequestPacket implements BedrockPacket {
-  private long MapUniqueID;
+  private long mapUniqueID;
 
-  private final List<anonymousnamespaceMapInfoRequestPacketAnonClientPixelsProxy> ClientPixelsList = new ObjectArrayList<>();
+  private final List<ClientPixelsProxy> clientPixelsList = new ObjectArrayList<>();
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

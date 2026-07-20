@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SyncedPlayerMovementSettings {
-  private int RewindHistorySize;
+  private int rewindHistorySize;
 
-  private boolean ServerAuthoritativeBlockBreaking;
+  private boolean serverAuthoritativeBlockBreaking;
 }

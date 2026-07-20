@@ -11,11 +11,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class InventoryAction {
-  private InventorySource Source;
+  private InventorySource source;
 
-  private int Slot;
+  private int slot;
 
-  private NetworkItemStackDescriptor FromItem;
+  private NetworkItemStackDescriptor fromItem;
 
-  private NetworkItemStackDescriptor ToItem;
+  private NetworkItemStackDescriptor toItem;
 }

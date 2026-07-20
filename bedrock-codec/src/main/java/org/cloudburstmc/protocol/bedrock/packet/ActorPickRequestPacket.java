@@ -21,11 +21,11 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class ActorPickRequestPacket implements BedrockPacket {
-  private long ActorID;
+  private long actorID;
 
-  private int MaxSlots;
+  private int maxSlots;
 
-  private boolean WithData;
+  private boolean withData;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

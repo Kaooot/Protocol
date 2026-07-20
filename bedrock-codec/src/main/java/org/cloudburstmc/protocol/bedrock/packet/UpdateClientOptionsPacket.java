@@ -23,9 +23,9 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class UpdateClientOptionsPacket implements BedrockPacket {
-  private GraphicsMode GraphicsModeChange;
+  private GraphicsMode graphicsModeChange;
 
-  private boolean FilterProfanityChange;
+  private boolean filterProfanityChange;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

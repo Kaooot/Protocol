@@ -23,9 +23,9 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class PlayerLocationPacket implements BedrockPacket {
-  private long TargetActorID;
+  private long targetActorID;
 
-  private Object Location;
+  private Object location;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

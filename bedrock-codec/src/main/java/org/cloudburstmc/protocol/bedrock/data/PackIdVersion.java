@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PackIdVersion {
-  private UUID PackUUID;
+  private UUID packUuid;
 
-  private String PackVersion;
+  private String packVersion;
 }

@@ -22,7 +22,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class ClientboundControlSchemeSetPacket implements BedrockPacket {
-  private ControlScheme ControlScheme;
+  private ControlScheme controlScheme;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

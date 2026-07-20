@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ServerSoundHandle {
-  private long ServerSoundHandle;
+  private long serverSoundHandle;
 }

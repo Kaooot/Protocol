@@ -22,9 +22,9 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class OpenSignPacket implements BedrockPacket {
-  private Vector3i Pos;
+  private Vector3i pos;
 
-  private boolean IsFrontSide;
+  private boolean isFrontSide;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

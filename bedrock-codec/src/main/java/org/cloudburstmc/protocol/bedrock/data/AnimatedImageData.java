@@ -11,11 +11,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AnimatedImageData {
-  private SkinImage SkinImage;
+  private SkinImage skinImage;
 
-  private personaAnimatedTextureType AnimatedTextureType;
+  private PersonaAnimatedTextureType animatedTextureType;
 
-  private float Frames;
+  private float frames;
 
-  private personaAnimationExpression AnimationExpression;
+  private PersonaAnimationExpression animationExpression;
 }

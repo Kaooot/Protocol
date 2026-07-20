@@ -12,7 +12,7 @@ import org.cloudburstmc.math.vector.Vector3f;
 @NoArgsConstructor
 @AllArgsConstructor
 public class WorldPosition {
-  private Vector3f Position;
+  private Vector3f position;
 
-  private DimensionType DimensionType;
+  private DimensionType dimensionType;
 }

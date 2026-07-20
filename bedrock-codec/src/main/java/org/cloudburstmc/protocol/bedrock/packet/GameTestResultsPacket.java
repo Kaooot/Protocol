@@ -23,11 +23,11 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class GameTestResultsPacket implements BedrockPacket {
-  private boolean Succeeded;
+  private boolean succeeded;
 
-  private String Error;
+  private String error;
 
-  private String TestName;
+  private String testName;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

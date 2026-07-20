@@ -6,7 +6,7 @@ import java.lang.Override;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.protocol.bedrock.data.clientStoreEntryPointConfig;
+import org.cloudburstmc.protocol.bedrock.data.ClientStoreEntryPointConfig;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
@@ -22,7 +22,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class ServerStoreInfoPacket implements BedrockPacket {
-  private clientStoreEntryPointConfig clientstoreentrypointconfiguration;
+  private ClientStoreEntryPointConfig clientStoreEntryPointConfiguration;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

@@ -23,7 +23,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class ServerPlayerPostMovePositionPacket implements BedrockPacket {
-  private Vector3f Pos;
+  private Vector3f pos;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

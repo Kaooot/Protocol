@@ -10,8 +10,10 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CameraInstructionFadeInstruction {
-  private CameraInstructionFadeInstructionTimeOption Time;
+public class EntityOffsetOption {
+  private float entityOffsetX;
 
-  private CameraInstructionFadeInstructionColorOption Color;
+  private float entityOffsetY;
+
+  private float entityOffsetZ;
 }

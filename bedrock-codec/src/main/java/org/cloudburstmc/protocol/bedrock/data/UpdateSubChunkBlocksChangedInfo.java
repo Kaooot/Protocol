@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UpdateSubChunkBlocksChangedInfo {
-  private final List<UpdateSubChunkNetworkBlockInfo> BlocksChangedStandards = new ObjectArrayList<>();
+  private final List<UpdateSubChunkNetworkBlockInfo> blocksChangedStandards = new ObjectArrayList<>();
 
-  private final List<UpdateSubChunkNetworkBlockInfo> BlocksChangedExtras = new ObjectArrayList<>();
+  private final List<UpdateSubChunkNetworkBlockInfo> blocksChangedExtras = new ObjectArrayList<>();
 }

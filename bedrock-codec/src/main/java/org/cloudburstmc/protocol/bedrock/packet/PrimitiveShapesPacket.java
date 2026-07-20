@@ -24,7 +24,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class PrimitiveShapesPacket implements BedrockPacket {
-  private final List<PrimitiveShapeDataPayload> Arrayofprimitiveshapescanbeamixofnewupdatedorremoved = new ObjectArrayList<>();
+  private final List<PrimitiveShapeDataPayload> shapes = new ObjectArrayList<>();
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

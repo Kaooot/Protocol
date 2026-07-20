@@ -14,31 +14,31 @@ import org.cloudburstmc.math.vector.Vector3i;
 @NoArgsConstructor
 @AllArgsConstructor
 public class StructureSettings {
-  private String StructurePaletteName;
+  private String structurePaletteName;
 
-  private boolean Shouldignoreentities;
+  private boolean shouldIgnoreEntities;
 
-  private boolean Shouldignoreblocks;
+  private boolean shouldIgnoreBlocks;
 
-  private boolean ShouldAllowNonTickingPlayerandTickingAreaChunks;
+  private boolean shouldAllowNonTickingPlayerAndTickingAreaChunks;
 
-  private Vector3i StructureSize;
+  private Vector3i structureSize;
 
-  private Vector3i StructureOffset;
+  private Vector3i structureOffset;
 
-  private long LastEditPlayer;
+  private long lastEditPlayer;
 
-  private Rotation Rotation;
+  private Rotation rotation;
 
-  private Mirror Mirror;
+  private Mirror mirror;
 
-  private AnimationMode AnimationMode;
+  private AnimationMode animationMode;
 
-  private float AnimationSeconds;
+  private float animationSeconds;
 
-  private float IntegrityValue;
+  private float integrityValue;
 
-  private int IntegritySeed;
+  private int integritySeed;
 
-  private Vector3f RotationPivot;
+  private Vector3f rotationPivot;
 }

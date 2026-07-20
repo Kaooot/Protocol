@@ -23,11 +23,11 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class GuiDataPickItemPacket implements BedrockPacket {
-  private String ItemName;
+  private String itemName;
 
-  private String ItemEffectName;
+  private String itemEffectName;
 
-  private int Slot;
+  private int slot;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

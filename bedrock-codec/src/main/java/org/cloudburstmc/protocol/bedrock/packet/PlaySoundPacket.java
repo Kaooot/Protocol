@@ -24,17 +24,17 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class PlaySoundPacket implements BedrockPacket {
-  private String Name;
+  private String name;
 
-  private Vector3i Position;
+  private Vector3i position;
 
-  private float Volume;
+  private float volume;
 
-  private float Pitch;
+  private float pitch;
 
-  private int LoopCount;
+  private int loopCount;
 
-  private ServerSoundHandle ServerSoundHandle;
+  private ServerSoundHandle serverSoundHandle;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

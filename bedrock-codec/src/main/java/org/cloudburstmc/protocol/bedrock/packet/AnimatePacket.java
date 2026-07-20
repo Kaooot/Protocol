@@ -24,13 +24,13 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class AnimatePacket implements BedrockPacket {
-  private AnimatePacketPayloadAction Action;
+  private AnimatePacketPayloadAction action;
 
-  private long TargetActorRuntimeID;
+  private long targetActorRuntimeID;
 
-  private float Data;
+  private float data;
 
-  private ActorSwingSource SwingSource;
+  private ActorSwingSource swingSource;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

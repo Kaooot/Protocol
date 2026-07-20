@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ExperimentToggle {
-  private String Name;
+  private String name;
 
-  private boolean Enabled;
+  private boolean enabled;
 }

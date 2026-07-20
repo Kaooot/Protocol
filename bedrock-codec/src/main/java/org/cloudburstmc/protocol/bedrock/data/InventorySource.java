@@ -12,9 +12,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class InventorySource {
-  private InventorySourceType SourceType;
+  private InventorySourceType sourceType;
 
-  private Integer ContainerID;
+  private Integer containerID;
 
-  private InventorySourceFlags BitFlags;
+  private InventorySourceFlags bitFlags;
 }

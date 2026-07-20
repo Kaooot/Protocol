@@ -26,7 +26,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class PurchaseReceiptPacket implements BedrockPacket {
-  private final List<String> PurchaseReceipts = new ObjectArrayList<>();
+  private final List<String> purchaseReceipts = new ObjectArrayList<>();
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

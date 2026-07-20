@@ -23,7 +23,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class ServerToClientHandshakePacket implements BedrockPacket {
-  private String HandshakeWebToken;
+  private String handshakeWebtoken;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

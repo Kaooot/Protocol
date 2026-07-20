@@ -23,7 +23,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class MoveActorDeltaPacket implements BedrockPacket {
-  private MoveActorDeltaData MoveData;
+  private MoveActorDeltaData moveData;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

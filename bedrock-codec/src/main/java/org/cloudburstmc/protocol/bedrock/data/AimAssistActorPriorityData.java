@@ -11,11 +11,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AimAssistActorPriorityData {
-  private int PresetIndex;
+  private int presetIndex;
 
-  private int CategoryIndex;
+  private int categoryIndex;
 
-  private int ActorIndex;
+  private int actorIndex;
 
-  private int PriorityValue;
+  private int priorityValue;
 }

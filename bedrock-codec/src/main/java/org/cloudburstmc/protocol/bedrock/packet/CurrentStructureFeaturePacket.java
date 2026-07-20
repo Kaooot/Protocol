@@ -24,7 +24,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class CurrentStructureFeaturePacket implements BedrockPacket {
-  private String CurrentStructureFeature;
+  private String currentStructureFeature;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

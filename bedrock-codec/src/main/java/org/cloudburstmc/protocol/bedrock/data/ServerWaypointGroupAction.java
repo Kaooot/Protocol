@@ -6,24 +6,12 @@ import java.lang.UnsupportedOperationException;
  * Auto generated from 1.26.40-beta.31 (v2168)
  */
 public enum ServerWaypointGroupAction {
-  /**
-   * None
-   */
   NONE,
 
-  /**
-   * Add
-   */
   ADD,
 
-  /**
-   * Remove
-   */
   REMOVE,
 
-  /**
-   * Update
-   */
   UPDATE;
 
   private static final ServerWaypointGroupAction[] VALUES = values();

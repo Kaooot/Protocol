@@ -26,9 +26,9 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class SetScoreboardIdentityPacket implements BedrockPacket {
-  private String ScoreboardIdentityPacketType;
+  private String scoreboardIdentityPacketType;
 
-  private final List<ScoreboardIdentityPacketInfo> ScoreboardIdentityInfo = new ObjectArrayList<>();
+  private final List<ScoreboardIdentityPacketInfo> scoreboardIdentityInfo = new ObjectArrayList<>();
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

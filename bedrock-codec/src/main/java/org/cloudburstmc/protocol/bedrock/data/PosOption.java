@@ -11,10 +11,6 @@ import org.cloudburstmc.math.vector.Vector3f;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CameraInstructionSplineInstructionSplineRotationOption {
-  private Vector3f Keyframevalue;
-
-  private float Keyframetime;
-
-  private easingfunction Keyframeeasingfunc;
+public class PosOption {
+  private Vector3f pos;
 }

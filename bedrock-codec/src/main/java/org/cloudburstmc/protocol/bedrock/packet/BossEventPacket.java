@@ -25,21 +25,21 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class BossEventPacket implements BedrockPacket {
-  private long TargetActorID;
+  private long targetActorID;
 
-  private long PlayerID;
+  private long playerID;
 
-  private BossEventUpdateType EventType;
+  private BossEventUpdateType eventType;
 
-  private String Name;
+  private String name;
 
-  private String FilteredName;
+  private String filteredName;
 
-  private float HealthPercent;
+  private float healthPercent;
 
-  private BossBarColor Color;
+  private BossBarColor color;
 
-  private BossBarOverlay Overlay;
+  private BossBarOverlay overlay;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

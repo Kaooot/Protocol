@@ -31,29 +31,29 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class AddActorPacket implements BedrockPacket {
-  private long TargetActorID;
+  private long targetActorID;
 
-  private long TargetRuntimeID;
+  private long targetRuntimeID;
 
-  private String ActorType;
+  private String actorType;
 
-  private Vector3f Position;
+  private Vector3f position;
 
-  private Vector3f Velocity;
+  private Vector3f velocity;
 
-  private Vector2f Rotation;
+  private Vector2f rotation;
 
-  private float YHeadRotation;
+  private float yHeadRotation;
 
-  private float YBodyRotation;
+  private float yBodyRotation;
 
-  private final List<SyncedAttribute> AttributesList = new ObjectArrayList<>();
+  private final List<SyncedAttribute> attributesList = new ObjectArrayList<>();
 
-  private SynchedActorDataList ActorData;
+  private SynchedActorDataList actorData;
 
-  private PropertySyncData SynchedProperties;
+  private PropertySyncData synchedProperties;
 
-  private final List<ActorLink> ActorLinks = new ObjectArrayList<>();
+  private final List<ActorLink> actorLinks = new ObjectArrayList<>();
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class VoxelShapesRegistryHandle {
-  private int Value;
+  private int value;
 }

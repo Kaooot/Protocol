@@ -22,7 +22,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class ClientboundDataDrivenUICloseScreenPacket implements BedrockPacket {
-  private Integer FormId;
+  private Integer formId;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

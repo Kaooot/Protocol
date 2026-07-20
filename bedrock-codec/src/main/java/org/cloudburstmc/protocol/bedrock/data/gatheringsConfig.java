@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class gatheringsConfig {
+public class GatheringsConfig {
   private UUID experienceId;
 
   private String experienceName;

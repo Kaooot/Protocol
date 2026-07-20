@@ -14,13 +14,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BiomeCappedSurfaceData {
-  private final List<Integer> floorblocks = new ObjectArrayList<>();
+  private final List<Integer> floorBlocks = new ObjectArrayList<>();
 
-  private final List<Integer> ceilingblocks = new ObjectArrayList<>();
+  private final List<Integer> ceilingBlocks = new ObjectArrayList<>();
 
-  private int seablock;
+  private int seaBlock;
 
-  private int foundationblock;
+  private int foundationBlock;
 
-  private int beachblock;
+  private int beachBlock;
 }

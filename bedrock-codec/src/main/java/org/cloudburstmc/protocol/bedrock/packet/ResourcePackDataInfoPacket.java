@@ -23,19 +23,19 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class ResourcePackDataInfoPacket implements BedrockPacket {
-  private String ResourceName;
+  private String resourceName;
 
-  private int ChunkSize;
+  private int chunkSize;
 
-  private int NumberofChunks;
+  private int numberOfChunks;
 
-  private long FileSize;
+  private long fileSize;
 
-  private String FileHash;
+  private String fileHash;
 
-  private boolean IsPremiumPack;
+  private boolean isPremiumPack;
 
-  private int PackType;
+  private int packType;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

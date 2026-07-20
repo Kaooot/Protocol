@@ -11,13 +11,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class InventoryOptions {
-  private InventoryLeftTabIndex LeftInventoryTab;
+  private InventoryLeftTabIndex leftInventoryTab;
 
-  private InventoryRightTabIndex RightInventoryTab;
+  private InventoryRightTabIndex rightInventoryTab;
 
-  private boolean Filtering;
+  private boolean filtering;
 
-  private InventoryLayout LayoutInv;
+  private InventoryLayout layoutInv;
 
-  private InventoryLayout LayoutCraft;
+  private InventoryLayout layoutCraft;
 }

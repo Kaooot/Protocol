@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MaterialReducerEntryOutput {
-  private int ItemId;
+  private int itemId;
 
-  private int ItemCount;
+  private int itemCount;
 }

@@ -6,9 +6,6 @@ import java.lang.UnsupportedOperationException;
  * Auto generated from 1.26.40-beta.31 (v2168)
  */
 public enum PositionTrackingDBClientRequestPacketPayloadAction {
-  /**
-   * Query
-   */
   QUERY;
 
   private static final PositionTrackingDBClientRequestPacketPayloadAction[] VALUES = values();

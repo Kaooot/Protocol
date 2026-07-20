@@ -28,33 +28,33 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class ServerboundDiagnosticsPacket implements BedrockPacket {
-  private float AvgFps;
+  private float avgFps;
 
-  private float AvgServerSimTickTimeMS;
+  private float avgServerSimTickTimeMS;
 
-  private float AvgClientSimTickTimeMS;
+  private float avgClientSimTickTimeMS;
 
-  private float AvgBeginFrameTimeMS;
+  private float avgBeginFrameTimeMS;
 
-  private float AvgInputTimeMS;
+  private float avgInputTimeMS;
 
-  private float AvgRenderTimeMS;
+  private float avgRenderTimeMS;
 
-  private float AvgEndFrameTimeMS;
+  private float avgEndFrameTimeMS;
 
-  private float AvgRemainderTimePercent;
+  private float avgRemainderTimePercent;
 
-  private float AvgUnaccountedTimePercent;
+  private float avgUnaccountedTimePercent;
 
-  private final List<MemoryCategoryCounter> MemoryCategoryValues = new ObjectArrayList<>();
+  private final List<MemoryCategoryCounter> memoryCategoryValues = new ObjectArrayList<>();
 
-  private final List<EntityDiagnosticTimingInfo> EntityDiagnostics = new ObjectArrayList<>();
+  private final List<EntityDiagnosticTimingInfo> entityDiagnostics = new ObjectArrayList<>();
 
-  private final List<SystemDiagnosticTimingInfo> SystemDiagnostics = new ObjectArrayList<>();
+  private final List<SystemDiagnosticTimingInfo> systemDiagnostics = new ObjectArrayList<>();
 
-  private final List<SystemCategory> SystemCategories = new ObjectArrayList<>();
+  private final List<SystemCategory> systemCategories = new ObjectArrayList<>();
 
-  private final List<WhiskerScopeDataSummary> WhiskerScopes = new ObjectArrayList<>();
+  private final List<WhiskerScopeDataSummary> whiskerScopes = new ObjectArrayList<>();
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

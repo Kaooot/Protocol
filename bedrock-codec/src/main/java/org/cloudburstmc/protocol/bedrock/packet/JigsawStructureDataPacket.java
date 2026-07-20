@@ -23,7 +23,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class JigsawStructureDataPacket implements BedrockPacket {
-  private NbtMap JigsawStructureDataTag;
+  private NbtMap jigsawStructureDataTag;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

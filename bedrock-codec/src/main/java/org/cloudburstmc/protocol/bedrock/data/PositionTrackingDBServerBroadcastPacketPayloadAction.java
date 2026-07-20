@@ -6,19 +6,10 @@ import java.lang.UnsupportedOperationException;
  * Auto generated from 1.26.40-beta.31 (v2168)
  */
 public enum PositionTrackingDBServerBroadcastPacketPayloadAction {
-  /**
-   * Update
-   */
   UPDATE,
 
-  /**
-   * Destroy
-   */
   DESTROY,
 
-  /**
-   * NotFound
-   */
   NOT_FOUND;
 
   private static final PositionTrackingDBServerBroadcastPacketPayloadAction[] VALUES = values();

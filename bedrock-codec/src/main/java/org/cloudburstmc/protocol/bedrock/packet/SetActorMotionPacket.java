@@ -28,11 +28,11 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class SetActorMotionPacket implements BedrockPacket {
-  private long TargetRuntimeID;
+  private long targetRuntimeID;
 
-  private Vector3f Motion;
+  private Vector3f motion;
 
-  private PlayerInputTick Tick;
+  private PlayerInputTick tick;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

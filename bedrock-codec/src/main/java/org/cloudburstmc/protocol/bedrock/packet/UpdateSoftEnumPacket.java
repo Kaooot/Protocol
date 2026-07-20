@@ -26,11 +26,11 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class UpdateSoftEnumPacket implements BedrockPacket {
-  private String EnumName;
+  private String enumName;
 
-  private final List<String> Values = new ObjectArrayList<>();
+  private final List<String> values = new ObjectArrayList<>();
 
-  private SoftEnumUpdateType UpdateType;
+  private SoftEnumUpdateType updateType;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

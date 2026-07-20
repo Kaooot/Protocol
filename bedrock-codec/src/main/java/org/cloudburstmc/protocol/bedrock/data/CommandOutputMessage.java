@@ -14,9 +14,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CommandOutputMessage {
-  private String MessageID;
+  private String messageID;
 
-  private boolean Successful;
+  private boolean successful;
 
-  private final List<String> Parameters = new ObjectArrayList<>();
+  private final List<String> parameters = new ObjectArrayList<>();
 }

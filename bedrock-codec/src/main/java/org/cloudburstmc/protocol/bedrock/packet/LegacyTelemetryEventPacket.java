@@ -23,13 +23,13 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class LegacyTelemetryEventPacket implements BedrockPacket {
-  private long TargetActorID;
+  private long targetActorID;
 
-  private LegacyTelemetryEventPacketPayloadType EventType;
+  private LegacyTelemetryEventPacketPayloadType eventType;
 
-  private boolean UsePlayerID;
+  private boolean usePlayerID;
 
-  private Object EventData;
+  private Object eventData;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

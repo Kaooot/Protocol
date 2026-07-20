@@ -22,15 +22,15 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class NetworkSettingsPacket implements BedrockPacket {
-  private int CompressionThreshold;
+  private int compressionThreshold;
 
-  private PacketCompressionAlgorithm CompressionAlgorithm;
+  private PacketCompressionAlgorithm compressionAlgorithm;
 
-  private boolean ClientThrottleEnabled;
+  private boolean clientThrottleEnabled;
 
-  private int ClientThrottleThreshold;
+  private int clientThrottleThreshold;
 
-  private float ClientThrottleScalar;
+  private float clientThrottleScalar;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

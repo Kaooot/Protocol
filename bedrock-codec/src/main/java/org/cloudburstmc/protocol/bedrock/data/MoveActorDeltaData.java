@@ -13,25 +13,25 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MoveActorDeltaData {
-  private long ActorRuntimeID;
+  private long actorRuntimeID;
 
-  private Float NewPositionX;
+  private Float newPositionX;
 
-  private Float NewPositionY;
+  private Float newPositionY;
 
-  private Float NewPositionZ;
+  private Float newPositionZ;
 
-  private Integer RotationX;
+  private Integer rotationX;
 
-  private Integer RotationY;
+  private Integer rotationY;
 
-  private Integer RotationYHead;
+  private Integer rotationYHead;
 
-  private boolean IsOnGround;
+  private boolean isOnGround;
 
-  private boolean ForceMove;
+  private boolean forceMove;
 
-  private boolean ForceMoveLocalEntity;
+  private boolean forceMoveLocalEntity;
 
-  private boolean ForceCompletion;
+  private boolean forceCompletion;
 }

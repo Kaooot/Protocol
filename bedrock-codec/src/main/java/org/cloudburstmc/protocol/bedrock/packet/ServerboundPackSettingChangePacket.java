@@ -24,11 +24,11 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class ServerboundPackSettingChangePacket implements BedrockPacket {
-  private UUID PackId;
+  private UUID packId;
 
-  private String PackSettingName;
+  private String packSettingName;
 
-  private Object PackSettingValue;
+  private Object packSettingValue;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

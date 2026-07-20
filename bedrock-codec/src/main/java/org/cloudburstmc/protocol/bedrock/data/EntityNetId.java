@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class EntityNetId {
-  private int RawId;
+  private int rawId;
 }

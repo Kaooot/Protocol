@@ -14,5 +14,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TintMapColor {
-  private final List<Color> Colors = new ObjectArrayList<>();
+  private final List<Color> colors = new ObjectArrayList<>();
 }

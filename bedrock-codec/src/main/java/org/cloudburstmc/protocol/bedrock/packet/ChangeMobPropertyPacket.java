@@ -22,17 +22,17 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class ChangeMobPropertyPacket implements BedrockPacket {
-  private long ActorId;
+  private long actorId;
 
-  private String PropertyName;
+  private String propertyName;
 
-  private boolean BoolComponentValue;
+  private boolean boolComponentValue;
 
-  private String StringComponentValue;
+  private String stringComponentValue;
 
-  private int IntComponentValue;
+  private int intComponentValue;
 
-  private float FloatComponentValue;
+  private float floatComponentValue;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

@@ -16,15 +16,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CameraAimAssistPresetDefinition {
-  private String CameraAimAssistIdentifier;
+  private String cameraAimAssistIdentifier;
 
-  private CameraAimAssistPresetExclusionDefinition exclusionsettings;
+  private CameraAimAssistPresetExclusionDefinition exclusionSettings;
 
-  private final List<String> liquidtargetinglist = new ObjectArrayList<>();
+  private final List<String> liquidTargetingList = new ObjectArrayList<>();
 
-  private final Map<String, String> itemsettings = new HashMap<>();
+  private final Map<String, String> itemSettings = new HashMap<>();
 
-  private String CameraAimAssistCategoryReference;
+  private String cameraAimAssistCategoryReference;
 
-  private String CameraAimAssistCategoryReference;
+  private String cameraAimAssistCategoryReference;
 }

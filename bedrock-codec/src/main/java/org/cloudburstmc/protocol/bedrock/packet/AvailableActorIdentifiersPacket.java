@@ -22,7 +22,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class AvailableActorIdentifiersPacket implements BedrockPacket {
-  private NbtMap IdentifierList;
+  private NbtMap identifierList;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

@@ -23,11 +23,11 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class LecternUpdatePacket implements BedrockPacket {
-  private int Newpagetoshow;
+  private int newPageToShow;
 
-  private int TotalPages;
+  private int totalPages;
 
-  private Vector3i PositionofLecterntoupdate;
+  private Vector3i positionOfLecternToUpdate;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

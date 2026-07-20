@@ -27,15 +27,15 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class ResourcePackStackPacket implements BedrockPacket {
-  private boolean TexturePackRequired;
+  private boolean texturePackRequired;
 
-  private final List<PackInstanceId> TexturePackList = new ObjectArrayList<>();
+  private final List<PackInstanceId> texturePackList = new ObjectArrayList<>();
 
-  private String BaseGameVersion;
+  private String baseGameVersion;
 
-  private Experiments Experiments;
+  private Experiments experiments;
 
-  private boolean IncludeEditorPacks;
+  private boolean includeEditorPacks;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

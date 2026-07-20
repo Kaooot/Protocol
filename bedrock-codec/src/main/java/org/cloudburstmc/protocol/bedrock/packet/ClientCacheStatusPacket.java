@@ -23,7 +23,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class ClientCacheStatusPacket implements BedrockPacket {
-  private boolean Iscachesupported;
+  private boolean isCacheSupported;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

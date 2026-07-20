@@ -12,13 +12,13 @@ import org.cloudburstmc.math.vector.Vector3i;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UpdateSubChunkNetworkBlockInfo {
-  private Vector3i Pos;
+  private Vector3i pos;
 
-  private int RuntimeId;
+  private int runtimeId;
 
-  private int UpdateFlags;
+  private int updateFlags;
 
-  private long SyncMessageEntityUniqueID;
+  private long syncMessageEntityUniqueID;
 
-  private int SyncMessageMessage;
+  private int syncMessageMessage;
 }

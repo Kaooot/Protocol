@@ -22,9 +22,9 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class BookEditPacket implements BedrockPacket {
-  private int BookSlot;
+  private int bookSlot;
 
-  private Object Operation;
+  private Object operation;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

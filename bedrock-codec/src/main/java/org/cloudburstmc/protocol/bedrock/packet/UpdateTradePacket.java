@@ -23,25 +23,25 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class UpdateTradePacket implements BedrockPacket {
-  private int ContainerId;
+  private int containerId;
 
-  private int Type;
+  private int type;
 
-  private int Size;
+  private int size;
 
-  private int TraderTier;
+  private int traderTier;
 
-  private long EntityUniqueId;
+  private long entityUniqueId;
 
-  private long LastTradingPlayer;
+  private long lastTradingPlayer;
 
-  private String DisplayName;
+  private String displayName;
 
-  private boolean UseNewTradeScreen;
+  private boolean useNewTradeScreen;
 
-  private boolean UsingEconomyTrade;
+  private boolean usingEconomyTrade;
 
-  private NbtMap Data;
+  private NbtMap data;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

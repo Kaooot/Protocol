@@ -6,19 +6,10 @@ import java.lang.UnsupportedOperationException;
  * Auto generated from 1.26.40-beta.31 (v2168)
  */
 public enum ItemUseTriggerType {
-  /**
-   * Unknown
-   */
   UNKNOWN,
 
-  /**
-   * Player Input
-   */
   PLAYER_INPUT,
 
-  /**
-   * Simulation Tick
-   */
   SIMULATION_TICK;
 
   private static final ItemUseTriggerType[] VALUES = values();

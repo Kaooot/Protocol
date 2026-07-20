@@ -18,7 +18,7 @@ public class CameraAimAssistPresetExclusionDefinition {
 
   private final List<String> entities = new ObjectArrayList<>();
 
-  private final List<String> blocktags = new ObjectArrayList<>();
+  private final List<String> blockTags = new ObjectArrayList<>();
 
-  private final List<String> entitytypefamilies = new ObjectArrayList<>();
+  private final List<String> entityTypeFamilies = new ObjectArrayList<>();
 }

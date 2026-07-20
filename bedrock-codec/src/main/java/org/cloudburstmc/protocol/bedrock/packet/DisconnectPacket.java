@@ -23,9 +23,9 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class DisconnectPacket implements BedrockPacket {
-  private DisconnectFailReason Reason;
+  private DisconnectFailReason reason;
 
-  private Object Messages;
+  private Object messages;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

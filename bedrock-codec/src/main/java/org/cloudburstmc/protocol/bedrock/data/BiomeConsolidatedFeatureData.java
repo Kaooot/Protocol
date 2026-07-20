@@ -19,5 +19,5 @@ public class BiomeConsolidatedFeatureData {
 
   private int pass;
 
-  private boolean canuseinternalfeature;
+  private boolean canUseInternalFeature;
 }

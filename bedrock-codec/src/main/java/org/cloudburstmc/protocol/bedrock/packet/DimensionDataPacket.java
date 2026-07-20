@@ -23,7 +23,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class DimensionDataPacket implements BedrockPacket {
-  private Object Definitions;
+  private Object definitions;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

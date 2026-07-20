@@ -6,19 +6,10 @@ import java.lang.UnsupportedOperationException;
  * Auto generated from 1.26.40-beta.31 (v2168)
  */
 public enum ShowStoreOfferRedirectType {
-  /**
-   * MarketplaceOffer
-   */
   MARKETPLACE_OFFER,
 
-  /**
-   * DressingRoomOffer
-   */
   DRESSING_ROOM_OFFER,
 
-  /**
-   * ThirdPartyServerPage
-   */
   THIRD_PARTY_SERVER_PAGE;
 
   private static final ShowStoreOfferRedirectType[] VALUES = values();

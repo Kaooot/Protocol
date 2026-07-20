@@ -22,9 +22,9 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class ServerStatsPacket implements BedrockPacket {
-  private float ServerTime;
+  private float serverTime;
 
-  private float NetworkTime;
+  private float networkTime;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

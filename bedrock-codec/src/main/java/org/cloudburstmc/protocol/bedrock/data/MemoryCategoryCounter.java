@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MemoryCategoryCounter {
-  private MemoryMemoryCategory Category;
+  private MemoryCategory category;
 
-  private long CurrentBytes;
+  private long currentBytes;
 }

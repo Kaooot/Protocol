@@ -22,7 +22,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class SubClientLoginPacket implements BedrockPacket {
-  private String SubClientConnectionRequest;
+  private String subClientConnectionRequest;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

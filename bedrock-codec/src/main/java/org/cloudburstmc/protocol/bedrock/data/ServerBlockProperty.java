@@ -13,7 +13,7 @@ import org.cloudburstmc.nbt.NbtMap;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ServerBlockProperty {
-  private String BlockName;
+  private String blockName;
 
-  private NbtMap BlockDefinition;
+  private NbtMap blockDefinition;
 }

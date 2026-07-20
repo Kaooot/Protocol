@@ -21,11 +21,11 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class ContainerSetDataPacket implements BedrockPacket {
-  private int ContainerID;
+  private int containerID;
 
   private int ID;
 
-  private int Value;
+  private int value;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

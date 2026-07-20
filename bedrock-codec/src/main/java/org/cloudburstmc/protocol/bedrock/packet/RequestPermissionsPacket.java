@@ -22,11 +22,11 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class RequestPermissionsPacket implements BedrockPacket {
-  private long TargetPlayerIdsRawID;
+  private long targetPlayerIdsRawID;
 
-  private int PlayerPermissionLevel;
+  private int playerPermissionLevel;
 
-  private int CustomPermissionFlags;
+  private int customPermissionFlags;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

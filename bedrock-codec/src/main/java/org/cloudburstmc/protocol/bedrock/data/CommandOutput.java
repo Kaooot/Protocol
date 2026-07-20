@@ -14,11 +14,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CommandOutput {
-  private CommandOutputType OutputType;
+  private CommandOutputType outputType;
 
-  private int SuccessCount;
+  private int successCount;
 
-  private final List<CommandOutputMessage> OutputMessages = new ObjectArrayList<>();
+  private final List<CommandOutputMessage> outputMessages = new ObjectArrayList<>();
 
-  private String DataSet;
+  private String dataSet;
 }

@@ -23,13 +23,13 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class ResourcePackChunkDataPacket implements BedrockPacket {
-  private String ResourceName;
+  private String resourceName;
 
-  private int ChunkID;
+  private int chunkID;
 
-  private long ByteOffset;
+  private long byteOffset;
 
-  private String ChunkData;
+  private String chunkData;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

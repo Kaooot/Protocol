@@ -24,11 +24,11 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class CodeBuilderSourcePacket implements BedrockPacket {
-  private CodeBuilderStorageQueryOptionsOperation Operation;
+  private CodeBuilderStorageQueryOptionsOperation operation;
 
-  private CodeBuilderStorageQueryOptionsCategory Category;
+  private CodeBuilderStorageQueryOptionsCategory category;
 
-  private CodeBuilderExecutionStateCodeStatus CodeStatus;
+  private CodeBuilderExecutionStateCodeStatus codeStatus;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

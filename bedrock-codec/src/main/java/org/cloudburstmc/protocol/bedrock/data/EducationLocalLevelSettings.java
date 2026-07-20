@@ -12,5 +12,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class EducationLocalLevelSettings {
-  private String CodeBuilderOverrideUri;
+  private String codeBuilderOverrideUri;
 }

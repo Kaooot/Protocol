@@ -23,9 +23,9 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class RemoveVolumeEntityPacket implements BedrockPacket {
-  private EntityNetId EntityNetworkId;
+  private EntityNetId entityNetworkId;
 
-  private DimensionType DimensionType;
+  private DimensionType dimensionType;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class EduSharedUriResource {
-  private String ButtonName;
+  private String buttonName;
 
-  private String LinkUri;
+  private String linkUri;
 }

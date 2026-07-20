@@ -24,13 +24,13 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class CommandRequestPacket implements BedrockPacket {
-  private String Command;
+  private String command;
 
-  private CommandOriginData Origin;
+  private CommandOriginData origin;
 
-  private boolean IsInternal;
+  private boolean isInternal;
 
-  private CurrentCmdVersion Version;
+  private CurrentCmdVersion version;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

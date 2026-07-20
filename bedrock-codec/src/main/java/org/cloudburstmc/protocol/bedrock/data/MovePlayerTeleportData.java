@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MovePlayerTeleportData {
-  private int TeleportationCause;
+  private int teleportationCause;
 
-  private int SourceActorType;
+  private int sourceActorType;
 }

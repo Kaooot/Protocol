@@ -13,15 +13,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DataStoreUpdate {
-  private String DataStoreName;
+  private String dataStoreName;
 
-  private String Property;
+  private String property;
 
-  private String Path;
+  private String path;
 
-  private Object Data;
+  private Object data;
 
-  private int PropertyUpdateCount;
+  private int propertyUpdateCount;
 
-  private int PathUpdateCount;
+  private int pathUpdateCount;
 }

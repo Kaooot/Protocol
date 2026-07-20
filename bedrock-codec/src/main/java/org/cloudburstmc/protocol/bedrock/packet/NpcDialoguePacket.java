@@ -23,17 +23,17 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class NpcDialoguePacket implements BedrockPacket {
-  private long NpcIdRawId;
+  private long npcIdRawId;
 
-  private NpcDialogueActionType NpcDialogueActionType;
+  private NpcDialogueActionType npcDialogueActionType;
 
-  private String Dialogue;
+  private String dialogue;
 
-  private String SceneName;
+  private String sceneName;
 
-  private String NpcName;
+  private String npcName;
 
-  private String ActionJSON;
+  private String actionJson;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

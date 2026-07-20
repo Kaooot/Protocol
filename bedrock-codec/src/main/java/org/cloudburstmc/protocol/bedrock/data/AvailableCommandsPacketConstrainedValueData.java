@@ -14,9 +14,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AvailableCommandsPacketConstrainedValueData {
-  private int EnumValueSymbol;
+  private int enumValueSymbol;
 
-  private int EnumSymbol;
+  private int enumSymbol;
 
-  private final List<Integer> ConstraintIndices = new ObjectArrayList<>();
+  private final List<Integer> constraintIndices = new ObjectArrayList<>();
 }

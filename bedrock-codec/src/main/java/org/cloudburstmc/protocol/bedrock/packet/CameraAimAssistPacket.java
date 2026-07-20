@@ -25,17 +25,17 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class CameraAimAssistPacket implements BedrockPacket {
-  private String PresetId;
+  private String presetId;
 
-  private Vector2f ViewAngle;
+  private Vector2f viewAngle;
 
-  private float Distance;
+  private float distance;
 
-  private CameraAimAssistPacketPayloadTargetMode TargetMode;
+  private CameraAimAssistPacketPayloadTargetMode targetMode;
 
-  private CameraAimAssistPacketPayloadAction Action;
+  private CameraAimAssistPacketPayloadAction action;
 
-  private boolean ShowDebugRender;
+  private boolean showDebugRender;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

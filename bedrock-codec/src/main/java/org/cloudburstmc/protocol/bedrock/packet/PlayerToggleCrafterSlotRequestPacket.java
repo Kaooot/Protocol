@@ -21,15 +21,15 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class PlayerToggleCrafterSlotRequestPacket implements BedrockPacket {
-  private int PosX;
+  private int posX;
 
-  private int PosY;
+  private int posY;
 
-  private int PosZ;
+  private int posZ;
 
-  private int SlotIndex;
+  private int slotIndex;
 
-  private boolean IsDisabled;
+  private boolean isDisabled;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

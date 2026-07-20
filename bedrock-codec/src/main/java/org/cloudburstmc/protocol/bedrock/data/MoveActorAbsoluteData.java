@@ -12,15 +12,15 @@ import org.cloudburstmc.math.vector.Vector3f;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MoveActorAbsoluteData {
-  private long ActorRuntimeID;
+  private long actorRuntimeID;
 
-  private int Header;
+  private int header;
 
-  private Vector3f Position;
+  private Vector3f position;
 
-  private int RotationX;
+  private int rotationX;
 
-  private int RotationY;
+  private int rotationY;
 
-  private int RotationYHead;
+  private int rotationYHead;
 }

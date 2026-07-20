@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AvailableCommandsPacketChainedSubcommandData {
-  private String Name;
+  private String name;
 
-  private final List<AvailableCommandsPacketChainedSubcommandRelationship> SubCommandvalues = new ObjectArrayList<>();
+  private final List<AvailableCommandsPacketChainedSubcommandRelationship> subCommandValues = new ObjectArrayList<>();
 }

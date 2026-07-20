@@ -27,9 +27,9 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class TrimDataPacket implements BedrockPacket {
-  private final List<TrimPattern> TrimPatternList = new ObjectArrayList<>();
+  private final List<TrimPattern> trimPatternList = new ObjectArrayList<>();
 
-  private final List<TrimMaterial> TrimMaterialList = new ObjectArrayList<>();
+  private final List<TrimMaterial> trimMaterialList = new ObjectArrayList<>();
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

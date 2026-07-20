@@ -22,11 +22,11 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class BlockPickRequestPacket implements BedrockPacket {
-  private Vector3i Position;
+  private Vector3i position;
 
-  private boolean WithData;
+  private boolean withData;
 
-  private int MaxSlots;
+  private int maxSlots;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

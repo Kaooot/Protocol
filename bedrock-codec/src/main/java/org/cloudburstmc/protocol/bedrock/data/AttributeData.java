@@ -14,19 +14,19 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AttributeData {
-  private float MinValue;
+  private float minValue;
 
-  private float MaxValue;
+  private float maxValue;
 
-  private float CurrentValue;
+  private float currentValue;
 
-  private float DefaultMinValue;
+  private float defaultMinValue;
 
-  private float DefaultMaxValue;
+  private float defaultMaxValue;
 
-  private float DefaultValue;
+  private float defaultValue;
 
-  private String hashedstring;
+  private String hashedString;
 
-  private final List<AttributeModifier> Modifiers = new ObjectArrayList<>();
+  private final List<AttributeModifier> modifiers = new ObjectArrayList<>();
 }

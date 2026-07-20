@@ -13,5 +13,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BiomeReplacementsData {
-  private final List<BiomeReplacementData> biomereplacements = new ObjectArrayList<>();
+  private final List<BiomeReplacementData> biomeReplacements = new ObjectArrayList<>();
 }

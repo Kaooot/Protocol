@@ -26,11 +26,11 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class SubChunkRequestPacket implements BedrockPacket {
-  private DimensionType DimensionType;
+  private DimensionType dimensionType;
 
-  private final List<SubChunkPosOffset> SubChunkPositionOffsetList = new ObjectArrayList<>();
+  private final List<SubChunkPosOffset> subChunkPositionOffsetList = new ObjectArrayList<>();
 
-  private SubChunkPos CenterPos;
+  private SubChunkPos centerPos;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

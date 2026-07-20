@@ -26,15 +26,15 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class PlayerActionPacket implements BedrockPacket {
-  private long PlayerRuntimeID;
+  private long playerRuntimeID;
 
-  private PlayerActionType Action;
+  private PlayerActionType action;
 
-  private Vector3i BlockPosition;
+  private Vector3i blockPosition;
 
-  private Vector3i ResultPos;
+  private Vector3i resultPos;
 
-  private int Face;
+  private int face;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

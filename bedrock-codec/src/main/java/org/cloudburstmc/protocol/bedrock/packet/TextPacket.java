@@ -24,15 +24,15 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class TextPacket implements BedrockPacket {
-  private boolean Localize;
+  private boolean localize;
 
-  private Object Body;
+  private Object body;
 
-  private String SendersXUID;
+  private String sendersXuid;
 
-  private String PlatformId;
+  private String platformId;
 
-  private String FilteredMessage;
+  private String filteredMessage;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

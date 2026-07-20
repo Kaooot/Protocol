@@ -10,10 +10,10 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class serverconfig {
-  private gatheringsConfig gathering;
+public class ServerConfig {
+  private GatheringsConfig gathering;
 
-  private clientStoreEntryPointConfig clientStoreEntryPoint;
+  private ClientStoreEntryPointConfig clientStoreEntryPoint;
 
-  private presenceConfig presence;
+  private PresenceConfig presence;
 }

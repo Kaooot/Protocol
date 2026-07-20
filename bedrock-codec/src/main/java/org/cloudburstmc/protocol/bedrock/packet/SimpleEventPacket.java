@@ -23,7 +23,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class SimpleEventPacket implements BedrockPacket {
-  private Subtype Type;
+  private Subtype type;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

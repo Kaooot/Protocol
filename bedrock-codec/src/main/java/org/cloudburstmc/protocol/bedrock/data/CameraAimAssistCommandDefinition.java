@@ -12,12 +12,12 @@ import org.cloudburstmc.math.vector.Vector2f;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class SharedTypesComprehensiveCameraAimAssistCommandDefinition {
-  private String SharedTypesReferenceSharedTypesAssetTypeCameraAimAssist;
+public class CameraAimAssistCommandDefinition {
+  private String cameraAimAssist;
 
-  private AimAssistTargetMode TargetMode;
+  private AimAssistTargetMode targetMode;
 
-  private Vector2f ViewAngle;
+  private Vector2f viewAngle;
 
-  private float Distance;
+  private float distance;
 }

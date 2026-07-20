@@ -19,45 +19,45 @@ import lombok.NoArgsConstructor;
 public class SerializedSkin {
   private String ID;
 
-  private String PlayFabID;
+  private String playFabID;
 
-  private String ResourcePatch;
+  private String resourcePatch;
 
-  private SkinImage ImageData;
+  private SkinImage imageData;
 
-  private final List<AnimatedImageData> AnimatedImageData = new ObjectArrayList<>();
+  private final List<AnimatedImageData> animatedImageData = new ObjectArrayList<>();
 
-  private SkinImage CapeImageData;
+  private SkinImage capeImageData;
 
-  private String JsonValue;
+  private String jsonValue;
 
-  private String MinEngineVersion;
+  private String minEngineVersion;
 
-  private String AnimationData;
+  private String animationData;
 
-  private String CapeID;
+  private String capeID;
 
-  private String FullID;
+  private String fullID;
 
-  private personaArmSizeType ArmSize;
+  private PersonaArmSizeType armSize;
 
-  private Color SkinColor;
+  private Color skinColor;
 
-  private final List<SerializedPersonaPieceHandle> PersonaPieces = new ObjectArrayList<>();
+  private final List<SerializedPersonaPieceHandle> personaPieces = new ObjectArrayList<>();
 
-  private final Map<personaPieceType, TintMapColor> PieceTintColors = new HashMap<>();
+  private final Map<PersonaPieceType, TintMapColor> pieceTintColors = new HashMap<>();
 
-  private boolean IsPremium;
+  private boolean isPremium;
 
-  private boolean IsPersona;
+  private boolean isPersona;
 
-  private boolean IsPersonaCapeOnClassicSkin;
+  private boolean isPersonaCapeOnClassicSkin;
 
-  private boolean IsPrimaryUser;
+  private boolean isPrimaryUser;
 
-  private boolean OverridesPlayerAppearance;
+  private boolean overridesPlayerAppearance;
 
-  private TrustedSkinFlag TrustedSkinFlag;
+  private TrustedSkinFlag trustedSkinFlag;
 
-  private String ProfileHash;
+  private String profileHash;
 }

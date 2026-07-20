@@ -13,13 +13,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SerializedPersonaPieceHandle {
-  private String PieceId;
+  private String pieceId;
 
-  private personaPieceType PieceType;
+  private PersonaPieceType pieceType;
 
-  private UUID PackId;
+  private UUID packId;
 
-  private boolean IsDefaultPiece;
+  private boolean isDefaultPiece;
 
-  private String ProductId;
+  private String productId;
 }

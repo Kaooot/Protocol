@@ -12,9 +12,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreativeGroupInfoPayload {
-  private String CreativeCategory;
+  private String creativeCategory;
 
-  private String Name;
+  private String name;
 
-  private NetworkItemInstanceDescriptor GroupIconItem;
+  private NetworkItemInstanceDescriptor groupIconItem;
 }

@@ -22,7 +22,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class RequestNetworkSettingsPacket implements BedrockPacket {
-  private int ClientNetworkVersion;
+  private int clientNetworkVersion;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

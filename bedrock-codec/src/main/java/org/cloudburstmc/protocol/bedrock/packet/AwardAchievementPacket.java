@@ -21,7 +21,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class AwardAchievementPacket implements BedrockPacket {
-  private int AchievementID;
+  private int achievementID;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

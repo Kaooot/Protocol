@@ -21,9 +21,9 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class CameraPacket implements BedrockPacket {
-  private long CameraID;
+  private long cameraID;
 
-  private long TargetPlayerID;
+  private long targetPlayerID;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

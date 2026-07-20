@@ -32,21 +32,21 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class MobEffectPacket implements BedrockPacket {
-  private long TargetRuntimeID;
+  private long targetRuntimeID;
 
-  private MobEffectPacketPayloadEvent EventID;
+  private MobEffectPacketPayloadEvent eventID;
 
-  private int EffectID;
+  private int effectID;
 
-  private int EffectAmplifier;
+  private int effectAmplifier;
 
-  private boolean ShowParticles;
+  private boolean showParticles;
 
-  private int EffectDurationTicks;
+  private int effectDurationTicks;
 
-  private PlayerInputTick Tick;
+  private PlayerInputTick tick;
 
-  private boolean Ambient;
+  private boolean ambient;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

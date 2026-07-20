@@ -10,10 +10,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CameraInstructionFadeInstructionTimeOption {
-  private float FadeInTime;
+public class ViewOffsetOption {
+  private float x;
 
-  private float HoldTime;
-
-  private float FadeOutTime;
+  private float y;
 }

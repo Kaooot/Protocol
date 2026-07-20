@@ -7,7 +7,7 @@ import java.lang.String;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.protocol.bedrock.data.gatheringsConfig;
+import org.cloudburstmc.protocol.bedrock.data.GatheringsConfig;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
@@ -23,13 +23,13 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class TransferPacket implements BedrockPacket {
-  private String ServerAddress;
+  private String serverAddress;
 
-  private int ServerPort;
+  private int serverPort;
 
-  private boolean ReloadWorld;
+  private boolean reloadWorld;
 
-  private gatheringsConfig GatheringsConfiguration;
+  private GatheringsConfig gatheringsConfiguration;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

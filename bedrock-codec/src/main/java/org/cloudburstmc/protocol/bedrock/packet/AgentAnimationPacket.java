@@ -22,9 +22,9 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class AgentAnimationPacket implements BedrockPacket {
-  private AgentAnimation AgentAnimation;
+  private AgentAnimation agentAnimation;
 
-  private long RuntimeId;
+  private long runtimeId;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

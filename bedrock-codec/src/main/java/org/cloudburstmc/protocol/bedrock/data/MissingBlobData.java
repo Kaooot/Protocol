@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MissingBlobData {
-  private long BlobId;
+  private long blobId;
 
-  private String BlobData;
+  private String blobData;
 }

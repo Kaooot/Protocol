@@ -24,13 +24,13 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class PacketViolationWarningPacket implements BedrockPacket {
-  private PacketViolationType ViolationType;
+  private PacketViolationType violationType;
 
-  private PacketViolationSeverity ViolationSeverity;
+  private PacketViolationSeverity violationSeverity;
 
-  private int ViolationPacketId;
+  private int violationPacketid;
 
-  private String ViolationContext;
+  private String violationContext;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

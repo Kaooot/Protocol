@@ -22,7 +22,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class SetPlayerInventoryOptionsPacket implements BedrockPacket {
-  private InventoryOptions InventoryOptions;
+  private InventoryOptions inventoryOptions;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

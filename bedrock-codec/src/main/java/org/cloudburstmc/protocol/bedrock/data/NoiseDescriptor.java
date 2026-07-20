@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 public class NoiseDescriptor {
   private String name;
 
-  private int firstoctave;
+  private int firstOctave;
 
   private final List<Float> amplitudes = new ObjectArrayList<>();
 }

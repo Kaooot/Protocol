@@ -22,9 +22,9 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class ServerSettingsResponsePacket implements BedrockPacket {
-  private int FormID;
+  private int formID;
 
-  private String FormUIJSON;
+  private String formUiJson;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

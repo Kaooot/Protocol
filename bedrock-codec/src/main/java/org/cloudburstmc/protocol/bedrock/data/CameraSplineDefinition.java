@@ -16,13 +16,13 @@ import lombok.NoArgsConstructor;
 public class CameraSplineDefinition {
   private String name;
 
-  private float totaltime;
+  private float totalTime;
 
-  private String splinetype;
+  private String splineType;
 
-  private final List<CameraSplineControlPoint> controlpoints = new ObjectArrayList<>();
+  private final List<CameraSplineControlPoint> controlPoints = new ObjectArrayList<>();
 
-  private final List<CameraSplineProgressKeyFrame> progresskeyframes = new ObjectArrayList<>();
+  private final List<CameraSplineProgressKeyFrame> progressKeyFrames = new ObjectArrayList<>();
 
-  private final List<CameraSplineRotationKeyFrame> rotationkeyframes = new ObjectArrayList<>();
+  private final List<CameraSplineRotationKeyFrame> rotationKeyFrames = new ObjectArrayList<>();
 }

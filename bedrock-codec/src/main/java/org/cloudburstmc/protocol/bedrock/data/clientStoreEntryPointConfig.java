@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class clientStoreEntryPointConfig {
+public class ClientStoreEntryPointConfig {
   private String storeId;
 
   private String storeName;

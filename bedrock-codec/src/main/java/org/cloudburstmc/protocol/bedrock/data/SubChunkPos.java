@@ -11,9 +11,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SubChunkPos {
-  private int SubchunkPositionX;
+  private int subchunkPositionX;
 
-  private int SubchunkPositionY;
+  private int subchunkPositionY;
 
-  private int SubchunkPositionZ;
+  private int subchunkPositionZ;
 }

@@ -25,11 +25,11 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class LabTablePacket implements BedrockPacket {
-  private LabTablePacketPayloadType Type;
+  private LabTablePacketPayloadType type;
 
-  private Vector3i Position;
+  private Vector3i position;
 
-  private LabTableReactionType Reaction;
+  private LabTableReactionType reaction;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

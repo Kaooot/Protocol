@@ -26,9 +26,9 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class SetHudPacket implements BedrockPacket {
-  private final List<HudElement> HudElement = new ObjectArrayList<>();
+  private final List<HudElement> hudElement = new ObjectArrayList<>();
 
-  private HudVisibility HudVisible;
+  private HudVisibility hudVisible;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

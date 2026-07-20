@@ -22,7 +22,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class SetLocalPlayerAsInitializedPacket implements BedrockPacket {
-  private long PlayerID;
+  private long playerID;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

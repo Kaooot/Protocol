@@ -11,9 +11,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ContainerMixDataEntry {
-  private int FromItemId;
+  private int fromItemId;
 
-  private int ReagentItemId;
+  private int reagentItemId;
 
-  private int ToItemId;
+  private int toItemId;
 }

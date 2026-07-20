@@ -22,11 +22,11 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class StopSoundPacket implements BedrockPacket {
-  private String SoundName;
+  private String soundName;
 
-  private boolean StopAllSounds;
+  private boolean stopAllSounds;
 
-  private boolean StopMusicLegacy;
+  private boolean stopMusicLegacy;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

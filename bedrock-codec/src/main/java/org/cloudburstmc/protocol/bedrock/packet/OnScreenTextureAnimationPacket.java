@@ -22,7 +22,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class OnScreenTextureAnimationPacket implements BedrockPacket {
-  private int EffectId;
+  private int effectId;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

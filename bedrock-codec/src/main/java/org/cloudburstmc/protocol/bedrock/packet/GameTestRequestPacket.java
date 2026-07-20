@@ -24,19 +24,19 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class GameTestRequestPacket implements BedrockPacket {
-  private int MaxTestsPerBatch;
+  private int maxTestsPerBatch;
 
-  private int RepeatCount;
+  private int repeatCount;
 
-  private Rotation Rotation;
+  private Rotation rotation;
 
-  private boolean StopOnFailure;
+  private boolean stopOnFailure;
 
-  private Vector3i TestPos;
+  private Vector3i testPos;
 
-  private int TestsPerRow;
+  private int testsPerRow;
 
-  private String TestName;
+  private String testName;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

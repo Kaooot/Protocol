@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class presenceConfig {
+public class PresenceConfig {
   private String richPresenceId;
 }

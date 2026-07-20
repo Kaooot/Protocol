@@ -22,9 +22,9 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class DebugInfoPacket implements BedrockPacket {
-  private long ActorId;
+  private long actorId;
 
-  private String Data;
+  private String data;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

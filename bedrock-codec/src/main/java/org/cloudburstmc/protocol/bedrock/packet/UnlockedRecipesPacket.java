@@ -25,9 +25,9 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class UnlockedRecipesPacket implements BedrockPacket {
-  private UnlockedRecipesPacketPayloadPacketType PacketType;
+  private UnlockedRecipesPacketPayloadPacketType packetType;
 
-  private final List<String> UnlockedRecipesList = new ObjectArrayList<>();
+  private final List<String> unlockedRecipesList = new ObjectArrayList<>();
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

@@ -23,9 +23,9 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class CommandOutputPacket implements BedrockPacket {
-  private CommandOriginData OriginData;
+  private CommandOriginData originData;
 
-  private CommandOutput Output;
+  private CommandOutput output;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

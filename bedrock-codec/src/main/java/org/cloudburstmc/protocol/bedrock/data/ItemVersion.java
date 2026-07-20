@@ -6,19 +6,10 @@ import java.lang.UnsupportedOperationException;
  * Auto generated from 1.26.40-beta.31 (v2168)
  */
 public enum ItemVersion {
-  /**
-   * Legacy
-   */
   LEGACY,
 
-  /**
-   * DataDriven
-   */
   DATA_DRIVEN,
 
-  /**
-   * None
-   */
   NONE;
 
   private static final ItemVersion[] VALUES = values();

@@ -11,15 +11,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ItemStackResponseSlotInfo {
-  private int RequestedSlot;
+  private int requestedSlot;
 
-  private int Slot;
+  private int slot;
 
-  private int Amount;
+  private int amount;
 
-  private ItemStackNetId ItemStackNetId;
+  private ItemStackNetId itemStackNetId;
 
-  private BedrockSafetyRedactableString CustomName;
+  private RedactableString customName;
 
-  private int DurabilityCorrection;
+  private int durabilityCorrection;
 }

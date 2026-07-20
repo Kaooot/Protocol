@@ -14,9 +14,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SkinImage {
-  private int Width;
+  private int width;
 
-  private int Height;
+  private int height;
 
-  private final List<Integer> ImageBytes = new ObjectArrayList<>();
+  private final List<Integer> imageBytes = new ObjectArrayList<>();
 }

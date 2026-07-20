@@ -10,10 +10,12 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CameraInstructionSetInstructionEntityOffsetOption {
-  private float entityoffsetx;
+public class CameraFovInstruction {
+  private float fieldOfView;
 
-  private float entityoffsety;
+  private float fovEaseTime;
 
-  private float entityoffsetz;
+  private EasingFunction fovEaseType;
+
+  private boolean fieldOfViewClear;
 }

@@ -23,7 +23,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class DeathInfoPacket implements BedrockPacket {
-  private DeathCauseMessageType DeathCauseMessage;
+  private DeathCauseMessageType deathCauseMessage;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

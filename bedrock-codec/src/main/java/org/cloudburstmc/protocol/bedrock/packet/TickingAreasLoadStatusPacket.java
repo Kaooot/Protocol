@@ -21,7 +21,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class TickingAreasLoadStatusPacket implements BedrockPacket {
-  private boolean WaitingForPreload;
+  private boolean waitingForPreload;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

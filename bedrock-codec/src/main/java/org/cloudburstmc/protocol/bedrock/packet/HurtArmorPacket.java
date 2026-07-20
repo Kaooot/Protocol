@@ -22,11 +22,11 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class HurtArmorPacket implements BedrockPacket {
-  private int Cause;
+  private int cause;
 
-  private int Damage;
+  private int damage;
 
-  private long ArmorSlots;
+  private long armorSlots;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

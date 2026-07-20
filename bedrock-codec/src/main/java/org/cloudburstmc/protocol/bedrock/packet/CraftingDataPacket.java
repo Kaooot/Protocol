@@ -32,29 +32,29 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class CraftingDataPacket implements BedrockPacket {
-  private final List<ShapedRecipePayload> ShapedRecipes = new ObjectArrayList<>();
+  private final List<ShapedRecipePayload> shapedRecipes = new ObjectArrayList<>();
 
-  private final List<ShapelessRecipePayload> ShapelessRecipes = new ObjectArrayList<>();
+  private final List<ShapelessRecipePayload> shapelessRecipes = new ObjectArrayList<>();
 
-  private final List<MultiRecipePayload> MultiRecipes = new ObjectArrayList<>();
+  private final List<MultiRecipePayload> multiRecipes = new ObjectArrayList<>();
 
-  private final List<ShapelessRecipePayload> UserDataShapelessRecipes = new ObjectArrayList<>();
+  private final List<ShapelessRecipePayload> userDataShapelessRecipes = new ObjectArrayList<>();
 
-  private final List<ShapelessRecipePayload> ShapelessChemistryRecipes = new ObjectArrayList<>();
+  private final List<ShapelessRecipePayload> shapelessChemistryRecipes = new ObjectArrayList<>();
 
-  private final List<ShapedRecipePayload> ShapedChemistryRecipes = new ObjectArrayList<>();
+  private final List<ShapedRecipePayload> shapedChemistryRecipes = new ObjectArrayList<>();
 
-  private final List<SmithingTransformRecipePayload> SmithingTransformRecipes = new ObjectArrayList<>();
+  private final List<SmithingTransformRecipePayload> smithingTransformRecipes = new ObjectArrayList<>();
 
-  private final List<SmithingTrimRecipePayload> SmithingTrimRecipes = new ObjectArrayList<>();
+  private final List<SmithingTrimRecipePayload> smithingTrimRecipes = new ObjectArrayList<>();
 
-  private final List<PotionMixDataEntry> PotionMixes = new ObjectArrayList<>();
+  private final List<PotionMixDataEntry> potionMixes = new ObjectArrayList<>();
 
-  private final List<ContainerMixDataEntry> ContainerMixes = new ObjectArrayList<>();
+  private final List<ContainerMixDataEntry> containerMixes = new ObjectArrayList<>();
 
-  private final List<MaterialReducerDataEntry> MaterialReducers = new ObjectArrayList<>();
+  private final List<MaterialReducerDataEntry> materialReducers = new ObjectArrayList<>();
 
-  private boolean ClearRecipes;
+  private boolean clearRecipes;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

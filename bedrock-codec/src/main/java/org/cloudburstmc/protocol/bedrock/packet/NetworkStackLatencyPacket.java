@@ -22,9 +22,9 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class NetworkStackLatencyPacket implements BedrockPacket {
-  private long CreationTime;
+  private long creationTime;
 
-  private boolean IsFromServer;
+  private boolean isFromServer;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

@@ -24,21 +24,21 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class CommandBlockUpdatePacket implements BedrockPacket {
-  private Object Target;
+  private Object target;
 
-  private String Command;
+  private String command;
 
-  private String LastOutput;
+  private String lastOutput;
 
-  private String Name;
+  private String name;
 
-  private String FilteredName;
+  private String filteredName;
 
-  private boolean TrackOutput;
+  private boolean trackOutput;
 
-  private int TickDelay;
+  private int tickDelay;
 
-  private boolean ExecuteOnFirstTick;
+  private boolean executeOnFirstTick;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

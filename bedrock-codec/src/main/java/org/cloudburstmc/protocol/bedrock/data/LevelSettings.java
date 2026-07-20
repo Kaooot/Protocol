@@ -14,103 +14,103 @@ import org.cloudburstmc.protocol.common.util.OptionalBoolean;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LevelSettings {
-  private long Seed;
+  private long seed;
 
-  private SpawnSettings SpawnSettings;
+  private SpawnSettings spawnSettings;
 
-  private String GeneratorType;
+  private String generatorType;
 
-  private String GameType;
+  private String gameType;
 
-  private boolean IsHardcore;
+  private boolean isHardcore;
 
-  private String GameDifficulty;
+  private String gameDifficulty;
 
-  private Vector3i DefaultSpawnBlockPosition;
+  private Vector3i defaultSpawnBlockPosition;
 
-  private boolean AchievementsDisabled;
+  private boolean achievementsDisabled;
 
-  private String EditorWorldType;
+  private String editorWorldType;
 
-  private boolean IsCreatedInEditor;
+  private boolean isCreatedInEditor;
 
-  private boolean IsExportedFromEditor;
+  private boolean isExportedFromEditor;
 
-  private int DayCycleStopTime;
+  private int dayCycleStopTime;
 
-  private String EducationEditionOffer;
+  private String educationEditionOffer;
 
-  private boolean EducationFeaturesEnabled;
+  private boolean educationFeaturesEnabled;
 
-  private String EducationProductID;
+  private String educationProductID;
 
-  private float RainLevel;
+  private float rainLevel;
 
-  private float LightningLevel;
+  private float lightningLevel;
 
-  private boolean HasConfirmedPlatformLockedContent;
+  private boolean hasConfirmedPlatformLockedContent;
 
-  private boolean MultiplayerGameIntent;
+  private boolean multiplayerGameIntent;
 
-  private boolean LANBroadcastIntent;
+  private boolean lanBroadcastIntent;
 
-  private String XboxLiveBroadcastSetting;
+  private String xboxLiveBroadcastSetting;
 
-  private String PlatformBroadcastSetting;
+  private String platformBroadcastSetting;
 
-  private boolean CommandsEnabled;
+  private boolean commandsEnabled;
 
-  private boolean TexturePacksRequired;
+  private boolean texturePacksRequired;
 
-  private GameRulesChangedPacketData RuleData;
+  private GameRulesChangedPacketData ruleData;
 
-  private Experiments Experiments;
+  private Experiments experiments;
 
-  private boolean HasBonusChestEnabled;
+  private boolean hasBonusChestEnabled;
 
-  private boolean StartWithMapEnabled;
+  private boolean startWithMapEnabled;
 
-  private String PlayerPermissions;
+  private String playerPermissions;
 
-  private int ServerChunkTickRange;
+  private int serverChunkTickRange;
 
-  private boolean HasLockedBehaviorPack;
+  private boolean hasLockedBehaviorPack;
 
-  private boolean HasLockedResourcePack;
+  private boolean hasLockedResourcePack;
 
-  private boolean IsFromLockedTemplate;
+  private boolean isFromLockedTemplate;
 
-  private boolean UseMsaGamertagsOnly;
+  private boolean useMsaGamertagsOnly;
 
-  private boolean IsFromWorldTemplate;
+  private boolean isFromWorldTemplate;
 
-  private boolean IsWorldTemplateOptionLocked;
+  private boolean isWorldTemplateOptionLocked;
 
-  private boolean OnlySpawnV1Villagers;
+  private boolean onlySpawnV1Villagers;
 
-  private boolean PersonaDisabled;
+  private boolean personaDisabled;
 
-  private boolean CustomSkinsDisabled;
+  private boolean customSkinsDisabled;
 
-  private boolean EmoteChatMuted;
+  private boolean emoteChatMuted;
 
-  private String BaseGameVersion;
+  private String baseGameVersion;
 
-  private int LimitedWorldWidth;
+  private int limitedWorldWidth;
 
-  private int LimitedWorldDepth;
+  private int limitedWorldDepth;
 
-  private boolean NetherType;
+  private boolean netherType;
 
-  private EduSharedUriResource EduSharedUriResource;
+  private EduSharedUriResource eduSharedUriResource;
 
-  private OptionalBoolean OverrideForceExperimentalGameplay = OptionalBoolean.empty();
+  private OptionalBoolean overrideForceExperimentalGameplay = OptionalBoolean.empty();
 
-  private String ChatRestrictionLevel;
+  private String chatRestrictionLevel;
 
-  private boolean DisablePlayerInteractions;
+  private boolean disablePlayerInteractions;
 
-  private String ServerEditorConnectionPolicy;
+  private String serverEditorConnectionPolicy;
 
-  private boolean AllowAnonymousBlockDropsInEditorWorlds;
+  private boolean allowAnonymousBlockDropsInEditorWorlds;
 }

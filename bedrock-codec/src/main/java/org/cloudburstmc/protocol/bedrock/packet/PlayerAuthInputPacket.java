@@ -35,43 +35,43 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class PlayerAuthInputPacket implements BedrockPacket {
-  private Vector2f PlayerRotation;
+  private Vector2f playerRotation;
 
-  private Vector3f Position;
+  private Vector3f position;
 
-  private Vector2f MoveVector;
+  private Vector2f moveVector;
 
-  private float PlayerHeadRotation;
+  private float playerHeadRotation;
 
-  private final List<PlayerAuthInputData> InputData = new ObjectArrayList<>();
+  private final List<PlayerAuthInputData> inputData = new ObjectArrayList<>();
 
-  private InputMode InputMode;
+  private InputMode inputMode;
 
-  private ClientPlayMode PlayMode;
+  private ClientPlayMode playMode;
 
-  private NewInteractionModel NewInteractionModel;
+  private NewInteractionModel newInteractionModel;
 
-  private Vector2f InteractRotation;
+  private Vector2f interactRotation;
 
-  private PlayerInputTick ClientTick;
+  private PlayerInputTick clientTick;
 
-  private Vector3f PosDelta;
+  private Vector3f posDelta;
 
-  private PackedItemUseLegacyInventoryTransaction ItemUseTransaction;
+  private PackedItemUseLegacyInventoryTransaction itemUseTransaction;
 
-  private ItemStackRequest ItemStackRequest;
+  private ItemStackRequest itemStackRequest;
 
-  private final List<PlayerBlockActionData> PlayerBlockActions = new ObjectArrayList<>();
+  private final List<PlayerBlockActionData> playerBlockActions = new ObjectArrayList<>();
 
-  private Vector2f VehicleRotation;
+  private Vector2f vehicleRotation;
 
-  private Long ClientPredictedVehicle;
+  private Long clientPredictedVehicle;
 
-  private Vector2f AnalogMoveVector;
+  private Vector2f analogMoveVector;
 
-  private Vector3f CameraOrientation;
+  private Vector3f cameraOrientation;
 
-  private Vector2f RawMoveVector;
+  private Vector2f rawMoveVector;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

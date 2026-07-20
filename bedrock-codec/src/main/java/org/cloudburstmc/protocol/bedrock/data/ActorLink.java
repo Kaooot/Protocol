@@ -11,15 +11,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ActorLink {
-  private long TargetA;
+  private long targetA;
 
-  private long TargetB;
+  private long targetB;
 
-  private ActorLinkType Type;
+  private ActorLinkType type;
 
-  private boolean Immediate;
+  private boolean immediate;
 
-  private boolean PassengerInitiated;
+  private boolean passengerInitiated;
 
-  private float VehicleAngularVelocity;
+  private float vehicleAngularVelocity;
 }

@@ -22,7 +22,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class RemoveActorPacket implements BedrockPacket {
-  private long TargetActorID;
+  private long targetActorID;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

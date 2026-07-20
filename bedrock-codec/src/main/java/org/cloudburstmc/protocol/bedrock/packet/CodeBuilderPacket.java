@@ -26,7 +26,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 public class CodeBuilderPacket implements BedrockPacket {
   private String URL;
 
-  private boolean Shouldopencodebuilder;
+  private boolean shouldOpenCodeBuilder;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

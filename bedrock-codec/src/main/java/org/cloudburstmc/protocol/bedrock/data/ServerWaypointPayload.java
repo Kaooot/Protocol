@@ -16,19 +16,19 @@ import org.cloudburstmc.protocol.common.util.OptionalBoolean;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ServerWaypointPayload {
-  private int UpdateFlag;
+  private int updateFlag;
 
-  private OptionalBoolean IsVisible = OptionalBoolean.empty();
+  private OptionalBoolean isVisible = OptionalBoolean.empty();
 
-  private WorldPosition WorldPosition;
+  private WorldPosition worldPosition;
 
-  private String TexturePath;
+  private String texturePath;
 
-  private Vector2f IconSize;
+  private Vector2f iconSize;
 
-  private Color Color;
+  private Color color;
 
-  private OptionalBoolean ClientPositionAuthority = OptionalBoolean.empty();
+  private OptionalBoolean clientPositionAuthority = OptionalBoolean.empty();
 
-  private Long ActorUniqueID;
+  private Long actorUniqueID;
 }

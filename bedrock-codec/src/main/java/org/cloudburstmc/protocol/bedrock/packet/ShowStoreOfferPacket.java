@@ -24,9 +24,9 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class ShowStoreOfferPacket implements BedrockPacket {
-  private UUID OfferId;
+  private UUID offerId;
 
-  private ShowStoreOfferRedirectType RedirectType;
+  private ShowStoreOfferRedirectType redirectType;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

@@ -25,7 +25,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class SetScorePacket implements BedrockPacket {
-  private final List<Object> ScoreInfo = new ObjectArrayList<>();
+  private final List<Object> scoreInfo = new ObjectArrayList<>();
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

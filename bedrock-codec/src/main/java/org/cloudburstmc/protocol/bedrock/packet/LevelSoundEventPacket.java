@@ -26,21 +26,21 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class LevelSoundEventPacket implements BedrockPacket {
-  private String SoundEventIdentifier;
+  private String soundEventIdentifier;
 
-  private Vector3f Position;
+  private Vector3f position;
 
-  private int Data;
+  private int data;
 
-  private String ActorIdentifier;
+  private String actorIdentifier;
 
-  private boolean IsBaby;
+  private boolean isBaby;
 
-  private boolean IsGlobal;
+  private boolean isGlobal;
 
-  private long ActorUniqueId;
+  private long actorUniqueId;
 
-  private Vector3f FireAtPosition;
+  private Vector3f fireAtPosition;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

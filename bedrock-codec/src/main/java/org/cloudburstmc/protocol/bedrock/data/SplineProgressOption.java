@@ -10,8 +10,10 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CameraInstructionSetInstructionViewOffsetOption {
-  private float x;
+public class SplineProgressOption {
+  private float keyFrameValue;
 
-  private float y;
+  private float keyFrameTime;
+
+  private EasingFunction keyFrameEasingFunc;
 }

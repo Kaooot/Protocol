@@ -15,7 +15,7 @@ public class BiomeClimateData {
 
   private float downfall;
 
-  private float snowaccumulationmin;
+  private float snowAccumulationMin;
 
-  private float snowaccumulationmax;
+  private float snowAccumulationMax;
 }

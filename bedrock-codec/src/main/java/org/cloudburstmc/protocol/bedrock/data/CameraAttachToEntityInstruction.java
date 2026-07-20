@@ -10,12 +10,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CameraInstructionFovInstruction {
-  private float FieldofView;
-
-  private float FOVEaseTime;
-
-  private easingfunction FOVEaseType;
-
-  private boolean FieldofViewClear;
+public class CameraAttachToEntityInstruction {
+  private long entityActorID;
 }

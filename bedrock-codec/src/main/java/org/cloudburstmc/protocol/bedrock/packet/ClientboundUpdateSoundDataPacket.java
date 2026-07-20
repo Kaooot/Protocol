@@ -23,21 +23,21 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class ClientboundUpdateSoundDataPacket implements BedrockPacket {
-  private ServerSoundHandle ServerSoundHandle;
+  private ServerSoundHandle serverSoundHandle;
 
-  private Object Stop;
+  private Object stop;
 
-  private Object SetVolume;
+  private Object setVolume;
 
-  private Object SetPitch;
+  private Object setPitch;
 
-  private Object Fade;
+  private Object fade;
 
-  private Object SeekTo;
+  private Object seekTo;
 
-  private Object Pause;
+  private Object pause;
 
-  private Object Resume;
+  private Object resume;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

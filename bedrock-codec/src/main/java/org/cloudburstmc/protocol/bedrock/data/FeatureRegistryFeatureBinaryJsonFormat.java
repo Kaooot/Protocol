@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class FeatureRegistryFeatureBinaryJsonFormat {
-  private String FeatureName;
+  private String featureName;
 
-  private String BinaryJsonOutput;
+  private String binaryJsonOutput;
 }

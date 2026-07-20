@@ -27,9 +27,9 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class ServerboundLoadingScreenPacket implements BedrockPacket {
-  private String LoadingScreenPacketType;
+  private String loadingScreenPacketType;
 
-  private int LoadingScreenId;
+  private int loadingScreenId;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

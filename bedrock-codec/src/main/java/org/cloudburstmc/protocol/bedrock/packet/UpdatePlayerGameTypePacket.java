@@ -23,11 +23,11 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class UpdatePlayerGameTypePacket implements BedrockPacket {
-  private GameType PlayerGameType;
+  private GameType playerGameType;
 
-  private long Targetplayer;
+  private long targetPlayer;
 
-  private PlayerInputTick Tick;
+  private PlayerInputTick tick;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

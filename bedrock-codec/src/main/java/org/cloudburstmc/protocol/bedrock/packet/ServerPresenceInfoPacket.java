@@ -6,7 +6,7 @@ import java.lang.Override;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.protocol.bedrock.data.presenceConfig;
+import org.cloudburstmc.protocol.bedrock.data.PresenceConfig;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
@@ -22,7 +22,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class ServerPresenceInfoPacket implements BedrockPacket {
-  private presenceConfig presenceconfiguration;
+  private PresenceConfig presenceConfiguration;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

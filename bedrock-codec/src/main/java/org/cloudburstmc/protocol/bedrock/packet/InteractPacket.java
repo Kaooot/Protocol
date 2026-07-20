@@ -24,11 +24,11 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class InteractPacket implements BedrockPacket {
-  private InteractPacketPayloadAction Action;
+  private InteractPacketPayloadAction action;
 
-  private long TargetRuntimeID;
+  private long targetRuntimeID;
 
-  private Vector3f Position;
+  private Vector3f position;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

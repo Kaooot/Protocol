@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BiomeWeightedData {
-  private int biomeidentifier;
+  private int biomeIdentifier;
 
   private int weight;
 }

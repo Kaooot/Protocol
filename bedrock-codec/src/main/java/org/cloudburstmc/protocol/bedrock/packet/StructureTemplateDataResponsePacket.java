@@ -25,11 +25,11 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class StructureTemplateDataResponsePacket implements BedrockPacket {
-  private String StructureName;
+  private String structureName;
 
-  private NbtMap StructuresNBT;
+  private NbtMap structuresNbt;
 
-  private StructureTemplateResponseType ResponseType;
+  private StructureTemplateResponseType responseType;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

@@ -25,21 +25,21 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class ClientboundTextureShiftPacket implements BedrockPacket {
-  private ClientboundTextureShiftPacketPayloadAction ActionID;
+  private ClientboundTextureShiftPacketPayloadAction actionID;
 
-  private String CollectionName;
+  private String collectionName;
 
-  private String FromStep;
+  private String fromStep;
 
-  private String ToStep;
+  private String toStep;
 
-  private final List<String> AllSteps = new ObjectArrayList<>();
+  private final List<String> allSteps = new ObjectArrayList<>();
 
-  private long CurrentLengthInTicks;
+  private long currentLengthInTicks;
 
-  private long TotalLengthInTicks;
+  private long totalLengthInTicks;
 
-  private boolean Enabled;
+  private boolean enabled;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

@@ -23,13 +23,13 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class StructureBlockUpdatePacket implements BedrockPacket {
-  private Vector3i BlockPosition;
+  private Vector3i blockPosition;
 
-  private StructureEditorData StructureData;
+  private StructureEditorData structureData;
 
-  private boolean Trigger;
+  private boolean trigger;
 
-  private boolean IsWaterlogged;
+  private boolean isWaterlogged;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AvailableCommandsPacketEnumData {
-  private String Name;
+  private String name;
 
-  private final List<Integer> Values = new ObjectArrayList<>();
+  private final List<Integer> values = new ObjectArrayList<>();
 }

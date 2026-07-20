@@ -14,5 +14,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ActorDataFlagComponent {
-  private final List<Integer> ActorFlagBitsetData = new ObjectArrayList<>();
+  private final List<Integer> actorFlagBitsetData = new ObjectArrayList<>();
 }

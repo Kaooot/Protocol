@@ -12,11 +12,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ItemEnchantOption {
-  private int Cost;
+  private int cost;
 
-  private ItemEnchants Enchants;
+  private ItemEnchants enchants;
 
-  private String EnchantName;
+  private String enchantName;
 
-  private RecipeNetId EnchantNetId;
+  private RecipeNetId enchantNetId;
 }

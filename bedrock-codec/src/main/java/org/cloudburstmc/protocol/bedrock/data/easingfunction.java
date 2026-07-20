@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
  */
 @Getter
 @RequiredArgsConstructor
-public enum easingfunction {
+public enum EasingFunction {
   LINEAR("linear"),
 
   SPRING("spring"),
@@ -76,17 +76,17 @@ public enum easingfunction {
 
   IN_OUT_ELASTIC("in_out_elastic");
 
-  private static final Map<String, easingfunction> SERIALIZE_NAMES = new HashMap<>(values().length);
+  private static final Map<String, EasingFunction> SERIALIZE_NAMES = new HashMap<>(values().length);
 
   static {
-    for (easingfunction value : values()) {
+    for (EasingFunction value : values()) {
       SERIALIZE_NAMES.put(value.getSerializeName(), value);
     }
   }
 
   private final String serializeName;
 
-  public static easingfunction fromName(String serializeName) {
+  public static EasingFunction fromName(String serializeName) {
     return SERIALIZE_NAMES.get(serializeName);
   }
 }

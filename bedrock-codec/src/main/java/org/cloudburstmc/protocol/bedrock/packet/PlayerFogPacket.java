@@ -25,7 +25,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class PlayerFogPacket implements BedrockPacket {
-  private final List<String> FogStack = new ObjectArrayList<>();
+  private final List<String> fogStack = new ObjectArrayList<>();
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

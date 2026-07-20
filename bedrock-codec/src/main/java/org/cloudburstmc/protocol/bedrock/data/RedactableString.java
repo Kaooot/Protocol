@@ -1,5 +1,6 @@
 package org.cloudburstmc.protocol.bedrock.data;
 
+import java.lang.String;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,8 +11,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PropertySyncDataPropertySyncFloatEntry {
-  private int PropertyIndex;
+public class RedactableString {
+  private String unredacted;
 
-  private float Data;
+  private String redacted;
 }

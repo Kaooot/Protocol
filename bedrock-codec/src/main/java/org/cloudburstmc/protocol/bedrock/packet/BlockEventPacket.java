@@ -22,11 +22,11 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class BlockEventPacket implements BedrockPacket {
-  private Vector3i BlockPosition;
+  private Vector3i blockPosition;
 
-  private int EventType;
+  private int eventType;
 
-  private int EventValue;
+  private int eventValue;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

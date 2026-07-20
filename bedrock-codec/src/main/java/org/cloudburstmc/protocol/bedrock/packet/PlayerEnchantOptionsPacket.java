@@ -24,7 +24,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class PlayerEnchantOptionsPacket implements BedrockPacket {
-  private final List<ItemEnchantOption> Options = new ObjectArrayList<>();
+  private final List<ItemEnchantOption> options = new ObjectArrayList<>();
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

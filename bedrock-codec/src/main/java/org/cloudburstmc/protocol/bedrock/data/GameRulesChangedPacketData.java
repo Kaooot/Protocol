@@ -13,5 +13,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class GameRulesChangedPacketData {
-  private final List<GameRule> RulesList = new ObjectArrayList<>();
+  private final List<GameRule> rulesList = new ObjectArrayList<>();
 }

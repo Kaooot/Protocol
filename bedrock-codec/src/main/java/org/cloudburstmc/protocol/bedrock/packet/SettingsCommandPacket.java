@@ -23,9 +23,9 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class SettingsCommandPacket implements BedrockPacket {
-  private String Command;
+  private String command;
 
-  private boolean SuppressOutput;
+  private boolean suppressOutput;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

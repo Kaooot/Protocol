@@ -26,13 +26,13 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class StructureTemplateDataRequestPacket implements BedrockPacket {
-  private String StructureName;
+  private String structureName;
 
-  private Vector3i StructurePosition;
+  private Vector3i structurePosition;
 
-  private StructureSettings StructureSettings;
+  private StructureSettings structureSettings;
 
-  private StructureTemplateRequestOperation RequestedOperation;
+  private StructureTemplateRequestOperation requestedOperation;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

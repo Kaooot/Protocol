@@ -14,11 +14,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CommandOriginData {
-  private String Type;
+  private String type;
 
-  private UUID UUID;
+  private UUID uuid;
 
-  private String RequestId;
+  private String requestId;
 
-  private Long PlayerId;
+  private Long playerId;
 }

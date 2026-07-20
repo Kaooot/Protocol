@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CameraInstructionAttachToEntityInstruction {
-  private long EntityActorID;
+public class ClientPixelsProxy {
+  private int pixel;
+
+  private int index;
 }

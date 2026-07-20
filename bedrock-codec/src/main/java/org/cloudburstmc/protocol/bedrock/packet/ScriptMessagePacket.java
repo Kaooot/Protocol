@@ -22,9 +22,9 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class ScriptMessagePacket implements BedrockPacket {
-  private String MessageId;
+  private String messageId;
 
-  private String MessageValue;
+  private String messageValue;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

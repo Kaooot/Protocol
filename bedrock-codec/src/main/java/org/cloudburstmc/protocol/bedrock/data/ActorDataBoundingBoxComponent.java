@@ -14,5 +14,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ActorDataBoundingBoxComponent {
-  private final List<Float> ActorDataBoundingBox = new ObjectArrayList<>();
+  private final List<Float> actorDataBoundingBox = new ObjectArrayList<>();
 }

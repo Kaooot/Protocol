@@ -23,7 +23,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class ResourcePackClientResponsePacket implements BedrockPacket {
-  private Object Response;
+  private Object response;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

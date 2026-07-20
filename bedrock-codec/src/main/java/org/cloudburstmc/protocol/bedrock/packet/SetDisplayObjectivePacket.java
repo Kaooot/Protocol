@@ -22,15 +22,15 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class SetDisplayObjectivePacket implements BedrockPacket {
-  private String DisplaySlotName;
+  private String displaySlotName;
 
-  private String ObjectiveName;
+  private String objectiveName;
 
-  private String ObjectiveDisplayName;
+  private String objectiveDisplayName;
 
-  private String CriteriaName;
+  private String criteriaName;
 
-  private int SortOrder;
+  private int sortOrder;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

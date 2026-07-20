@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ArmorSlotAndDamagePair {
-  private SharedTypesLegacyArmorSlot ArmorSlot;
+  private ArmorSlot armorSlot;
 
-  private int Damage;
+  private int damage;
 }

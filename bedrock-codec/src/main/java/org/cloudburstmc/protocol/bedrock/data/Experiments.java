@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Experiments {
-  private final List<ExperimentToggle> Toggles = new ObjectArrayList<>();
+  private final List<ExperimentToggle> toggles = new ObjectArrayList<>();
 
-  private boolean ExperimentsEverToggled;
+  private boolean experimentsEverToggled;
 }

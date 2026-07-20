@@ -22,15 +22,15 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class UpdateEquipPacket implements BedrockPacket {
-  private int ContainerId;
+  private int containerId;
 
-  private int Type;
+  private int type;
 
-  private int Size;
+  private int size;
 
-  private long EntityUniqueId;
+  private long entityUniqueId;
 
-  private NbtMap Data;
+  private NbtMap data;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

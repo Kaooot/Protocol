@@ -29,19 +29,19 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class LevelChunkPacket implements BedrockPacket {
-  private ChunkPos ChunkPosition;
+  private ChunkPos chunkPosition;
 
-  private DimensionType DimensionId;
+  private DimensionType dimensionId;
 
-  private int SubchunksCount;
+  private int subchunksCount;
 
-  private Integer ClientRequestSubChunkLimit;
+  private Integer clientRequestSubchunkLimit;
 
-  private boolean CacheEnabled;
+  private boolean cacheEnabled;
 
-  private final List<LevelChunkPacketPayloadSubChunkMetadata> CacheMetadata = new ObjectArrayList<>();
+  private final List<LevelChunkPacketPayloadSubChunkMetadata> cacheMetadata = new ObjectArrayList<>();
 
-  private String SerializedChunkData;
+  private String serializedChunkData;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

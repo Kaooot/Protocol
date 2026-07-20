@@ -11,21 +11,21 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CameraInstruction {
-  private CameraInstructionSetInstruction Set;
+  private CameraSetInstruction set;
 
-  private boolean Clear;
+  private boolean clear;
 
-  private CameraInstructionFadeInstruction Fade;
+  private CameraFadeInstruction fade;
 
-  private CameraInstructionTargetInstruction Target;
+  private CameraTargetInstruction target;
 
-  private boolean RemoveTarget;
+  private boolean removeTarget;
 
-  private CameraInstructionFovInstruction FieldOfView;
+  private CameraFovInstruction fieldOfView;
 
-  private CameraInstructionSplineInstruction Spline;
+  private CameraSplineInstruction spline;
 
-  private CameraInstructionAttachToEntityInstruction AttachToEntity;
+  private CameraAttachToEntityInstruction attachToEntity;
 
-  private boolean DetachFromEntity;
+  private boolean detachFromEntity;
 }

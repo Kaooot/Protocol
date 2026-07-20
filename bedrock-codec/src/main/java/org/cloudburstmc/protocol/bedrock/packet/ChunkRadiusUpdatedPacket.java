@@ -21,7 +21,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class ChunkRadiusUpdatedPacket implements BedrockPacket {
-  private int ChunkRadius;
+  private int chunkRadius;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

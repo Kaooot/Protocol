@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CameraInstructionSetInstructionRotOption {
-  private float x;
+public class EaseOption {
+  private int type;
 
-  private float y;
+  private float time;
 }

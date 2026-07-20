@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AgentCapabilities {
-  private boolean CanModifyBlocks;
+  private boolean canModifyBlocks;
 }

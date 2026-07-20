@@ -22,7 +22,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class ServerboundDataStorePacket implements BedrockPacket {
-  private DataStoreUpdate Update;
+  private DataStoreUpdate update;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

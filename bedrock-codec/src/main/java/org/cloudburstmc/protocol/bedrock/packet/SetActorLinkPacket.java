@@ -23,7 +23,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class SetActorLinkPacket implements BedrockPacket {
-  private ActorLink Link;
+  private ActorLink link;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

@@ -12,11 +12,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SyncedAttribute {
-  private String AttributeName;
+  private String attributeName;
 
-  private float MinValue;
+  private float minValue;
 
-  private float CurrentValue;
+  private float currentValue;
 
-  private float MaxValue;
+  private float maxValue;
 }

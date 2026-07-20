@@ -14,9 +14,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BiomeNoiseGradientSurfaceData {
-  private final List<Integer> nonreplaceableblocks = new ObjectArrayList<>();
+  private final List<Integer> nonreplaceableBlocks = new ObjectArrayList<>();
 
-  private final List<SerializedNoiseBlockSpecifier> gradientblocks = new ObjectArrayList<>();
+  private final List<SerializedNoiseBlockSpecifier> gradientBlocks = new ObjectArrayList<>();
 
   private NoiseDescriptor noise;
 }

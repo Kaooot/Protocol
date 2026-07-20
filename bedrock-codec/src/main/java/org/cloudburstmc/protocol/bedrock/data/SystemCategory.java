@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SystemCategory {
-  private String CategoryName;
+  private String categoryName;
 
-  private long SystemIndex;
+  private long systemIndex;
 }

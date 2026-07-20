@@ -6,14 +6,8 @@ import java.lang.UnsupportedOperationException;
  * Auto generated from 1.26.40-beta.31 (v2168)
  */
 public enum ItemUsePredictedResult {
-  /**
-   * Failure
-   */
   FAILURE,
 
-  /**
-   * Success
-   */
   SUCCESS;
 
   private static final ItemUsePredictedResult[] VALUES = values();

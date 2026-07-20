@@ -22,7 +22,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class SetCommandsEnabledPacket implements BedrockPacket {
-  private boolean CommandsEnabled;
+  private boolean commandsEnabled;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

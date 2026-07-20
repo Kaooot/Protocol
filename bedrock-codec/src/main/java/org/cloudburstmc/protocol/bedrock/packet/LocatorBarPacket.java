@@ -24,7 +24,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class LocatorBarPacket implements BedrockPacket {
-  private final List<LocatorBarWaypointPayload> Waypoints = new ObjectArrayList<>();
+  private final List<LocatorBarWaypointPayload> waypoints = new ObjectArrayList<>();
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

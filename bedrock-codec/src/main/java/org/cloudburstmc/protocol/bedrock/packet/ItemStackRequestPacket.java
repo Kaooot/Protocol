@@ -24,7 +24,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class ItemStackRequestPacket implements BedrockPacket {
-  private final List<ItemStackRequest> Requests = new ObjectArrayList<>();
+  private final List<ItemStackRequest> requests = new ObjectArrayList<>();
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

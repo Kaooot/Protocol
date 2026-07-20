@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class FullContainerName {
-  private ContainerEnumName ContainerName;
+  private ContainerEnumName containerName;
 
-  private int DynamicID;
+  private int dynamicID;
 }

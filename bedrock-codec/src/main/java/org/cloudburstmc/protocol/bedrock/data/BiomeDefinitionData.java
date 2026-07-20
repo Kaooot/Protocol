@@ -17,17 +17,17 @@ public class BiomeDefinitionData {
 
   private float downfall;
 
-  private float foliagesnow;
+  private float foliageSnow;
 
   private float depth;
 
   private float scale;
 
-  private int mapwatercolorARGB;
+  private int mapWaterColorArgb;
 
   private boolean rain;
 
   private BiomeTagsData tags;
 
-  private BiomeDefinitionChunkGenData chunkgendata;
+  private BiomeDefinitionChunkGenData chunkGenData;
 }

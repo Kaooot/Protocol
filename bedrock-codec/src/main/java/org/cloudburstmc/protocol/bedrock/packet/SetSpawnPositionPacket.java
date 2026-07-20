@@ -25,13 +25,13 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class SetSpawnPositionPacket implements BedrockPacket {
-  private SpawnPositionType SpawnPositionType;
+  private SpawnPositionType spawnPositionType;
 
-  private Vector3i BlockPosition;
+  private Vector3i blockPosition;
 
-  private DimensionType Dimensiontype;
+  private DimensionType dimensionType;
 
-  private Vector3i SpawnBlockPos;
+  private Vector3i spawnBlockPos;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

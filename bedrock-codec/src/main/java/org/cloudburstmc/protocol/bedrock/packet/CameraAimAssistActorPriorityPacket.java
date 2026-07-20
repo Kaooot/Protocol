@@ -25,7 +25,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class CameraAimAssistActorPriorityPacket implements BedrockPacket {
-  private final List<AimAssistActorPriorityData> CameraAimAssistActorPriorityList = new ObjectArrayList<>();
+  private final List<AimAssistActorPriorityData> cameraAimassistActorPriorityList = new ObjectArrayList<>();
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

@@ -35,37 +35,37 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class AddPlayerPacket implements BedrockPacket {
-  private UUID UUID;
+  private UUID uuid;
 
-  private String PlayerName;
+  private String playerName;
 
-  private long TargetRuntimeID;
+  private long targetRuntimeID;
 
-  private String PlatformChatId;
+  private String platformChatId;
 
-  private Vector3f Position;
+  private Vector3f position;
 
-  private Vector3f Velocity;
+  private Vector3f velocity;
 
-  private Vector2f Rotation;
+  private Vector2f rotation;
 
-  private float YHeadRotation;
+  private float yHeadRotation;
 
-  private NetworkItemStackDescriptor CarriedItem;
+  private NetworkItemStackDescriptor carriedItem;
 
-  private GameType PlayerGameType;
+  private GameType playerGameType;
 
-  private SynchedActorDataList EntityData;
+  private SynchedActorDataList entityData;
 
-  private PropertySyncData SynchedProperties;
+  private PropertySyncData synchedProperties;
 
-  private SerializedAbilitiesData AbilitiesData;
+  private SerializedAbilitiesData abilitiesData;
 
-  private final List<ActorLink> ActorLinks = new ObjectArrayList<>();
+  private final List<ActorLink> actorLinks = new ObjectArrayList<>();
 
-  private String DeviceId;
+  private String deviceId;
 
-  private BuildPlatform BuildPlatform;
+  private BuildPlatform buildPlatform;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

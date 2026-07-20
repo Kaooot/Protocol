@@ -15,19 +15,19 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ShapelessRecipePayload {
-  private String RecipeId;
+  private String recipeId;
 
-  private final List<RecipeIngredient> Ingredients = new ObjectArrayList<>();
+  private final List<RecipeIngredient> ingredients = new ObjectArrayList<>();
 
-  private final List<NetworkItemInstanceDescriptorData> Results = new ObjectArrayList<>();
+  private final List<NetworkItemInstanceDescriptorData> results = new ObjectArrayList<>();
 
-  private UUID UUID;
+  private UUID uuid;
 
-  private String Tag;
+  private String tag;
 
-  private int Priority;
+  private int priority;
 
-  private RecipeUnlockingRequirement UnlockingRequirement;
+  private RecipeUnlockingRequirement unlockingRequirement;
 
-  private RecipeNetId NetId;
+  private RecipeNetId netId;
 }

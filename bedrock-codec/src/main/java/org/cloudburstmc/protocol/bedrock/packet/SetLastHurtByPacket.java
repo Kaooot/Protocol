@@ -22,7 +22,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class SetLastHurtByPacket implements BedrockPacket {
-  private ActorType LastHurtBy;
+  private ActorType lastHurtBy;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

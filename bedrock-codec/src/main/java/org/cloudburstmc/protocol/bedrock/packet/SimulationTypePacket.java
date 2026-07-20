@@ -23,7 +23,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class SimulationTypePacket implements BedrockPacket {
-  private SimulationType SimType;
+  private SimulationType simType;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

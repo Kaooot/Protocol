@@ -11,11 +11,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BiomeMesaSurfaceData {
-  private int claymaterial;
+  private int clayMaterial;
 
-  private int hardclaymaterial;
+  private int hardClayMaterial;
 
-  private boolean brycepillars;
+  private boolean brycePillars;
 
-  private boolean hasforest;
+  private boolean hasForest;
 }

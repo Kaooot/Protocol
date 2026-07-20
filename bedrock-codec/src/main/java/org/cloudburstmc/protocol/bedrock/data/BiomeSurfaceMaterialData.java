@@ -11,15 +11,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BiomeSurfaceMaterialData {
-  private int topblock;
+  private int topBlock;
 
-  private int midblock;
+  private int midBlock;
 
-  private int seafloorblock;
+  private int seaFloorBlock;
 
-  private int foundationblock;
+  private int foundationBlock;
 
-  private int seablock;
+  private int seaBlock;
 
-  private int seafloordepth;
+  private int seaFloorDepth;
 }

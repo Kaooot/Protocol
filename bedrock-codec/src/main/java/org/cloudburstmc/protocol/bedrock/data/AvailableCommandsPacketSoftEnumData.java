@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AvailableCommandsPacketSoftEnumData {
-  private String EnumName;
+  private String enumName;
 
-  private final List<String> EnumOptions = new ObjectArrayList<>();
+  private final List<String> enumOptions = new ObjectArrayList<>();
 }

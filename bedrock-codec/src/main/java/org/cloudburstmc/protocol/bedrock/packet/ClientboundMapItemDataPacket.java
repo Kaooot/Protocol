@@ -28,31 +28,31 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class ClientboundMapItemDataPacket implements BedrockPacket {
-  private long MapID;
+  private long mapID;
 
-  private int Dimension;
+  private int dimension;
 
-  private boolean IsLocked;
+  private boolean isLocked;
 
-  private Vector3i MapOrigin;
+  private Vector3i mapOrigin;
 
-  private final List<Long> CreationMapIDs = new ObjectArrayList<>();
+  private final List<Long> creationMapIds = new ObjectArrayList<>();
 
-  private Integer Scale;
+  private Integer scale;
 
-  private final List<MapItemTrackedActorUniqueId> TrackedActorIDs = new ObjectArrayList<>();
+  private final List<MapItemTrackedActorUniqueId> trackedActorIds = new ObjectArrayList<>();
 
-  private final List<MapDecoration> Decorations = new ObjectArrayList<>();
+  private final List<MapDecoration> decorations = new ObjectArrayList<>();
 
-  private Integer Width;
+  private Integer width;
 
-  private Integer Height;
+  private Integer height;
 
-  private Integer StartX;
+  private Integer startX;
 
-  private Integer StartY;
+  private Integer startY;
 
-  private final List<Integer> Pixels = new ObjectArrayList<>();
+  private final List<Integer> pixels = new ObjectArrayList<>();
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

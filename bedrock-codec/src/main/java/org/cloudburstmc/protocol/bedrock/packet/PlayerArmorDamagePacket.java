@@ -24,7 +24,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class PlayerArmorDamagePacket implements BedrockPacket {
-  private final List<ArmorSlotAndDamagePair> ArmorSlotandDamagePairs = new ObjectArrayList<>();
+  private final List<ArmorSlotAndDamagePair> armorSlotAndDamagePairs = new ObjectArrayList<>();
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

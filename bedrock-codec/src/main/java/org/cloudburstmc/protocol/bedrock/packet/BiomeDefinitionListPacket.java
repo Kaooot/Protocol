@@ -28,9 +28,9 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class BiomeDefinitionListPacket implements BedrockPacket {
-  private final Map<Integer, BiomeDefinitionData> MapofBiomenamestodata = new HashMap<>();
+  private final Map<Integer, BiomeDefinitionData> mapOfBiomeNamesToData = new HashMap<>();
 
-  private BiomeStringList Stringlist;
+  private BiomeStringList stringList;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

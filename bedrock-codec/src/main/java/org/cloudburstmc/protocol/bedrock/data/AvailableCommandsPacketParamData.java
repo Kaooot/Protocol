@@ -12,11 +12,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AvailableCommandsPacketParamData {
-  private String Name;
+  private String name;
 
-  private int ParseSymbol;
+  private int parseSymbol;
 
-  private boolean IsOptional;
+  private boolean isOptional;
 
-  private int Options;
+  private int options;
 }

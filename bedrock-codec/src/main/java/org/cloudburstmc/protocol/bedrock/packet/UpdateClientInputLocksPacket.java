@@ -22,7 +22,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class UpdateClientInputLocksPacket implements BedrockPacket {
-  private int InputLockComponentData;
+  private int inputLockComponentdata;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

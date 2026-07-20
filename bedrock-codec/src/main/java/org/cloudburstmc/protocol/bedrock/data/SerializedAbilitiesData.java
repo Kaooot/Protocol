@@ -13,11 +13,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SerializedAbilitiesData {
-  private long TargetPlayerRawId;
+  private long targetPlayerRawId;
 
-  private PlayerPermissionLevel PlayerPermissions;
+  private PlayerPermissionLevel playerPermissions;
 
-  private CommandPermissionLevel CommandPermissions;
+  private CommandPermissionLevel commandPermissions;
 
-  private final List<SerializedAbilitiesDataSerializedLayer> Layers = new ObjectArrayList<>();
+  private final List<SerializedAbilitiesDataSerializedLayer> layers = new ObjectArrayList<>();
 }

@@ -24,7 +24,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class AnvilDamagePacket implements BedrockPacket {
-  private Vector3i BlockPosition;
+  private Vector3i blockPosition;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

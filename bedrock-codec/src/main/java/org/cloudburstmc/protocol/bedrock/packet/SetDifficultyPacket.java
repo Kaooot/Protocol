@@ -22,7 +22,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class SetDifficultyPacket implements BedrockPacket {
-  private int Difficulty;
+  private int difficulty;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

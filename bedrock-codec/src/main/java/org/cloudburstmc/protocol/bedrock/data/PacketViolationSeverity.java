@@ -6,24 +6,12 @@ import java.lang.UnsupportedOperationException;
  * Auto generated from 1.26.40-beta.31 (v2168)
  */
 public enum PacketViolationSeverity {
-  /**
-   * Unknown
-   */
   UNKNOWN,
 
-  /**
-   * Warning
-   */
   WARNING,
 
-  /**
-   * FinalWarning
-   */
   FINAL_WARNING,
 
-  /**
-   * TerminatingConnection
-   */
   TERMINATING_CONNECTION;
 
   private static final PacketViolationSeverity[] VALUES = values();

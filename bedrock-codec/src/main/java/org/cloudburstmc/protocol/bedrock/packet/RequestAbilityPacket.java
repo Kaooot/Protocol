@@ -23,13 +23,13 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class RequestAbilityPacket implements BedrockPacket {
-  private int Ability;
+  private int ability;
 
-  private RequestAbilityPacketPayloadType ValueType;
+  private RequestAbilityPacketPayloadType valueType;
 
-  private boolean Bool;
+  private boolean bool;
 
-  private float floatValue;
+  private float FloatValue;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

@@ -13,15 +13,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MapDecoration {
-  private MapDecorationType ImageType;
+  private MapDecorationType imageType;
 
-  private int Rotation;
+  private int rotation;
 
-  private int X;
+  private int x;
 
-  private int Y;
+  private int y;
 
-  private String Label;
+  private String label;
 
-  private Color Color;
+  private Color color;
 }

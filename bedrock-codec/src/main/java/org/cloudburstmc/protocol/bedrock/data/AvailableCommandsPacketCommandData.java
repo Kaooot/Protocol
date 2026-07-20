@@ -15,17 +15,17 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AvailableCommandsPacketCommandData {
-  private String Name;
+  private String name;
 
-  private String Description;
+  private String description;
 
-  private int Flags;
+  private int flags;
 
-  private CommandPermissionLevel PermissionLevel;
+  private CommandPermissionLevel permissionLevel;
 
-  private int AliasEnum;
+  private int aliasEnum;
 
-  private final List<Integer> CommandDataChainedSubcommandIndexes = new ObjectArrayList<>();
+  private final List<Integer> commandDataChainedSubcommandIndexes = new ObjectArrayList<>();
 
-  private final List<AvailableCommandsPacketOverloadData> Overloads = new ObjectArrayList<>();
+  private final List<AvailableCommandsPacketOverloadData> overloads = new ObjectArrayList<>();
 }

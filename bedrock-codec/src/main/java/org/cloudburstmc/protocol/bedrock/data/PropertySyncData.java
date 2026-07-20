@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PropertySyncData {
-  private final List<PropertySyncDataPropertySyncIntEntry> IntEntriesList = new ObjectArrayList<>();
+  private final List<PropertySyncIntEntry> intEntriesList = new ObjectArrayList<>();
 
-  private final List<PropertySyncDataPropertySyncFloatEntry> FloatEntriesList = new ObjectArrayList<>();
+  private final List<PropertySyncFloatEntry> floatEntriesList = new ObjectArrayList<>();
 }

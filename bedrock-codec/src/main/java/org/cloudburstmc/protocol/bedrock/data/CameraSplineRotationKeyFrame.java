@@ -16,5 +16,5 @@ public class CameraSplineRotationKeyFrame {
 
   private float time;
 
-  private easingfunction easing;
+  private EasingFunction easing;
 }

@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DeathCauseMessageType {
-  private String DeathCauseAttackName;
+  private String deathCauseAttackName;
 
-  private final List<String> DeathCauseMessageList = new ObjectArrayList<>();
+  private final List<String> deathCauseMessageList = new ObjectArrayList<>();
 }

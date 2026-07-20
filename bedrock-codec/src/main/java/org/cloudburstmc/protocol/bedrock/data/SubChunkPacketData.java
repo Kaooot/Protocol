@@ -13,13 +13,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SubChunkPacketData {
-  private SubChunkPosOffset SubChunkPosOffset;
+  private SubChunkPosOffset subChunkPosOffset;
 
-  private String SubChunkRequestResult;
+  private String subChunkRequestResult;
 
-  private String SerializedSubChunk;
+  private String serializedSubChunk;
 
-  private SubChunkHeightmapData HeightMapData;
+  private SubChunkHeightmapData heightMapData;
 
-  private Long BlobId;
+  private Long blobId;
 }

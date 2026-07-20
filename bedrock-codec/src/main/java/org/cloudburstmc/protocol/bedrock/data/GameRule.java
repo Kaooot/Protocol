@@ -13,9 +13,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class GameRule {
-  private String RuleName;
+  private String ruleName;
 
-  private boolean RuleCanBeModified;
+  private boolean ruleCanBeModified;
 
-  private Object RuleValue;
+  private Object ruleValue;
 }

@@ -13,5 +13,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SynchedActorDataList {
-  private final List<DataItemEntry> Data = new ObjectArrayList<>();
+  private final List<DataItemEntry> data = new ObjectArrayList<>();
 }

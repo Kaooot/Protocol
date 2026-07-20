@@ -27,19 +27,19 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class PhotoTransferPacket implements BedrockPacket {
-  private String PhotoName;
+  private String photoName;
 
-  private String PhotoData;
+  private String photoData;
 
-  private String BookID;
+  private String bookID;
 
-  private PhotoType Type;
+  private PhotoType type;
 
-  private PhotoType SourceType;
+  private PhotoType sourceType;
 
-  private long OwnerID;
+  private long ownerID;
 
-  private String NewPhotoName;
+  private String newPhotoName;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

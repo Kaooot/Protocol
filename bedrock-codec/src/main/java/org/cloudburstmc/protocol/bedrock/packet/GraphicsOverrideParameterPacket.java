@@ -27,19 +27,19 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class GraphicsOverrideParameterPacket implements BedrockPacket {
-  private final Map<Float, Vector3f> ParameterKeyframeValues = new HashMap<>();
+  private final Map<Float, Vector3f> parameterKeyframeValues = new HashMap<>();
 
-  private float FloatValue;
+  private float floatValue;
 
-  private Vector3f Vec3Value;
+  private Vector3f vec3Value;
 
-  private String BiomeIdentifier;
+  private String biomeIdentifier;
 
-  private String PlayerIdentifier;
+  private String playerIdentifier;
 
-  private GraphicsOverrideParameterType IdentifierforParameter;
+  private GraphicsOverrideParameterType identifierForParameter;
 
-  private boolean ResetParameter;
+  private boolean resetParameter;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

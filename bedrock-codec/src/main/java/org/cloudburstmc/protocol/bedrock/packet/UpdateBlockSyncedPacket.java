@@ -23,17 +23,17 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class UpdateBlockSyncedPacket implements BedrockPacket {
-  private Vector3i BlockPosition;
+  private Vector3i blockPosition;
 
-  private int BlockRuntimeID;
+  private int blockRuntimeID;
 
-  private int Flags;
+  private int flags;
 
-  private int Layer;
+  private int layer;
 
-  private long UniqueActorId;
+  private long uniqueActorId;
 
-  private long ActorSyncMessage;
+  private long actorSyncMessage;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

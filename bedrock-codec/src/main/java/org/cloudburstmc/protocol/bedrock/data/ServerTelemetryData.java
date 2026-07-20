@@ -12,11 +12,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ServerTelemetryData {
-  private String ServerId;
+  private String serverId;
 
-  private String ScenarioId;
+  private String scenarioId;
 
-  private String WorldId;
+  private String worldId;
 
-  private String OwnerId;
+  private String ownerId;
 }

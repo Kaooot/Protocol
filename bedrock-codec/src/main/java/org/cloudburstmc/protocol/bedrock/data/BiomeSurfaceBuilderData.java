@@ -11,19 +11,19 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BiomeSurfaceBuilderData {
-  private BiomeSurfaceMaterialData surfacematerials;
+  private BiomeSurfaceMaterialData surfaceMaterials;
 
-  private boolean hasdefaultoverworldsurface;
+  private boolean hasDefaultOverworldSurface;
 
-  private boolean hasswampsurface;
+  private boolean hasSwampSurface;
 
-  private boolean hasfrozenoceansurface;
+  private boolean hasFrozenOceanSurface;
 
-  private boolean hastheendsurface;
+  private boolean hasTheEndSurface;
 
-  private BiomeMesaSurfaceData mesasurface;
+  private BiomeMesaSurfaceData mesaSurface;
 
-  private BiomeCappedSurfaceData cappedsurface;
+  private BiomeCappedSurfaceData cappedSurface;
 
-  private BiomeNoiseGradientSurfaceData noisegradientsurface;
+  private BiomeNoiseGradientSurfaceData noiseGradientSurface;
 }

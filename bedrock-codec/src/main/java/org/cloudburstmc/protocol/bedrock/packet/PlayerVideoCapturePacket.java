@@ -23,9 +23,9 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class PlayerVideoCapturePacket implements BedrockPacket {
-  private Object StartVideoCapture;
+  private Object startVideoCapture;
 
-  private Object StopVideoCapture;
+  private Object stopVideoCapture;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

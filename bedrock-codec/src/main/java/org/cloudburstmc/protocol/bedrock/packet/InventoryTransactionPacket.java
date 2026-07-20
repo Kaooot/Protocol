@@ -26,11 +26,11 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class InventoryTransactionPacket implements BedrockPacket {
-  private ItemStackLegacyRequestId LegacyRequestID;
+  private ItemStackLegacyRequestId legacyRequestID;
 
-  private final List<LegacySetSlot> LegacySetItemSlots = new ObjectArrayList<>();
+  private final List<LegacySetSlot> legacySetItemSlots = new ObjectArrayList<>();
 
-  private Object Transaction;
+  private Object transaction;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

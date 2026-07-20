@@ -26,23 +26,23 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class MovePlayerPacket implements BedrockPacket {
-  private long PlayerRuntimeID;
+  private long playerRuntimeID;
 
-  private Vector3f Position;
+  private Vector3f position;
 
-  private Vector2f Rotation;
+  private Vector2f rotation;
 
-  private float YHeadRotation;
+  private float yHeadRotation;
 
-  private String PositionMode;
+  private String positionMode;
 
-  private boolean OnGround;
+  private boolean onGround;
 
-  private long RidingRuntimeID;
+  private long ridingRuntimeID;
 
-  private MovePlayerTeleportData TeleportData;
+  private MovePlayerTeleportData teleportData;
 
-  private PlayerInputTick Tick;
+  private PlayerInputTick tick;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

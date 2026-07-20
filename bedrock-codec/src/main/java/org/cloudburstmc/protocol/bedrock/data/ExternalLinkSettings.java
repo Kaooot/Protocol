@@ -14,5 +14,5 @@ import lombok.NoArgsConstructor;
 public class ExternalLinkSettings {
   private String URL;
 
-  private String DisplayName;
+  private String displayName;
 }

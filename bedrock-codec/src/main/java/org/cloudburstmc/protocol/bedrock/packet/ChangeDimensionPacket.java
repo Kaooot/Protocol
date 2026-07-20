@@ -23,13 +23,13 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class ChangeDimensionPacket implements BedrockPacket {
-  private DimensionType DimensionID;
+  private DimensionType dimensionID;
 
-  private Vector3f Position;
+  private Vector3f position;
 
-  private boolean Respawn;
+  private boolean respawn;
 
-  private int LoadingScreenId;
+  private int loadingScreenId;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

@@ -22,9 +22,9 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class ResourcePackChunkRequestPacket implements BedrockPacket {
-  private String ResourceName;
+  private String resourceName;
 
-  private int Chunk;
+  private int chunk;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

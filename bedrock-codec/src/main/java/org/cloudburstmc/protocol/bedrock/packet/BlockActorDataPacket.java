@@ -23,9 +23,9 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class BlockActorDataPacket implements BedrockPacket {
-  private Vector3i BlockPosition;
+  private Vector3i blockPosition;
 
-  private NbtMap ActorDataTags;
+  private NbtMap actorDataTags;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

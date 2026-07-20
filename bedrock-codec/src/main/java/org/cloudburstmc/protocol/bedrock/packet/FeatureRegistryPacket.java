@@ -24,7 +24,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class FeatureRegistryPacket implements BedrockPacket {
-  private final List<FeatureRegistryFeatureBinaryJsonFormat> FeaturesDataList = new ObjectArrayList<>();
+  private final List<FeatureRegistryFeatureBinaryJsonFormat> featuresDataList = new ObjectArrayList<>();
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

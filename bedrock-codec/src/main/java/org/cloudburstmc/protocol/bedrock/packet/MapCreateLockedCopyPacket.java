@@ -23,9 +23,9 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class MapCreateLockedCopyPacket implements BedrockPacket {
-  private long OriginalMapId;
+  private long originalMapId;
 
-  private long NewMapId;
+  private long newMapId;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

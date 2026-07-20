@@ -20,11 +20,11 @@ public class CameraAimAssistCategoryPriorities {
 
   private final Map<String, Integer> blocks = new HashMap<>();
 
-  private Object blocktags;
+  private Object blockTags;
 
-  private Object entitytypefamilies;
+  private Object entityTypeFamilies;
 
-  private Integer entitydefault;
+  private Integer entityDefault;
 
-  private Integer blockdefault;
+  private Integer blockDefault;
 }

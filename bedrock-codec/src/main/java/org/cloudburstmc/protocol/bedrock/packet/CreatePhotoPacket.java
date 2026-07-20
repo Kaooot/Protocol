@@ -22,11 +22,11 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class CreatePhotoPacket implements BedrockPacket {
-  private long RawID;
+  private long rawID;
 
-  private String PhotoName;
+  private String photoName;
 
-  private String PhotoItemName;
+  private String photoItemName;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

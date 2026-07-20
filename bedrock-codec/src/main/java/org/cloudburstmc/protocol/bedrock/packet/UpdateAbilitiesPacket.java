@@ -22,7 +22,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class UpdateAbilitiesPacket implements BedrockPacket {
-  private SerializedAbilitiesData Data;
+  private SerializedAbilitiesData data;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

@@ -24,9 +24,9 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class EmoteListPacket implements BedrockPacket {
-  private long Runtimeid;
+  private long runtimeId;
 
-  private final List<UUID> Emotepieceids = new ObjectArrayList<>();
+  private final List<UUID> emotePieceIds = new ObjectArrayList<>();
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ItemEnchants {
-  private int Slot;
+  private int slot;
 
-  private final List<List<EnchantmentInstance>> ItemEnchants = new ObjectArrayList<>();
+  private final List<List<EnchantmentInstance>> itemEnchants = new ObjectArrayList<>();
 }

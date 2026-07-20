@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PositionTrackingId {
-  private int Value;
+  private int value;
 }

@@ -26,15 +26,15 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class NpcRequestPacket implements BedrockPacket {
-  private long NPCRuntimeID;
+  private long npcRuntimeID;
 
-  private NpcRequestPacketPayloadRequestType RequestType;
+  private NpcRequestPacketPayloadRequestType requestType;
 
-  private String Actions;
+  private String actions;
 
-  private int ActionIndex;
+  private int actionIndex;
 
-  private String SceneName;
+  private String sceneName;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

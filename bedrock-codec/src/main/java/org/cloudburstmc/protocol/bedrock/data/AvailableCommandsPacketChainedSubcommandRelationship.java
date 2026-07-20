@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AvailableCommandsPacketChainedSubcommandRelationship {
-  private int SubCommandFirstValue;
+  private int subCommandFirstValue;
 
-  private int SubCommandSecondValue;
+  private int subCommandSecondValue;
 }

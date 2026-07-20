@@ -22,11 +22,11 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class EditorNetworkPacket implements BedrockPacket {
-  private boolean RouteToManager;
+  private boolean routeToManager;
 
-  private String RawVariantName;
+  private String rawVariantName;
 
-  private String RawVariantData;
+  private String rawVariantData;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

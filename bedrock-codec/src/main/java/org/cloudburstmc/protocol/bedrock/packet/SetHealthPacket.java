@@ -21,7 +21,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class SetHealthPacket implements BedrockPacket {
-  private int Health;
+  private int health;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

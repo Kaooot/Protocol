@@ -21,9 +21,9 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class CompletedUsingItemPacket implements BedrockPacket {
-  private int ItemId;
+  private int itemId;
 
-  private int ItemUseMethod;
+  private int itemUseMethod;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

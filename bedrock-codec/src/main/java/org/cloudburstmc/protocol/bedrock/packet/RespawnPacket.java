@@ -24,11 +24,11 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class RespawnPacket implements BedrockPacket {
-  private Vector3f Position;
+  private Vector3f position;
 
-  private PlayerRespawnState State;
+  private PlayerRespawnState state;
 
-  private long PlayerRuntimeId;
+  private long playerRuntimeId;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

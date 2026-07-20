@@ -12,13 +12,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class NetworkItemInstanceDescriptorData {
-  private int Id;
+  private int id;
 
-  private int Stacksize;
+  private int stackSize;
 
-  private int Auxvalue;
+  private int auxValue;
 
-  private int BlockRuntimeId;
+  private int blockRuntimeId;
 
-  private String UserDataBuffer;
+  private String userDataBuffer;
 }

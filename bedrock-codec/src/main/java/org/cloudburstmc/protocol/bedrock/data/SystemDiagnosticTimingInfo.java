@@ -12,11 +12,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SystemDiagnosticTimingInfo {
-  private String DisplayName;
+  private String displayName;
 
-  private long SystemIndex;
+  private long systemIndex;
 
-  private long TimeinNS;
+  private long timeInNs;
 
-  private int PercentofTotal;
+  private int percentOfTotal;
 }

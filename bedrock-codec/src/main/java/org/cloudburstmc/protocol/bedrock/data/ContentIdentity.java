@@ -12,5 +12,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ContentIdentity {
-  private String Identity;
+  private String identity;
 }

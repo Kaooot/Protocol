@@ -26,7 +26,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class ContainerRegistryCleanupPacket implements BedrockPacket {
-  private final List<FullContainerName> RemovedContainers = new ObjectArrayList<>();
+  private final List<FullContainerName> removedContainers = new ObjectArrayList<>();
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

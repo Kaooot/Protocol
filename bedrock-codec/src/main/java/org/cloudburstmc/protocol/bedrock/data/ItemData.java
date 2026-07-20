@@ -13,13 +13,13 @@ import org.cloudburstmc.nbt.NbtMap;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ItemData {
-  private String hashedstring;
+  private String hashedString;
 
-  private int ItemId;
+  private int itemId;
 
-  private boolean IsComponentBased;
+  private boolean isComponentBased;
 
-  private ItemVersion ItemVersion;
+  private ItemVersion itemVersion;
 
-  private NbtMap ItemComponentData;
+  private NbtMap itemComponentData;
 }

@@ -21,11 +21,11 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class PlayerHotbarPacket implements BedrockPacket {
-  private int SelectedSlot;
+  private int selectedSlot;
 
-  private int ContainerID;
+  private int containerID;
 
-  private boolean Shouldselectslot;
+  private boolean shouldSelectSlot;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

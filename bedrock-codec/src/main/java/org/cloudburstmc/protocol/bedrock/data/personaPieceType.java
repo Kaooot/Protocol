@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
  */
 @Getter
 @RequiredArgsConstructor
-public enum personaPieceType {
+public enum PersonaPieceType {
   SKELETON("skeleton"),
 
   BODY("body"),
@@ -66,17 +66,17 @@ public enum personaPieceType {
 
   EMOTE("emote");
 
-  private static final Map<String, personaPieceType> SERIALIZE_NAMES = new HashMap<>(values().length);
+  private static final Map<String, PersonaPieceType> SERIALIZE_NAMES = new HashMap<>(values().length);
 
   static {
-    for (personaPieceType value : values()) {
+    for (PersonaPieceType value : values()) {
       SERIALIZE_NAMES.put(value.getSerializeName(), value);
     }
   }
 
   private final String serializeName;
 
-  public static personaPieceType fromName(String serializeName) {
+  public static PersonaPieceType fromName(String serializeName) {
     return SERIALIZE_NAMES.get(serializeName);
   }
 }

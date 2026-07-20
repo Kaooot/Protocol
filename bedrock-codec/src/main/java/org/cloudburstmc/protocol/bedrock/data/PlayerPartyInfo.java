@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PlayerPartyInfo {
-  private String partyid;
+  private String partyId;
 
-  private boolean ispartyleader;
+  private boolean isPartyLeader;
 }

@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LegacySetSlot {
-  private ContainerEnumName ContainerEnum;
+  private ContainerEnumName containerEnum;
 
-  private final List<Integer> Slots = new ObjectArrayList<>();
+  private final List<Integer> slots = new ObjectArrayList<>();
 }

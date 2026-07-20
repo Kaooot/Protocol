@@ -13,5 +13,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class InventoryTransaction {
-  private final List<InventoryAction> Actions = new ObjectArrayList<>();
+  private final List<InventoryAction> actions = new ObjectArrayList<>();
 }

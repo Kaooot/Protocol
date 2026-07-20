@@ -11,8 +11,8 @@ import java.util.Map;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.cloudburstmc.protocol.bedrock.data.SerializableVoxelShape;
 import org.cloudburstmc.protocol.bedrock.data.VoxelShapesRegistryHandle;
-import org.cloudburstmc.protocol.bedrock.data.VoxelShapesSerializableVoxelShape;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
@@ -29,11 +29,11 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class VoxelShapesPacket implements BedrockPacket {
-  private final List<VoxelShapesSerializableVoxelShape> Shapes = new ObjectArrayList<>();
+  private final List<SerializableVoxelShape> shapes = new ObjectArrayList<>();
 
-  private final Map<String, VoxelShapesRegistryHandle> NameMap = new HashMap<>();
+  private final Map<String, VoxelShapesRegistryHandle> nameMap = new HashMap<>();
 
-  private int CustomShapeCount;
+  private int customShapeCount;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

@@ -6,14 +6,8 @@ import java.lang.UnsupportedOperationException;
  * Auto generated from 1.26.40-beta.31 (v2168)
  */
 public enum AgentAnimation {
-  /**
-   * ArmSwing
-   */
   ARM_SWING,
 
-  /**
-   * Shrug
-   */
   SHRUG;
 
   private static final AgentAnimation[] VALUES = values();

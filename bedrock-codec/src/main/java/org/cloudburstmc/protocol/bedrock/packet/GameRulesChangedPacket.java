@@ -23,7 +23,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class GameRulesChangedPacket implements BedrockPacket {
-  private GameRulesChangedPacketData RuleData;
+  private GameRulesChangedPacketData ruleData;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

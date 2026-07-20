@@ -25,7 +25,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class CameraSplinePacket implements BedrockPacket {
-  private final List<CameraSplineDefinition> CameraDataSplines = new ObjectArrayList<>();
+  private final List<CameraSplineDefinition> cameraDataSplines = new ObjectArrayList<>();
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

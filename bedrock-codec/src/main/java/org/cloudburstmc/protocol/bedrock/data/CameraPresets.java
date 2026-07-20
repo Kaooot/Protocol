@@ -14,47 +14,47 @@ import org.cloudburstmc.math.vector.Vector3f;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CameraPresets {
-  private String SharedTypesIdentifierSharedTypesAssetTypeCameraPreset;
+  private String cameraPreset;
 
-  private String SharedTypesReferenceSharedTypesAssetTypeCameraPreset;
+  private String cameraPreset;
 
-  private float PosX;
+  private float posX;
 
-  private float PosY;
+  private float posY;
 
-  private float PosZ;
+  private float posZ;
 
-  private float RotX;
+  private float rotX;
 
-  private float RotY;
+  private float rotY;
 
-  private float RotationSpeed;
+  private float rotationSpeed;
 
-  private boolean SnaptoTarget;
+  private boolean snapToTarget;
 
-  private Vector2f HorizontalRotationLimit;
+  private Vector2f horizontalRotationLimit;
 
-  private Vector2f VerticalRotationLimit;
+  private Vector2f verticalRotationLimit;
 
-  private boolean ContinueTargeting;
+  private boolean continueTargeting;
 
-  private float BlockListeningRadius;
+  private float blockListeningRadius;
 
-  private Vector2f ViewOffset;
+  private Vector2f viewOffset;
 
-  private Vector3f EntityOffset;
+  private Vector3f entityOffset;
 
-  private float Radius;
+  private float radius;
 
-  private float YawLimitMin;
+  private float yawLimitMin;
 
-  private float YawLimitMax;
+  private float yawLimitMax;
 
-  private SharedTypesComprehensiveCameraPresetAudioListener Listener;
+  private AudioListener listener;
 
-  private boolean PlayerEffects;
+  private boolean playerEffects;
 
-  private SharedTypesComprehensiveCameraAimAssistCommandDefinition AimAssist;
+  private CameraAimAssistCommandDefinition aimAssist;
 
-  private ControlScheme ControlScheme;
+  private ControlScheme controlScheme;
 }

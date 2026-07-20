@@ -23,9 +23,9 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class UpdateSubChunkBlocksPacket implements BedrockPacket {
-  private Vector3i SubChunkBlockPosition;
+  private Vector3i subChunkBlockPosition;
 
-  private UpdateSubChunkBlocksChangedInfo BlocksChanged;
+  private UpdateSubChunkBlocksChangedInfo blocksChanged;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

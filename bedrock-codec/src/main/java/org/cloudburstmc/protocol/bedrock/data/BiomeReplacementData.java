@@ -14,15 +14,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BiomeReplacementData {
-  private int replacementbiome;
+  private int replacementBiome;
 
   private int dimension;
 
-  private final List<Integer> targetbiomes = new ObjectArrayList<>();
+  private final List<Integer> targetBiomes = new ObjectArrayList<>();
 
   private float amount;
 
-  private float noisefrequencyscale;
+  private float noiseFrequencyScale;
 
-  private int replacementindex;
+  private int replacementIndex;
 }

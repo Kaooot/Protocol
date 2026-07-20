@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RecipeUnlockingRequirement {
-  private RecipeUnlockingContext UnlockingContext;
+  private RecipeUnlockingContext unlockingContext;
 
-  private final List<RecipeIngredient> UnlockingIngredients = new ObjectArrayList<>();
+  private final List<RecipeIngredient> unlockingIngredients = new ObjectArrayList<>();
 }

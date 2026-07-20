@@ -22,7 +22,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class PartyChangedPacket implements BedrockPacket {
-  private PlayerPartyInfo partyinfo;
+  private PlayerPartyInfo partyInfo;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

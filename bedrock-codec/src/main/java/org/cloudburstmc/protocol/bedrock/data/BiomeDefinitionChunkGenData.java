@@ -13,23 +13,23 @@ import lombok.NoArgsConstructor;
 public class BiomeDefinitionChunkGenData {
   private BiomeClimateData climate;
 
-  private BiomeConsolidatedFeaturesData consolidatedfeatures;
+  private BiomeConsolidatedFeaturesData consolidatedFeatures;
 
-  private BiomeMountainParamsData mountainparams;
+  private BiomeMountainParamsData mountainParams;
 
-  private BiomeSurfaceMaterialAdjustmentData surfacematerialadjustments;
+  private BiomeSurfaceMaterialAdjustmentData surfaceMaterialAdjustments;
 
-  private BiomeOverworldGenRulesData overworldgenrules;
+  private BiomeOverworldGenRulesData overworldGenRules;
 
-  private BiomeMultinoiseGenRulesData multinoisegenrules;
+  private BiomeMultinoiseGenRulesData multinoiseGenRules;
 
-  private BiomeLegacyWorldGenRulesData legacyworldgenrules;
+  private BiomeLegacyWorldGenRulesData legacyWorldGenRules;
 
-  private BiomeReplacementsData replacementbiomes;
+  private BiomeReplacementsData replacementBiomes;
 
-  private VillageType VillageType;
+  private VillageType villageType;
 
-  private BiomeSurfaceBuilderData surfacebuilderdata;
+  private BiomeSurfaceBuilderData surfaceBuilderData;
 
-  private BiomeSurfaceBuilderData subsurfacebuilderdata;
+  private BiomeSurfaceBuilderData subsurfaceBuilderData;
 }

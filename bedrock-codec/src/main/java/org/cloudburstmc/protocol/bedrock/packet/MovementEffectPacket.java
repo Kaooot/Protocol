@@ -25,13 +25,13 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class MovementEffectPacket implements BedrockPacket {
-  private long TargetRuntimeID;
+  private long targetRuntimeID;
 
-  private MovementEffectType EffectID;
+  private MovementEffectType effectID;
 
-  private int EffectDuration;
+  private int effectDuration;
 
-  private PlayerInputTick Tick;
+  private PlayerInputTick tick;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

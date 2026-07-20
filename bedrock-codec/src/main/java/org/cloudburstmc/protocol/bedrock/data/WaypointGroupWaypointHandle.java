@@ -12,5 +12,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class WaypointGroupWaypointHandle {
-  private UUID UUID;
+  private UUID uuid;
 }

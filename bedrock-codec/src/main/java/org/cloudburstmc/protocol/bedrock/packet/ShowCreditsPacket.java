@@ -22,9 +22,9 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class ShowCreditsPacket implements BedrockPacket {
-  private long PlayerRuntimeID;
+  private long playerRuntimeID;
 
-  private int CreditsState;
+  private int creditsState;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

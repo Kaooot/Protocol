@@ -22,7 +22,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class CameraPresetsPacket implements BedrockPacket {
-  private CameraPresets CameraPresets;
+  private CameraPresets cameraPresets;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

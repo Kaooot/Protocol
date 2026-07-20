@@ -22,13 +22,13 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class ContainerOpenPacket implements BedrockPacket {
-  private int ContainerId;
+  private int containerId;
 
-  private int ContainerType;
+  private int containerType;
 
-  private Vector3i Position;
+  private Vector3i position;
 
-  private long TargetActorID;
+  private long targetActorID;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

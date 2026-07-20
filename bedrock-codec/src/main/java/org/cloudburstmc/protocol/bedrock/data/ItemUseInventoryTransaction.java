@@ -13,27 +13,27 @@ import org.cloudburstmc.math.vector.Vector3i;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ItemUseInventoryTransaction {
-  private InventoryTransaction Actions;
+  private InventoryTransaction actions;
 
-  private ItemUseActionType ActionType;
+  private ItemUseActionType actionType;
 
-  private ItemUseTriggerType TriggerType;
+  private ItemUseTriggerType triggerType;
 
-  private Vector3i Position;
+  private Vector3i position;
 
-  private int Face;
+  private int face;
 
-  private int Slot;
+  private int slot;
 
-  private NetworkItemStackDescriptor Item;
+  private NetworkItemStackDescriptor item;
 
-  private Vector3f FromPosition;
+  private Vector3f fromPosition;
 
-  private Vector3f ClickPosition;
+  private Vector3f clickPosition;
 
-  private int TargetBlockId;
+  private int targetBlockId;
 
-  private ItemUsePredictedResult ClientInteractPrediction;
+  private ItemUsePredictedResult clientInteractPrediction;
 
-  private ItemUseClientCooldownState ClientCooldownState;
+  private ItemUseClientCooldownState clientCooldownState;
 }

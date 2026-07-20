@@ -27,11 +27,11 @@ import org.cloudburstmc.protocol.common.util.OptionalBoolean;
     doNotUseGetters = true
 )
 public class ClientCameraAimAssistPacket implements BedrockPacket {
-  private String CameraPresetId;
+  private String cameraPresetId;
 
-  private ClientCameraAimAssistPacketAction Action;
+  private ClientCameraAimAssistPacketAction action;
 
-  private OptionalBoolean Allowaimassist = OptionalBoolean.empty();
+  private OptionalBoolean allowAimAssist = OptionalBoolean.empty();
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

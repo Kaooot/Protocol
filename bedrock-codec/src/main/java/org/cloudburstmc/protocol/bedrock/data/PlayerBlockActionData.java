@@ -12,9 +12,9 @@ import org.cloudburstmc.math.vector.Vector3i;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PlayerBlockActionData {
-  private PlayerActionType PlayerActionType;
+  private PlayerActionType playerActionType;
 
-  private Vector3i Position;
+  private Vector3i position;
 
-  private int Facing;
+  private int facing;
 }

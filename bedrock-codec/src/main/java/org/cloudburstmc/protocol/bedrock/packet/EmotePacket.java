@@ -23,17 +23,17 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class EmotePacket implements BedrockPacket {
-  private long ActorRuntimeId;
+  private long actorRuntimeId;
 
-  private String EmoteId;
+  private String emoteId;
 
-  private int EmoteLengthTicks;
+  private int emoteLengthTicks;
 
-  private String Xuid;
+  private String xuid;
 
-  private String PlatformId;
+  private String platformId;
 
-  private int Flags;
+  private int flags;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

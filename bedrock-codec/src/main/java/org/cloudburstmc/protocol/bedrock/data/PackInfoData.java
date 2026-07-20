@@ -12,21 +12,21 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PackInfoData {
-  private PackIdVersion PackIdVersion;
+  private PackIdVersion packIdVersion;
 
-  private long PackSize;
+  private long packSize;
 
-  private String ContentKey;
+  private String contentKey;
 
-  private String SubpackName;
+  private String subpackName;
 
-  private ContentIdentity ContentIdentity;
+  private ContentIdentity contentIdentity;
 
-  private boolean HasScripts;
+  private boolean hasScripts;
 
-  private boolean IsAddonPack;
+  private boolean isAddonPack;
 
-  private boolean IsRayTracingCapable;
+  private boolean isRayTracingCapable;
 
-  private String CDNURL;
+  private String cdnURL;
 }

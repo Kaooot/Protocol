@@ -22,9 +22,9 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class LevelEventGenericPacket implements BedrockPacket {
-  private int EventId;
+  private int eventId;
 
-  private NbtMap CTD;
+  private NbtMap data;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

@@ -13,5 +13,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BiomeLegacyWorldGenRulesData {
-  private final List<BiomeConditionalTransformationData> legacyprehillsedge = new ObjectArrayList<>();
+  private final List<BiomeConditionalTransformationData> legacyPreHillsEdge = new ObjectArrayList<>();
 }

@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class NetworkPermissions {
-  private boolean ServerAuthSoundEnabled;
+  private boolean serverAuthSoundEnabled;
 }

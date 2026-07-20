@@ -12,17 +12,17 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class StructureEditorData {
-  private BedrockSafetyRedactableString StructureName;
+  private RedactableString structureName;
 
-  private String DataField;
+  private String dataField;
 
-  private boolean Shouldincludeplayers;
+  private boolean shouldIncludePlayers;
 
-  private boolean Shouldshowboundingbox;
+  private boolean shouldShowBoundingBox;
 
-  private StructureBlockType StructureBlockType;
+  private StructureBlockType structureBlockType;
 
-  private StructureSettings StructureSettings;
+  private StructureSettings structureSettings;
 
-  private StructureRedstoneSaveMode RedstoneSaveMode;
+  private StructureRedstoneSaveMode redstoneSaveMode;
 }

@@ -11,15 +11,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BiomeMountainParamsData {
-  private int steepblock;
+  private int steepBlock;
 
-  private boolean northslopes;
+  private boolean northSlopes;
 
-  private boolean southslopes;
+  private boolean southSlopes;
 
-  private boolean westslopes;
+  private boolean westSlopes;
 
-  private boolean eastslopes;
+  private boolean eastSlopes;
 
-  private boolean topslideenabled;
+  private boolean topSlideEnabled;
 }

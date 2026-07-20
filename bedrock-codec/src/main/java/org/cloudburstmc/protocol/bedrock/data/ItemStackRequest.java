@@ -15,11 +15,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ItemStackRequest {
-  private ItemStackRequestId ClientRequestId;
+  private ItemStackRequestId clientRequestId;
 
-  private final List<Object> Actions = new ObjectArrayList<>();
+  private final List<Object> actions = new ObjectArrayList<>();
 
-  private final List<String> StringsToFilter = new ObjectArrayList<>();
+  private final List<String> stringsToFilter = new ObjectArrayList<>();
 
-  private TextProcessingEventOrigin StringsToFilterOrigin;
+  private TextProcessingEventOrigin stringsToFilterOrigin;
 }

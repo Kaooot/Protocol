@@ -22,9 +22,9 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class TakeItemActorPacket implements BedrockPacket {
-  private long ItemRuntimeID;
+  private long itemRuntimeID;
 
-  private long ActorRuntimeID;
+  private long actorRuntimeID;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

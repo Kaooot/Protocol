@@ -6,24 +6,12 @@ import java.lang.UnsupportedOperationException;
  * Auto generated from 1.26.40-beta.31 (v2168)
  */
 public enum InventoryLayout {
-  /**
-   * None
-   */
   NONE,
 
-  /**
-   * InventoryOnly
-   */
   INVENTORY_ONLY,
 
-  /**
-   * Default
-   */
   DEFAULT,
 
-  /**
-   * RecipeBookOnly
-   */
   RECIPE_BOOK_ONLY;
 
   private static final InventoryLayout[] VALUES = values();

@@ -24,15 +24,15 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class SpawnParticleEffectPacket implements BedrockPacket {
-  private int DimensionId;
+  private int dimensionId;
 
-  private long ActorId;
+  private long actorId;
 
-  private Vector3f Position;
+  private Vector3f position;
 
-  private String EffectName;
+  private String effectName;
 
-  private String MolangVariables;
+  private String molangVariables;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

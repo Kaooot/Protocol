@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PlayerInputTick {
-  private long Inputtick;
+  private long inputTick;
 }

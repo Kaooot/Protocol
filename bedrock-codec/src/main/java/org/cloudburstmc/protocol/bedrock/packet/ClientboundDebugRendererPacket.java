@@ -23,9 +23,9 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class ClientboundDebugRendererPacket implements BedrockPacket {
-  private String Type;
+  private String type;
 
-  private DebugMarkerData DebugMarkerData;
+  private DebugMarkerData debugMarkerData;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

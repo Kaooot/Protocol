@@ -11,9 +11,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LocatorBarWaypointPayload {
-  private WaypointGroupWaypointHandle GroupHandle;
+  private WaypointGroupWaypointHandle groupHandle;
 
-  private ServerWaypointPayload ServerWaypointPayload;
+  private ServerWaypointPayload serverWaypointPayload;
 
-  private ServerWaypointGroupAction ActionFlag;
+  private ServerWaypointGroupAction actionFlag;
 }

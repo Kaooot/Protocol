@@ -26,9 +26,9 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class CreativeContentPacket implements BedrockPacket {
-  private final List<CreativeGroupInfoPayload> Groups = new ObjectArrayList<>();
+  private final List<CreativeGroupInfoPayload> groups = new ObjectArrayList<>();
 
-  private final List<CreativeItemEntryPayload> Entries = new ObjectArrayList<>();
+  private final List<CreativeItemEntryPayload> entries = new ObjectArrayList<>();
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

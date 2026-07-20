@@ -11,13 +11,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AdventureSettings {
-  private boolean noPvM;
+  private boolean noPvm;
 
-  private boolean noMvP;
+  private boolean noMvp;
 
-  private boolean ImmutableWorld;
+  private boolean immutableWorld;
 
-  private boolean ShowNameTags;
+  private boolean showNameTags;
 
-  private boolean AutoJump;
+  private boolean autoJump;
 }

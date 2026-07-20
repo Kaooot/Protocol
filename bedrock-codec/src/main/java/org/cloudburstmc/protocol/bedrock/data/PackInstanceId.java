@@ -12,9 +12,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PackInstanceId {
-  private String PackID;
+  private String packID;
 
-  private String Version;
+  private String version;
 
-  private String SubPackName;
+  private String subPackName;
 }

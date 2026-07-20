@@ -25,7 +25,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class PlayStatusPacket implements BedrockPacket {
-  private PlayStatus Status;
+  private PlayStatus status;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

@@ -11,17 +11,17 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BiomeCoordinateData {
-  private int minvaluetype;
+  private int minValueType;
 
-  private int minvalue;
+  private int minValue;
 
-  private int maxvaluetype;
+  private int maxValueType;
 
-  private int maxvalue;
+  private int maxValue;
 
-  private int gridoffset;
+  private int gridOffset;
 
-  private int gridstepsize;
+  private int gridStepSize;
 
   private RandomDistributionType distribution;
 }

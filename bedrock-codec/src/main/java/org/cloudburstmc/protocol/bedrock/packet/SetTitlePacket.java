@@ -26,21 +26,21 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class SetTitlePacket implements BedrockPacket {
-  private SetTitlePacketTitleType TitleType;
+  private SetTitlePacketTitleType titleType;
 
-  private String TitleText;
+  private String titleText;
 
-  private int FadeInTime;
+  private int fadeInTime;
 
-  private int StayTime;
+  private int stayTime;
 
-  private int FadeOutTime;
+  private int fadeOutTime;
 
-  private String Xuid;
+  private String xuid;
 
-  private String PlatformOnlineId;
+  private String platformOnlineId;
 
-  private String FilteredTitleMessage;
+  private String filteredTitleMessage;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

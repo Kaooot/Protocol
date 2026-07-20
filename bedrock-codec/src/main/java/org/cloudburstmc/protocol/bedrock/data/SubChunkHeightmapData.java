@@ -15,11 +15,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SubChunkHeightmapData {
-  private String HeightMapType;
+  private String heightMapType;
 
-  private final List<List<Integer>> SubchunkHeightMap = new ObjectArrayList<>();
+  private final List<List<Integer>> subchunkHeightMap = new ObjectArrayList<>();
 
-  private String RenderHeightMapType;
+  private String renderHeightMapType;
 
-  private final List<List<Integer>> SubchunkRenderHeightMap = new ObjectArrayList<>();
+  private final List<List<Integer>> subchunkRenderHeightMap = new ObjectArrayList<>();
 }

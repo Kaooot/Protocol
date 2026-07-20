@@ -12,23 +12,23 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class EducationLevelSettings {
-  private String CodeBuilderDefaultURI;
+  private String codeBuilderDefaultURI;
 
-  private String CodeBuilderTitle;
+  private String codeBuilderTitle;
 
-  private boolean CanresizeCodeBuilder;
+  private boolean canResizeCodeBuilder;
 
-  private boolean Disablelegacytitlebar;
+  private boolean disableLegacyTitleBar;
 
-  private String PostProcessFilter;
+  private String postProcessFilter;
 
-  private String ScreenshotBorderResourcePath;
+  private String screenshotBorderResourcePath;
 
-  private AgentCapabilities AgentCapabilities;
+  private AgentCapabilities agentCapabilities;
 
-  private EducationLocalLevelSettings LocalSettings;
+  private EducationLocalLevelSettings localSettings;
 
-  private boolean DeprecatedAlwaysFalse;
+  private boolean deprecatedAlwaysFalse;
 
-  private ExternalLinkSettings ExternalLinkSettings;
+  private ExternalLinkSettings externalLinkSettings;
 }

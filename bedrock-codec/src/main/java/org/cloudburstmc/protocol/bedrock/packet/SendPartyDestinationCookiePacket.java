@@ -27,7 +27,7 @@ public class SendPartyDestinationCookiePacket implements BedrockPacket {
 
   private PartyDestinationCookieIntent intent;
 
-  private String destinationname;
+  private String destinationName;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

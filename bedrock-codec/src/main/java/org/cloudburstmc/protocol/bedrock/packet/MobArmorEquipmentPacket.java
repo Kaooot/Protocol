@@ -23,17 +23,17 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class MobArmorEquipmentPacket implements BedrockPacket {
-  private long TargetRuntimeID;
+  private long targetRuntimeID;
 
-  private NetworkItemStackDescriptor Head;
+  private NetworkItemStackDescriptor head;
 
-  private NetworkItemStackDescriptor Torso;
+  private NetworkItemStackDescriptor torso;
 
-  private NetworkItemStackDescriptor Legs;
+  private NetworkItemStackDescriptor legs;
 
-  private NetworkItemStackDescriptor Feet;
+  private NetworkItemStackDescriptor feet;
 
-  private NetworkItemStackDescriptor Body;
+  private NetworkItemStackDescriptor body;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

@@ -24,19 +24,19 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class AddItemActorPacket implements BedrockPacket {
-  private long TargetActorID;
+  private long targetActorID;
 
-  private long TargetRuntimeID;
+  private long targetRuntimeID;
 
-  private NetworkItemStackDescriptor Item;
+  private NetworkItemStackDescriptor item;
 
-  private Vector3f Position;
+  private Vector3f position;
 
-  private Vector3f Velocity;
+  private Vector3f velocity;
 
-  private SynchedActorDataList EntityData;
+  private SynchedActorDataList entityData;
 
-  private boolean IsFromFishing;
+  private boolean isFromFishing;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

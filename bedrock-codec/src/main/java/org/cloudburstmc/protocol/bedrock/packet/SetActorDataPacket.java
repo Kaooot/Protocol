@@ -24,13 +24,13 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class SetActorDataPacket implements BedrockPacket {
-  private long TargetRuntimeID;
+  private long targetRuntimeID;
 
-  private SynchedActorDataList ActorData;
+  private SynchedActorDataList actorData;
 
-  private PropertySyncData SynchedProperties;
+  private PropertySyncData synchedProperties;
 
-  private PlayerInputTick Tick;
+  private PlayerInputTick tick;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

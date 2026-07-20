@@ -6,49 +6,22 @@ import java.lang.UnsupportedOperationException;
  * Auto generated from 1.26.40-beta.31 (v2168)
  */
 public enum SetTitlePacketTitleType {
-  /**
-   * Clear
-   */
   CLEAR,
 
-  /**
-   * Reset
-   */
   RESET,
 
-  /**
-   * Title
-   */
   TITLE,
 
-  /**
-   * Subtitle
-   */
   SUBTITLE,
 
-  /**
-   * Actionbar
-   */
   ACTIONBAR,
 
-  /**
-   * Times
-   */
   TIMES,
 
-  /**
-   * TitleTextObject
-   */
   TITLE_TEXT_OBJECT,
 
-  /**
-   * SubtitleTextObject
-   */
   SUBTITLE_TEXT_OBJECT,
 
-  /**
-   * ActionbarTextObject
-   */
   ACTIONBAR_TEXT_OBJECT;
 
   private static final SetTitlePacketTitleType[] VALUES = values();

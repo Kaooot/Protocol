@@ -25,7 +25,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class MultiplayerSettingsPacket implements BedrockPacket {
-  private MultiplayerSettingsPacketType PacketType;
+  private MultiplayerSettingsPacketType packetType;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

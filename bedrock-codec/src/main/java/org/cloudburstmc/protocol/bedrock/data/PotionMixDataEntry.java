@@ -11,15 +11,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PotionMixDataEntry {
-  private int FromPotionId;
+  private int fromPotionId;
 
-  private int FromItemAux;
+  private int fromItemAux;
 
-  private int ReagentItemId;
+  private int reagentItemId;
 
-  private int ReagentItemAux;
+  private int reagentItemAux;
 
-  private int ToPotionId;
+  private int toPotionId;
 
-  private int ToItemAux;
+  private int toItemAux;
 }

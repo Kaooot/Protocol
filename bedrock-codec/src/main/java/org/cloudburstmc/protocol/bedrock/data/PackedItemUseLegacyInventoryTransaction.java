@@ -13,9 +13,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PackedItemUseLegacyInventoryTransaction {
-  private ItemStackLegacyRequestId LegacyRequestID;
+  private ItemStackLegacyRequestId legacyRequestID;
 
-  private final List<LegacySetSlot> LegacySetItemSlots = new ObjectArrayList<>();
+  private final List<LegacySetSlot> legacySetItemSlots = new ObjectArrayList<>();
 
-  private ItemUseInventoryTransaction ItemUseTransaction;
+  private ItemUseInventoryTransaction itemUseTransaction;
 }

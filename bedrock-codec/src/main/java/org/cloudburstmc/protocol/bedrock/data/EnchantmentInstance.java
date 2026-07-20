@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class EnchantmentInstance {
-  private EnchantType EnchantType;
+  private EnchantType enchantType;
 
-  private int EnchantLevel;
+  private int enchantLevel;
 }

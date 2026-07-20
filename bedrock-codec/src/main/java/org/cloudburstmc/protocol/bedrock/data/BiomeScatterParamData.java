@@ -15,17 +15,17 @@ import lombok.NoArgsConstructor;
 public class BiomeScatterParamData {
   private final List<BiomeCoordinateData> coordinates = new ObjectArrayList<>();
 
-  private CoordinateEvaluationOrder evalorder;
+  private CoordinateEvaluationOrder evalOrder;
 
-  private int chancepercenttype;
+  private int chancePercentType;
 
-  private int chancepercent;
+  private int chancePercent;
 
-  private int chancenumerator;
+  private int chanceNumerator;
 
-  private int chancedenominator;
+  private int chanceDenominator;
 
-  private int iterationstype;
+  private int iterationsType;
 
   private int iterations;
 }

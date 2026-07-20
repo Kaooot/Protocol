@@ -12,9 +12,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TrimMaterial {
-  private String hashedstring;
+  private String hashedString;
 
-  private String Color;
+  private String color;
 
-  private String hashedstring;
+  private String hashedString;
 }

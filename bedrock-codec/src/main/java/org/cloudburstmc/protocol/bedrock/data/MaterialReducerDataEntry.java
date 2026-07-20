@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MaterialReducerDataEntry {
-  private int FromItemKey;
+  private int fromItemKey;
 
-  private final List<MaterialReducerEntryOutput> ItemIdsandCounts = new ObjectArrayList<>();
+  private final List<MaterialReducerEntryOutput> itemIdsAndCounts = new ObjectArrayList<>();
 }

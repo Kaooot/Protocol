@@ -15,5 +15,5 @@ import lombok.NoArgsConstructor;
 public class AvailableCommandsPacketOverloadData {
   private boolean isChaining;
 
-  private final List<AvailableCommandsPacketParamData> ParameterData = new ObjectArrayList<>();
+  private final List<AvailableCommandsPacketParamData> parameterData = new ObjectArrayList<>();
 }

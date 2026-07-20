@@ -12,15 +12,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AttributeModifier {
-  private String Id;
+  private String id;
 
-  private String Name;
+  private String name;
 
-  private float Amount;
+  private float amount;
 
-  private int Operation;
+  private int operation;
 
-  private int Operand;
+  private int operand;
 
-  private boolean IsSerializable;
+  private boolean isSerializable;
 }

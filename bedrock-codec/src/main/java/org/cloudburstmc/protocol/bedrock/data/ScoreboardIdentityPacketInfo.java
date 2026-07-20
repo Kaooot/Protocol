@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ScoreboardIdentityPacketInfo {
-  private ScoreboardId ScoreboardId;
+  private ScoreboardId scoreboardId;
 
-  private Long PlayerUniqueId;
+  private Long playerUniqueId;
 }

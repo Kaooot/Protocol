@@ -23,7 +23,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class AutomationClientConnectPacket implements BedrockPacket {
-  private WebSocketPacketData WebSocketData;
+  private WebSocketPacketData webSocketData;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

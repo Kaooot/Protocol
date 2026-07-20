@@ -26,21 +26,21 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class AddVolumeEntityPacket implements BedrockPacket {
-  private EntityNetId EntityNetworkId;
+  private EntityNetId entityNetworkId;
 
-  private NbtMap Components;
+  private NbtMap components;
 
-  private String JSONIdentifier;
+  private String jsonIdentifier;
 
-  private String InstanceName;
+  private String instanceName;
 
-  private Vector3i MinBounds;
+  private Vector3i minBounds;
 
-  private Vector3i MaxBounds;
+  private Vector3i maxBounds;
 
-  private DimensionType DimensionType;
+  private DimensionType dimensionType;
 
-  private String EngineVersion;
+  private String engineVersion;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

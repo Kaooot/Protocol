@@ -23,7 +23,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class EducationSettingsPacket implements BedrockPacket {
-  private EducationLevelSettings EducationLevelSettings;
+  private EducationLevelSettings educationLevelSettings;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

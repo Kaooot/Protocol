@@ -23,7 +23,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class ShowProfilePacket implements BedrockPacket {
-  private String PlayerXUID;
+  private String playerXuid;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

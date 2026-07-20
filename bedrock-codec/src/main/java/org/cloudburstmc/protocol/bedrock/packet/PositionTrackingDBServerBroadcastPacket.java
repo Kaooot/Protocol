@@ -24,11 +24,11 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class PositionTrackingDBServerBroadcastPacket implements BedrockPacket {
-  private PositionTrackingDBServerBroadcastPacketPayloadAction Action;
+  private PositionTrackingDBServerBroadcastPacketPayloadAction action;
 
-  private PositionTrackingId Id;
+  private PositionTrackingId id;
 
-  private NbtMap Positiontrackingdata;
+  private NbtMap positionTrackingData;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class anonymousnamespaceMapInfoRequestPacketAnonClientPixelsProxy {
-  private int pixel;
+public class PropertySyncIntEntry {
+  private int propertyIndex;
 
-  private int index;
+  private int data;
 }

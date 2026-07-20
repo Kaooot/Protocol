@@ -27,15 +27,15 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class ClientMovementPredictionSyncPacket implements BedrockPacket {
-  private ActorDataFlagComponent ActorDataFlag;
+  private ActorDataFlagComponent actorDataFlag;
 
-  private ActorDataBoundingBoxComponent ActorBoundingBox;
+  private ActorDataBoundingBoxComponent actorBoundingBox;
 
-  private final List<Float> MovementAttributesComponent = new ObjectArrayList<>();
+  private final List<Float> movementAttributesComponent = new ObjectArrayList<>();
 
-  private long ActorUniqueID;
+  private long actorUniqueID;
 
-  private boolean ActorFlyingState;
+  private boolean actorFlyingState;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

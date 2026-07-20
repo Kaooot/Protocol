@@ -14,5 +14,5 @@ import lombok.NoArgsConstructor;
 public class DataItemEntry {
   private int ID;
 
-  private Object Payload;
+  private Object payload;
 }

@@ -13,9 +13,9 @@ import org.cloudburstmc.math.vector.Vector3i;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MapItemTrackedActorUniqueId {
-  private MapItemTrackedActorType Type;
+  private MapItemTrackedActorType type;
 
-  private Long EntityID;
+  private Long entityID;
 
-  private Vector3i BlockPosition;
+  private Vector3i blockPosition;
 }

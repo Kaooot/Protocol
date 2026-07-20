@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ChunkPos {
-  private int X;
+  private int x;
 
-  private int Z;
+  private int z;
 }

@@ -11,15 +11,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SerializedAbilitiesDataSerializedLayer {
-  private int SerializedLayer;
+  private int serializedLayer;
 
-  private int AbilitiesSet;
+  private int abilitiesSet;
 
-  private int AbilityValues;
+  private int abilityValues;
 
-  private float FlySpeed;
+  private float flySpeed;
 
-  private float VerticalFlySpeed;
+  private float verticalFlySpeed;
 
-  private float WalkSpeed;
+  private float walkSpeed;
 }

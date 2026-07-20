@@ -16,25 +16,25 @@ import org.cloudburstmc.math.vector.Vector3f;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PrimitiveShapeDataPayload {
-  private long NetworkId;
+  private long networkId;
 
-  private ScriptModuleMinecraftScriptPrimitiveShapeType ShapeType;
+  private ScriptPrimitiveShapeType shapeType;
 
-  private Vector3f Location;
+  private Vector3f location;
 
-  private Float Scale;
+  private Float scale;
 
-  private Vector3f Rotation;
+  private Vector3f rotation;
 
-  private Float TotalTimeLeft;
+  private Float totalTimeLeft;
 
-  private Float MaximumRenderDistance;
+  private Float maximumRenderDistance;
 
-  private Color Color;
+  private Color color;
 
-  private DimensionType DimensionID;
+  private DimensionType dimensionID;
 
-  private Long AttachedToEntityID;
+  private Long attachedToEntityID;
 
-  private Object ExtraShapeData;
+  private Object extraShapeData;
 }

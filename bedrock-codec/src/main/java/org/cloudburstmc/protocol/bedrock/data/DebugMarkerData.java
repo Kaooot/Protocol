@@ -14,11 +14,11 @@ import org.cloudburstmc.math.vector.Vector3f;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DebugMarkerData {
-  private String Text;
+  private String text;
 
-  private Vector3f Position;
+  private Vector3f position;
 
-  private Color Color;
+  private Color color;
 
   private long duration;
 }

@@ -16,9 +16,9 @@ import org.cloudburstmc.nbt.NbtMap;
 import org.cloudburstmc.protocol.bedrock.data.LevelSettings;
 import org.cloudburstmc.protocol.bedrock.data.NetworkPermissions;
 import org.cloudburstmc.protocol.bedrock.data.ServerBlockProperty;
+import org.cloudburstmc.protocol.bedrock.data.ServerConfig;
 import org.cloudburstmc.protocol.bedrock.data.ServerTelemetryData;
 import org.cloudburstmc.protocol.bedrock.data.SyncedPlayerMovementSettings;
-import org.cloudburstmc.protocol.bedrock.data.serverconfig;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
@@ -35,55 +35,55 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class StartGamePacket implements BedrockPacket {
-  private long EntityID;
+  private long entityID;
 
-  private long RuntimeID;
+  private long runtimeID;
 
-  private String GameType;
+  private String gameType;
 
-  private Vector3f Position;
+  private Vector3f position;
 
-  private Vector2f Rotation;
+  private Vector2f rotation;
 
-  private LevelSettings Settings;
+  private LevelSettings settings;
 
-  private String LevelID;
+  private String levelID;
 
-  private String LevelName;
+  private String levelName;
 
-  private String TemplateContentIdentity;
+  private String templateContentIdentity;
 
-  private boolean IsTrial;
+  private boolean isTrial;
 
-  private SyncedPlayerMovementSettings MovementSettings;
+  private SyncedPlayerMovementSettings movementSettings;
 
-  private long LevelCurrentTime;
+  private long levelCurrentTime;
 
-  private int EnchantmentSeed;
+  private int enchantmentSeed;
 
-  private final List<ServerBlockProperty> BlockProperties = new ObjectArrayList<>();
+  private final List<ServerBlockProperty> blockProperties = new ObjectArrayList<>();
 
-  private String MultiplayerCorrelationId;
+  private String multiplayerCorrelationId;
 
-  private boolean EnableItemStackNetManager;
+  private boolean enableItemStackNetManager;
 
-  private String ServerVersion;
+  private String serverVersion;
 
-  private NbtMap PlayerPropertyData;
+  private NbtMap playerPropertyData;
 
-  private long ServerBlockTypeRegistryChecksum;
+  private long serverBlockTypeRegistryChecksum;
 
-  private UUID WorldTemplateID;
+  private UUID worldTemplateID;
 
-  private boolean ServerEnabledClientSideGeneration;
+  private boolean serverEnabledClientsideGeneration;
 
-  private boolean BlockNetworkIdsAreHashes;
+  private boolean blockNetworkIdsAreHashes;
 
-  private NetworkPermissions NetworkPermissions;
+  private NetworkPermissions networkPermissions;
 
-  private serverconfig ServerConfigurationJoinInfo;
+  private ServerConfig serverConfigurationJoinInfo;
 
-  private ServerTelemetryData ServerTelemetryData;
+  private ServerTelemetryData serverTelemetryData;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

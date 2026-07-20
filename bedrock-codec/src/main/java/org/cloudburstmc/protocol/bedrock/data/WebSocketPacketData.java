@@ -12,5 +12,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class WebSocketPacketData {
-  private String WebsocketServerURI;
+  private String websocketServerURI;
 }

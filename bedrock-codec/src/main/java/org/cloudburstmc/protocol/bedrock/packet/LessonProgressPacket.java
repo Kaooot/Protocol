@@ -22,11 +22,11 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class LessonProgressPacket implements BedrockPacket {
-  private int LessonAction;
+  private int lessonAction;
 
-  private int Score;
+  private int score;
 
-  private String ActivityId;
+  private String activityId;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

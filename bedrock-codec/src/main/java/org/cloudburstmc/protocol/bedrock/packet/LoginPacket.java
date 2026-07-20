@@ -22,9 +22,9 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class LoginPacket implements BedrockPacket {
-  private int ClientNetworkVersion;
+  private int clientNetworkVersion;
 
-  private String ConnectionRequest;
+  private String connectionRequest;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

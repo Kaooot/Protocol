@@ -23,15 +23,15 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class AddPaintingPacket implements BedrockPacket {
-  private long TargetActorID;
+  private long targetActorID;
 
-  private long TargetRuntimeID;
+  private long targetRuntimeID;
 
-  private Vector3f Position;
+  private Vector3f position;
 
-  private int Direction;
+  private int direction;
 
-  private String Motif;
+  private String motif;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

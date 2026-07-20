@@ -26,11 +26,11 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class NetworkChunkPublisherUpdatePacket implements BedrockPacket {
-  private Vector3i Newpositionforview;
+  private Vector3i newPositionForView;
 
-  private int Newradiusforview;
+  private int newRadiusForView;
 
-  private final List<ChunkPos> ServerBuiltChunksList = new ObjectArrayList<>();
+  private final List<ChunkPos> serverBuiltChunksList = new ObjectArrayList<>();
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

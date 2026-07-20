@@ -25,13 +25,13 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class PlayerSkinPacket implements BedrockPacket {
-  private UUID UUID;
+  private UUID uuid;
 
-  private SerializedSkin SerializedSkin;
+  private SerializedSkin serializedSkin;
 
-  private String LocalizedNewSkinName;
+  private String localizedNewSkinName;
 
-  private String LocalizedOldSkinName;
+  private String localizedOldSkinName;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

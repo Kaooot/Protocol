@@ -12,15 +12,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SmithingTrimRecipePayload {
-  private String RecipeId;
+  private String recipeId;
 
-  private RecipeIngredient TemplateIngredient;
+  private RecipeIngredient templateIngredient;
 
-  private RecipeIngredient BaseIngredient;
+  private RecipeIngredient baseIngredient;
 
-  private RecipeIngredient AdditionIngredient;
+  private RecipeIngredient additionIngredient;
 
-  private String Tag;
+  private String tag;
 
-  private RecipeNetId NetId;
+  private RecipeNetId netId;
 }

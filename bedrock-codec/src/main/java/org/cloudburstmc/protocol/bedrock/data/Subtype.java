@@ -6,24 +6,12 @@ import java.lang.UnsupportedOperationException;
  * Auto generated from 1.26.40-beta.31 (v2168)
  */
 public enum Subtype {
-  /**
-   * UninitializedSubtype
-   */
   UNINITIALIZED_SUBTYPE,
 
-  /**
-   * EnableCommands
-   */
   ENABLE_COMMANDS,
 
-  /**
-   * DisableCommands
-   */
   DISABLE_COMMANDS,
 
-  /**
-   * UnlockWorldTemplateSettings
-   */
   UNLOCK_WORLD_TEMPLATE_SETTINGS;
 
   private static final Subtype[] VALUES = values();

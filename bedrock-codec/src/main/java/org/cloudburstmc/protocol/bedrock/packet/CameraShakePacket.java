@@ -24,13 +24,13 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class CameraShakePacket implements BedrockPacket {
-  private float Intensity;
+  private float intensity;
 
-  private float Seconds;
+  private float seconds;
 
-  private CameraShakeType ShakeType;
+  private CameraShakeType shakeType;
 
-  private CameraShakeAction ShakeAction;
+  private CameraShakeAction shakeAction;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

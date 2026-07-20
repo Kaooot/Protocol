@@ -12,13 +12,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class WhiskerScopeDataSummary {
-  private String Label;
+  private String label;
 
-  private String Indentation;
+  private String indentation;
 
-  private long TotalHighCostNS;
+  private long totalHighCostNS;
 
-  private long TotalMidCostNS;
+  private long totalMidCostNS;
 
-  private long TotalLowCostNS;
+  private long totalLowCostNS;
 }

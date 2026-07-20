@@ -29,21 +29,21 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class AvailableCommandsPacket implements BedrockPacket {
-  private final List<String> EnumValues = new ObjectArrayList<>();
+  private final List<String> enumValues = new ObjectArrayList<>();
 
-  private final List<String> ChainedSubcommandValues = new ObjectArrayList<>();
+  private final List<String> chainedSubcommandValues = new ObjectArrayList<>();
 
-  private final List<String> PostFixes = new ObjectArrayList<>();
+  private final List<String> postFixes = new ObjectArrayList<>();
 
-  private final List<AvailableCommandsPacketEnumData> EnumData = new ObjectArrayList<>();
+  private final List<AvailableCommandsPacketEnumData> enumData = new ObjectArrayList<>();
 
-  private final List<AvailableCommandsPacketChainedSubcommandData> ChainedSubcommandData = new ObjectArrayList<>();
+  private final List<AvailableCommandsPacketChainedSubcommandData> chainedSubcommandData = new ObjectArrayList<>();
 
-  private final List<AvailableCommandsPacketCommandData> Commands = new ObjectArrayList<>();
+  private final List<AvailableCommandsPacketCommandData> commands = new ObjectArrayList<>();
 
-  private final List<AvailableCommandsPacketSoftEnumData> SoftEnums = new ObjectArrayList<>();
+  private final List<AvailableCommandsPacketSoftEnumData> softEnums = new ObjectArrayList<>();
 
-  private final List<AvailableCommandsPacketConstrainedValueData> Constraints = new ObjectArrayList<>();
+  private final List<AvailableCommandsPacketConstrainedValueData> constraints = new ObjectArrayList<>();
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

@@ -30,19 +30,19 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class CorrectPlayerMovePredictionPacket implements BedrockPacket {
-  private RewindType PredictionType;
+  private RewindType predictionType;
 
-  private Vector3f Pos;
+  private Vector3f pos;
 
-  private Vector3f PosDelta;
+  private Vector3f posDelta;
 
-  private Vector2f Rotation;
+  private Vector2f rotation;
 
-  private Float VehicleAngularVelocity;
+  private Float vehicleAngularVelocity;
 
-  private boolean OnGround;
+  private boolean onGround;
 
-  private PlayerInputTick Tick;
+  private PlayerInputTick tick;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

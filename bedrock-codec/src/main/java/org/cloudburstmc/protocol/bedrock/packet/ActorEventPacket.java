@@ -24,13 +24,13 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class ActorEventPacket implements BedrockPacket {
-  private long TargetRuntimeID;
+  private long targetRuntimeID;
 
-  private ActorEvent EventID;
+  private ActorEvent eventID;
 
-  private int Data;
+  private int data;
 
-  private Vector3f FireAtPosition;
+  private Vector3f fireAtPosition;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

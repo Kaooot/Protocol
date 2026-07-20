@@ -10,10 +10,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CameraInstructionSplineInstructionSplineProgressOption {
-  private float Keyframevalue;
+public class CameraFadeInstruction {
+  private TimeOption time;
 
-  private float Keyframetime;
-
-  private easingfunction Keyframeeasingfunc;
+  private ColorOption color;
 }

@@ -23,7 +23,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class UpdateAdventureSettingsPacket implements BedrockPacket {
-  private AdventureSettings AdventureSettings;
+  private AdventureSettings adventureSettings;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

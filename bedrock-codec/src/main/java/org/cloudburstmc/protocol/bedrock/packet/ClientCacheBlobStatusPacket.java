@@ -25,9 +25,9 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class ClientCacheBlobStatusPacket implements BedrockPacket {
-  private final List<Long> MissingIds = new ObjectArrayList<>();
+  private final List<Long> missingIds = new ObjectArrayList<>();
 
-  private final List<Long> FoundIds = new ObjectArrayList<>();
+  private final List<Long> foundIds = new ObjectArrayList<>();
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

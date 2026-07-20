@@ -14,9 +14,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ItemStackResponseInfo {
-  private String Result;
+  private String result;
 
-  private ItemStackRequestId ClientRequestId;
+  private ItemStackRequestId clientRequestId;
 
-  private final List<ItemStackResponseContainerInfo> Containers = new ObjectArrayList<>();
+  private final List<ItemStackResponseContainerInfo> containers = new ObjectArrayList<>();
 }

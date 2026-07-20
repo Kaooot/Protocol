@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RecipeIngredient {
-  private Object ItemDescriptor;
+  private Object itemDescriptor;
 
-  private int StackSize;
+  private int stackSize;
 }

@@ -22,15 +22,15 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class MobEquipmentPacket implements BedrockPacket {
-  private long TargetRuntimeID;
+  private long targetRuntimeID;
 
-  private NetworkItemStackDescriptor Item;
+  private NetworkItemStackDescriptor item;
 
-  private int Slot;
+  private int slot;
 
-  private int SelectedSlot;
+  private int selectedSlot;
 
-  private int ContainerID;
+  private int containerID;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

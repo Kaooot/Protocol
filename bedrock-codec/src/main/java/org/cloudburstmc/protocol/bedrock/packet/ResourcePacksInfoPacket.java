@@ -26,17 +26,17 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class ResourcePacksInfoPacket implements BedrockPacket {
-  private boolean ResourcePackRequired;
+  private boolean resourcePackRequired;
 
-  private boolean HasAddonPacks;
+  private boolean hasAddonPacks;
 
-  private boolean HasScripts;
+  private boolean hasScripts;
 
-  private boolean ForceDisableVibrantVisuals;
+  private boolean forceDisableVibrantVisuals;
 
-  private PackIdVersion WorldTemplateIdAndVersion;
+  private PackIdVersion worldTemplateIdAndVersion;
 
-  private final List<PackInfoData> ResourcePacks = new ObjectArrayList<>();
+  private final List<PackInfoData> resourcePacks = new ObjectArrayList<>();
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

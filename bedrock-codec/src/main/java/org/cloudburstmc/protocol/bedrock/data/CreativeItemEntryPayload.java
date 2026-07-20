@@ -11,9 +11,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreativeItemEntryPayload {
-  private CreativeItemNetId CreativeNetId;
+  private CreativeItemNetId creativeNetId;
 
-  private NetworkItemInstanceDescriptor ItemInstance;
+  private NetworkItemInstanceDescriptor itemInstance;
 
-  private int GroupIndex;
+  private int groupIndex;
 }

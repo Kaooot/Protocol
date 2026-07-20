@@ -13,9 +13,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BiomeConditionalTransformationData {
-  private final List<BiomeWeightedData> transformsinto = new ObjectArrayList<>();
+  private final List<BiomeWeightedData> transformsInto = new ObjectArrayList<>();
 
-  private int conditionjson;
+  private int conditionJson;
 
-  private int minpassingneighbors;
+  private int minPassingNeighbors;
 }

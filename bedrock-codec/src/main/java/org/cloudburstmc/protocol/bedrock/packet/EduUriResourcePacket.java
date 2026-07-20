@@ -22,7 +22,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class EduUriResourcePacket implements BedrockPacket {
-  private EduSharedUriResource EduSharedURIResource;
+  private EduSharedUriResource eduSharedURIResource;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

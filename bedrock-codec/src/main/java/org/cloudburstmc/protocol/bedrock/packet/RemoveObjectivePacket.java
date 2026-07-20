@@ -23,7 +23,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class RemoveObjectivePacket implements BedrockPacket {
-  private String ObjectiveName;
+  private String objectiveName;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

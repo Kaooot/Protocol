@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ItemStackResponseContainerInfo {
-  private FullContainerName FullContainerName;
+  private FullContainerName fullContainerName;
 
-  private final List<ItemStackResponseSlotInfo> Slots = new ObjectArrayList<>();
+  private final List<ItemStackResponseSlotInfo> slots = new ObjectArrayList<>();
 }

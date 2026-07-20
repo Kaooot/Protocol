@@ -25,13 +25,13 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class InventoryContentPacket implements BedrockPacket {
-  private int ContainerId;
+  private int containerId;
 
-  private final List<NetworkItemStackDescriptor> Slots = new ObjectArrayList<>();
+  private final List<NetworkItemStackDescriptor> slots = new ObjectArrayList<>();
 
-  private FullContainerName FullContainerName;
+  private FullContainerName fullContainerName;
 
-  private NetworkItemStackDescriptor StorageItem;
+  private NetworkItemStackDescriptor storageItem;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

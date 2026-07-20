@@ -11,19 +11,19 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BiomeElementData {
-  private float noisefreqscale;
+  private float noiseFreqScale;
 
-  private float noiselowerbound;
+  private float noiseLowerBound;
 
-  private float noiseupperbound;
+  private float noiseUpperBound;
 
-  private int heightmintype;
+  private int heightMinType;
 
-  private int heightmin;
+  private int heightMin;
 
-  private int heightmaxtype;
+  private int heightMaxType;
 
-  private int heightmax;
+  private int heightMax;
 
-  private BiomeSurfaceMaterialData adjustedmaterials;
+  private BiomeSurfaceMaterialData adjustedMaterials;
 }

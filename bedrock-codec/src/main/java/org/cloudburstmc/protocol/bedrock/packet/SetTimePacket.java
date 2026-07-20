@@ -22,7 +22,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class SetTimePacket implements BedrockPacket {
-  private int Time;
+  private int time;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

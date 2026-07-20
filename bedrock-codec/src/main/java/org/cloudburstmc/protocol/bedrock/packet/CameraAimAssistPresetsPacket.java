@@ -28,11 +28,11 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class CameraAimAssistPresetsPacket implements BedrockPacket {
-  private final List<CameraAimAssistCategoryDefinition> CameraAimAssistPresets = new ObjectArrayList<>();
+  private final List<CameraAimAssistCategoryDefinition> cameraAimassistPresets = new ObjectArrayList<>();
 
-  private final List<CameraAimAssistPresetDefinition> CameraAimAssistCategories = new ObjectArrayList<>();
+  private final List<CameraAimAssistPresetDefinition> cameraAimassistCategories = new ObjectArrayList<>();
 
-  private CameraAimAssistPresetsPacketOperation Operation;
+  private CameraAimAssistPresetsPacketOperation operation;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

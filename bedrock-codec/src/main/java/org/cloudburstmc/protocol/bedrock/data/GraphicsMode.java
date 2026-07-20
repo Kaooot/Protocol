@@ -6,24 +6,12 @@ import java.lang.UnsupportedOperationException;
  * Auto generated from 1.26.40-beta.31 (v2168)
  */
 public enum GraphicsMode {
-  /**
-   * Simple
-   */
   SIMPLE,
 
-  /**
-   * Fancy
-   */
   FANCY,
 
-  /**
-   * Advanced
-   */
   ADVANCED,
 
-  /**
-   * RayTraced
-   */
   RAY_TRACED;
 
   private static final GraphicsMode[] VALUES = values();
