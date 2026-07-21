@@ -10,8 +10,6 @@ import org.cloudburstmc.math.vector.Vector3i;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
- * Auto generated from 1.26.40-beta.31 (v2168)
- *
  * Packet ID: 110 (0x6e)
  * Variation of UpdateBlockSyncedPacket that includes information to sync entities with renderchunk generation. Occasionally when blocks change a sync message is sent and during the change on the dimension, this packet is sent to the client to alert the update flags and sync info at a specific position.
  */

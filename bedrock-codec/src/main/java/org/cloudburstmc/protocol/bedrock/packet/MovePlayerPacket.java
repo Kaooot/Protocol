@@ -14,8 +14,6 @@ import org.cloudburstmc.protocol.bedrock.data.PositionMode;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
- * Auto generated from 1.26.40-beta.31 (v2168)
- *
  * Packet ID: 19 (0x13)
  */
 @Data

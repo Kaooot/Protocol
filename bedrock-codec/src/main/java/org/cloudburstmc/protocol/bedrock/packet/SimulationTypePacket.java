@@ -10,8 +10,6 @@ import org.cloudburstmc.protocol.bedrock.data.SimulationType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
- * Auto generated from 1.26.40-beta.31 (v2168)
- *
  * Packet ID: 168 (0xa8)
  * - mSimType: an enum representing the simulation type to switch to.
  */

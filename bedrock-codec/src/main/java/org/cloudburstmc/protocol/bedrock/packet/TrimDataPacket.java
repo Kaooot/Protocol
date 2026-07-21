@@ -13,8 +13,6 @@ import org.cloudburstmc.protocol.bedrock.data.TrimPattern;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
- * Auto generated from 1.26.40-beta.31 (v2168)
- *
  * Packet ID: 302 (0x12e)
  * - mTrimPatterns: vector of TrimPattern
  * - mTrimMaterials: vector of TrimMaterial

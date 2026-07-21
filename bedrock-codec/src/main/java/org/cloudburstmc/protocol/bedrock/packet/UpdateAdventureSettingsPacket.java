@@ -10,8 +10,6 @@ import org.cloudburstmc.protocol.bedrock.data.AdventureSettings;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
- * Auto generated from 1.26.40-beta.31 (v2168)
- *
  * Packet ID: 188 (0xbc)
  * Sent by the server to update the state of AdventureSettings. Replaces the AdventureSettingsPacket for updating AdventureSettings from server to client.
  */

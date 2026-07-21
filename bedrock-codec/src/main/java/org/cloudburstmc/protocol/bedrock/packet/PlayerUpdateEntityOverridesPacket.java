@@ -10,8 +10,6 @@ import lombok.ToString;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
- * Auto generated from 1.26.40-beta.31 (v2168)
- *
  * Packet ID: 325 (0x145)
  * Updates client entity property override data. Sets/removes an override for the indicated property for a specific entity on a client or clears all overrides for that entity.
  */

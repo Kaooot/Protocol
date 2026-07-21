@@ -9,8 +9,6 @@ import lombok.ToString;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
- * Auto generated from 1.26.40-beta.31 (v2168)
- *
  * Packet ID: 196 (0xc4)
  * Used to update the players input permissions. Sends the full permission set and the server position of the player at the time the permission was modified.
  */

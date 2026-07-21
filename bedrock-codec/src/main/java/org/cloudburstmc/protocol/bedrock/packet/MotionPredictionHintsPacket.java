@@ -10,8 +10,6 @@ import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
- * Auto generated from 1.26.40-beta.31 (v2168)
- *
  * Packet ID: 157 (0x9d)
  * This is from the server when spatial optimizations are enabled and the server does not send a spatial update.
  */

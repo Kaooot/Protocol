@@ -13,8 +13,6 @@ import org.cloudburstmc.protocol.bedrock.data.ClientboundTextureShiftPacketPaylo
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
- * Auto generated from 1.26.40-beta.31 (v2168)
- *
  * Packet ID: 336 (0x150)
  */
 @Data

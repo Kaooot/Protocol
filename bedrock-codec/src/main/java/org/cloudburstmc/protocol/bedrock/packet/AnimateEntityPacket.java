@@ -13,8 +13,6 @@ import lombok.ToString;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
- * Auto generated from 1.26.40-beta.31 (v2168)
- *
  * Packet ID: 158 (0x9e)
  * Several properties can be specified in the following order:</br>
  * - The name of the animation (a string) that the specified entities are to play.</br>

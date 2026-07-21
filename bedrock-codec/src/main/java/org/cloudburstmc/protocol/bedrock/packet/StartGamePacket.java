@@ -23,8 +23,6 @@ import org.cloudburstmc.protocol.bedrock.data.SyncedPlayerMovementSettings;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
- * Auto generated from 1.26.40-beta.31 (v2168)
- *
  * Packet ID: 11 (0xb)
  * The player movement mode is also specified here, see ServerAuthMovementMode enum documentation for details on the modes.
  */

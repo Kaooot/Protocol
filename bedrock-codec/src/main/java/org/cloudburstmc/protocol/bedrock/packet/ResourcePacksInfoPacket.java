@@ -13,8 +13,6 @@ import org.cloudburstmc.protocol.bedrock.data.PackInfoData;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
- * Auto generated from 1.26.40-beta.31 (v2168)
- *
  * Packet ID: 6 (0x6)
  * Sends resource pack information to the client including pack IDs, versions, sizes, and content keys.
  */

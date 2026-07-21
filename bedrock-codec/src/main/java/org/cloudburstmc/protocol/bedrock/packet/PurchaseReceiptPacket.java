@@ -12,8 +12,6 @@ import lombok.ToString;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
- * Auto generated from 1.26.40-beta.31 (v2168)
- *
  * Packet ID: 92 (0x5c)
  * Sent from the client after we make a purchase in the store OR if we login and our entitlements are verified.
  * It sends a vector of purchase receipts(string).There is a handler and a multiple senders.

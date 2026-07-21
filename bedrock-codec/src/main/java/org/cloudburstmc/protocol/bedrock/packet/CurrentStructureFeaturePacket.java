@@ -10,8 +10,6 @@ import lombok.ToString;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
- * Auto generated from 1.26.40-beta.31 (v2168)
- *
  * Packet ID: 314 (0x13a)
  * Sends the name of the Structure Feature the player is currently occupying to the client.
  * If the player is not in a structure, this packet contains an empty string.

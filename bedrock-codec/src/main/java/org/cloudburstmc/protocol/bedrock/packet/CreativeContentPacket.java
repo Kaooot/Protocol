@@ -13,8 +13,6 @@ import org.cloudburstmc.protocol.bedrock.data.CreativeItemEntryPayload;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
- * Auto generated from 1.26.40-beta.31 (v2168)
- *
  * Packet ID: 145 (0x91)
  * Sent once by the server on startup to tell clients all of the items that can show up in the creative menu and recipe book.
  */

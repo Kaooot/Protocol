@@ -13,8 +13,6 @@ import org.cloudburstmc.protocol.bedrock.data.ChunkPos;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
- * Auto generated from 1.26.40-beta.31 (v2168)
- *
  * Packet ID: 121 (0x79)
  * Used (from the server) when a user's Chunk View moves, I.e. the area that determines what chunks exist. For ClientSideGeneration we also send the client a list of ChunkPos that the Server will fully build.
  */

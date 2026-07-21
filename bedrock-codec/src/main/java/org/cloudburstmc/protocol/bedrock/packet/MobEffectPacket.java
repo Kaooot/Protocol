@@ -11,8 +11,6 @@ import org.cloudburstmc.protocol.bedrock.data.PlayerInputTick;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
- * Auto generated from 1.26.40-beta.31 (v2168)
- *
  * Packet ID: 28 (0x1c)
  * At the start of the game the server sends any mob effects with _sendAdditionalLevelData() if the joining player saved out with them,
  * and then anytime a mob effect is added, removed, or updated this packet is sent.<br>

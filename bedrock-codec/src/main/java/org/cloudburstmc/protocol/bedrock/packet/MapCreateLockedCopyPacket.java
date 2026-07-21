@@ -9,8 +9,6 @@ import lombok.ToString;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
- * Auto generated from 1.26.40-beta.31 (v2168)
- *
  * Packet ID: 131 (0x83)
  * It sends the original map id and the new map id. 
  * On the server it follows a similar process to creating a new map, sends the data and the map info to the client.

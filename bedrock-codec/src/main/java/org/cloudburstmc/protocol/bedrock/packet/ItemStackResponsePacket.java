@@ -12,8 +12,6 @@ import org.cloudburstmc.protocol.bedrock.data.ItemStackResponseInfo;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
- * Auto generated from 1.26.40-beta.31 (v2168)
- *
  * Packet ID: 148 (0x94)
  */
 @Data

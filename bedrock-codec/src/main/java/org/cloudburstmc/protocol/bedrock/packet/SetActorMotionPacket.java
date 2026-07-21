@@ -11,8 +11,6 @@ import org.cloudburstmc.protocol.bedrock.data.PlayerInputTick;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
- * Auto generated from 1.26.40-beta.31 (v2168)
- *
  * Packet ID: 40 (0x28)
  * It is primarily relevant for client predicted entities like the player or a boat or horse they are in control of.
  * For most other actor types it does nothing.<br>

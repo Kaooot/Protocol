@@ -10,8 +10,6 @@ import lombok.ToString;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
- * Auto generated from 1.26.40-beta.31 (v2168)
- *
  * Packet ID: 138 (0x8a)
  * Sent in both directions; by client to request that an emote is played and then from the server to the clients to indicate which player needs to now emote.
  */

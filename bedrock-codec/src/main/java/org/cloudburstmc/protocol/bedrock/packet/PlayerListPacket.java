@@ -12,8 +12,6 @@ import lombok.ToString;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
- * Auto generated from 1.26.40-beta.31 (v2168)
- *
  * Packet ID: 63 (0x3f)
  * Sent from the Server at the start of the game or when a player is added to all clients. Lists the players.
  */

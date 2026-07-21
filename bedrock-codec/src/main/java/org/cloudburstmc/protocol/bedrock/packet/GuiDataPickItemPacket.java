@@ -10,8 +10,6 @@ import lombok.ToString;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
- * Auto generated from 1.26.40-beta.31 (v2168)
- *
  * Packet ID: 54 (0x36)
  * This is only used when players use pick block, a command is used, tests, and some 3rd party content.
  */

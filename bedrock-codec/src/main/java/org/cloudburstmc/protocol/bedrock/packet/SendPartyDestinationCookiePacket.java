@@ -11,8 +11,6 @@ import org.cloudburstmc.protocol.bedrock.data.PartyDestinationCookieIntent;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
- * Auto generated from 1.26.40-beta.31 (v2168)
- *
  * Packet ID: 349 (0x15d)
  */
 @Data

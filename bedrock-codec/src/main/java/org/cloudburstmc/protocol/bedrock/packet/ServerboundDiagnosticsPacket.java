@@ -16,8 +16,6 @@ import org.cloudburstmc.protocol.bedrock.data.WhiskerScopeDataSummary;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
- * Auto generated from 1.26.40-beta.31 (v2168)
- *
  * Packet ID: 315 (0x13b)
  */
 @Data

@@ -12,8 +12,6 @@ import org.cloudburstmc.protocol.bedrock.data.ClientPixelsProxy;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
- * Auto generated from 1.26.40-beta.31 (v2168)
- *
  * Packet ID: 68 (0x44)
  * If the server finds the map, it sends the data back. If it can't find the map, it creates it and sends the map and data back.
  * (the map creation data packet and the map data packet are separate packets).

@@ -13,8 +13,6 @@ import org.cloudburstmc.protocol.bedrock.data.SoftEnumUpdateType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
- * Auto generated from 1.26.40-beta.31 (v2168)
- *
  * Packet ID: 114 (0x72)
  * This allows someone to sync between server and client tags and enums on mobs or on the level.
  */

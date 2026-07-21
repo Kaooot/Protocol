@@ -22,8 +22,6 @@ import org.cloudburstmc.protocol.bedrock.data.PlayerInputTick;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
- * Auto generated from 1.26.40-beta.31 (v2168)
- *
  * Packet ID: 144 (0x90)
  * These are for Server Authoritative Movement to sync all player input with the server.
  */

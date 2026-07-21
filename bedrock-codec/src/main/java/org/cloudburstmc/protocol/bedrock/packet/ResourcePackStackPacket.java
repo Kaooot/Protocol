@@ -14,8 +14,6 @@ import org.cloudburstmc.protocol.bedrock.data.PackInstanceId;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
- * Auto generated from 1.26.40-beta.31 (v2168)
- *
  * Packet ID: 7 (0x7)
  * Sent to client in response to ResourcePackClientResponsePacket with info on current resource pack stack.
  */

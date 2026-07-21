@@ -11,8 +11,6 @@ import org.cloudburstmc.protocol.bedrock.data.PhotoType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
- * Auto generated from 1.26.40-beta.31 (v2168)
- *
  * Packet ID: 99 (0x63)
  * When the player uses the camera item or adds a photo to the scrapbook it sends the photo to the server,
  * then the server sends a response back on whether that was successful or not.

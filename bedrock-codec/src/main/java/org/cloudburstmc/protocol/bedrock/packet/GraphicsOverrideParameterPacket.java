@@ -15,8 +15,6 @@ import org.cloudburstmc.protocol.bedrock.data.GraphicsOverrideParameterType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
- * Auto generated from 1.26.40-beta.31 (v2168)
- *
  * Packet ID: 331 (0x14b)
  */
 @Data

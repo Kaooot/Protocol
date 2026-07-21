@@ -10,8 +10,6 @@ import lombok.ToString;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
- * Auto generated from 1.26.40-beta.31 (v2168)
- *
  * Packet ID: 150 (0x96)
  * This is EDU exclusively.It is sent once from _sendLevelData() in the start of a game from the server,
  * and once per CodeBuilderCommand

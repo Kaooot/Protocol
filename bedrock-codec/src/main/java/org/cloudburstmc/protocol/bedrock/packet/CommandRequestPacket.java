@@ -12,8 +12,6 @@ import org.cloudburstmc.protocol.bedrock.data.CurrentCmdVersion;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
- * Auto generated from 1.26.40-beta.31 (v2168)
- *
  * Packet ID: 77 (0x4d)
  */
 @Data

@@ -10,8 +10,6 @@ import org.cloudburstmc.math.vector.Vector3i;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
- * Auto generated from 1.26.40-beta.31 (v2168)
- *
  * Packet ID: 125 (0x7d)
  * It is a request from the client to either turn the page in the lectern or drop the book.
  */

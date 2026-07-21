@@ -10,8 +10,6 @@ import org.cloudburstmc.protocol.bedrock.data.WebSocketPacketData;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
- * Auto generated from 1.26.40-beta.31 (v2168)
- *
  * Packet ID: 95 (0x5f)
  * Only used though command to connect to server URLs. This is primarily used by EDU for connecting to their companion apps and other external applications through web sockets. Some mods/3rd party packs use it as well.
  */

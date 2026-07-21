@@ -11,8 +11,6 @@ import org.cloudburstmc.protocol.bedrock.data.InteractPacketPayloadAction;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
- * Auto generated from 1.26.40-beta.31 (v2168)
- *
  * Packet ID: 33 (0x21)
  * Used for inventory button press and in _updateInteraction() for a variety of purposes. From the client.
  */

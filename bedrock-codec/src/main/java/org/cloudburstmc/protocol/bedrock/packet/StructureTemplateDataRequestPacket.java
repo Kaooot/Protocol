@@ -13,8 +13,6 @@ import org.cloudburstmc.protocol.bedrock.data.StructureTemplateRequestOperation;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
- * Auto generated from 1.26.40-beta.31 (v2168)
- *
  * Packet ID: 132 (0x84)
  * This is used to kick off the process of loading and returning a structure in a Tag from the server back to the client. Currently this functionality is completely disabled and does nothing.
  */

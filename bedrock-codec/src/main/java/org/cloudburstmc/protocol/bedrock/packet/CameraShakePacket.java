@@ -11,8 +11,6 @@ import org.cloudburstmc.protocol.bedrock.data.CameraShakeType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
- * Auto generated from 1.26.40-beta.31 (v2168)
- *
  * Packet ID: 159 (0x9f)
  * It may be used to queue or stop a camera shake
  */

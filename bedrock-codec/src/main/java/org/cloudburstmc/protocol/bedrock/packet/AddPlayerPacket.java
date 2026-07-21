@@ -22,8 +22,6 @@ import org.cloudburstmc.protocol.bedrock.data.SynchedActorDataList;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
- * Auto generated from 1.26.40-beta.31 (v2168)
- *
  * Packet ID: 12 (0xc)
  * A new player joins the game; the server sends this packet to the other players.
  */

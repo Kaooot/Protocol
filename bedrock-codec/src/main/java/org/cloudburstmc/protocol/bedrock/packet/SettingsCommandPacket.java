@@ -10,8 +10,6 @@ import lombok.ToString;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
- * Auto generated from 1.26.40-beta.31 (v2168)
- *
  * Packet ID: 140 (0x8c)
  * Used when the player changes the world settings like doDayNightCycle or WeatherCycle via the world settings menu
  */

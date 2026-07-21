@@ -11,8 +11,6 @@ import org.cloudburstmc.protocol.bedrock.data.ActorEvent;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
- * Auto generated from 1.26.40-beta.31 (v2168)
- *
  * Packet ID: 27 (0x1b)
  * Ranges from a crossbow being ready to fire to taming animals..., some of which may be obsolete (frex, ADD_PLAYER_LEVELS)
  */

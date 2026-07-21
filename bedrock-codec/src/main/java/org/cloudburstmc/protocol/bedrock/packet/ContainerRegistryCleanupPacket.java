@@ -12,8 +12,6 @@ import org.cloudburstmc.protocol.bedrock.data.FullContainerName;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
- * Auto generated from 1.26.40-beta.31 (v2168)
- *
  * Packet ID: 317 (0x13d)
  * Whenever the serverside ContainerRegistry does a clean, identifiers for the removed containers are gathered in a ContainerRegistryCleanUp
  * packet and sent to the client so that the clientside container registry can remove those same containers.

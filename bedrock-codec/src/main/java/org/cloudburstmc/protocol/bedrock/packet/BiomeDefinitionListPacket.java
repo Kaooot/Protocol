@@ -14,8 +14,6 @@ import org.cloudburstmc.protocol.bedrock.data.BiomeStringList;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
- * Auto generated from 1.26.40-beta.31 (v2168)
- *
  * Packet ID: 122 (0x7a)
  * - mBiomeData: map of biome string indices to biome definition data.
  * - mStringList: list of biome name strings.

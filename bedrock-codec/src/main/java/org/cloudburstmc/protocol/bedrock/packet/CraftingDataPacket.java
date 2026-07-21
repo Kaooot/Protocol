@@ -19,8 +19,6 @@ import org.cloudburstmc.protocol.bedrock.data.SmithingTrimRecipePayload;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
- * Auto generated from 1.26.40-beta.31 (v2168)
- *
  * Packet ID: 52 (0x34)
  * Sent from the server on level startup to send all recipes to the client.
  */

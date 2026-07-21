@@ -6,9 +6,6 @@ import java.util.Map;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-/**
- * Auto generated from 1.26.40-beta.31 (v2168)
- */
 @Getter
 @RequiredArgsConstructor
 public enum PersonaPieceType {

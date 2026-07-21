@@ -11,8 +11,6 @@ import org.cloudburstmc.protocol.bedrock.data.ShowStoreOfferRedirectType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
- * Auto generated from 1.26.40-beta.31 (v2168)
- *
  * Packet ID: 91 (0x5b)
  * The server can redirect the user to a 3rd party server page, to a marketplace offer description page, or to a dressing room page containing desired offer.
  */

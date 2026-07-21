@@ -14,8 +14,6 @@ import org.cloudburstmc.protocol.bedrock.data.ActorDataFlagComponent;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
- * Auto generated from 1.26.40-beta.31 (v2168)
- *
  * Packet ID: 322 (0x142)
  * Only used in Server-Authoritative Movement. Sent periodically if the client has received corrections from the server. Contains information about client-predictions that are relevant to movement.
  */

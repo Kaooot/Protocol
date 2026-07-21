@@ -16,8 +16,6 @@ import org.cloudburstmc.protocol.bedrock.data.VoxelShapesRegistryHandle;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
- * Auto generated from 1.26.40-beta.31 (v2168)
- *
  * Packet ID: 337 (0x151)
  * Sends the serializable voxel shapes data to the client as it's needed on both the client and server. This packet should always be sent before StartGamePacket.
  */

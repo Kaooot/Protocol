@@ -10,8 +10,6 @@ import org.cloudburstmc.protocol.bedrock.data.PlayStatus;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
- * Auto generated from 1.26.40-beta.31 (v2168)
- *
  * Packet ID: 2 (0x2)
  * Used after the Server handles a Login or (Sub)Client Authentication Packet
  * If everything is good, then it sends this packet to the client to finish the handshake.

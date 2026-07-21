@@ -12,8 +12,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 import org.cloudburstmc.protocol.common.util.OptionalBoolean;
 
 /**
- * Auto generated from 1.26.40-beta.31 (v2168)
- *
  * Packet ID: 321 (0x141)
  * Sent by clients to the server for activating/deactivating aim-assist.
  * Activation uses the CameraPreset Id for server-side lookup and uses its aim_assist field

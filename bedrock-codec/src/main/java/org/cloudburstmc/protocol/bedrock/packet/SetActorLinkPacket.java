@@ -10,8 +10,6 @@ import org.cloudburstmc.protocol.bedrock.data.ActorLink;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
- * Auto generated from 1.26.40-beta.31 (v2168)
- *
  * Packet ID: 41 (0x29)
  * Sent when the player starts riding something. Two are sent at a time for some reason.
  */

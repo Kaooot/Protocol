@@ -10,8 +10,6 @@ import org.cloudburstmc.protocol.bedrock.data.AgentAnimation;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
- * Auto generated from 1.26.40-beta.31 (v2168)
- *
  * Packet ID: 304 (0x130)
  */
 @Data

@@ -11,8 +11,6 @@ import org.cloudburstmc.protocol.bedrock.data.NpcRequestPacketPayloadRequestType
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
- * Auto generated from 1.26.40-beta.31 (v2168)
- *
  * Packet ID: 98 (0x62)
  * A request is made from the client during an interaction with an NPC then the request is processed by the server. 
  * Actor MUST have the NPCComponent to be handled. 

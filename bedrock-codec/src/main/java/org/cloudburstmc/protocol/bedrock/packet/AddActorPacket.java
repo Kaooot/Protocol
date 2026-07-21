@@ -18,8 +18,6 @@ import org.cloudburstmc.protocol.bedrock.data.SynchedActorDataList;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
- * Auto generated from 1.26.40-beta.31 (v2168)
- *
  * Packet ID: 13 (0xd)
  * Newly created entities on server use AddActorPacket to notify clients that they exist.
  */

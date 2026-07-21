@@ -16,8 +16,6 @@ import org.cloudburstmc.protocol.bedrock.data.LevelChunkPacketPayloadSubChunkMet
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
- * Auto generated from 1.26.40-beta.31 (v2168)
- *
  * Packet ID: 58 (0x3a)
  * Used to start a chunk transaction.
  */

@@ -10,8 +10,6 @@ import org.cloudburstmc.protocol.bedrock.data.Subtype;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
- * Auto generated from 1.26.40-beta.31 (v2168)
- *
  * Packet ID: 64 (0x40)
  * This is fired from the client to the server and a SetCommandsEnabledPacket is sent back when enabling commands.
  */

@@ -11,8 +11,6 @@ import org.cloudburstmc.protocol.bedrock.data.PlayerActionType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
- * Auto generated from 1.26.40-beta.31 (v2168)
- *
  * Packet ID: 36 (0x24)
  * The expected actions change depending on the ServerAuthMovementMode specified in the StartGamePacket.
  * See the PlayerActionType enum for details on which have differing behavior.

@@ -11,8 +11,6 @@ import org.cloudburstmc.protocol.bedrock.data.PlayerRespawnState;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
- * Auto generated from 1.26.40-beta.31 (v2168)
- *
  * Packet ID: 45 (0x2d)
  * For some reason each respawn 1 packet is sent from the client and 3 are sent from the server.
  */

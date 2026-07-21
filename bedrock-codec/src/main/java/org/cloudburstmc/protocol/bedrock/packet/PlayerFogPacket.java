@@ -12,8 +12,6 @@ import lombok.ToString;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
- * Auto generated from 1.26.40-beta.31 (v2168)
- *
  * Packet ID: 160 (0xa0)
  * This is the packet that tracks the active fog stack from the server so the local players can apply different fog settings.
  */

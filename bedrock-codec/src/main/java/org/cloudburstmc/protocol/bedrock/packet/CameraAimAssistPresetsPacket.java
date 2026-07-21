@@ -14,8 +14,6 @@ import org.cloudburstmc.protocol.bedrock.data.CameraAimAssistPresetsPacketOperat
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
- * Auto generated from 1.26.40-beta.31 (v2168)
- *
  * Packet ID: 320 (0x140)
  * Sent by the server to clients for initializing and updating the client aim-assist registry.
  * AddToExisting operations are sent by the server when new presets/categories are added to the registry through creator facing APIs.

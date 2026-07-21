@@ -12,8 +12,6 @@ import org.cloudburstmc.protocol.bedrock.data.ItemData;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
- * Auto generated from 1.26.40-beta.31 (v2168)
- *
  * Packet ID: 162 (0xa2)
  * This packet needs to be sent immediately after the StartGamePacket for primary clients.
  */

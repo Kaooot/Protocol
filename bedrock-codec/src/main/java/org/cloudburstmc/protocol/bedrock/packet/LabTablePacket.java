@@ -12,8 +12,6 @@ import org.cloudburstmc.protocol.bedrock.data.LabTableReactionType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
- * Auto generated from 1.26.40-beta.31 (v2168)
- *
  * Packet ID: 109 (0x6d)
  * The packet can be fired from the client through the UI or from the server during updates.
  */

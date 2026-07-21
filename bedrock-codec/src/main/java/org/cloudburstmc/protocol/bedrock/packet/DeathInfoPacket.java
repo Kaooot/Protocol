@@ -10,8 +10,6 @@ import org.cloudburstmc.protocol.bedrock.data.DeathCauseMessageType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
- * Auto generated from 1.26.40-beta.31 (v2168)
- *
  * Packet ID: 189 (0xbd)
  * mDeathCauseMessage: is untranslated cause of death string vector returned from ActorDamageSource
  */

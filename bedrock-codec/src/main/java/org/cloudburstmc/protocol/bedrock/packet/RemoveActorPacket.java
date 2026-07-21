@@ -9,8 +9,6 @@ import lombok.ToString;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
- * Auto generated from 1.26.40-beta.31 (v2168)
- *
  * Packet ID: 14 (0xe)
  * This is sent to the client to confirm which entity is being removed. This is done by sending an ActorUniqueID
  */

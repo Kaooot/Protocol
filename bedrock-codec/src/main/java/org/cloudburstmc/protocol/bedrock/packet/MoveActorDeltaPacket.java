@@ -10,8 +10,6 @@ import org.cloudburstmc.protocol.bedrock.data.MoveActorDeltaData;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
- * Auto generated from 1.26.40-beta.31 (v2168)
- *
  * Packet ID: 111 (0x6f)
  * Each position, rotation and head-rotation component is sent as an independent optional, accompanied by flags indicating whether the actor is on the ground and whether this is a teleport.
  */

@@ -10,8 +10,6 @@ import org.cloudburstmc.protocol.bedrock.data.NetworkItemStackDescriptor;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
- * Auto generated from 1.26.40-beta.31 (v2168)
- *
  * Packet ID: 31 (0x1f)
  */
 @Data

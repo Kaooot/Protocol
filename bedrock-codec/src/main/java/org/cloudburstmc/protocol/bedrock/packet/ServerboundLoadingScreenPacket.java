@@ -10,8 +10,6 @@ import org.cloudburstmc.protocol.bedrock.data.LoadingScreenPacketType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
- * Auto generated from 1.26.40-beta.31 (v2168)
- *
  * Packet ID: 312 (0x138)
  * In order for the client to send a packet with StartLoadingScreen, the server needs to anticipate that this packet is coming.
  * If the server doesn't expect that we are about to start a loading screen, the server will disconnect the client.

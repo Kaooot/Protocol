@@ -11,8 +11,6 @@ import org.cloudburstmc.protocol.bedrock.data.AnimatePacketPayloadAction;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
- * Auto generated from 1.26.40-beta.31 (v2168)
- *
  * Packet ID: 44 (0x2c)
  * Combination of server bound and client bound packets to trigger animations.
  */

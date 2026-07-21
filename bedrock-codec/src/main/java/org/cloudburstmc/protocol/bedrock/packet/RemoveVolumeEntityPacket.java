@@ -11,8 +11,6 @@ import org.cloudburstmc.protocol.bedrock.data.EntityNetId;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
- * Auto generated from 1.26.40-beta.31 (v2168)
- *
  * Packet ID: 167 (0xa7)
  */
 @Data

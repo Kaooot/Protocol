@@ -10,8 +10,6 @@ import lombok.ToString;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
- * Auto generated from 1.26.40-beta.31 (v2168)
- *
  * Packet ID: 326 (0x146)
  * Sent by PlayerLocationSender when a player position changes beyond a certain angle.
  */
