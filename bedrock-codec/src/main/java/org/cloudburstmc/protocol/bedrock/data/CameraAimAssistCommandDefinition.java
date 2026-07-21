@@ -10,7 +10,7 @@ import org.cloudburstmc.math.vector.Vector2f;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CameraAimAssistCommandDefinition {
-  private String cameraAimAssist;
+  private String presetId;
 
   private AimAssistTargetMode targetMode;
 

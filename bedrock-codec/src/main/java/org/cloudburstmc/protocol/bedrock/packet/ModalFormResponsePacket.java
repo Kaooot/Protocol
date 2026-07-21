@@ -24,7 +24,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 public class ModalFormResponsePacket implements BedrockPacket {
   private int formID;
 
-  private String jsonValue;
+  private String jsonResponse;
 
   private ModalFormCancelReason formCancelReason;
 

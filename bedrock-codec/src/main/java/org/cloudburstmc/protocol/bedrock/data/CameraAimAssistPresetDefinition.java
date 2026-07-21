@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CameraAimAssistPresetDefinition {
-  private String cameraAimAssistIdentifier;
+  private String identifier;
 
   private CameraAimAssistPresetExclusionDefinition exclusionSettings;
 
@@ -21,7 +21,7 @@ public class CameraAimAssistPresetDefinition {
 
   private final Map<String, String> itemSettings = new HashMap<>();
 
-  private String cameraAimAssistCategoryReference;
+  private String defaultItemSettings;
 
-  private String cameraAimAssistCategoryReference;
+  private String handSettings;
 }

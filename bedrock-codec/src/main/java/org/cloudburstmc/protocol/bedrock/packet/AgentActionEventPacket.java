@@ -25,7 +25,7 @@ public class AgentActionEventPacket implements BedrockPacket {
 
   private AgentActionType action;
 
-  private String jsonValue;
+  private String response;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {

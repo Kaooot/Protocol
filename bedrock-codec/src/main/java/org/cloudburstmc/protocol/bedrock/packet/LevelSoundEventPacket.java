@@ -24,7 +24,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class LevelSoundEventPacket implements BedrockPacket {
-  private String soundEventIdentifier;
+  private String soundEvent;
 
   private Vector3f position;
 

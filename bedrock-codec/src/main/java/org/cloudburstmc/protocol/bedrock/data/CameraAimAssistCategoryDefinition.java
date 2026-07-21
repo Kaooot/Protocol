@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CameraAimAssistCategoryDefinition {
-  private String cameraAimAssistCategoryIdentifier;
+  private String name;
 
   private CameraAimAssistCategoryPriorities priorities;
 }

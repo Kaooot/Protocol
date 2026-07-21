@@ -26,9 +26,9 @@ public class SerializedSkin {
 
   private SkinImage capeImageData;
 
-  private String jsonValue;
+  private String geometryData;
 
-  private String minEngineVersion;
+  private String geometryDataMinEngineVersion;
 
   private String animationData;
 

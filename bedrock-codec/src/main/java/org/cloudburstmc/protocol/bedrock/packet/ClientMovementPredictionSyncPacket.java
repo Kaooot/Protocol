@@ -29,7 +29,7 @@ public class ClientMovementPredictionSyncPacket implements BedrockPacket {
 
   private ActorDataBoundingBoxComponent actorBoundingBox;
 
-  private final List<Float> movementAttributesComponent = new ObjectArrayList<>();
+  private final List<Float> movementAttributes = new ObjectArrayList<>();
 
   private long actorUniqueID;
 

@@ -11,9 +11,9 @@ import org.cloudburstmc.math.vector.Vector3f;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CameraPresets {
-  private String cameraPreset;
+  private String name;
 
-  private String cameraPreset;
+  private String inheritFrom;
 
   private float posX;
 
