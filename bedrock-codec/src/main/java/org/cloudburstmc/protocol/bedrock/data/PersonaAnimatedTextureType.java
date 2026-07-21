@@ -3,8 +3,6 @@ package org.cloudburstmc.protocol.bedrock.data;
 import java.lang.UnsupportedOperationException;
 
 public enum PersonaAnimatedTextureType {
-  NONE,
-
   FACE,
 
   BODY32X32,

@@ -17,7 +17,7 @@ public enum BuildPlatform {
 
   SONY,
 
-  NINTENDO,
+  NX,
 
   XBOX,
 

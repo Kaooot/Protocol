@@ -27,6 +27,4 @@ public class MoveActorDeltaData {
   private boolean forceMoveLocalEntity;
 
   private boolean forceCompletion;
-
-  private long ticks;
 }

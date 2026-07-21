@@ -1,7 +1,6 @@
 package org.cloudburstmc.protocol.bedrock.data;
 
 import java.awt.Color;
-import java.lang.Float;
 import java.lang.String;
 import lombok.Data;
 import org.cloudburstmc.protocol.common.util.OptionalBoolean;
@@ -13,8 +12,6 @@ public class TextDataPayload {
   private OptionalBoolean useRotation = OptionalBoolean.empty();
 
   private Color backgroundColor;
-
-  private Float lineGapHeight;
 
   private OptionalBoolean depthTest = OptionalBoolean.empty();
 
