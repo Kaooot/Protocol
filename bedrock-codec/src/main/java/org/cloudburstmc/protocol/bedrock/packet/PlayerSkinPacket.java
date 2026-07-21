@@ -13,7 +13,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Packet ID: 93 (0x5d)
- * Sent from the client to server, then processed and broadcasted to all clients. This is used by third-party(3P) servers to send custom geometry.
  */
 @Data
 @EqualsAndHashCode(

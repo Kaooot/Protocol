@@ -10,7 +10,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Packet ID: 75 (0x4b)
- * That packet is sent to the client.  When the credits have concluded, a packet is sent back to the server to let it know to reinstate the player watching the credits.
  */
 @Data
 @EqualsAndHashCode(

@@ -5,13 +5,9 @@ import java.lang.Object;
 import java.lang.String;
 import java.util.HashMap;
 import java.util.Map;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class CameraAimAssistCategoryPriorities {
   private final Map<String, Integer> entities = new HashMap<>();
 

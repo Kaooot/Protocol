@@ -11,7 +11,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Packet ID: 16 (0x10)
- * Is currently only used for debug draw. Packets will not be sent if debug draw is not available.
  */
 @Data
 @EqualsAndHashCode(

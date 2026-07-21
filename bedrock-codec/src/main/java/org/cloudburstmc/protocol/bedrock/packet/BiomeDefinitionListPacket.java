@@ -15,8 +15,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Packet ID: 122 (0x7a)
- * - mBiomeData: map of biome string indices to biome definition data.
- * - mStringList: list of biome name strings.
  */
 @Data
 @EqualsAndHashCode(

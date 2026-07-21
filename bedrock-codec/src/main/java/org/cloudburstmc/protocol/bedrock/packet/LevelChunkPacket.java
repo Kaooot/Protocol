@@ -17,7 +17,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Packet ID: 58 (0x3a)
- * Used to start a chunk transaction.
  */
 @Data
 @EqualsAndHashCode(

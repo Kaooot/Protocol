@@ -23,7 +23,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Packet ID: 12 (0xc)
- * A new player joins the game; the server sends this packet to the other players.
  */
 @Data
 @EqualsAndHashCode(

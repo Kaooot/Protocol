@@ -11,8 +11,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Packet ID: 150 (0x96)
- * This is EDU exclusively.It is sent once from _sendLevelData() in the start of a game from the server,
- * and once per CodeBuilderCommand
  */
 @Data
 @EqualsAndHashCode(

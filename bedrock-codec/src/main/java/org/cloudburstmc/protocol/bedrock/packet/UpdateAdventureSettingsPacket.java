@@ -11,7 +11,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Packet ID: 188 (0xbc)
- * Sent by the server to update the state of AdventureSettings. Replaces the AdventureSettingsPacket for updating AdventureSettings from server to client.
  */
 @Data
 @EqualsAndHashCode(

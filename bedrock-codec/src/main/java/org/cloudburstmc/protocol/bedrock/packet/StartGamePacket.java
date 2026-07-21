@@ -24,7 +24,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Packet ID: 11 (0xb)
- * The player movement mode is also specified here, see ServerAuthMovementMode enum documentation for details on the modes.
  */
 @Data
 @EqualsAndHashCode(

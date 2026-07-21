@@ -3,15 +3,11 @@ package org.cloudburstmc.protocol.bedrock.data;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import java.lang.String;
 import java.util.List;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.protocol.common.util.OptionalBoolean;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class CameraSplineInstruction {
   private float totalTime;
 

@@ -12,7 +12,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Packet ID: 44 (0x2c)
- * Combination of server bound and client bound packets to trigger animations.
  */
 @Data
 @EqualsAndHashCode(

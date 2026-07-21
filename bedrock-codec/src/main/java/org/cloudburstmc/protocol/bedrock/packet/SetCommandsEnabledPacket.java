@@ -10,7 +10,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Packet ID: 59 (0x3b)
- * see SimpleEventPacket
  */
 @Data
 @EqualsAndHashCode(

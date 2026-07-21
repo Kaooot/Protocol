@@ -13,7 +13,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Packet ID: 136 (0x88)
- * Any missing blob should just be thrown into one of these packet ASAP and sent. This is actually how chunk data gets to the client the first time.
  */
 @Data
 @EqualsAndHashCode(

@@ -13,7 +13,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Packet ID: 160 (0xa0)
- * This is the packet that tracks the active fog stack from the server so the local players can apply different fog settings.
  */
 @Data
 @EqualsAndHashCode(

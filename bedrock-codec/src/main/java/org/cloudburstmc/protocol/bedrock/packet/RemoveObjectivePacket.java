@@ -11,7 +11,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Packet ID: 106 (0x6a)
- * This is just the name of the objective.
  */
 @Data
 @EqualsAndHashCode(

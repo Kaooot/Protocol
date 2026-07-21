@@ -11,8 +11,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Packet ID: 141 (0x8d)
- * Only used when Item Stack Net Manager is disabled on the server.
- * Sends the position of the anvil that is requesting to be damaged from the client.
  */
 @Data
 @EqualsAndHashCode(

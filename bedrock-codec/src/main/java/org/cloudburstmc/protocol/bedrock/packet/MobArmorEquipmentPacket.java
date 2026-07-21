@@ -11,7 +11,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Packet ID: 32 (0x20)
- * This is related to MobEquipmentPackets, but armor specifically and passes ALL equipment changes at once instead of one slot at a time.
  */
 @Data
 @EqualsAndHashCode(

@@ -23,7 +23,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Packet ID: 144 (0x90)
- * These are for Server Authoritative Movement to sync all player input with the server.
  */
 @Data
 @EqualsAndHashCode(

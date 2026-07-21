@@ -11,8 +11,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Packet ID: 314 (0x13a)
- * Sends the name of the Structure Feature the player is currently occupying to the client.
- * If the player is not in a structure, this packet contains an empty string.
  */
 @Data
 @EqualsAndHashCode(

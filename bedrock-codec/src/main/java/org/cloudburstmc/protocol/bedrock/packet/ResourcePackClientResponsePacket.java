@@ -11,7 +11,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Packet ID: 8 (0x8)
- * Sent to MinecraftGame to complete the resource pack loading process.
  */
 @Data
 @EqualsAndHashCode(

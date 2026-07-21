@@ -17,7 +17,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Packet ID: 337 (0x151)
- * Sends the serializable voxel shapes data to the client as it's needed on both the client and server. This packet should always be sent before StartGamePacket.
  */
 @Data
 @EqualsAndHashCode(

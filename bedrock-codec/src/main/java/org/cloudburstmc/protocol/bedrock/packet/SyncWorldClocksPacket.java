@@ -11,8 +11,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Packet ID: 344 (0x158)
- * Sent from the server when a client joins to initialize all world clocks for the client and periodically to all clients to keep them in sync.
- * It is also sent to all clients when a world clock's paused state changes or when time markers are added or removed.
  */
 @Data
 @EqualsAndHashCode(

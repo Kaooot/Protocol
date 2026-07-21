@@ -13,7 +13,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Packet ID: 339 (0x153)
- * Sent by the server to clients for updating the actor priority for client aim-assist systems.
  */
 @Data
 @EqualsAndHashCode(

@@ -11,7 +11,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Packet ID: 140 (0x8c)
- * Used when the player changes the world settings like doDayNightCycle or WeatherCycle via the world settings menu
  */
 @Data
 @EqualsAndHashCode(

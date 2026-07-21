@@ -11,7 +11,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Packet ID: 324 (0x144)
- * Internal
  */
 @Data
 @EqualsAndHashCode(

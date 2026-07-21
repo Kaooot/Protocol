@@ -15,7 +15,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Packet ID: 7 (0x7)
- * Sent to client in response to ResourcePackClientResponsePacket with info on current resource pack stack.
  */
 @Data
 @EqualsAndHashCode(

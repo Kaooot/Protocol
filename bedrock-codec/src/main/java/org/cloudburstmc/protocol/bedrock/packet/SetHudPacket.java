@@ -14,7 +14,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Packet ID: 308 (0x134)
- * This packet will toggle the HUD visibility.
  */
 @Data
 @EqualsAndHashCode(

@@ -12,7 +12,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Packet ID: 159 (0x9f)
- * It may be used to queue or stop a camera shake
  */
 @Data
 @EqualsAndHashCode(

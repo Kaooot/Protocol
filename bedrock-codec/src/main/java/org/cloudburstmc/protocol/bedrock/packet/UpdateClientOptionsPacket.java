@@ -11,7 +11,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Packet ID: 323 (0x143)
- * The values in this packet are originally synced through the Connection Request and then updated via this packet.
  */
 @Data
 @EqualsAndHashCode(

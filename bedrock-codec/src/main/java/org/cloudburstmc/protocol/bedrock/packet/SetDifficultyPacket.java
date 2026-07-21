@@ -10,7 +10,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Packet ID: 60 (0x3c)
- * Used for when a client changes difficulty through the menu or when the server changes the difficulty.
  */
 @Data
 @EqualsAndHashCode(

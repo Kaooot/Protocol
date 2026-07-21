@@ -11,7 +11,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Packet ID: 21 (0x15)
- * This happens often. Luckily, the packets are small.
  */
 @Data
 @EqualsAndHashCode(

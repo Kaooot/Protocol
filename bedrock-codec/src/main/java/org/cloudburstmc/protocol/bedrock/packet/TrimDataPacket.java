@@ -14,8 +14,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Packet ID: 302 (0x12e)
- * - mTrimPatterns: vector of TrimPattern
- * - mTrimMaterials: vector of TrimMaterial
  */
 @Data
 @EqualsAndHashCode(

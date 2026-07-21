@@ -12,15 +12,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Packet ID: 28 (0x1c)
- * At the start of the game the server sends any mob effects with _sendAdditionalLevelData() if the joining player saved out with them,
- * and then anytime a mob effect is added, removed, or updated this packet is sent.<br>
- * It is important for player movement simulation to ensure that the following effects are sent for the player or any client predicted vehicle they are in control of:<br>
- * - levitation<br>
- * - slow_falling<br>
- * - jump<br>
- * - movement_speed<br>
- * - movement_slowdown<br>
- * - weaving
  */
 @Data
 @EqualsAndHashCode(

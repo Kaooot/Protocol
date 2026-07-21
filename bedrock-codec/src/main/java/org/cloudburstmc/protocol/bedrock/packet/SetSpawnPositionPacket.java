@@ -13,7 +13,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Packet ID: 43 (0x2b)
- * see RespawnPacket
  */
 @Data
 @EqualsAndHashCode(

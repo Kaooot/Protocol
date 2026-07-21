@@ -4,14 +4,10 @@ import java.awt.Color;
 import java.lang.Float;
 import java.lang.Long;
 import java.lang.Object;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.cloudburstmc.math.vector.Vector3f;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class PrimitiveShapeDataPayload {
   private long networkId;
 

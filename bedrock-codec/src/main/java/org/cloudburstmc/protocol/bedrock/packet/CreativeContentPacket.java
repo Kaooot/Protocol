@@ -14,7 +14,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Packet ID: 145 (0x91)
- * Sent once by the server on startup to tell clients all of the items that can show up in the creative menu and recipe book.
  */
 @Data
 @EqualsAndHashCode(

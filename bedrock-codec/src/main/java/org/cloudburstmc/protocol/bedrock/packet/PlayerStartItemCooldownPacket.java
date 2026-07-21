@@ -11,7 +11,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Packet ID: 176 (0xb0)
- * Packet sent by the player to start the cooldown on an item.
  */
 @Data
 @EqualsAndHashCode(

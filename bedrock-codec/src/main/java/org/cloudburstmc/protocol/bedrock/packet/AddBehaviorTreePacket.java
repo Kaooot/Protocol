@@ -11,7 +11,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Packet ID: 89 (0x59)
- * For automation
  */
 @Data
 @EqualsAndHashCode(

@@ -10,8 +10,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Packet ID: 131 (0x83)
- * It sends the original map id and the new map id. 
- * On the server it follows a similar process to creating a new map, sends the data and the map info to the client.
  */
 @Data
 @EqualsAndHashCode(

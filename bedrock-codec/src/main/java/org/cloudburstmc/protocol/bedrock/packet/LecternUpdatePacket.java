@@ -11,7 +11,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Packet ID: 125 (0x7d)
- * It is a request from the client to either turn the page in the lectern or drop the book.
  */
 @Data
 @EqualsAndHashCode(

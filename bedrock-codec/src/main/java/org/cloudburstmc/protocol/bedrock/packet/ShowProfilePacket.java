@@ -11,7 +11,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Packet ID: 104 (0x68)
- * The only use in vanilla is a test command called ProfileCommand. It makes the user's xbox profile popup.
  */
 @Data
 @EqualsAndHashCode(

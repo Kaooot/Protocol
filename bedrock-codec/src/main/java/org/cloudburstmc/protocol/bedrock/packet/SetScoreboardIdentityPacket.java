@@ -14,7 +14,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Packet ID: 112 (0x70)
- * Send an update packet for a player identity definition iff a tracked player has logged in with a different display name.
  */
 @Data
 @EqualsAndHashCode(

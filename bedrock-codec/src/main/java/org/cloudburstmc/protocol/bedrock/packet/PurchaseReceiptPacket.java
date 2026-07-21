@@ -13,8 +13,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Packet ID: 92 (0x5c)
- * Sent from the client after we make a purchase in the store OR if we login and our entitlements are verified.
- * It sends a vector of purchase receipts(string).There is a handler and a multiple senders.
  */
 @Data
 @EqualsAndHashCode(

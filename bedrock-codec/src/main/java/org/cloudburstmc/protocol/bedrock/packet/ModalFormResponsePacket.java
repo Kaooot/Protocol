@@ -12,7 +12,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Packet ID: 101 (0x65)
- * see ModalFormRequestPacket
  */
 @Data
 @EqualsAndHashCode(

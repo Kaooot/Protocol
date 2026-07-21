@@ -11,7 +11,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Packet ID: 168 (0xa8)
- * - mSimType: an enum representing the simulation type to switch to.
  */
 @Data
 @EqualsAndHashCode(

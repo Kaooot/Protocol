@@ -10,7 +10,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Packet ID: 185 (0xb9)
- * Can only be used by Operators or Hosts.
  */
 @Data
 @EqualsAndHashCode(

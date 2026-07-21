@@ -11,9 +11,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Packet ID: 139 (0x8b)
- * This is used by EDU for joining players and removing players from your session,
- * the settings (there is only one) is an enum for enabling/disabling/refreshing multiplayer join codes.
- * Starts on the client, and a response to the client is issued from the server.
  */
 @Data
 @EqualsAndHashCode(

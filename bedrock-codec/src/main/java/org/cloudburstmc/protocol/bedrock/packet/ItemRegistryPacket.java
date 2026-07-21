@@ -13,7 +13,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Packet ID: 162 (0xa2)
- * This packet needs to be sent immediately after the StartGamePacket for primary clients.
  */
 @Data
 @EqualsAndHashCode(

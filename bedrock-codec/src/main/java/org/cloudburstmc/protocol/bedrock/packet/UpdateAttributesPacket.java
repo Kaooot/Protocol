@@ -14,7 +14,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Packet ID: 29 (0x1d)
- * Occasionally updating player attributes (buffs/debuffs, health, etc)
  */
 @Data
 @EqualsAndHashCode(

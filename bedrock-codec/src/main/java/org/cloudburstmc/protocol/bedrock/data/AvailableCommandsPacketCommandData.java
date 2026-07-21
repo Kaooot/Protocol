@@ -4,13 +4,9 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import java.lang.Integer;
 import java.lang.String;
 import java.util.List;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class AvailableCommandsPacketCommandData {
   private String name;
 

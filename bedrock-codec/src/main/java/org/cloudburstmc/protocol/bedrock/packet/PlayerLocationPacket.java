@@ -11,7 +11,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Packet ID: 326 (0x146)
- * Sent by PlayerLocationSender when a player position changes beyond a certain angle.
  */
 @Data
 @EqualsAndHashCode(

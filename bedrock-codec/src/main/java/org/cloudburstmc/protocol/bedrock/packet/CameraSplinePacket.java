@@ -13,7 +13,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Packet ID: 338 (0x152)
- * Sent by the server to clients for initializing custom spline data that can be played later through the camera command.
  */
 @Data
 @EqualsAndHashCode(

@@ -10,7 +10,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Packet ID: 102 (0x66)
- * It is also an empty packet. There is no handler for this packet, should be removed.
  */
 @Data
 @EqualsAndHashCode(

@@ -10,7 +10,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Packet ID: 192 (0xc0)
- * Sent from server.
  */
 @Data
 @EqualsAndHashCode(

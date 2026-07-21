@@ -11,7 +11,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Packet ID: 195 (0xc3)
- * Internal Text Packet
  */
 @Data
 @EqualsAndHashCode(

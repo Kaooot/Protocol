@@ -10,7 +10,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Packet ID: 113 (0x71)
- * Client tells the server that the client is ready to roll.
  */
 @Data
 @EqualsAndHashCode(

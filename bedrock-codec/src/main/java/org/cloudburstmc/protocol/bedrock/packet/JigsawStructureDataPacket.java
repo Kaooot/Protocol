@@ -11,7 +11,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Packet ID: 313 (0x139)
- * Sends the serialized jigsaw rule JSON to the client as it's needed on both the client and server.
  */
 @Data
 @EqualsAndHashCode(

@@ -11,7 +11,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Packet ID: 157 (0x9d)
- * This is from the server when spatial optimizations are enabled and the server does not send a spatial update.
  */
 @Data
 @EqualsAndHashCode(

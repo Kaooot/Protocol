@@ -11,7 +11,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Packet ID: 72 (0x48)
- * Informs client about any changes to the game rules.
  */
 @Data
 @EqualsAndHashCode(

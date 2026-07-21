@@ -14,7 +14,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Packet ID: 114 (0x72)
- * This allows someone to sync between server and client tags and enums on mobs or on the level.
  */
 @Data
 @EqualsAndHashCode(

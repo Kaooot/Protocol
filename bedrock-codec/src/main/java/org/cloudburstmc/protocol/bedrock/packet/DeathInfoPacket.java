@@ -11,7 +11,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Packet ID: 189 (0xbd)
- * mDeathCauseMessage: is untranslated cause of death string vector returned from ActorDamageSource
  */
 @Data
 @EqualsAndHashCode(

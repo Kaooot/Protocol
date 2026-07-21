@@ -11,7 +11,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Packet ID: 41 (0x29)
- * Sent when the player starts riding something. Two are sent at a time for some reason.
  */
 @Data
 @EqualsAndHashCode(

@@ -12,7 +12,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Packet ID: 33 (0x21)
- * Used for inventory button press and in _updateInteraction() for a variety of purposes. From the client.
  */
 @Data
 @EqualsAndHashCode(

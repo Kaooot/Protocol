@@ -11,7 +11,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Packet ID: 64 (0x40)
- * This is fired from the client to the server and a SetCommandsEnabledPacket is sent back when enabling commands.
  */
 @Data
 @EqualsAndHashCode(

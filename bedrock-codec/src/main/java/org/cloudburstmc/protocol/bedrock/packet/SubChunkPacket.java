@@ -15,7 +15,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Packet ID: 174 (0xae)
- * Contains subchunk terrain data, heightmaps, and optional blob cache IDs.
  */
 @Data
 @EqualsAndHashCode(

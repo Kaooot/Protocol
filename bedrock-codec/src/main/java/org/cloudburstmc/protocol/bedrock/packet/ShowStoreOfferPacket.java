@@ -12,7 +12,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Packet ID: 91 (0x5b)
- * The server can redirect the user to a 3rd party server page, to a marketplace offer description page, or to a dressing room page containing desired offer.
  */
 @Data
 @EqualsAndHashCode(

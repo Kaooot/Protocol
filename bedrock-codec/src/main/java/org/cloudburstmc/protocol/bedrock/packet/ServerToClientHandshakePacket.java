@@ -11,7 +11,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Packet ID: 3 (0x3)
- * Sent from the server at the end of the login packet
  */
 @Data
 @EqualsAndHashCode(

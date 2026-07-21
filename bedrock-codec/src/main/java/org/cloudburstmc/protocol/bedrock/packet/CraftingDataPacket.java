@@ -20,7 +20,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Packet ID: 52 (0x34)
- * Sent from the server on level startup to send all recipes to the client.
  */
 @Data
 @EqualsAndHashCode(

@@ -10,7 +10,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Packet ID: 310 (0x136)
- * This will only have an affect if the client currently has a server form on the UI stack.
  */
 @Data
 @EqualsAndHashCode(

@@ -13,7 +13,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Packet ID: 109 (0x6d)
- * The packet can be fired from the client through the UI or from the server during updates.
  */
 @Data
 @EqualsAndHashCode(

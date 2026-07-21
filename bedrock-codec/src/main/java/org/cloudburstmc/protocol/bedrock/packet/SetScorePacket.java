@@ -13,7 +13,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Packet ID: 108 (0x6c)
- * Sets the scoreboard which is used for 3rd party content.
  */
 @Data
 @EqualsAndHashCode(

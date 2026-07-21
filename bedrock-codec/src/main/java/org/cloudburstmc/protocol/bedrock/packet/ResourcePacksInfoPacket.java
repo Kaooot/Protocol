@@ -14,7 +14,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Packet ID: 6 (0x6)
- * Sends resource pack information to the client including pack IDs, versions, sizes, and content keys.
  */
 @Data
 @EqualsAndHashCode(

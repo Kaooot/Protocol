@@ -12,7 +12,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Packet ID: 45 (0x2d)
- * For some reason each respawn 1 packet is sent from the client and 3 are sent from the server.
  */
 @Data
 @EqualsAndHashCode(

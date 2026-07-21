@@ -10,7 +10,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Packet ID: 17 (0x11)
- * From this the item and count is turned into an item and the transaction is handled afterwards.
  */
 @Data
 @EqualsAndHashCode(

@@ -11,7 +11,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Packet ID: 82 (0x52)
- * Sent from the serverFileChunkUploader during the initialization of the file uploader. This packet is sent to the primary client.
  */
 @Data
 @EqualsAndHashCode(

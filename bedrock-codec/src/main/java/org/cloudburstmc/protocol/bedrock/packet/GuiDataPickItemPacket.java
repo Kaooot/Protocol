@@ -11,7 +11,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Packet ID: 54 (0x36)
- * This is only used when players use pick block, a command is used, tests, and some 3rd party content.
  */
 @Data
 @EqualsAndHashCode(

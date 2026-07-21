@@ -13,7 +13,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Packet ID: 63 (0x3f)
- * Sent from the Server at the start of the game or when a player is added to all clients. Lists the players.
  */
 @Data
 @EqualsAndHashCode(

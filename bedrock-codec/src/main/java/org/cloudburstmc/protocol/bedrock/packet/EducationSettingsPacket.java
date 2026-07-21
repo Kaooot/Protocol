@@ -11,7 +11,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Packet ID: 137 (0x89)
- * Currently transmits EducationLevelSettings to all clients when the game is starting.
  */
 @Data
 @EqualsAndHashCode(

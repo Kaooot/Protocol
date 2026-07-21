@@ -10,7 +10,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Packet ID: 14 (0xe)
- * This is sent to the client to confirm which entity is being removed. This is done by sending an ActorUniqueID
  */
 @Data
 @EqualsAndHashCode(

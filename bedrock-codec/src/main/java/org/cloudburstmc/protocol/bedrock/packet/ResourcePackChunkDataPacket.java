@@ -11,7 +11,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Packet ID: 83 (0x53)
- * (only one marked for uncompressed) realms resource pack download
  */
 @Data
 @EqualsAndHashCode(

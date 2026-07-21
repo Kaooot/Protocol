@@ -15,7 +15,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Packet ID: 322 (0x142)
- * Only used in Server-Authoritative Movement. Sent periodically if the client has received corrections from the server. Contains information about client-predictions that are relevant to movement.
  */
 @Data
 @EqualsAndHashCode(

@@ -11,7 +11,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Packet ID: 165 (0xa5)
- * Intended to one day replace SynchedActorData.
  */
 @Data
 @EqualsAndHashCode(

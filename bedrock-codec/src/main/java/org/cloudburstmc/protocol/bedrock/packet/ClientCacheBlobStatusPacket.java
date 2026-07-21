@@ -13,7 +13,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Packet ID: 135 (0x87)
- * Sent periodically by the client to update the server on which blob it has (ACK) and which blobs it is lacking (MISS).
  */
 @Data
 @EqualsAndHashCode(
