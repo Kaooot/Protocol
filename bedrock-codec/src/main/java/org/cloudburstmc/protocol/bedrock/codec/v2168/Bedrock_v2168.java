@@ -11,6 +11,7 @@ import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataTypes;
 import org.cloudburstmc.protocol.bedrock.data.actor.ActorFlags;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestActionType;
 import org.cloudburstmc.protocol.bedrock.data.payload.diagnostics.MemoryCategory;
+import org.cloudburstmc.protocol.bedrock.data.payload.skin.AnimatedTextureType;
 import org.cloudburstmc.protocol.bedrock.packet.*;
 import org.cloudburstmc.protocol.bedrock.transformer.FlagTransformer;
 import org.cloudburstmc.protocol.bedrock.transformer.TypeMapTransformer;
@@ -102,11 +103,17 @@ public class Bedrock_v2168 extends Bedrock_v1001 {
             .update(ActorDataTypes.DATA_PARTICLE, new TypeMapTransformer<>(PARTICLE_TYPES))
             .build();
 
+    protected static final TypeMap<AnimatedTextureType> ANIMATED_TEXTURE_TYPES = TypeMap.builder(AnimatedTextureType.class)
+            .insert(0, AnimatedTextureType.FACE)
+            .insert(1, AnimatedTextureType.BODY_32X32)
+            .insert(2, AnimatedTextureType.BODY_128X128)
+            .build();
+
     public static final BedrockCodec CODEC = Bedrock_v1001.CODEC.toBuilder()
             .raknetProtocolVersion(11)
             .protocolVersion(2168)
             .minecraftVersion("1.26.40")
-            .helper(() -> new BedrockCodecHelper_v2168(ACTOR_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES, PLAYER_ABILITIES, TEXT_PROCESSING_ORIGINS))
+            .helper(() -> new BedrockCodecHelper_v2168(ACTOR_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES, PLAYER_ABILITIES, TEXT_PROCESSING_ORIGINS, ANIMATED_TEXTURE_TYPES))
             .updateSerializer(AddActorPacket.class, AddActorSerializer_v2168.INSTANCE)
             .updateSerializer(AddItemActorPacket.class, AddItemActorSerializer_v2168.INSTANCE)
             .updateSerializer(AddPlayerPacket.class, AddPlayerSerializer_v2168.INSTANCE)

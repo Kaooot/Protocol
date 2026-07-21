@@ -1,6 +1,7 @@
 package org.cloudburstmc.protocol.bedrock.data.payload.diagnostics;
 
 import lombok.Data;
+import org.cloudburstmc.math.vector.Vector3f;
 
 /**
  * @author Kaooot
@@ -12,4 +13,12 @@ public class EntityDiagnosticTimingInfo {
     private String entity;
     private long timeInNS;
     private int percentOfTotal;
+    /**
+     * @since v2171
+     */
+    private Vector3f position;
+    /**
+     * @since v2171
+     */
+    private String dimension;
 }

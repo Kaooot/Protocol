@@ -21,6 +21,10 @@ public class TextDataPayload implements DebugShapePayload {
      */
     private Integer backgroundColor;
     /**
+     * @since v2171
+     */
+    private float lineGapHeight;
+    /**
      * @since v975
      */
     private boolean depthTest;

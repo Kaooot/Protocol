@@ -13,7 +13,7 @@ public enum BuildPlatform {
     WIN_32(8),
     DEDICATED(9),
     SONY(11),
-    NX(12),
+    NINTENDO(12),
     XBOX(13),
     LINUX(15),
     UNKNOWN(-1);

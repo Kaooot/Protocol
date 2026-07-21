@@ -5,6 +5,10 @@ package org.cloudburstmc.protocol.bedrock.data.payload.skin;
  */
 public enum AnimatedTextureType {
 
+    /**
+     * @since v2171
+     */
+    NONE,
     FACE,
     BODY_32X32,
     BODY_128X128;

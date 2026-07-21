@@ -75,8 +75,12 @@ public class BedrockCodecHelper_v2168 extends BedrockCodecHelper_v1001 {
             .insert(19, ItemStackRequestActionType.CRAFT_RESULTS)
             .build();
 
-    public BedrockCodecHelper_v2168(ActorDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes, TypeMap<ItemStackRequestActionType> stackRequestActionTypes, TypeMap<ContainerEnumName> containerSlotTypes, TypeMap<AbilitiesIndex> abilities, TypeMap<TextProcessingEventOrigin> textProcessingEventOrigins) {
+    protected final TypeMap<AnimatedTextureType> animatedTextureTypes;
+
+    public BedrockCodecHelper_v2168(ActorDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes, TypeMap<ItemStackRequestActionType> stackRequestActionTypes, TypeMap<ContainerEnumName> containerSlotTypes, TypeMap<AbilitiesIndex> abilities, TypeMap<TextProcessingEventOrigin> textProcessingEventOrigins,
+                                    TypeMap<AnimatedTextureType> animatedTextureTypes) {
         super(entityData, gameRulesTypes, stackRequestActionTypes, containerSlotTypes, abilities, textProcessingEventOrigins);
+        this.animatedTextureTypes = animatedTextureTypes;
     }
 
     @Override
@@ -1059,7 +1063,7 @@ public class BedrockCodecHelper_v2168 extends BedrockCodecHelper_v1001 {
 
     protected void writeAnimatedImageData(ByteBuf buffer, AnimatedImageData animatedImageData) {
         this.writeSkinImage(buffer, animatedImageData.getSkinImage());
-        VarInts.writeUnsignedInt(buffer, animatedImageData.getAnimatedTextureType().ordinal());
+        VarInts.writeUnsignedInt(buffer, this.animatedTextureTypes.getId(animatedImageData.getAnimatedTextureType()));
         buffer.writeFloatLE(animatedImageData.getFrames());
         VarInts.writeUnsignedInt(buffer, animatedImageData.getAnimationExpression().ordinal());
     }
@@ -1067,7 +1071,7 @@ public class BedrockCodecHelper_v2168 extends BedrockCodecHelper_v1001 {
     protected AnimatedImageData readAnimatedImageData(ByteBuf buffer) {
         final AnimatedImageData animatedImageData = new AnimatedImageData();
         animatedImageData.setSkinImage(this.readSkinImage(buffer));
-        animatedImageData.setAnimatedTextureType(AnimatedTextureType.from(VarInts.readUnsignedInt(buffer)));
+        animatedImageData.setAnimatedTextureType(this.animatedTextureTypes.getType(VarInts.readUnsignedInt(buffer)));
         animatedImageData.setFrames(buffer.readFloatLE());
         animatedImageData.setAnimationExpression(AnimationExpression.from(VarInts.readUnsignedInt(buffer)));
         return animatedImageData;
