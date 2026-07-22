@@ -1,8 +1,14 @@
-package org.cloudburstmc.protocol.bedrock.data;
+package org.cloudburstmc.protocol.bedrock.data.event;
 
 import java.lang.UnsupportedOperationException;
 
+/**
+ * Contains various achievement identifiers used for telemetry purposes
+ */
 public enum AchievementIds {
+  /**
+   * achievement description.
+   */
   CHEST_FULL_OF_COBBLESTONE,
 
   DIAMOND_FOR_YOU,
