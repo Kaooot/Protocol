@@ -21,9 +21,6 @@ import org.cloudburstmc.protocol.bedrock.data.SerializedAbilitiesData;
 import org.cloudburstmc.protocol.bedrock.data.SynchedActorDataList;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 12 (0xc)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

@@ -13,9 +13,6 @@ import org.cloudburstmc.protocol.bedrock.data.PlayerInputTick;
 import org.cloudburstmc.protocol.bedrock.data.RewindType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 161 (0xa1)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

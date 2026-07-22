@@ -12,9 +12,6 @@ import org.cloudburstmc.protocol.bedrock.data.ScoreboardIdentityPacketInfo;
 import org.cloudburstmc.protocol.bedrock.data.ScoreboardIdentityPacketType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 112 (0x70)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

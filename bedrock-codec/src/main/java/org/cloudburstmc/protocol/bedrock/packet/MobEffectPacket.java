@@ -10,9 +10,6 @@ import org.cloudburstmc.protocol.bedrock.data.MobEffectPacketPayloadEvent;
 import org.cloudburstmc.protocol.bedrock.data.PlayerInputTick;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 28 (0x1c)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

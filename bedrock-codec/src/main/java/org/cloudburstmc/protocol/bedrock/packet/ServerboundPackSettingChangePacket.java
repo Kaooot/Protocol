@@ -11,9 +11,6 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 329 (0x149)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

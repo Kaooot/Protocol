@@ -13,9 +13,6 @@ import org.cloudburstmc.protocol.bedrock.data.Experiments;
 import org.cloudburstmc.protocol.bedrock.data.PackInstanceId;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 7 (0x7)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

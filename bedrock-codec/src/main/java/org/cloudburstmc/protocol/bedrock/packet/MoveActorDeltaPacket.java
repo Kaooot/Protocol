@@ -9,9 +9,6 @@ import lombok.ToString;
 import org.cloudburstmc.protocol.bedrock.data.MoveActorDeltaData;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 111 (0x6f)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

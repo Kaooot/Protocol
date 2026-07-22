@@ -15,9 +15,6 @@ import org.cloudburstmc.protocol.bedrock.data.DimensionType;
 import org.cloudburstmc.protocol.bedrock.data.LevelChunkPacketPayloadSubChunkMetadata;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 58 (0x3a)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

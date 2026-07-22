@@ -11,9 +11,6 @@ import org.cloudburstmc.protocol.bedrock.data.DimensionType;
 import org.cloudburstmc.protocol.bedrock.data.SpawnPositionType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 43 (0x2b)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

@@ -9,9 +9,6 @@ import lombok.ToString;
 import org.cloudburstmc.protocol.bedrock.data.AdventureSettings;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 188 (0xbc)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

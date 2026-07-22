@@ -15,9 +15,6 @@ import org.cloudburstmc.protocol.bedrock.data.MapDecoration;
 import org.cloudburstmc.protocol.bedrock.data.MapItemTrackedActorUniqueId;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 67 (0x43)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

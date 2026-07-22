@@ -11,9 +11,6 @@ import lombok.ToString;
 import org.cloudburstmc.protocol.bedrock.data.FeatureRegistryFeatureBinaryJsonFormat;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 191 (0xbf)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

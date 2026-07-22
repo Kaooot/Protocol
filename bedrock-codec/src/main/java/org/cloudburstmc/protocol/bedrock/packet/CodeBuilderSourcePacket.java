@@ -11,9 +11,6 @@ import org.cloudburstmc.protocol.bedrock.data.CodeBuilderStorageQueryOptionsCate
 import org.cloudburstmc.protocol.bedrock.data.CodeBuilderStorageQueryOptionsOperation;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 178 (0xb2)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

@@ -11,9 +11,6 @@ import org.cloudburstmc.math.vector.Vector3i;
 import org.cloudburstmc.protocol.bedrock.data.ServerSoundHandle;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 86 (0x56)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

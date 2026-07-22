@@ -10,9 +10,6 @@ import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.protocol.bedrock.data.InteractPacketPayloadAction;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 33 (0x21)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

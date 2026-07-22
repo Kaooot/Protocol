@@ -10,9 +10,6 @@ import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.protocol.bedrock.data.DimensionType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 61 (0x3d)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

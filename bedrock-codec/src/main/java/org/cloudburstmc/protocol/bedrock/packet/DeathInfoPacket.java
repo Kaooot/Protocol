@@ -9,9 +9,6 @@ import lombok.ToString;
 import org.cloudburstmc.protocol.bedrock.data.DeathCauseMessageType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 189 (0xbd)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

@@ -10,9 +10,6 @@ import lombok.ToString;
 import org.cloudburstmc.protocol.bedrock.data.DataDrivenScreenClosedReason;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 343 (0x157)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

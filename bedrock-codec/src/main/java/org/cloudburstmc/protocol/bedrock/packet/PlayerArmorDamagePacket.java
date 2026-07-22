@@ -11,9 +11,6 @@ import lombok.ToString;
 import org.cloudburstmc.protocol.bedrock.data.ArmorSlotAndDamagePair;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 149 (0x95)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

@@ -9,9 +9,6 @@ import lombok.ToString;
 import org.cloudburstmc.protocol.bedrock.data.GameType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 62 (0x3e)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

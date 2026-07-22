@@ -10,9 +10,6 @@ import org.cloudburstmc.math.vector.Vector3i;
 import org.cloudburstmc.protocol.bedrock.data.StructureEditorData;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 90 (0x5a)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

@@ -10,9 +10,6 @@ import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.protocol.bedrock.data.ActorEvent;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 27 (0x1b)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

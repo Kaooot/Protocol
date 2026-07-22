@@ -12,9 +12,6 @@ import org.cloudburstmc.protocol.bedrock.data.HudElement;
 import org.cloudburstmc.protocol.bedrock.data.HudVisibility;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 308 (0x134)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

@@ -10,9 +10,6 @@ import org.cloudburstmc.math.vector.Vector3i;
 import org.cloudburstmc.nbt.NbtMap;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 56 (0x38)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

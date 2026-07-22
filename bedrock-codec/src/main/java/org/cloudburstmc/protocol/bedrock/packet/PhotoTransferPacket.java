@@ -10,9 +10,6 @@ import lombok.ToString;
 import org.cloudburstmc.protocol.bedrock.data.PhotoType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 99 (0x63)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

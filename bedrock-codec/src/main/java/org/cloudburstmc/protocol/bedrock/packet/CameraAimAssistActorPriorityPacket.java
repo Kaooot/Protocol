@@ -11,9 +11,6 @@ import lombok.ToString;
 import org.cloudburstmc.protocol.bedrock.data.AimAssistActorPriorityData;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 339 (0x153)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

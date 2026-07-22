@@ -11,9 +11,6 @@ import org.cloudburstmc.protocol.bedrock.data.LabTablePacketPayloadType;
 import org.cloudburstmc.protocol.bedrock.data.LabTableReactionType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 109 (0x6d)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

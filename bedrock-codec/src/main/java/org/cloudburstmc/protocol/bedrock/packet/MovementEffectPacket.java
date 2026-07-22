@@ -10,9 +10,6 @@ import org.cloudburstmc.protocol.bedrock.data.MovementEffectType;
 import org.cloudburstmc.protocol.bedrock.data.PlayerInputTick;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 318 (0x13e)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

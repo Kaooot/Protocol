@@ -15,9 +15,6 @@ import org.cloudburstmc.protocol.bedrock.data.SystemDiagnosticTimingInfo;
 import org.cloudburstmc.protocol.bedrock.data.WhiskerScopeDataSummary;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 315 (0x13b)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

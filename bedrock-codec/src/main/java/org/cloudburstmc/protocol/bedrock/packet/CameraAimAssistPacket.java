@@ -12,9 +12,6 @@ import org.cloudburstmc.protocol.bedrock.data.CameraAimAssistPacketPayloadAction
 import org.cloudburstmc.protocol.bedrock.data.CameraAimAssistPacketPayloadTargetMode;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 316 (0x13c)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

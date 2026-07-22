@@ -10,9 +10,6 @@ import lombok.ToString;
 import org.cloudburstmc.protocol.bedrock.data.AgentActionType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 181 (0xb5)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

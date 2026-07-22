@@ -9,9 +9,6 @@ import lombok.ToString;
 import org.cloudburstmc.protocol.bedrock.data.InventoryOptions;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 307 (0x133)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

@@ -11,9 +11,6 @@ import lombok.ToString;
 import org.cloudburstmc.protocol.bedrock.data.ItemEnchantOption;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 146 (0x92)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

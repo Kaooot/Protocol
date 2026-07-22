@@ -9,9 +9,6 @@ import lombok.ToString;
 import org.cloudburstmc.protocol.bedrock.data.WebSocketPacketData;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 95 (0x5f)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

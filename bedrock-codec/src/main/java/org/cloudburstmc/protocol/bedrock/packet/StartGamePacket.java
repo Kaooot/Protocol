@@ -22,9 +22,6 @@ import org.cloudburstmc.protocol.bedrock.data.ServerTelemetryData;
 import org.cloudburstmc.protocol.bedrock.data.SyncedPlayerMovementSettings;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 11 (0xb)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

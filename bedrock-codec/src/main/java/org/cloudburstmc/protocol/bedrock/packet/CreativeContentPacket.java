@@ -12,9 +12,6 @@ import org.cloudburstmc.protocol.bedrock.data.CreativeGroupInfoPayload;
 import org.cloudburstmc.protocol.bedrock.data.CreativeItemEntryPayload;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 145 (0x91)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

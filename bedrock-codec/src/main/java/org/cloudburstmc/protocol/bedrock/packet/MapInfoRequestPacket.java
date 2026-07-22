@@ -11,9 +11,6 @@ import lombok.ToString;
 import org.cloudburstmc.protocol.bedrock.data.ClientPixelsProxy;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 68 (0x44)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

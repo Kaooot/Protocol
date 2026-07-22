@@ -9,9 +9,6 @@ import lombok.ToString;
 import org.cloudburstmc.protocol.bedrock.data.SerializedAbilitiesData;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 187 (0xbb)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

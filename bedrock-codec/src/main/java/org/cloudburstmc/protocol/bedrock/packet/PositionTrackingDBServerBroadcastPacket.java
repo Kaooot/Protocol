@@ -11,9 +11,6 @@ import org.cloudburstmc.protocol.bedrock.data.PositionTrackingDBServerBroadcastP
 import org.cloudburstmc.protocol.bedrock.data.PositionTrackingId;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 153 (0x99)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

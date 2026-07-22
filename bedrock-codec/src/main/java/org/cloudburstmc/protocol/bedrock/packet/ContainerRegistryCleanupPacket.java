@@ -11,9 +11,6 @@ import lombok.ToString;
 import org.cloudburstmc.protocol.bedrock.data.FullContainerName;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 317 (0x13d)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

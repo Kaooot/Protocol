@@ -13,9 +13,6 @@ import org.cloudburstmc.protocol.bedrock.data.ItemStackLegacyRequestId;
 import org.cloudburstmc.protocol.bedrock.data.LegacySetSlot;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 30 (0x1e)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

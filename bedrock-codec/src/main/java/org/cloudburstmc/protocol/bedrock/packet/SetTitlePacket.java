@@ -10,9 +10,6 @@ import lombok.ToString;
 import org.cloudburstmc.protocol.bedrock.data.SetTitlePacketTitleType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 88 (0x58)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

@@ -9,9 +9,6 @@ import lombok.ToString;
 import org.cloudburstmc.protocol.bedrock.data.AgentAnimation;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 304 (0x130)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

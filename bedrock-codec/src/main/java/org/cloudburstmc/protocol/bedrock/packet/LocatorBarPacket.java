@@ -11,9 +11,6 @@ import lombok.ToString;
 import org.cloudburstmc.protocol.bedrock.data.LocatorBarWaypointPayload;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 341 (0x155)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

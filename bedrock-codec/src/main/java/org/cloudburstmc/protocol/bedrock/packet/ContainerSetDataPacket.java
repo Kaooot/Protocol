@@ -8,9 +8,6 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 51 (0x33)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

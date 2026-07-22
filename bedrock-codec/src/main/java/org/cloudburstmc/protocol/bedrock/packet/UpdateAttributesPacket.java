@@ -12,9 +12,6 @@ import org.cloudburstmc.protocol.bedrock.data.AttributeData;
 import org.cloudburstmc.protocol.bedrock.data.PlayerInputTick;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 29 (0x1d)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

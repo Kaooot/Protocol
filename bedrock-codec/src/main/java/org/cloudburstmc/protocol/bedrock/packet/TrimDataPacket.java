@@ -12,9 +12,6 @@ import org.cloudburstmc.protocol.bedrock.data.TrimMaterial;
 import org.cloudburstmc.protocol.bedrock.data.TrimPattern;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 302 (0x12e)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

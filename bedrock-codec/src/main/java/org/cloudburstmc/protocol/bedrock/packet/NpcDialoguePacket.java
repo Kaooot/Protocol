@@ -10,9 +10,6 @@ import lombok.ToString;
 import org.cloudburstmc.protocol.bedrock.data.NpcDialogueActionType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 169 (0xa9)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

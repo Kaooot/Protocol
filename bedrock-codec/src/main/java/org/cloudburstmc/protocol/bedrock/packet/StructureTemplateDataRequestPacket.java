@@ -12,9 +12,6 @@ import org.cloudburstmc.protocol.bedrock.data.StructureSettings;
 import org.cloudburstmc.protocol.bedrock.data.StructureTemplateRequestOperation;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 132 (0x84)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

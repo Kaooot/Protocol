@@ -12,9 +12,6 @@ import org.cloudburstmc.math.vector.Vector3i;
 import org.cloudburstmc.protocol.bedrock.data.ChunkPos;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 121 (0x79)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

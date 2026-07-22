@@ -10,9 +10,6 @@ import org.cloudburstmc.protocol.bedrock.data.DimensionType;
 import org.cloudburstmc.protocol.bedrock.data.EntityNetId;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 167 (0xa7)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

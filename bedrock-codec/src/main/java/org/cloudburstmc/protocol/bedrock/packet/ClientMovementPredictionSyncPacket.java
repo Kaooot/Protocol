@@ -13,9 +13,6 @@ import org.cloudburstmc.protocol.bedrock.data.ActorDataBoundingBoxComponent;
 import org.cloudburstmc.protocol.bedrock.data.ActorDataFlagComponent;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 322 (0x142)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

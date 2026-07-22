@@ -11,9 +11,6 @@ import org.cloudburstmc.protocol.bedrock.data.PropertySyncData;
 import org.cloudburstmc.protocol.bedrock.data.SynchedActorDataList;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 39 (0x27)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

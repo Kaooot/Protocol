@@ -12,9 +12,6 @@ import lombok.ToString;
 import org.cloudburstmc.protocol.bedrock.data.ClientboundTextureShiftPacketPayloadAction;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 336 (0x150)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

@@ -10,9 +10,6 @@ import lombok.ToString;
 import org.cloudburstmc.protocol.bedrock.data.NpcRequestPacketPayloadRequestType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 98 (0x62)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

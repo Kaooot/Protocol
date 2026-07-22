@@ -11,9 +11,6 @@ import lombok.ToString;
 import org.cloudburstmc.protocol.bedrock.data.SerializedSkin;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 93 (0x5d)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

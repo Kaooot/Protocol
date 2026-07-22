@@ -11,7 +11,8 @@ import org.cloudburstmc.protocol.bedrock.data.LegacyTelemetryEventPacketPayloadT
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
- * Packet ID: 65 (0x41)
+ * Sends telemetry data to the client.
+ * Documentation on the various events can be found in the relevant event classes.
  */
 @Data
 @EqualsAndHashCode(
@@ -21,12 +22,24 @@ import org.cloudburstmc.protocol.common.PacketSignal;
     doNotUseGetters = true
 )
 public class LegacyTelemetryEventPacket implements BedrockPacket {
+  /**
+   * The ActorUniqueID of the target actor
+   */
   private long targetActorID;
 
+  /**
+   * The type of the telemetry event
+   */
   private LegacyTelemetryEventPacketPayloadType eventType;
 
+  /**
+   * Whether Player ID is used and whether the ActorUniqueID belongs to a player
+   */
   private boolean usePlayerID;
 
+  /**
+   * The telemetry event
+   */
   private Object eventData;
 
   @Override

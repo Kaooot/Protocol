@@ -12,9 +12,6 @@ import lombok.ToString;
 import org.cloudburstmc.protocol.bedrock.data.SoftEnumUpdateType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 114 (0x72)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

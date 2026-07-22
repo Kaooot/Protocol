@@ -10,9 +10,6 @@ import org.cloudburstmc.protocol.bedrock.data.GameType;
 import org.cloudburstmc.protocol.bedrock.data.PlayerInputTick;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 151 (0x97)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

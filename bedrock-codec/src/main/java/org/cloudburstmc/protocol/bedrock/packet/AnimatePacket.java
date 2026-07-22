@@ -10,9 +10,6 @@ import org.cloudburstmc.protocol.bedrock.data.ActorSwingSource;
 import org.cloudburstmc.protocol.bedrock.data.AnimatePacketPayloadAction;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 44 (0x2c)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

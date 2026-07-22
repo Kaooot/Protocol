@@ -11,9 +11,6 @@ import org.cloudburstmc.protocol.bedrock.data.PacketViolationSeverity;
 import org.cloudburstmc.protocol.bedrock.data.PacketViolationType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 156 (0x9c)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

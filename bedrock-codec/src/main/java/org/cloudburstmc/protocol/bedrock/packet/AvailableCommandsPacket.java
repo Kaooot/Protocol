@@ -16,9 +16,6 @@ import org.cloudburstmc.protocol.bedrock.data.AvailableCommandsPacketEnumData;
 import org.cloudburstmc.protocol.bedrock.data.AvailableCommandsPacketSoftEnumData;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 76 (0x4c)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

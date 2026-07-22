@@ -14,9 +14,6 @@ import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.protocol.bedrock.data.GraphicsOverrideParameterType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 331 (0x14b)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

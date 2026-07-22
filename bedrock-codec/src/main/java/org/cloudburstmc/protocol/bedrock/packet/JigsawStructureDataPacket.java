@@ -9,9 +9,6 @@ import lombok.ToString;
 import org.cloudburstmc.nbt.NbtMap;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 313 (0x139)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

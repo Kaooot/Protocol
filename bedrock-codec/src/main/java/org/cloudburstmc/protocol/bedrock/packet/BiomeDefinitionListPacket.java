@@ -13,9 +13,6 @@ import org.cloudburstmc.protocol.bedrock.data.BiomeDefinitionData;
 import org.cloudburstmc.protocol.bedrock.data.BiomeStringList;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 122 (0x7a)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

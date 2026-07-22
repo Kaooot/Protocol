@@ -10,9 +10,6 @@ import lombok.ToString;
 import org.cloudburstmc.protocol.bedrock.data.GatheringsConfig;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 85 (0x55)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

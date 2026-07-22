@@ -9,9 +9,6 @@ import lombok.ToString;
 import org.cloudburstmc.protocol.bedrock.data.CameraPresets;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 198 (0xc6)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

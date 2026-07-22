@@ -9,9 +9,6 @@ import lombok.ToString;
 import org.cloudburstmc.protocol.bedrock.data.PacketCompressionAlgorithm;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 143 (0x8f)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

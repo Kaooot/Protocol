@@ -12,9 +12,6 @@ import org.cloudburstmc.protocol.bedrock.data.PackIdVersion;
 import org.cloudburstmc.protocol.bedrock.data.PackInfoData;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 6 (0x6)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

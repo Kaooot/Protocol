@@ -18,9 +18,6 @@ import org.cloudburstmc.protocol.bedrock.data.SmithingTransformRecipePayload;
 import org.cloudburstmc.protocol.bedrock.data.SmithingTrimRecipePayload;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 52 (0x34)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

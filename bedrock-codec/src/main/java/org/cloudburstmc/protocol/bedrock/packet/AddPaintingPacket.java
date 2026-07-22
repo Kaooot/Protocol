@@ -10,9 +10,6 @@ import lombok.ToString;
 import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 22 (0x16)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

@@ -11,9 +11,6 @@ import org.cloudburstmc.nbt.NbtMap;
 import org.cloudburstmc.protocol.bedrock.data.StructureTemplateResponseType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 133 (0x85)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

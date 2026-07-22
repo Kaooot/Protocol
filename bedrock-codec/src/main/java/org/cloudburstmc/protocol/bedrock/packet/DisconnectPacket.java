@@ -10,9 +10,6 @@ import lombok.ToString;
 import org.cloudburstmc.protocol.bedrock.data.DisconnectFailReason;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 5 (0x5)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

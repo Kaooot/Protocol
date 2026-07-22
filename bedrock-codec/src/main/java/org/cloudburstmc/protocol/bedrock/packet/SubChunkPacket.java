@@ -13,9 +13,6 @@ import org.cloudburstmc.protocol.bedrock.data.SubChunkPacketData;
 import org.cloudburstmc.protocol.bedrock.data.SubChunkPos;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 174 (0xae)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

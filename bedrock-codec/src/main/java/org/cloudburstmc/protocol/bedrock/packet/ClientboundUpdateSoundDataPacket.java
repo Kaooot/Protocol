@@ -10,9 +10,6 @@ import lombok.ToString;
 import org.cloudburstmc.protocol.bedrock.data.ServerSoundHandle;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 348 (0x15c)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

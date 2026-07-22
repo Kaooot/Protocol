@@ -11,9 +11,6 @@ import org.cloudburstmc.math.vector.Vector3i;
 import org.cloudburstmc.protocol.bedrock.data.Rotation;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 194 (0xc2)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

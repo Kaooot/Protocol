@@ -10,9 +10,6 @@ import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.protocol.bedrock.data.PlayerInputTick;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 40 (0x28)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

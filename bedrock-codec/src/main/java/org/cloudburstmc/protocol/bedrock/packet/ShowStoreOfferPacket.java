@@ -10,9 +10,6 @@ import lombok.ToString;
 import org.cloudburstmc.protocol.bedrock.data.ShowStoreOfferRedirectType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 91 (0x5b)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

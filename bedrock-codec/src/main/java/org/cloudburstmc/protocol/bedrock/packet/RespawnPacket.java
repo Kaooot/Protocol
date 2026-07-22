@@ -10,9 +10,6 @@ import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.protocol.bedrock.data.PlayerRespawnState;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 45 (0x2d)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

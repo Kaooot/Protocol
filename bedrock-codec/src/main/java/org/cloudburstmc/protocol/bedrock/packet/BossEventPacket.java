@@ -12,9 +12,6 @@ import org.cloudburstmc.protocol.bedrock.data.BossBarOverlay;
 import org.cloudburstmc.protocol.bedrock.data.BossEventUpdateType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 74 (0x4a)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

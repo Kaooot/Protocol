@@ -11,9 +11,6 @@ import lombok.ToString;
 import org.cloudburstmc.protocol.bedrock.data.ItemStackRequest;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 147 (0x93)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

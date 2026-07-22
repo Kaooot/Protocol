@@ -21,9 +21,6 @@ import org.cloudburstmc.protocol.bedrock.data.PlayerBlockActionData;
 import org.cloudburstmc.protocol.bedrock.data.PlayerInputTick;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 144 (0x90)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

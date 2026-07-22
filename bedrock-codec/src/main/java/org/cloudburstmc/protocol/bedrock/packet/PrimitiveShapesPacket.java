@@ -11,9 +11,6 @@ import lombok.ToString;
 import org.cloudburstmc.protocol.bedrock.data.PrimitiveShapeDataPayload;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 328 (0x148)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

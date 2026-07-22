@@ -9,9 +9,6 @@ import lombok.ToString;
 import org.cloudburstmc.protocol.bedrock.data.LoadingScreenPacketType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 312 (0x138)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

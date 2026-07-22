@@ -12,9 +12,6 @@ import org.cloudburstmc.protocol.bedrock.data.FullContainerName;
 import org.cloudburstmc.protocol.bedrock.data.NetworkItemStackDescriptor;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 49 (0x31)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

@@ -10,9 +10,6 @@ import org.cloudburstmc.protocol.bedrock.data.PositionTrackingDBClientRequestPac
 import org.cloudburstmc.protocol.bedrock.data.PositionTrackingId;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 154 (0x9a)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

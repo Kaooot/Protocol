@@ -11,9 +11,6 @@ import org.cloudburstmc.protocol.bedrock.data.ClientCameraAimAssistPacketAction;
 import org.cloudburstmc.protocol.common.PacketSignal;
 import org.cloudburstmc.protocol.common.util.OptionalBoolean;
 
-/**
- * Packet ID: 321 (0x141)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

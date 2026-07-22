@@ -11,9 +11,6 @@ import lombok.ToString;
 import org.cloudburstmc.protocol.bedrock.data.MissingBlobData;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 136 (0x88)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

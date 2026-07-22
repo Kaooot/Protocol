@@ -9,9 +9,6 @@ import lombok.ToString;
 import org.cloudburstmc.protocol.bedrock.data.ClientStoreEntryPointConfig;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 346 (0x15a)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

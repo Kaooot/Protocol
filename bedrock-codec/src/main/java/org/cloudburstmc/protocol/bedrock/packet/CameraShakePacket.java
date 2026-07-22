@@ -10,9 +10,6 @@ import org.cloudburstmc.protocol.bedrock.data.CameraShakeAction;
 import org.cloudburstmc.protocol.bedrock.data.CameraShakeType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 159 (0x9f)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

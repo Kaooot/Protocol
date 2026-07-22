@@ -10,9 +10,6 @@ import lombok.ToString;
 import org.cloudburstmc.protocol.bedrock.data.PartyDestinationCookieIntent;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 349 (0x15d)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

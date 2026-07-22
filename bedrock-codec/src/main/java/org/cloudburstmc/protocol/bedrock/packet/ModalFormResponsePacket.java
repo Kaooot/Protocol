@@ -10,9 +10,6 @@ import lombok.ToString;
 import org.cloudburstmc.protocol.bedrock.data.ModalFormCancelReason;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 101 (0x65)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

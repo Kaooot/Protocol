@@ -13,9 +13,6 @@ import org.cloudburstmc.protocol.bedrock.data.CameraAimAssistPresetDefinition;
 import org.cloudburstmc.protocol.bedrock.data.CameraAimAssistPresetsPacketOperation;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 320 (0x140)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

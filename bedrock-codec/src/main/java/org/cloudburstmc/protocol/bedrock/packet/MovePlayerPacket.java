@@ -13,9 +13,6 @@ import org.cloudburstmc.protocol.bedrock.data.PlayerInputTick;
 import org.cloudburstmc.protocol.bedrock.data.PositionMode;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 19 (0x13)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

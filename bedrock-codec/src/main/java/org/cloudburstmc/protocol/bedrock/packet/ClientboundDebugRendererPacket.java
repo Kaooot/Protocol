@@ -10,9 +10,6 @@ import org.cloudburstmc.protocol.bedrock.data.DebugMarkerData;
 import org.cloudburstmc.protocol.bedrock.data.PayloadType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 164 (0xa4)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

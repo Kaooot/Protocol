@@ -10,9 +10,6 @@ import lombok.ToString;
 import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 123 (0x7b)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

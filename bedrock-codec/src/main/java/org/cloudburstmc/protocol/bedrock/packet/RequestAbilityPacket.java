@@ -9,9 +9,6 @@ import lombok.ToString;
 import org.cloudburstmc.protocol.bedrock.data.RequestAbilityPacketPayloadType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 184 (0xb8)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

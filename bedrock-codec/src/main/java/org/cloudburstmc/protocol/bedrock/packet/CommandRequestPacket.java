@@ -11,9 +11,6 @@ import org.cloudburstmc.protocol.bedrock.data.CommandOriginData;
 import org.cloudburstmc.protocol.bedrock.data.CurrentCmdVersion;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 77 (0x4d)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

@@ -10,9 +10,6 @@ import org.cloudburstmc.math.vector.Vector3i;
 import org.cloudburstmc.protocol.bedrock.data.PlayerActionType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 36 (0x24)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

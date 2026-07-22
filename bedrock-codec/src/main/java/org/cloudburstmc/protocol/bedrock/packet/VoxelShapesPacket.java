@@ -15,9 +15,6 @@ import org.cloudburstmc.protocol.bedrock.data.SerializableVoxelShape;
 import org.cloudburstmc.protocol.bedrock.data.VoxelShapesRegistryHandle;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 337 (0x151)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

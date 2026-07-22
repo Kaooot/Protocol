@@ -9,9 +9,6 @@ import lombok.ToString;
 import org.cloudburstmc.protocol.bedrock.data.CameraInstruction;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 300 (0x12c)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

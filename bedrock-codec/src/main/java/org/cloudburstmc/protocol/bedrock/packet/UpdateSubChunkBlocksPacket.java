@@ -10,9 +10,6 @@ import org.cloudburstmc.math.vector.Vector3i;
 import org.cloudburstmc.protocol.bedrock.data.UpdateSubChunkBlocksChangedInfo;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 172 (0xac)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

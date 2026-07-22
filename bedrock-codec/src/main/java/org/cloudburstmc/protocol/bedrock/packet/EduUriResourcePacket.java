@@ -9,9 +9,6 @@ import lombok.ToString;
 import org.cloudburstmc.protocol.bedrock.data.EduSharedUriResource;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 170 (0xaa)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

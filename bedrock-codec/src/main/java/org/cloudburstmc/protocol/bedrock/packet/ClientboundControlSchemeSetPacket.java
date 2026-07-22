@@ -9,9 +9,6 @@ import lombok.ToString;
 import org.cloudburstmc.protocol.bedrock.data.ControlScheme;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 327 (0x147)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true

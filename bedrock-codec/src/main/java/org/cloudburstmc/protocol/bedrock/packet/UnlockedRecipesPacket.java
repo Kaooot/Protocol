@@ -12,9 +12,6 @@ import lombok.ToString;
 import org.cloudburstmc.protocol.bedrock.data.UnlockedRecipesPacketPayloadPacketType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Packet ID: 199 (0xc7)
- */
 @Data
 @EqualsAndHashCode(
     doNotUseGetters = true
