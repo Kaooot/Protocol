@@ -3,7 +3,7 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import org.cloudburstmc.protocol.common.PacketHandler;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-interface BedrockPacketHandler extends PacketHandler {
+public interface BedrockPacketHandler extends PacketHandler {
   default PacketSignal handlePacket(BedrockPacket packet) {
     return packet.handle(this);
   }
