@@ -1,151 +1,140 @@
 package org.cloudburstmc.protocol.bedrock.data;
 
-import java.lang.String;
-import java.util.HashMap;
-import java.util.Map;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import java.lang.UnsupportedOperationException;
 
-@Getter
-@RequiredArgsConstructor
 public enum PlayerAuthInputData {
-  ASCEND("ascend"),
+  ASCEND,
 
-  DESCEND("descend"),
+  DESCEND,
 
-  JUMP_DOWN("jumpdown"),
+  JUMP_DOWN,
 
-  SPRINT_DOWN("sprintdown"),
+  SPRINT_DOWN,
 
-  CHANGE_HEIGHT("changeheight"),
+  CHANGE_HEIGHT,
 
-  JUMPING("jumping"),
+  JUMPING,
 
-  AUTO_JUMPING_IN_WATER("autojumpinginwater"),
+  AUTO_JUMPING_IN_WATER,
 
-  SNEAKING("sneaking"),
+  SNEAKING,
 
-  SNEAK_DOWN("sneakdown"),
+  SNEAK_DOWN,
 
-  UP("up"),
+  UP,
 
-  DOWN("down"),
+  DOWN,
 
-  LEFT("left"),
+  LEFT,
 
-  RIGHT("right"),
+  RIGHT,
 
-  UP_LEFT("upleft"),
+  UP_LEFT,
 
-  UP_RIGHT("upright"),
+  UP_RIGHT,
 
-  WANT_UP("wantup"),
+  WANT_UP,
 
-  WANT_DOWN("wantdown"),
+  WANT_DOWN,
 
-  WANT_DOWN_SLOW("wantdownslow"),
+  WANT_DOWN_SLOW,
 
-  WANT_UP_SLOW("wantupslow"),
+  WANT_UP_SLOW,
 
-  SPRINTING("sprinting"),
+  SPRINTING,
 
-  ASCEND_BLOCK("ascendblock"),
+  ASCEND_BLOCK,
 
-  DESCEND_BLOCK("descendblock"),
+  DESCEND_BLOCK,
 
-  SNEAK_TOGGLE_DOWN("sneaktoggledown"),
+  SNEAK_TOGGLE_DOWN,
 
-  PERSIST_SNEAK("persistsneak"),
+  PERSIST_SNEAK,
 
-  START_SPRINTING("startsprinting"),
+  START_SPRINTING,
 
-  STOP_SPRINTING("stopsprinting"),
+  STOP_SPRINTING,
 
-  START_SNEAKING("startsneaking"),
+  START_SNEAKING,
 
-  STOP_SNEAKING("stopsneaking"),
+  STOP_SNEAKING,
 
-  START_SWIMMING("startswimming"),
+  START_SWIMMING,
 
-  STOP_SWIMMING("stopswimming"),
+  STOP_SWIMMING,
 
-  START_JUMPING("startjumping"),
+  START_JUMPING,
 
-  START_GLIDING("startgliding"),
+  START_GLIDING,
 
-  STOP_GLIDING("stopgliding"),
+  STOP_GLIDING,
 
-  PERFORM_ITEM_INTERACTION("performiteminteraction"),
+  PERFORM_ITEM_INTERACTION,
 
-  PERFORM_BLOCK_ACTIONS("performblockactions"),
+  PERFORM_BLOCK_ACTIONS,
 
-  PERFORM_ITEM_STACK_REQUEST("performitemstackrequest"),
+  PERFORM_ITEM_STACK_REQUEST,
 
-  HANDLED_TELEPORT("handledteleport"),
+  HANDLED_TELEPORT,
 
-  EMOTING("emoting"),
+  EMOTING,
 
-  MISSED_SWING("missedswing"),
+  MISSED_SWING,
 
-  START_CRAWLING("startcrawling"),
+  START_CRAWLING,
 
-  STOP_CRAWLING("stopcrawling"),
+  STOP_CRAWLING,
 
-  START_FLYING("startflying"),
+  START_FLYING,
 
-  STOP_FLYING("stopflying"),
+  STOP_FLYING,
 
-  CLIENT_ACK_SERVER_DATA("clientackserverdata"),
+  CLIENT_ACK_SERVER_DATA,
 
-  IS_IN_CLIENT_PREDICTED_VEHICLE("isinclientpredictedvehicle"),
+  IS_IN_CLIENT_PREDICTED_VEHICLE,
 
-  PADDLING_LEFT("paddlingleft"),
+  PADDLING_LEFT,
 
-  PADDLING_RIGHT("paddlingright"),
+  PADDLING_RIGHT,
 
-  BLOCK_BREAKING_DELAY_ENABLED("blockbreakingdelayenabled"),
+  BLOCK_BREAKING_DELAY_ENABLED,
 
-  HORIZONTAL_COLLISION("horizontalcollision"),
+  HORIZONTAL_COLLISION,
 
-  VERTICAL_COLLISION("verticalcollision"),
+  VERTICAL_COLLISION,
 
-  DOWN_LEFT("downleft"),
+  DOWN_LEFT,
 
-  DOWN_RIGHT("downright"),
+  DOWN_RIGHT,
 
-  START_USING_ITEM("startusingitem"),
+  START_USING_ITEM,
 
-  START_SPIN_ATTACK("startspinattack"),
+  START_SPIN_ATTACK,
 
-  STOP_SPIN_ATTACK("stopspinattack"),
+  STOP_SPIN_ATTACK,
 
-  IS_HOTBAR_ONLY_TOUCH("ishotbaronlytouch"),
+  IS_HOTBAR_ONLY_TOUCH,
 
-  JUMP_RELEASED_RAW("jumpreleasedraw"),
+  JUMP_RELEASED_RAW,
 
-  JUMP_PRESSED_RAW("jumppressedraw"),
+  JUMP_PRESSED_RAW,
 
-  JUMP_CURRENT_RAW("jumpcurrentraw"),
+  JUMP_CURRENT_RAW,
 
-  SNEAK_RELEASED_RAW("sneakreleasedraw"),
+  SNEAK_RELEASED_RAW,
 
-  SNEAK_PRESSED_RAW("sneakpressedraw"),
+  SNEAK_PRESSED_RAW,
 
-  SNEAK_CURRENT_RAW("sneakcurrentraw"),
+  SNEAK_CURRENT_RAW,
 
-  INTERNAL_UPDATE("internalupdate");
+  INTERNAL_UPDATE;
 
-  private static final Map<String, PlayerAuthInputData> SERIALIZE_NAMES = new HashMap<>(values().length);
+  private static final PlayerAuthInputData[] VALUES = values();
 
-  static {
-    for (PlayerAuthInputData value : values()) {
-      SERIALIZE_NAMES.put(value.getSerializeName(), value);
+  public static PlayerAuthInputData from(int ordinal) {
+    if (ordinal >= 0 && ordinal < VALUES.length) {
+      return VALUES[ordinal];
     }
-  }
-
-  private final String serializeName;
-
-  public static PlayerAuthInputData fromName(String serializeName) {
-    return SERIALIZE_NAMES.get(serializeName);
+    throw new UnsupportedOperationException("Detected unknown PlayerAuthInputData ID: " + ordinal);
   }
 }

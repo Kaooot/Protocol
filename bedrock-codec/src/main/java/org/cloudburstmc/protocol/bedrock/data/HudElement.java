@@ -1,51 +1,40 @@
 package org.cloudburstmc.protocol.bedrock.data;
 
-import java.lang.String;
-import java.util.HashMap;
-import java.util.Map;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import java.lang.UnsupportedOperationException;
 
-@Getter
-@RequiredArgsConstructor
 public enum HudElement {
-  PAPER_DOLL("paperdoll"),
+  PAPER_DOLL,
 
-  ARMOR("armor"),
+  ARMOR,
 
-  TOOL_TIPS("tooltips"),
+  TOOL_TIPS,
 
-  TOUCH_CONTROLS("touchcontrols"),
+  TOUCH_CONTROLS,
 
-  CROSSHAIR("crosshair"),
+  CROSSHAIR,
 
-  HOT_BAR("hotbar"),
+  HOT_BAR,
 
-  HEALTH("health"),
+  HEALTH,
 
-  PROGRESS_BAR("progressbar"),
+  PROGRESS_BAR,
 
-  HUNGER("hunger"),
+  HUNGER,
 
-  AIR_BUBBLES("airbubbles"),
+  AIR_BUBBLES,
 
-  HORSE_HEALTH("horsehealth"),
+  HORSE_HEALTH,
 
-  STATUS_EFFECTS("statuseffects"),
+  STATUS_EFFECTS,
 
-  ITEM_TEXT("itemtext");
+  ITEM_TEXT;
 
-  private static final Map<String, HudElement> SERIALIZE_NAMES = new HashMap<>(values().length);
+  private static final HudElement[] VALUES = values();
 
-  static {
-    for (HudElement value : values()) {
-      SERIALIZE_NAMES.put(value.getSerializeName(), value);
+  public static HudElement from(int ordinal) {
+    if (ordinal >= 0 && ordinal < VALUES.length) {
+      return VALUES[ordinal];
     }
-  }
-
-  private final String serializeName;
-
-  public static HudElement fromName(String serializeName) {
-    return SERIALIZE_NAMES.get(serializeName);
+    throw new UnsupportedOperationException("Detected unknown HudElement ID: " + ordinal);
   }
 }

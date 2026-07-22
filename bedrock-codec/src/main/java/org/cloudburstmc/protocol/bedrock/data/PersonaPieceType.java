@@ -1,6 +1,7 @@
 package org.cloudburstmc.protocol.bedrock.data;
 
 import java.lang.String;
+import java.lang.UnsupportedOperationException;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.Getter;
@@ -63,6 +64,8 @@ public enum PersonaPieceType {
 
   EMOTE("emote");
 
+  private static final PersonaPieceType[] VALUES = values();
+
   private static final Map<String, PersonaPieceType> SERIALIZE_NAMES = new HashMap<>(values().length);
 
   static {
@@ -72,6 +75,13 @@ public enum PersonaPieceType {
   }
 
   private final String serializeName;
+
+  public static PersonaPieceType from(int ordinal) {
+    if (ordinal >= 0 && ordinal < VALUES.length) {
+      return VALUES[ordinal];
+    }
+    throw new UnsupportedOperationException("Detected unknown PersonaPieceType ID: " + ordinal);
+  }
 
   public static PersonaPieceType fromName(String serializeName) {
     return SERIALIZE_NAMES.get(serializeName);
