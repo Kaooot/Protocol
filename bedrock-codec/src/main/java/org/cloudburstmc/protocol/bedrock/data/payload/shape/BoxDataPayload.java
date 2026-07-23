@@ -10,7 +10,7 @@ import org.cloudburstmc.protocol.bedrock.data.ExtraShapeDataType;
  */
 @Data
 @ToString
-public class BoxDataPayload implements DebugShapePayload {
+public class BoxDataPayload implements ExtraShapeDataPayload {
 
     private Vector3f boxBound;
 

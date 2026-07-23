@@ -9,7 +9,7 @@ import org.cloudburstmc.protocol.bedrock.data.ExtraShapeDataType;
  */
 @Data
 @ToString
-public class TextDataPayload implements DebugShapePayload {
+public class TextDataPayload implements ExtraShapeDataPayload {
 
     private String text;
     /**

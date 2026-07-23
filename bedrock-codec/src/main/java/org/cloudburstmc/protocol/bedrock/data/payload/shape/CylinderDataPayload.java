@@ -8,7 +8,7 @@ import org.cloudburstmc.protocol.bedrock.data.ExtraShapeDataType;
  * @author Kaooot
  */
 @Data
-public class CylinderDataPayload implements DebugShapePayload {
+public class CylinderDataPayload implements ExtraShapeDataPayload {
 
     private Vector2f radiusX;
     private Vector2f radiusZ;

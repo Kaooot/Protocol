@@ -8,7 +8,7 @@ import org.cloudburstmc.protocol.bedrock.data.ExtraShapeDataType;
  * @author Kaooot
  */
 @Data
-public class EllipsoidDataPayload implements DebugShapePayload {
+public class EllipsoidDataPayload implements ExtraShapeDataPayload {
 
     private Vector3f radii;
     private int segmentsPerAxis;

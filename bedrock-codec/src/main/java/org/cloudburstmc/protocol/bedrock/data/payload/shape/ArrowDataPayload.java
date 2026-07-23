@@ -10,7 +10,7 @@ import org.cloudburstmc.protocol.bedrock.data.ExtraShapeDataType;
  */
 @Data
 @ToString
-public class ArrowDataPayload implements DebugShapePayload {
+public class ArrowDataPayload implements ExtraShapeDataPayload {
 
     private Vector3f arrowEndLocation;
     private Float arrowHeadLength;
