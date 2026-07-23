@@ -32,6 +32,7 @@ public class CraftingDataSerializer_v291 implements BedrockPacketSerializer<Craf
                 packet.getShapelessRecipes().size() +
                 packet.getShapelessChemistryRecipes().size() +
                 packet.getUserDataShapelessRecipes().size() +
+                packet.getFurnaceRecipes().size() +
                 packet.getMultiRecipes().size() +
                 packet.getSmithingTransformRecipes().size() +
                 packet.getSmithingTrimRecipes().size();
@@ -98,6 +99,7 @@ public class CraftingDataSerializer_v291 implements BedrockPacketSerializer<Craf
                     packet.getUserDataShapelessRecipes().add(this.readShapelessRecipePayload(buffer, helper));
                     break;
                 case FURNACE_RECIPE:
+                case FURNACE_AUX_RECIPE:
                     packet.getFurnaceRecipes().add(this.readFurnaceRecipePayload(buffer, helper, type));
                     break;
                 case MULTI:

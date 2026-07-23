@@ -45,6 +45,7 @@ public class CraftingDataSerializer_v582 extends CraftingDataSerializer_v567 {
                     packet.getUserDataShapelessRecipes().add(this.readShapelessRecipePayload(buffer, helper));
                     break;
                 case FURNACE_RECIPE:
+                case FURNACE_AUX_RECIPE:
                     packet.getFurnaceRecipes().add(this.readFurnaceRecipePayload(buffer, helper, type));
                     break;
                 case MULTI:
