@@ -8,7 +8,7 @@ import lombok.Data;
 @Data
 public class ColorAttributeData implements EASAttributeData {
 
-    private Integer color;
+    private Color255RGBA color;
     private ColorAttributeOperation operation;
 
     @Override
