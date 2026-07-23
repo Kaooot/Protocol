@@ -7,7 +7,7 @@ import org.cloudburstmc.protocol.bedrock.data.payload.common.DimensionType;
 import java.util.UUID;
 
 @Value
-public class DimensionDefinitionGroup {
+public class DimensionDefinition {
     String name;
     int heightMaximum;
     int heightMinimum;
