@@ -1,0 +1,335 @@
+package org.cloudburstmc.protocol.bedrock.data.actor;
+
+import java.lang.UnsupportedOperationException;
+
+/**
+ * Various actor types
+ */
+public enum ActorType {
+  UNDEFINED,
+
+  MOB,
+
+  PATHFINDER_MOB,
+
+  MONSTER,
+
+  ANIMAL,
+
+  TAMABLE_ANIMAL,
+
+  AMBIENT,
+
+  UNDEAD_MONSTER,
+
+  ZOMBIE_MONSTER,
+
+  ARTHROPOD,
+
+  MINECART,
+
+  SKELETON_MONSTER,
+
+  EQUINE_ANIMAL,
+
+  PROJECTILE,
+
+  ABSTRACT_ARROW,
+
+  WATER_ANIMAL,
+
+  VILLAGER_BASE,
+
+  CHICKEN,
+
+  COW,
+
+  PIG,
+
+  SHEEP,
+
+  WOLF,
+
+  VILLAGER,
+
+  MUSHROOM_COW,
+
+  SQUID,
+
+  RABBIT,
+
+  BAT,
+
+  IRON_GOLEM,
+
+  SNOW_GOLEM,
+
+  OCELOT,
+
+  HORSE,
+
+  POLAR_BEAR,
+
+  LLAMA,
+
+  PARROT,
+
+  DOLPHIN,
+
+  DONKEY,
+
+  MULE,
+
+  SKELETON_HORSE,
+
+  ZOMBIE_HORSE,
+
+  ZOMBIE,
+
+  CREEPER,
+
+  SKELETON,
+
+  SPIDER,
+
+  PIG_ZOMBIE,
+
+  SLIME,
+
+  ENDER_MAN,
+
+  SILVERFISH,
+
+  CAVE_SPIDER,
+
+  GHAST,
+
+  LAVA_SLIME,
+
+  BLAZE,
+
+  ZOMBIE_VILLAGER,
+
+  WITCH,
+
+  STRAY,
+
+  HUSK,
+
+  WITHER_SKELETON,
+
+  GUARDIAN,
+
+  ELDER_GUARDIAN,
+
+  NPC,
+
+  WITHER_BOSS,
+
+  DRAGON,
+
+  SHULKER,
+
+  ENDERMITE,
+
+  AGENT,
+
+  VINDICATOR,
+
+  PHANTOM,
+
+  ILLAGER_BEAST,
+
+  ARMOR_STAND,
+
+  TRIPOD_CAMERA,
+
+  PLAYER,
+
+  ITEM_ENTITY,
+
+  PRIMED_TNT,
+
+  FALLING_BLOCK,
+
+  MOVING_BLOCK,
+
+  EXPERIENCE_POTION,
+
+  EXPERIENCE,
+
+  EYE_OF_ENDER,
+
+  ENDER_CRYSTAL,
+
+  FIREWORKS_ROCKET,
+
+  TRIDENT,
+
+  TURTLE,
+
+  CAT,
+
+  SHULKER_BULLET,
+
+  FISHING_HOOK,
+
+  CHALKBOARD,
+
+  DRAGON_FIREBALL,
+
+  ARROW,
+
+  SNOWBALL,
+
+  THROWN_EGG,
+
+  PAINTING,
+
+  LARGE_FIREBALL,
+
+  THROWN_POTION,
+
+  ENDERPEARL,
+
+  LEASH_KNOT,
+
+  WITHER_SKULL,
+
+  BOAT_RIDEABLE,
+
+  WITHER_SKULL_DANGEROUS,
+
+  LIGHTNING_BOLT,
+
+  SMALL_FIREBALL,
+
+  AREA_EFFECT_CLOUD,
+
+  LINGERING_POTION,
+
+  LLAMA_SPIT,
+
+  EVOCATION_FANG,
+
+  EVOCATION_ILLAGER,
+
+  VEX,
+
+  MINECART_RIDEABLE,
+
+  MINECART_HOPPER,
+
+  MINECART_TNT,
+
+  MINECART_CHEST,
+
+  MINECART_FURNACE,
+
+  MINECART_COMMAND_BLOCK,
+
+  ICE_BOMB,
+
+  BALLOON,
+
+  PUFFERFISH,
+
+  SALMON,
+
+  DROWNED,
+
+  TROPICALFISH,
+
+  FISH,
+
+  PANDA,
+
+  PILLAGER,
+
+  VILLAGER_V2,
+
+  ZOMBIE_VILLAGER_V2,
+
+  SHIELD,
+
+  WANDERING_TRADER,
+
+  LECTERN,
+
+  ELDER_GUARDIAN_GHOST,
+
+  FOX,
+
+  BEE,
+
+  PIGLIN,
+
+  HOGLIN,
+
+  STRIDER,
+
+  ZOGLIN,
+
+  PIGLIN_BRUTE,
+
+  GOAT,
+
+  GLOW_SQUID,
+
+  AXOLOTL,
+
+  WARDEN,
+
+  FROG,
+
+  TADPOLE,
+
+  ALLAY,
+
+  CHEST_BOAT_RIDEABLE,
+
+  TRADER_LLAMA,
+
+  CAMEL,
+
+  SNIFFER,
+
+  BREEZE,
+
+  BREEZE_WIND_CHARGE_PROJECTILE,
+
+  ARMADILLO,
+
+  WIND_CHARGE_PROJECTILE,
+
+  BOGGED,
+
+  OMINOUS_ITEM_SPAWNER,
+
+  CREAKING,
+
+  HAPPY_GHAST,
+
+  COPPER_GOLEM,
+
+  NAUTILUS,
+
+  ZOMBIE_NAUTILUS,
+
+  PARCHED,
+
+  CAMEL_HUSK,
+
+  SULFUR_CUBE,
+
+  CUSHION;
+
+  private static final ActorType[] VALUES = values();
+
+  public static ActorType from(int ordinal) {
+    if (ordinal >= 0 && ordinal < VALUES.length) {
+      return VALUES[ordinal];
+    }
+    throw new UnsupportedOperationException("Detected unknown ActorType ID: " + ordinal);
+  }
+}

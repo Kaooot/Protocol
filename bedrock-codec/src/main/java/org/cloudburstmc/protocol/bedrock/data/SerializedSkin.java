@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import lombok.Data;
+import org.cloudburstmc.protocol.bedrock.data.skin.AnimatedImageData;
 
 @Data
 public class SerializedSkin {

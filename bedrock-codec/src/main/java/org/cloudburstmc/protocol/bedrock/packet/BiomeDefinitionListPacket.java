@@ -9,8 +9,8 @@ import java.util.Map;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.protocol.bedrock.data.BiomeDefinitionData;
-import org.cloudburstmc.protocol.bedrock.data.BiomeStringList;
+import org.cloudburstmc.protocol.bedrock.data.biome.BiomeDefinitionData;
+import org.cloudburstmc.protocol.bedrock.data.biome.BiomeStringList;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data

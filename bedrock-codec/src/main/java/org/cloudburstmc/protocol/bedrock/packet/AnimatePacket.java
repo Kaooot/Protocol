@@ -6,8 +6,8 @@ import java.lang.Override;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.protocol.bedrock.data.ActorSwingSource;
-import org.cloudburstmc.protocol.bedrock.data.AnimatePacketPayloadAction;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorSwingSource;
+import org.cloudburstmc.protocol.bedrock.data.actor.AnimatePacketPayloadAction;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data

@@ -8,8 +8,8 @@ import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.protocol.bedrock.data.AttributeData;
 import org.cloudburstmc.protocol.bedrock.data.PlayerInputTick;
+import org.cloudburstmc.protocol.bedrock.data.actor.attribute.AttributeData;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data

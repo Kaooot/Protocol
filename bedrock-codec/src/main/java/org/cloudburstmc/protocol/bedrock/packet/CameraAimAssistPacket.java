@@ -9,7 +9,7 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.math.vector.Vector2f;
 import org.cloudburstmc.protocol.bedrock.data.CameraAimAssistPacketPayloadAction;
-import org.cloudburstmc.protocol.bedrock.data.CameraAimAssistPacketPayloadTargetMode;
+import org.cloudburstmc.protocol.bedrock.data.camera.aimassist.CameraAimAssistPacketPayloadTargetMode;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data

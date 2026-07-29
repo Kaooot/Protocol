@@ -3,6 +3,7 @@ package org.cloudburstmc.protocol.bedrock.data;
 import java.lang.String;
 import lombok.Data;
 import org.cloudburstmc.math.vector.Vector2f;
+import org.cloudburstmc.protocol.bedrock.data.camera.aimassist.AimAssistTargetMode;
 
 @Data
 public class CameraAimAssistCommandDefinition {

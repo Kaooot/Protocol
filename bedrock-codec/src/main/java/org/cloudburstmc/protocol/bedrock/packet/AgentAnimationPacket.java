@@ -6,7 +6,7 @@ import java.lang.Override;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.protocol.bedrock.data.AgentAnimation;
+import org.cloudburstmc.protocol.bedrock.data.education.AgentAnimation;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data

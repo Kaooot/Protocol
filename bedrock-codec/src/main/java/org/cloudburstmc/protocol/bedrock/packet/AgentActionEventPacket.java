@@ -7,7 +7,7 @@ import java.lang.String;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.protocol.bedrock.data.AgentActionType;
+import org.cloudburstmc.protocol.bedrock.data.education.AgentActionType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data

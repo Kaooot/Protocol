@@ -6,7 +6,7 @@ import java.lang.Override;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.protocol.bedrock.data.ActorType;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data

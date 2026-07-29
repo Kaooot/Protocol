@@ -4,6 +4,7 @@ import java.lang.String;
 import lombok.Data;
 import org.cloudburstmc.math.vector.Vector2f;
 import org.cloudburstmc.math.vector.Vector3f;
+import org.cloudburstmc.protocol.bedrock.data.camera.AudioListener;
 
 @Data
 public class CameraPresets {

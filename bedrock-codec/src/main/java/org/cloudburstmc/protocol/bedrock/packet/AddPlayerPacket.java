@@ -12,13 +12,13 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.math.vector.Vector2f;
 import org.cloudburstmc.math.vector.Vector3f;
-import org.cloudburstmc.protocol.bedrock.data.ActorLink;
 import org.cloudburstmc.protocol.bedrock.data.BuildPlatform;
 import org.cloudburstmc.protocol.bedrock.data.GameType;
 import org.cloudburstmc.protocol.bedrock.data.NetworkItemStackDescriptor;
 import org.cloudburstmc.protocol.bedrock.data.PropertySyncData;
 import org.cloudburstmc.protocol.bedrock.data.SerializedAbilitiesData;
 import org.cloudburstmc.protocol.bedrock.data.SynchedActorDataList;
+import org.cloudburstmc.protocol.bedrock.data.actor.link.ActorLink;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data

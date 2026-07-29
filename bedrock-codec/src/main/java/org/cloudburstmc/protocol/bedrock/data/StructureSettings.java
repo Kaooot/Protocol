@@ -4,6 +4,7 @@ import java.lang.String;
 import lombok.Data;
 import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.math.vector.Vector3i;
+import org.cloudburstmc.protocol.bedrock.data.structure.AnimationMode;
 
 @Data
 public class StructureSettings {

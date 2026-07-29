@@ -2,7 +2,7 @@ package org.cloudburstmc.protocol.bedrock.data.event;
 
 import java.lang.String;
 import lombok.Data;
-import org.cloudburstmc.protocol.bedrock.data.ActorType;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorType;
 
 /**
  * Provides information about a mob that has been killed

@@ -9,11 +9,11 @@ import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.protocol.bedrock.data.AvailableCommandsPacketChainedSubcommandData;
-import org.cloudburstmc.protocol.bedrock.data.AvailableCommandsPacketCommandData;
-import org.cloudburstmc.protocol.bedrock.data.AvailableCommandsPacketConstrainedValueData;
-import org.cloudburstmc.protocol.bedrock.data.AvailableCommandsPacketEnumData;
-import org.cloudburstmc.protocol.bedrock.data.AvailableCommandsPacketSoftEnumData;
+import org.cloudburstmc.protocol.bedrock.data.command.AvailableCommandsPacketChainedSubcommandData;
+import org.cloudburstmc.protocol.bedrock.data.command.AvailableCommandsPacketCommandData;
+import org.cloudburstmc.protocol.bedrock.data.command.AvailableCommandsPacketConstrainedValueData;
+import org.cloudburstmc.protocol.bedrock.data.command.AvailableCommandsPacketEnumData;
+import org.cloudburstmc.protocol.bedrock.data.command.AvailableCommandsPacketSoftEnumData;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data

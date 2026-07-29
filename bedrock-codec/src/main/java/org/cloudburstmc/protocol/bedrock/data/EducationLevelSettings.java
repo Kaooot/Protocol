@@ -2,6 +2,7 @@ package org.cloudburstmc.protocol.bedrock.data;
 
 import java.lang.String;
 import lombok.Data;
+import org.cloudburstmc.protocol.bedrock.data.education.AgentCapabilities;
 
 @Data
 public class EducationLevelSettings {
