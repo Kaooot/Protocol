@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.codec.v2171.serializer;
+package org.cloudburstmc.protocol.bedrock.codec.v2177.serializer;
 
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
@@ -12,8 +12,8 @@ import org.cloudburstmc.protocol.common.util.VarInts;
  * @author Kaooot
  */
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class MoveActorDeltaSerializer_v2171 extends MoveActorDeltaSerializer_v2168 {
-    public static final MoveActorDeltaSerializer_v2171 INSTANCE = new MoveActorDeltaSerializer_v2171();
+public class MoveActorDeltaSerializer_v2177 extends MoveActorDeltaSerializer_v2168 {
+    public static final MoveActorDeltaSerializer_v2177 INSTANCE = new MoveActorDeltaSerializer_v2177();
 
     @Override
     protected void writeMoveActorDeltaData(ByteBuf buffer, BedrockCodecHelper helper, MoveActorDeltaData data) {

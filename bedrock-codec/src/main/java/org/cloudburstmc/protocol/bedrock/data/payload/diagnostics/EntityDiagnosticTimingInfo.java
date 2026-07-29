@@ -14,11 +14,11 @@ public class EntityDiagnosticTimingInfo {
     private long timeInNS;
     private int percentOfTotal;
     /**
-     * @since v2171
+     * @since v2177
      */
     private Vector3f position;
     /**
-     * @since v2171
+     * @since v2177
      */
     private String dimension;
 }

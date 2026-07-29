@@ -1007,4 +1007,8 @@ public interface BedrockPacketHandler extends PacketHandler {
     default PacketSignal handle(PartyDestinationCookieResponsePacket packet) {
         return PacketSignal.UNHANDLED;
     }
+
+    default PacketSignal handle(SetPlayerFurnaceOptionsPacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
 }

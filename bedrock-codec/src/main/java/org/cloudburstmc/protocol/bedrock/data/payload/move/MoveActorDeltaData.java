@@ -22,7 +22,7 @@ public class MoveActorDeltaData {
     private boolean forceMoveLocalEntity;
     private boolean forceCompletion;
     /**
-     * @since v2171
+     * @since v2177
      */
     private long ticks;
 }
