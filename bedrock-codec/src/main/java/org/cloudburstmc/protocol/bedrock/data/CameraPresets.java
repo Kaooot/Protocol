@@ -51,4 +51,8 @@ public class CameraPresets {
   private CameraAimAssistCommandDefinition aimAssist;
 
   private ControlScheme controlScheme;
+
+  private boolean applyInheritedStartingRotation;
+
+  private Vector2f startingRotation;
 }

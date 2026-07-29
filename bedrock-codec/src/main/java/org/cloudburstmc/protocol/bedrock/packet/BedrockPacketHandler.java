@@ -744,6 +744,10 @@ public interface BedrockPacketHandler extends PacketHandler {
     return PacketSignal.UNHANDLED;
   }
 
+  default PacketSignal handle(SetPlayerFurnaceOptionsPacket packet) {
+    return PacketSignal.UNHANDLED;
+  }
+
   default PacketSignal handle(SetPlayerGameTypePacket packet) {
     return PacketSignal.UNHANDLED;
   }

@@ -375,6 +375,8 @@ public class BedrockPacketType {
 
   public static final BedrockPacketType SET_LOCAL_PLAYER_AS_INITIALIZED = new BedrockPacketType("SET_LOCAL_PLAYER_AS_INITIALIZED");
 
+  public static final BedrockPacketType SET_PLAYER_FURNACE_OPTIONS = new BedrockPacketType("SET_PLAYER_FURNACE_OPTIONS");
+
   public static final BedrockPacketType SET_PLAYER_GAME_TYPE = new BedrockPacketType("SET_PLAYER_GAME_TYPE");
 
   public static final BedrockPacketType SET_PLAYER_INVENTORY_OPTIONS = new BedrockPacketType("SET_PLAYER_INVENTORY_OPTIONS");

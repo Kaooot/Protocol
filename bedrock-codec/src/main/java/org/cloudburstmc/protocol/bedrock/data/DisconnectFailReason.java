@@ -297,7 +297,9 @@ public enum DisconnectFailReason {
 
   NOT_AUTHENTICATED_FAST_FAIL,
 
-  EDITOR_NOT_ALLOWED;
+  EDITOR_NOT_ALLOWED,
+
+  MISSING_STRUCTURE_DATA;
 
   private static final DisconnectFailReason[] VALUES = values();
 
