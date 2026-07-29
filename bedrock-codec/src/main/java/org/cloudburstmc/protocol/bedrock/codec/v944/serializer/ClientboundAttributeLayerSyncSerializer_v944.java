@@ -226,16 +226,40 @@ public class ClientboundAttributeLayerSyncSerializer_v944 implements BedrockPack
     }
 
     protected void writeColorAttributeData(ByteBuf buffer, BedrockCodecHelper helper, ColorAttributeData data) {
-        buffer.writeIntLE(data.getColor());
+        this.writeColor255RGBA(buffer, helper, data.getColor());
         helper.writeOptionalNull(buffer, data.getOperation().name(), helper::writeString);
     }
 
     protected ColorAttributeData readColorAttributeData(ByteBuf buffer, BedrockCodecHelper helper) {
         final ColorAttributeData data = new ColorAttributeData();
-        data.setColor(buffer.readIntLE());
+        data.setColor(this.readColor255RGBA(buffer, helper));
         data.setOperation(helper.readOptional(buffer, null,
                 (buf, h) -> ColorAttributeOperation.valueOf(h.readString(buffer))));
         return data;
+    }
+
+    protected void writeColor255RGBA(ByteBuf buffer, BedrockCodecHelper helper, Color255RGBA color) {
+        VarInts.writeUnsignedInt(buffer, color.getType());
+        if (color.getType() == 0) {
+            helper.writeString(buffer, color.getStringColor());
+        } else {
+            for (int i = 0; i < color.getArrayColor().length; i++) {
+                buffer.writeIntLE(color.getArrayColor()[i]);
+            }
+        }
+    }
+
+    protected Color255RGBA readColor255RGBA(ByteBuf buffer, BedrockCodecHelper helper) {
+        final Color255RGBA color = new Color255RGBA();
+        color.setType(VarInts.readUnsignedInt(buffer));
+        if (color.getType() == 0) {
+            color.setStringColor(helper.readString(buffer));
+        } else {
+            for (int i = 0; i < color.getArrayColor().length; i++) {
+                color.getArrayColor()[i] = buffer.readIntLE();
+            }
+        }
+        return color;
     }
 
     protected void writeWeight(ByteBuf buffer, BedrockCodecHelper helper, AttributeLayerSettings.WeightData weight) {

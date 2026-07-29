@@ -18,7 +18,7 @@ public class PrimitiveShapesSerializer_v859 extends PrimitiveShapesSerializer_v8
     public static final PrimitiveShapesSerializer_v859 INSTANCE = new PrimitiveShapesSerializer_v859();
 
     @Override
-    protected void writeShapeData(ByteBuf buffer, BedrockCodecHelper helper, ShapeDataPayload payload) {
+    protected void writeShapeData(ByteBuf buffer, BedrockCodecHelper helper, PrimitiveShapeDataPayload payload) {
         VarInts.writeUnsignedLong(buffer, payload.getNetworkId());
         helper.writeOptionalNull(buffer, payload.getShapeType(), (buf, shape) -> buf.writeByte(shape.ordinal()));
         helper.writeOptionalNull(buffer, payload.getLocation(), helper::writeVector3f);
@@ -31,8 +31,8 @@ public class PrimitiveShapesSerializer_v859 extends PrimitiveShapesSerializer_v8
     }
 
     @Override
-    protected ShapeDataPayload readShapeData(ByteBuf buffer, BedrockCodecHelper helper) {
-        final ShapeDataPayload payload = new ShapeDataPayload();
+    protected PrimitiveShapeDataPayload readShapeData(ByteBuf buffer, BedrockCodecHelper helper) {
+        final PrimitiveShapeDataPayload payload = new PrimitiveShapeDataPayload();
         payload.setNetworkId(VarInts.readUnsignedLong(buffer));
         payload.setShapeType(helper.readOptional(buffer, null, buf -> ScriptPrimitiveShapeType.from(buf.readUnsignedByte())));
         payload.setLocation(helper.readOptional(buffer, null, helper::readVector3f));
@@ -46,7 +46,7 @@ public class PrimitiveShapesSerializer_v859 extends PrimitiveShapesSerializer_v8
     }
 
     @Override
-    protected void writeExtraShapeData(ByteBuf buffer, BedrockCodecHelper helper, DebugShapePayload payload) {
+    protected void writeExtraShapeData(ByteBuf buffer, BedrockCodecHelper helper, ExtraShapeDataPayload payload) {
         VarInts.writeUnsignedInt(buffer, payload.getType().ordinal());
         switch (payload.getType()) {
             case ARROW:
@@ -68,7 +68,7 @@ public class PrimitiveShapesSerializer_v859 extends PrimitiveShapesSerializer_v8
     }
 
     @Override
-    protected DebugShapePayload readExtraShapeData(ByteBuf buffer, BedrockCodecHelper helper, ScriptPrimitiveShapeType type) {
+    protected ExtraShapeDataPayload readExtraShapeData(ByteBuf buffer, BedrockCodecHelper helper, ScriptPrimitiveShapeType type) {
         final ExtraShapeDataType extraShapeDataType = ExtraShapeDataType.from(VarInts.readUnsignedInt(buffer));
         switch (extraShapeDataType) {
             case NONE:

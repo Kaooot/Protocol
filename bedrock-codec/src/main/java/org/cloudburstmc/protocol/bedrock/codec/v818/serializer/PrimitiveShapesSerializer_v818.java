@@ -23,7 +23,7 @@ public class PrimitiveShapesSerializer_v818 implements BedrockPacketSerializer<P
         helper.readArray(buffer, packet.getShapes(), this::readShapeData);
     }
 
-    protected void writeShapeData(ByteBuf buffer, BedrockCodecHelper helper, ShapeDataPayload payload) {
+    protected void writeShapeData(ByteBuf buffer, BedrockCodecHelper helper, PrimitiveShapeDataPayload payload) {
         VarInts.writeUnsignedLong(buffer, payload.getNetworkId());
         helper.writeOptionalNull(buffer, payload.getShapeType(), (buf, shape) -> buf.writeByte(shape.ordinal()));
         helper.writeOptionalNull(buffer, payload.getLocation(), helper::writeVector3f);
@@ -34,8 +34,8 @@ public class PrimitiveShapesSerializer_v818 implements BedrockPacketSerializer<P
         this.writeExtraShapeData(buffer, helper, payload.getExtraShapeData());
     }
 
-    protected ShapeDataPayload readShapeData(ByteBuf buffer, BedrockCodecHelper helper) {
-        final ShapeDataPayload payload = new ShapeDataPayload();
+    protected PrimitiveShapeDataPayload readShapeData(ByteBuf buffer, BedrockCodecHelper helper) {
+        final PrimitiveShapeDataPayload payload = new PrimitiveShapeDataPayload();
         payload.setNetworkId(VarInts.readUnsignedLong(buffer));
         payload.setShapeType(helper.readOptional(buffer, null, buf -> ScriptPrimitiveShapeType.from(buf.readUnsignedByte())));
         payload.setLocation(helper.readOptional(buffer, null, helper::readVector3f));
@@ -47,7 +47,7 @@ public class PrimitiveShapesSerializer_v818 implements BedrockPacketSerializer<P
         return payload;
     }
 
-    protected void writeExtraShapeData(ByteBuf buffer, BedrockCodecHelper helper, DebugShapePayload payload) {
+    protected void writeExtraShapeData(ByteBuf buffer, BedrockCodecHelper helper, ExtraShapeDataPayload payload) {
         TextDataPayload textDataPayload = new TextDataPayload();
         BoxDataPayload boxDataPayload = new BoxDataPayload();
         LineDataPayload lineDataPayload = new LineDataPayload();
@@ -89,7 +89,7 @@ public class PrimitiveShapesSerializer_v818 implements BedrockPacketSerializer<P
         helper.writeOptionalNull(buffer, numSegments, ByteBuf::writeByte);
     }
 
-    protected DebugShapePayload readExtraShapeData(ByteBuf buffer, BedrockCodecHelper helper, ScriptPrimitiveShapeType type) {
+    protected ExtraShapeDataPayload readExtraShapeData(ByteBuf buffer, BedrockCodecHelper helper, ScriptPrimitiveShapeType type) {
         final String text = helper.readOptional(buffer, null, helper::readString);
         final Vector3f boxBound = helper.readOptional(buffer, null, helper::readVector3f);
         final Vector3f endLocation = helper.readOptional(buffer, null, helper::readVector3f);

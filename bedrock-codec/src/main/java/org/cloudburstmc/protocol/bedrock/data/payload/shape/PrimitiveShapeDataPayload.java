@@ -10,7 +10,7 @@ import org.cloudburstmc.protocol.bedrock.data.payload.common.DimensionType;
  */
 @Data
 @ToString
-public class ShapeDataPayload {
+public class PrimitiveShapeDataPayload {
 
     private long networkId;
     private ScriptPrimitiveShapeType shapeType;
@@ -28,5 +28,5 @@ public class ShapeDataPayload {
      * @since v924
      */
     private Long attachedToEntityID;
-    private DebugShapePayload extraShapeData;
+    private ExtraShapeDataPayload extraShapeData;
 }

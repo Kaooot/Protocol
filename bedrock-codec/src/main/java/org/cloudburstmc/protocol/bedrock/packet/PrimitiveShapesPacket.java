@@ -4,7 +4,7 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.protocol.bedrock.data.payload.shape.ShapeDataPayload;
+import org.cloudburstmc.protocol.bedrock.data.payload.shape.PrimitiveShapeDataPayload;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 import java.util.List;
@@ -14,7 +14,7 @@ import java.util.List;
 @ToString(doNotUseGetters = true)
 public class PrimitiveShapesPacket implements BedrockPacket {
 
-    private final List<ShapeDataPayload> shapes = new ObjectArrayList<>();
+    private final List<PrimitiveShapeDataPayload> shapes = new ObjectArrayList<>();
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

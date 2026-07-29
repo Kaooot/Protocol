@@ -7,7 +7,7 @@ import org.cloudburstmc.protocol.bedrock.data.ExtraShapeDataType;
  * @author Kaooot
  */
 @Data
-public class PyramidDataPayload implements DebugShapePayload {
+public class PyramidDataPayload implements ExtraShapeDataPayload {
 
     private float width;
     private Float depth;

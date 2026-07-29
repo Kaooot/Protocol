@@ -17,7 +17,7 @@ public class PrimitiveShapesSerializer_v1001 extends PrimitiveShapesSerializer_v
     public static final PrimitiveShapesSerializer_v1001 INSTANCE = new PrimitiveShapesSerializer_v1001();
 
     @Override
-    protected void writeExtraShapeData(ByteBuf buffer, BedrockCodecHelper helper, DebugShapePayload payload) {
+    protected void writeExtraShapeData(ByteBuf buffer, BedrockCodecHelper helper, ExtraShapeDataPayload payload) {
         VarInts.writeUnsignedInt(buffer, payload.getType().ordinal());
         switch (payload.getType()) {
             case ARROW:
@@ -51,7 +51,7 @@ public class PrimitiveShapesSerializer_v1001 extends PrimitiveShapesSerializer_v
     }
 
     @Override
-    protected DebugShapePayload readExtraShapeData(ByteBuf buffer, BedrockCodecHelper helper, ScriptPrimitiveShapeType type) {
+    protected ExtraShapeDataPayload readExtraShapeData(ByteBuf buffer, BedrockCodecHelper helper, ScriptPrimitiveShapeType type) {
         final ExtraShapeDataType extraShapeDataType = ExtraShapeDataType.from(VarInts.readUnsignedInt(buffer));
         switch (extraShapeDataType) {
             case NONE:

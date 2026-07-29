@@ -10,7 +10,7 @@ import org.cloudburstmc.protocol.bedrock.data.ExtraShapeDataType;
  */
 @Data
 @ToString
-public class LineDataPayload implements DebugShapePayload {
+public class LineDataPayload implements ExtraShapeDataPayload {
 
     private Vector3f lineEndLocation;
 

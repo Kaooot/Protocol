@@ -8,7 +8,7 @@ import org.cloudburstmc.protocol.bedrock.data.ExtraShapeDataType;
  * @author Kaooot
  */
 @Data
-public class ConeDataPayload implements DebugShapePayload {
+public class ConeDataPayload implements ExtraShapeDataPayload {
 
     private Vector2f radii;
     private float height;

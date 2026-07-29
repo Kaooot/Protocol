@@ -4,7 +4,7 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.protocol.bedrock.data.definitions.DimensionDefinitionGroup;
+import org.cloudburstmc.protocol.bedrock.data.definitions.DimensionDefinition;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 import java.util.List;
@@ -21,7 +21,7 @@ import java.util.List;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class DimensionDataPacket implements BedrockPacket {
-    private final List<DimensionDefinitionGroup> definitions = new ObjectArrayList<>();
+    private final List<DimensionDefinition> definitions = new ObjectArrayList<>();
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {
