@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.data.gathering;
+package org.cloudburstmc.protocol.bedrock.data.payload.common;
 
 import lombok.Data;
 import org.cloudburstmc.protocol.bedrock.data.payload.configuration.ClientStoreEntryPointConfiguration;
@@ -8,9 +8,9 @@ import org.cloudburstmc.protocol.bedrock.data.payload.configuration.PresenceConf
  * @author Kaooot
  */
 @Data
-public class ServerJoinInfo {
+public class ServerConfigurationJoinInfo {
 
-    private GatheringsConfig gatheringsConfig;
+    private GatheringsConfigurationJoinInfo gatheringsConfig;
     private ClientStoreEntryPointConfiguration storeEntryPointInfo;
     private PresenceConfiguration presenceConfiguration;
 }

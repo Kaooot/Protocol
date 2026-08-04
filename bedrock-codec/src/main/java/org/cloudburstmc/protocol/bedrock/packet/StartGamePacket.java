@@ -10,7 +10,7 @@ import org.cloudburstmc.nbt.NbtList;
 import org.cloudburstmc.nbt.NbtMap;
 import org.cloudburstmc.protocol.bedrock.data.*;
 import org.cloudburstmc.protocol.bedrock.data.definitions.ItemDefinition;
-import org.cloudburstmc.protocol.bedrock.data.gathering.ServerJoinInfo;
+import org.cloudburstmc.protocol.bedrock.data.payload.common.ServerConfigurationJoinInfo;
 import org.cloudburstmc.protocol.bedrock.data.payload.ServerTelemetryData;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
@@ -93,7 +93,7 @@ public class StartGamePacket implements BedrockPacket {
     /**
      * @since v924
      */
-    private ServerJoinInfo serverConfigurationJoinInfo;
+    private ServerConfigurationJoinInfo serverConfigurationJoinInfo;
     /**
      * @since v924
      */
