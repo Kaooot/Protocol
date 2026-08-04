@@ -24,7 +24,7 @@ import org.cloudburstmc.protocol.bedrock.data.actor.PropertySyncData;
 import org.cloudburstmc.protocol.bedrock.data.ddui.DataStoreUpdate;
 import org.cloudburstmc.protocol.bedrock.data.definitions.BlockDefinition;
 import org.cloudburstmc.protocol.bedrock.data.definitions.ItemDefinition;
-import org.cloudburstmc.protocol.bedrock.data.gathering.GatheringsConfig;
+import org.cloudburstmc.protocol.bedrock.data.payload.common.GatheringsConfigurationJoinInfo;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerEnumName;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerId;
 import org.cloudburstmc.protocol.bedrock.data.inventory.FullContainerName;
@@ -628,12 +628,12 @@ public abstract class BaseBedrockCodecHelper implements BedrockCodecHelper {
     }
 
     @Override
-    public void writeGatheringsConfig(ByteBuf buffer, GatheringsConfig config) {
+    public void writeGatheringsConfigurationJoinInfo(ByteBuf buffer, GatheringsConfigurationJoinInfo config) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public GatheringsConfig readGatheringsConfig(ByteBuf buffer) {
+    public GatheringsConfigurationJoinInfo readGatheringsConfigurationJoinInfo(ByteBuf buffer) {
         throw new UnsupportedOperationException();
     }
 

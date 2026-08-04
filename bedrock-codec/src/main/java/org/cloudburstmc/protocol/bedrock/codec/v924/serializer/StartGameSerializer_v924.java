@@ -6,8 +6,8 @@ import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v818.serializer.StartGameSerializer_v818;
 import org.cloudburstmc.protocol.bedrock.data.*;
-import org.cloudburstmc.protocol.bedrock.data.gathering.GatheringsConfig;
-import org.cloudburstmc.protocol.bedrock.data.gathering.ServerJoinInfo;
+import org.cloudburstmc.protocol.bedrock.data.payload.common.GatheringsConfigurationJoinInfo;
+import org.cloudburstmc.protocol.bedrock.data.payload.common.ServerConfigurationJoinInfo;
 import org.cloudburstmc.protocol.bedrock.data.payload.ServerTelemetryData;
 import org.cloudburstmc.protocol.bedrock.packet.StartGamePacket;
 import org.cloudburstmc.protocol.common.util.OptionalBoolean;
@@ -25,14 +25,14 @@ public class StartGameSerializer_v924 extends StartGameSerializer_v818 {
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, StartGamePacket packet) {
         super.serialize(buffer, helper, packet);
-        helper.writeOptionalNull(buffer, packet.getServerConfigurationJoinInfo(), this::writeServerJoinInfo);
+        helper.writeOptionalNull(buffer, packet.getServerConfigurationJoinInfo(), this::writeServerConfigurationJoinInfo);
         this.writeServerTelemetryData(buffer, helper, packet.getServerTelemetryData());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, StartGamePacket packet) {
         super.deserialize(buffer, helper, packet);
-        packet.setServerConfigurationJoinInfo(helper.readOptional(buffer, null, this::readServerJoinInfo));
+        packet.setServerConfigurationJoinInfo(helper.readOptional(buffer, null, this::readServerConfigurationJoinInfo));
         packet.setServerTelemetryData(this.readServerTelemetryData(buffer, helper));
     }
 
@@ -144,17 +144,17 @@ public class StartGameSerializer_v924 extends StartGameSerializer_v818 {
         settings.setDisablePlayerInteractions(buffer.readBoolean());
     }
 
-    protected void writeServerJoinInfo(ByteBuf buffer, BedrockCodecHelper helper, ServerJoinInfo joinInfo) {
-        helper.writeOptionalNull(buffer, joinInfo.getGatheringsConfig(), this::writeGatheringsConfig);
+    protected void writeServerConfigurationJoinInfo(ByteBuf buffer, BedrockCodecHelper helper, ServerConfigurationJoinInfo joinInfo) {
+        helper.writeOptionalNull(buffer, joinInfo.getGatheringsConfig(), this::writeGatheringsConfigurationJoinInfo);
     }
 
-    protected ServerJoinInfo readServerJoinInfo(ByteBuf buffer, BedrockCodecHelper helper) {
-        final ServerJoinInfo joinInfo = new ServerJoinInfo();
-        joinInfo.setGatheringsConfig(helper.readOptional(buffer, null, this::readGatheringsConfig));
+    protected ServerConfigurationJoinInfo readServerConfigurationJoinInfo(ByteBuf buffer, BedrockCodecHelper helper) {
+        final ServerConfigurationJoinInfo joinInfo = new ServerConfigurationJoinInfo();
+        joinInfo.setGatheringsConfig(helper.readOptional(buffer, null, this::readGatheringsConfigurationJoinInfo));
         return joinInfo;
     }
 
-    protected void writeGatheringsConfig(ByteBuf buffer, BedrockCodecHelper helper, GatheringsConfig config) {
+    protected void writeGatheringsConfigurationJoinInfo(ByteBuf buffer, BedrockCodecHelper helper, GatheringsConfigurationJoinInfo config) {
         helper.writeString(buffer, config.getExperienceId().toString());
         helper.writeString(buffer, config.getExperienceName());
         helper.writeString(buffer, config.getWorldId().toString());
@@ -163,8 +163,8 @@ public class StartGameSerializer_v924 extends StartGameSerializer_v818 {
         helper.writeString(buffer, ""); // Store ID
     }
 
-    protected GatheringsConfig readGatheringsConfig(ByteBuf buffer, BedrockCodecHelper helper) {
-        final GatheringsConfig config = new GatheringsConfig();
+    protected GatheringsConfigurationJoinInfo readGatheringsConfigurationJoinInfo(ByteBuf buffer, BedrockCodecHelper helper) {
+        final GatheringsConfigurationJoinInfo config = new GatheringsConfigurationJoinInfo();
         UUID experienceID;
         try {
             experienceID = UUID.fromString(helper.readString(buffer));

@@ -5,7 +5,7 @@ import org.cloudburstmc.math.vector.Vector3i;
 import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v924.BedrockCodecHelper_v924;
 import org.cloudburstmc.protocol.bedrock.data.AbilitiesIndex;
-import org.cloudburstmc.protocol.bedrock.data.gathering.GatheringsConfig;
+import org.cloudburstmc.protocol.bedrock.data.payload.common.GatheringsConfigurationJoinInfo;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerEnumName;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.TextProcessingEventOrigin;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestActionType;
@@ -38,28 +38,28 @@ public class BedrockCodecHelper_v944 extends BedrockCodecHelper_v924 {
     }
 
     @Override
-    public void writeGatheringsConfig(ByteBuf buffer, GatheringsConfig config) {
+    public void writeGatheringsConfigurationJoinInfo(ByteBuf buffer, GatheringsConfigurationJoinInfo config) {
         this.writeUuid(buffer, config.getExperienceId());
         this.writeString(buffer, config.getExperienceName());
-        this.writeUuid(buffer, config.getWorldId());
-        this.writeString(buffer, config.getWorldName());
+        this.writeOptionalNull(buffer, config.getWorldId(), this::writeUuid);
+        this.writeOptionalNull(buffer, config.getWorldName(), this::writeString);
         this.writeString(buffer, config.getCreatorId());
-        this.writeUuid(buffer, config.getTargetId());
-        this.writeString(buffer, config.getScenarioId());
-        this.writeString(buffer, config.getServerId());
+        this.writeOptionalNull(buffer, config.getTargetId(), this::writeUuid);
+        this.writeOptionalNull(buffer, config.getScenarioId(), this::writeString);
+        this.writeOptionalNull(buffer, config.getServerId(), this::writeString);
     }
 
     @Override
-    public GatheringsConfig readGatheringsConfig(ByteBuf buffer) {
-        final GatheringsConfig config = new GatheringsConfig();
+    public GatheringsConfigurationJoinInfo readGatheringsConfigurationJoinInfo(ByteBuf buffer) {
+        final GatheringsConfigurationJoinInfo config = new GatheringsConfigurationJoinInfo();
         config.setExperienceId(this.readUuid(buffer));
         config.setExperienceName(this.readString(buffer));
-        config.setWorldId(this.readUuid(buffer));
-        config.setWorldName(this.readString(buffer));
+        config.setWorldId(this.readOptional(buffer, null, this::readUuid));
+        config.setWorldName(this.readOptional(buffer, null, this::readString));
         config.setCreatorId(this.readString(buffer));
-        config.setTargetId(this.readUuid(buffer));
-        config.setScenarioId(this.readString(buffer));
-        config.setServerId(this.readString(buffer));
+        config.setTargetId(this.readOptional(buffer, null, this::readUuid));
+        config.setScenarioId(this.readOptional(buffer, null, this::readString));
+        config.setServerId(this.readOptional(buffer, null, this::readString));
         return config;
     }
 

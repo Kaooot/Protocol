@@ -44,7 +44,7 @@ public class StartGameSerializer_v2168 extends StartGameSerializer_v1001 {
         buffer.writeBoolean(packet.isServerEnabledClientSideGeneration());
         buffer.writeBoolean(packet.isBlockNetworkIdsAreHashes());
         this.writeNetworkPermissions(buffer, helper, packet.getNetworkPermissions());
-        helper.writeOptionalNull(buffer, packet.getServerConfigurationJoinInfo(), this::writeServerJoinInfo);
+        helper.writeOptionalNull(buffer, packet.getServerConfigurationJoinInfo(), this::writeServerConfigurationJoinInfo);
         this.writeServerTelemetryData(buffer, helper, packet.getServerTelemetryData());
     }
 
@@ -73,7 +73,7 @@ public class StartGameSerializer_v2168 extends StartGameSerializer_v1001 {
         packet.setServerEnabledClientSideGeneration(buffer.readBoolean());
         packet.setBlockNetworkIdsAreHashes(buffer.readBoolean());
         packet.setNetworkPermissions(this.readNetworkPermissions(buffer, helper));
-        packet.setServerConfigurationJoinInfo(helper.readOptional(buffer, null, this::readServerJoinInfo));
+        packet.setServerConfigurationJoinInfo(helper.readOptional(buffer, null, this::readServerConfigurationJoinInfo));
         packet.setServerTelemetryData(this.readServerTelemetryData(buffer, helper));
     }
 

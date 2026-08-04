@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.data.gathering;
+package org.cloudburstmc.protocol.bedrock.data.payload.common;
 
 import lombok.Data;
 
@@ -8,7 +8,7 @@ import java.util.UUID;
  * @author Kaooot
  */
 @Data
-public class GatheringsConfig {
+public class GatheringsConfigurationJoinInfo {
 
     private UUID experienceId;
     private String experienceName;
