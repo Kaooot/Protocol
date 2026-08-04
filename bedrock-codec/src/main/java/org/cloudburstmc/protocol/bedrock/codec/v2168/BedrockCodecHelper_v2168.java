@@ -91,7 +91,7 @@ public class BedrockCodecHelper_v2168 extends BedrockCodecHelper_v1001 {
         return configuration;
     }
 
-    protected void writeUserDataBuffer(ByteBuf buffer, UserDataBuffer userDataBuffer) {
+    protected void writeUserDataBuffer(ByteBuf buffer, UserDataBuffer userDataBuffer, boolean isBlockingId) {
         ByteBuf userDataBuf = ByteBufAllocator.DEFAULT.ioBuffer();
         try (LittleEndianByteBufOutputStream stream = new LittleEndianByteBufOutputStream(userDataBuf);
              NBTOutputStream nbtStream = new NBTOutputStream(stream)) {
@@ -115,7 +115,7 @@ public class BedrockCodecHelper_v2168 extends BedrockCodecHelper_v1001 {
                 stream.writeUTF(aCanBreak);
             }
 
-            if (userDataBuffer.getBlockingTicks() != 0) {
+            if (isBlockingId) {
                 stream.writeLong(userDataBuffer.getBlockingTicks());
             }
 
@@ -205,7 +205,8 @@ public class BedrockCodecHelper_v2168 extends BedrockCodecHelper_v1001 {
                         item.getCanPlace(),
                         item.getCanBreak(),
                         item.getBlockingTicks()
-                )
+                ),
+                definition.getIdentifier().equals(BLOCKING_ID)
         );
     }
 
@@ -256,14 +257,15 @@ public class BedrockCodecHelper_v2168 extends BedrockCodecHelper_v1001 {
                         item.getCanPlace(),
                         item.getCanBreak(),
                         item.getBlockingTicks()
-                )
+                ),
+                definition.getIdentifier().equals(BLOCKING_ID)
         );
     }
 
     @Override
     public ItemData readNetworkItemInstanceDescriptor(ByteBuf buffer) {
         int runtimeId = VarInts.readInt(buffer);
-        ItemDefinition definition = this.getItemDefinitions().getDefinition(runtimeId);
+        ItemDefinition definition = runtimeId == 0 ? ItemDefinition.AIR : this.getItemDefinitions().getDefinition(runtimeId);
         int count = buffer.readUnsignedShortLE();
         int damage = VarInts.readUnsignedInt(buffer);
         int blockRuntimeId = VarInts.readInt(buffer);
@@ -579,9 +581,13 @@ public class BedrockCodecHelper_v2168 extends BedrockCodecHelper_v1001 {
     }
 
     public void writeItemStackRequestNetworkItemInstanceDescriptor(ByteBuf buffer, ItemStackRequestNetworkItemInstanceDescriptor descriptor) {
+        final RecipeIngredient ingredient = descriptor.getIngredient();
         this.writeIngredient(buffer, descriptor.getIngredient());
         VarInts.writeUnsignedInt(buffer, descriptor.getBlockRuntimeId());
-        this.writeUserDataBuffer(buffer, descriptor.getUserDataBuffer());
+        this.writeUserDataBuffer(buffer, descriptor.getUserDataBuffer(),
+                ingredient.getDescriptor() != null && ingredient.getDescriptor() instanceof NameDescriptor &&
+                        BLOCKING_ID.equals(((NameDescriptor) ingredient.getDescriptor()).getItemId().getIdentifier())
+        );
     }
 
     protected ItemStackRequestNetworkItemInstanceDescriptor readItemStackRequestNetworkItemInstanceDescriptor(ByteBuf buffer) {
