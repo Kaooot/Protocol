@@ -868,14 +868,14 @@ public class BedrockCodecHelper_v2168 extends BedrockCodecHelper_v1001 {
     protected void writeItemStackRequestMineBlockAction(ByteBuf buffer, MineBlockAction action) {
         VarInts.writeInt(buffer, action.getSlot());
         VarInts.writeInt(buffer, action.getPredictedDurability());
-        VarInts.writeInt(buffer, action.getStackNetworkId());
+        buffer.writeIntLE(action.getStackNetworkId());
     }
 
     protected MineBlockAction readItemStackRequestMineBlockAction(ByteBuf buffer) {
         return new MineBlockAction(
                 VarInts.readInt(buffer),
                 VarInts.readInt(buffer),
-                VarInts.readInt(buffer)
+                buffer.readIntLE()
         );
     }
 
@@ -930,14 +930,14 @@ public class BedrockCodecHelper_v2168 extends BedrockCodecHelper_v1001 {
     }
 
     protected void writeItemStackRequestCraftRepairAndDisenchantAction(ByteBuf buffer, CraftGrindstoneAction action) {
-        VarInts.writeUnsignedInt(buffer, action.getRecipeNetId().getRawId());
+        buffer.writeIntLE(action.getRecipeNetId().getRawId());
         buffer.writeByte(action.getNumberOfRequestedCrafts());
         VarInts.writeInt(buffer, action.getRepairCost());
     }
 
     protected CraftGrindstoneAction readItemStackRequestCraftRepairAndDisenchantAction(ByteBuf buffer) {
         return new CraftGrindstoneAction(
-                new RecipeNetId(VarInts.readUnsignedInt(buffer)),
+                new RecipeNetId(buffer.readIntLE()),
                 buffer.readUnsignedByte(),
                 VarInts.readInt(buffer)
         );
