@@ -34,8 +34,13 @@ public class PlayerLocationSerializer_v2168 extends PlayerLocationSerializer_v80
     @Override
     protected void writeLocationVariant(ByteBuf buffer, BedrockCodecHelper helper, PlayerLocation location) {
         VarInts.writeUnsignedInt(buffer, location.getType().ordinal());
-        if (location.getType().equals(PlayerLocationPacketType.PLAYER_LOCATION_COORDINATES)) {
-            this.writeCoordinatesLocation(buffer, helper, (CoordinatesLocation) location);
+        switch (location.getType()) {
+            case PLAYER_LOCATION_COORDINATES:
+                this.writeCoordinatesLocation(buffer, helper, (CoordinatesLocation) location);
+                break;
+            case PLAYER_LOCATION_HIDE:
+                this.writeHiddenLocation(buffer, helper, (HiddenLocation) location);
+                break;
         }
     }
 
@@ -54,7 +59,7 @@ public class PlayerLocationSerializer_v2168 extends PlayerLocationSerializer_v80
 
     @Override
     protected void writeCoordinatesLocation(ByteBuf buffer, BedrockCodecHelper helper, CoordinatesLocation coordinatesLocation) {
-        VarInts.writeInt(buffer, 0);
+        VarInts.writeInt(buffer, coordinatesLocation.getType().ordinal());
         helper.writeVector3f(buffer, coordinatesLocation.getPosition());
     }
 
@@ -68,7 +73,7 @@ public class PlayerLocationSerializer_v2168 extends PlayerLocationSerializer_v80
 
     @Override
     protected void writeHiddenLocation(ByteBuf buffer, BedrockCodecHelper helper, HiddenLocation hiddenLocation) {
-        VarInts.writeInt(buffer, 0);
+        VarInts.writeInt(buffer, hiddenLocation.getType().ordinal());
     }
 
     @Override
