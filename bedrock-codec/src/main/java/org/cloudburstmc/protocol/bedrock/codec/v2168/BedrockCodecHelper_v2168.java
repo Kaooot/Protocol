@@ -1010,7 +1010,7 @@ public class BedrockCodecHelper_v2168 extends BedrockCodecHelper_v1001 {
         serializedSkin.setImageData(this.readSkinImage(buffer));
         this.readArray(buffer, serializedSkin.getAnimatedImageData(), this::readAnimatedImageData);
         serializedSkin.setCapeImageData(this.readSkinImage(buffer));
-        serializedSkin.setGeometryData(this.readString(buffer));
+        serializedSkin.setGeometryData(this.readStringMaxLen(buffer, this.encodingSettings.maxGeometryDataSize()));
         serializedSkin.setGeometryDataMinEngineVersion(this.readString(buffer));
         serializedSkin.setAnimationData(this.readString(buffer));
         serializedSkin.setCapeID(this.readString(buffer));
