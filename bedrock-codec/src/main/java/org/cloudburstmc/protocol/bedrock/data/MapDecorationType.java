@@ -53,6 +53,16 @@ public enum MapDecorationType {
 
   TRIAL_CHAMBERS,
 
+  ABANDONED_CAMP,
+
+  BURIED_ANCIENT_CITY,
+
+  BURIED_MINESHAFT,
+
+  DESERT_PYRAMID,
+
+  WARM_OCEAN_RUINS,
+
   COUNT;
 
   private static final MapDecorationType[] VALUES = values();

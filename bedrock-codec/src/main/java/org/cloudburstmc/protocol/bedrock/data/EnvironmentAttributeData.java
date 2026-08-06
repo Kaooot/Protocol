@@ -23,4 +23,6 @@ public class EnvironmentAttributeData {
   private int localTransitionTicks;
 
   private boolean noiseTransition;
+
+  private NoiseAlignment noiseAlignment;
 }
