@@ -303,11 +303,11 @@ public class CraftingDataSerializer_v2168 implements BedrockPacketSerializer<Cra
     }
 
     protected void writeRecipeNetId(ByteBuf buffer, RecipeNetId netId) {
-        VarInts.writeInt(buffer, netId.getRawId());
+        VarInts.writeUnsignedInt(buffer, netId.getRawId());
     }
 
     protected RecipeNetId readRecipeNetId(ByteBuf buffer) {
-        return new RecipeNetId(VarInts.readInt(buffer));
+        return new RecipeNetId(VarInts.readUnsignedInt(buffer));
     }
 
     protected int fromAuxValue(int value) {
