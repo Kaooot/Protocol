@@ -210,7 +210,7 @@ public class BedrockCodecHelper_v2168 extends BedrockCodecHelper_v1001 {
                         item.getCanBreak(),
                         item.getBlockingTicks()
                 ),
-                definition.getIdentifier().equals(BLOCKING_ID)
+                definition != null && definition.getIdentifier().equals(BLOCKING_ID)
         );
     }
 
@@ -229,7 +229,7 @@ public class BedrockCodecHelper_v2168 extends BedrockCodecHelper_v1001 {
 
         int blockRuntimeId = VarInts.readUnsignedInt(buffer);
 
-        final UserDataBuffer userDataBuffer = this.readUserDataBuffer(buffer, definition.getIdentifier().equals(BLOCKING_ID));
+        final UserDataBuffer userDataBuffer = this.readUserDataBuffer(buffer, definition != null && definition.getIdentifier().equals(BLOCKING_ID));
         return ItemData.builder()
                 .definition(definition)
                 .damage(damage)
@@ -262,7 +262,7 @@ public class BedrockCodecHelper_v2168 extends BedrockCodecHelper_v1001 {
                         item.getCanBreak(),
                         item.getBlockingTicks()
                 ),
-                definition.getIdentifier().equals(BLOCKING_ID)
+                definition != null && definition.getIdentifier().equals(BLOCKING_ID)
         );
     }
 
@@ -273,7 +273,7 @@ public class BedrockCodecHelper_v2168 extends BedrockCodecHelper_v1001 {
         int count = buffer.readUnsignedShortLE();
         int damage = VarInts.readUnsignedInt(buffer);
         int blockRuntimeId = VarInts.readInt(buffer);
-        final UserDataBuffer userDataBuffer = this.readUserDataBuffer(buffer, definition.getIdentifier().equals(BLOCKING_ID));
+        final UserDataBuffer userDataBuffer = this.readUserDataBuffer(buffer, definition != null && definition.getIdentifier().equals(BLOCKING_ID));
         return ItemData.builder()
                 .definition(definition)
                 .damage(damage)
