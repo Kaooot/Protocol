@@ -44,16 +44,30 @@ public class MapDecoration {
         VILLAGE_TAIGA,
         JUNGLE_TEMPLE,
         WITCH_HUT,
+        /**
+         * @since v671
+         */
         TRIAL_CHAMBERS,
-        COUNT;
-
-        private static final Type[] VALUES = values();
-
-        public static Type from(int ordinal) {
-            if (ordinal >= 0 && ordinal < VALUES.length) {
-                return VALUES[ordinal];
-            }
-            throw new UnsupportedOperationException("Detected unknown MapDecoration.Type ID: " + ordinal);
-        }
+        /**
+         * @since v2181
+         */
+        ABANDONED_CAMP,
+        /**
+         * @since v2181
+         */
+        BURIED_ANCIENT_CITY,
+        /**
+         * @since v2181
+         */
+        BURIED_MINESHAFT,
+        /**
+         * @since v2181
+         */
+        DESERT_PYRAMID,
+        /**
+         * @since v2181
+         */
+        WARM_OCEAN_RUINS,
+        COUNT
     }
 }

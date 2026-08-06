@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.codec.v2177.serializer;
+package org.cloudburstmc.protocol.bedrock.codec.v2181.serializer;
 
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
@@ -16,8 +16,8 @@ import org.cloudburstmc.protocol.common.util.VarInts;
  * @author Kaooot
  */
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class SetPlayerFurnaceOptionsSerializer_v2177 implements BedrockPacketSerializer<SetPlayerFurnaceOptionsPacket> {
-    public static final SetPlayerFurnaceOptionsSerializer_v2177 INSTANCE = new SetPlayerFurnaceOptionsSerializer_v2177();
+public class SetPlayerFurnaceOptionsSerializer_v2181 implements BedrockPacketSerializer<SetPlayerFurnaceOptionsPacket> {
+    public static final SetPlayerFurnaceOptionsSerializer_v2181 INSTANCE = new SetPlayerFurnaceOptionsSerializer_v2181();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, SetPlayerFurnaceOptionsPacket packet) {

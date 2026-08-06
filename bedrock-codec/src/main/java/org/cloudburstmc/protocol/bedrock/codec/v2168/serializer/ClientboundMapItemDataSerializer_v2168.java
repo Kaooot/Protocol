@@ -6,8 +6,7 @@ import it.unimi.dsi.fastutil.ints.IntList;
 import it.unimi.dsi.fastutil.longs.LongArrayList;
 import it.unimi.dsi.fastutil.longs.LongList;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
 import org.cloudburstmc.protocol.bedrock.data.payload.common.DimensionType;
@@ -15,6 +14,7 @@ import org.cloudburstmc.protocol.bedrock.data.payload.map.MapDecoration;
 import org.cloudburstmc.protocol.bedrock.data.payload.map.MapItemTrackedActorType;
 import org.cloudburstmc.protocol.bedrock.data.payload.map.MapItemTrackedActorUniqueId;
 import org.cloudburstmc.protocol.bedrock.packet.ClientboundMapItemDataPacket;
+import org.cloudburstmc.protocol.common.util.TypeMap;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
 import java.util.List;
@@ -22,9 +22,10 @@ import java.util.List;
 /**
  * @author Kaooot
  */
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@RequiredArgsConstructor
 public class ClientboundMapItemDataSerializer_v2168 implements BedrockPacketSerializer<ClientboundMapItemDataPacket> {
-    public static final ClientboundMapItemDataSerializer_v2168 INSTANCE = new ClientboundMapItemDataSerializer_v2168();
+
+    protected final TypeMap<MapDecoration.Type> mapDecorationTypes;
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ClientboundMapItemDataPacket packet) {
@@ -99,7 +100,7 @@ public class ClientboundMapItemDataSerializer_v2168 implements BedrockPacketSeri
     }
 
     private void writeMapDecoration(ByteBuf buffer, BedrockCodecHelper helper, MapDecoration mapDecoration) {
-        buffer.writeByte(mapDecoration.getImageType().ordinal());
+        buffer.writeByte(this.mapDecorationTypes.getId(mapDecoration.getImageType()));
         buffer.writeByte(mapDecoration.getRotation());
         buffer.writeByte(mapDecoration.getX());
         buffer.writeByte(mapDecoration.getY());
@@ -109,7 +110,7 @@ public class ClientboundMapItemDataSerializer_v2168 implements BedrockPacketSeri
 
     private MapDecoration readMapDecoration(ByteBuf buffer, BedrockCodecHelper helper) {
         final MapDecoration mapDecoration = new MapDecoration();
-        mapDecoration.setImageType(MapDecoration.Type.from(buffer.readByte()));
+        mapDecoration.setImageType(this.mapDecorationTypes.getType(buffer.readByte()));
         mapDecoration.setRotation(buffer.readUnsignedByte());
         mapDecoration.setX(buffer.readUnsignedByte());
         mapDecoration.setY(buffer.readUnsignedByte());

@@ -72,7 +72,7 @@ public class Bedrock_v354 extends Bedrock_v340 {
             .helper(() -> new BedrockCodecHelper_v340(ACTOR_DATA, GAME_RULE_TYPES))
             .updateSerializer(CraftingDataPacket.class, CraftingDataSerializer_v354.INSTANCE)
             .updateSerializer(LegacyTelemetryEventPacket.class, LegacyTelemetryEventSerializer_v354.INSTANCE)
-            .updateSerializer(ClientboundMapItemDataPacket.class, ClientboundMapItemDataSerializer_v354.INSTANCE)
+            .updateSerializer(ClientboundMapItemDataPacket.class, new ClientboundMapItemDataSerializer_v354(MAP_DECORATION_TYPES))
             .updateSerializer(UpdateTradePacket.class, UpdateTradeSerializer_v354.INSTANCE)
             .updateSerializer(LecternUpdatePacket.class, LecternUpdateSerializer_v354.INSTANCE)
             .updateSerializer(LevelEventPacket.class, new LevelEventSerializer_v291(LEVEL_EVENTS))

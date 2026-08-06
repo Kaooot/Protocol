@@ -9,12 +9,17 @@ import org.cloudburstmc.protocol.bedrock.data.payload.common.DimensionType;
 import org.cloudburstmc.protocol.bedrock.data.payload.map.MapDecoration;
 import org.cloudburstmc.protocol.bedrock.data.payload.map.MapItemTrackedActorUniqueId;
 import org.cloudburstmc.protocol.bedrock.packet.ClientboundMapItemDataPacket;
+import org.cloudburstmc.protocol.common.util.TypeMap;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
 import java.util.List;
 
 public class ClientboundMapItemDataSerializer_v544 extends ClientboundMapItemDataSerializer_v354 {
 
+
+    public ClientboundMapItemDataSerializer_v544(TypeMap<MapDecoration.Type> mapDecorationTypes) {
+        super(mapDecorationTypes);
+    }
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ClientboundMapItemDataPacket packet) {

@@ -5,6 +5,7 @@ import it.unimi.dsi.fastutil.ints.IntList;
 import it.unimi.dsi.fastutil.longs.LongList;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
 import org.cloudburstmc.protocol.bedrock.data.payload.common.DimensionType;
@@ -12,13 +13,14 @@ import org.cloudburstmc.protocol.bedrock.data.payload.map.MapDecoration;
 import org.cloudburstmc.protocol.bedrock.data.payload.map.MapItemTrackedActorType;
 import org.cloudburstmc.protocol.bedrock.data.payload.map.MapItemTrackedActorUniqueId;
 import org.cloudburstmc.protocol.bedrock.packet.ClientboundMapItemDataPacket;
+import org.cloudburstmc.protocol.common.util.TypeMap;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
 import java.util.List;
 
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@RequiredArgsConstructor
 public class ClientboundMapItemDataSerializer_v354 implements BedrockPacketSerializer<ClientboundMapItemDataPacket> {
-    public static final ClientboundMapItemDataSerializer_v354 INSTANCE = new ClientboundMapItemDataSerializer_v354();
+    protected final TypeMap<MapDecoration.Type> mapDecorationTypes;
 
     protected static final int FLAG_TEXTURE_UPDATE = 0x02;
     protected static final int FLAG_DECORATION_UPDATE = 0x04;
@@ -124,7 +126,7 @@ public class ClientboundMapItemDataSerializer_v354 implements BedrockPacketSeria
 
         VarInts.writeUnsignedInt(buffer, decorations.size());
         for (MapDecoration decoration : decorations) {
-            buffer.writeByte(decoration.getImageType().ordinal());
+            buffer.writeByte(this.mapDecorationTypes.getId(decoration.getImageType()));
             buffer.writeByte(decoration.getRotation());
             buffer.writeByte(decoration.getX());
             buffer.writeByte(decoration.getY());
@@ -157,7 +159,7 @@ public class ClientboundMapItemDataSerializer_v354 implements BedrockPacketSeria
             int yOffset = buffer.readUnsignedByte();
             String label = helper.readString(buffer);
             int color = VarInts.readUnsignedInt(buffer);
-            decorations.add(new MapDecoration(MapDecoration.Type.from(image), rotation, xOffset, yOffset, label, color));
+            decorations.add(new MapDecoration(this.mapDecorationTypes.getType(image), rotation, xOffset, yOffset, label, color));
         }
     }
 

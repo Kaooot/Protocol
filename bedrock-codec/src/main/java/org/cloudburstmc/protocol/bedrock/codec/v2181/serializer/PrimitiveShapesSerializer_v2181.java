@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.codec.v2177.serializer;
+package org.cloudburstmc.protocol.bedrock.codec.v2181.serializer;
 
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
@@ -11,8 +11,8 @@ import org.cloudburstmc.protocol.bedrock.data.payload.shape.TextDataPayload;
  * @author Kaooot
  */
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class PrimitiveShapesSerializer_v2177 extends PrimitiveShapesSerializer_v1001 {
-    public static final PrimitiveShapesSerializer_v2177 INSTANCE = new PrimitiveShapesSerializer_v2177();
+public class PrimitiveShapesSerializer_v2181 extends PrimitiveShapesSerializer_v1001 {
+    public static final PrimitiveShapesSerializer_v2181 INSTANCE = new PrimitiveShapesSerializer_v2181();
 
     @Override
     protected void writeTextData(ByteBuf buffer, BedrockCodecHelper helper, TextDataPayload payload) {

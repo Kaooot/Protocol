@@ -118,7 +118,7 @@ public class Bedrock_v2168 extends Bedrock_v1001 {
             .updateSerializer(AddItemActorPacket.class, AddItemActorSerializer_v2168.INSTANCE)
             .updateSerializer(AddPlayerPacket.class, AddPlayerSerializer_v2168.INSTANCE)
             .updateSerializer(AnvilDamagePacket.class, AnvilDamageSerializer_v2168.INSTANCE)
-            .updateSerializer(ClientboundMapItemDataPacket.class, ClientboundMapItemDataSerializer_v2168.INSTANCE)
+            .updateSerializer(ClientboundMapItemDataPacket.class, new ClientboundMapItemDataSerializer_v2168(MAP_DECORATION_TYPES))
             .updateSerializer(ClientboundUpdateSoundDataPacket.class, ClientboundUpdateSoundDataSerializer_v2168.INSTANCE)
             .updateSerializer(CraftingDataPacket.class, CraftingDataSerializer_v2168.INSTANCE)
             .updateSerializer(CreativeContentPacket.class, CreativeContentSerializer_v2168.INSTANCE)

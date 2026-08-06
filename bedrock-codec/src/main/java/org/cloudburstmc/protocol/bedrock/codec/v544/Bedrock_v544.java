@@ -15,7 +15,7 @@ public class Bedrock_v544 extends Bedrock_v534 {
             .helper(() -> new BedrockCodecHelper_v534(ACTOR_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES, PLAYER_ABILITIES))
             .updateSerializer(StartGamePacket.class, new StartGameSerializer_v544())
             .updateSerializer(UpdateAttributesPacket.class, UpdateAttributesSerializer_v544.INSTANCE)
-            .updateSerializer(ClientboundMapItemDataPacket.class, new ClientboundMapItemDataSerializer_v544())
+            .updateSerializer(ClientboundMapItemDataPacket.class, new ClientboundMapItemDataSerializer_v544(MAP_DECORATION_TYPES))
             .updateSerializer(MapInfoRequestPacket.class, new MapInfoRequestSerializer_v544())
             .updateSerializer(ModalFormResponsePacket.class, new ModalFormResponseSerializer_v544())
             .updateSerializer(NetworkChunkPublisherUpdatePacket.class, new NetworkChunkPublisherUpdateSerializer_v544())

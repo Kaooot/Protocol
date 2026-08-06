@@ -243,7 +243,7 @@ public enum DisconnectFailReason {
      */
     EDITOR_NOT_ALLOWED,
     /**
-     * @since v2177
+     * @since v2181
      */
     MISSING_STRUCTURE_DATA
 }

@@ -7,6 +7,7 @@ import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelSoundEvent1S
 import org.cloudburstmc.protocol.bedrock.codec.v313.serializer.LevelSoundEvent2Serializer_v313;
 import org.cloudburstmc.protocol.bedrock.codec.v332.serializer.LevelSoundEventSerializer_v332;
 import org.cloudburstmc.protocol.bedrock.codec.v361.serializer.LevelEventGenericSerializer_v361;
+import org.cloudburstmc.protocol.bedrock.codec.v544.serializer.ClientboundMapItemDataSerializer_v544;
 import org.cloudburstmc.protocol.bedrock.codec.v575.BedrockCodecHelper_v575;
 import org.cloudburstmc.protocol.bedrock.codec.v662.Bedrock_v662;
 import org.cloudburstmc.protocol.bedrock.codec.v671.serializer.*;
@@ -15,6 +16,7 @@ import org.cloudburstmc.protocol.bedrock.data.ParticleType;
 import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
 import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataTypes;
 import org.cloudburstmc.protocol.bedrock.data.actor.ActorFlags;
+import org.cloudburstmc.protocol.bedrock.data.payload.map.MapDecoration;
 import org.cloudburstmc.protocol.bedrock.packet.*;
 import org.cloudburstmc.protocol.bedrock.transformer.FlagTransformer;
 import org.cloudburstmc.protocol.bedrock.transformer.TypeMapTransformer;
@@ -54,6 +56,11 @@ public class Bedrock_v671 extends Bedrock_v662 {
             .update(ActorDataTypes.HEARTBEAT_SOUND_EVENT, new TypeMapTransformer<>(SOUND_EVENTS))
             .build();
 
+    protected static final TypeMap<MapDecoration.Type> MAP_DECORATION_TYPES = Bedrock_v662.MAP_DECORATION_TYPES
+            .toBuilder()
+            .insert(24, MapDecoration.Type.TRIAL_CHAMBERS)
+            .build();
+
     public static final BedrockCodec CODEC = Bedrock_v662.CODEC.toBuilder()
             .raknetProtocolVersion(11)
             .protocolVersion(671)
@@ -65,6 +72,7 @@ public class Bedrock_v671 extends Bedrock_v662 {
             .updateSerializer(LevelSoundEvent2Packet.class, new LevelSoundEvent2Serializer_v313(SOUND_EVENTS))
             .updateSerializer(LevelSoundEventPacket.class, new LevelSoundEventSerializer_v332(SOUND_EVENTS))
             .updateSerializer(ClientboundDebugRendererPacket.class, ClientboundDebugRendererSerializer_v671.INSTANCE)
+            .updateSerializer(ClientboundMapItemDataPacket.class, new ClientboundMapItemDataSerializer_v544(MAP_DECORATION_TYPES))
             .updateSerializer(CorrectPlayerMovePredictionPacket.class, CorrectPlayerMovePredictionSerializer_v671.INSTANCE)
             .updateSerializer(ResourcePackStackPacket.class, ResourcePackStackSerializer_v671.INSTANCE)
             .updateSerializer(UpdatePlayerGameTypePacket.class, UpdatePlayerGameTypeSerializer_v671.INSTANCE)

@@ -11,6 +11,7 @@ import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataFormat;
 import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataTypes;
 import org.cloudburstmc.protocol.bedrock.data.actor.ActorEvent;
 import org.cloudburstmc.protocol.bedrock.data.actor.ActorFlags;
+import org.cloudburstmc.protocol.bedrock.data.payload.map.MapDecoration;
 import org.cloudburstmc.protocol.bedrock.packet.*;
 import org.cloudburstmc.protocol.bedrock.transformer.BlockDefinitionTransformer;
 import org.cloudburstmc.protocol.bedrock.transformer.BooleanTransformer;
@@ -629,6 +630,33 @@ public class Bedrock_v291 {
             .insert(41, CommandParam.COMMAND)
             .build();
 
+    protected static final TypeMap<MapDecoration.Type> MAP_DECORATION_TYPES = TypeMap.builder(MapDecoration.Type.class)
+            .insert(0, MapDecoration.Type.MARKER_WHITE)
+            .insert(1, MapDecoration.Type.MARKER_GREEN)
+            .insert(2, MapDecoration.Type.MARKER_RED)
+            .insert(3, MapDecoration.Type.MARKER_BLUE)
+            .insert(4, MapDecoration.Type.X_WHITE)
+            .insert(5, MapDecoration.Type.TRIANGLE_RED)
+            .insert(6, MapDecoration.Type.SQUARE_WHITE)
+            .insert(7, MapDecoration.Type.MARKER_SIGN)
+            .insert(8, MapDecoration.Type.MARKER_PINK)
+            .insert(9, MapDecoration.Type.MARKER_ORANGE)
+            .insert(10, MapDecoration.Type.MARKER_YELLOW)
+            .insert(11, MapDecoration.Type.MARKER_TEAL)
+            .insert(12, MapDecoration.Type.TRIANGLE_GREEN)
+            .insert(13, MapDecoration.Type.SMALL_SQUARE_WHITE)
+            .insert(14, MapDecoration.Type.MANSION)
+            .insert(15, MapDecoration.Type.MONUMENT)
+            .insert(16, MapDecoration.Type.NO_DRAW)
+            .insert(17, MapDecoration.Type.VILLAGE_DESERT)
+            .insert(18, MapDecoration.Type.VILLAGE_PLAINS)
+            .insert(19, MapDecoration.Type.VILLAGE_SAVANNA)
+            .insert(20, MapDecoration.Type.VILLAGE_SNOWY)
+            .insert(21, MapDecoration.Type.VILLAGE_TAIGA)
+            .insert(22, MapDecoration.Type.JUNGLE_TEMPLE)
+            .insert(23, MapDecoration.Type.WITCH_HUT)
+            .build();
+
     public static final BedrockCodec CODEC = BedrockCodec.builder()
             .protocolVersion(291)
             .minecraftVersion("1.7.0")
@@ -699,7 +727,7 @@ public class Bedrock_v291 {
             .registerPacket(SimpleEventPacket::new, SimpleEventSerializer_v291.INSTANCE, 64, PacketRecipient.BOTH)
             .registerPacket(LegacyTelemetryEventPacket::new, LegacyTelemetryEventSerializer_v291.INSTANCE, 65, PacketRecipient.CLIENT)
             .registerPacket(SpawnExperienceOrbPacket::new, SpawnExperienceOrbSerializer_v291.INSTANCE, 66, PacketRecipient.CLIENT)
-            .registerPacket(ClientboundMapItemDataPacket::new, ClientboundMapItemDataSerializer_v291.INSTANCE, 67, PacketRecipient.CLIENT)
+            .registerPacket(ClientboundMapItemDataPacket::new, new ClientboundMapItemDataSerializer_v291(MAP_DECORATION_TYPES), 67, PacketRecipient.CLIENT)
             .registerPacket(MapInfoRequestPacket::new, MapInfoRequestSerializer_v291.INSTANCE, 68, PacketRecipient.SERVER)
             .registerPacket(RequestChunkRadiusPacket::new, RequestChunkRadiusSerializer_v291.INSTANCE, 69, PacketRecipient.SERVER)
             .registerPacket(ChunkRadiusUpdatedPacket::new, ChunkRadiusUpdatedSerializer_v291.INSTANCE, 70, PacketRecipient.CLIENT)
