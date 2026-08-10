@@ -18,15 +18,15 @@ public class PlayerSkinSerializer_v2168 implements BedrockPacketSerializer<Playe
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, PlayerSkinPacket packet) {
         helper.writeUuid(buffer, packet.getUuid());
         helper.writeSerializedSkin(buffer, packet.getSerializedSkin());
-        helper.writeString(buffer, packet.getLocalizedOldSkinName());
         helper.writeString(buffer, packet.getLocalizedNewSkinName());
+        helper.writeString(buffer, packet.getLocalizedOldSkinName());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, PlayerSkinPacket packet) {
         packet.setUuid(helper.readUuid(buffer));
         packet.setSerializedSkin(helper.readSerializedSkin(buffer));
-        packet.setLocalizedOldSkinName(helper.readString(buffer));
         packet.setLocalizedNewSkinName(helper.readString(buffer));
+        packet.setLocalizedOldSkinName(helper.readString(buffer));
     }
 }
