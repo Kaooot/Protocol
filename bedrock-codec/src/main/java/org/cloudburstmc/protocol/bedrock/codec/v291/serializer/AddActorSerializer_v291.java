@@ -47,8 +47,8 @@ public class AddActorSerializer_v291 implements BedrockPacketSerializer<AddActor
 
         String name = helper.readString(buffer);
         float min = buffer.readFloatLE();
-        float max = buffer.readFloatLE();
         float val = buffer.readFloatLE();
+        float max = buffer.readFloatLE();
 
         return new AttributeData(name, min, max, val);
     }
@@ -58,7 +58,7 @@ public class AddActorSerializer_v291 implements BedrockPacketSerializer<AddActor
 
         helper.writeString(buffer, attribute.getAttributeName());
         buffer.writeFloatLE(attribute.getMinValue());
-        buffer.writeFloatLE(attribute.getMaxValue());
         buffer.writeFloatLE(attribute.getCurrentValue());
+        buffer.writeFloatLE(attribute.getMaxValue());
     }
 }
