@@ -47,8 +47,8 @@ public class AddEntitySerializer_v291 implements BedrockPacketSerializer<AddEnti
 
         String name = helper.readString(buffer);
         float min = buffer.readFloatLE();
-        float max = buffer.readFloatLE();
         float val = buffer.readFloatLE();
+        float max = buffer.readFloatLE();
 
         return new AttributeData(name, min, max, val);
     }
@@ -58,7 +58,7 @@ public class AddEntitySerializer_v291 implements BedrockPacketSerializer<AddEnti
 
         helper.writeString(buffer, attribute.getName());
         buffer.writeFloatLE(attribute.getMinimum());
-        buffer.writeFloatLE(attribute.getMaximum());
         buffer.writeFloatLE(attribute.getValue());
+        buffer.writeFloatLE(attribute.getMaximum());
     }
 }
