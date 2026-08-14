@@ -17,12 +17,6 @@ import org.cloudburstmc.protocol.common.util.TypeMap;
  */
 public class Bedrock_v2181 extends Bedrock_v2168 {
 
-    protected static final TypeMap<AnimatedTextureType> ANIMATED_TEXTURE_TYPES = Bedrock_v2168.ANIMATED_TEXTURE_TYPES
-            .toBuilder()
-            .shift(0, 1)
-            .insert(0, AnimatedTextureType.NONE)
-            .build();
-
     protected static final TypeMap<MemoryCategory> MEMORY_CATEGORY_TYPES = Bedrock_v2168.MEMORY_CATEGORY_TYPES.toBuilder()
             .remove(58)
             .shift(58, -1)
@@ -43,7 +37,7 @@ public class Bedrock_v2181 extends Bedrock_v2168 {
             .raknetProtocolVersion(11)
             .protocolVersion(2181)
             .minecraftVersion("1.26.50-beta.24")
-            .helper(() -> new BedrockCodecHelper_v2168(ACTOR_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES, PLAYER_ABILITIES, TEXT_PROCESSING_ORIGINS, ANIMATED_TEXTURE_TYPES))
+            .helper(() -> new BedrockCodecHelper_v2168(ACTOR_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES, PLAYER_ABILITIES, TEXT_PROCESSING_ORIGINS))
             .updateSerializer(CameraPresetsPacket.class, CameraPresetsSerializer_v2181.INSTANCE)
             .updateSerializer(ClientboundAttributeLayerSyncPacket.class, ClientboundAttributeLayerSyncSerializer_v2181.INSTANCE)
             .updateSerializer(ClientboundMapItemDataPacket.class, new ClientboundMapItemDataSerializer_v2168(MAP_DECORATION_TYPES))
