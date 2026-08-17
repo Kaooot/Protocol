@@ -5,6 +5,7 @@ package org.cloudburstmc.protocol.bedrock.data.payload.creative;
  */
 public enum CreativeItemCategory {
 
+    UNDEFINED,
     CONSTRUCTION,
     NATURE,
     EQUIPMENT,
