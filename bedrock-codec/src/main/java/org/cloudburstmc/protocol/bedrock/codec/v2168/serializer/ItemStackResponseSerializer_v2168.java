@@ -35,10 +35,10 @@ public class ItemStackResponseSerializer_v2168 extends ItemStackResponseSerializ
     protected void writeItemStackResponseInfo(ByteBuf buffer, BedrockCodecHelper helper, ItemStackResponseInfo info) {
         buffer.writeByte(info.getResult().ordinal());
         VarInts.writeInt(buffer, info.getClientRequestId().getID());
+        buffer.writeBoolean(true);
         final boolean containersHasValue = !info.getContainers().isEmpty();
         buffer.writeBoolean(containersHasValue);
         if (containersHasValue) {
-            buffer.writeBoolean(true);
             helper.writeArray(buffer, info.getContainers(), helper::writeItemStackResponseContainer);
         }
     }
@@ -47,11 +47,8 @@ public class ItemStackResponseSerializer_v2168 extends ItemStackResponseSerializ
         final ItemStackNetResult result = ItemStackNetResult.from(buffer.readUnsignedByte());
         final ItemStackRequestId clientRequestId = new ItemStackRequestId(VarInts.readInt(buffer));
         final List<ItemStackResponseContainerInfo> containers = new ObjectArrayList<>();
-        final boolean containersHasValue = buffer.readBoolean();
-        if (containersHasValue) {
-            if (buffer.readBoolean()) {
-                helper.readArray(buffer, containers, helper::readItemStackResponseContainer);
-            }
+        if (buffer.readBoolean() && buffer.readBoolean()) {
+            helper.readArray(buffer, containers, helper::readItemStackResponseContainer);
         }
         return new ItemStackResponseInfo(result, clientRequestId, containers);
     }
