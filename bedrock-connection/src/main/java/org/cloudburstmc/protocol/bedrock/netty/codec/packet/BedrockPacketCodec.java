@@ -5,6 +5,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageCodec;
 import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
+import lombok.RequiredArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.PacketDirection;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
@@ -18,9 +19,12 @@ import java.util.List;
 
 import static java.util.Objects.requireNonNull;
 
+@RequiredArgsConstructor
 public abstract class BedrockPacketCodec extends MessageToMessageCodec<ByteBuf, BedrockPacketWrapper> {
     private static final InternalLogger log = InternalLoggerFactory.getInstance(BedrockPacketCodec.class);
     public static final String NAME = "bedrock-packet-codec";
+
+    private final boolean shouldLogEncodingErrors;
 
     private BedrockCodec codec = BedrockCompat.CODEC;
     private BedrockCodecHelper helper = codec.createHelper();
@@ -51,8 +55,11 @@ public abstract class BedrockPacketCodec extends MessageToMessageCodec<ByteBuf, 
                 msg.setPacketBuffer(buf.retain());
                 out.add(msg.retain());
             } catch (Throwable t) {
-                log.error("Error encoding packet {}", msg.getPacket(), t);
-                throw t;
+                if (this.shouldLogEncodingErrors) {
+                    log.error("Error encoding packet {}", msg.getPacket(), t);
+                    throw t;
+                }
+                ctx.fireExceptionCaught(t);
             } finally {
                 buf.release();
             }
@@ -70,8 +77,11 @@ public abstract class BedrockPacketCodec extends MessageToMessageCodec<ByteBuf, 
             wrapper.setPacket(this.codec.tryDecode(helper, msg, wrapper.getPacketId(), this.inboundRecipient));
             out.add(wrapper.retain());
         } catch (Throwable t) {
-            log.error("Failed to decode packet", t);
-            throw t;
+            if (this.shouldLogEncodingErrors) {
+                log.error("Failed to decode packet", t);
+                throw t;
+            }
+            ctx.fireExceptionCaught(t);
         } finally {
             wrapper.release();
         }

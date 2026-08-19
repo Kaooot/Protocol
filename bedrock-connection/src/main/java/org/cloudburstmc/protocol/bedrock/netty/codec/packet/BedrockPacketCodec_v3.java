@@ -6,6 +6,14 @@ import org.cloudburstmc.protocol.common.util.VarInts;
 
 public class BedrockPacketCodec_v3 extends BedrockPacketCodec {
 
+    public BedrockPacketCodec_v3() {
+        super(true);
+    }
+
+    public BedrockPacketCodec_v3(boolean shouldLogEncodingErrors) {
+        super(shouldLogEncodingErrors);
+    }
+
     @Override
     public void encodeHeader(ByteBuf buf, BedrockPacketWrapper msg) {
         int header = 0;

@@ -5,6 +5,14 @@ import org.cloudburstmc.protocol.bedrock.netty.BedrockPacketWrapper;
 
 public class BedrockPacketCodec_v2 extends BedrockPacketCodec {
 
+    public BedrockPacketCodec_v2() {
+        super(true);
+    }
+
+    public BedrockPacketCodec_v2(boolean shouldLogEncodingErrors) {
+        super(shouldLogEncodingErrors);
+    }
+
     @Override
     public void encodeHeader(ByteBuf buf, BedrockPacketWrapper msg) {
         buf.writeByte(msg.getPacketId());
