@@ -23,7 +23,7 @@ public class ResourcePacksInfoSerializer_v729 extends ResourcePacksInfoSerialize
         packet.setResourcePackRequired(buffer.readBoolean());
         packet.setHasAddonPacks(buffer.readBoolean());
         packet.setHasScripts(buffer.readBoolean());
-        helper.readArray(buffer, packet.getResourcePacks(), ByteBuf::readShortLE, this::readPackInfoData);
+        helper.readArray(buffer, packet.getResourcePacks(), ByteBuf::readShortLE, this::readPackInfoData, MAX_LENGTH);
         this.readCDNEntries(buffer, packet, helper);
     }
 }

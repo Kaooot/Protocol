@@ -28,7 +28,7 @@ public class ClientboundDataStoreSerializer_v898 implements BedrockPacketSeriali
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ClientboundDataStorePacket packet) {
-        helper.readArray(buffer, packet.getUpdates(), this::readDataStoreChangeInfo);
+        helper.readArray(buffer, packet.getUpdates(), this::readDataStoreChangeInfo, 500);
     }
 
     protected void writeDataStoreChangeInfo(ByteBuf buffer, BedrockCodecHelper helper, DataStoreChangeInfo info) {
@@ -100,8 +100,8 @@ public class ClientboundDataStoreSerializer_v898 implements BedrockPacketSeriali
 
     protected DataStoreChange readDataStoreChange(ByteBuf buffer, BedrockCodecHelper helper) {
         final DataStoreChange change = new DataStoreChange();
-        change.setDataStoreName(helper.readString(buffer));
-        change.setProperty(helper.readString(buffer));
+        change.setDataStoreName(helper.readStringMaxLen(buffer, 1000));
+        change.setProperty(helper.readStringMaxLen(buffer, 1000));
         change.setUpdateCount(buffer.readIntLE());
         change.setTheNewPropertyValue(this.readDynamicValue(buffer, helper));
         return change;
@@ -143,7 +143,7 @@ public class ClientboundDataStoreSerializer_v898 implements BedrockPacketSeriali
 
     protected DataStoreRemoval readDataStoreRemoval(ByteBuf buffer, BedrockCodecHelper helper) {
         final DataStoreRemoval removal = new DataStoreRemoval();
-        removal.setDataStoreName(helper.readString(buffer));
+        removal.setDataStoreName(helper.readStringMaxLen(buffer, 1000));
         return removal;
     }
 }

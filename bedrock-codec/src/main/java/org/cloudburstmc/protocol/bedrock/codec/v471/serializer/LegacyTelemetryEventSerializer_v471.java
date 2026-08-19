@@ -26,9 +26,11 @@ public class LegacyTelemetryEventSerializer_v471 extends LegacyTelemetryEventSer
         this.readers.put(LegacyTelemetryEventPacket.Type.CODE_BUILDER_SCOREBOARD, this::readCodeBuilderScoreboard);
         this.writers.put(LegacyTelemetryEventPacket.Type.CODE_BUILDER_SCOREBOARD, this::writeCodeBuilderScoreboard);
         this.readers.put(LegacyTelemetryEventPacket.Type.STRIDER_RIDDEN_IN_LAVA_IN_OVERWORLD, (b, h) -> StriderRiddenInLavaInOverworldEventData.INSTANCE);
-        this.writers.put(LegacyTelemetryEventPacket.Type.STRIDER_RIDDEN_IN_LAVA_IN_OVERWORLD, (b, h, e) -> {});
+        this.writers.put(LegacyTelemetryEventPacket.Type.STRIDER_RIDDEN_IN_LAVA_IN_OVERWORLD, (b, h, e) -> {
+        });
         this.readers.put(LegacyTelemetryEventPacket.Type.SNEAK_CLOSE_TO_SCULK_SENSOR, (b, h) -> SneakCloseToSculkSensorEventData.INSTANCE);
-        this.writers.put(LegacyTelemetryEventPacket.Type.SNEAK_CLOSE_TO_SCULK_SENSOR, (b, h, e) -> {});
+        this.writers.put(LegacyTelemetryEventPacket.Type.SNEAK_CLOSE_TO_SCULK_SENSOR, (b, h, e) -> {
+        });
     }
 
     protected TargetBlockHitEventData readBlockHit(ByteBuf buffer, BedrockCodecHelper helper) {
@@ -66,7 +68,7 @@ public class LegacyTelemetryEventSerializer_v471 extends LegacyTelemetryEventSer
     }
 
     protected CodeBuilderRuntimeActionEventData readCodeBuilderAction(ByteBuf buffer, BedrockCodecHelper helper) {
-        String action = helper.readString(buffer);
+        String action = helper.readStringMaxLen(buffer, 16);
         return new CodeBuilderRuntimeActionEventData(action);
     }
 
@@ -76,7 +78,7 @@ public class LegacyTelemetryEventSerializer_v471 extends LegacyTelemetryEventSer
     }
 
     protected CodeBuilderScoreboardEventData readCodeBuilderScoreboard(ByteBuf buffer, BedrockCodecHelper helper) {
-        String objectiveName = helper.readString(buffer);
+        String objectiveName = helper.readStringMaxLen(buffer, 256);
         int score = VarInts.readInt(buffer);
         return new CodeBuilderScoreboardEventData(objectiveName, score);
     }

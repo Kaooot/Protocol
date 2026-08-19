@@ -36,7 +36,7 @@ public class LevelChunkSerializer_v2168 extends LevelChunkSerializer_v649 {
         packet.setSubChunksCount(VarInts.readUnsignedInt(buffer));
         packet.setClientRequestSubChunkLimit(helper.readOptional(buffer, null, VarInts::readInt));
         packet.setCacheEnabled(buffer.readBoolean());
-        helper.readArray(buffer, packet.getCacheBlobs(), ByteBuf::readLongLE);
+        helper.readArray(buffer, packet.getCacheBlobs(), ByteBuf::readLongLE, MAX_BLOBS);
         packet.setSerializedChunkData(helper.readByteBuf(buffer));
     }
 }

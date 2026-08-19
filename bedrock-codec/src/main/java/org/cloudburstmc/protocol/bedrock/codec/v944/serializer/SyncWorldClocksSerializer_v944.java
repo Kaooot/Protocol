@@ -62,7 +62,7 @@ public class SyncWorldClocksSerializer_v944 implements BedrockPacketSerializer<S
 
     protected SyncStateData readSyncStateData(ByteBuf buffer, BedrockCodecHelper helper) {
         final SyncStateData data = new SyncStateData();
-        helper.readArray(buffer, data.getClockData(), this::readSyncWorldClockStateData);
+        helper.readArray(buffer, data.getClockData(), this::readSyncWorldClockStateData, 256);
         return data;
     }
 
@@ -72,7 +72,7 @@ public class SyncWorldClocksSerializer_v944 implements BedrockPacketSerializer<S
 
     protected InitializeRegistryData readInitializeRegistryDataData(ByteBuf buffer, BedrockCodecHelper helper) {
         final InitializeRegistryData data = new InitializeRegistryData();
-        helper.readArray(buffer, data.getClockData(), this::readWorldClockData);
+        helper.readArray(buffer, data.getClockData(), this::readWorldClockData, 256);
         return data;
     }
 
@@ -84,7 +84,7 @@ public class SyncWorldClocksSerializer_v944 implements BedrockPacketSerializer<S
     protected AddTimeMarkerData readAddTimeMarkerData(ByteBuf buffer, BedrockCodecHelper helper) {
         final AddTimeMarkerData data = new AddTimeMarkerData();
         data.setClockId(VarInts.readUnsignedLong(buffer));
-        helper.readArray(buffer, data.getTimeMarkers(), this::readTimeMarkerData);
+        helper.readArray(buffer, data.getTimeMarkers(), this::readTimeMarkerData, 256);
         return data;
     }
 
@@ -96,7 +96,7 @@ public class SyncWorldClocksSerializer_v944 implements BedrockPacketSerializer<S
     protected RemoveTimeMarkerData readRemoveTimeMarkerData(ByteBuf buffer, BedrockCodecHelper helper) {
         final RemoveTimeMarkerData data = new RemoveTimeMarkerData();
         data.setClockId(VarInts.readUnsignedLong(buffer));
-        helper.readArray(buffer, data.getTimeMarkerIds(), VarInts::readUnsignedLong);
+        helper.readArray(buffer, data.getTimeMarkerIds(), VarInts::readUnsignedLong, 256);
         return data;
     }
 
@@ -125,10 +125,10 @@ public class SyncWorldClocksSerializer_v944 implements BedrockPacketSerializer<S
     protected WorldClockData readWorldClockData(ByteBuf buffer, BedrockCodecHelper helper) {
         final WorldClockData data = new WorldClockData();
         data.setId(VarInts.readUnsignedLong(buffer));
-        data.setName(helper.readString(buffer));
+        data.setName(helper.readStringMaxLen(buffer, 128));
         data.setTime(VarInts.readInt(buffer));
         data.setPaused(buffer.readBoolean());
-        helper.readArray(buffer, data.getTimeMarkers(), this::readTimeMarkerData);
+        helper.readArray(buffer, data.getTimeMarkers(), this::readTimeMarkerData, 256);
         return data;
     }
 
@@ -142,7 +142,7 @@ public class SyncWorldClocksSerializer_v944 implements BedrockPacketSerializer<S
     protected TimeMarkerData readTimeMarkerData(ByteBuf buffer, BedrockCodecHelper helper) {
         final TimeMarkerData data = new TimeMarkerData();
         data.setId(VarInts.readUnsignedLong(buffer));
-        data.setName(helper.readString(buffer));
+        data.setName(helper.readStringMaxLen(buffer, 128));
         data.setTime(VarInts.readInt(buffer));
         data.setPeriod(helper.readOptional(buffer, null, ByteBuf::readIntLE));
         return data;

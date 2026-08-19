@@ -6,6 +6,8 @@ import org.cloudburstmc.protocol.bedrock.codec.v582.serializer.CraftingDataSeria
 import org.cloudburstmc.protocol.bedrock.data.payload.crafting.ShapedRecipePayload;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
+import static org.cloudburstmc.protocol.common.util.Preconditions.checkArgument;
+
 public class CraftingDataSerializer_v671 extends CraftingDataSerializer_v582 {
     public static final CraftingDataSerializer_v671 INSTANCE = new CraftingDataSerializer_v671();
 
@@ -33,6 +35,7 @@ public class CraftingDataSerializer_v671 extends CraftingDataSerializer_v582 {
         payload.setWidth(VarInts.readInt(buffer));
         payload.setHeight(VarInts.readInt(buffer));
         final int length = payload.getWidth() * payload.getHeight();
+        checkArgument(length <= MAX_INGREDIENTS, "Tried to read %s Ingredients but maximum is %s", length);
         for (int i = 0; i < length; i++) {
             payload.getIngredients().add(helper.readIngredient(buffer));
         }

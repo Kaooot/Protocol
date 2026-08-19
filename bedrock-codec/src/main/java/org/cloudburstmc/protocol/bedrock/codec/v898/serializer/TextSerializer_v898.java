@@ -56,8 +56,8 @@ public class TextSerializer_v898 implements BedrockPacketSerializer<TextPacket> 
         final TextPacketType messageType = TextPacketType.from(buffer.readUnsignedByte());
         packet.setMessageType(messageType);
         packet.setBody(this.readMessageBody(buffer, helper, bodyType));
-        packet.setSendersXUID(helper.readString(buffer));
-        packet.setPlatformId(helper.readString(buffer));
+        packet.setSendersXUID(helper.readStringMaxLen(buffer, 64));
+        packet.setPlatformId(helper.readStringMaxLen(buffer, 256));
         packet.setFilteredMessage(helper.readString(buffer));
     }
 
@@ -105,8 +105,8 @@ public class TextSerializer_v898 implements BedrockPacketSerializer<TextPacket> 
 
     protected AuthorAndMessage readAuthorAndMessage(ByteBuf buffer, BedrockCodecHelper helper) {
         final AuthorAndMessage authorAndMessage = new AuthorAndMessage();
-        authorAndMessage.setPlayerName(helper.readString(buffer));
-        authorAndMessage.setMessage(helper.readString(buffer));
+        authorAndMessage.setPlayerName(helper.readStringMaxLen(buffer, 256));
+        authorAndMessage.setMessage(helper.readStringMaxLen(buffer, 65536));
         return authorAndMessage;
     }
 
@@ -118,7 +118,7 @@ public class TextSerializer_v898 implements BedrockPacketSerializer<TextPacket> 
     protected MessageAndParams readMessageAndParams(ByteBuf buffer, BedrockCodecHelper helper) {
         final MessageAndParams messageAndParams = new MessageAndParams();
         messageAndParams.setMessage(helper.readString(buffer));
-        helper.readArray(buffer, messageAndParams.getParameterList(), helper::readString);
+        helper.readArray(buffer, messageAndParams.getParameterList(), helper::readString, 4);
         return messageAndParams;
     }
 }

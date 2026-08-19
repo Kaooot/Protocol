@@ -18,6 +18,8 @@ import org.cloudburstmc.protocol.common.util.VarInts;
 public class BossEventSerializer_v1001 implements BedrockPacketSerializer<BossEventPacket> {
     public static final BossEventSerializer_v1001 INSTANCE = new BossEventSerializer_v1001();
 
+    protected static final int NAME_LENGTH = 256;
+
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, BossEventPacket packet) {
         VarInts.writeLong(buffer, packet.getTargetActorID());
@@ -35,8 +37,8 @@ public class BossEventSerializer_v1001 implements BedrockPacketSerializer<BossEv
         packet.setTargetActorID(VarInts.readLong(buffer));
         packet.setPlayerID(VarInts.readLong(buffer));
         packet.setEventType(BossEventUpdateType.from(buffer.readUnsignedByte()));
-        packet.setName(helper.readString(buffer));
-        packet.setFilteredName(helper.readString(buffer));
+        packet.setName(helper.readStringMaxLen(buffer, NAME_LENGTH));
+        packet.setFilteredName(helper.readStringMaxLen(buffer, NAME_LENGTH));
         packet.setHealthPercent(buffer.readFloatLE());
         packet.setColor(BossBarColor.from(buffer.readUnsignedByte()));
         packet.setOverlay(BossBarOverlay.from(buffer.readUnsignedByte()));

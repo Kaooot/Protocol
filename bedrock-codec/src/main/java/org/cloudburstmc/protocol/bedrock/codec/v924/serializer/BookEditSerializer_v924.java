@@ -74,8 +74,8 @@ public class BookEditSerializer_v924 extends BookEditSerializer_v291 {
     protected BookEditAction.ReplacePage readReplacePage(ByteBuf buffer, BedrockCodecHelper helper) {
         final BookEditAction.ReplacePage action = new BookEditAction.ReplacePage();
         action.setPageIndex(VarInts.readInt(buffer));
-        action.setPageText(helper.readString(buffer));
-        action.setPhotoName(helper.readString(buffer));
+        action.setPageText(helper.readStringMaxLen(buffer, MAX_LENGTH));
+        action.setPhotoName(helper.readStringMaxLen(buffer, MAX_LENGTH));
         return action;
     }
 
@@ -90,8 +90,8 @@ public class BookEditSerializer_v924 extends BookEditSerializer_v291 {
     protected BookEditAction.AddPage readAddPage(ByteBuf buffer, BedrockCodecHelper helper) {
         final BookEditAction.AddPage action = new BookEditAction.AddPage();
         action.setPageIndex(VarInts.readInt(buffer));
-        action.setPageText(helper.readString(buffer));
-        action.setPhotoName(helper.readString(buffer));
+        action.setPageText(helper.readStringMaxLen(buffer, MAX_LENGTH));
+        action.setPhotoName(helper.readStringMaxLen(buffer, MAX_LENGTH));
         return action;
     }
 

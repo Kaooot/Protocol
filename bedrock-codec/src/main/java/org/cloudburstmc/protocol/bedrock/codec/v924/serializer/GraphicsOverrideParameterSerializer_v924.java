@@ -5,7 +5,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
-import org.cloudburstmc.protocol.bedrock.codec.v859.serializer.GraphicsParameterOverrideSerializer_v859;
+import org.cloudburstmc.protocol.bedrock.codec.v859.serializer.GraphicsOverrideParameterSerializer_v859;
 import org.cloudburstmc.protocol.bedrock.data.GraphicsOverrideParameterType;
 import org.cloudburstmc.protocol.bedrock.packet.GraphicsOverrideParameterPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
@@ -17,8 +17,8 @@ import java.util.Map;
  * @author Kaooot
  */
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class GraphicsParameterOverrideSerializer_v924 extends GraphicsParameterOverrideSerializer_v859 {
-    public static final GraphicsParameterOverrideSerializer_v924 INSTANCE = new GraphicsParameterOverrideSerializer_v924();
+public class GraphicsOverrideParameterSerializer_v924 extends GraphicsOverrideParameterSerializer_v859 {
+    public static final GraphicsOverrideParameterSerializer_v924 INSTANCE = new GraphicsOverrideParameterSerializer_v924();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, GraphicsOverrideParameterPacket packet) {
@@ -48,7 +48,7 @@ public class GraphicsParameterOverrideSerializer_v924 extends GraphicsParameterO
         packet.getParameterKeyframeValues().putAll(parameterKeyframeValues);
         packet.setFloatValue(helper.readOptional(buffer, null, ByteBuf::readFloatLE));
         packet.setVec3Value(helper.readOptional(buffer, null, helper::readVector3f));
-        packet.setBiomeIdentifier(helper.readString(buffer));
+        packet.setBiomeIdentifier(helper.readStringMaxLen(buffer, 255));
         packet.setIdentifierForParameter(GraphicsOverrideParameterType.from(buffer.readUnsignedByte()));
         packet.setResetParameter(buffer.readBoolean());
     }

@@ -34,7 +34,7 @@ public class CraftingDataSerializer_v361 extends CraftingDataSerializer_v354 {
     protected ShapelessRecipePayload readShapelessRecipePayload(ByteBuf buffer, BedrockCodecHelper helper) {
         final ShapelessRecipePayload payload = new ShapelessRecipePayload();
         payload.setRecipeId(helper.readString(buffer));
-        helper.readArray(buffer, payload.getIngredients(), this::readIngredient);
+        helper.readArray(buffer, payload.getIngredients(), this::readIngredient, MAX_INGREDIENTS);
         helper.readArray(buffer, payload.getResults(), helper::readItem);
         payload.setUuid(helper.readUuid(buffer));
         payload.setTag(helper.readString(buffer));
@@ -64,6 +64,7 @@ public class CraftingDataSerializer_v361 extends CraftingDataSerializer_v354 {
         payload.setWidth(VarInts.readInt(buffer));
         payload.setHeight(VarInts.readInt(buffer));
         final int length = payload.getWidth() * payload.getHeight();
+        checkArgument(length <= MAX_INGREDIENTS, "Tried to read %s Ingredients but maximum is %s", length);
         for (int i = 0; i < length; i++) {
             payload.getIngredients().add(this.readIngredient(buffer, helper));
         }

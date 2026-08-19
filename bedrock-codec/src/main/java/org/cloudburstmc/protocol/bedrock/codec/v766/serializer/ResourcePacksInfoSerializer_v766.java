@@ -24,7 +24,7 @@ public class ResourcePacksInfoSerializer_v766 extends ResourcePacksInfoSerialize
         packet.setHasAddonPacks(buffer.readBoolean());
         packet.setHasScripts(buffer.readBoolean());
         packet.setWorldTemplateIdAndVersion(this.readPackIdVersion(buffer, helper));
-        helper.readArray(buffer, packet.getResourcePacks(), ByteBuf::readShortLE, this::readPackInfoData);
+        helper.readArray(buffer, packet.getResourcePacks(), ByteBuf::readShortLE, this::readPackInfoData, MAX_LENGTH);
     }
 
     @Override

@@ -51,7 +51,7 @@ public class ClientboundDebugRendererSerializer_v428 implements BedrockPacketSer
 
     protected DebugMarkerData readDebugMarkerData(ByteBuf buffer, BedrockCodecHelper helper) {
         final DebugMarkerData data = new DebugMarkerData();
-        data.setText(helper.readString(buffer));
+        data.setText(helper.readStringMaxLen(buffer, 4096));
         data.setPosition(helper.readVector3f(buffer));
         final int red = (int) (buffer.readFloatLE() * 255);
         final int green = (int) (buffer.readFloatLE() * 255);

@@ -17,6 +17,8 @@ import static org.cloudburstmc.protocol.common.util.Preconditions.checkArgument;
 public class ClientCacheBlobStatusSerializer_v361 implements BedrockPacketSerializer<ClientCacheBlobStatusPacket> {
     public static final ClientCacheBlobStatusSerializer_v361 INSTANCE = new ClientCacheBlobStatusSerializer_v361();
 
+    protected static final int MAX_LENGTH = 4095;
+
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ClientCacheBlobStatusPacket packet) {
         LongList nacks = packet.getFoundIds();
@@ -30,13 +32,11 @@ public class ClientCacheBlobStatusSerializer_v361 implements BedrockPacketSerial
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ClientCacheBlobStatusPacket packet) {
-        int maxLength = helper.getEncodingSettings().maxListSize();
-
         int naksLength = VarInts.readUnsignedInt(buffer);
-        checkArgument(maxLength <= 0 || naksLength <= maxLength, "Tried to read %s Nacks but maximum is %s", naksLength, maxLength);
+        checkArgument(naksLength <= MAX_LENGTH, "Tried to read %s Nacks but maximum is %s", naksLength, MAX_LENGTH);
 
         int acksLength = VarInts.readUnsignedInt(buffer);
-        checkArgument(maxLength <= 0 || acksLength <= maxLength, "Tried to read %s Nacks but maximum is %s", acksLength, maxLength);
+        checkArgument(acksLength <= MAX_LENGTH, "Tried to read %s Nacks but maximum is %s", acksLength, MAX_LENGTH);
 
         LongList naks = packet.getFoundIds();
         for (int i = 0; i < naksLength; i++) {

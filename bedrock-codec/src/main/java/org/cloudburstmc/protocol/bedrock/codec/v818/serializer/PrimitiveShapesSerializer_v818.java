@@ -20,7 +20,7 @@ public class PrimitiveShapesSerializer_v818 implements BedrockPacketSerializer<P
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, PrimitiveShapesPacket packet) {
-        helper.readArray(buffer, packet.getShapes(), this::readShapeData);
+        helper.readArray(buffer, packet.getShapes(), this::readShapeData, 1048576);
     }
 
     protected void writeShapeData(ByteBuf buffer, BedrockCodecHelper helper, PrimitiveShapeDataPayload payload) {

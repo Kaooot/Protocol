@@ -29,23 +29,7 @@ public class BedrockCodecHelper_v924 extends BedrockCodecHelper_v898 {
 
     @Override
     public DataStoreUpdate readDataStoreUpdate(ByteBuf buffer) {
-        final DataStoreUpdate update = new DataStoreUpdate();
-        update.setDataStoreName(this.readString(buffer));
-        update.setProperty(this.readString(buffer));
-        update.setPath(this.readString(buffer));
-        update.setType(DataStorePropertyType.from(VarInts.readUnsignedInt(buffer)));
-        switch (update.getType()) {
-            case DOUBLE:
-                update.setData(buffer.readDoubleLE());
-                break;
-            case BOOLEAN:
-                update.setData(buffer.readBoolean());
-                break;
-            case STRING:
-                update.setData(this.readString(buffer));
-                break;
-        }
-        update.setPropertyUpdateCount(buffer.readIntLE());
+        final DataStoreUpdate update = super.readDataStoreUpdate(buffer);
         update.setPathUpdateCount(buffer.readIntLE());
         return update;
     }

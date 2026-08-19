@@ -83,7 +83,7 @@ public class TextSerializer_v332 implements BedrockPacketSerializer<TextPacket> 
                 throw new UnsupportedOperationException("Unsupported TextPacketType " + messageType);
         }
 
-        packet.setSendersXUID(helper.readString(buffer));
-        packet.setPlatformId(helper.readString(buffer));
+        packet.setSendersXUID(helper.readStringMaxLen(buffer, 64));
+        packet.setPlatformId(helper.readStringMaxLen(buffer, 256));
     }
 }

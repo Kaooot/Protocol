@@ -37,9 +37,9 @@ public class BedrockCodecHelper_v554 extends BedrockCodecHelper_v534 {
         this.readArray(buffer, actions, byteBuf -> {
             ItemStackRequestActionType type = this.stackRequestActionTypes.getType(byteBuf.readByte());
             return readRequestActionData(byteBuf, type);
-        }, 32);
+        }, 100);
         List<String> filteredStrings = new ObjectArrayList<>();
-        this.readArray(buffer, filteredStrings, this::readString);
+        this.readArray(buffer, filteredStrings, (buf, helper) -> helper.readStringMaxLen(buf, 1000));
 
         int originVal = buffer.readIntLE();
         TextProcessingEventOrigin origin = originVal == -1 ? null : this.textProcessingEventOrigins.getType(originVal);  // new for v552

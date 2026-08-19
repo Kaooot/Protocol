@@ -167,7 +167,7 @@ public class BedrockCodecHelper_v291 extends BaseBedrockCodecHelper {
     public CommandOriginData readCommandOrigin(ByteBuf buffer) {
         CommandOriginType origin = CommandOriginType.values()[VarInts.readUnsignedInt(buffer)];
         UUID uuid = readUuid(buffer);
-        String requestId = readString(buffer);
+        String requestId = readStringMaxLen(buffer, 39);
         long varLong = -1;
         if (origin == CommandOriginType.DEV_CONSOLE || origin == CommandOriginType.TEST) {
             varLong = VarInts.readLong(buffer);

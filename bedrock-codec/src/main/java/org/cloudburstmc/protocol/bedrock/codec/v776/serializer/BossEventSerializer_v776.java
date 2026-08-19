@@ -37,8 +37,8 @@ public class BossEventSerializer_v776 extends BossEventSerializer_v486 {
     @Override
     protected void deserializeAction(ByteBuf buffer, BedrockCodecHelper helper, BossEventPacket packet) {
         if (packet.getEventType() == BossEventUpdateType.ADD) {
-            packet.setName(helper.readString(buffer));
-            packet.setFilteredName(helper.readString(buffer));
+            packet.setName(helper.readStringMaxLen(buffer, NAME_LENGTH));
+            packet.setFilteredName(helper.readStringMaxLen(buffer, NAME_LENGTH));
             packet.setHealthPercent(buffer.readFloatLE());
             // fall through to UPDATE_PROPERTIES
             packet.setDarkenScreen(buffer.readUnsignedShortLE());
@@ -46,8 +46,8 @@ public class BossEventSerializer_v776 extends BossEventSerializer_v486 {
             packet.setColor(BossBarColor.from(VarInts.readUnsignedInt(buffer)));
             packet.setOverlay(BossBarOverlay.from(VarInts.readUnsignedInt(buffer)));
         } else if (packet.getEventType() == BossEventUpdateType.UPDATE_NAME) {
-            packet.setName(helper.readString(buffer));
-            packet.setFilteredName(helper.readString(buffer));
+            packet.setName(helper.readStringMaxLen(buffer, NAME_LENGTH));
+            packet.setFilteredName(helper.readStringMaxLen(buffer, NAME_LENGTH));
         } else {
             super.deserializeAction(buffer, helper, packet);
         }

@@ -15,6 +15,8 @@ import java.util.UUID;
 public class ResourcePacksInfoSerializer_v291 implements BedrockPacketSerializer<ResourcePacksInfoPacket> {
     public static final ResourcePacksInfoSerializer_v291 INSTANCE = new ResourcePacksInfoSerializer_v291();
 
+    protected static final int MAX_LENGTH = 65535;
+
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ResourcePacksInfoPacket packet) {
         buffer.writeBoolean(packet.isResourcePackRequired());
@@ -26,7 +28,7 @@ public class ResourcePacksInfoSerializer_v291 implements BedrockPacketSerializer
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ResourcePacksInfoPacket packet) {
         packet.setResourcePackRequired(buffer.readBoolean());
         buffer.readShortLE();
-        helper.readArray(buffer, packet.getResourcePacks(), ByteBuf::readShortLE, this::readPackInfoData);
+        helper.readArray(buffer, packet.getResourcePacks(), ByteBuf::readShortLE, this::readPackInfoData, MAX_LENGTH);
     }
 
     protected void writePackInfoData(ByteBuf buffer, BedrockCodecHelper helper, PackInfoData data) {

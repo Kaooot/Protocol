@@ -17,8 +17,8 @@ import java.util.Map;
  * @author Kaooot
  */
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class GraphicsParameterOverrideSerializer_v859 implements BedrockPacketSerializer<GraphicsOverrideParameterPacket> {
-    public static final GraphicsParameterOverrideSerializer_v859 INSTANCE = new GraphicsParameterOverrideSerializer_v859();
+public class GraphicsOverrideParameterSerializer_v859 implements BedrockPacketSerializer<GraphicsOverrideParameterPacket> {
+    public static final GraphicsOverrideParameterSerializer_v859 INSTANCE = new GraphicsOverrideParameterSerializer_v859();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, GraphicsOverrideParameterPacket packet) {
@@ -44,7 +44,7 @@ public class GraphicsParameterOverrideSerializer_v859 implements BedrockPacketSe
         }
 
         packet.getParameterKeyframeValues().putAll(parameterKeyframeValues);
-        packet.setBiomeIdentifier(helper.readString(buffer));
+        packet.setBiomeIdentifier(helper.readStringMaxLen(buffer, 255));
         packet.setIdentifierForParameter(GraphicsOverrideParameterType.from(buffer.readUnsignedByte()));
         packet.setResetParameter(buffer.readBoolean());
     }

@@ -26,7 +26,7 @@ public class ResourcePackStackSerializer_v898 extends ResourcePackStackSerialize
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ResourcePackStackPacket packet) {
         packet.setTexturePackRequired(buffer.readBoolean());
-        helper.readArray(buffer, packet.getTexturePackList(), this::readPackInstanceId);
+        helper.readArray(buffer, packet.getTexturePackList(), this::readPackInstanceId, MAX_LENGTH);
         packet.setBaseGameVersion(helper.readString(buffer));
         packet.setExperiments(this.readExperiments(buffer, helper));
         packet.setIncludeEditorPacks(buffer.readBoolean());

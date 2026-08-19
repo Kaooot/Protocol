@@ -22,7 +22,7 @@ public class ClientCacheBlobStatusSerializer_v1001 extends ClientCacheBlobStatus
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ClientCacheBlobStatusPacket packet) {
-        helper.readArray(buffer, packet.getMissingIds(), ByteBuf::readLongLE);
-        helper.readArray(buffer, packet.getFoundIds(), ByteBuf::readLongLE);
+        helper.readArray(buffer, packet.getMissingIds(), ByteBuf::readLongLE, MAX_LENGTH);
+        helper.readArray(buffer, packet.getFoundIds(), ByteBuf::readLongLE, MAX_LENGTH);
     }
 }

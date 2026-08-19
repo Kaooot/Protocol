@@ -80,7 +80,7 @@ public class PlayerAuthInputSerializer_v2168 extends PlayerAuthInputSerializer_v
             packet.setItemStackRequest(helper.readOptional(buffer, null, helper::readItemStackRequest));
         }
         if (buffer.readBoolean() && buffer.readBoolean()) {
-            helper.readArray(buffer, packet.getPlayerBlockActions(), this::readPlayerBlockActionData);
+            helper.readArray(buffer, packet.getPlayerBlockActions(), this::readPlayerBlockActionData, helper.getEncodingSettings().maxPlayerBlockActionDataSize());
         }
         if (buffer.readBoolean()) {
             packet.setVehicleRotation(helper.readOptional(buffer, null, helper::readVector2f));

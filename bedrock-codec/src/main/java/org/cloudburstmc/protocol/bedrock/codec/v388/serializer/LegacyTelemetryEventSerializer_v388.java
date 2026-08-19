@@ -29,7 +29,7 @@ public class LegacyTelemetryEventSerializer_v388 extends LegacyTelemetryEventSer
         int killerEntityType = VarInts.readInt(buffer);
         int entityDamageCause = VarInts.readInt(buffer);
         int villagerTradeTier = VarInts.readInt(buffer);
-        String villagerDisplayName = helper.readString(buffer);
+        String villagerDisplayName = helper.readStringMaxLen(buffer, 128);
         return new MobKilledEventData(killerUniqueEntityId, victimUniqueEntityId, killerEntityType, entityDamageCause,
                 villagerTradeTier, villagerDisplayName);
     }
@@ -46,7 +46,7 @@ public class LegacyTelemetryEventSerializer_v388 extends LegacyTelemetryEventSer
     }
 
     protected ActorDefinitionEventData readActorDefinition(ByteBuf buffer, BedrockCodecHelper helper) {
-        String eventName = helper.readString(buffer);
+        String eventName = helper.readStringMaxLen(buffer, 256);
         return new ActorDefinitionEventData(eventName);
     }
 

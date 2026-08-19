@@ -28,7 +28,7 @@ public class DimensionDataSerializer_v503 implements BedrockPacketSerializer<Dim
     }
 
     protected DimensionDefinition readDefinition(ByteBuf buffer, BedrockCodecHelper helper) {
-        String id = helper.readString(buffer);
+        String id = helper.readStringMaxLen(buffer, 256);
         int maximumHeight = VarInts.readInt(buffer);
         int minimumHeight = VarInts.readInt(buffer);
         GeneratorType generatorType = GeneratorType.from(VarInts.readInt(buffer));

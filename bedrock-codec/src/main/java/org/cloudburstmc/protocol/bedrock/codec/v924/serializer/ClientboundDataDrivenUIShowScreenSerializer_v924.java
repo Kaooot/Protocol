@@ -21,6 +21,6 @@ public class ClientboundDataDrivenUIShowScreenSerializer_v924 implements Bedrock
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ClientboundDataDrivenUIShowScreenPacket packet) {
-        packet.setScreenId(helper.readString(buffer));
+        packet.setScreenId(helper.readStringMaxLen(buffer, 500));
     }
 }

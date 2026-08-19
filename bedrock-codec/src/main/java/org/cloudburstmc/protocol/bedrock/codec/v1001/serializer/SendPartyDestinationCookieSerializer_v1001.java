@@ -24,8 +24,8 @@ public class SendPartyDestinationCookieSerializer_v1001 implements BedrockPacket
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, SendPartyDestinationCookiePacket packet) {
-        packet.setCookie(helper.readString(buffer));
+        packet.setCookie(helper.readStringMaxLen(buffer, 2048));
         packet.setIntent(PartyDestinationCookieIntent.from(buffer.readByte()));
-        packet.setDestinationName(helper.readString(buffer));
+        packet.setDestinationName(helper.readStringMaxLen(buffer, 64));
     }
 }

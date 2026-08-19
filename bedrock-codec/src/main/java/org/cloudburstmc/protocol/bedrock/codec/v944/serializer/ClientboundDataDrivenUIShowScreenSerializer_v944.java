@@ -16,7 +16,7 @@ public class ClientboundDataDrivenUIShowScreenSerializer_v944 extends Clientboun
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ClientboundDataDrivenUIShowScreenPacket packet) {
-        helper.writeString(buffer, packet.getScreenId());
+        super.serialize(buffer, helper, packet);
         buffer.writeIntLE(packet.getFormId());
         helper.writeOptionalNull(buffer, packet.getDataInstanceId(),
                 (buf, aHelper, dataInstanceId) -> buf.writeIntLE(dataInstanceId));
@@ -24,7 +24,7 @@ public class ClientboundDataDrivenUIShowScreenSerializer_v944 extends Clientboun
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ClientboundDataDrivenUIShowScreenPacket packet) {
-        packet.setScreenId(helper.readString(buffer));
+        super.deserialize(buffer, helper, packet);
         packet.setFormId(buffer.readIntLE());
         packet.setDataInstanceId(helper.readOptional(buffer, null, ByteBuf::readIntLE));
     }

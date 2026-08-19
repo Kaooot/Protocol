@@ -31,25 +31,25 @@ public class ClientboundAttributeLayerSyncSerializer_v1001 extends ClientboundAt
     @Override
     protected AttributeLayerData readAttributeLayerData(ByteBuf buffer, BedrockCodecHelper helper) {
         final AttributeLayerData data = new AttributeLayerData();
-        data.setName(helper.readString(buffer));
-        data.setNoiseName(helper.readOptional(buffer, null, helper::readString));
+        data.setName(helper.readStringMaxLen(buffer, NAME_LENGTH));
+        data.setNoiseName(helper.readOptional(buffer, null, (buf, codecHelper) -> codecHelper.readStringMaxLen(buf, NAME_LENGTH)));
         data.setDimension(DimensionType.from(VarInts.readInt(buffer)));
         data.setSettings(this.readAttributeLayerSettings(buffer, helper));
-        helper.readArray(buffer, data.getAttributes(), this::readEnvironmentAttributeData);
+        helper.readArray(buffer, data.getAttributes(), this::readEnvironmentAttributeData, 1024);
         return data;
     }
 
     @Override
     protected void writeEnvironmentAttributeData(ByteBuf buffer, BedrockCodecHelper helper, EnvironmentAttributeData data) {
-       super.writeEnvironmentAttributeData(buffer,helper,data);
-       buffer.writeIntLE(data.getLocalTransitionTicks());
-       buffer.writeBoolean(data.isNoiseTransition());
+        super.writeEnvironmentAttributeData(buffer, helper, data);
+        buffer.writeIntLE(data.getLocalTransitionTicks());
+        buffer.writeBoolean(data.isNoiseTransition());
     }
 
     @Override
     protected EnvironmentAttributeData readEnvironmentAttributeData(ByteBuf buffer, BedrockCodecHelper helper) {
         final EnvironmentAttributeData data = new EnvironmentAttributeData();
-        data.setAttributeName(helper.readString(buffer));
+        data.setAttributeName(helper.readStringMaxLen(buffer, 128));
         data.setFromAttribute(helper.readOptional(buffer, null, this::readAttributeData));
         data.setAttribute(this.readAttributeData(buffer, helper));
         data.setToAttribute(helper.readOptional(buffer, null, this::readAttributeData));

@@ -82,7 +82,7 @@ public class BedrockCodecHelper_v1001 extends BedrockCodecHelper_v975 {
         final PresenceConfiguration configuration = new PresenceConfiguration();
         configuration.setExperienceName(this.readOptional(buffer, null, this::readString));
         configuration.setWorldName(this.readOptional(buffer, null, this::readString));
-        configuration.setRichPresenceId(this.readString(buffer));
+        configuration.setRichPresenceId(this.readStringMaxLen(buffer, 50));
         return configuration;
     }
 

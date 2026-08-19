@@ -29,7 +29,7 @@ public class PlayerEnchantOptionsSerializer_v975 extends PlayerEnchantOptionsSer
     protected ItemEnchantOption readItemEnchantOption(ByteBuf buffer, BedrockCodecHelper helper) {
         final int cost = buffer.readUnsignedByte();
         final ItemEnchants itemEnchants = this.readItemEnchants(buffer, helper);
-        final String enchantName = helper.readString(buffer);
+        final String enchantName = helper.readStringMaxLen(buffer, 256);
         final int enchantNetId = VarInts.readUnsignedInt(buffer);
         return new ItemEnchantOption(cost, itemEnchants, enchantName, enchantNetId);
     }

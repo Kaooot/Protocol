@@ -37,13 +37,13 @@ public class BedrockCodecHelper_v898 extends BedrockCodecHelper_v776 {
     public CommandOriginData readCommandOrigin(ByteBuf buffer) {
         final String type = this.readString(buffer);
         final UUID uuid = this.readUuid(buffer);
-        final String requestId = this.readString(buffer);
+        final String requestId = this.readStringMaxLen(buffer, 39);
         final long playerId = buffer.readLongLE();
         return new CommandOriginData(CommandOriginType.from(type), uuid, requestId, playerId);
     }
 
     @Override
-    public void writeDataStoreUpdate(ByteBuf buffer,  DataStoreUpdate update) {
+    public void writeDataStoreUpdate(ByteBuf buffer, DataStoreUpdate update) {
         this.writeString(buffer, update.getDataStoreName());
         this.writeString(buffer, update.getProperty());
         this.writeString(buffer, update.getPath());
@@ -65,9 +65,9 @@ public class BedrockCodecHelper_v898 extends BedrockCodecHelper_v776 {
     @Override
     public DataStoreUpdate readDataStoreUpdate(ByteBuf buffer) {
         final DataStoreUpdate update = new DataStoreUpdate();
-        update.setDataStoreName(this.readString(buffer));
-        update.setProperty(this.readString(buffer));
-        update.setPath(this.readString(buffer));
+        update.setDataStoreName(this.readStringMaxLen(buffer, 1000));
+        update.setProperty(this.readStringMaxLen(buffer, 1000));
+        update.setPath(this.readStringMaxLen(buffer, 1000));
         update.setType(DataStorePropertyType.from(VarInts.readUnsignedInt(buffer)));
         switch (update.getType()) {
             case DOUBLE:
@@ -77,7 +77,7 @@ public class BedrockCodecHelper_v898 extends BedrockCodecHelper_v776 {
                 update.setData(buffer.readBoolean());
                 break;
             case STRING:
-                update.setData(this.readString(buffer));
+                update.setData(this.readStringMaxLen(buffer, 5000));
                 break;
         }
         update.setPropertyUpdateCount(buffer.readIntLE());

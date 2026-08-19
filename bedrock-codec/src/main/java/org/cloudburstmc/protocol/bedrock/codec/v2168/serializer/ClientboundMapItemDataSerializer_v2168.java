@@ -26,6 +26,8 @@ import java.util.List;
 public class ClientboundMapItemDataSerializer_v2168 implements BedrockPacketSerializer<ClientboundMapItemDataPacket> {
 
     protected final TypeMap<MapDecoration.Type> mapDecorationTypes;
+    protected static final int MAX_LENGTH = 65535;
+    protected static final int MAX_PIXELS_LENGTH = 16384;
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ClientboundMapItemDataPacket packet) {
@@ -60,18 +62,18 @@ public class ClientboundMapItemDataSerializer_v2168 implements BedrockPacketSeri
         packet.setMapOrigin(helper.readBlockPosition(buffer));
         packet.setCreationMapIDs(helper.readOptional(buffer, null, (buf, codecHelper) -> {
             final LongList creationMapIds = new LongArrayList();
-            codecHelper.readArray(buf, creationMapIds, VarInts::readLong);
+            codecHelper.readArray(buf, creationMapIds, VarInts::readLong, MAX_LENGTH);
             return creationMapIds;
         }));
         packet.setScale(helper.readOptional(buffer, null, (buf, codecHelper) -> (int) buf.readByte()));
         packet.setTrackedActorIDs(helper.readOptional(buffer, null, (buf, codecHelper) -> {
             final List<MapItemTrackedActorUniqueId> trackedActorIDs = new ObjectArrayList<>();
-            codecHelper.readArray(buf, trackedActorIDs, this::readMapItemTrackedActorUniqueId);
+            codecHelper.readArray(buf, trackedActorIDs, this::readMapItemTrackedActorUniqueId, MAX_LENGTH);
             return trackedActorIDs;
         }));
         packet.setDecorations(helper.readOptional(buffer, null, (buf, codecHelper) -> {
             final List<MapDecoration> decorations = new ObjectArrayList<>();
-            codecHelper.readArray(buf, decorations, this::readMapDecoration);
+            codecHelper.readArray(buf, decorations, this::readMapDecoration, MAX_LENGTH);
             return decorations;
         }));
         packet.setWidth(helper.readOptional(buffer, null, VarInts::readInt));
@@ -80,7 +82,7 @@ public class ClientboundMapItemDataSerializer_v2168 implements BedrockPacketSeri
         packet.setStartY(helper.readOptional(buffer, null, VarInts::readInt));
         packet.setPixels(helper.readOptional(buffer, null, (buf, codecHelper) -> {
             final IntList pixels = new IntArrayList();
-            codecHelper.readArray(buf, pixels, ByteBuf::readIntLE);
+            codecHelper.readArray(buf, pixels, ByteBuf::readIntLE, MAX_PIXELS_LENGTH);
             return pixels;
         }));
     }

@@ -15,6 +15,8 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.function.BiFunction;
 
+import static org.cloudburstmc.protocol.common.util.Preconditions.checkArgument;
+
 public class LegacyTelemetryEventSerializer_v291 implements BedrockPacketSerializer<LegacyTelemetryEventPacket> {
     public static final LegacyTelemetryEventSerializer_v291 INSTANCE = new LegacyTelemetryEventSerializer_v291();
 
@@ -22,6 +24,8 @@ public class LegacyTelemetryEventSerializer_v291 implements BedrockPacketSeriali
 
     protected final EnumMap<LegacyTelemetryEventPacket.Type, BiFunction<ByteBuf, BedrockCodecHelper, EventData>> readers = new EnumMap<>(LegacyTelemetryEventPacket.Type.class);
     protected final EnumMap<LegacyTelemetryEventPacket.Type, TriConsumer<ByteBuf, BedrockCodecHelper, EventData>> writers = new EnumMap<>(LegacyTelemetryEventPacket.Type.class);
+
+    private static final int MAX_ERROR_COUNT = 2048;
 
     protected LegacyTelemetryEventSerializer_v291() {
         this.readers.put(LegacyTelemetryEventPacket.Type.ACHIEVEMENT, this::readAchievement);
@@ -142,7 +146,7 @@ public class LegacyTelemetryEventSerializer_v291 implements BedrockPacketSeriali
         long victimUniqueEntityId = VarInts.readLong(buffer);
         int entityDamageCause = VarInts.readInt(buffer);
         int villagerTradeTier = VarInts.readInt(buffer);
-        String villagerDisplayName = helper.readString(buffer);
+        String villagerDisplayName = helper.readStringMaxLen(buffer, 128);
         return new MobKilledEventData(killerUniqueEntityId, victimUniqueEntityId, -1, entityDamageCause,
                 villagerTradeTier, villagerDisplayName);
     }
@@ -234,8 +238,9 @@ public class LegacyTelemetryEventSerializer_v291 implements BedrockPacketSeriali
 
     protected SlashCommandEventData readSlashCommandExecuted(ByteBuf buffer, BedrockCodecHelper helper) {
         int successCount = VarInts.readInt(buffer);
-        VarInts.readInt(buffer);
-        String commandName = helper.readString(buffer);
+        final int errorCount = VarInts.readInt(buffer);
+        checkArgument(errorCount <= MAX_ERROR_COUNT, "Tried to read %s Slash Command Errors but maximum is %s", errorCount, MAX_ERROR_COUNT);
+        String commandName = helper.readStringMaxLen(buffer, 512);
         List<String> outputMessages = Arrays.asList(helper.readString(buffer).split(";"));
         return new SlashCommandEventData(commandName, successCount, outputMessages);
     }

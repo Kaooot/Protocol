@@ -20,6 +20,8 @@ import org.cloudburstmc.protocol.common.util.VarInts;
 public class PlayerListSerializer_v2168 implements BedrockPacketSerializer<PlayerListPacket> {
     public static final PlayerListSerializer_v2168 INSTANCE = new PlayerListSerializer_v2168();
 
+    protected static final int MAX_ENTRIES = 1000;
+
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, PlayerListPacket packet) {
         helper.writeArray(buffer, packet.getEntries(), this::writePlayerListEntryVariant);
@@ -27,7 +29,7 @@ public class PlayerListSerializer_v2168 implements BedrockPacketSerializer<Playe
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, PlayerListPacket packet) {
-        helper.readArray(buffer, packet.getEntries(), this::readPlayerListEntryVariant);
+        helper.readArray(buffer, packet.getEntries(), this::readPlayerListEntryVariant, MAX_ENTRIES);
     }
 
     protected void writePlayerListEntryVariant(ByteBuf buffer, BedrockCodecHelper helper, PlayerListEntry entry) {

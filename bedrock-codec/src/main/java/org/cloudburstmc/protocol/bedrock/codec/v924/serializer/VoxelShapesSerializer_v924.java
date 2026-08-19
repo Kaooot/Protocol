@@ -52,9 +52,9 @@ public class VoxelShapesSerializer_v924 implements BedrockPacketSerializer<Voxel
     protected VoxelShapes.SerializableVoxelShape readVoxelShape(ByteBuf buffer, BedrockCodecHelper helper) {
         final VoxelShapes.SerializableVoxelShape voxelShape = new VoxelShapes.SerializableVoxelShape();
         voxelShape.setCells(this.readCells(buffer, helper));
-        helper.readArray(buffer, voxelShape.getXCoordinates(), ByteBuf::readFloatLE);
-        helper.readArray(buffer, voxelShape.getYCoordinates(), ByteBuf::readFloatLE);
-        helper.readArray(buffer, voxelShape.getZCoordinates(), ByteBuf::readFloatLE);
+        helper.readArray(buffer, voxelShape.getXCoordinates(), ByteBuf::readFloatLE, 128);
+        helper.readArray(buffer, voxelShape.getYCoordinates(), ByteBuf::readFloatLE, 128);
+        helper.readArray(buffer, voxelShape.getZCoordinates(), ByteBuf::readFloatLE, 128);
         return voxelShape;
     }
 
@@ -70,7 +70,7 @@ public class VoxelShapesSerializer_v924 implements BedrockPacketSerializer<Voxel
         cells.setXSize(buffer.readUnsignedByte());
         cells.setYSize(buffer.readUnsignedByte());
         cells.setZSize(buffer.readUnsignedByte());
-        helper.readArray(buffer, cells.getStorage(), buf -> (int) buf.readUnsignedByte());
+        helper.readArray(buffer, cells.getStorage(), buf -> (int) buf.readUnsignedByte(), 256048);
         return cells;
     }
 

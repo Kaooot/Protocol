@@ -172,7 +172,7 @@ public class StartGameSerializer_v924 extends StartGameSerializer_v818 {
             experienceID = null;
         }
         config.setExperienceId(experienceID);
-        config.setExperienceName(helper.readString(buffer));
+        config.setExperienceName(helper.readStringMaxLen(buffer, 29));
         UUID experienceWorldID;
         try {
             experienceWorldID = UUID.fromString(helper.readString(buffer));
@@ -180,8 +180,8 @@ public class StartGameSerializer_v924 extends StartGameSerializer_v818 {
             experienceWorldID = null;
         }
         config.setWorldId(experienceWorldID);
-        config.setWorldName(helper.readString(buffer));
-        config.setCreatorId(helper.readString(buffer));
+        config.setWorldName(helper.readStringMaxLen(buffer, 29));
+        config.setCreatorId(helper.readStringMaxLen(buffer, 60));
         helper.readString(buffer); // Store ID
         return config;
     }

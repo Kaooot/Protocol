@@ -69,7 +69,7 @@ public class BedrockCodecHelper_v440 extends BedrockCodecHelper_v431 {
     @Override
     public StructureSettings readStructureSettings(ByteBuf buffer) {
         final StructureSettings structureSettings = new StructureSettings();
-        structureSettings.setStructurePaletteName(this.readString(buffer));
+        structureSettings.setStructurePaletteName(this.readStringMaxLen(buffer, 256));
         structureSettings.setShouldIgnoreEntities(buffer.readBoolean());
         structureSettings.setShouldIgnoreBlocks(buffer.readBoolean());
         structureSettings.setStructureSize(this.readBlockPosition(buffer));

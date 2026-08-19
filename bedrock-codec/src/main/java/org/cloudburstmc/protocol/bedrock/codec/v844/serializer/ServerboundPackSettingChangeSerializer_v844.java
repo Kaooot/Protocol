@@ -36,7 +36,7 @@ public class ServerboundPackSettingChangeSerializer_v844 implements BedrockPacke
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ServerboundPackSettingChangePacket packet) {
         packet.setPackId(helper.readUuid(buffer));
-        packet.setPackSettingName(helper.readString(buffer));
+        packet.setPackSettingName(helper.readStringMaxLen(buffer, 128));
         packet.setPackSettingDataType(ServerboundPackSettingChangePacket.Type.from(VarInts.readUnsignedInt(buffer)));
 
         switch (packet.getPackSettingDataType()) {

@@ -25,7 +25,7 @@ public class ResourcePacksInfoSerializer_v332 extends ResourcePacksInfoSerialize
         packet.setResourcePackRequired(buffer.readBoolean());
         packet.setHasScripts(buffer.readBoolean());
         buffer.readShortLE();
-        helper.readArray(buffer, packet.getResourcePacks(), ByteBuf::readShortLE, this::readPackInfoData);
+        helper.readArray(buffer, packet.getResourcePacks(), ByteBuf::readShortLE, this::readPackInfoData, MAX_LENGTH);
     }
 
     @Override

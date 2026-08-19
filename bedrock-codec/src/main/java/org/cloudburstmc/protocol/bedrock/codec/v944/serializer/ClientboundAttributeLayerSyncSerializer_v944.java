@@ -20,6 +20,8 @@ import org.cloudburstmc.protocol.common.util.VarInts;
 public class ClientboundAttributeLayerSyncSerializer_v944 implements BedrockPacketSerializer<ClientboundAttributeLayerSyncPacket> {
     public static final ClientboundAttributeLayerSyncSerializer_v944 INSTANCE = new ClientboundAttributeLayerSyncSerializer_v944();
 
+    protected static final int NAME_LENGTH = 128;
+
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ClientboundAttributeLayerSyncPacket packet) {
         VarInts.writeUnsignedInt(buffer, packet.getData().getType().ordinal());
@@ -66,7 +68,7 @@ public class ClientboundAttributeLayerSyncSerializer_v944 implements BedrockPack
 
     protected UpdateAttributeLayersData readUpdateAttributeLayersData(ByteBuf buffer, BedrockCodecHelper helper) {
         final UpdateAttributeLayersData data = new UpdateAttributeLayersData();
-        helper.readArray(buffer, data.getAttributeLayers(), this::readAttributeLayerData);
+        helper.readArray(buffer, data.getAttributeLayers(), this::readAttributeLayerData, 512);
         return data;
     }
 
@@ -78,7 +80,7 @@ public class ClientboundAttributeLayerSyncSerializer_v944 implements BedrockPack
 
     protected UpdateAttributeLayerSettingsData readUpdateAttributeLayerSettingsData(ByteBuf buffer, BedrockCodecHelper helper) {
         final UpdateAttributeLayerSettingsData data = new UpdateAttributeLayerSettingsData();
-        data.setAttributeLayerName(helper.readString(buffer));
+        data.setAttributeLayerName(helper.readStringMaxLen(buffer, 128));
         data.setAttributeLayerDimension(DimensionType.from(VarInts.readInt(buffer)));
         data.setAttributesLayerSettings(this.readAttributeLayerSettings(buffer, helper));
         return data;
@@ -92,9 +94,9 @@ public class ClientboundAttributeLayerSyncSerializer_v944 implements BedrockPack
 
     protected UpdateEnvironmentAttributesData readUpdateEnvironmentAttributesData(ByteBuf buffer, BedrockCodecHelper helper) {
         final UpdateEnvironmentAttributesData data = new UpdateEnvironmentAttributesData();
-        data.setAttributeLayerName(helper.readString(buffer));
+        data.setAttributeLayerName(helper.readStringMaxLen(buffer, 128));
         data.setAttributeLayerDimension(DimensionType.from(VarInts.readInt(buffer)));
-        helper.readArray(buffer, data.getAttributes(), this::readEnvironmentAttributeData);
+        helper.readArray(buffer, data.getAttributes(), this::readEnvironmentAttributeData, 1024);
         return data;
     }
 
@@ -106,9 +108,9 @@ public class ClientboundAttributeLayerSyncSerializer_v944 implements BedrockPack
 
     protected RemoveEnvironmentAttributesData readRemoveEnvironmentAttributesData(ByteBuf buffer, BedrockCodecHelper helper) {
         final RemoveEnvironmentAttributesData data = new RemoveEnvironmentAttributesData();
-        data.setAttributeLayerName(helper.readString(buffer));
+        data.setAttributeLayerName(helper.readStringMaxLen(buffer, 128));
         data.setAttributeLayerDimension(DimensionType.from(VarInts.readInt(buffer)));
-        helper.readArray(buffer, data.getAttributes(), helper::readString);
+        helper.readArray(buffer, data.getAttributes(), (buf, codecHelper) -> codecHelper.readStringMaxLen(buf, 128), 1024);
         return data;
     }
 
@@ -121,10 +123,10 @@ public class ClientboundAttributeLayerSyncSerializer_v944 implements BedrockPack
 
     protected AttributeLayerData readAttributeLayerData(ByteBuf buffer, BedrockCodecHelper helper) {
         final AttributeLayerData data = new AttributeLayerData();
-        data.setName(helper.readString(buffer));
+        data.setName(helper.readStringMaxLen(buffer, NAME_LENGTH));
         data.setDimension(DimensionType.from(VarInts.readInt(buffer)));
         data.setSettings(this.readAttributeLayerSettings(buffer, helper));
-        helper.readArray(buffer, data.getAttributes(), this::readEnvironmentAttributeData);
+        helper.readArray(buffer, data.getAttributes(), this::readEnvironmentAttributeData, 1024);
         return data;
     }
 

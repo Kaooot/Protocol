@@ -33,9 +33,9 @@ public class BedrockCodecHelper_v422 extends BedrockCodecHelper_v419 {
         this.readArray(buffer, actions, byteBuf -> {
             ItemStackRequestActionType type = this.stackRequestActionTypes.getType(byteBuf.readByte());
             return readRequestActionData(byteBuf, type);
-        }, 32);
+        }, 100);
         List<String> filteredStrings = new ArrayList<>(); // new for v422
-        this.readArray(buffer, filteredStrings, this::readString);
+        this.readArray(buffer, filteredStrings, (buf, helper) -> helper.readStringMaxLen(buf, 1000));
         return new ItemStackRequest(requestId, actions.toArray(new ItemStackRequestAction[0]), filteredStrings.toArray(new String[0]));
     }
 

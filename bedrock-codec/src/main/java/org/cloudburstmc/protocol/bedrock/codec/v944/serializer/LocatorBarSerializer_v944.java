@@ -32,7 +32,7 @@ public class LocatorBarSerializer_v944 implements BedrockPacketSerializer<Locato
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, LocatorBarPacket packet) {
-        helper.readArray(buffer, packet.getWaypoints(), this::readLocatorBarWaypointPayload);
+        helper.readArray(buffer, packet.getWaypoints(), this::readLocatorBarWaypointPayload, 40000);
     }
 
     protected void writeLocatorBarWaypointPayload(ByteBuf buffer, BedrockCodecHelper helper, LocatorBarWaypointPayload payload) {

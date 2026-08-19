@@ -22,7 +22,7 @@ public class StructureTemplateDataRequestSerializer_v361 implements BedrockPacke
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, StructureTemplateDataRequestPacket packet) {
-        packet.setStructureName(helper.readString(buffer));
+        packet.setStructureName(helper.readStringMaxLen(buffer, 256));
         packet.setStructurePosition(helper.readBlockPosition(buffer));
         packet.setStructureSettings(helper.readStructureSettings(buffer));
         packet.setRequestedOperation(StructureTemplateRequestOperation.from(buffer.readByte()));

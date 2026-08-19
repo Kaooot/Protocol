@@ -87,7 +87,7 @@ public class BedrockCodecHelper_v2168 extends BedrockCodecHelper_v1001 {
     @Override
     public PresenceConfiguration readPresenceConfiguration(ByteBuf buffer) {
         final PresenceConfiguration configuration = new PresenceConfiguration();
-        configuration.setRichPresenceId(this.readOptional(buffer, null, this::readString));
+        configuration.setRichPresenceId(this.readOptional(buffer, null, (buf, codecHelper) -> codecHelper.readStringMaxLen(buf, 50)));
         return configuration;
     }
 
@@ -616,9 +616,9 @@ public class BedrockCodecHelper_v2168 extends BedrockCodecHelper_v1001 {
     public ItemStackRequest readItemStackRequest(ByteBuf buffer) {
         final ItemStackRequestId clientRequestId = new ItemStackRequestId(VarInts.readInt(buffer));
         final List<ItemStackRequestAction> actions = new ObjectArrayList<>();
-        this.readArray(buffer, actions, this::readItemStackRequestAction);
+        this.readArray(buffer, actions, this::readItemStackRequestAction, 100);
         final List<String> stringsToFilter = new ObjectArrayList<>();
-        this.readArray(buffer, stringsToFilter, this::readString);
+        this.readArray(buffer, stringsToFilter, (buf, helper) -> helper.readStringMaxLen(buf, 1000));
         final TextProcessingEventOrigin origin = this.textProcessingEventOrigins.getType(buffer.readIntLE());
         return new ItemStackRequest(
                 clientRequestId.getID(),

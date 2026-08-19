@@ -12,6 +12,8 @@ import org.cloudburstmc.protocol.bedrock.packet.ResourcePackStackPacket;
 public class ResourcePackStackSerializer_v291 implements BedrockPacketSerializer<ResourcePackStackPacket> {
     public static final ResourcePackStackSerializer_v291 INSTANCE = new ResourcePackStackSerializer_v291();
 
+    protected static final int MAX_LENGTH = 65535;
+
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ResourcePackStackPacket packet) {
         buffer.writeBoolean(packet.isTexturePackRequired());
@@ -22,8 +24,8 @@ public class ResourcePackStackSerializer_v291 implements BedrockPacketSerializer
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ResourcePackStackPacket packet) {
         packet.setTexturePackRequired(buffer.readBoolean());
-        helper.readArray(buffer, packet.getAddonList(), this::readPackInstanceId);
-        helper.readArray(buffer, packet.getTexturePackList(), this::readPackInstanceId);
+        helper.readArray(buffer, packet.getAddonList(), this::readPackInstanceId, MAX_LENGTH);
+        helper.readArray(buffer, packet.getTexturePackList(), this::readPackInstanceId, MAX_LENGTH);
     }
 
     protected void writePackInstanceId(ByteBuf buffer, BedrockCodecHelper helper, PackInstanceId packInstanceId) {

@@ -9,9 +9,13 @@ import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
 import org.cloudburstmc.protocol.bedrock.packet.ClientCacheMissResponsePacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
+import static org.cloudburstmc.protocol.common.util.Preconditions.checkArgument;
+
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ClientCacheMissResponseSerializer_v361 implements BedrockPacketSerializer<ClientCacheMissResponsePacket> {
     public static final ClientCacheMissResponseSerializer_v361 INSTANCE = new ClientCacheMissResponseSerializer_v361();
+
+    protected static final int MAX_LENGTH = 4095;
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ClientCacheMissResponsePacket packet) {
@@ -29,6 +33,7 @@ public class ClientCacheMissResponseSerializer_v361 implements BedrockPacketSeri
         Long2ObjectMap<ByteBuf> blobs = packet.getMissingBlobs();
 
         int length = VarInts.readUnsignedInt(buffer);
+        checkArgument(length <= MAX_LENGTH, "Tried to read %s Missing Blobs but maximum is %s", length, MAX_LENGTH);
         for (int i = 0; i < length; i++) {
             long id = buffer.readLongLE();
             ByteBuf blob = helper.readByteBuf(buffer);

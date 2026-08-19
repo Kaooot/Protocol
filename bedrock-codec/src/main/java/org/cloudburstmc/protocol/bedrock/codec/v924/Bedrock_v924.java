@@ -148,7 +148,7 @@ public class Bedrock_v924 extends Bedrock_v898 {
             .updateSerializer(CameraAimAssistPresetsPacket.class, CameraAimAssistPresetsSerializer_v924.INSTANCE)
             .updateSerializer(CameraInstructionPacket.class, CameraInstructionSerializer_v924.INSTANCE)
             .updateSerializer(PrimitiveShapesPacket.class, PrimitiveShapesSerializer_v924.INSTANCE)
-            .updateSerializer(GraphicsOverrideParameterPacket.class, GraphicsParameterOverrideSerializer_v924.INSTANCE)
+            .updateSerializer(GraphicsOverrideParameterPacket.class, GraphicsOverrideParameterSerializer_v924.INSTANCE)
             .updateSerializer(LevelSoundEventPacket.class, new LevelSoundEventSerializer_v786(SOUND_EVENTS))
             .updateSerializer(ServerboundDiagnosticsPacket.class, new ServerboundDiagnosticsSerializer_v924(MEMORY_CATEGORY_TYPES))
             .updateSerializer(StartGamePacket.class, StartGameSerializer_v924.INSTANCE)

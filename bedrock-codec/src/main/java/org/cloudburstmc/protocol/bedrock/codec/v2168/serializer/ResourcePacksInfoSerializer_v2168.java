@@ -31,6 +31,6 @@ public class ResourcePacksInfoSerializer_v2168 extends ResourcePacksInfoSerializ
         packet.setHasScripts(buffer.readBoolean());
         packet.setForceDisableVibrantVisuals(buffer.readBoolean());
         packet.setWorldTemplateIdAndVersion(this.readPackIdVersion(buffer, helper));
-        helper.readArray(buffer, packet.getResourcePacks(), this::readPackInfoData);
+        helper.readArray(buffer, packet.getResourcePacks(), this::readPackInfoData, MAX_LENGTH);
     }
 }

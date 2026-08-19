@@ -12,8 +12,12 @@ import org.cloudburstmc.protocol.bedrock.data.payload.common.DimensionType;
 import org.cloudburstmc.protocol.bedrock.packet.SubChunkPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
+import static org.cloudburstmc.protocol.common.util.Preconditions.checkArgument;
+
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class SubChunkSerializer_v486 extends SubChunkSerializer_v475 {
+
+    protected static final int MAX_SUB_CHUNKS = 8192;
 
     public static final SubChunkSerializer_v486 INSTANCE = new SubChunkSerializer_v486();
 
@@ -34,6 +38,7 @@ public class SubChunkSerializer_v486 extends SubChunkSerializer_v475 {
         packet.setCenterPos(helper.readVector3i(buffer));
 
         int size = buffer.readIntLE();
+        checkArgument(size <= MAX_SUB_CHUNKS, "Tried to read %s Sub Chunks but maximum is %s", MAX_SUB_CHUNKS);
         for (int i = 0; i < size; i++) {
             packet.getSubChunkData().add(this.readSubChunkPacketData(buffer, helper, packet));
         }

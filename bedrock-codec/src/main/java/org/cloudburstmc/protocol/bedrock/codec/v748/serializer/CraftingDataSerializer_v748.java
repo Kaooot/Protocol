@@ -31,7 +31,7 @@ public class CraftingDataSerializer_v748 extends CraftingDataSerializer_v685 {
     protected ShapelessRecipePayload readShapelessRecipePayload(ByteBuf buffer, BedrockCodecHelper helper, CraftingDataEntryType type) {
         final ShapelessRecipePayload payload = new ShapelessRecipePayload();
         payload.setRecipeId(helper.readString(buffer));
-        helper.readArray(buffer, payload.getIngredients(), helper::readIngredient);
+        helper.readArray(buffer, payload.getIngredients(), helper::readIngredient, MAX_INGREDIENTS);
         helper.readArray(buffer, payload.getResults(), helper::readItemInstance);
         payload.setUuid(helper.readUuid(buffer));
         payload.setTag(helper.readString(buffer));

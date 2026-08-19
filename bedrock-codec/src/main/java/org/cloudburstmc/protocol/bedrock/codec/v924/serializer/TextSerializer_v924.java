@@ -40,8 +40,8 @@ public class TextSerializer_v924 extends TextSerializer_v898 {
         final TextPacketType messageType = TextPacketType.from(buffer.readUnsignedByte());
         packet.setMessageType(messageType);
         packet.setBody(this.readMessageBody(buffer, helper, bodyType));
-        packet.setSendersXUID(helper.readString(buffer));
-        packet.setPlatformId(helper.readString(buffer));
+        packet.setSendersXUID(helper.readStringMaxLen(buffer, 64));
+        packet.setPlatformId(helper.readStringMaxLen(buffer, 256));
         packet.setFilteredMessage(helper.readString(buffer));
     }
 }

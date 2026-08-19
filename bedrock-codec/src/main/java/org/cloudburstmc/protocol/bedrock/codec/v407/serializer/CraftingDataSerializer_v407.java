@@ -8,6 +8,8 @@ import org.cloudburstmc.protocol.bedrock.codec.v388.serializer.CraftingDataSeria
 import org.cloudburstmc.protocol.bedrock.data.payload.crafting.*;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
+import static org.cloudburstmc.protocol.common.util.Preconditions.checkArgument;
+
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CraftingDataSerializer_v407 extends CraftingDataSerializer_v388 {
     public static final CraftingDataSerializer_v407 INSTANCE = new CraftingDataSerializer_v407();
@@ -27,7 +29,7 @@ public class CraftingDataSerializer_v407 extends CraftingDataSerializer_v388 {
     protected ShapelessRecipePayload readShapelessRecipePayload(ByteBuf buffer, BedrockCodecHelper helper) {
         final ShapelessRecipePayload payload = new ShapelessRecipePayload();
         payload.setRecipeId(helper.readString(buffer));
-        helper.readArray(buffer, payload.getIngredients(), helper::readIngredient);
+        helper.readArray(buffer, payload.getIngredients(), helper::readIngredient, MAX_INGREDIENTS);
         helper.readArray(buffer, payload.getResults(), helper::readItemInstance);
         payload.setUuid(helper.readUuid(buffer));
         payload.setTag(helper.readString(buffer));
@@ -59,6 +61,7 @@ public class CraftingDataSerializer_v407 extends CraftingDataSerializer_v388 {
         payload.setWidth(VarInts.readInt(buffer));
         payload.setHeight(VarInts.readInt(buffer));
         final int length = payload.getWidth() * payload.getHeight();
+        checkArgument(length <= MAX_INGREDIENTS, "Tried to read %s Ingredients but maximum is %s", length);
         for (int i = 0; i < length; i++) {
             payload.getIngredients().add(helper.readIngredient(buffer));
         }

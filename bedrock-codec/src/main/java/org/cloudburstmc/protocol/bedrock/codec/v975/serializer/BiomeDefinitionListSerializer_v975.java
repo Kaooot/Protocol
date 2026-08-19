@@ -135,7 +135,7 @@ public class BiomeDefinitionListSerializer_v975 extends BiomeDefinitionListSeria
         final String name = helper.readString(buffer);
         final int firstOctave = buffer.readIntLE();
         final List<Float> amplitudes = new ObjectArrayList<>();
-        helper.readArray(buffer, amplitudes, ByteBuf::readFloatLE);
+        helper.readArray(buffer, amplitudes, ByteBuf::readFloatLE, 100);
         return new NoiseDescriptor(name, firstOctave, amplitudes);
     }
 }

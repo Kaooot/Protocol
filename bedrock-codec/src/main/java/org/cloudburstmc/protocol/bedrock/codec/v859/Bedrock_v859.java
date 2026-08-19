@@ -30,6 +30,6 @@ public class Bedrock_v859 extends Bedrock_v844 {
             .updateSerializer(CameraInstructionPacket.class, CameraInstructionSerializer_v859.INSTANCE)
             .updateSerializer(PrimitiveShapesPacket.class, PrimitiveShapesSerializer_v859.INSTANCE)
             .updateSerializer(ShowStoreOfferPacket.class, ShowStoreOfferSerializer_v859.INSTANCE)
-            .registerPacket(GraphicsOverrideParameterPacket::new, GraphicsParameterOverrideSerializer_v859.INSTANCE, 331, PacketRecipient.CLIENT)
+            .registerPacket(GraphicsOverrideParameterPacket::new, GraphicsOverrideParameterSerializer_v859.INSTANCE, 331, PacketRecipient.CLIENT)
             .build();
 }

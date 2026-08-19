@@ -11,12 +11,16 @@ import org.cloudburstmc.protocol.bedrock.data.payload.event.*;
 import org.cloudburstmc.protocol.bedrock.packet.LegacyTelemetryEventPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
+import static org.cloudburstmc.protocol.common.util.Preconditions.checkArgument;
+
 /**
  * @author Kaooot
  */
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class LegacyTelemetryEventSerializer_v898 implements BedrockPacketSerializer<LegacyTelemetryEventPacket> {
     public static final LegacyTelemetryEventSerializer_v898 INSTANCE = new LegacyTelemetryEventSerializer_v898();
+
+    private static final int MAX_ERROR_COUNT = 2048;
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, LegacyTelemetryEventPacket packet) {
@@ -181,7 +185,7 @@ public class LegacyTelemetryEventSerializer_v898 implements BedrockPacketSeriali
     }
 
     protected ActorDefinition readActorDefinition(ByteBuf buffer, BedrockCodecHelper helper) {
-        final String eventName = helper.readString(buffer);
+        final String eventName = helper.readStringMaxLen(buffer, 256);
         return new ActorDefinition(eventName);
     }
 
@@ -225,7 +229,7 @@ public class LegacyTelemetryEventSerializer_v898 implements BedrockPacketSeriali
     }
 
     protected CodeBuilderRuntimeAction readCodeBuilderRuntimeAction(ByteBuf buffer, BedrockCodecHelper helper) {
-        final String codeBuilderRuntimeAction = helper.readString(buffer);
+        final String codeBuilderRuntimeAction = helper.readStringMaxLen(buffer, 16);
         return new CodeBuilderRuntimeAction(codeBuilderRuntimeAction);
     }
 
@@ -235,7 +239,7 @@ public class LegacyTelemetryEventSerializer_v898 implements BedrockPacketSeriali
     }
 
     protected CodeBuilderScoreboard readCodeBuilderScoreboard(ByteBuf buffer, BedrockCodecHelper helper) {
-        final String objectiveName = helper.readString(buffer);
+        final String objectiveName = helper.readStringMaxLen(buffer, 256);
         final int score = VarInts.readInt(buffer);
         return new CodeBuilderScoreboard(objectiveName, score);
     }
@@ -311,7 +315,7 @@ public class LegacyTelemetryEventSerializer_v898 implements BedrockPacketSeriali
         final int instigatorsChildActorType = VarInts.readInt(buffer);
         final int damageSource = VarInts.readInt(buffer);
         final int tradeTier = VarInts.readInt(buffer);
-        final String traderName = helper.readString(buffer);
+        final String traderName = helper.readStringMaxLen(buffer, 128);
         return new MobKilled(instigatorActorID, targetActorID, instigatorsChildActorType, damageSource, tradeTier, traderName);
     }
 
@@ -404,7 +408,8 @@ public class LegacyTelemetryEventSerializer_v898 implements BedrockPacketSeriali
     protected SlashCommand readSlashCommand(ByteBuf buffer, BedrockCodecHelper helper) {
         final int successCount = VarInts.readInt(buffer);
         final int errorCount = VarInts.readInt(buffer);
-        final String commandName = helper.readString(buffer);
+        checkArgument(errorCount <= MAX_ERROR_COUNT, "Tried to read %s Slash Command Errors but maximum is %s", errorCount, MAX_ERROR_COUNT);
+        final String commandName = helper.readStringMaxLen(buffer, 512);
         final String errorList = helper.readString(buffer);
         return new SlashCommand(successCount, errorCount, commandName, errorList);
     }

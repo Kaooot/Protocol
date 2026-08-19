@@ -16,9 +16,13 @@ import org.cloudburstmc.protocol.common.util.VarInts;
 
 import java.util.List;
 
+import static org.cloudburstmc.protocol.common.util.Preconditions.checkArgument;
+
 @RequiredArgsConstructor
 public class ClientboundMapItemDataSerializer_v291 implements BedrockPacketSerializer<ClientboundMapItemDataPacket> {
     protected final TypeMap<MapDecoration.Type> mapDecorationTypes;
+    protected static final int MAX_LENGTH = 65535;
+    protected static final int MAX_PIXELS_LENGTH = 16384;
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ClientboundMapItemDataPacket packet) {
@@ -101,6 +105,7 @@ public class ClientboundMapItemDataSerializer_v291 implements BedrockPacketSeria
         if ((type & 0x8) != 0) {
             LongList trackedEntityIds = packet.getCreationMapIDs();
             int length = VarInts.readUnsignedInt(buffer);
+            checkArgument(length <= MAX_LENGTH, "Tried to read %s Creation Map IDs but maximum is %s", length, MAX_LENGTH);
             for (int i = 0; i < length; i++) {
                 trackedEntityIds.add(VarInts.readLong(buffer));
             }
@@ -113,6 +118,7 @@ public class ClientboundMapItemDataSerializer_v291 implements BedrockPacketSeria
         if ((type & 0x4) != 0) {
             List<MapItemTrackedActorUniqueId> trackedObjects = packet.getTrackedActorIDs();
             int length = VarInts.readUnsignedInt(buffer);
+            checkArgument(length <= MAX_LENGTH, "Tried to read %s Map Item Tracked Actor IDs but maximum is %s", length, MAX_LENGTH);
             for (int i = 0; i < length; i++) {
                 MapItemTrackedActorType objectType = MapItemTrackedActorType.from(buffer.readIntLE());
                 switch (objectType) {
@@ -127,6 +133,7 @@ public class ClientboundMapItemDataSerializer_v291 implements BedrockPacketSeria
 
             List<MapDecoration> decorations = packet.getDecorations();
             length = VarInts.readUnsignedInt(buffer);
+            checkArgument(length <= MAX_LENGTH, "Tried to read %s Map Decorations but maximum is %s", length, MAX_LENGTH);
             for (int i = 0; i < length; i++) {
                 int image = buffer.readUnsignedByte();
                 int rotation = buffer.readUnsignedByte();
@@ -143,7 +150,7 @@ public class ClientboundMapItemDataSerializer_v291 implements BedrockPacketSeria
             packet.setHeight(VarInts.readInt(buffer));
             packet.setStartX(VarInts.readInt(buffer));
             packet.setStartY(VarInts.readInt(buffer));
-            helper.readArray(buffer, packet.getPixels(), VarInts::readUnsignedInt);
+            helper.readArray(buffer, packet.getPixels(), VarInts::readUnsignedInt, MAX_PIXELS_LENGTH);
         }
     }
 }

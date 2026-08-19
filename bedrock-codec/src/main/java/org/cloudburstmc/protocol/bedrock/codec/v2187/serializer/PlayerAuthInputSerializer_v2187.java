@@ -67,7 +67,7 @@ public class PlayerAuthInputSerializer_v2187 extends PlayerAuthInputSerializer_v
         packet.setPosDelta(helper.readVector3f(buffer));
         packet.setItemUseTransaction(helper.readOptional(buffer, null, this::readPackedLegacyItemUseInventoryTransaction));
         packet.setItemStackRequest(helper.readOptional(buffer, null, helper::readItemStackRequest));
-        helper.readArray(buffer, packet.getPlayerBlockActions(), this::readPlayerBlockActionData);
+        helper.readArray(buffer, packet.getPlayerBlockActions(), this::readPlayerBlockActionData, helper.getEncodingSettings().maxPlayerBlockActionDataSize());
         packet.setVehicleRotation(helper.readOptional(buffer, null, helper::readVector2f));
         packet.setClientPredictedVehicle(helper.readOptional(buffer, null, VarInts::readLong));
         packet.setAnalogMoveVector(helper.readVector2f(buffer));

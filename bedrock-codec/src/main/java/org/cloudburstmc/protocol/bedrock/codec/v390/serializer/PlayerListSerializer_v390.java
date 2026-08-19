@@ -31,7 +31,7 @@ public class PlayerListSerializer_v390 extends PlayerListSerializer_v388 {
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, PlayerListPacket packet) {
         final PlayerListPacketType packetType = PlayerListPacketType.fromLegacy(VarInts.readUnsignedInt(buffer));
         helper.readArray(buffer, packet.getEntries(), (buf, codecHelper) ->
-                this.readPlayerListEntryVariant(buf, codecHelper, packetType));
+                this.readPlayerListEntryVariant(buf, codecHelper, packetType), MAX_ENTRIES);
 
         if (packet.getEntries().get(0).getPacketType().equals(PlayerListPacketType.ADD)) {
             final int length = packet.getEntries().size();

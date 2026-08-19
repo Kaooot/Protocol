@@ -18,6 +18,8 @@ import org.cloudburstmc.protocol.common.util.VarInts;
 public class CraftingDataSerializer_v2168 implements BedrockPacketSerializer<CraftingDataPacket> {
     public static final CraftingDataSerializer_v2168 INSTANCE = new CraftingDataSerializer_v2168();
 
+    protected static final int MAX_INGREDIENTS = 128;
+
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, CraftingDataPacket packet) {
         helper.writeArray(buffer, packet.getShapedRecipes(), this::writeShapedRecipePayload);
@@ -69,7 +71,7 @@ public class CraftingDataSerializer_v2168 implements BedrockPacketSerializer<Cra
         payload.setRecipeId(helper.readString(buffer));
         payload.setWidth(VarInts.readInt(buffer));
         payload.setHeight(VarInts.readInt(buffer));
-        helper.readArray(buffer, payload.getIngredients(), this::readRecipeIngredient);
+        helper.readArray(buffer, payload.getIngredients(), this::readRecipeIngredient, MAX_INGREDIENTS);
         helper.readArray(buffer, payload.getResults(), helper::readNetworkItemInstanceDescriptor);
         payload.setUuid(helper.readUuid(buffer));
         payload.setTag(helper.readString(buffer));
@@ -94,7 +96,7 @@ public class CraftingDataSerializer_v2168 implements BedrockPacketSerializer<Cra
     protected ShapelessRecipePayload readShapelessRecipePayload(ByteBuf buffer, BedrockCodecHelper helper) {
         final ShapelessRecipePayload payload = new ShapelessRecipePayload();
         payload.setRecipeId(helper.readString(buffer));
-        helper.readArray(buffer, payload.getIngredients(), this::readRecipeIngredient);
+        helper.readArray(buffer, payload.getIngredients(), this::readRecipeIngredient, MAX_INGREDIENTS);
         helper.readArray(buffer, payload.getResults(), helper::readNetworkItemInstanceDescriptor);
         payload.setUuid(helper.readUuid(buffer));
         payload.setTag(helper.readString(buffer));
@@ -229,7 +231,7 @@ public class CraftingDataSerializer_v2168 implements BedrockPacketSerializer<Cra
         final RecipeUnlockingContext unlockingContext = RecipeUnlockingContext.from(VarInts.readInt(buffer));
         final RecipeUnlockingRequirement unlockingRequirement = new RecipeUnlockingRequirement(unlockingContext);
         if (buffer.readBoolean()) {
-            helper.readArray(buffer, unlockingRequirement.getUnlockingIngredients(), this::readRecipeIngredient);
+            helper.readArray(buffer, unlockingRequirement.getUnlockingIngredients(), this::readRecipeIngredient, 128);
         }
         return unlockingRequirement;
     }

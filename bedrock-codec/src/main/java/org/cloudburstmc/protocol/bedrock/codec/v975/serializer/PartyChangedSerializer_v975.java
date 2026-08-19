@@ -34,7 +34,7 @@ public class PartyChangedSerializer_v975 extends PartyChangedSerializer_v944 {
     @Override
     protected PlayerPartyInfo readPlayerPartyInfo(ByteBuf buffer, BedrockCodecHelper helper) {
         final PlayerPartyInfo info = new PlayerPartyInfo();
-        info.setPartyId(helper.readString(buffer));
+        info.setPartyId(helper.readStringMaxLen(buffer, MAX_PARTY_ID_LENGTH));
         info.setPartyLeader(buffer.readBoolean());
         return info;
     }

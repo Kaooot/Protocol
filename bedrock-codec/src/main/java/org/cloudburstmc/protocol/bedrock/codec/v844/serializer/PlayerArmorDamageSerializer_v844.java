@@ -21,7 +21,7 @@ public class PlayerArmorDamageSerializer_v844 implements BedrockPacketSerializer
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, PlayerArmorDamagePacket packet) {
-        helper.readArray(buffer, packet.getArmorSlotAndDamagePairs(), this::readPair);
+        helper.readArray(buffer, packet.getArmorSlotAndDamagePairs(), this::readPair, 5);
     }
 
     protected void writePair(ByteBuf buffer, ArmorSlotAndDamagePair pair) {

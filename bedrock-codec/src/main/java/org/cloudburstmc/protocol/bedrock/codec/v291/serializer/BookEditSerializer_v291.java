@@ -13,6 +13,8 @@ import org.cloudburstmc.protocol.bedrock.packet.BookEditPacket;
 public class BookEditSerializer_v291 implements BedrockPacketSerializer<BookEditPacket> {
     public static final BookEditSerializer_v291 INSTANCE = new BookEditSerializer_v291();
 
+    protected static final int MAX_LENGTH = 768;
+
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, BookEditPacket packet) {
         buffer.writeByte(packet.getOperation().getType().ordinal());
@@ -68,8 +70,8 @@ public class BookEditSerializer_v291 implements BedrockPacketSerializer<BookEdit
     protected BookEditAction.ReplacePage readReplacePage(ByteBuf buffer, BedrockCodecHelper helper) {
         final BookEditAction.ReplacePage action = new BookEditAction.ReplacePage();
         action.setPageIndex(buffer.readUnsignedByte());
-        action.setPageText(helper.readString(buffer));
-        action.setPhotoName(helper.readString(buffer));
+        action.setPageText(helper.readStringMaxLen(buffer, MAX_LENGTH));
+        action.setPhotoName(helper.readStringMaxLen(buffer, MAX_LENGTH));
         return action;
     }
 
@@ -82,8 +84,8 @@ public class BookEditSerializer_v291 implements BedrockPacketSerializer<BookEdit
     protected BookEditAction.AddPage readAddPage(ByteBuf buffer, BedrockCodecHelper helper) {
         final BookEditAction.AddPage action = new BookEditAction.AddPage();
         action.setPageIndex(buffer.readUnsignedByte());
-        action.setPageText(helper.readString(buffer));
-        action.setPhotoName(helper.readString(buffer));
+        action.setPageText(helper.readStringMaxLen(buffer, MAX_LENGTH));
+        action.setPhotoName(helper.readStringMaxLen(buffer, MAX_LENGTH));
         return action;
     }
 
@@ -117,9 +119,9 @@ public class BookEditSerializer_v291 implements BedrockPacketSerializer<BookEdit
 
     protected BookEditAction.Finalize readFinalize(ByteBuf buffer, BedrockCodecHelper helper) {
         final BookEditAction.Finalize action = new BookEditAction.Finalize();
-        action.setTitle(helper.readString(buffer));
-        action.setAuthor(helper.readString(buffer));
-        action.setXuid(helper.readString(buffer));
+        action.setTitle(helper.readStringMaxLen(buffer, MAX_LENGTH));
+        action.setAuthor(helper.readStringMaxLen(buffer, MAX_LENGTH));
+        action.setXuid(helper.readStringMaxLen(buffer, MAX_LENGTH));
         return action;
     }
 }

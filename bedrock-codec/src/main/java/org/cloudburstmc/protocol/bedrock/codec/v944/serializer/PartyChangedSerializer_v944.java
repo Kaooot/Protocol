@@ -15,6 +15,8 @@ import org.cloudburstmc.protocol.bedrock.packet.PartyChangedPacket;
 public class PartyChangedSerializer_v944 implements BedrockPacketSerializer<PartyChangedPacket> {
     public static final PartyChangedSerializer_v944 INSTANCE = new PartyChangedSerializer_v944();
 
+    protected static final int MAX_PARTY_ID_LENGTH = 49;
+
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, PartyChangedPacket packet) {
         this.writePlayerPartyInfo(buffer, helper, packet.getPartyInfo());
@@ -31,7 +33,7 @@ public class PartyChangedSerializer_v944 implements BedrockPacketSerializer<Part
 
     protected PlayerPartyInfo readPlayerPartyInfo(ByteBuf buffer, BedrockCodecHelper helper) {
         final PlayerPartyInfo info = new PlayerPartyInfo();
-        info.setPartyId(helper.readOptional(buffer, null, helper::readString));
+        info.setPartyId(helper.readOptional(buffer, null, (buf, codecHelper) -> codecHelper.readStringMaxLen(buf, MAX_PARTY_ID_LENGTH)));
         return info;
     }
 }

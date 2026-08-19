@@ -25,7 +25,7 @@ public class DimensionDataSerializer_v975 extends DimensionDataSerializer_v503 {
 
     @Override
     protected DimensionDefinition readDefinition(ByteBuf buffer, BedrockCodecHelper helper) {
-        final String id = helper.readString(buffer);
+        final String id = helper.readStringMaxLen(buffer, 256);
         final int maximumHeight = VarInts.readInt(buffer);
         final int minimumHeight = VarInts.readInt(buffer);
         final GeneratorType generatorType = GeneratorType.from(VarInts.readInt(buffer));

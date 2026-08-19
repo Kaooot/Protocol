@@ -59,7 +59,7 @@ public class CameraInstructionSerializer_v924 extends CameraInstructionSerialize
             final EasingType keyFrameEasingFunc = EasingType.fromName(h.readString(buf));
             return new CameraSplineInstruction.SplineRotationOption(null, -1f, keyFrameValue, keyFrameTime, keyFrameEasingFunc);
         });
-        final String splineIdentifier = helper.readString(buffer);
+        final String splineIdentifier = helper.readStringMaxLen(buffer, 1024);
         final boolean loadFromJSON = buffer.readBoolean();
         return new CameraSplineInstruction(totalTime, type, curve, progressKeyFrames, rotationOption, splineIdentifier, loadFromJSON);
     }

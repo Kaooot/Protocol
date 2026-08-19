@@ -21,7 +21,7 @@ public class BedrockCodecHelper_v503 extends BedrockCodecHelper_v471 {
     @Override
     public StructureSettings readStructureSettings(ByteBuf buffer) {
         final StructureSettings structureSettings = new StructureSettings();
-        structureSettings.setStructurePaletteName(this.readString(buffer));
+        structureSettings.setStructurePaletteName(this.readStringMaxLen(buffer, 256));
         structureSettings.setShouldIgnoreEntities(buffer.readBoolean());
         structureSettings.setShouldIgnoreBlocks(buffer.readBoolean());
         structureSettings.setShouldAllowNonTickingPlayerAndTickingAreaChunks(buffer.readBoolean());

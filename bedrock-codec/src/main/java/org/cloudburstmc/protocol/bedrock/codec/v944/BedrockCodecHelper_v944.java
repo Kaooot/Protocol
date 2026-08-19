@@ -53,13 +53,13 @@ public class BedrockCodecHelper_v944 extends BedrockCodecHelper_v924 {
     public GatheringsConfigurationJoinInfo readGatheringsConfigurationJoinInfo(ByteBuf buffer) {
         final GatheringsConfigurationJoinInfo config = new GatheringsConfigurationJoinInfo();
         config.setExperienceId(this.readUuid(buffer));
-        config.setExperienceName(this.readString(buffer));
+        config.setExperienceName(this.readStringMaxLen(buffer, 29));
         config.setWorldId(this.readOptional(buffer, null, this::readUuid));
-        config.setWorldName(this.readOptional(buffer, null, this::readString));
-        config.setCreatorId(this.readString(buffer));
+        config.setWorldName(this.readOptional(buffer, null, (buf, codecHelper) -> codecHelper.readStringMaxLen(buf, 29)));
+        config.setCreatorId(this.readStringMaxLen(buffer, 60));
         config.setTargetId(this.readOptional(buffer, null, this::readUuid));
-        config.setScenarioId(this.readOptional(buffer, null, this::readString));
-        config.setServerId(this.readOptional(buffer, null, this::readString));
+        config.setScenarioId(this.readOptional(buffer, null, (buf, codecHelper) -> codecHelper.readStringMaxLen(buf, 100)));
+        config.setServerId(this.readOptional(buffer, null, (buf, codecHelper) -> codecHelper.readStringMaxLen(buf, 100)));
         return config;
     }
 

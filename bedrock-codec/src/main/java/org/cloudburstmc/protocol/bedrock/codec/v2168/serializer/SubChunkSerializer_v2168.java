@@ -34,7 +34,7 @@ public class SubChunkSerializer_v2168 extends SubChunkSerializer_v818 {
         packet.setCacheEnabled(buffer.readBoolean());
         packet.setDimensionType(DimensionType.from(VarInts.readInt(buffer)));
         packet.setCenterPos(this.readCenterPos(buffer));
-        helper.readArray(buffer, packet.getSubChunkData(), (buf, codecHelper) -> this.readSubChunkPacketData(buffer, helper, packet));
+        helper.readArray(buffer, packet.getSubChunkData(), (buf, codecHelper) -> this.readSubChunkPacketData(buffer, helper, packet), MAX_SUB_CHUNKS);
     }
 
     @Override

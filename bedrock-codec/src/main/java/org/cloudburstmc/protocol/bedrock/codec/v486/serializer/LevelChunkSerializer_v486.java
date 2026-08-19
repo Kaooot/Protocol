@@ -9,6 +9,8 @@ import org.cloudburstmc.protocol.bedrock.codec.v361.serializer.LevelChunkSeriali
 import org.cloudburstmc.protocol.bedrock.packet.LevelChunkPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
+import static org.cloudburstmc.protocol.common.util.Preconditions.checkArgument;
+
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class LevelChunkSerializer_v486 extends LevelChunkSerializer_v361 {
     public static final LevelChunkSerializer_v486 INSTANCE = new LevelChunkSerializer_v486();
@@ -60,6 +62,7 @@ public class LevelChunkSerializer_v486 extends LevelChunkSerializer_v361 {
         if (packet.isCacheEnabled()) {
             LongList blobIds = packet.getCacheBlobs();
             int length = VarInts.readUnsignedInt(buffer);
+            checkArgument(length <= MAX_BLOBS, "Tried to read %s Blob IDs but maximum is %s", length, MAX_BLOBS);
 
             for (int i = 0; i < length; i++) {
                 blobIds.add(buffer.readLongLE());

@@ -14,6 +14,8 @@ import org.cloudburstmc.protocol.common.util.VarInts;
 public class CraftingDataSerializer_v291 implements BedrockPacketSerializer<CraftingDataPacket> {
     public static final CraftingDataSerializer_v291 INSTANCE = new CraftingDataSerializer_v291();
 
+    protected static final int MAX_INGREDIENTS = 128;
+
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, CraftingDataPacket packet) {
         this.writeEntries(buffer, helper, packet);
@@ -198,7 +200,7 @@ public class CraftingDataSerializer_v291 implements BedrockPacketSerializer<Craf
         payload.setWidth(VarInts.readInt(buffer));
         payload.setHeight(VarInts.readInt(buffer));
         helper.readArray(buffer, payload.getIngredients(), (buf, codecHelper) ->
-                RecipeIngredient.fromItem(codecHelper.readItem(buf)));
+                RecipeIngredient.fromItem(codecHelper.readItem(buf)), MAX_INGREDIENTS);
         helper.readArray(buffer, payload.getResults(), helper::readItem);
         payload.setUuid(helper.readUuid(buffer));
         return payload;
@@ -214,7 +216,7 @@ public class CraftingDataSerializer_v291 implements BedrockPacketSerializer<Craf
     protected ShapelessRecipePayload readShapelessRecipePayload(ByteBuf buffer, BedrockCodecHelper helper) {
         final ShapelessRecipePayload payload = new ShapelessRecipePayload();
         helper.readArray(buffer, payload.getIngredients(), (buf, codecHelper) ->
-                RecipeIngredient.fromItem(codecHelper.readItem(buf)));
+                RecipeIngredient.fromItem(codecHelper.readItem(buf)), MAX_INGREDIENTS);
         helper.readArray(buffer, payload.getResults(), helper::readItem);
         payload.setUuid(helper.readUuid(buffer));
         return payload;
