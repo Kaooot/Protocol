@@ -49,23 +49,23 @@ public class MapDecoration {
          */
         TRIAL_CHAMBERS,
         /**
-         * @since v2181
+         * @since v2187
          */
         ABANDONED_CAMP,
         /**
-         * @since v2181
+         * @since v2187
          */
         BURIED_ANCIENT_CITY,
         /**
-         * @since v2181
+         * @since v2187
          */
         BURIED_MINESHAFT,
         /**
-         * @since v2181
+         * @since v2187
          */
         DESERT_PYRAMID,
         /**
-         * @since v2181
+         * @since v2187
          */
         WARM_OCEAN_RUINS,
         COUNT

@@ -1011,4 +1011,8 @@ public interface BedrockPacketHandler extends PacketHandler {
     default PacketSignal handle(SetPlayerFurnaceOptionsPacket packet) {
         return PacketSignal.UNHANDLED;
     }
+
+    default PacketSignal handle(RecordStartedPacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
 }
