@@ -580,6 +580,10 @@ public interface BedrockPacketHandler extends PacketHandler {
     return PacketSignal.UNHANDLED;
   }
 
+  default PacketSignal handle(RecordStartedPacket packet) {
+    return PacketSignal.UNHANDLED;
+  }
+
   default PacketSignal handle(RefreshEntitlementsPacket packet) {
     return PacketSignal.UNHANDLED;
   }

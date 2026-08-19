@@ -2,9 +2,7 @@ package org.cloudburstmc.protocol.bedrock.packet;
 
 import java.lang.AssertionError;
 import java.lang.CloneNotSupportedException;
-import java.lang.Float;
 import java.lang.Override;
-import java.lang.String;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -19,22 +17,10 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @ToString(
     doNotUseGetters = true
 )
-public class PlaySoundPacket implements BedrockPacket {
-  private String name;
-
-  private Vector3i position;
-
-  private float volume;
-
-  private float pitch;
-
-  private int loopCount;
-
-  private boolean bypassListenerRangeCheck;
+public class RecordStartedPacket implements BedrockPacket {
+  private Vector3i blockPosition;
 
   private ServerSoundHandle serverSoundHandle;
-
-  private Float playbackPositionSeconds;
 
   @Override
   public final PacketSignal handle(BedrockPacketHandler handler) {
@@ -43,13 +29,13 @@ public class PlaySoundPacket implements BedrockPacket {
 
   @Override
   public BedrockPacketType getPacketType() {
-    return BedrockPacketType.PLAY_SOUND;
+    return BedrockPacketType.RECORD_STARTED;
   }
 
   @Override
-  public PlaySoundPacket clone() {
+  public RecordStartedPacket clone() {
     try {
-      return (PlaySoundPacket) super.clone();
+      return (RecordStartedPacket) super.clone();
     } catch (CloneNotSupportedException e) {
       throw new AssertionError(e);
     }

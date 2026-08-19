@@ -293,6 +293,8 @@ public class BedrockPacketType {
 
   public static final BedrockPacketType PURCHASE_RECEIPT = new BedrockPacketType("PURCHASE_RECEIPT");
 
+  public static final BedrockPacketType RECORD_STARTED = new BedrockPacketType("RECORD_STARTED");
+
   public static final BedrockPacketType REFRESH_ENTITLEMENTS = new BedrockPacketType("REFRESH_ENTITLEMENTS");
 
   public static final BedrockPacketType REMOVE_ACTOR = new BedrockPacketType("REMOVE_ACTOR");

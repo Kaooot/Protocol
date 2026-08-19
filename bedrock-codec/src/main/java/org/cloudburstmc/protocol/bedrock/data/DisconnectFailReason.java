@@ -299,7 +299,9 @@ public enum DisconnectFailReason {
 
   EDITOR_NOT_ALLOWED,
 
-  MISSING_STRUCTURE_DATA;
+  MISSING_STRUCTURE_DATA,
+
+  UNSUPPORTED_TRANSPORT;
 
   private static final DisconnectFailReason[] VALUES = values();
 
