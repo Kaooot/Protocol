@@ -5,11 +5,13 @@ package org.cloudburstmc.protocol.bedrock.data.payload.creative;
  */
 public enum CreativeItemCategory {
 
+    ALL,
     CONSTRUCTION,
     NATURE,
     EQUIPMENT,
     ITEMS,
-    ITEM_COMMAND_ONLY;
+    ITEM_COMMAND_ONLY,
+    UNDEFINED;
 
     private static final CreativeItemCategory[] VALUES = values();
 
