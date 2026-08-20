@@ -18,6 +18,10 @@ public class PrimitiveShapesSerializer_v1001 extends PrimitiveShapesSerializer_v
 
     @Override
     protected void writeExtraShapeData(ByteBuf buffer, BedrockCodecHelper helper, ExtraShapeDataPayload payload) {
+        if (payload == null) {
+            VarInts.writeUnsignedInt(buffer, ExtraShapeDataType.NONE.ordinal());
+            return;
+        }
         VarInts.writeUnsignedInt(buffer, payload.getType().ordinal());
         switch (payload.getType()) {
             case ARROW:

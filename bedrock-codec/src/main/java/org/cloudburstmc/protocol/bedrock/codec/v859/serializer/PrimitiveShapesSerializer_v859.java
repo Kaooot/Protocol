@@ -26,7 +26,7 @@ public class PrimitiveShapesSerializer_v859 extends PrimitiveShapesSerializer_v8
         helper.writeOptionalNull(buffer, payload.getRotation(), helper::writeVector3f);
         helper.writeOptionalNull(buffer, payload.getTotalTimeLeft(), ByteBuf::writeFloatLE);
         helper.writeOptionalNull(buffer, payload.getColor(), ByteBuf::writeIntLE);
-        helper.writeOptionalNull(buffer, payload.getDimension(), (buf, dimension) ->  VarInts.writeInt(buf, dimension.getValue())); // Added
+        helper.writeOptionalNull(buffer, payload.getDimension(), (buf, dimension) -> VarInts.writeInt(buf, dimension.getValue())); // Added
         this.writeExtraShapeData(buffer, helper, payload.getExtraShapeData());
     }
 
@@ -47,6 +47,10 @@ public class PrimitiveShapesSerializer_v859 extends PrimitiveShapesSerializer_v8
 
     @Override
     protected void writeExtraShapeData(ByteBuf buffer, BedrockCodecHelper helper, ExtraShapeDataPayload payload) {
+        if (payload == null) {
+            VarInts.writeUnsignedInt(buffer, ExtraShapeDataType.NONE.ordinal());
+            return;
+        }
         VarInts.writeUnsignedInt(buffer, payload.getType().ordinal());
         switch (payload.getType()) {
             case ARROW:
