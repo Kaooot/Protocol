@@ -22,7 +22,7 @@ public class LevelChunkSerializer_v2168 extends LevelChunkSerializer_v649 {
         VarInts.writeInt(buffer, packet.getChunkZ());
         VarInts.writeInt(buffer, packet.getDimension().getValue());
         VarInts.writeUnsignedInt(buffer, packet.getSubChunksCount());
-        helper.writeOptionalNull(buffer, packet.getClientRequestSubChunkLimit(), VarInts::writeInt);
+        helper.writeOptional(buffer, value -> packet.isClientNeedsToRequestSubChunks(), packet.getClientRequestSubChunkLimit(), VarInts::writeInt);
         buffer.writeBoolean(packet.isCacheEnabled());
         helper.writeArray(buffer, packet.getCacheBlobs(), ByteBuf::writeLongLE);
         helper.writeByteBuf(buffer, packet.getSerializedChunkData());
@@ -34,7 +34,10 @@ public class LevelChunkSerializer_v2168 extends LevelChunkSerializer_v649 {
         packet.setChunkZ(VarInts.readInt(buffer));
         packet.setDimension(DimensionType.from(VarInts.readInt(buffer)));
         packet.setSubChunksCount(VarInts.readUnsignedInt(buffer));
-        packet.setClientRequestSubChunkLimit(helper.readOptional(buffer, null, VarInts::readInt));
+        packet.setClientRequestSubChunkLimit(helper.readOptional(buffer, null, (buf, codecHelper) -> {
+            packet.setClientNeedsToRequestSubChunks(true);
+            return VarInts.readInt(buf);
+        }));
         packet.setCacheEnabled(buffer.readBoolean());
         helper.readArray(buffer, packet.getCacheBlobs(), ByteBuf::readLongLE, MAX_BLOBS);
         packet.setSerializedChunkData(helper.readByteBuf(buffer));
