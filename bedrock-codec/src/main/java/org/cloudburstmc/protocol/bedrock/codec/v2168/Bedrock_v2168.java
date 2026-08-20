@@ -103,12 +103,6 @@ public class Bedrock_v2168 extends Bedrock_v1001 {
             .update(ActorDataTypes.DATA_PARTICLE, new TypeMapTransformer<>(PARTICLE_TYPES))
             .build();
 
-    protected static final TypeMap<AnimatedTextureType> ANIMATED_TEXTURE_TYPES = TypeMap.builder(AnimatedTextureType.class)
-            .insert(0, AnimatedTextureType.FACE)
-            .insert(1, AnimatedTextureType.BODY_32X32)
-            .insert(2, AnimatedTextureType.BODY_128X128)
-            .build();
-
     public static final BedrockCodec CODEC = Bedrock_v1001.CODEC.toBuilder()
             .raknetProtocolVersion(11)
             .protocolVersion(2168)
