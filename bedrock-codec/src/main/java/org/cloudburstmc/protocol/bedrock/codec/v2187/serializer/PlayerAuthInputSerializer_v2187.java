@@ -11,6 +11,9 @@ import org.cloudburstmc.protocol.bedrock.data.ClientPlayMode;
 import org.cloudburstmc.protocol.bedrock.data.InputInteractionModel;
 import org.cloudburstmc.protocol.bedrock.data.InputMode;
 import org.cloudburstmc.protocol.bedrock.data.PlayerAuthInputData;
+import org.cloudburstmc.protocol.bedrock.data.payload.inventory.net.ItemStackLegacyRequestId;
+import org.cloudburstmc.protocol.bedrock.data.payload.inventory.transaction.LegacySetSlot;
+import org.cloudburstmc.protocol.bedrock.data.payload.inventory.transaction.data.PackedLegacyItemUseInventoryTransaction;
 import org.cloudburstmc.protocol.bedrock.packet.PlayerAuthInputPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -38,11 +41,13 @@ public class PlayerAuthInputSerializer_v2187 extends PlayerAuthInputSerializer_v
         helper.writeVector3f(buffer, packet.getPosDelta());
         helper.writeOptionalNull(buffer, packet.getItemUseTransaction(), this::writePackedLegacyItemUseInventoryTransaction);
         helper.writeOptionalNull(buffer, packet.getItemStackRequest(), helper::writeItemStackRequest);
-        final boolean hasPlayerBlockActions = !packet.getPlayerBlockActions().isEmpty();
-        buffer.writeBoolean(hasPlayerBlockActions);
-        if (hasPlayerBlockActions) {
-            helper.writeArray(buffer, packet.getPlayerBlockActions(), this::writePlayerBlockActionData);
-        }
+        helper.writeOptional(
+                buffer,
+                o -> !packet.getPlayerBlockActions().isEmpty(),
+                packet.getPlayerBlockActions(),
+                (buf, codecHelper, playerBlockActions) ->
+                        codecHelper.writeArray(buf, packet.getPlayerBlockActions(), this::writePlayerBlockActionData)
+        );
         helper.writeOptionalNull(buffer, packet.getVehicleRotation(), helper::writeVector2f);
         helper.writeOptionalNull(buffer, packet.getClientPredictedVehicle(), VarInts::writeLong);
         helper.writeVector2f(buffer, packet.getAnalogMoveVector());
@@ -67,11 +72,61 @@ public class PlayerAuthInputSerializer_v2187 extends PlayerAuthInputSerializer_v
         packet.setPosDelta(helper.readVector3f(buffer));
         packet.setItemUseTransaction(helper.readOptional(buffer, null, this::readPackedLegacyItemUseInventoryTransaction));
         packet.setItemStackRequest(helper.readOptional(buffer, null, helper::readItemStackRequest));
-        helper.readArray(buffer, packet.getPlayerBlockActions(), this::readPlayerBlockActionData, helper.getEncodingSettings().maxPlayerBlockActionDataSize());
+        helper.readOptional(buffer, null, (buf, codecHelper) -> {
+            codecHelper.readArray(
+                    buf,
+                    packet.getPlayerBlockActions(),
+                    this::readPlayerBlockActionData,
+                    codecHelper.getEncodingSettings().maxPlayerBlockActionDataSize()
+            );
+            return null;
+        });
         packet.setVehicleRotation(helper.readOptional(buffer, null, helper::readVector2f));
         packet.setClientPredictedVehicle(helper.readOptional(buffer, null, VarInts::readLong));
         packet.setAnalogMoveVector(helper.readVector2f(buffer));
         packet.setCameraOrientation(helper.readVector3f(buffer));
         packet.setRawMoveVector(helper.readVector2f(buffer));
+    }
+
+    @Override
+    protected void writePackedLegacyItemUseInventoryTransaction(ByteBuf buffer, BedrockCodecHelper helper, PackedLegacyItemUseInventoryTransaction transaction) {
+        VarInts.writeInt(buffer, transaction.getLegacyRequestID().getID());
+        helper.writeOptional(
+                buffer,
+                o -> !transaction.getLegacySetItemSlots().isEmpty(),
+                transaction.getLegacySetItemSlots(),
+                (buf, codecHelper, legacySetSlots) ->
+                        codecHelper.writeArray(buf, transaction.getLegacySetItemSlots(),
+                                (buf1, helper1, slot) -> {
+                                    helper1.writeContainerEnumName(buf1, slot.getContainerEnum());
+                                    helper1.writeByteArray(buf1, slot.getSlots());
+                                }
+                        )
+        );
+        helper.writeArray(buffer, transaction.getActions(), this::writeInventoryAction);
+        helper.writeItemUseInventoryTransaction(buffer, transaction.getTransaction());
+    }
+
+    @Override
+    protected PackedLegacyItemUseInventoryTransaction readPackedLegacyItemUseInventoryTransaction(ByteBuf buffer, BedrockCodecHelper helper) {
+        final PackedLegacyItemUseInventoryTransaction transaction = new PackedLegacyItemUseInventoryTransaction();
+        transaction.setLegacyRequestID(new ItemStackLegacyRequestId(VarInts.readInt(buffer)));
+        helper.readOptional(buffer, null, (buf, codecHelper) -> {
+            codecHelper.readArray(buf, transaction.getLegacySetItemSlots(), (buf1, helper1) -> {
+                final LegacySetSlot slot = new LegacySetSlot();
+                slot.setContainerEnum(helper1.readContainerEnumName(buf1));
+                slot.setSlots(helper1.readByteArray(buf1));
+                return slot;
+            });
+            return null;
+        });
+        helper.readArray(
+                buffer,
+                transaction.getActions(),
+                this::readInventoryAction,
+                helper.getEncodingSettings().maxInventoryActionsOrRequests()
+        );
+        transaction.setTransaction(helper.readItemUseInventoryTransaction(buffer));
+        return transaction;
     }
 }
