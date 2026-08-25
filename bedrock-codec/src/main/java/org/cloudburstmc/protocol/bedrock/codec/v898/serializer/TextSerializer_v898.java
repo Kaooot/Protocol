@@ -37,7 +37,12 @@ public class TextSerializer_v898 implements BedrockPacketSerializer<TextPacket> 
         this.writeMessageBody(buffer, helper, body);
         helper.writeString(buffer, packet.getSendersXUID());
         helper.writeString(buffer, packet.getPlatformId());
-        helper.writeString(buffer, packet.getFilteredMessage());
+        helper.writeOptional(
+                buffer,
+                o -> !packet.getFilteredMessage().isEmpty(),
+                packet.getFilteredMessage(),
+                helper::writeString
+        );
     }
 
     @Override
@@ -58,7 +63,7 @@ public class TextSerializer_v898 implements BedrockPacketSerializer<TextPacket> 
         packet.setBody(this.readMessageBody(buffer, helper, bodyType));
         packet.setSendersXUID(helper.readStringMaxLen(buffer, 64));
         packet.setPlatformId(helper.readStringMaxLen(buffer, 256));
-        packet.setFilteredMessage(helper.readString(buffer));
+        packet.setFilteredMessage(helper.readOptional(buffer, "", helper::readString));
     }
 
     protected void writeMessageBody(ByteBuf buffer, BedrockCodecHelper helper, TextPacketBody body) {
