@@ -18,7 +18,7 @@ public class SpawnParticleEffectPacket implements BedrockPacket {
     private long actorId = -1;
     private Vector3f position;
     private String effectName;
-    private Optional<String> molangVariables;
+    private Optional<String> molangVariables = Optional.empty();
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {
