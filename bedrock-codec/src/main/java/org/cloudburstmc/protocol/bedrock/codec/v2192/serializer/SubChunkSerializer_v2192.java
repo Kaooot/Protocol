@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.codec.v2187.serializer;
+package org.cloudburstmc.protocol.bedrock.codec.v2192.serializer;
 
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
@@ -10,8 +10,8 @@ import org.cloudburstmc.protocol.common.util.VarInts;
  * @author Kaooot
  */
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
-public class SubChunkSerializer_v2187 extends SubChunkSerializer_v2168 {
-    public static final SubChunkSerializer_v2187 INSTANCE = new SubChunkSerializer_v2187();
+public class SubChunkSerializer_v2192 extends SubChunkSerializer_v2168 {
+    public static final SubChunkSerializer_v2192 INSTANCE = new SubChunkSerializer_v2192();
 
     protected static final int HEIGHT_MAP_ARRAY_LENGTH = 16;
 

@@ -87,11 +87,11 @@ public class CameraPreset {
     @Nullable
     private ControlScheme controlScheme;
     /**
-     * @since v2187
+     * @since v2192
      */
     private Boolean applyInheritedStartingRotation;
     /**
-     * @since v2187
+     * @since v2192
      */
     private Vector2f startingRotation;
 }

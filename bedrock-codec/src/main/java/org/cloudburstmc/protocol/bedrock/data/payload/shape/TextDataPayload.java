@@ -21,7 +21,7 @@ public class TextDataPayload implements ExtraShapeDataPayload {
      */
     private Integer backgroundColor;
     /**
-     * @since v2187
+     * @since v2192
      */
     private float lineGapHeight;
     /**

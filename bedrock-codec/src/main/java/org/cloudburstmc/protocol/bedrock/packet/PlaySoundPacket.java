@@ -20,7 +20,7 @@ public class PlaySoundPacket implements BedrockPacket {
      */
     private int loopCount;
     /**
-     * @since v2187
+     * @since v2192
      */
     private boolean bypassListenerRangeCheck;
     /**
@@ -28,7 +28,7 @@ public class PlaySoundPacket implements BedrockPacket {
      */
     private ServerSoundHandle serverSoundHandle;
     /**
-     * @since v2187
+     * @since v2192
      */
     private Float playbackPositionSeconds;
 

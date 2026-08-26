@@ -25,7 +25,7 @@ public class EnvironmentAttributeData {
      */
     private boolean noiseTransition;
     /**
-     * @since v2187
+     * @since v2192
      */
     private NoiseAlignment noiseAlignment;
 }
