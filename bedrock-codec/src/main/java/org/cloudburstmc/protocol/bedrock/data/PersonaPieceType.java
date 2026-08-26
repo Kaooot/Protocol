@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum PersonaPieceType {
+  UNKNOWN("unknown"),
+
   SKELETON("skeleton"),
 
   BODY("body"),
@@ -62,7 +64,9 @@ public enum PersonaPieceType {
 
   CLASSIC_SKIN("classicskin"),
 
-  EMOTE("emote");
+  EMOTE("emote"),
+
+  UNSUPPORTED("unsupported");
 
   private static final PersonaPieceType[] VALUES = values();
 

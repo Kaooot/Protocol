@@ -18,6 +18,8 @@ public class ItemUseInventoryTransaction {
 
   private int slot;
 
+  private HandSlot hand;
+
   private NetworkItemStackDescriptor item;
 
   private Vector3f fromPosition;
