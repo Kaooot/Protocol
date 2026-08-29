@@ -16,7 +16,7 @@ import java.util.UUID;
 public class ServerboundPackSettingChangePacket implements BedrockPacket {
     private UUID packId;
     private String packSettingName;
-    private Type packSettingDataType;
+    private Type packSettingValueType;
     private Object packSettingValue;
 
     @Override
@@ -41,7 +41,11 @@ public class ServerboundPackSettingChangePacket implements BedrockPacket {
     public enum Type {
         FLOAT,
         BOOLEAN,
-        STRING;
+        STRING,
+        /**
+         * @since v2192
+         */
+        ARRAY;
 
         private static final Type[] VALUES = values();
 

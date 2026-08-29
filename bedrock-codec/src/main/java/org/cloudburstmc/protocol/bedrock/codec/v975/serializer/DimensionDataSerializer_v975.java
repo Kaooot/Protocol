@@ -30,6 +30,6 @@ public class DimensionDataSerializer_v975 extends DimensionDataSerializer_v503 {
         final int minimumHeight = VarInts.readInt(buffer);
         final GeneratorType generatorType = GeneratorType.from(VarInts.readInt(buffer));
         final DimensionType dimensionType = DimensionType.from(VarInts.readInt(buffer));
-        return new DimensionDefinition(id, maximumHeight, minimumHeight, generatorType, dimensionType, null);
+        return new DimensionDefinition(id, maximumHeight, minimumHeight, generatorType, dimensionType, null, null);
     }
 }

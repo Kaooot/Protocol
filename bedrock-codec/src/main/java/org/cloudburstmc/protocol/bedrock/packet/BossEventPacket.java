@@ -14,6 +14,9 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 public class BossEventPacket implements BedrockPacket {
     private long targetActorID;
     private BossEventUpdateType eventType;
+    /**
+     * @deprecated since v2192
+     */
     private long playerID;
     private String name = "";
     private String filteredName = "";

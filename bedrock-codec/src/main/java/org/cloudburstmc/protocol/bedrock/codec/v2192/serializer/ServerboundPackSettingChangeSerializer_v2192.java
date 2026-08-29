@@ -1,16 +1,22 @@
-package org.cloudburstmc.protocol.bedrock.codec.v844.serializer;
+package org.cloudburstmc.protocol.bedrock.codec.v2192.serializer;
 
 import io.netty.buffer.ByteBuf;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
-import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
+import org.cloudburstmc.protocol.bedrock.codec.v844.serializer.ServerboundPackSettingChangeSerializer_v844;
 import org.cloudburstmc.protocol.bedrock.packet.ServerboundPackSettingChangePacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
+
+import java.util.List;
 
 /**
  * @author Kaooot
  */
-public class ServerboundPackSettingChangeSerializer_v844 implements BedrockPacketSerializer<ServerboundPackSettingChangePacket> {
-    public static final ServerboundPackSettingChangeSerializer_v844 INSTANCE = new ServerboundPackSettingChangeSerializer_v844();
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class ServerboundPackSettingChangeSerializer_v2192 extends ServerboundPackSettingChangeSerializer_v844 {
+    public static final ServerboundPackSettingChangeSerializer_v2192 INSTANCE = new ServerboundPackSettingChangeSerializer_v2192();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ServerboundPackSettingChangePacket packet) {
@@ -30,6 +36,9 @@ public class ServerboundPackSettingChangeSerializer_v844 implements BedrockPacke
             case STRING:
                 helper.writeString(buffer, (String) value);
                 break;
+            case ARRAY:
+                helper.writeArray(buffer, (List<String>) value, helper::writeString);
+                break;
         }
     }
 
@@ -48,6 +57,11 @@ public class ServerboundPackSettingChangeSerializer_v844 implements BedrockPacke
                 break;
             case STRING:
                 packet.setPackSettingValue(helper.readString(buffer));
+                break;
+            case ARRAY:
+                final List<String> value = new ObjectArrayList<>();
+                helper.readArray(buffer, value, helper::readString);
+                packet.setPackSettingValue(value);
                 break;
         }
     }

@@ -1,10 +1,10 @@
-package org.cloudburstmc.protocol.bedrock.codec.v2168.serializer;
+package org.cloudburstmc.protocol.bedrock.codec.v2192.serializer;
 
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
-import org.cloudburstmc.protocol.bedrock.codec.v975.serializer.DimensionDataSerializer_v975;
+import org.cloudburstmc.protocol.bedrock.codec.v2168.serializer.DimensionDataSerializer_v2168;
 import org.cloudburstmc.protocol.bedrock.data.GeneratorType;
 import org.cloudburstmc.protocol.bedrock.data.definitions.DimensionDefinition;
 import org.cloudburstmc.protocol.bedrock.data.payload.common.DimensionType;
@@ -16,13 +16,13 @@ import java.util.UUID;
  * @author Kaooot
  */
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class DimensionDataSerializer_v2168 extends DimensionDataSerializer_v975 {
-    public static final DimensionDataSerializer_v2168 INSTANCE = new DimensionDataSerializer_v2168();
+public class DimensionDataSerializer_v2192 extends DimensionDataSerializer_v2168 {
+    public static final DimensionDataSerializer_v2192 INSTANCE = new DimensionDataSerializer_v2192();
 
     @Override
     protected void writeDefinition(ByteBuf buffer, BedrockCodecHelper helper, DimensionDefinition definition) {
         super.writeDefinition(buffer, helper, definition);
-        helper.writeUuid(buffer, definition.getPackId());
+        helper.writeString(buffer, definition.getDefaultBiome());
     }
 
     @Override
@@ -33,6 +33,7 @@ public class DimensionDataSerializer_v2168 extends DimensionDataSerializer_v975 
         final GeneratorType generatorType = GeneratorType.from(VarInts.readInt(buffer));
         final DimensionType dimensionType = DimensionType.from(VarInts.readInt(buffer));
         final UUID packId = helper.readUuid(buffer);
-        return new DimensionDefinition(id, maximumHeight, minimumHeight, generatorType, dimensionType, packId, null);
+        final String defaultBiome = helper.readStringMaxLen(buffer, 256);
+        return new DimensionDefinition(id, maximumHeight, minimumHeight, generatorType, dimensionType, packId, defaultBiome);
     }
 }

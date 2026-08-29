@@ -20,4 +20,8 @@ public class DimensionDefinition {
      * @since v2168
      */
     UUID packId;
+    /**
+     * @since v2192
+     */
+    String defaultBiome;
 }
