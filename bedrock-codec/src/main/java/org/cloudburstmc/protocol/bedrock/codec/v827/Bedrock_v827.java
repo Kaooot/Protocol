@@ -26,7 +26,6 @@ public class Bedrock_v827 extends Bedrock_v819 {
             .build();
 
     public static final BedrockCodec CODEC = Bedrock_v819.CODEC.toBuilder()
-            .raknetProtocolVersion(11)
             .protocolVersion(827)
             .minecraftVersion("1.21.100")
             .updateSerializer(StartGamePacket.class, StartGameSerializer_v827.INSTANCE)

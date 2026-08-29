@@ -10,7 +10,6 @@ import org.cloudburstmc.protocol.bedrock.packet.*;
 public class Bedrock_v748 extends Bedrock_v729 {
 
     public static final BedrockCodec CODEC = Bedrock_v729.CODEC.toBuilder()
-            .raknetProtocolVersion(11)
             .protocolVersion(748)
             .minecraftVersion("1.21.40")
             .helper(() -> new BedrockCodecHelper_v729(ACTOR_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES, PLAYER_ABILITIES, TEXT_PROCESSING_ORIGINS))

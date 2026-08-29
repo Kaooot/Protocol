@@ -30,7 +30,6 @@ public class Bedrock_v729 extends Bedrock_v712 {
             .build();
 
     public static final BedrockCodec CODEC = Bedrock_v712.CODEC.toBuilder()
-            .raknetProtocolVersion(11)
             .protocolVersion(729)
             .minecraftVersion("1.21.30")
             .helper(() -> new BedrockCodecHelper_v729(ACTOR_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES, PLAYER_ABILITIES, TEXT_PROCESSING_ORIGINS))

@@ -48,7 +48,6 @@ public class Bedrock_v800 extends Bedrock_v786 {
 
     @SuppressWarnings("deprecation")
     public static final BedrockCodec CODEC = Bedrock_v786.CODEC.toBuilder()
-            .raknetProtocolVersion(11)
             .protocolVersion(800)
             .minecraftVersion("1.21.80")
             .helper(() -> new BedrockCodecHelper_v776(ACTOR_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES, PLAYER_ABILITIES, TEXT_PROCESSING_ORIGINS))
