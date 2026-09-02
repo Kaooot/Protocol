@@ -226,5 +226,9 @@ public enum MemoryCategory {
     /**
      * @since v2168
      */
-    GAMEFACE_LAYOUT
+    GAMEFACE_LAYOUT,
+    /**
+     * @since v2207
+     */
+    EXECUTABLE
 }

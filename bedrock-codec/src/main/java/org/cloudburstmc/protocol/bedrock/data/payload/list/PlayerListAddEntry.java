@@ -17,6 +17,10 @@ public class PlayerListAddEntry implements PlayerListEntry {
     private long actorUniqueID;
     private String playerName;
     private String xblXUID;
+    /**
+     * @since v2207
+     */
+    private String playFabID;
     private String platformOnlineID;
     private BuildPlatform buildPlatform;
     /**

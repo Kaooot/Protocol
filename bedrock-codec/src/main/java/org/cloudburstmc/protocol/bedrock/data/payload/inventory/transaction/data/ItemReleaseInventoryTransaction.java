@@ -2,6 +2,7 @@ package org.cloudburstmc.protocol.bedrock.data.payload.inventory.transaction.dat
 
 import lombok.Data;
 import org.cloudburstmc.math.vector.Vector3f;
+import org.cloudburstmc.protocol.bedrock.data.HandSlot;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
 import org.cloudburstmc.protocol.bedrock.data.payload.inventory.transaction.InventoryTransaction;
 import org.cloudburstmc.protocol.bedrock.data.payload.inventory.transaction.ItemReleaseActionType;
@@ -17,6 +18,10 @@ public class ItemReleaseInventoryTransaction implements InventoryTransactionData
     private int slot;
     private ItemData item;
     private Vector3f fromPosition;
+    /**
+     * @since v2207
+     */
+    private HandSlot hand;
 
     @Override
     public InventoryTransactionDataType getType() {

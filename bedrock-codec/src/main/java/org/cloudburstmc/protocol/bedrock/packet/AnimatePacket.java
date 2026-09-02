@@ -2,6 +2,7 @@ package org.cloudburstmc.protocol.bedrock.packet;
 
 import lombok.*;
 import org.cloudburstmc.protocol.bedrock.data.ActorSwingSource;
+import org.cloudburstmc.protocol.bedrock.data.HandSlot;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
@@ -18,6 +19,10 @@ public class AnimatePacket implements BedrockPacket {
      * @since v898
      */
     private ActorSwingSource swingSource;
+    /**
+     * @since v2207
+     */
+    private HandSlot hand = HandSlot.MAINHAND;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

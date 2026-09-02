@@ -2,6 +2,7 @@ package org.cloudburstmc.protocol.bedrock.data.payload.inventory.transaction.dat
 
 import lombok.Data;
 import org.cloudburstmc.math.vector.Vector3f;
+import org.cloudburstmc.protocol.bedrock.data.HandSlot;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
 import org.cloudburstmc.protocol.bedrock.data.payload.inventory.transaction.InventoryTransaction;
 import org.cloudburstmc.protocol.bedrock.data.payload.inventory.transaction.ItemUseOnActorActionType;
@@ -16,6 +17,10 @@ public class ItemUseOnActorInventoryTransaction implements InventoryTransactionD
     private long runtimeId;
     private ItemUseOnActorActionType actionType;
     private int slot;
+    /**
+     * @since v2207
+     */
+    private HandSlot hand;
     private ItemData item;
     private Vector3f fromPosition;
     private Vector3f hitPosition;

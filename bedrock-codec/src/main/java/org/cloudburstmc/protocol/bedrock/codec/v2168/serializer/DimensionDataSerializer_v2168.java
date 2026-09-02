@@ -33,6 +33,6 @@ public class DimensionDataSerializer_v2168 extends DimensionDataSerializer_v975 
         final GeneratorType generatorType = GeneratorType.from(VarInts.readInt(buffer));
         final DimensionType dimensionType = DimensionType.from(VarInts.readInt(buffer));
         final UUID packId = helper.readUuid(buffer);
-        return new DimensionDefinition(id, maximumHeight, minimumHeight, generatorType, dimensionType, packId, null);
+        return new DimensionDefinition(id, maximumHeight, minimumHeight, generatorType, dimensionType, packId, null, 0, false);
     }
 }

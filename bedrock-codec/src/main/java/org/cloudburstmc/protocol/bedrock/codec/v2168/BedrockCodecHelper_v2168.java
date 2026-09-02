@@ -75,6 +75,38 @@ public class BedrockCodecHelper_v2168 extends BedrockCodecHelper_v1001 {
             .insert(19, ItemStackRequestActionType.CRAFT_RESULTS)
             .build();
 
+    protected TypeMap<PieceType> personaPieceTypeMap = TypeMap.builder(PieceType.class)
+            .insert(0, PieceType.UNKNOWN)
+            .insert(1, PieceType.SKELETON)
+            .insert(2, PieceType.BODY)
+            .insert(3, PieceType.SKIN)
+            .insert(4, PieceType.BOTTOM)
+            .insert(5, PieceType.FEET)
+            .insert(6, PieceType.DRESS)
+            .insert(7, PieceType.TOP)
+            .insert(8, PieceType.HIGH_PANTS)
+            .insert(9, PieceType.HANDS)
+            .insert(10, PieceType.OUTERWEAR)
+            .insert(11, PieceType.FACIAL_HAIR)
+            .insert(12, PieceType.MOUTH)
+            .insert(13, PieceType.EYES)
+            .insert(14, PieceType.HAIR)
+            .insert(15, PieceType.HOOD)
+            .insert(16, PieceType.BACK)
+            .insert(17, PieceType.FACE_ACCESSORY)
+            .insert(18, PieceType.HEAD)
+            .insert(19, PieceType.LEGS)
+            .insert(20, PieceType.LEFT_LEG)
+            .insert(21, PieceType.RIGHT_LEG)
+            .insert(22, PieceType.ARMS)
+            .insert(23, PieceType.LEFT_ARM)
+            .insert(24, PieceType.RIGHT_ARM)
+            .insert(25, PieceType.CAPES)
+            .insert(26, PieceType.CLASSIC_SKIN)
+            .insert(27, PieceType.EMOTE)
+            .insert(28, PieceType.UNSUPPORTED)
+            .build();
+
     public BedrockCodecHelper_v2168(ActorDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes, TypeMap<ItemStackRequestActionType> stackRequestActionTypes, TypeMap<ContainerEnumName> containerSlotTypes, TypeMap<AbilitiesIndex> abilities, TypeMap<TextProcessingEventOrigin> textProcessingEventOrigins) {
         super(entityData, gameRulesTypes, stackRequestActionTypes, containerSlotTypes, abilities, textProcessingEventOrigins);
     }
@@ -1081,7 +1113,7 @@ public class BedrockCodecHelper_v2168 extends BedrockCodecHelper_v1001 {
 
     protected void writeSerializedPersonaPieceHandle(ByteBuf buffer, SerializedPersonaPieceHandle handle) {
         this.writeString(buffer, handle.getPieceId());
-        buffer.writeIntLE(handle.getPieceType().ordinal());
+        buffer.writeIntLE(this.personaPieceTypeMap.getId(handle.getPieceType()));
         this.writeUuid(buffer, handle.getPackId());
         buffer.writeBoolean(handle.isDefaultPiece());
         this.writeString(buffer, handle.getProductId());
@@ -1090,7 +1122,7 @@ public class BedrockCodecHelper_v2168 extends BedrockCodecHelper_v1001 {
     protected SerializedPersonaPieceHandle readSerializedPersonaPieceHandle(ByteBuf buffer) {
         final SerializedPersonaPieceHandle handle = new SerializedPersonaPieceHandle();
         handle.setPieceId(this.readString(buffer));
-        handle.setPieceType(PieceType.from(buffer.readIntLE()));
+        handle.setPieceType(this.personaPieceTypeMap.getType(buffer.readIntLE()));
         handle.setPackId(this.readUuid(buffer));
         handle.setDefaultPiece(buffer.readBoolean());
         handle.setProductId(this.readString(buffer));

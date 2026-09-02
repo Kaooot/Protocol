@@ -38,19 +38,16 @@ public enum PieceType {
     CAPES("capes", "persona_capes"),
     CLASSIC_SKIN("classicskin", "persona_classic_skin"),
     EMOTE("emote", "persona_emote"),
+    /**
+     * @since v2207
+     */
+    CO_CO("coco", "persona_coco"),
     UNSUPPORTED("unsupported", "unsupported");
 
     private static final PieceType[] VALUES = values();
 
     private final String id;
     private final String personaId;
-
-    public static PieceType from(int ordinal) {
-        if (ordinal >= 0 && ordinal < VALUES.length) {
-            return VALUES[ordinal];
-        }
-        return UNKNOWN;
-    }
 
     public static PieceType from(String value) {
         for (PieceType pieceType : VALUES) {
