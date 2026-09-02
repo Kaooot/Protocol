@@ -19,25 +19,25 @@ public class ClientboundUpdateSoundDataSerializer_v2168 extends ClientboundUpdat
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ClientboundUpdateSoundDataPacket packet) {
         helper.writeServerSoundHandle(buffer, packet.getServerSoundHandle());
-        helper.writeOptionalNull(buffer, packet.getStop(), this::writeSoundData);
-        helper.writeOptionalNull(buffer, packet.getSetVolume(), this::writeSoundData);
-        helper.writeOptionalNull(buffer, packet.getSetPitch(), this::writeSoundData);
-        helper.writeOptionalNull(buffer, packet.getFade(), this::writeSoundData);
-        helper.writeOptionalNull(buffer, packet.getSeekTo(), this::writeSoundData);
-        helper.writeOptionalNull(buffer, packet.getPause(), this::writeSoundData);
-        helper.writeOptionalNull(buffer, packet.getResume(), this::writeSoundData);
+        this.writeSoundData(buffer, helper, packet.getStop());
+        this.writeSoundData(buffer, helper, packet.getSetVolume());
+        this.writeSoundData(buffer, helper, packet.getSetPitch());
+        this.writeSoundData(buffer, helper, packet.getFade());
+        this.writeSoundData(buffer, helper, packet.getSeekTo());
+        this.writeSoundData(buffer, helper, packet.getPause());
+        this.writeSoundData(buffer, helper, packet.getResume());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ClientboundUpdateSoundDataPacket packet) {
         packet.setServerSoundHandle(helper.readServerSoundHandle(buffer));
-        packet.setStop(helper.readOptional(buffer, null, this::readSoundData));
-        packet.setSetVolume(helper.readOptional(buffer, null, this::readSoundData));
-        packet.setSetPitch(helper.readOptional(buffer, null, this::readSoundData));
-        packet.setFade(helper.readOptional(buffer, null, this::readSoundData));
-        packet.setSeekTo(helper.readOptional(buffer, null, this::readSoundData));
-        packet.setPause(helper.readOptional(buffer, null, this::readSoundData));
-        packet.setResume(helper.readOptional(buffer, null, this::readSoundData));
+        packet.setStop(this.readSoundData(buffer, helper));
+        packet.setSetVolume(this.readSoundData(buffer, helper));
+        packet.setSetPitch(this.readSoundData(buffer, helper));
+        packet.setFade(this.readSoundData(buffer, helper));
+        packet.setSeekTo(this.readSoundData(buffer, helper));
+        packet.setPause(this.readSoundData(buffer, helper));
+        packet.setResume(this.readSoundData(buffer, helper));
     }
 
     protected void writeSoundData(ByteBuf buffer, BedrockCodecHelper helper, SoundData soundData) {
