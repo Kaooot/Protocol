@@ -32,7 +32,7 @@ public class CommandBlockUpdateSerializer_v776 extends CommandBlockUpdateSeriali
         packet.setName(helper.readString(buffer));
         packet.setFilteredName(helper.readString(buffer));
         packet.setTrackOutput(buffer.readBoolean());
-        buffer.writeIntLE(packet.getTickDelay());
-        buffer.writeBoolean(packet.isExecuteOnFirstTick());
+        packet.setTickDelay(buffer.readIntLE());
+        packet.setExecuteOnFirstTick(buffer.readBoolean());
     }
 }
