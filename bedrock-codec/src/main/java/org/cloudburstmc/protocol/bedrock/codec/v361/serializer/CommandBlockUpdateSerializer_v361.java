@@ -20,8 +20,8 @@ public class CommandBlockUpdateSerializer_v361 extends CommandBlockUpdateSeriali
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, CommandBlockUpdatePacket packet) {
-        super.serialize(buffer, helper, packet);
-        buffer.writeIntLE(packet.getTickDelay());
-        buffer.writeBoolean(packet.isExecuteOnFirstTick());
+        super.deserialize(buffer, helper, packet);
+        packet.setTickDelay(buffer.readIntLE());
+        packet.setExecuteOnFirstTick(buffer.readBoolean());
     }
 }

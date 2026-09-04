@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v361.serializer.CommandBlockUpdateSerializer_v361;
 import org.cloudburstmc.protocol.bedrock.packet.CommandBlockUpdatePacket;
-import org.cloudburstmc.protocol.common.util.VarInts;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CommandBlockUpdateSerializer_v776 extends CommandBlockUpdateSerializer_v361 {
@@ -32,7 +31,7 @@ public class CommandBlockUpdateSerializer_v776 extends CommandBlockUpdateSeriali
         packet.setName(helper.readString(buffer));
         packet.setFilteredName(helper.readString(buffer));
         packet.setTrackOutput(buffer.readBoolean());
-        buffer.writeIntLE(packet.getTickDelay());
-        buffer.writeBoolean(packet.isExecuteOnFirstTick());
+        packet.setTickDelay(buffer.readIntLE());
+        packet.setExecuteOnFirstTick(buffer.readBoolean());
     }
 }
