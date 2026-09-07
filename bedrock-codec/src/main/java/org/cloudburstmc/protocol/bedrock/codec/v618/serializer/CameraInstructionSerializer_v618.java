@@ -33,12 +33,14 @@ public class CameraInstructionSerializer_v618 implements BedrockPacketSerializer
         DefinitionUtils.checkDefinition(helper.getCameraPresetDefinitions(), instruction.getPreset());
         buffer.writeIntLE(instruction.getPreset().getRuntimeId());
         helper.writeOptionalNull(buffer, instruction.getEase(), this::writeEaseOption);
-        helper.writeOptionalNull(buffer, instruction.getPos().getPos(), helper::writeVector3f);
+        helper.writeOptionalNull(buffer, instruction.getPos(),
+                (buf, codecHelper, posOption) -> codecHelper.writeVector3f(buf, posOption.getPos()));
         helper.writeOptionalNull(buffer, instruction.getRot(), (buf, codecHelper, rotOption) -> {
             buf.writeFloatLE(rotOption.getX());
             buf.writeFloatLE(rotOption.getY());
         });
-        helper.writeOptionalNull(buffer, instruction.getFacing().getPos(), helper::writeVector3f);
+        helper.writeOptionalNull(buffer, instruction.getFacing(),
+                (buf, codecHelper, facingOption) -> codecHelper.writeVector3f(buf, facingOption.getPos()));
         helper.writeOptional(buffer, OptionalBoolean::isPresent, instruction.getDefaultValue(),
                 (b, optional) -> b.writeBoolean(optional.getAsBoolean()));
     }

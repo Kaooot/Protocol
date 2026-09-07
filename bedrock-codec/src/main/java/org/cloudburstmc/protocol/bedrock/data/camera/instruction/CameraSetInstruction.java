@@ -9,17 +9,17 @@ public class CameraSetInstruction {
 
     private NamedDefinition preset;
     private EaseOption ease;
-    private PosOption pos = new PosOption();
-    private RotOption rot = new RotOption();
-    private FacingOption facing = new FacingOption();
+    private PosOption pos ;
+    private RotOption rot;
+    private FacingOption facing;
     /**
      * @since v712
      */
-    private ViewOffsetOption viewOffset = new ViewOffsetOption();
+    private ViewOffsetOption viewOffset;
     /**
      * @since v748
      */
-    private EntityOffsetOption entityOffset = new EntityOffsetOption();
+    private EntityOffsetOption entityOffset;
     private OptionalBoolean defaultValue = OptionalBoolean.empty();
     /**
      * @since v818
