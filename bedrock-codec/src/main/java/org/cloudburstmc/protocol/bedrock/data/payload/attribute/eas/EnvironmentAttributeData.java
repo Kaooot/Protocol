@@ -1,7 +1,7 @@
 package org.cloudburstmc.protocol.bedrock.data.payload.attribute.eas;
 
 import lombok.Data;
-import org.cloudburstmc.protocol.bedrock.data.camera.EasingType;
+import org.cloudburstmc.protocol.bedrock.data.camera.EasingFunction;
 
 /**
  * @author Kaooot
@@ -42,7 +42,7 @@ public class EnvironmentAttributeData {
      * @deprecated since v2207, replaced by {@link #payload}. Still used by pre-v2207 codecs.
      */
     @Deprecated
-    private EasingType easing;
+    private EasingFunction easing;
     /**
      * @since v1001
      * @deprecated since v2207, replaced by {@link #payload}. Still used by pre-v2207 codecs.

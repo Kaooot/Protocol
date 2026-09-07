@@ -10,5 +10,5 @@ public class CameraSplineProgressKeyFrame {
 
     float progress;
     float time;
-    EasingType easing;
+    EasingFunction easing;
 }

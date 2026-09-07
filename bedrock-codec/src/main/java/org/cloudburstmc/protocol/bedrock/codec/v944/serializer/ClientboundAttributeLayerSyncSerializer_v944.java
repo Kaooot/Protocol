@@ -5,8 +5,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
-import org.cloudburstmc.protocol.bedrock.data.Dimension;
-import org.cloudburstmc.protocol.bedrock.data.camera.EasingType;
+import org.cloudburstmc.protocol.bedrock.data.camera.EasingFunction;
 import org.cloudburstmc.protocol.bedrock.data.payload.attribute.*;
 import org.cloudburstmc.protocol.bedrock.data.payload.attribute.eas.*;
 import org.cloudburstmc.protocol.bedrock.data.payload.common.DimensionType;
@@ -164,7 +163,7 @@ public class ClientboundAttributeLayerSyncSerializer_v944 implements BedrockPack
         data.setToAttribute(helper.readOptional(buffer, null, this::readAttributeData));
         data.setCurrentTransitionTicks(buffer.readIntLE());
         data.setTotalTransitionTicks(buffer.readIntLE());
-        data.setEasing(EasingType.fromName(helper.readString(buffer)));
+        data.setEasing(EasingFunction.fromName(helper.readString(buffer)));
         return data;
     }
 

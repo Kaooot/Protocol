@@ -3,41 +3,15 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.protocol.bedrock.data.camera.*;
+import org.cloudburstmc.protocol.bedrock.data.camera.instruction.CameraInstruction;
 import org.cloudburstmc.protocol.common.PacketSignal;
-import org.cloudburstmc.protocol.common.util.OptionalBoolean;
 
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class CameraInstructionPacket implements BedrockPacket {
-    private CameraSetInstruction setInstruction;
-    private OptionalBoolean clear = OptionalBoolean.empty();
-    private CameraFadeInstruction fadeInstruction;
-    /**
-     * @since v712
-     */
-    private CameraTargetInstruction targetInstruction;
-    /**
-     * @since v712
-     */
-    private OptionalBoolean removeTarget = OptionalBoolean.empty();
-    /**
-     * @since v827
-     */
-    private CameraFovInstruction fovInstruction;
-    /**
-     * @since v859
-     */
-    private CameraSplineInstruction splineInstruction;
-    /**
-     * @since v859
-     */
-    private CameraAttachToEntityInstruction attachToEntityInstruction;
-    /**
-     * @since v859
-     */
-    private OptionalBoolean detachFromEntity = OptionalBoolean.empty();
+
+    private CameraInstruction cameraInstruction = new CameraInstruction();
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {
@@ -49,14 +23,6 @@ public class CameraInstructionPacket implements BedrockPacket {
         return BedrockPacketType.CAMERA_INSTRUCTION;
     }
 
-    public void setClear(boolean value) {
-        this.clear = OptionalBoolean.of(value);
-    }
-
-    public void setClear(OptionalBoolean clear) {
-        this.clear = clear;
-    }
-
     @Override
     public CameraInstructionPacket clone() {
         try {
@@ -66,4 +32,3 @@ public class CameraInstructionPacket implements BedrockPacket {
         }
     }
 }
-

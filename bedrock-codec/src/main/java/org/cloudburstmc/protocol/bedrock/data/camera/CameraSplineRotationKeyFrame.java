@@ -11,5 +11,5 @@ public class CameraSplineRotationKeyFrame {
 
     Vector3f rotation;
     float time;
-    EasingType easing;
+    EasingFunction easing;
 }

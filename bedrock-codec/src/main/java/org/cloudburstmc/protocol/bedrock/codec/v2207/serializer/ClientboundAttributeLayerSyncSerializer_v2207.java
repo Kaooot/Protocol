@@ -5,7 +5,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v2192.serializer.ClientboundAttributeLayerSyncSerializer_v2192;
-import org.cloudburstmc.protocol.bedrock.data.camera.EasingType;
+import org.cloudburstmc.protocol.bedrock.data.camera.EasingFunction;
 import org.cloudburstmc.protocol.bedrock.data.payload.attribute.eas.AttributeLayerData;
 import org.cloudburstmc.protocol.bedrock.data.payload.attribute.eas.ConstantAttributeData;
 import org.cloudburstmc.protocol.bedrock.data.payload.attribute.eas.EnvironmentAttributeData;
@@ -34,42 +34,42 @@ public class ClientboundAttributeLayerSyncSerializer_v2207 extends ClientboundAt
     protected static final int SETTINGS_NAME_LENGTH = 128;
 
     /**
-     * {@code easing_function} enum-as-value mapping. The binary values do not follow the {@link EasingType}
+     * {@code easing_function} enum-as-value mapping. The binary values do not follow the {@link EasingFunction}
      * declaration order, so they are mapped explicitly.
      */
-    protected static final TypeMap<EasingType> EASING_FUNCTIONS = TypeMap.builder(EasingType.class)
-            .insert(0, EasingType.LINEAR)
-            .insert(1, EasingType.SPRING)
-            .insert(2, EasingType.EASE_IN_QUAD)
-            .insert(3, EasingType.EASE_OUT_QUAD)
-            .insert(4, EasingType.EASE_IN_OUT_QUAD)
-            .insert(5, EasingType.EASE_IN_CUBIC)
-            .insert(6, EasingType.EASE_OUT_CUBIC)
-            .insert(7, EasingType.EASE_IN_OUT_CUBIC)
-            .insert(8, EasingType.EASE_IN_QUART)
-            .insert(9, EasingType.EASE_OUT_QUART)
-            .insert(10, EasingType.EASE_IN_OUT_QUART)
-            .insert(11, EasingType.EASE_IN_QUINT)
-            .insert(12, EasingType.EASE_OUT_QUINT)
-            .insert(13, EasingType.EASE_IN_OUT_QUINT)
-            .insert(14, EasingType.EASE_IN_SINE)
-            .insert(15, EasingType.EASE_OUT_SINE)
-            .insert(16, EasingType.EASE_IN_OUT_SINE)
-            .insert(17, EasingType.EASE_IN_EXPO)
-            .insert(18, EasingType.EASE_OUT_EXPO)
-            .insert(19, EasingType.EASE_IN_OUT_EXPO)
-            .insert(20, EasingType.EASE_IN_CIRC)
-            .insert(21, EasingType.EASE_OUT_CIRC)
-            .insert(22, EasingType.EASE_IN_OUT_CIRC)
-            .insert(23, EasingType.EASE_IN_BOUNCE)
-            .insert(24, EasingType.EASE_OUT_BOUNCE)
-            .insert(25, EasingType.EASE_IN_OUT_BOUNCE)
-            .insert(26, EasingType.EASE_IN_BACK)
-            .insert(27, EasingType.EASE_OUT_BACK)
-            .insert(28, EasingType.EASE_IN_OUT_BACK)
-            .insert(29, EasingType.EASE_IN_ELASTIC)
-            .insert(30, EasingType.EASE_OUT_ELASTIC)
-            .insert(31, EasingType.EASE_IN_OUT_ELASTIC)
+    protected static final TypeMap<EasingFunction> EASING_FUNCTIONS = TypeMap.builder(EasingFunction.class)
+            .insert(0, EasingFunction.LINEAR)
+            .insert(1, EasingFunction.SPRING)
+            .insert(2, EasingFunction.IN_QUAD)
+            .insert(3, EasingFunction.OUT_QUAD)
+            .insert(4, EasingFunction.IN_OUT_QUAD)
+            .insert(5, EasingFunction.IN_CUBIC)
+            .insert(6, EasingFunction.OUT_CUBIC)
+            .insert(7, EasingFunction.IN_OUT_CUBIC)
+            .insert(8, EasingFunction.IN_QUART)
+            .insert(9, EasingFunction.OUT_QUART)
+            .insert(10, EasingFunction.IN_OUT_QUART)
+            .insert(11, EasingFunction.IN_QUINT)
+            .insert(12, EasingFunction.OUT_QUINT)
+            .insert(13, EasingFunction.IN_OUT_QUINT)
+            .insert(14, EasingFunction.IN_SINE)
+            .insert(15, EasingFunction.OUT_SINE)
+            .insert(16, EasingFunction.IN_OUT_SINE)
+            .insert(17, EasingFunction.IN_EXPO)
+            .insert(18, EasingFunction.OUT_EXPO)
+            .insert(19, EasingFunction.IN_OUT_EXPO)
+            .insert(20, EasingFunction.IN_CIRC)
+            .insert(21, EasingFunction.OUT_CIRC)
+            .insert(22, EasingFunction.IN_OUT_CIRC)
+            .insert(23, EasingFunction.IN_BOUNCE)
+            .insert(24, EasingFunction.OUT_BOUNCE)
+            .insert(25, EasingFunction.IN_OUT_BOUNCE)
+            .insert(26, EasingFunction.IN_BACK)
+            .insert(27, EasingFunction.OUT_BACK)
+            .insert(28, EasingFunction.IN_OUT_BACK)
+            .insert(29, EasingFunction.IN_ELASTIC)
+            .insert(30, EasingFunction.OUT_ELASTIC)
+            .insert(31, EasingFunction.IN_OUT_ELASTIC)
             .build();
 
     @Override

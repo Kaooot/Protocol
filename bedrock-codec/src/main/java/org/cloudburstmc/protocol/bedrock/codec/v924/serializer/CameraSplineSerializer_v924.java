@@ -65,7 +65,7 @@ public class CameraSplineSerializer_v924 implements BedrockPacketSerializer<Came
     protected CameraSplineProgressKeyFrame readCameraSplineProgressKeyFrame(ByteBuf buffer, BedrockCodecHelper helper) {
         final float progress = buffer.readFloatLE();
         final float time = buffer.readFloatLE();
-        final EasingType easing = EasingType.fromName(helper.readString(buffer));
+        final EasingFunction easing = EasingFunction.fromName(helper.readString(buffer));
         return new CameraSplineProgressKeyFrame(progress, time, easing);
     }
 
@@ -78,7 +78,7 @@ public class CameraSplineSerializer_v924 implements BedrockPacketSerializer<Came
     protected CameraSplineRotationKeyFrame readCameraSplineRotationKeyFrame(ByteBuf buffer, BedrockCodecHelper helper) {
         final Vector3f rotation = helper.readVector3f(buffer);
         final float time = buffer.readFloatLE();
-        final EasingType easing = EasingType.fromName(helper.readString(buffer));
+        final EasingFunction easing = EasingFunction.fromName(helper.readString(buffer));
         return new CameraSplineRotationKeyFrame(rotation, time, easing);
     }
 }
