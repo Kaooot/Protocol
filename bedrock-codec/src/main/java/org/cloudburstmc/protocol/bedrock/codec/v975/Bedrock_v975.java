@@ -2,6 +2,7 @@ package org.cloudburstmc.protocol.bedrock.codec.v975;
 
 import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
+import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelEventSerializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v671.Bedrock_v671;
 import org.cloudburstmc.protocol.bedrock.codec.v898.serializer.AvailableCommandsSerializer_v898;
 import org.cloudburstmc.protocol.bedrock.codec.v944.Bedrock_v944;
@@ -94,6 +95,7 @@ public class Bedrock_v975 extends Bedrock_v944 {
             .updateSerializer(DimensionDataPacket.class, DimensionDataSerializer_v975.INSTANCE)
             .updateSerializer(DisconnectPacket.class, DisconnectSerializer_v975.INSTANCE)
             .updateSerializer(InventorySlotPacket.class, InventorySlotSerializer_v975.INSTANCE)
+            .updateSerializer(LevelEventPacket.class, new LevelEventSerializer_v291(LEVEL_EVENTS))
             .updateSerializer(LevelSoundEventPacket.class, new LevelSoundEventSerializer_v975(SOUND_EVENTS))
             .updateSerializer(LocatorBarPacket.class, LocatorBarSerializer_v975.INSTANCE)
             .updateSerializer(MobEquipmentPacket.class, MobEquipmentSerializer_v975.INSTANCE)
