@@ -3,7 +3,9 @@ package org.cloudburstmc.protocol.bedrock.codec.v2168;
 import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
 import org.cloudburstmc.protocol.bedrock.codec.v1001.Bedrock_v1001;
+import org.cloudburstmc.protocol.bedrock.codec.v1001.serializer.LevelSoundEventSerializer_v1001;
 import org.cloudburstmc.protocol.bedrock.codec.v2168.serializer.*;
+import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelEventSerializer_v291;
 import org.cloudburstmc.protocol.bedrock.data.LevelEventType;
 import org.cloudburstmc.protocol.bedrock.data.ParticleType;
 import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
@@ -11,7 +13,6 @@ import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataTypes;
 import org.cloudburstmc.protocol.bedrock.data.actor.ActorFlags;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestActionType;
 import org.cloudburstmc.protocol.bedrock.data.payload.diagnostics.MemoryCategory;
-import org.cloudburstmc.protocol.bedrock.data.payload.skin.AnimatedTextureType;
 import org.cloudburstmc.protocol.bedrock.packet.*;
 import org.cloudburstmc.protocol.bedrock.transformer.FlagTransformer;
 import org.cloudburstmc.protocol.bedrock.transformer.TypeMapTransformer;
@@ -117,6 +118,8 @@ public class Bedrock_v2168 extends Bedrock_v1001 {
             .updateSerializer(DimensionDataPacket.class, DimensionDataSerializer_v2168.INSTANCE)
             .updateSerializer(ItemStackResponsePacket.class, ItemStackResponseSerializer_v2168.INSTANCE)
             .updateSerializer(LevelChunkPacket.class, LevelChunkSerializer_v2168.INSTANCE)
+            .updateSerializer(LevelEventPacket.class, new LevelEventSerializer_v291(LEVEL_EVENTS))
+            .updateSerializer(LevelSoundEventPacket.class, new LevelSoundEventSerializer_v1001(SOUND_EVENTS))
             .updateSerializer(MoveActorDeltaPacket.class, MoveActorDeltaSerializer_v2168.INSTANCE)
             .updateSerializer(MovePlayerPacket.class, MovePlayerSerializer_v2168.INSTANCE)
             .updateSerializer(PlayerAuthInputPacket.class, PlayerAuthInputSerializer_v2168.INSTANCE)
