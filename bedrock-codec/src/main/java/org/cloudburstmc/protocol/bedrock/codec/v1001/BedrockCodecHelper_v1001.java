@@ -23,7 +23,7 @@ public class BedrockCodecHelper_v1001 extends BedrockCodecHelper_v975 {
     }
 
     @Override
-    protected void writeInventorySource(ByteBuf buffer, InventorySource source) {
+    public void writeInventorySource(ByteBuf buffer, InventorySource source) {
         VarInts.writeUnsignedInt(buffer, source.getSourceType().ordinal());
         final boolean hasContainer = source.getSourceType().equals(InventorySourceType.CONTAINER_INVENTORY) ||
                 source.getSourceType().equals(InventorySourceType.NON_IMPLEMENTED_FEATURE_TODO);
@@ -40,7 +40,7 @@ public class BedrockCodecHelper_v1001 extends BedrockCodecHelper_v975 {
     }
 
     @Override
-    protected InventorySource readInventorySource(ByteBuf buffer) {
+    public InventorySource readInventorySource(ByteBuf buffer) {
         final InventorySource source = new InventorySource();
         source.setSourceType(InventorySourceType.from(VarInts.readUnsignedInt(buffer)));
         if (buffer.readBoolean()) {
@@ -53,7 +53,7 @@ public class BedrockCodecHelper_v1001 extends BedrockCodecHelper_v975 {
     }
 
     @Override
-    protected void writeInventoryAction(ByteBuf buffer, InventoryAction action) {
+    public void writeInventoryAction(ByteBuf buffer, InventoryAction action) {
         this.writeInventorySource(buffer, action.getSource());
         VarInts.writeUnsignedInt(buffer, action.getSlot());
         this.writeNetworkItemStackDescriptor(buffer, action.getFromItem());
@@ -90,7 +90,7 @@ public class BedrockCodecHelper_v1001 extends BedrockCodecHelper_v975 {
     public void writeItemUseInventoryTransaction(ByteBuf buffer, ItemUseInventoryTransaction transaction) {
         VarInts.writeInt(buffer, transaction.getActionType().ordinal());
         buffer.writeByte(transaction.getTriggerType().ordinal());
-        this.writeVector3i(buffer, transaction.getPosition());
+        this.writeBlockPosition(buffer, transaction.getPosition());
         buffer.writeByte(transaction.getFace());
         VarInts.writeInt(buffer, transaction.getSlot());
         this.writeNetworkItemStackDescriptor(buffer, transaction.getItem());
@@ -106,7 +106,7 @@ public class BedrockCodecHelper_v1001 extends BedrockCodecHelper_v975 {
         final ItemUseInventoryTransaction transaction = new ItemUseInventoryTransaction();
         transaction.setActionType(ItemUseActionType.from(VarInts.readInt(buffer)));
         transaction.setTriggerType(ItemUseTriggerType.from(buffer.readUnsignedByte()));
-        transaction.setPosition(this.readVector3i(buffer));
+        transaction.setPosition(this.readBlockPosition(buffer));
         transaction.setFace(buffer.readByte());
         transaction.setSlot(VarInts.readInt(buffer));
         transaction.setItem(this.readNetworkItemStackDescriptor(buffer));

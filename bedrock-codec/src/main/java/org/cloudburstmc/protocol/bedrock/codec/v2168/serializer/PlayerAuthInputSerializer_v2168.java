@@ -122,7 +122,7 @@ public class PlayerAuthInputSerializer_v2168 extends PlayerAuthInputSerializer_v
         }
         buffer.writeBoolean(true);
         buffer.writeBoolean(true);
-        helper.writeArray(buffer, transaction.getActions(), this::writeInventoryAction);
+        helper.writeArray(buffer, transaction.getActions(), helper::writeInventoryAction);
         helper.writeItemUseInventoryTransaction(buffer, transaction.getTransaction());
     }
 
@@ -139,7 +139,7 @@ public class PlayerAuthInputSerializer_v2168 extends PlayerAuthInputSerializer_v
             });
         }
         if (buffer.readBoolean() && buffer.readBoolean()) {
-            helper.readArray(buffer, transaction.getActions(), this::readInventoryAction, helper.getEncodingSettings().maxInventoryActionsOrRequests());
+            helper.readArray(buffer, transaction.getActions(), helper::readInventoryAction, helper.getEncodingSettings().maxInventoryActionsOrRequests());
         }
         transaction.setTransaction(helper.readItemUseInventoryTransaction(buffer));
         return transaction;

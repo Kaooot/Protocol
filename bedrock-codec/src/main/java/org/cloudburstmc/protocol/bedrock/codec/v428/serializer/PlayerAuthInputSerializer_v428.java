@@ -8,15 +8,13 @@ import org.cloudburstmc.protocol.bedrock.codec.v419.serializer.PlayerAuthInputSe
 import org.cloudburstmc.protocol.bedrock.data.PlayerActionType;
 import org.cloudburstmc.protocol.bedrock.data.PlayerAuthInputData;
 import org.cloudburstmc.protocol.bedrock.data.PlayerBlockActionData;
-import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerId;
 import org.cloudburstmc.protocol.bedrock.data.payload.inventory.net.ItemStackLegacyRequestId;
-import org.cloudburstmc.protocol.bedrock.data.payload.inventory.transaction.*;
+import org.cloudburstmc.protocol.bedrock.data.payload.inventory.transaction.ItemUseActionType;
+import org.cloudburstmc.protocol.bedrock.data.payload.inventory.transaction.LegacySetSlot;
 import org.cloudburstmc.protocol.bedrock.data.payload.inventory.transaction.data.ItemUseInventoryTransaction;
 import org.cloudburstmc.protocol.bedrock.data.payload.inventory.transaction.data.PackedLegacyItemUseInventoryTransaction;
 import org.cloudburstmc.protocol.bedrock.packet.PlayerAuthInputPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
-
-import static java.util.Objects.requireNonNull;
 
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public class PlayerAuthInputSerializer_v428 extends PlayerAuthInputSerializer_v419 {
@@ -94,7 +92,7 @@ public class PlayerAuthInputSerializer_v428 extends PlayerAuthInputSerializer_v4
         if (transaction.getLegacyRequestID().getID() < -1 && (transaction.getLegacyRequestID().getID() & 1) == 0) {
             helper.writeArray(buffer, transaction.getLegacySetItemSlots(), this::writeLegacySetSlot);
         }
-        helper.writeArray(buffer, transaction.getActions(), this::writeInventoryAction);
+        helper.writeArray(buffer, transaction.getActions(), helper::writeInventoryAction);
         this.writeItemUseInventoryTransaction(buffer, helper, transaction.getTransaction());
     }
 
@@ -106,7 +104,7 @@ public class PlayerAuthInputSerializer_v428 extends PlayerAuthInputSerializer_v4
             helper.readArray(buffer, transaction.getLegacySetItemSlots(), this::readLegacySetSlot);
         }
 
-        helper.readArray(buffer, transaction.getActions(), this::readInventoryAction);
+        helper.readArray(buffer, transaction.getActions(), helper::readInventoryAction);
         transaction.setTransaction(this.readItemUseInventoryTransaction(buffer, helper));
         return transaction;
     }
@@ -153,61 +151,5 @@ public class PlayerAuthInputSerializer_v428 extends PlayerAuthInputSerializer_v4
         transaction.setClickPosition(helper.readVector3f(buffer));
         transaction.setTargetBlockId(helper.getBlockDefinitions().getDefinition(VarInts.readUnsignedInt(buffer)));
         return transaction;
-    }
-
-    protected void writeInventoryAction(ByteBuf buffer, BedrockCodecHelper helper, InventoryAction action) {
-        this.writeInventorySource(buffer, action.getSource());
-        VarInts.writeUnsignedInt(buffer, action.getSlot());
-        helper.writeItem(buffer, action.getFromItem());
-        helper.writeItem(buffer, action.getToItem());
-    }
-
-    protected InventoryAction readInventoryAction(ByteBuf buffer, BedrockCodecHelper helper) {
-        final InventoryAction action = new InventoryAction();
-        action.setSource(this.readInventorySource(buffer));
-        action.setSlot(VarInts.readUnsignedInt(buffer));
-        action.setFromItem(helper.readItem(buffer));
-        action.setToItem(helper.readItem(buffer));
-        return action;
-    }
-
-    protected void writeInventorySource(ByteBuf buffer, InventorySource inventorySource) {
-        requireNonNull(inventorySource, "InventorySource was null");
-
-        VarInts.writeUnsignedInt(buffer, inventorySource.getSourceType().ordinal());
-
-        switch (inventorySource.getSourceType()) {
-            case CONTAINER_INVENTORY:
-            case NON_IMPLEMENTED_FEATURE_TODO:
-                VarInts.writeInt(buffer, inventorySource.getContainerID());
-                break;
-            case WORLD_INTERACTION:
-                VarInts.writeUnsignedInt(buffer, inventorySource.getBitFlags().ordinal());
-                break;
-        }
-    }
-
-    protected InventorySource readInventorySource(ByteBuf buffer) {
-        final InventorySourceType type = InventorySourceType.from(VarInts.readUnsignedInt(buffer));
-        final InventorySource source = new InventorySource();
-        source.setSourceType(type);
-
-        switch (type) {
-            case CONTAINER_INVENTORY:
-            case NON_IMPLEMENTED_FEATURE_TODO:
-                source.setContainerID(VarInts.readInt(buffer));
-                source.setBitFlags(InventorySourceFlags.NO_FLAG);
-                break;
-            case GLOBAL_INVENTORY:
-            case CREATIVE_INVENTORY:
-                source.setContainerID(ContainerId.NONE);
-                source.setBitFlags(InventorySourceFlags.NO_FLAG);
-                break;
-            case WORLD_INTERACTION:
-                source.setContainerID(ContainerId.NONE);
-                source.setBitFlags(InventorySourceFlags.from(VarInts.readUnsignedInt(buffer)));
-                break;
-        }
-        return source;
     }
 }

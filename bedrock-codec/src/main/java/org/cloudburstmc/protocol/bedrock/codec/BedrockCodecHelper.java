@@ -28,6 +28,8 @@ import org.cloudburstmc.protocol.bedrock.data.payload.common.RedactableString;
 import org.cloudburstmc.protocol.bedrock.data.payload.configuration.PresenceConfiguration;
 import org.cloudburstmc.protocol.bedrock.data.payload.experiment.ExperimentToggle;
 import org.cloudburstmc.protocol.bedrock.data.payload.experiment.Experiments;
+import org.cloudburstmc.protocol.bedrock.data.payload.inventory.transaction.InventoryAction;
+import org.cloudburstmc.protocol.bedrock.data.payload.inventory.transaction.InventorySource;
 import org.cloudburstmc.protocol.bedrock.data.payload.inventory.transaction.InventoryTransaction;
 import org.cloudburstmc.protocol.bedrock.data.payload.inventory.transaction.data.ItemUseInventoryTransaction;
 import org.cloudburstmc.protocol.bedrock.data.payload.skin.SerializedSkin;
@@ -296,4 +298,12 @@ public interface BedrockCodecHelper {
     void writeSerializedSkin(ByteBuf buffer, SerializedSkin serializedSkin);
 
     SerializedSkin readSerializedSkin(ByteBuf buffer);
+
+    void writeInventorySource(ByteBuf buffer, InventorySource inventorySource);
+
+    InventorySource readInventorySource(ByteBuf buffer);
+
+    void writeInventoryAction(ByteBuf buffer, InventoryAction action);
+
+    InventoryAction readInventoryAction(ByteBuf buffer);
 }

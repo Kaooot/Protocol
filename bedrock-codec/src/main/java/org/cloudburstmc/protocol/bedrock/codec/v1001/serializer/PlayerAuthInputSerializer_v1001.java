@@ -26,7 +26,7 @@ public class PlayerAuthInputSerializer_v1001 extends PlayerAuthInputSerializer_v
                 codecHelper.writeByteArray(buf, slot.getSlots());
             });
         }
-        helper.writeArray(buffer, transaction.getActions(), this::writeInventoryAction);
+        helper.writeArray(buffer, transaction.getActions(), helper::writeInventoryAction);
         this.writeItemUseInventoryTransaction(buffer, helper, transaction.getTransaction());
     }
 
@@ -42,7 +42,7 @@ public class PlayerAuthInputSerializer_v1001 extends PlayerAuthInputSerializer_v
                 return slot;
             });
         }
-        helper.readArray(buffer, transaction.getActions(), this::readInventoryAction, helper.getEncodingSettings().maxInventoryActionsOrRequests());
+        helper.readArray(buffer, transaction.getActions(), helper::readInventoryAction, helper.getEncodingSettings().maxInventoryActionsOrRequests());
         transaction.setTransaction(this.readItemUseInventoryTransaction(buffer, helper));
         return transaction;
     }

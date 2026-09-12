@@ -411,7 +411,8 @@ public abstract class BaseBedrockCodecHelper implements BedrockCodecHelper {
         this.writeArray(buffer, actions.getActions(), this::writeInventoryAction);
     }
 
-    protected InventorySource readInventorySource(ByteBuf buffer) {
+    @Override
+    public InventorySource readInventorySource(ByteBuf buffer) {
         final InventorySourceType type = InventorySourceType.from(VarInts.readUnsignedInt(buffer));
         final InventorySource source = new InventorySource();
         source.setSourceType(type);
@@ -435,7 +436,8 @@ public abstract class BaseBedrockCodecHelper implements BedrockCodecHelper {
         return source;
     }
 
-    protected void writeInventorySource(ByteBuf buffer, InventorySource inventorySource) {
+    @Override
+    public void writeInventorySource(ByteBuf buffer, InventorySource inventorySource) {
         requireNonNull(inventorySource, "InventorySource was null");
 
         VarInts.writeUnsignedInt(buffer, inventorySource.getSourceType().ordinal());
@@ -451,14 +453,16 @@ public abstract class BaseBedrockCodecHelper implements BedrockCodecHelper {
         }
     }
 
-    protected void writeInventoryAction(ByteBuf buffer, InventoryAction action) {
+    @Override
+    public void writeInventoryAction(ByteBuf buffer, InventoryAction action) {
         this.writeInventorySource(buffer, action.getSource());
         VarInts.writeUnsignedInt(buffer, action.getSlot());
         this.writeItem(buffer, action.getFromItem());
         this.writeItem(buffer, action.getToItem());
     }
 
-    protected InventoryAction readInventoryAction(ByteBuf buffer) {
+    @Override
+    public InventoryAction readInventoryAction(ByteBuf buffer) {
         final InventoryAction action = new InventoryAction();
         action.setSource(this.readInventorySource(buffer));
         action.setSlot(VarInts.readUnsignedInt(buffer));
