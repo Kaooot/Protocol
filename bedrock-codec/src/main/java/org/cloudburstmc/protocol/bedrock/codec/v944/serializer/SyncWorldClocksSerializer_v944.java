@@ -5,61 +5,54 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
+import org.cloudburstmc.protocol.bedrock.codec.VariantCodec;
 import org.cloudburstmc.protocol.bedrock.data.clock.*;
 import org.cloudburstmc.protocol.bedrock.packet.SyncWorldClocksPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
-
-import java.util.ArrayList;
 
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public class SyncWorldClocksSerializer_v944 implements BedrockPacketSerializer<SyncWorldClocksPacket> {
 
     public static final SyncWorldClocksSerializer_v944 INSTANCE = new SyncWorldClocksSerializer_v944();
 
+    protected final VariantCodec<SyncWorldClocksPacket> dataVariant = VariantCodec.<SyncWorldClocksPayloadType, SyncWorldClocksPacket>builder(SyncWorldClocksPayloadType::ordinal)
+            .add(
+                    SyncWorldClocksPayloadType.SYNC_STATE_DATA,
+                    SyncStateData.class,
+                    this::writeSyncStateData,
+                    this::readSyncStateData
+            )
+            .add(
+                    SyncWorldClocksPayloadType.INITIALIZE_REGISTRY_DATA,
+                    InitializeRegistryData.class,
+                    this::writeInitializeRegistryData,
+                    this::readInitializeRegistryData
+            )
+            .add(
+                    SyncWorldClocksPayloadType.ADD_TIMER_MARKER_DATA,
+                    AddTimeMarkerData.class,
+                    this::writeAddTimeMarkerData,
+                    this::readAddTimeMarkerData
+            )
+            .add(
+                    SyncWorldClocksPayloadType.REMOVE_TIME_MARKER_DATA,
+                    RemoveTimeMarkerData.class,
+                    this::writeRemoveTimeMarkerData,
+                    this::readRemoveTimeMarkerData
+            )
+            .build();
+
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, SyncWorldClocksPacket packet) {
-        SyncWorldClocksPayload data = packet.getData();
-
-        if (data instanceof SyncStateData) {
-            VarInts.writeUnsignedInt(buffer, 0);
-            writeSyncState(buffer, helper, (SyncStateData) data);
-        } else if (data instanceof InitializeRegistryData) {
-            VarInts.writeUnsignedInt(buffer, 1);
-            writeInitializeRegistry(buffer, helper, (InitializeRegistryData) data);
-        } else if (data instanceof AddTimeMarkerData) {
-            VarInts.writeUnsignedInt(buffer, 2);
-            writeAddTimeMarker(buffer, helper, (AddTimeMarkerData) data);
-        } else if (data instanceof RemoveTimeMarkerData) {
-            VarInts.writeUnsignedInt(buffer, 3);
-            writeRemoveTimeMarker(buffer, helper, (RemoveTimeMarkerData) data);
-        } else {
-            throw new IllegalArgumentException("Not oneOf<SyncStateData, InitializeRegistryData, AddTimeMarkerData, RemoveTimeMarkerData>");
-        }
+        this.dataVariant.write(buffer, helper, packet, packet.getData());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, SyncWorldClocksPacket packet) {
-        int type = VarInts.readUnsignedInt(buffer);
-
-        switch (type) {
-            case 0:
-                packet.setData(readSyncState(buffer, helper));
-                return;
-            case 1:
-                packet.setData(readInitializeRegistry(buffer, helper));
-                return;
-            case 2:
-                packet.setData(readAddTimeMarker(buffer, helper));
-                return;
-            case 3:
-                packet.setData(readRemoveTimeMarker(buffer, helper));
-                return;
-        }
-
-        throw new IllegalArgumentException(type + " is not oneOf<SyncStateData, InitializeRegistryData, AddTimeMarkerData, RemoveTimeMarkerData>");
+        packet.setData(this.dataVariant.read(buffer, helper, packet));
     }
 
-    private void writeSyncState(ByteBuf buf, BedrockCodecHelper helper, SyncStateData data) {
+    private void writeSyncStateData(ByteBuf buf, BedrockCodecHelper helper, SyncWorldClocksPacket packet, SyncStateData data) {
         helper.writeArray(buf, data.getClockData(), (b, entry) -> {
             VarInts.writeUnsignedLong(b, entry.getClockId());
             VarInts.writeInt(b, entry.getTime());
@@ -67,7 +60,7 @@ public class SyncWorldClocksSerializer_v944 implements BedrockPacketSerializer<S
         });
     }
 
-    private SyncStateData readSyncState(ByteBuf buf, BedrockCodecHelper helper) {
+    private SyncStateData readSyncStateData(ByteBuf buf, BedrockCodecHelper helper, SyncWorldClocksPacket packet) {
         SyncStateData data = new SyncStateData();
 
         helper.readArray(buf, data.getClockData(), b -> {
@@ -81,25 +74,25 @@ public class SyncWorldClocksSerializer_v944 implements BedrockPacketSerializer<S
         return data;
     }
 
-    private void writeInitializeRegistry(ByteBuf buf, BedrockCodecHelper helper, InitializeRegistryData data) {
+    private void writeInitializeRegistryData(ByteBuf buf, BedrockCodecHelper helper, SyncWorldClocksPacket packet, InitializeRegistryData data) {
         helper.writeArray(buf, data.getClockData(), (b, entry) -> {
             VarInts.writeUnsignedLong(b, entry.getId());
             helper.writeString(b, entry.getName());
             VarInts.writeInt(b, entry.getTime());
             b.writeBoolean(entry.isPaused());
 
-            helper.writeArray(b, entry.getTimeMarkers(), (bb, marker) -> writeTimeMarker(bb, helper, marker));
+            helper.writeArray(b, entry.getTimeMarkers(), (bb, marker) -> writeTimeMarker(bb, helper, packet, marker));
         });
     }
 
-    private void writeTimeMarker(ByteBuf buf, BedrockCodecHelper helper, TimeMarkerData marker) {
+    private void writeTimeMarker(ByteBuf buf, BedrockCodecHelper helper, SyncWorldClocksPacket packet, TimeMarkerData marker) {
         VarInts.writeUnsignedLong(buf, marker.getId());
         helper.writeString(buf, marker.getName());
         VarInts.writeInt(buf, marker.getTime());
         helper.writeOptionalNull(buf, marker.getPeriod(), ByteBuf::writeIntLE);
     }
 
-    private TimeMarkerData readTimeMarker(ByteBuf buf, BedrockCodecHelper helper) {
+    private TimeMarkerData readTimeMarker(ByteBuf buf, BedrockCodecHelper helper, SyncWorldClocksPacket packet) {
         TimeMarkerData marker = new TimeMarkerData();
         marker.setId(VarInts.readUnsignedLong(buf));
         marker.setName(helper.readStringMaxLen(buf, 128));
@@ -108,7 +101,7 @@ public class SyncWorldClocksSerializer_v944 implements BedrockPacketSerializer<S
         return marker;
     }
 
-    private InitializeRegistryData readInitializeRegistry(ByteBuf buf, BedrockCodecHelper helper) {
+    private InitializeRegistryData readInitializeRegistryData(ByteBuf buf, BedrockCodecHelper helper, SyncWorldClocksPacket packet) {
         InitializeRegistryData data = new InitializeRegistryData();
 
         helper.readArray(buf, data.getClockData(), b -> {
@@ -118,7 +111,7 @@ public class SyncWorldClocksSerializer_v944 implements BedrockPacketSerializer<S
             clock.setTime(VarInts.readInt(b));
             clock.setPaused(b.readBoolean());
 
-            helper.readArray(b, clock.getTimeMarkers(), bb -> readTimeMarker(bb, helper), 256);
+            helper.readArray(b, clock.getTimeMarkers(), bb -> readTimeMarker(bb, helper, packet), 256);
 
             return clock;
         }, 256);
@@ -126,24 +119,24 @@ public class SyncWorldClocksSerializer_v944 implements BedrockPacketSerializer<S
         return data;
     }
 
-    private void writeAddTimeMarker(ByteBuf buf, BedrockCodecHelper helper, AddTimeMarkerData data) {
+    private void writeAddTimeMarkerData(ByteBuf buf, BedrockCodecHelper helper, SyncWorldClocksPacket packet, AddTimeMarkerData data) {
         VarInts.writeUnsignedLong(buf, data.getClockId());
-        helper.writeArray(buf, data.getTimeMarkers(), (b, marker) -> writeTimeMarker(b, helper, marker));
+        helper.writeArray(buf, data.getTimeMarkers(), (b, marker) -> writeTimeMarker(b, helper, packet, marker));
     }
 
-    private AddTimeMarkerData readAddTimeMarker(ByteBuf buf, BedrockCodecHelper helper) {
+    private AddTimeMarkerData readAddTimeMarkerData(ByteBuf buf, BedrockCodecHelper helper, SyncWorldClocksPacket packet) {
         AddTimeMarkerData data = new AddTimeMarkerData();
         data.setClockId(VarInts.readUnsignedLong(buf));
-        helper.readArray(buf, data.getTimeMarkers(), b -> readTimeMarker(b, helper), 256);
+        helper.readArray(buf, data.getTimeMarkers(), b -> readTimeMarker(b, helper, packet), 256);
         return data;
     }
 
-    private void writeRemoveTimeMarker(ByteBuf buf, BedrockCodecHelper helper, RemoveTimeMarkerData data) {
+    private void writeRemoveTimeMarkerData(ByteBuf buf, BedrockCodecHelper helper, SyncWorldClocksPacket packet, RemoveTimeMarkerData data) {
         VarInts.writeUnsignedLong(buf, data.getClockId());
         helper.writeArray(buf, data.getTimeMarkerIds(), VarInts::writeUnsignedLong);
     }
 
-    private RemoveTimeMarkerData readRemoveTimeMarker(ByteBuf buf, BedrockCodecHelper helper) {
+    private RemoveTimeMarkerData readRemoveTimeMarkerData(ByteBuf buf, BedrockCodecHelper helper, SyncWorldClocksPacket packet) {
         RemoveTimeMarkerData data = new RemoveTimeMarkerData();
         data.setClockId(VarInts.readUnsignedLong(buf));
         helper.readArray(buf, data.getTimeMarkerIds(), VarInts::readUnsignedLong, 256);

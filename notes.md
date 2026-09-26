@@ -1,4 +1,4 @@
-* convert to VariantCodec: InventoryTransaction, LegacyTelemetryEvent, SyncWorldClocks
+* convert to VariantCodec: InventoryTransaction, LegacyTelemetryEvent
 * impl EntityDamageCause enum?
 * since and deprecation tags
 * ActorDataTypes migration

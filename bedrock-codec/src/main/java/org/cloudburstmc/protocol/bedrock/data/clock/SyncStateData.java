@@ -6,7 +6,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class SyncStateData implements SyncWorldClocksPayload {
+public class SyncStateData {
 
     private final List<SyncWorldClockStateData> clockData = new ObjectArrayList<>();
 }
