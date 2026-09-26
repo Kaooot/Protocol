@@ -14,13 +14,13 @@ public class ScriptMessageSerializer_v486 implements BedrockPacketSerializer<Scr
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ScriptMessagePacket packet) {
-        helper.writeString(buffer, packet.getChannel());
-        helper.writeString(buffer, packet.getMessage());
+        helper.writeString(buffer, packet.getMessageId());
+        helper.writeString(buffer, packet.getMessageValue());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ScriptMessagePacket packet) {
-        packet.setChannel(helper.readString(buffer));
-        packet.setMessage(helper.readString(buffer));
+        packet.setMessageId(helper.readString(buffer));
+        packet.setMessageValue(helper.readString(buffer));
     }
 }

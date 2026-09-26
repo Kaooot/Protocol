@@ -1,31 +1,27 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.protocol.bedrock.data.camera.AimAssistActorPriorityData;
+import org.cloudburstmc.protocol.bedrock.data.camera.aimassist.AimAssistActorPriorityData;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 import java.util.List;
 
-/**
- * Camera aim-assist actor priority data sent from the server to clients.
- * Sent by the server to clients for updating the actor priority for client aim-assist systems.
- *
- * @since v924
- */
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class CameraAimAssistActorPriorityPacket implements BedrockPacket {
 
-    private List<AimAssistActorPriorityData> priorityData;
+    private final List<AimAssistActorPriorityData> cameraAimassistActorPriorityList = new ObjectArrayList<>();
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
+    @Override
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.CAMERA_AIM_ASSIST_ACTOR_PRIORITY;
     }

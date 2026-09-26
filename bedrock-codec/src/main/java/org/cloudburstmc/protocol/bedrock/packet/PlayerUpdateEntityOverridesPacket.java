@@ -2,6 +2,8 @@ package org.cloudburstmc.protocol.bedrock.packet;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
@@ -9,14 +11,15 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class PlayerUpdateEntityOverridesPacket implements BedrockPacket {
-    private long entityUniqueId;
+
+    private long targetID;
     private int propertyIndex;
     private UpdateType updateType;
     private int intValue;
     private float floatValue;
 
     @Override
-    public PacketSignal handle(BedrockPacketHandler handler) {
+    public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
@@ -26,7 +29,7 @@ public class PlayerUpdateEntityOverridesPacket implements BedrockPacket {
     }
 
     @Override
-    public BedrockPacket clone() {
+    public PlayerUpdateEntityOverridesPacket clone() {
         try {
             return (PlayerUpdateEntityOverridesPacket) super.clone();
         } catch (CloneNotSupportedException e) {
@@ -34,10 +37,25 @@ public class PlayerUpdateEntityOverridesPacket implements BedrockPacket {
         }
     }
 
+    @Getter
+    @RequiredArgsConstructor
     public enum UpdateType {
-        CLEAR_OVERRIDES,
-        REMOVE_OVERRIDE,
-        SET_INT_OVERRIDE,
-        SET_FLOAT_OVERRIDE
+        CLEAR_OVERRIDES("clearoverrides"),
+        REMOVE_OVERRIDE("removeoverride"),
+        SET_INT_OVERRIDE("setintoverride"),
+        SET_FLOAT_OVERRIDE("setfloatoverride");
+
+        private static final UpdateType[] VALUES = values();
+
+        private final String id;
+
+        public static UpdateType from(String value) {
+            for (UpdateType action : VALUES) {
+                if (action.getId().equalsIgnoreCase(value)) {
+                    return action;
+                }
+            }
+            throw new UnsupportedOperationException("Detected unknown UpdateType ID: " + value);
+        }
     }
 }

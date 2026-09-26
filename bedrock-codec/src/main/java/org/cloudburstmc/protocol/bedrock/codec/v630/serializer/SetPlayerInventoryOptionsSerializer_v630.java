@@ -4,8 +4,9 @@ import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
 import org.cloudburstmc.protocol.bedrock.data.inventory.InventoryLayout;
-import org.cloudburstmc.protocol.bedrock.data.inventory.InventoryTabLeft;
-import org.cloudburstmc.protocol.bedrock.data.inventory.InventoryTabRight;
+import org.cloudburstmc.protocol.bedrock.data.inventory.InventoryLeftTabIndex;
+import org.cloudburstmc.protocol.bedrock.data.inventory.InventoryOptions;
+import org.cloudburstmc.protocol.bedrock.data.inventory.InventoryRightTabIndex;
 import org.cloudburstmc.protocol.bedrock.packet.SetPlayerInventoryOptionsPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -13,19 +14,22 @@ public class SetPlayerInventoryOptionsSerializer_v630 implements BedrockPacketSe
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, SetPlayerInventoryOptionsPacket packet) {
-        VarInts.writeInt(buffer, packet.getLeftTab().ordinal());
-        VarInts.writeInt(buffer, packet.getRightTab().ordinal());
-        buffer.writeBoolean(packet.isFiltering());
-        VarInts.writeInt(buffer, packet.getLayout().ordinal());
-        VarInts.writeInt(buffer, packet.getCraftingLayout().ordinal());
+        InventoryOptions options = packet.getInventoryOptions();
+        VarInts.writeInt(buffer, options.getLeftInventoryTab().ordinal());
+        VarInts.writeInt(buffer, options.getRightInventoryTab().ordinal());
+        buffer.writeBoolean(options.isFiltering());
+        VarInts.writeInt(buffer, options.getLayoutInv().ordinal());
+        VarInts.writeInt(buffer, options.getLayoutCraft().ordinal());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, SetPlayerInventoryOptionsPacket packet) {
-        packet.setLeftTab(InventoryTabLeft.VALUES[VarInts.readInt(buffer)]);
-        packet.setRightTab(InventoryTabRight.VALUES[VarInts.readInt(buffer)]);
-        packet.setFiltering(buffer.readBoolean());
-        packet.setLayout(InventoryLayout.VALUES[VarInts.readInt(buffer)]);
-        packet.setCraftingLayout(InventoryLayout.VALUES[VarInts.readInt(buffer)]);
+        InventoryOptions options = new InventoryOptions();
+        options.setLeftInventoryTab(InventoryLeftTabIndex.from(VarInts.readInt(buffer)));
+        options.setRightInventoryTab(InventoryRightTabIndex.from(VarInts.readInt(buffer)));
+        options.setFiltering(buffer.readBoolean());
+        options.setLayoutInv(InventoryLayout.from(VarInts.readInt(buffer)));
+        options.setLayoutCraft(InventoryLayout.from(VarInts.readInt(buffer)));
+        packet.setInventoryOptions(options);
     }
 }

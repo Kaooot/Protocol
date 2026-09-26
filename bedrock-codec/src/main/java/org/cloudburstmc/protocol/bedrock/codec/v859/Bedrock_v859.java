@@ -1,34 +1,34 @@
 package org.cloudburstmc.protocol.bedrock.codec.v859;
 
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
-import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
-import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.EntityEventSerializer_v291;
+import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
+import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.ActorEventSerializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v844.BedrockCodecHelper_v844;
 import org.cloudburstmc.protocol.bedrock.codec.v844.Bedrock_v844;
 import org.cloudburstmc.protocol.bedrock.codec.v859.serializer.*;
 import org.cloudburstmc.protocol.bedrock.data.PacketRecipient;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityEventType;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorEvent;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataTypes;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorFlags;
 import org.cloudburstmc.protocol.bedrock.packet.*;
 import org.cloudburstmc.protocol.bedrock.transformer.FlagTransformer;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 
 public class Bedrock_v859 extends Bedrock_v844 {
 
-    protected static final TypeMap<EntityFlag> ENTITY_FLAGS = Bedrock_v844.ENTITY_FLAGS
+    protected static final TypeMap<ActorFlags> ENTITY_FLAGS = Bedrock_v844.ENTITY_FLAGS
             .toBuilder()
-            .insert(126, EntityFlag.BODY_ROTATION_LOCKED_TO_VEHICLE)
+            .insert(126, ActorFlags.BODY_ROTATION_LOCKED_TO_VEHICLE)
             .build();
 
-    protected static final EntityDataTypeMap ENTITY_DATA = Bedrock_v844.ENTITY_DATA
+    protected static final ActorDataTypeMap ENTITY_DATA = Bedrock_v844.ENTITY_DATA
             .toBuilder()
-            .update(EntityDataTypes.FLAGS, new FlagTransformer(ENTITY_FLAGS, 0))
-            .update(EntityDataTypes.FLAGS_2, new FlagTransformer(ENTITY_FLAGS, 1))
+            .update(ActorDataTypes.FLAGS, new FlagTransformer(ENTITY_FLAGS, 0))
+            .update(ActorDataTypes.FLAGS_2, new FlagTransformer(ENTITY_FLAGS, 1))
             .build();
 
-    protected static final TypeMap<EntityEventType> ENTITY_EVENTS = Bedrock_v844.ENTITY_EVENTS.toBuilder()
-            .insert(79, EntityEventType.SHAKE_WETNESS_STOP)
+    protected static final TypeMap<ActorEvent> ACTOR_EVENTS = Bedrock_v844.ACTOR_EVENTS.toBuilder()
+            .insert(79, ActorEvent.SHAKE_WETNESS_STOP)
             .build();
 
     public static final BedrockCodec CODEC = Bedrock_v844.CODEC.toBuilder()
@@ -39,9 +39,9 @@ public class Bedrock_v859 extends Bedrock_v844 {
             .updateSerializer(AnimatePacket.class, AnimateSerializer_v859.INSTANCE)
             .updateSerializer(BiomeDefinitionListPacket.class, BiomeDefinitionListSerializer_v859.INSTANCE)
             .updateSerializer(CameraInstructionPacket.class, CameraInstructionSerializer_v859.INSTANCE)
-            .updateSerializer(DebugDrawerPacket.class, DebugDrawerSerializer_v859.INSTANCE)
-            .updateSerializer(EntityEventPacket.class, new EntityEventSerializer_v291(ENTITY_EVENTS))
+            .updateSerializer(PrimitiveShapesPacket.class, PrimitiveShapesSerializer_v859.INSTANCE)
+            .updateSerializer(ActorEventPacket.class, new ActorEventSerializer_v291(ACTOR_EVENTS))
             .updateSerializer(ShowStoreOfferPacket.class, ShowStoreOfferSerializer_v859.INSTANCE)
-            .registerPacket(GraphicsParameterOverridePacket::new, GraphicsParameterOverrideSerializer_v859.INSTANCE, 331, PacketRecipient.CLIENT)
+            .registerPacket(GraphicsOverrideParameterPacket::new, GraphicsOverrideParameterSerializer_v859.INSTANCE, 331, PacketRecipient.CLIENT)
             .build();
 }

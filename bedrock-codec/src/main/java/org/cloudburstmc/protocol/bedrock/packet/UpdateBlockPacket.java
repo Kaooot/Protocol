@@ -15,20 +15,21 @@ import java.util.Set;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class UpdateBlockPacket implements BedrockPacket {
+
     public static final Set<Flag> FLAG_ALL = Collections.unmodifiableSet(EnumSet.of(Flag.NEIGHBORS, Flag.NETWORK));
     public static final Set<Flag> FLAG_ALL_PRIORITY = Collections.unmodifiableSet(
             EnumSet.of(Flag.NEIGHBORS, Flag.NETWORK, Flag.PRIORITY));
-
     final Set<Flag> flags = EnumSet.noneOf(Flag.class);
     Vector3i blockPosition;
     BlockDefinition definition;
-    int dataLayer;
+    int layer;
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
+    @Override
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.UPDATE_BLOCK;
     }
@@ -50,4 +51,3 @@ public class UpdateBlockPacket implements BedrockPacket {
         }
     }
 }
-

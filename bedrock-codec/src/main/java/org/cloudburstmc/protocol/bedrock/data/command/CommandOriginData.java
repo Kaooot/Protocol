@@ -1,13 +1,14 @@
 package org.cloudburstmc.protocol.bedrock.data.command;
 
-import lombok.Value;
+import lombok.Data;
 
 import java.util.UUID;
 
-@Value
+@Data
 public class CommandOriginData {
-    private final CommandOriginType origin;
-    private final UUID uuid;
-    private final String requestId;
-    private final long playerId;
+
+    private CommandOriginType type;
+    private UUID uuid;
+    private String requestId;
+    private Long playerId;
 }

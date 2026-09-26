@@ -5,7 +5,7 @@ import io.netty.channel.ChannelHandlerContext;
 import lombok.Getter;
 import lombok.Setter;
 import org.cloudburstmc.protocol.bedrock.data.CompressionAlgorithm;
-import org.cloudburstmc.protocol.bedrock.data.PacketCompressionAlgorithm;
+import org.cloudburstmc.protocol.bedrock.data.connection.PacketCompressionAlgorithm;
 import org.cloudburstmc.protocol.common.util.Zlib;
 
 public class ZlibCompression implements BatchCompression {

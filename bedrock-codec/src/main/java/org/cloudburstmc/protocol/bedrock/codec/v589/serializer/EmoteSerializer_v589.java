@@ -15,7 +15,7 @@ public class EmoteSerializer_v589 extends EmoteSerializer_v388 {
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, EmotePacket packet) {
-        VarInts.writeUnsignedLong(buffer, packet.getRuntimeEntityId());
+        VarInts.writeUnsignedLong(buffer, packet.getActorRuntimeId());
         helper.writeString(buffer, packet.getEmoteId());
         helper.writeString(buffer, packet.getXuid());
         helper.writeString(buffer, packet.getPlatformId());
@@ -24,7 +24,7 @@ public class EmoteSerializer_v589 extends EmoteSerializer_v388 {
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, EmotePacket packet) {
-        packet.setRuntimeEntityId(VarInts.readUnsignedLong(buffer));
+        packet.setActorRuntimeId(VarInts.readUnsignedLong(buffer));
         packet.setEmoteId(helper.readString(buffer));
         packet.setXuid(helper.readString(buffer));
         packet.setPlatformId(helper.readString(buffer));

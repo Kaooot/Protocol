@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
+import org.cloudburstmc.protocol.bedrock.data.actor.EntityNetId;
 import org.cloudburstmc.protocol.bedrock.packet.RemoveVolumeEntityPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -15,11 +16,11 @@ public class RemoveVolumeEntitySerializer_v440 implements BedrockPacketSerialize
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, RemoveVolumeEntityPacket packet) {
-        VarInts.writeUnsignedInt(buffer, packet.getId());
+        VarInts.writeUnsignedInt(buffer, packet.getEntityNetworkId().getRawId());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, RemoveVolumeEntityPacket packet) {
-        packet.setId(VarInts.readUnsignedInt(buffer));
+        packet.setEntityNetworkId(new EntityNetId(VarInts.readUnsignedInt(buffer)));
     }
 }

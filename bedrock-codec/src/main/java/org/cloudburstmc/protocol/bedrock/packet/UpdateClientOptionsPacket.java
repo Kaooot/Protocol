@@ -3,25 +3,20 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.checkerframework.checker.nullness.qual.Nullable;
-import org.cloudburstmc.protocol.bedrock.data.GraphicsMode;
+import org.cloudburstmc.protocol.bedrock.data.connection.GraphicsMode;
 import org.cloudburstmc.protocol.common.PacketSignal;
+import org.cloudburstmc.protocol.common.util.OptionalBoolean;
 
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class UpdateClientOptionsPacket implements BedrockPacket {
 
-    @Nullable
-    private GraphicsMode graphicsMode;
-    /**
-     * @since v975
-     */
-    @Nullable
-    private Boolean filterProfanityChange;
+    private GraphicsMode graphicsModeChange;
+    private OptionalBoolean filterProfanityChange = OptionalBoolean.empty();
 
     @Override
-    public PacketSignal handle(BedrockPacketHandler handler) {
+    public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
@@ -31,7 +26,7 @@ public class UpdateClientOptionsPacket implements BedrockPacket {
     }
 
     @Override
-    public BedrockPacket clone() {
+    public UpdateClientOptionsPacket clone() {
         try {
             return (UpdateClientOptionsPacket) super.clone();
         } catch (CloneNotSupportedException e) {

@@ -9,11 +9,11 @@ public class ServerPlayerPostMovePositionSerializer_v630 implements BedrockPacke
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ServerPlayerPostMovePositionPacket packet) {
-        helper.writeVector3f(buffer, packet.getPosition());
+        helper.writeVector3f(buffer, packet.getPos());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ServerPlayerPostMovePositionPacket packet) {
-        packet.setPosition(helper.readVector3f(buffer));
+        packet.setPos(helper.readVector3f(buffer));
     }
-}
+}

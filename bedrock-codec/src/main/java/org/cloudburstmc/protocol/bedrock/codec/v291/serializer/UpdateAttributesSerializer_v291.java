@@ -5,7 +5,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
-import org.cloudburstmc.protocol.bedrock.data.AttributeData;
+import org.cloudburstmc.protocol.bedrock.data.actor.attribute.AttributeData;
 import org.cloudburstmc.protocol.bedrock.packet.UpdateAttributesPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -17,14 +17,14 @@ public class UpdateAttributesSerializer_v291 implements BedrockPacketSerializer<
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, UpdateAttributesPacket packet) {
-        VarInts.writeUnsignedLong(buffer, packet.getRuntimeEntityId());
-        helper.writeArray(buffer, packet.getAttributes(), this::writeAttribute);
+        VarInts.writeUnsignedLong(buffer, packet.getTargetRuntimeID());
+        helper.writeArray(buffer, packet.getAttributeList(), this::writeAttribute);
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, UpdateAttributesPacket packet) {
-        packet.setRuntimeEntityId(VarInts.readUnsignedLong(buffer));
-        helper.readArray(buffer, packet.getAttributes(), this::readAttribute);
+        packet.setTargetRuntimeID(VarInts.readUnsignedLong(buffer));
+        helper.readArray(buffer, packet.getAttributeList(), this::readAttribute);
     }
 
     public AttributeData readAttribute(ByteBuf buffer, BedrockCodecHelper helper) {
@@ -35,15 +35,21 @@ public class UpdateAttributesSerializer_v291 implements BedrockPacketSerializer<
         float def = buffer.readFloatLE();
         String name = helper.readString(buffer);
 
-        return new AttributeData(name, min, max, val, def);
+        AttributeData attribute = new AttributeData();
+        attribute.setName(name);
+        attribute.setMinValue(min);
+        attribute.setMaxValue(max);
+        attribute.setCurrentValue(val);
+        attribute.setDefaultValue(def);
+        return attribute;
     }
 
     public void writeAttribute(ByteBuf buffer, BedrockCodecHelper helper, AttributeData attribute) {
         checkNotNull(attribute, "attribute");
 
-        buffer.writeFloatLE(attribute.getMinimum());
-        buffer.writeFloatLE(attribute.getMaximum());
-        buffer.writeFloatLE(attribute.getValue());
+        buffer.writeFloatLE(attribute.getMinValue());
+        buffer.writeFloatLE(attribute.getMaxValue());
+        buffer.writeFloatLE(attribute.getCurrentValue());
         buffer.writeFloatLE(attribute.getDefaultValue());
         helper.writeString(buffer, attribute.getName());
     }

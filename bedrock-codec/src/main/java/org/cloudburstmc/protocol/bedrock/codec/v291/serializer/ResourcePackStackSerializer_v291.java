@@ -5,40 +5,40 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
+import org.cloudburstmc.protocol.bedrock.data.resourcepack.PackInstanceId;
 import org.cloudburstmc.protocol.bedrock.packet.ResourcePackStackPacket;
-
-import static java.util.Objects.requireNonNull;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ResourcePackStackSerializer_v291 implements BedrockPacketSerializer<ResourcePackStackPacket> {
     public static final ResourcePackStackSerializer_v291 INSTANCE = new ResourcePackStackSerializer_v291();
 
+    protected static final int MAX_LENGTH = 65535;
+
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ResourcePackStackPacket packet) {
-        buffer.writeBoolean(packet.isForcedToAccept());
-        helper.writeArray(buffer, packet.getBehaviorPacks(), this::writeEntry);
-        helper.writeArray(buffer, packet.getResourcePacks(), this::writeEntry);
+        buffer.writeBoolean(packet.isTexturePackRequired());
+        helper.writeArray(buffer, packet.getAddonList(), this::writePackInstanceId);
+        helper.writeArray(buffer, packet.getTexturePackList(), this::writePackInstanceId);
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ResourcePackStackPacket packet) {
-        packet.setForcedToAccept(buffer.readBoolean());
-        helper.readArray(buffer, packet.getBehaviorPacks(), this::readEntry);
-        helper.readArray(buffer, packet.getResourcePacks(), this::readEntry);
+        packet.setTexturePackRequired(buffer.readBoolean());
+        helper.readArray(buffer, packet.getAddonList(), this::readPackInstanceId, MAX_LENGTH);
+        helper.readArray(buffer, packet.getTexturePackList(), this::readPackInstanceId, MAX_LENGTH);
     }
 
-    public ResourcePackStackPacket.Entry readEntry(ByteBuf buffer, BedrockCodecHelper helper) {
-        String packId = helper.readString(buffer);
-        String packVersion = helper.readString(buffer);
-        String subPackName = helper.readString(buffer);
-        return new ResourcePackStackPacket.Entry(packId, packVersion, subPackName);
+    protected void writePackInstanceId(ByteBuf buffer, BedrockCodecHelper helper, PackInstanceId packInstanceId) {
+        helper.writeString(buffer, packInstanceId.getPackID());
+        helper.writeString(buffer, packInstanceId.getVersion());
+        helper.writeString(buffer, packInstanceId.getSubPackName());
     }
 
-    public void writeEntry(ByteBuf buffer, BedrockCodecHelper helper, ResourcePackStackPacket.Entry entry) {
-        requireNonNull(entry, "ResourcePackStackPacket entry is null");
-
-        helper.writeString(buffer, entry.getPackId());
-        helper.writeString(buffer, entry.getPackVersion());
-        helper.writeString(buffer, entry.getSubPackName());
+    protected PackInstanceId readPackInstanceId(ByteBuf buffer, BedrockCodecHelper helper) {
+        final PackInstanceId packInstanceId = new PackInstanceId();
+        packInstanceId.setPackID(helper.readString(buffer));
+        packInstanceId.setVersion(helper.readString(buffer));
+        packInstanceId.setSubPackName(helper.readString(buffer));
+        return packInstanceId;
     }
 }

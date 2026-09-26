@@ -4,7 +4,6 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.nbt.NbtMap;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 import java.util.List;
@@ -13,25 +12,18 @@ import java.util.List;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class UnlockedRecipesPacket implements BedrockPacket {
-    private ActionType action;
-    private final List<String> unlockedRecipes = new ObjectArrayList<>();
+
+    private PacketType type;
+    private final List<String> unlockedRecipesList = new ObjectArrayList<>();
 
     @Override
-    public PacketSignal handle(BedrockPacketHandler handler) {
+    public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
     @Override
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.UNLOCKED_RECIPES;
-    }
-
-    public enum ActionType {
-        EMPTY,
-        INITIALLY_UNLOCKED,
-        NEWLY_UNLOCKED,
-        REMOVE_UNLOCKED,
-        REMOVE_ALL
     }
 
     @Override
@@ -42,5 +34,21 @@ public class UnlockedRecipesPacket implements BedrockPacket {
             throw new AssertionError(e);
         }
     }
-}
 
+    public enum PacketType {
+        EMPTY,
+        INITIALLY_UNLOCKED_RECIPES,
+        NEWLY_UNLOCKED_RECIPES,
+        REMOVE_UNLOCKED_RECIPES,
+        REMOVE_ALL_UNLOCKED_RECIPES;
+
+        private static final PacketType[] VALUES = values();
+
+        public static PacketType from(int ordinal) {
+            if (ordinal >= 0 && ordinal < VALUES.length) {
+                return VALUES[ordinal];
+            }
+            throw new UnsupportedOperationException("Detected unknown UnlockedRecipesPacketPayload::PacketType ID: " + ordinal);
+        }
+    }
+}

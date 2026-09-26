@@ -7,10 +7,10 @@ import org.cloudburstmc.protocol.bedrock.codec.v332.serializer.LevelSoundEventSe
 import org.cloudburstmc.protocol.bedrock.codec.v388.serializer.AvailableCommandsSerializer_v388;
 import org.cloudburstmc.protocol.bedrock.codec.v408.Bedrock_v408;
 import org.cloudburstmc.protocol.bedrock.codec.v419.serializer.*;
-import org.cloudburstmc.protocol.bedrock.data.LevelEvent;
-import org.cloudburstmc.protocol.bedrock.data.LevelEventType;
+import org.cloudburstmc.protocol.bedrock.data.world.event.LevelEvent;
+import org.cloudburstmc.protocol.bedrock.data.world.event.LevelEventType;
 import org.cloudburstmc.protocol.bedrock.data.PacketRecipient;
-import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
+import org.cloudburstmc.protocol.bedrock.data.sound.LevelSoundEvent;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandParam;
 import org.cloudburstmc.protocol.bedrock.packet.*;
 import org.cloudburstmc.protocol.common.util.TypeMap;
@@ -22,9 +22,9 @@ public class Bedrock_v419 extends Bedrock_v408 {
             .shift(30, 1)
             .build();
 
-    protected static final TypeMap<SoundEvent> SOUND_EVENTS = Bedrock_v408.SOUND_EVENTS.toBuilder()
-            .replace(317, SoundEvent.EQUIP_NETHERITE)
-            .insert(318, SoundEvent.UNDEFINED)
+    protected static final TypeMap<LevelSoundEvent> SOUND_EVENTS = Bedrock_v408.SOUND_EVENTS.toBuilder()
+            .replace(317, LevelSoundEvent.EQUIP_NETHERITE)
+            .insert(318, LevelSoundEvent.UNDEFINED)
             .build();
 
     protected static final TypeMap<LevelEventType> LEVEL_EVENTS = Bedrock_v408.LEVEL_EVENTS.toBuilder()
@@ -42,9 +42,9 @@ public class Bedrock_v419 extends Bedrock_v408 {
             .updateSerializer(StartGamePacket.class, StartGameSerializer_v419.INSTANCE)
             .updateSerializer(MovePlayerPacket.class, MovePlayerSerializer_v419.INSTANCE)
             .updateSerializer(UpdateAttributesPacket.class, UpdateAttributesSerializer_v419.INSTANCE)
-            .updateSerializer(SetEntityDataPacket.class, SetEntityDataSerializer_v419.INSTANCE)
+            .updateSerializer(SetActorDataPacket.class, SetEntityDataSerializer_v419.INSTANCE)
             .updateSerializer(ContainerClosePacket.class, ContainerCloseSerializer_v419.INSTANCE)
-            .updateSerializer(MoveEntityDeltaPacket.class, MoveEntityDeltaSerializer_v419.INSTANCE)
+            .updateSerializer(MoveActorDeltaPacket.class, MoveActorDeltaSerializer_v419.INSTANCE)
             .updateSerializer(PlayerAuthInputPacket.class, PlayerAuthInputSerializer_v419.INSTANCE)
             .updateSerializer(ItemStackResponsePacket.class, ItemStackResponseSerializer_v419.INSTANCE)
             .updateSerializer(LevelSoundEvent1Packet.class, new LevelSoundEvent1Serializer_v291(SOUND_EVENTS))
@@ -56,6 +56,6 @@ public class Bedrock_v419 extends Bedrock_v408 {
             .registerPacket(CameraShakePacket::new, CameraShakeSerializer_v419.INSTANCE, 159, PacketRecipient.CLIENT)
             .registerPacket(PlayerFogPacket::new, PlayerFogSerializer_v419.INSTANCE, 160, PacketRecipient.CLIENT)
             .registerPacket(CorrectPlayerMovePredictionPacket::new, CorrectPlayerMovePredictionSerializer_v419.INSTANCE, 161, PacketRecipient.CLIENT)
-            .registerPacket(ItemComponentPacket::new, ItemComponentSerializer_v419.INSTANCE, 162, PacketRecipient.CLIENT)
+            .registerPacket(ItemRegistryPacket::new, ItemRegistrySerializer_v419.INSTANCE, 162, PacketRecipient.CLIENT)
             .build();
 }

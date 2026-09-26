@@ -1,0 +1,13 @@
+package org.cloudburstmc.protocol.bedrock.data.inventory.itemstack;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class ItemStackNetId {
+
+    private int ID;
+}

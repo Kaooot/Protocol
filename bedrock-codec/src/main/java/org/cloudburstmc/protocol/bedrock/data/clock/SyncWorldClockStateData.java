@@ -1,12 +1,11 @@
 package org.cloudburstmc.protocol.bedrock.data.clock;
 
+import lombok.Data;
 
-import lombok.Value;
-
-@Value
+@Data
 public class SyncWorldClockStateData {
 
-    long clockId;
-    int time;
-    boolean paused;
+    private long clockId;
+    private int time;
+    private boolean isPaused;
 }

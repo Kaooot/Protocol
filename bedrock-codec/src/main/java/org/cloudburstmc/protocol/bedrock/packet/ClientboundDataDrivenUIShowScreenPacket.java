@@ -3,32 +3,21 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.checkerframework.checker.nullness.qual.Nullable;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Allows the server to tell the client to show a Data Driven UI screen.
- *
- * @since v924
- */
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class ClientboundDataDrivenUIShowScreenPacket implements BedrockPacket {
 
     private String screenId;
-
     /**
-     * The unique id of this instance of the form for tracking in scripting
      * @since v944
      */
     private int formId;
-
     /**
-     * The optional id of the data associated with this screen
      * @since v944
      */
-    @Nullable
     private Integer dataInstanceId;
 
     @Override
@@ -36,8 +25,9 @@ public class ClientboundDataDrivenUIShowScreenPacket implements BedrockPacket {
         return handler.handle(this);
     }
 
+    @Override
     public BedrockPacketType getPacketType() {
-        return BedrockPacketType.CLIENTBOUND_DATA_DRIVEN_UI_SHOW_SCREEN;
+        return BedrockPacketType.CLIENTBOUND_DATA_DRIVEN_U_I_SHOW_SCREEN;
     }
 
     @Override

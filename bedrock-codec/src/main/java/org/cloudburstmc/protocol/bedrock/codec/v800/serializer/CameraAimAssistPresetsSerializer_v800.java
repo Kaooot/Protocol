@@ -5,7 +5,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v776.serializer.CameraAimAssistPresetsSerializer_v776;
-import org.cloudburstmc.protocol.bedrock.data.camera.CameraAimAssistOperation;
+import org.cloudburstmc.protocol.bedrock.data.camera.aimassist.CameraAimAssistPresetsPacketOperation;
 import org.cloudburstmc.protocol.bedrock.packet.CameraAimAssistPresetsPacket;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -13,19 +13,17 @@ public class CameraAimAssistPresetsSerializer_v800 extends CameraAimAssistPreset
 
     public static final CameraAimAssistPresetsSerializer_v800 INSTANCE = new CameraAimAssistPresetsSerializer_v800();
 
-    private static final CameraAimAssistOperation[] OPERATIONS = CameraAimAssistOperation.values();
-
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, CameraAimAssistPresetsPacket packet) {
-        helper.writeArray(buffer, packet.getCategoryDefinitions(), this::writeCategory);
-        helper.writeArray(buffer, packet.getPresets(), this::writePreset);
+        helper.writeArray(buffer, packet.getCameraAimAssistCategories(), this::writeCategory);
+        helper.writeArray(buffer, packet.getCameraAimAssistPresets(), this::writePreset);
         buffer.writeByte(packet.getOperation().ordinal());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, CameraAimAssistPresetsPacket packet) {
-        helper.readArray(buffer, packet.getCategoryDefinitions(), this::readCategory);
-        helper.readArray(buffer, packet.getPresets(), this::readPreset);
-        packet.setOperation(OPERATIONS[buffer.readUnsignedByte()]);
+        helper.readArray(buffer, packet.getCameraAimAssistCategories(), this::readCategory);
+        helper.readArray(buffer, packet.getCameraAimAssistPresets(), this::readPreset);
+        packet.setOperation(CameraAimAssistPresetsPacketOperation.from(buffer.readUnsignedByte()));
     }
 }

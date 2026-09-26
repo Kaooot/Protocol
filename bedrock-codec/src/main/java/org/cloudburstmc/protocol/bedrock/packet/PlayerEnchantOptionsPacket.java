@@ -1,22 +1,23 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.protocol.bedrock.data.inventory.EnchantOptionData;
+import org.cloudburstmc.protocol.bedrock.data.item.ItemEnchantOption;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class PlayerEnchantOptionsPacket implements BedrockPacket {
-    private final List<EnchantOptionData> options = new ArrayList<>();
+
+    private final List<ItemEnchantOption> options = new ObjectArrayList<>();
 
     @Override
-    public PacketSignal handle(BedrockPacketHandler handler) {
+    public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
@@ -34,4 +35,3 @@ public class PlayerEnchantOptionsPacket implements BedrockPacket {
         }
     }
 }
-

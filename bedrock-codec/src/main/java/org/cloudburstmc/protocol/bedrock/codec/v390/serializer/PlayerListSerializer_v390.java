@@ -4,85 +4,44 @@ import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
-import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
-import org.cloudburstmc.protocol.bedrock.data.BuildPlatform;
+import org.cloudburstmc.protocol.bedrock.codec.v388.serializer.PlayerListSerializer_v388;
+import org.cloudburstmc.protocol.bedrock.data.player.list.PlayerListAddEntry;
+import org.cloudburstmc.protocol.bedrock.data.player.list.PlayerListPacketType;
+import org.cloudburstmc.protocol.bedrock.data.player.list.PlayerListRemoveEntry;
 import org.cloudburstmc.protocol.bedrock.packet.PlayerListPacket;
-import org.cloudburstmc.protocol.common.util.TextConverter;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
-import static org.cloudburstmc.protocol.bedrock.packet.PlayerListPacket.Action;
-import static org.cloudburstmc.protocol.bedrock.packet.PlayerListPacket.Entry;
-
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class PlayerListSerializer_v390 implements BedrockPacketSerializer<PlayerListPacket> {
+public class PlayerListSerializer_v390 extends PlayerListSerializer_v388 {
     public static final PlayerListSerializer_v390 INSTANCE = new PlayerListSerializer_v390();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, PlayerListPacket packet) {
-        buffer.writeByte(packet.getAction().ordinal());
-        VarInts.writeUnsignedInt(buffer, packet.getEntries().size());
+        VarInts.writeUnsignedInt(
+                buffer,
+                packet.getEntries().get(0) instanceof PlayerListRemoveEntry ?
+                        PlayerListPacketType.REMOVE.getLegacyId() : PlayerListPacketType.ADD.getLegacyId()
+        );
+        helper.writeArray(buffer, packet.getEntries(), this::writePlayerListEntry);
 
-        if (packet.getAction() == Action.ADD) {
-            for (Entry entry : packet.getEntries()) {
-                this.writeEntryBase(buffer, helper, entry);
-            }
-
-            for (Entry entry : packet.getEntries()) {
-                buffer.writeBoolean(entry.isTrustedSkin());
-            }
-        } else {
-            for (Entry entry : packet.getEntries()) {
-                helper.writeUuid(buffer, entry.getUuid());
+        if (packet.getEntries().get(0) instanceof PlayerListAddEntry) {
+            for (Object entry : packet.getEntries()) {
+                buffer.writeBoolean(((PlayerListAddEntry) entry).isTrustedSkin());
             }
         }
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, PlayerListPacket packet) {
-        Action action = Action.values()[buffer.readUnsignedByte()];
-        packet.setAction(action);
-        int length = VarInts.readUnsignedInt(buffer);
+        final PlayerListPacketType packetType = PlayerListPacketType.fromLegacy(VarInts.readUnsignedInt(buffer));
+        helper.readArray(buffer, packet.getEntries(), (buf, codecHelper) ->
+                this.readPlayerListEntry(buf, codecHelper, packetType), MAX_ENTRIES);
 
-        if (action == Action.ADD) {
-            for (int i = 0; i < length; i++) {
-                packet.getEntries().add(this.readEntryBase(buffer, helper));
-            }
-
+        if (packet.getEntries().get(0) instanceof PlayerListAddEntry) {
+            final int length = packet.getEntries().size();
             for (int i = 0; i < length && buffer.isReadable(); i++) {
-                packet.getEntries().get(i).setTrustedSkin(buffer.readBoolean());
-            }
-        } else {
-            for (int i = 0; i < length; i++) {
-                packet.getEntries().add(new Entry(helper.readUuid(buffer)));
+                ((PlayerListAddEntry) packet.getEntries().get(i)).setTrustedSkin(buffer.readBoolean());
             }
         }
-    }
-
-    protected void writeEntryBase(ByteBuf buffer, BedrockCodecHelper helper, Entry entry) {
-        helper.writeUuid(buffer, entry.getUuid());
-
-        VarInts.writeLong(buffer, entry.getEntityId());
-        TextConverter converter = helper.getTextConverter();
-        helper.writeString(buffer, converter.serialize(entry.getName(CharSequence.class)));
-        helper.writeString(buffer, entry.getXuid());
-        helper.writeString(buffer, entry.getPlatformChatId());
-        buffer.writeIntLE(entry.getBuildPlatform().getId());
-        helper.writeSkin(buffer, entry.getSkin());
-        buffer.writeBoolean(entry.isTeacher());
-        buffer.writeBoolean(entry.isHost());
-    }
-
-    protected Entry readEntryBase(ByteBuf buffer, BedrockCodecHelper helper) {
-        Entry entry = new Entry(helper.readUuid(buffer));
-        entry.setEntityId(VarInts.readLong(buffer));
-        TextConverter converter = helper.getTextConverter();
-        entry.setName(converter.deserialize(helper.readString(buffer)));
-        entry.setXuid(helper.readString(buffer));
-        entry.setPlatformChatId(helper.readString(buffer));
-        entry.setBuildPlatform(BuildPlatform.from(buffer.readIntLE()));
-        entry.setSkin(helper.readSkin(buffer));
-        entry.setTeacher(buffer.readBoolean());
-        entry.setHost(buffer.readBoolean());
-        return entry;
     }
 }

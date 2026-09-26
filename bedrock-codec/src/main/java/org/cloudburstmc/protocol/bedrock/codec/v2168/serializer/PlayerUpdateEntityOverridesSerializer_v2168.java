@@ -12,7 +12,7 @@ public class PlayerUpdateEntityOverridesSerializer_v2168 extends PlayerUpdateEnt
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, PlayerUpdateEntityOverridesPacket packet) {
-        VarInts.writeLong(buffer, packet.getEntityUniqueId());
+        VarInts.writeLong(buffer, packet.getTargetID());
         VarInts.writeUnsignedInt(buffer, packet.getPropertyIndex());
         VarInts.writeUnsignedInt(buffer, packet.getUpdateType().ordinal());
         buffer.writeByte(packet.getUpdateType().ordinal());
@@ -25,7 +25,7 @@ public class PlayerUpdateEntityOverridesSerializer_v2168 extends PlayerUpdateEnt
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, PlayerUpdateEntityOverridesPacket packet) {
-        packet.setEntityUniqueId(VarInts.readLong(buffer));
+        packet.setTargetID(VarInts.readLong(buffer));
         packet.setPropertyIndex(VarInts.readUnsignedInt(buffer));
 
         int type = VarInts.readUnsignedInt(buffer);

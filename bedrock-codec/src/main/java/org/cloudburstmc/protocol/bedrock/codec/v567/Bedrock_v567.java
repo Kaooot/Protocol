@@ -11,19 +11,19 @@ import org.cloudburstmc.protocol.bedrock.codec.v567.serializer.CommandRequestSer
 import org.cloudburstmc.protocol.bedrock.codec.v567.serializer.CraftingDataSerializer_v567;
 import org.cloudburstmc.protocol.bedrock.codec.v567.serializer.StartGameSerializer_v567;
 import org.cloudburstmc.protocol.bedrock.data.PacketRecipient;
-import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
+import org.cloudburstmc.protocol.bedrock.data.sound.LevelSoundEvent;
 import org.cloudburstmc.protocol.bedrock.packet.*;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 
 public class Bedrock_v567 extends Bedrock_v560 {
 
 
-    public static final TypeMap<SoundEvent> SOUND_EVENTS = Bedrock_v560.SOUND_EVENTS.toBuilder()
-            .replace(458, SoundEvent.INSERT)
-            .insert(459, SoundEvent.PICKUP)
-            .insert(460, SoundEvent.INSERT_ENCHANTED)
-            .insert(461, SoundEvent.PICKUP_ENCHANTED)
-            .insert(462, SoundEvent.UNDEFINED)
+    public static final TypeMap<LevelSoundEvent> SOUND_EVENTS = Bedrock_v560.SOUND_EVENTS.toBuilder()
+            .replace(458, LevelSoundEvent.INSERT)
+            .insert(459, LevelSoundEvent.PICKUP)
+            .insert(460, LevelSoundEvent.INSERT_ENCHANTED)
+            .insert(461, LevelSoundEvent.PICKUP_ENCHANTED)
+            .insert(462, LevelSoundEvent.UNDEFINED)
             .build();
 
     public static final BedrockCodec CODEC = Bedrock_v560.CODEC.toBuilder()

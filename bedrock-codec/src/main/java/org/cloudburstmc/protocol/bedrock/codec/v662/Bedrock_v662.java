@@ -10,12 +10,12 @@ import org.cloudburstmc.protocol.bedrock.codec.v575.BedrockCodecHelper_v575;
 import org.cloudburstmc.protocol.bedrock.codec.v594.serializer.AvailableCommandsSerializer_v594;
 import org.cloudburstmc.protocol.bedrock.codec.v649.Bedrock_v649;
 import org.cloudburstmc.protocol.bedrock.codec.v662.serializer.*;
-import org.cloudburstmc.protocol.bedrock.data.LevelEvent;
-import org.cloudburstmc.protocol.bedrock.data.LevelEventType;
-import org.cloudburstmc.protocol.bedrock.data.ParticleType;
-import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
+import org.cloudburstmc.protocol.bedrock.data.world.event.LevelEvent;
+import org.cloudburstmc.protocol.bedrock.data.world.event.LevelEventType;
+import org.cloudburstmc.protocol.bedrock.data.world.event.ParticleType;
+import org.cloudburstmc.protocol.bedrock.data.sound.LevelSoundEvent;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandParam;
-import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.TextProcessingEventOrigin;
+import org.cloudburstmc.protocol.bedrock.data.text.TextProcessingEventOrigin;
 import org.cloudburstmc.protocol.bedrock.packet.*;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 
@@ -27,7 +27,7 @@ public class Bedrock_v662 extends Bedrock_v649 {
             .insert(24, CommandParam.RATIONAL_RANGE_VAL)
             .insert(25, CommandParam.RATIONAL_RANGE_POST_VAL)
             .insert(26, CommandParam.RATIONAL_RANGE)
-            .insert(27, CommandParam.RATIONAL_RANGE_FULL)
+            .insert(27, CommandParam.FULL_RATIONAL_RANGE)
             .shift(48, 8)
             .insert(48, CommandParam.PROPERTY_VALUE)
             .insert(49, CommandParam.HAS_PROPERTY_PARAM_VALUE)
@@ -62,19 +62,19 @@ public class Bedrock_v662 extends Bedrock_v649 {
             .replace(14, TextProcessingEventOrigin.SERVER_FORM) // replaces PASS_THROUGH_WITHOUT_SIFT
             .build();
 
-    protected static final TypeMap<SoundEvent> SOUND_EVENTS = Bedrock_v649.SOUND_EVENTS
+    protected static final TypeMap<LevelSoundEvent> SOUND_EVENTS = Bedrock_v649.SOUND_EVENTS
             .toBuilder()
-            .replace(500, SoundEvent.VAULT_OPEN_SHUTTER)
-            .insert(501, SoundEvent.VAULT_CLOSE_SHUTTER)
-            .insert(502, SoundEvent.VAULT_EJECT_ITEM)
-            .insert(503, SoundEvent.VAULT_INSERT_ITEM)
-            .insert(504, SoundEvent.VAULT_INSERT_ITEM_FAIL)
-            .insert(505, SoundEvent.VAULT_AMBIENT)
-            .insert(506, SoundEvent.VAULT_ACTIVATE)
-            .insert(507, SoundEvent.VAULT_DEACTIVATE)
-            .insert(508, SoundEvent.HURT_REDUCED)
-            .insert(509, SoundEvent.WIND_CHARGE_BURST)
-            .insert(511, SoundEvent.UNDEFINED)
+            .replace(500, LevelSoundEvent.VAULT_OPEN_SHUTTER)
+            .insert(501, LevelSoundEvent.VAULT_CLOSE_SHUTTER)
+            .insert(502, LevelSoundEvent.VAULT_EJECT_ITEM)
+            .insert(503, LevelSoundEvent.VAULT_INSERT_ITEM)
+            .insert(504, LevelSoundEvent.VAULT_INSERT_ITEM_FAIL)
+            .insert(505, LevelSoundEvent.VAULT_AMBIENT)
+            .insert(506, LevelSoundEvent.VAULT_ACTIVATE)
+            .insert(507, LevelSoundEvent.VAULT_DEACTIVATE)
+            .insert(508, LevelSoundEvent.HURT_REDUCED)
+            .insert(509, LevelSoundEvent.WIND_CHARGE_BURST)
+            .insert(511, LevelSoundEvent.UNDEFINED)
             .build();
 
     public static final BedrockCodec CODEC = Bedrock_v649.CODEC.toBuilder()
@@ -92,7 +92,7 @@ public class Bedrock_v662 extends Bedrock_v649 {
             .updateSerializer(MobEffectPacket.class, MobEffectSerializer_v662.INSTANCE)
             .updateSerializer(PlayerAuthInputPacket.class, new PlayerAuthInputSerializer_v662())
             .updateSerializer(ResourcePacksInfoPacket.class, ResourcePacksInfoSerializer_v622.INSTANCE)
-            .updateSerializer(SetEntityMotionPacket.class, SetEntityMotionSerializer_v662.INSTANCE)
+            .updateSerializer(SetActorMotionPacket.class, SetEntityMotionSerializer_v662.INSTANCE)
             .deregisterPacket(ItemFrameDropItemPacket.class) // this packet is now deprecated
             .build();
 }

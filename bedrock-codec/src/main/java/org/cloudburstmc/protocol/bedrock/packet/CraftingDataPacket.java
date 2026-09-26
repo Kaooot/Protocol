@@ -4,10 +4,7 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.ContainerMixData;
-import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.MaterialReducer;
-import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.PotionMixData;
-import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.recipe.*;
+import org.cloudburstmc.protocol.bedrock.data.recipe.*;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 import java.util.List;
@@ -16,49 +13,24 @@ import java.util.List;
 @ToString(doNotUseGetters = true)
 @EqualsAndHashCode(doNotUseGetters = true)
 public class CraftingDataPacket implements BedrockPacket {
+
+    private final List<ShapedRecipePayload> shapedRecipes = new ObjectArrayList<>();
+    private final List<ShapelessRecipePayload> shapelessRecipes = new ObjectArrayList<>();
+    private final List<MultiRecipePayload> multiRecipes = new ObjectArrayList<>();
+    private final List<ShapelessRecipePayload> userDataShapelessRecipes = new ObjectArrayList<>();
+    private final List<ShapelessRecipePayload> shapelessChemistryRecipes = new ObjectArrayList<>();
+    private final List<ShapedRecipePayload> shapedChemistryRecipes = new ObjectArrayList<>();
+    private final List<SmithingTransformRecipePayload> smithingTransformRecipes = new ObjectArrayList<>();
+    private final List<SmithingTrimRecipePayload> smithingTrimRecipes = new ObjectArrayList<>();
+    private final List<PotionMixDataEntry> potionMixes = new ObjectArrayList<>();
+    private final List<ContainerMixDataEntry> containerMixes = new ObjectArrayList<>();
+    private final List<MaterialReducerDataEntry> materialReducers = new ObjectArrayList<>();
+    private boolean clearRecipes;
+
     /**
-     * @deprecated since v2168
+     * @deprecated since v975
      */
-    private final List<RecipeData> craftingData = new ObjectArrayList<>();
-    /**
-     * @since v2168
-     */
-    private final List<ShapedRecipeData> shapedData = new ObjectArrayList<>();
-    /**
-     * @since v2168
-     */
-    private final List<ShapelessRecipeData> shapelessData = new ObjectArrayList<>();
-    /**
-     * @since v2168
-     */
-    private final List<MultiRecipeData> multiData = new ObjectArrayList<>();
-    /**
-     * @since v2168
-     */
-    private final List<ShapelessRecipeData> shapelessUserData = new ObjectArrayList<>();
-    /**
-     * @since v2168
-     */
-    private final List<ShapelessRecipeData> shapelessChemistryData = new ObjectArrayList<>();
-    /**
-     * @since v2168
-     */
-    private final List<ShapedRecipeData> shapedChemistryData = new ObjectArrayList<>();
-    /**
-     * @since v2168
-     */
-    private final List<SmithingTransformRecipeData> smithingTransformData = new ObjectArrayList<>();
-    /**
-     * @since v2168
-     */
-    private final List<SmithingTrimRecipeData> smithingTrimData = new ObjectArrayList<>();
-    private final List<PotionMixData> potionMixData = new ObjectArrayList<>();
-    private final List<ContainerMixData> containerMixData = new ObjectArrayList<>();
-    /**
-     * @since v465
-     */
-    private final List<MaterialReducer> materialReducers = new ObjectArrayList<>();
-    private boolean cleanRecipes;
+    private final List<FurnaceRecipePayload> furnaceRecipes = new ObjectArrayList<>();
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {
@@ -78,4 +50,3 @@ public class CraftingDataPacket implements BedrockPacket {
         }
     }
 }
-

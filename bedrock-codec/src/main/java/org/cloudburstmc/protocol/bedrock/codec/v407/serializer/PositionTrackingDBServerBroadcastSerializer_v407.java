@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.cloudburstmc.nbt.NbtMap;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
+import org.cloudburstmc.protocol.bedrock.data.positiontracking.PositionTrackingId;
 import org.cloudburstmc.protocol.bedrock.packet.PositionTrackingDBServerBroadcastPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -13,19 +14,17 @@ import org.cloudburstmc.protocol.common.util.VarInts;
 public class PositionTrackingDBServerBroadcastSerializer_v407 implements BedrockPacketSerializer<PositionTrackingDBServerBroadcastPacket> {
     public static final PositionTrackingDBServerBroadcastSerializer_v407 INSTANCE = new PositionTrackingDBServerBroadcastSerializer_v407();
 
-    protected static final PositionTrackingDBServerBroadcastPacket.Action[] ACTIONS = PositionTrackingDBServerBroadcastPacket.Action.values();
-
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, PositionTrackingDBServerBroadcastPacket packet) {
         buffer.writeByte(packet.getAction().ordinal());
-        VarInts.writeInt(buffer, packet.getTrackingId());
-        helper.writeTag(buffer, packet.getTag());
+        VarInts.writeInt(buffer, packet.getId().getValue());
+        helper.writeTag(buffer, packet.getPositionTrackingData());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, PositionTrackingDBServerBroadcastPacket packet) {
-        packet.setAction(ACTIONS[buffer.readByte()]);
-        packet.setTrackingId(VarInts.readInt(buffer));
-        packet.setTag(helper.readTag(buffer, NbtMap.class));
+        packet.setAction(PositionTrackingDBServerBroadcastPacket.Action.from(buffer.readByte()));
+        packet.setId(new PositionTrackingId(VarInts.readInt(buffer)));
+        packet.setPositionTrackingData(helper.readTag(buffer, NbtMap.class));
     }
 }

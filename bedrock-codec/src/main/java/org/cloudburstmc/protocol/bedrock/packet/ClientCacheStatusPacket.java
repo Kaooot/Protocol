@@ -9,13 +9,15 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class ClientCacheStatusPacket implements BedrockPacket {
-    private boolean supported;
+
+    private boolean isCacheSupported;
 
     @Override
-    public PacketSignal handle(BedrockPacketHandler handler) {
+    public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
+    @Override
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.CLIENT_CACHE_STATUS;
     }
@@ -29,4 +31,3 @@ public class ClientCacheStatusPacket implements BedrockPacket {
         }
     }
 }
-

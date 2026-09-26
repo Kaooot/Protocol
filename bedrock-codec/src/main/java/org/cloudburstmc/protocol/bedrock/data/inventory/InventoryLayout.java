@@ -1,19 +1,18 @@
 package org.cloudburstmc.protocol.bedrock.data.inventory;
 
 public enum InventoryLayout {
+
     NONE,
-    /**
-     * SURVIVAL before v924
-     */
     INVENTORY_ONLY,
-    /**
-     * RECIPE_BOOK before v924
-     */
     DEFAULT,
-    /**
-     * CREATIVE before v924
-     */
     RECIPE_BOOK_ONLY;
 
-    public static final InventoryLayout[] VALUES = values();
+    private static final InventoryLayout[] VALUES = values();
+
+    public static InventoryLayout from(int ordinal) {
+        if (ordinal >= 0 && ordinal < VALUES.length) {
+            return VALUES[ordinal];
+        }
+        throw new UnsupportedOperationException("Detected unknown InventoryLayout ID: " + ordinal);
+    }
 }

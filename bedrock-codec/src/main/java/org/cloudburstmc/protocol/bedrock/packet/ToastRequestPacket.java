@@ -14,7 +14,7 @@ public class ToastRequestPacket implements BedrockPacket {
     private CharSequence content;
 
     @Override
-    public PacketSignal handle(BedrockPacketHandler handler) {
+    public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
@@ -37,7 +37,7 @@ public class ToastRequestPacket implements BedrockPacket {
     }
 
     public <T extends CharSequence> T getTitle(Class<T> type) {
-        return type.cast(title);
+        return type.cast(this.title);
     }
 
     public String getContent() {
@@ -45,7 +45,6 @@ public class ToastRequestPacket implements BedrockPacket {
     }
 
     public <T extends CharSequence> T getContent(Class<T> type) {
-        return type.cast(content);
+        return type.cast(this.content);
     }
 }
-

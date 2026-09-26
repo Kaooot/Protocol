@@ -10,15 +10,17 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class BlockPickRequestPacket implements BedrockPacket {
-    private Vector3i blockPosition;
-    private boolean addUserData;
-    private int hotbarSlot;
+
+    private Vector3i position;
+    private boolean withData;
+    private int maxSlots;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
+    @Override
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.BLOCK_PICK_REQUEST;
     }
@@ -32,4 +34,3 @@ public class BlockPickRequestPacket implements BedrockPacket {
         }
     }
 }
-

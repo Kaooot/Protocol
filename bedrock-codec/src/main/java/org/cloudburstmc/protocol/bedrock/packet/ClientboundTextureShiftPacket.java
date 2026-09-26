@@ -1,5 +1,6 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -7,23 +8,18 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 import java.util.List;
 
-/**
- * Sends a set of update properties for the texture shift system from the server to the client.
- *
- * @since v924
- */
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class ClientboundTextureShiftPacket implements BedrockPacket {
 
-    private Action action;
+    private Action actionID;
     private String collectionName;
     private String fromStep;
     private String toStep;
-    private List<String> allSteps;
-    private long currentLengthTicks;
-    private long totalLengthTicks;
+    private final List<String> allSteps = new ObjectArrayList<>();
+    private long currentLengthInTicks;
+    private long totalLengthInTicks;
     private boolean enabled;
 
     @Override
@@ -31,6 +27,7 @@ public class ClientboundTextureShiftPacket implements BedrockPacket {
         return handler.handle(this);
     }
 
+    @Override
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.CLIENTBOUND_TEXTURE_SHIFT;
     }
@@ -49,6 +46,15 @@ public class ClientboundTextureShiftPacket implements BedrockPacket {
         INITIALIZE,
         START,
         SET_ENABLED,
-        SYNC
+        SYNC;
+
+        private static final Action[] VALUES = values();
+
+        public static Action from(int ordinal) {
+            if (ordinal >= 0 && ordinal < VALUES.length) {
+                return VALUES[ordinal];
+            }
+            throw new UnsupportedOperationException("Detected unknown ClientboundTextureShiftPacketPayload::Action ID: " + ordinal);
+        }
     }
 }

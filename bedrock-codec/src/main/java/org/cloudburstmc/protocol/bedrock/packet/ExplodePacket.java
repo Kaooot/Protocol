@@ -10,10 +10,15 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 import java.util.List;
 
+/**
+ * @deprecated
+ */
 @Data
+@Deprecated
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class ExplodePacket implements BedrockPacket {
+
     private final List<Vector3i> records = new ObjectArrayList<>();
     private Vector3f position;
     private float radius;
@@ -36,4 +41,3 @@ public class ExplodePacket implements BedrockPacket {
         }
     }
 }
-

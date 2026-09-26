@@ -1,13 +1,17 @@
 package org.cloudburstmc.protocol.bedrock.data.biome;
 
-import lombok.Value;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Value
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class BiomeMultinoiseGenRulesData {
 
-    float temperature;
-    float humidity;
-    float altitude;
-    float weirdness;
-    float weight;
+    private float temperature;
+    private float humidity;
+    private float altitude;
+    private float weirdness;
+    private float weight;
 }

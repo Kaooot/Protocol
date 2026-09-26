@@ -16,12 +16,12 @@ public class SpawnExperienceOrbSerializer_v291 implements BedrockPacketSerialize
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, SpawnExperienceOrbPacket packet) {
         helper.writeVector3f(buffer, packet.getPosition());
-        VarInts.writeInt(buffer, packet.getAmount());
+        VarInts.writeInt(buffer, packet.getXpValue());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, SpawnExperienceOrbPacket packet) {
         packet.setPosition(helper.readVector3f(buffer));
-        packet.setAmount(VarInts.readInt(buffer));
+        packet.setXpValue(VarInts.readInt(buffer));
     }
 }

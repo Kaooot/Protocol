@@ -1,0 +1,36 @@
+package org.cloudburstmc.protocol.bedrock.packet;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import org.cloudburstmc.protocol.bedrock.data.camera.aimassist.ClientCameraAimAssistPacketAction;
+import org.cloudburstmc.protocol.common.PacketSignal;
+
+@Data
+@EqualsAndHashCode(doNotUseGetters = true)
+@ToString(doNotUseGetters = true)
+public class ClientCameraAimAssistPacket implements BedrockPacket {
+
+    private String cameraPresetId;
+    private ClientCameraAimAssistPacketAction action;
+    private boolean allowAimAssist;
+
+    @Override
+    public final PacketSignal handle(BedrockPacketHandler handler) {
+        return handler.handle(this);
+    }
+
+    @Override
+    public BedrockPacketType getPacketType() {
+        return BedrockPacketType.CLIENT_CAMERA_AIM_ASSIST;
+    }
+
+    @Override
+    public ClientCameraAimAssistPacket clone() {
+        try {
+            return (ClientCameraAimAssistPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
+}

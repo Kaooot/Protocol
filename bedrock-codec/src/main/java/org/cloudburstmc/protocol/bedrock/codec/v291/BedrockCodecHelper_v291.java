@@ -10,15 +10,20 @@ import org.cloudburstmc.nbt.NbtMap;
 import org.cloudburstmc.nbt.NbtUtils;
 import org.cloudburstmc.protocol.bedrock.codec.BaseBedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
-import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
-import org.cloudburstmc.protocol.bedrock.data.GameRuleData;
+import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
+import org.cloudburstmc.protocol.bedrock.data.misc.RedactableString;
+import org.cloudburstmc.protocol.bedrock.data.actor.link.ActorLink;
+import org.cloudburstmc.protocol.bedrock.data.actor.link.ActorLinkType;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandEnumConstraint;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandEnumData;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandOriginData;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandOriginType;
 import org.cloudburstmc.protocol.bedrock.data.definitions.ItemDefinition;
-import org.cloudburstmc.protocol.bedrock.data.entity.*;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataFormat;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataMap;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataType;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
+import org.cloudburstmc.protocol.bedrock.data.world.GameRule;
 import org.cloudburstmc.protocol.bedrock.transformer.EntityDataTransformer;
 import org.cloudburstmc.protocol.common.util.TriConsumer;
 import org.cloudburstmc.protocol.common.util.TypeMap;
@@ -37,29 +42,26 @@ import static org.cloudburstmc.protocol.common.util.Preconditions.checkNotNull;
 
 public class BedrockCodecHelper_v291 extends BaseBedrockCodecHelper {
 
-    public BedrockCodecHelper_v291(EntityDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes) {
+    public BedrockCodecHelper_v291(ActorDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes) {
         super(entityData, gameRulesTypes);
     }
 
     @Override
-    public EntityLinkData readEntityLink(ByteBuf buffer) {
-
-        long from = VarInts.readLong(buffer);
-        long to = VarInts.readLong(buffer);
-        int type = buffer.readUnsignedByte();
-        boolean immediate = buffer.readBoolean();
-
-        return new EntityLinkData(from, to, EntityLinkData.Type.values()[type], immediate, false, 0f);
+    public void writeActorLink(ByteBuf buffer, ActorLink entityLink) {
+        VarInts.writeLong(buffer, entityLink.getTargetA());
+        VarInts.writeLong(buffer, entityLink.getTargetB());
+        buffer.writeByte(entityLink.getType().ordinal());
+        buffer.writeBoolean(entityLink.isImmediate());
     }
 
     @Override
-    public void writeEntityLink(ByteBuf buffer, EntityLinkData entityLink) {
-        checkNotNull(entityLink, "entityLink");
-
-        VarInts.writeLong(buffer, entityLink.getFrom());
-        VarInts.writeLong(buffer, entityLink.getTo());
-        buffer.writeByte(entityLink.getType().ordinal());
-        buffer.writeBoolean(entityLink.isImmediate());
+    public ActorLink readActorLink(ByteBuf buffer) {
+        final ActorLink actorLink = new ActorLink();
+        actorLink.setTargetA(VarInts.readLong(buffer));
+        actorLink.setTargetB(VarInts.readLong(buffer));
+        actorLink.setType(ActorLinkType.from(buffer.readUnsignedByte()));
+        actorLink.setImmediate(buffer.readBoolean());
+        return actorLink;
     }
 
     @Override
@@ -170,53 +172,54 @@ public class BedrockCodecHelper_v291 extends BaseBedrockCodecHelper {
     }
 
     @Override
-    public CommandOriginData readCommandOrigin(ByteBuf buffer) {
-        CommandOriginType origin = CommandOriginType.values()[VarInts.readUnsignedInt(buffer)];
-        UUID uuid = readUuid(buffer);
-        String requestId = readString(buffer);
-        long varLong = -1;
-        if (origin == CommandOriginType.DEV_CONSOLE || origin == CommandOriginType.TEST) {
-            varLong = VarInts.readLong(buffer);
-        }
-        return new CommandOriginData(origin, uuid, requestId, varLong);
-    }
-
-    @Override
-    public void writeCommandOrigin(ByteBuf buffer, CommandOriginData originData) {
-        checkNotNull(originData, "commandOriginData");
-        VarInts.writeUnsignedInt(buffer, originData.getOrigin().ordinal());
-        writeUuid(buffer, originData.getUuid());
-        writeString(buffer, originData.getRequestId());
-        if (originData.getOrigin() == CommandOriginType.DEV_CONSOLE || originData.getOrigin() == CommandOriginType.TEST) {
+    public void writeCommandOriginData(ByteBuf buffer, CommandOriginData originData) {
+        VarInts.writeUnsignedInt(buffer, originData.getType().ordinal());
+        this.writeUuid(buffer, originData.getUuid());
+        this.writeString(buffer, originData.getRequestId());
+        if (originData.getType().equals(CommandOriginType.DEV_CONSOLE) || originData.getType().equals(CommandOriginType.TEST)) {
             VarInts.writeLong(buffer, originData.getPlayerId());
         }
     }
 
     @Override
-    public GameRuleData<?> readGameRule(ByteBuf buffer) {
+    public CommandOriginData readCommandOriginData(ByteBuf buffer) {
+        final CommandOriginData data = new CommandOriginData();
+        data.setType(CommandOriginType.from(VarInts.readUnsignedInt(buffer)));
+        data.setUuid(this.readUuid(buffer));
+        data.setRequestId(this.readString(buffer));
+        long playerId = -1L;
+        if (data.getType().equals(CommandOriginType.DEV_CONSOLE) || data.getType().equals(CommandOriginType.TEST)) {
+            playerId = VarInts.readLong(buffer);
+        }
+        data.setPlayerId(playerId);
+        return data;
+    }
+
+    @Override
+    public GameRule readGameRule(ByteBuf buffer) {
 
         String name = readString(buffer);
         int type = VarInts.readUnsignedInt(buffer);
 
         switch (type) {
             case 1:
-                return new GameRuleData<>(name, buffer.readBoolean());
+                return new GameRule(name, false, buffer.readBoolean());
             case 2:
-                return new GameRuleData<>(name, VarInts.readUnsignedInt(buffer));
+                return new GameRule(name, false, VarInts.readUnsignedInt(buffer));
             case 3:
-                return new GameRuleData<>(name, buffer.readFloatLE());
+                return new GameRule(name, false, buffer.readFloatLE());
         }
         throw new IllegalStateException("Invalid gamerule type received");
     }
 
     @Override
-    public void writeGameRule(ByteBuf buffer, GameRuleData<?> gameRule) {
+    public void writeGameRule(ByteBuf buffer, GameRule gameRule) {
         checkNotNull(gameRule, "gameRule");
 
-        Object value = gameRule.getValue();
+        Object value = gameRule.getRuleValue();
         int type = this.gameRuleType.getId(value.getClass());
 
-        writeString(buffer, gameRule.getName());
+        writeString(buffer, gameRule.getRuleName());
         VarInts.writeUnsignedInt(buffer, type);
         switch (type) {
             case 1:
@@ -232,25 +235,25 @@ public class BedrockCodecHelper_v291 extends BaseBedrockCodecHelper {
     }
 
     @Override
-    public GameRuleData<?> readGameRuleInStartGame(ByteBuf buffer) {
+    public GameRule readGameRuleInStartGame(ByteBuf buffer) {
         return readGameRule(buffer);
     }
 
     @Override
-    public void writeGameRuleInStartGame(ByteBuf buffer, GameRuleData<?> gameRule) {
+    public void writeGameRuleInStartGame(ByteBuf buffer, GameRule gameRule) {
         writeGameRule(buffer, gameRule);
     }
 
     @Override
-    public void readEntityData(ByteBuf buffer, EntityDataMap entityDataMap) {
-        checkNotNull(entityDataMap, "entityDataMap");
+    public void readEntityData(ByteBuf buffer, ActorDataMap actorDataMap) {
+        checkNotNull(actorDataMap, "entityDataMap");
 
         int length = VarInts.readUnsignedInt(buffer);
         checkArgument(this.encodingSettings.maxListSize() <= 0 || length <= this.encodingSettings.maxListSize(), "Entity data size is too big: %s", length);
 
         for (int i = 0; i < length; i++) {
             int id = VarInts.readUnsignedInt(buffer);
-            EntityDataFormat format = EntityDataFormat.values()[VarInts.readUnsignedInt(buffer)];
+            ActorDataFormat format = ActorDataFormat.values()[VarInts.readUnsignedInt(buffer)];
 
             Object value;
             switch (format) {
@@ -285,14 +288,14 @@ public class BedrockCodecHelper_v291 extends BaseBedrockCodecHelper {
                     throw new UnsupportedOperationException("Unknown entity data type received");
             }
 
-            EntityDataTypeMap.Definition<?>[] definitions = this.entityData.fromId(id, format);
+            ActorDataTypeMap.Definition<?>[] definitions = this.entityData.fromId(id, format);
             if (definitions != null) {
-                for (EntityDataTypeMap.Definition<?> definition : definitions) {
+                for (ActorDataTypeMap.Definition<?> definition : definitions) {
                     //noinspection unchecked
                     EntityDataTransformer<Object, ?> transformer = (EntityDataTransformer<Object, ?>) definition.getTransformer();
-                    Object transformedValue = transformer.deserialize(this, entityDataMap, value);
+                    Object transformedValue = transformer.deserialize(this, actorDataMap, value);
                     if (transformedValue != null) {
-                        entityDataMap.put(definition.getType(), transformedValue);
+                        actorDataMap.put(definition.getType(), transformedValue);
                     }
                 }
             } else {
@@ -303,18 +306,18 @@ public class BedrockCodecHelper_v291 extends BaseBedrockCodecHelper {
 
     @SuppressWarnings("unchecked")
     @Override
-    public void writeEntityData(ByteBuf buffer, EntityDataMap entityDataMap) {
-        checkNotNull(entityDataMap, "entityDataMap");
+    public void writeEntityData(ByteBuf buffer, ActorDataMap actorDataMap) {
+        checkNotNull(actorDataMap, "entityDataMap");
 
         // Collect serialized entries first
-        List<Map.Entry<EntityDataTypeMap.Definition<?>, Object>> serializedEntries = new LinkedList<>();
+        List<Map.Entry<ActorDataTypeMap.Definition<?>, Object>> serializedEntries = new LinkedList<>();
 
-        for (Map.Entry<EntityDataType<?>, Object> entry : entityDataMap.entrySet()) {
-            EntityDataTypeMap.Definition<?> definition = this.entityData.fromType(entry.getKey());
+        for (Map.Entry<ActorDataType<?>, Object> entry : actorDataMap.entrySet()) {
+            ActorDataTypeMap.Definition<?> definition = this.entityData.fromType(entry.getKey());
 
             try {
                 Object value = ((EntityDataTransformer<?, Object>) definition.getTransformer())
-                        .serialize(this, entityDataMap, entry.getValue());
+                        .serialize(this, actorDataMap, entry.getValue());
 
                 // Skip if transformer returns null (indicating this entry shouldn't be serialized)
                 if (value == null) {
@@ -329,8 +332,8 @@ public class BedrockCodecHelper_v291 extends BaseBedrockCodecHelper {
 
         VarInts.writeUnsignedInt(buffer, serializedEntries.size());
 
-        for (Map.Entry<EntityDataTypeMap.Definition<?>, Object> entry : serializedEntries) {
-            EntityDataTypeMap.Definition<?> definition = entry.getKey();
+        for (Map.Entry<ActorDataTypeMap.Definition<?>, Object> entry : serializedEntries) {
+            ActorDataTypeMap.Definition<?> definition = entry.getKey();
             Object value = entry.getValue();
 
             VarInts.writeUnsignedInt(buffer, definition.getId());
@@ -445,5 +448,17 @@ public class BedrockCodecHelper_v291 extends BaseBedrockCodecHelper {
     @Override
     public <T> void writeOptionalNull(ByteBuf buffer, T object, TriConsumer<ByteBuf, BedrockCodecHelper, T> consumer) {
         this.writeOptional(buffer, Objects::nonNull, object, consumer);
+    }
+
+    @Override
+    public void writeRedactableString(ByteBuf buffer, RedactableString string) {
+        this.writeString(buffer, string.getUnredacted());
+    }
+
+    @Override
+    public RedactableString readRedactableString(ByteBuf buffer) {
+        final RedactableString string = new RedactableString();
+        string.setUnredacted(this.readString(buffer));
+        return string;
     }
 }

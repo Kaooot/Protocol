@@ -6,8 +6,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public enum ItemDescriptorType {
-    INVALID("empty"),
-    DEFAULT("name"),
+    EMPTY("empty"),
+    NAME("name"),
     MOLANG("molang"),
     ITEM_TAG("item_tag"),
     /**
@@ -21,6 +21,7 @@ public enum ItemDescriptorType {
     COMPLEX_ALIAS("COMPLEX_ALIAS_DEPRECATED");
 
     private static final Map<String, ItemDescriptorType> serializeNames = new HashMap<>(values().length, 1);
+
     static {
         for (ItemDescriptorType value : values()) {
             serializeNames.put(value.serializeName, value);

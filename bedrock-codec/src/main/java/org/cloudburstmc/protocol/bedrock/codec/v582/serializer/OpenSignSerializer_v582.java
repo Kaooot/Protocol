@@ -5,8 +5,8 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
-import org.cloudburstmc.protocol.bedrock.data.TrimMaterial;
-import org.cloudburstmc.protocol.bedrock.data.TrimPattern;
+import org.cloudburstmc.protocol.bedrock.data.recipe.TrimMaterial;
+import org.cloudburstmc.protocol.bedrock.data.recipe.TrimPattern;
 import org.cloudburstmc.protocol.bedrock.packet.OpenSignPacket;
 import org.cloudburstmc.protocol.bedrock.packet.TrimDataPacket;
 
@@ -16,13 +16,13 @@ public class OpenSignSerializer_v582 implements BedrockPacketSerializer<OpenSign
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, OpenSignPacket packet) {
-        helper.writeBlockPosition(buffer, packet.getPosition());
+        helper.writeBlockPosition(buffer, packet.getPos());
         buffer.writeBoolean(packet.isFrontSide());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, OpenSignPacket packet) {
-        packet.setPosition(helper.readBlockPosition(buffer));
+        packet.setPos(helper.readBlockPosition(buffer));
         packet.setFrontSide(buffer.readBoolean());
     }
 }

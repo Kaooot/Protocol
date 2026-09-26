@@ -3,26 +3,22 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.protocol.bedrock.data.PresenceConfiguration;
+import org.cloudburstmc.protocol.bedrock.data.connection.PresenceConfig;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Sent by the server to provide PresenceConfiguration to the client.
- *
- * @since v975
- */
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class ServerPresenceInfoPacket implements BedrockPacket {
 
-    private PresenceConfiguration presenceConfiguration;
+    private PresenceConfig presenceConfiguration;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
+    @Override
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.SERVER_PRESENCE_INFO;
     }

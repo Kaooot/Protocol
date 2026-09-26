@@ -1,122 +1,164 @@
 package org.cloudburstmc.protocol.bedrock.codec.v685.serializer;
 
 import io.netty.buffer.ByteBuf;
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import java.util.List;
-import java.util.UUID;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v671.serializer.CraftingDataSerializer_v671;
-import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
-import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.CraftingDataType;
-import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.RecipeUnlockingRequirement;
-import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.recipe.CraftingRecipeData;
-import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.recipe.ShapedRecipeData;
-import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.recipe.ShapelessRecipeData;
-import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.ItemDescriptorWithCount;
+import org.cloudburstmc.protocol.bedrock.data.recipe.*;
+import org.cloudburstmc.protocol.bedrock.packet.CraftingDataPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
+
+import static org.cloudburstmc.protocol.common.util.Preconditions.checkArgument;
 
 public class CraftingDataSerializer_v685 extends CraftingDataSerializer_v671 {
     public static final CraftingDataSerializer_v685 INSTANCE = new CraftingDataSerializer_v685();
 
     @Override
-    protected ShapelessRecipeData readShapelessRecipe(ByteBuf buffer, BedrockCodecHelper helper, CraftingDataType type) {
-        String recipeId = helper.readString(buffer);
-        List<ItemDescriptorWithCount> inputs = new ObjectArrayList<>();
-        helper.readArray(buffer, inputs, helper::readIngredient);
-
-        List<ItemData> outputs = new ObjectArrayList<>();
-        helper.readArray(buffer, outputs, helper::readItemInstance);
-
-        UUID uuid = helper.readUuid(buffer);
-        String craftingTag = helper.readString(buffer);
-        int priority = VarInts.readInt(buffer);
-
-        RecipeUnlockingRequirement requirement = RecipeUnlockingRequirement.INVALID;
-        if (type == CraftingDataType.SHAPELESS) {
-            requirement = this.readRequirement(buffer, helper, type);
+    protected void writeShapedRecipes(ByteBuf buffer, BedrockCodecHelper helper, CraftingDataPacket packet) {
+        for (final ShapedRecipePayload payload : packet.getShapedRecipes()) {
+            VarInts.writeInt(buffer, CraftingDataEntryType.SHAPED_RECIPE.ordinal());
+            this.writeShapedRecipePayload(buffer, helper, payload, CraftingDataEntryType.SHAPED_RECIPE);
         }
-
-        int networkId = VarInts.readUnsignedInt(buffer);
-        return ShapelessRecipeData.of(type, recipeId, inputs, outputs, uuid, craftingTag, priority, networkId, requirement);
     }
 
     @Override
-    protected void writeShapelessRecipe(ByteBuf buffer, BedrockCodecHelper helper, ShapelessRecipeData data) {
-        helper.writeString(buffer, data.getId());
-        helper.writeArray(buffer, data.getIngredients(), helper::writeIngredient);
-        helper.writeArray(buffer, data.getResults(), helper::writeItemInstance);
-
-        helper.writeUuid(buffer, data.getUuid());
-        helper.writeString(buffer, data.getTag());
-        VarInts.writeInt(buffer, data.getPriority());
-
-        if (data.getType() == CraftingDataType.SHAPELESS) {
-            this.writeRequirement(buffer, helper, data);
-        }
-        VarInts.writeUnsignedInt(buffer, data.getNetId());
+    protected void readShapedRecipe(ByteBuf buffer, BedrockCodecHelper helper, CraftingDataPacket packet) {
+        packet.getShapedRecipes().add(this.readShapedRecipePayload(buffer, helper, CraftingDataEntryType.SHAPED_RECIPE));
     }
 
     @Override
-    protected ShapedRecipeData readShapedRecipe(ByteBuf buffer, BedrockCodecHelper helper, CraftingDataType type) {
-        String recipeId = helper.readString(buffer);
-        int width = VarInts.readInt(buffer);
-        int height = VarInts.readInt(buffer);
-        int inputCount = width * height;
-        List<ItemDescriptorWithCount> inputs = new ObjectArrayList<>();
-        for (int i = 0; i < inputCount; i++) {
-            inputs.add(helper.readIngredient(buffer));
+    protected void writeShapedChemistryRecipes(ByteBuf buffer, BedrockCodecHelper helper, CraftingDataPacket packet) {
+        for (final ShapedRecipePayload payload : packet.getShapedChemistryRecipes()) {
+            VarInts.writeInt(buffer, CraftingDataEntryType.SHAPED_CHEMISTRY_RECIPE.ordinal());
+            this.writeShapedRecipePayload(buffer, helper, payload, CraftingDataEntryType.SHAPED_CHEMISTRY_RECIPE);
         }
-        List<ItemData> outputs = new ObjectArrayList<>();
-        helper.readArray(buffer, outputs, helper::readItemInstance);
-        UUID uuid = helper.readUuid(buffer);
-        String craftingTag = helper.readString(buffer);
-        int priority = VarInts.readInt(buffer);
-        boolean assumeSymmetry = buffer.readBoolean();
-
-        RecipeUnlockingRequirement requirement = RecipeUnlockingRequirement.INVALID;
-        if (type == CraftingDataType.SHAPED) {
-            requirement = this.readRequirement(buffer, helper, type);
-        }
-
-        int networkId = VarInts.readUnsignedInt(buffer);
-        return ShapedRecipeData.of(type, recipeId, width, height, inputs, outputs, uuid, craftingTag, priority, networkId, assumeSymmetry, requirement);
     }
 
     @Override
-    protected void writeShapedRecipe(ByteBuf buffer, BedrockCodecHelper helper, ShapedRecipeData data) {
-        helper.writeString(buffer, data.getId());
-        VarInts.writeInt(buffer, data.getWidth());
-        VarInts.writeInt(buffer, data.getHeight());
-        int count = data.getWidth() * data.getHeight();
-        List<ItemDescriptorWithCount> inputs = data.getIngredients();
-        for (int i = 0; i < count; i++) {
-            helper.writeIngredient(buffer, inputs.get(i));
-        }
-        helper.writeArray(buffer, data.getResults(), helper::writeItemInstance);
-        helper.writeUuid(buffer, data.getUuid());
-        helper.writeString(buffer, data.getTag());
-        VarInts.writeInt(buffer, data.getPriority());
-        buffer.writeBoolean(data.isAssumeSymetry());
-
-        if (data.getType() == CraftingDataType.SHAPED) {
-            this.writeRequirement(buffer, helper, data);
-        }
-
-        VarInts.writeUnsignedInt(buffer, data.getNetId());
+    protected void readShapedChemistryRecipe(ByteBuf buffer, BedrockCodecHelper helper, CraftingDataPacket packet) {
+        packet.getShapedChemistryRecipes().add(this.readShapedRecipePayload(buffer, helper, CraftingDataEntryType.SHAPED_CHEMISTRY_RECIPE));
     }
 
-    protected RecipeUnlockingRequirement readRequirement(ByteBuf buffer, BedrockCodecHelper helper, CraftingDataType type) {
-        RecipeUnlockingRequirement requirement = new RecipeUnlockingRequirement(RecipeUnlockingRequirement.UnlockingContext.from(buffer.readByte()));
-        if (requirement.getContext().equals(RecipeUnlockingRequirement.UnlockingContext.NONE)) {
-            helper.readArray(buffer, requirement.getIngredients(), (buf, h) -> h.readIngredient(buf));
+    @Override
+    protected void writeShapelessRecipes(ByteBuf buffer, BedrockCodecHelper helper, CraftingDataPacket packet) {
+        for (final ShapelessRecipePayload payload : packet.getShapelessRecipes()) {
+            VarInts.writeInt(buffer, CraftingDataEntryType.SHAPELESS_RECIPE.ordinal());
+            this.writeShapelessRecipePayload(buffer, helper, payload, CraftingDataEntryType.SHAPELESS_RECIPE);
         }
-        return requirement;
     }
 
-    protected void writeRequirement(ByteBuf buffer, BedrockCodecHelper helper, CraftingRecipeData data) {
-        buffer.writeByte(data.getRequirement().getContext().ordinal());
-        if (data.getRequirement().getContext().equals(RecipeUnlockingRequirement.UnlockingContext.NONE)) {
-            helper.writeArray(buffer, data.getRequirement().getIngredients(), (buf, h, ingredient) -> h.writeIngredient(buf, ingredient));
+    @Override
+    protected void readShapelessRecipe(ByteBuf buffer, BedrockCodecHelper helper, CraftingDataPacket packet) {
+        packet.getShapelessRecipes().add(this.readShapelessRecipePayload(buffer, helper, CraftingDataEntryType.SHAPELESS_RECIPE));
+    }
+
+    @Override
+    protected void writeShapelessChemistryRecipes(ByteBuf buffer, BedrockCodecHelper helper, CraftingDataPacket packet) {
+        for (final ShapelessRecipePayload payload : packet.getShapelessChemistryRecipes()) {
+            VarInts.writeInt(buffer, CraftingDataEntryType.SHAPELESS_CHEMISTRY_RECIPE.ordinal());
+            this.writeShapelessRecipePayload(buffer, helper, payload, CraftingDataEntryType.SHAPELESS_CHEMISTRY_RECIPE);
         }
+    }
+
+    @Override
+    protected void readShapelessChemistryRecipe(ByteBuf buffer, BedrockCodecHelper helper, CraftingDataPacket packet) {
+        packet.getShapelessChemistryRecipes().add(this.readShapelessRecipePayload(buffer, helper, CraftingDataEntryType.SHAPELESS_CHEMISTRY_RECIPE));
+    }
+
+    @Override
+    protected void writeUserDataShapelessRecipes(ByteBuf buffer, BedrockCodecHelper helper, CraftingDataPacket packet) {
+        for (final ShapelessRecipePayload payload : packet.getUserDataShapelessRecipes()) {
+            VarInts.writeInt(buffer, CraftingDataEntryType.USER_DATA_SHAPELESS_RECIPE.ordinal());
+            this.writeShapelessRecipePayload(buffer, helper, payload, CraftingDataEntryType.USER_DATA_SHAPELESS_RECIPE);
+        }
+    }
+
+    @Override
+    protected void readUserDataShapelessRecipe(ByteBuf buffer, BedrockCodecHelper helper, CraftingDataPacket packet) {
+        packet.getUserDataShapelessRecipes().add(this.readShapelessRecipePayload(buffer, helper, CraftingDataEntryType.USER_DATA_SHAPELESS_RECIPE));
+    }
+
+    protected void writeShapedRecipePayload(ByteBuf buffer, BedrockCodecHelper helper, ShapedRecipePayload payload, CraftingDataEntryType type) {
+        helper.writeString(buffer, payload.getRecipeId());
+        VarInts.writeInt(buffer, payload.getWidth());
+        VarInts.writeInt(buffer, payload.getHeight());
+        final int length = payload.getWidth() * payload.getHeight();
+        for (int i = 0; i < length; i++) {
+            helper.writeIngredient(buffer, payload.getIngredients().get(i));
+        }
+        helper.writeArray(buffer, payload.getResults(), helper::writeItemInstance);
+        helper.writeUuid(buffer, payload.getUuid());
+        helper.writeString(buffer, payload.getTag());
+        VarInts.writeInt(buffer, payload.getPriority());
+        buffer.writeBoolean(payload.isAssumeSymmetry());
+        if (type.equals(CraftingDataEntryType.SHAPED_RECIPE)) {
+            this.writeRecipeUnlockingRequirement(buffer, helper, payload.getUnlockingRequirement());
+        }
+        this.writeRecipeNetId(buffer, payload.getNetId());
+    }
+
+    protected ShapedRecipePayload readShapedRecipePayload(ByteBuf buffer, BedrockCodecHelper helper, CraftingDataEntryType type) {
+        final ShapedRecipePayload payload = new ShapedRecipePayload();
+        payload.setRecipeId(helper.readString(buffer));
+        payload.setWidth(VarInts.readInt(buffer));
+        payload.setHeight(VarInts.readInt(buffer));
+        final int length = payload.getWidth() * payload.getHeight();
+        checkArgument(length <= MAX_INGREDIENTS, "Tried to read %s Ingredients but maximum is %s", length);
+        for (int i = 0; i < length; i++) {
+            payload.getIngredients().add(helper.readIngredient(buffer));
+        }
+        helper.readArray(buffer, payload.getResults(), helper::readItemInstance);
+        payload.setUuid(helper.readUuid(buffer));
+        payload.setTag(helper.readString(buffer));
+        payload.setPriority(VarInts.readInt(buffer));
+        payload.setAssumeSymmetry(buffer.readBoolean());
+        if (type.equals(CraftingDataEntryType.SHAPED_RECIPE)) {
+            payload.setUnlockingRequirement(this.readRecipeUnlockingRequirement(buffer, helper));
+        }
+        payload.setNetId(this.readRecipeNetId(buffer));
+        return payload;
+    }
+
+    protected void writeShapelessRecipePayload(ByteBuf buffer, BedrockCodecHelper helper, ShapelessRecipePayload payload, CraftingDataEntryType type) {
+        helper.writeString(buffer, payload.getRecipeId());
+        helper.writeArray(buffer, payload.getIngredients(), helper::writeIngredient);
+        helper.writeArray(buffer, payload.getResults(), helper::writeItemInstance);
+        helper.writeUuid(buffer, payload.getUuid());
+        helper.writeString(buffer, payload.getTag());
+        VarInts.writeInt(buffer, payload.getPriority());
+        if (type.equals(CraftingDataEntryType.SHAPELESS_RECIPE)) {
+            this.writeRecipeUnlockingRequirement(buffer, helper, payload.getUnlockingRequirement());
+        }
+        this.writeRecipeNetId(buffer, payload.getNetId());
+    }
+
+    protected ShapelessRecipePayload readShapelessRecipePayload(ByteBuf buffer, BedrockCodecHelper helper, CraftingDataEntryType type) {
+        final ShapelessRecipePayload payload = new ShapelessRecipePayload();
+        payload.setRecipeId(helper.readString(buffer));
+        helper.readArray(buffer, payload.getIngredients(), helper::readIngredient, MAX_INGREDIENTS);
+        helper.readArray(buffer, payload.getResults(), helper::readItemInstance);
+        payload.setUuid(helper.readUuid(buffer));
+        payload.setTag(helper.readString(buffer));
+        payload.setPriority(VarInts.readInt(buffer));
+        if (type.equals(CraftingDataEntryType.SHAPELESS_RECIPE)) {
+            payload.setUnlockingRequirement(this.readRecipeUnlockingRequirement(buffer, helper));
+        }
+        payload.setNetId(this.readRecipeNetId(buffer));
+        return payload;
+    }
+
+    protected void writeRecipeUnlockingRequirement(ByteBuf buffer, BedrockCodecHelper helper, RecipeUnlockingRequirement unlockingRequirement) {
+        buffer.writeByte(unlockingRequirement.getUnlockingContext().ordinal());
+        if (unlockingRequirement.getUnlockingContext().equals(RecipeUnlockingContext.NONE)) {
+            helper.writeArray(buffer, unlockingRequirement.getUnlockingIngredients(), helper::writeIngredient);
+        }
+    }
+
+    protected RecipeUnlockingRequirement readRecipeUnlockingRequirement(ByteBuf buffer, BedrockCodecHelper helper) {
+        final RecipeUnlockingContext unlockingContext = RecipeUnlockingContext.from(buffer.readByte());
+        final RecipeUnlockingRequirement unlockingRequirement = new RecipeUnlockingRequirement(unlockingContext);
+        if (unlockingRequirement.getUnlockingContext().equals(RecipeUnlockingContext.NONE)) {
+            helper.readArray(buffer, unlockingRequirement.getUnlockingIngredients(), helper::readIngredient, 128);
+        }
+        return unlockingRequirement;
     }
 }

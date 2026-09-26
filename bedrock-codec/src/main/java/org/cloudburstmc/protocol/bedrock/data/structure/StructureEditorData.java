@@ -1,15 +1,20 @@
 package org.cloudburstmc.protocol.bedrock.data.structure;
 
-import lombok.Value;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.cloudburstmc.protocol.bedrock.data.misc.RedactableString;
 
-@Value
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class StructureEditorData {
-    private final String name;
-    private final String filteredName;
-    private final String dataField;
-    private final boolean includingPlayers;
-    private final boolean boundingBoxVisible;
-    private final StructureBlockType type;
-    private final StructureSettings settings;
-    private final StructureRedstoneSaveMode redstoneSaveMode;
+
+    private RedactableString structureName;
+    private String dataField;
+    private boolean shouldIncludePlayers;
+    private boolean shouldShowBoundingBox;
+    private StructureBlockType structureBlockType;
+    private StructureSettings structureSettings;
+    private StructureRedstoneSaveMode redstoneSaveMode;
 }

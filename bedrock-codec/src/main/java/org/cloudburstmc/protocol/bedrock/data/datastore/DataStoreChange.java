@@ -3,15 +3,10 @@ package org.cloudburstmc.protocol.bedrock.data.datastore;
 import lombok.Data;
 
 @Data
-public class DataStoreChange implements DataStoreAction {
+public class DataStoreChange {
 
     private String dataStoreName;
     private String property;
-    private Object newValue;
     private int updateCount;
-
-    @Override
-    public int getType() {
-        return 1;
-    }
+    private Object theNewPropertyValue;
 }

@@ -6,10 +6,15 @@ import lombok.ToString;
 import org.cloudburstmc.nbt.NbtMap;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
+/**
+ * @deprecated
+ */
+@Deprecated
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class UpdateBlockPropertiesPacket implements BedrockPacket {
+
     private NbtMap properties;
 
     @Override
@@ -30,4 +35,3 @@ public class UpdateBlockPropertiesPacket implements BedrockPacket {
         }
     }
 }
-

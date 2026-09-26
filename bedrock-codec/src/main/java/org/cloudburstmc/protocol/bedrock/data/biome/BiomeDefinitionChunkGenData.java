@@ -1,58 +1,36 @@
 package org.cloudburstmc.protocol.bedrock.data.biome;
 
-import lombok.Value;
-import org.checkerframework.checker.nullness.qual.Nullable;
-import org.cloudburstmc.protocol.bedrock.data.VillageType;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.cloudburstmc.protocol.bedrock.data.world.VillageType;
 
-import java.util.List;
-
-@Value
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class BiomeDefinitionChunkGenData {
-    @Nullable
-    BiomeClimateData climate;
-    @Nullable
-    List<BiomeConsolidatedFeatureData> consolidatedFeatures;
-    @Nullable
-    BiomeMountainParamsData mountainParams;
-    @Nullable
-    BiomeSurfaceMaterialAdjustmentData surfaceMaterialAdjustment;
-    @Nullable
-    BiomeSurfaceMaterialData surfaceMaterial;
-    /**
-     * @since v844
-     */
-    boolean hasDefaultOverworldSurface;
-    boolean hasSwampSurface;
-    boolean hasFrozenOceanSurface;
-    boolean hasTheEndSurface;
-    @Nullable
-    BiomeMesaSurfaceData mesaSurface;
-    @Nullable
-    BiomeCappedSurfaceData cappedSurface;
-    @Nullable
-    BiomeOverworldGenRulesData overworldGenRules;
-    @Nullable
-    BiomeMultinoiseGenRulesData multinoiseGenRules;
-    @Nullable
-    BiomeLegacyWorldGenRulesData legacyWorldGenRules;
+
+    private BiomeClimateData climate;
+    private BiomeConsolidatedFeaturesData consolidatedFeatures;
+    private BiomeMountainParamsData mountainParams;
+    private BiomeSurfaceMaterialAdjustmentData surfaceMaterialAdjustments;
+    private BiomeOverworldGenRulesData overworldGenRules;
+    private BiomeMultinoiseGenRulesData multinoiseGenRules;
+    private BiomeLegacyWorldGenRulesData legacyWorldGenRules;
     /**
      * @since v859
      */
-    @Nullable
-    List<BiomeReplacementData> biomeReplacements;
+    private BiomeReplacementsData replacementBiomes;
     /**
      * @since v924
      */
-    @Nullable
-    VillageType villageType;
+    private VillageType villageType;
     /**
      * @since v975
      */
-    @Nullable
-    BiomeSurfaceBuilderData surfaceBuilderData;
+    private BiomeSurfaceBuilderData surfaceBuilderData;
     /**
      * @since v975
      */
-    @Nullable
-    BiomeSurfaceBuilderData subsurfaceBuilderData;
+    private BiomeSurfaceBuilderData subsurfaceBuilderData;
 }

@@ -9,17 +9,16 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class RequestChunkRadiusPacket implements BedrockPacket {
-    private int radius;
-    /**
-     * @since v582
-     */
-    private int maxRadius;
+
+    private int chunkRadius;
+    private int maxChunkradius;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
+    @Override
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.REQUEST_CHUNK_RADIUS;
     }
@@ -33,4 +32,3 @@ public class RequestChunkRadiusPacket implements BedrockPacket {
         }
     }
 }
-

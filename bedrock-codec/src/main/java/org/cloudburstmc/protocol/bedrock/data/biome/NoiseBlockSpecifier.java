@@ -1,13 +1,21 @@
 package org.cloudburstmc.protocol.bedrock.data.biome;
 
-import lombok.Value;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Value
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class NoiseBlockSpecifier {
 
-    String noise;
-    float threshold;
-    float rangeMin;
-    float rangeMax;
-    int block;
+    private String noise;
+
+    private float threshold;
+
+    private float rangeMin;
+
+    private float rangeMax;
+
+    private int block;
 }

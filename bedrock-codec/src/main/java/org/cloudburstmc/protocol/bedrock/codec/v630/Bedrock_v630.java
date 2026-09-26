@@ -1,7 +1,14 @@
 package org.cloudburstmc.protocol.bedrock.codec.v630;
 
+import org.cloudburstmc.protocol.bedrock.data.world.event.ParticleType;
+
+import org.cloudburstmc.protocol.bedrock.data.world.event.LevelEventType;
+import org.cloudburstmc.protocol.bedrock.data.world.event.LevelEvent;
+
+import org.cloudburstmc.protocol.bedrock.data.sound.LevelSoundEvent;
+
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
-import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
+import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelEventSerializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelSoundEvent1Serializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v313.serializer.LevelSoundEvent2Serializer_v313;
@@ -12,10 +19,10 @@ import org.cloudburstmc.protocol.bedrock.codec.v622.Bedrock_v622;
 import org.cloudburstmc.protocol.bedrock.codec.v630.serializer.ServerPlayerPostMovePositionSerializer_v630;
 import org.cloudburstmc.protocol.bedrock.codec.v630.serializer.SetPlayerInventoryOptionsSerializer_v630;
 import org.cloudburstmc.protocol.bedrock.codec.v630.serializer.ShowStoreOfferSerializer_v630;
-import org.cloudburstmc.protocol.bedrock.codec.v630.serializer.ToggleCrafterSlotRequestSerializer_v630;
-import org.cloudburstmc.protocol.bedrock.data.*;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes;
-import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerSlotType;
+import org.cloudburstmc.protocol.bedrock.codec.v630.serializer.PlayerToggleCrafterSlotRequestSerializer_v630;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataTypes;
+import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerEnumName;
+import org.cloudburstmc.protocol.bedrock.data.PacketRecipient;
 import org.cloudburstmc.protocol.bedrock.packet.*;
 import org.cloudburstmc.protocol.bedrock.transformer.TypeMapTransformer;
 import org.cloudburstmc.protocol.common.util.TypeMap;
@@ -35,31 +42,31 @@ public class Bedrock_v630 extends Bedrock_v622 {
             .insert(LEVEL_EVENT_PARTICLE_TYPE, PARTICLE_TYPES)
             .build();
 
-    protected static final EntityDataTypeMap ENTITY_DATA = Bedrock_v622.ENTITY_DATA
+    protected static final ActorDataTypeMap ENTITY_DATA = Bedrock_v622.ENTITY_DATA
             .toBuilder()
-            .update(EntityDataTypes.AREA_EFFECT_CLOUD_PARTICLE, new TypeMapTransformer<>(PARTICLE_TYPES))
+            .update(ActorDataTypes.AREA_EFFECT_CLOUD_PARTICLE, new TypeMapTransformer<>(PARTICLE_TYPES))
             .build();
 
-    protected static final TypeMap<ContainerSlotType> CONTAINER_SLOT_TYPES = Bedrock_v622.CONTAINER_SLOT_TYPES.toBuilder()
-            .insert(62, ContainerSlotType.CRAFTER_BLOCK_CONTAINER)
+    protected static final TypeMap<ContainerEnumName> CONTAINER_SLOT_TYPES = Bedrock_v622.CONTAINER_SLOT_TYPES.toBuilder()
+            .insert(62, ContainerEnumName.CRAFTER_LEVEL_ENTITY_CONTAINER)
             .build();
 
-    protected static final TypeMap<SoundEvent> SOUND_EVENTS = Bedrock_v622.SOUND_EVENTS
+    protected static final TypeMap<LevelSoundEvent> SOUND_EVENTS = Bedrock_v622.SOUND_EVENTS
             .toBuilder()
-            .replace(479, SoundEvent.CRAFTER_CRAFT)
-            .insert(480, SoundEvent.CRAFTER_FAILED)
-            .insert(481, SoundEvent.DECORATED_POT_INSERT)
-            .insert(482, SoundEvent.DECORATED_POT_INSERT_FAILED)
-            .insert(483, SoundEvent.CRAFTER_DISABLE_SLOT)
-            .insert(484, SoundEvent.TRIAL_SPAWNER_OPEN_SHUTTER)
-            .insert(485, SoundEvent.TRIAL_SPAWNER_EJECT_ITEM)
-            .insert(486, SoundEvent.TRIAL_SPAWNER_DETECT_PLAYER)
-            .insert(487, SoundEvent.TRIAL_SPAWNER_SPAWN_MOB)
-            .insert(488, SoundEvent.TRIAL_SPAWNER_CLOSE_SHUTTER)
-            .insert(489, SoundEvent.TRIAL_SPAWNER_AMBIENT)
-            .insert(490, SoundEvent.COPPER_BULB_ON)
-            .insert(491, SoundEvent.COPPER_BULB_OFF)
-            .insert(492, SoundEvent.UNDEFINED)
+            .replace(479, LevelSoundEvent.CRAFTER_CRAFT)
+            .insert(480, LevelSoundEvent.CRAFTER_FAILED)
+            .insert(481, LevelSoundEvent.DECORATED_POT_INSERT)
+            .insert(482, LevelSoundEvent.DECORATED_POT_INSERT_FAILED)
+            .insert(483, LevelSoundEvent.CRAFTER_DISABLE_SLOT)
+            .insert(484, LevelSoundEvent.TRIAL_SPAWNER_OPEN_SHUTTER)
+            .insert(485, LevelSoundEvent.TRIAL_SPAWNER_EJECT_ITEM)
+            .insert(486, LevelSoundEvent.TRIAL_SPAWNER_DETECT_PLAYER)
+            .insert(487, LevelSoundEvent.TRIAL_SPAWNER_SPAWN_MOB)
+            .insert(488, LevelSoundEvent.TRIAL_SPAWNER_CLOSE_SHUTTER)
+            .insert(489, LevelSoundEvent.TRIAL_SPAWNER_AMBIENT)
+            .insert(490, LevelSoundEvent.COPPER_BULB_ON)
+            .insert(491, LevelSoundEvent.COPPER_BULB_OFF)
+            .insert(492, LevelSoundEvent.UNDEFINED)
             .build();
 
 
@@ -75,7 +82,7 @@ public class Bedrock_v630 extends Bedrock_v622 {
             .updateSerializer(LevelSoundEventPacket.class, new LevelSoundEventSerializer_v332(SOUND_EVENTS))
             .updateSerializer(ShowStoreOfferPacket.class, ShowStoreOfferSerializer_v630.INSTANCE)
             .registerPacket(ServerPlayerPostMovePositionPacket::new, new ServerPlayerPostMovePositionSerializer_v630(), 16, PacketRecipient.CLIENT)
-            .registerPacket(ToggleCrafterSlotRequestPacket::new, new ToggleCrafterSlotRequestSerializer_v630(), 306, PacketRecipient.SERVER)
+            .registerPacket(PlayerToggleCrafterSlotRequestPacket::new, new PlayerToggleCrafterSlotRequestSerializer_v630(), 306, PacketRecipient.SERVER)
             .registerPacket(SetPlayerInventoryOptionsPacket::new, new SetPlayerInventoryOptionsSerializer_v630(), 307, PacketRecipient.BOTH)
             .build();
 }

@@ -2,43 +2,29 @@ package org.cloudburstmc.protocol.bedrock.packet;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.cloudburstmc.math.vector.Vector3i;
 import org.cloudburstmc.nbt.NbtMap;
+import org.cloudburstmc.protocol.bedrock.data.actor.EntityNetId;
+import org.cloudburstmc.protocol.bedrock.data.world.DimensionType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
-@EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
+@EqualsAndHashCode(doNotUseGetters = true)
+@ToString(doNotUseGetters = true)
 public class AddVolumeEntityPacket implements BedrockPacket {
-    private int id;
-    private NbtMap data;
-    /**
-     * @since v465
-     */
-    private String engineVersion;
-    /**
-     * @since v485
-     */
-    private String identifier;
-    /**
-     * @since v485
-     */
-    private String instanceName;
 
-    /**
-     * @since v503
-     */
+    private EntityNetId entityNetworkId;
+    private NbtMap components;
+    private String jsonIdentifier;
+    private String instanceName;
     private Vector3i minBounds;
-    /**
-     * @since v503
-     */
     private Vector3i maxBounds;
-    /**
-     * @since v503
-     */
-    private int dimension;
+    private DimensionType dimensionType;
+    private String engineVersion;
 
     @Override
-    public PacketSignal handle(BedrockPacketHandler handler) {
+    public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
@@ -56,4 +42,3 @@ public class AddVolumeEntityPacket implements BedrockPacket {
         }
     }
 }
-

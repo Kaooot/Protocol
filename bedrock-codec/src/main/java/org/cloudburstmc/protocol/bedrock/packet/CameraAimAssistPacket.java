@@ -4,28 +4,28 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.math.vector.Vector2f;
-import org.cloudburstmc.protocol.bedrock.data.camera.AimAssistAction;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class CameraAimAssistPacket implements BedrockPacket {
-    private Vector2f viewAngle;
-    private float distance;
-    private TargetMode targetMode;
-    private AimAssistAction action;
+
     /**
      * @since v766
      */
     private String presetId;
+    private Vector2f viewAngle;
+    private float distance;
+    private TargetMode targetMode;
+    private Action action;
     /**
      * @since v827
      */
     private boolean showDebugRender;
 
     @Override
-    public PacketSignal handle(BedrockPacketHandler handler) {
+    public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
@@ -43,8 +43,31 @@ public class CameraAimAssistPacket implements BedrockPacket {
         }
     }
 
+    public enum Action {
+        SET,
+        CLEAR;
+
+        private static final Action[] VALUES = values();
+
+        public static Action from(int ordinal) {
+            if (ordinal >= 0 && ordinal < VALUES.length) {
+                return VALUES[ordinal];
+            }
+            throw new UnsupportedOperationException("Detected unknown CameraAimAssistPacketPayload::Action ID: " + ordinal);
+        }
+    }
+
     public enum TargetMode {
         ANGLE,
-        DISTANCE
+        DISTANCE;
+
+        private static final TargetMode[] VALUES = values();
+
+        public static TargetMode from(int ordinal) {
+            if (ordinal >= 0 && ordinal < VALUES.length) {
+                return VALUES[ordinal];
+            }
+            throw new UnsupportedOperationException("Detected unknown CameraAimAssistPacketPayload::TargetMode ID: " + ordinal);
+        }
     }
 }

@@ -1,25 +1,24 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.cloudburstmc.protocol.bedrock.data.text.DeathCauseMessageType;
 import org.cloudburstmc.protocol.common.PacketSignal;
-
-import java.util.List;
 
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class DeathInfoPacket implements BedrockPacket {
-   private String causeAttackName;
-   private final List<String> messageList = new ObjectArrayList<>();
+
+    private DeathCauseMessageType deathCauseMessage;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
+    @Override
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.DEATH_INFO;
     }
@@ -33,4 +32,3 @@ public class DeathInfoPacket implements BedrockPacket {
         }
     }
 }
-

@@ -12,11 +12,11 @@ public class UpdateClientInputLocksSerializer_v944 extends UpdateClientInputLock
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, UpdateClientInputLocksPacket packet) {
-        VarInts.writeUnsignedInt(buffer, packet.getLockComponentData());
+        VarInts.writeUnsignedInt(buffer, packet.getInputLockComponentdata());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, UpdateClientInputLocksPacket packet) {
-        packet.setLockComponentData(VarInts.readUnsignedInt(buffer));
+        packet.setInputLockComponentdata(VarInts.readUnsignedInt(buffer));
     }
 }

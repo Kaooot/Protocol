@@ -12,10 +12,11 @@ import java.util.UUID;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class PlayerSkinPacket implements BedrockPacket {
+
     private UUID uuid;
-    private SerializedSkin skin;
-    private String newSkinName;
-    private String oldSkinName;
+    private SerializedSkin serializedSkin;
+    private String localizedNewSkinName;
+    private String localizedOldSkinName;
     private boolean trustedSkin;
 
     @Override
@@ -23,6 +24,7 @@ public class PlayerSkinPacket implements BedrockPacket {
         return handler.handle(this);
     }
 
+    @Override
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.PLAYER_SKIN;
     }
@@ -36,4 +38,3 @@ public class PlayerSkinPacket implements BedrockPacket {
         }
     }
 }
-

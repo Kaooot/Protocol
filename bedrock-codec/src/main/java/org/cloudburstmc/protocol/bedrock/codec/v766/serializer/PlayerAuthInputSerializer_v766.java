@@ -3,12 +3,11 @@ package org.cloudburstmc.protocol.bedrock.codec.v766.serializer;
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import org.cloudburstmc.math.vector.Vector2f;
-import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v748.serializer.PlayerAuthInputSerializer_v748;
-import org.cloudburstmc.protocol.bedrock.data.PlayerAuthInputData;
-import org.cloudburstmc.protocol.bedrock.data.PlayerBlockActionData;
+import org.cloudburstmc.protocol.bedrock.data.player.input.InputMode;
+import org.cloudburstmc.protocol.bedrock.data.player.input.PlayerAuthInputData;
+import org.cloudburstmc.protocol.bedrock.data.player.PlayerBlockActionData;
 import org.cloudburstmc.protocol.bedrock.packet.PlayerAuthInputPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -19,35 +18,32 @@ public class PlayerAuthInputSerializer_v766 extends PlayerAuthInputSerializer_v7
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, PlayerAuthInputPacket packet) {
-        Vector3f rotation = packet.getRotation();
-        buffer.writeFloatLE(rotation.getX());
-        buffer.writeFloatLE(rotation.getY());
+        helper.writeVector2f(buffer, packet.getPlayerRotation());
         helper.writeVector3f(buffer, packet.getPosition());
-        buffer.writeFloatLE(packet.getMotion().getX());
-        buffer.writeFloatLE(packet.getMotion().getY());
-        buffer.writeFloatLE(rotation.getZ());
+        helper.writeVector2f(buffer, packet.getMoveVector());
+        buffer.writeFloatLE(packet.getPlayerHeadRotation());
         helper.writeLargeVarIntFlags(buffer, packet.getInputData(), PlayerAuthInputData.class);
         VarInts.writeUnsignedInt(buffer, packet.getInputMode().ordinal());
         VarInts.writeUnsignedInt(buffer, packet.getPlayMode().ordinal());
         writeInteractionModel(buffer, helper, packet);
         helper.writeVector2f(buffer, packet.getInteractRotation());
-        VarInts.writeUnsignedLong(buffer, packet.getTick());
-        helper.writeVector3f(buffer, packet.getDelta());
+        helper.writePlayerInputTick(buffer, packet.getClientTick());
+        helper.writeVector3f(buffer, packet.getPosDelta());
         if (packet.getInputData().contains(PlayerAuthInputData.PERFORM_ITEM_INTERACTION)) {
-            this.writeItemUseTransaction(buffer, helper, packet.getItemUseTransaction());
+            this.writePackedItemUseLegacyInventoryTransaction(buffer, helper, packet.getItemUseTransaction());
         }
         if (packet.getInputData().contains(PlayerAuthInputData.PERFORM_ITEM_STACK_REQUEST)) {
             helper.writeItemStackRequest(buffer, packet.getItemStackRequest());
         }
         if (packet.getInputData().contains(PlayerAuthInputData.PERFORM_BLOCK_ACTIONS)) {
-            VarInts.writeInt(buffer, packet.getPlayerActions().size());
-            for (PlayerBlockActionData actionData : packet.getPlayerActions()) {
+            VarInts.writeInt(buffer, packet.getPlayerBlockActions().size());
+            for (PlayerBlockActionData actionData : packet.getPlayerBlockActions()) {
                 writePlayerBlockActionData(buffer, helper, actionData);
             }
         }
-        if (packet.getInputData().contains(PlayerAuthInputData.IN_CLIENT_PREDICTED_IN_VEHICLE)) {
+        if (packet.getInputData().contains(PlayerAuthInputData.IS_IN_CLIENT_PREDICTED_VEHICLE)) {
             helper.writeVector2f(buffer, packet.getVehicleRotation());
-            VarInts.writeLong(buffer, packet.getPredictedVehicle());
+            VarInts.writeLong(buffer, packet.getClientPredictedVehicle());
         }
         helper.writeVector2f(buffer, packet.getAnalogMoveVector());
         helper.writeVector3f(buffer, packet.getCameraOrientation());
@@ -56,31 +52,29 @@ public class PlayerAuthInputSerializer_v766 extends PlayerAuthInputSerializer_v7
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, PlayerAuthInputPacket packet) {
-        float x = buffer.readFloatLE();
-        float y = buffer.readFloatLE();
+        packet.setPlayerRotation(helper.readVector2f(buffer));
         packet.setPosition(helper.readVector3f(buffer));
-        packet.setMotion(Vector2f.from(buffer.readFloatLE(), buffer.readFloatLE()));
-        float z = buffer.readFloatLE();
-        packet.setRotation(Vector3f.from(x, y, z));
+        packet.setMoveVector(helper.readVector2f(buffer));
+        packet.setPlayerHeadRotation(buffer.readFloatLE());
         helper.readLargeVarIntFlags(buffer, packet.getInputData(), PlayerAuthInputData.class);
-        packet.setInputMode(INPUT_MODES[VarInts.readUnsignedInt(buffer)]);
-        packet.setPlayMode(CLIENT_PLAY_MODES[VarInts.readUnsignedInt(buffer)]);
+        packet.setInputMode(InputMode.from(VarInts.readUnsignedInt(buffer)));
+        packet.setPlayMode(CLIENT_PLAY_MODES.getType(VarInts.readUnsignedInt(buffer)));
         readInteractionModel(buffer, helper, packet);
         packet.setInteractRotation(helper.readVector2f(buffer));
-        packet.setTick(VarInts.readUnsignedLong(buffer));
-        packet.setDelta(helper.readVector3f(buffer));
+        packet.setClientTick(helper.readPlayerInputTick(buffer));
+        packet.setPosDelta(helper.readVector3f(buffer));
         if (packet.getInputData().contains(PlayerAuthInputData.PERFORM_ITEM_INTERACTION)) {
-            packet.setItemUseTransaction(this.readItemUseTransaction(buffer, helper));
+            packet.setItemUseTransaction(this.readPackedItemUseLegacyInventoryTransaction(buffer, helper));
         }
         if (packet.getInputData().contains(PlayerAuthInputData.PERFORM_ITEM_STACK_REQUEST)) {
             packet.setItemStackRequest(helper.readItemStackRequest(buffer));
         }
         if (packet.getInputData().contains(PlayerAuthInputData.PERFORM_BLOCK_ACTIONS)) {
-            helper.readArray(buffer, packet.getPlayerActions(), VarInts::readInt, this::readPlayerBlockActionData, 32); // 32 is more than enough
+            helper.readArray(buffer, packet.getPlayerBlockActions(), VarInts::readInt, this::readPlayerBlockActionData, helper.getEncodingSettings().maxPlayerBlockActionDataSize());
         }
-        if (packet.getInputData().contains(PlayerAuthInputData.IN_CLIENT_PREDICTED_IN_VEHICLE)) {
+        if (packet.getInputData().contains(PlayerAuthInputData.IS_IN_CLIENT_PREDICTED_VEHICLE)) {
             packet.setVehicleRotation(helper.readVector2f(buffer));
-            packet.setPredictedVehicle(VarInts.readLong(buffer));
+            packet.setClientPredictedVehicle(VarInts.readLong(buffer));
         }
         packet.setAnalogMoveVector(helper.readVector2f(buffer));
         packet.setCameraOrientation(helper.readVector3f(buffer));

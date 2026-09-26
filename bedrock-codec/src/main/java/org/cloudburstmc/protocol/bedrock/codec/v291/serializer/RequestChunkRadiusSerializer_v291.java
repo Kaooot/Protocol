@@ -15,11 +15,11 @@ public class RequestChunkRadiusSerializer_v291 implements BedrockPacketSerialize
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, RequestChunkRadiusPacket packet) {
-        VarInts.writeInt(buffer, packet.getRadius());
+        VarInts.writeInt(buffer, packet.getChunkRadius());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, RequestChunkRadiusPacket packet) {
-        packet.setRadius(VarInts.readInt(buffer));
+        packet.setChunkRadius(VarInts.readInt(buffer));
     }
 }

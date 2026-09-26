@@ -9,11 +9,12 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class DebugInfoPacket implements BedrockPacket {
-    private long uniqueEntityId;
+
+    private long actorId;
     private String data;
 
     @Override
-    public PacketSignal handle(BedrockPacketHandler handler) {
+    public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
@@ -31,4 +32,3 @@ public class DebugInfoPacket implements BedrockPacket {
         }
     }
 }
-

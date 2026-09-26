@@ -13,7 +13,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
  *
  * <h3>Note Block</h3>
  * <blockquote>
- *     eventType: (Instrument)
+ * eventType: (Instrument)
  *     <ul>
  *         <li>0 (Piano)</li>
  *         <li>1 (Base Drum)</li>
@@ -42,35 +42,16 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @ToString(doNotUseGetters = true)
 public class BlockEventPacket implements BedrockPacket {
 
-    /**
-     * Position to execute block event.
-     *
-     * @param blockPosition block event position
-     * @return block event position
-     */
     private Vector3i blockPosition;
-
-    /**
-     * Block event type to execute
-     *
-     * @param eventType block event type
-     * @return block event type
-     */
     private int eventType;
-
-    /**
-     * Data used by event (if applicable)
-     *
-     * @param eventData data for event
-     * @return data for event
-     */
-    private int eventData;
+    private int eventValue;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
+    @Override
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.BLOCK_EVENT;
     }
@@ -84,4 +65,3 @@ public class BlockEventPacket implements BedrockPacket {
         }
     }
 }
-

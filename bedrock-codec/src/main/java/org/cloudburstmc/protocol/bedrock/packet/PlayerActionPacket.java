@@ -4,20 +4,18 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.math.vector.Vector3i;
-import org.cloudburstmc.protocol.bedrock.data.PlayerActionType;
+import org.cloudburstmc.protocol.bedrock.data.player.input.PlayerActionType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class PlayerActionPacket implements BedrockPacket {
-    private long runtimeEntityId;
+
+    private long playerRuntimeID;
     private PlayerActionType action;
     private Vector3i blockPosition;
-    /**
-     * @since v526
-     */
-    private Vector3i resultPosition;
+    private Vector3i resultPos;
     private int face;
 
     @Override
@@ -25,6 +23,7 @@ public class PlayerActionPacket implements BedrockPacket {
         return handler.handle(this);
     }
 
+    @Override
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.PLAYER_ACTION;
     }
@@ -38,4 +37,3 @@ public class PlayerActionPacket implements BedrockPacket {
         }
     }
 }
-

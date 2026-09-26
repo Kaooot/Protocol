@@ -14,13 +14,13 @@ public class RecordStartedSerializer_v2192 implements BedrockPacketSerializer<Re
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, RecordStartedPacket packet) {
-        helper.writeVector3i(buffer, packet.getBlockPos());
-        buffer.writeLongLE(packet.getServerSoundHandle());
+        helper.writeVector3i(buffer, packet.getBlockPosition());
+        helper.writeServerSoundHandle(buffer, packet.getServerSoundHandle());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, RecordStartedPacket packet) {
-        packet.setBlockPos(helper.readVector3i(buffer));
-        packet.setServerSoundHandle(buffer.readLongLE());
+        packet.setBlockPosition(helper.readVector3i(buffer));
+        packet.setServerSoundHandle(helper.readServerSoundHandle(buffer));
     }
 }

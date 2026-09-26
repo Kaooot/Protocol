@@ -1,7 +1,7 @@
 package org.cloudburstmc.protocol.bedrock.data.definitions;
 
 import org.cloudburstmc.nbt.NbtMap;
-import org.cloudburstmc.protocol.bedrock.data.inventory.ItemVersion;
+import org.cloudburstmc.protocol.bedrock.data.item.ItemVersion;
 import org.cloudburstmc.protocol.common.NamedDefinition;
 
 public interface ItemDefinition extends NamedDefinition {

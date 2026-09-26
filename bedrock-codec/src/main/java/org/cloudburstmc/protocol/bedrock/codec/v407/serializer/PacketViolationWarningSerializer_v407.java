@@ -5,8 +5,8 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
-import org.cloudburstmc.protocol.bedrock.data.PacketViolationSeverity;
-import org.cloudburstmc.protocol.bedrock.data.PacketViolationType;
+import org.cloudburstmc.protocol.bedrock.data.connection.PacketViolationSeverity;
+import org.cloudburstmc.protocol.bedrock.data.connection.PacketViolationType;
 import org.cloudburstmc.protocol.bedrock.packet.PacketViolationWarningPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -19,17 +19,17 @@ public class PacketViolationWarningSerializer_v407 implements BedrockPacketSeria
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, PacketViolationWarningPacket packet) {
-        VarInts.writeInt(buffer, packet.getType().ordinal() - 1);
-        VarInts.writeInt(buffer, packet.getSeverity().ordinal() - 1);
-        VarInts.writeInt(buffer, packet.getPacketCauseId());
-        helper.writeString(buffer, packet.getContext());
+        VarInts.writeInt(buffer, packet.getViolationType().ordinal() - 1);
+        VarInts.writeInt(buffer, packet.getViolationSeverity().ordinal() - 1);
+        VarInts.writeInt(buffer, packet.getViolationPacketid());
+        helper.writeString(buffer, packet.getViolationContext());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, PacketViolationWarningPacket packet) {
-        packet.setType(TYPES[VarInts.readInt(buffer) + 1]);
-        packet.setSeverity(SEVERITIES[VarInts.readInt(buffer) + 1]);
-        packet.setPacketCauseId(VarInts.readInt(buffer));
-        packet.setContext(helper.readString(buffer));
+        packet.setViolationType(TYPES[VarInts.readInt(buffer) + 1]);
+        packet.setViolationSeverity(SEVERITIES[VarInts.readInt(buffer) + 1]);
+        packet.setViolationPacketid(VarInts.readInt(buffer));
+        packet.setViolationContext(helper.readString(buffer));
     }
 }

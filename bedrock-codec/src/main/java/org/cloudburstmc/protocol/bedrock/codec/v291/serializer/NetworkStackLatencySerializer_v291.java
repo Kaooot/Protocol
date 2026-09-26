@@ -14,11 +14,11 @@ public class NetworkStackLatencySerializer_v291 implements BedrockPacketSerializ
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, NetworkStackLatencyPacket packet) {
-        buffer.writeLongLE(packet.getTimestamp());
+        buffer.writeLongLE(packet.getCreationTime());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, NetworkStackLatencyPacket packet) {
-        packet.setTimestamp(buffer.readLongLE());
+        packet.setCreationTime(buffer.readLongLE());
     }
 }

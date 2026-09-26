@@ -10,9 +10,9 @@ import org.cloudburstmc.protocol.bedrock.codec.v465.BedrockCodecHelper_v465;
 import org.cloudburstmc.protocol.bedrock.codec.v471.Bedrock_v471;
 import org.cloudburstmc.protocol.bedrock.codec.v475.serializer.StartGameSerializer_v475;
 import org.cloudburstmc.protocol.bedrock.codec.v475.serializer.SubChunkSerializer_v475;
-import org.cloudburstmc.protocol.bedrock.data.LevelEvent;
-import org.cloudburstmc.protocol.bedrock.data.LevelEventType;
-import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
+import org.cloudburstmc.protocol.bedrock.data.world.event.LevelEvent;
+import org.cloudburstmc.protocol.bedrock.data.world.event.LevelEventType;
+import org.cloudburstmc.protocol.bedrock.data.sound.LevelSoundEvent;
 import org.cloudburstmc.protocol.bedrock.packet.*;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 
@@ -22,9 +22,9 @@ public class Bedrock_v475 extends Bedrock_v471 {
             .insert(9801, LevelEvent.SLEEPING_PLAYERS)
             .build();
 
-    protected static final TypeMap<SoundEvent> SOUND_EVENTS = Bedrock_v471.SOUND_EVENTS.toBuilder()
-            .replace(371, SoundEvent.RECORD_OTHERSIDE)
-            .insert(372, SoundEvent.UNDEFINED)
+    protected static final TypeMap<LevelSoundEvent> SOUND_EVENTS = Bedrock_v471.SOUND_EVENTS.toBuilder()
+            .replace(371, LevelSoundEvent.RECORD_OTHERSIDE)
+            .insert(372, LevelSoundEvent.UNDEFINED)
             .build();
 
     public static final BedrockCodec CODEC = Bedrock_v471.CODEC.toBuilder()

@@ -12,12 +12,12 @@ public class TransferSerializer_v2168 extends TransferSerializer_v729 {
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, TransferPacket packet) {
         super.serialize(buffer, helper, packet);
-        helper.writeOptionalNull(buffer, packet.getGatheringsConfigurationJoinInfo(), helper::writeGatheringsConfiguration);
+        helper.writeOptionalNull(buffer, packet.getGatheringsConfiguration(), helper::writeGatheringsConfig);
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, TransferPacket packet) {
         super.deserialize(buffer, helper, packet);
-        packet.setGatheringsConfigurationJoinInfo(helper.readOptional(buffer, null, helper::readGatheringsConfiguration));
+        packet.setGatheringsConfiguration(helper.readOptional(buffer, null, helper::readGatheringsConfig));
     }
 }

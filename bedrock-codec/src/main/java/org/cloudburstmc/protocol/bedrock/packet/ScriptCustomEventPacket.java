@@ -13,6 +13,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class ScriptCustomEventPacket implements BedrockPacket {
+
     private String eventName;
     private String data;
 
@@ -34,5 +35,3 @@ public class ScriptCustomEventPacket implements BedrockPacket {
         }
     }
 }
-
-

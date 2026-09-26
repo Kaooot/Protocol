@@ -2,85 +2,34 @@ package org.cloudburstmc.protocol.bedrock.packet;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import lombok.ToString;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorSwingSource;
+import org.cloudburstmc.protocol.bedrock.data.player.HandSlot;
 import org.cloudburstmc.protocol.common.PacketSignal;
-
-import java.util.HashMap;
 
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class AnimatePacket implements BedrockPacket {
+
+    private Action action;
+    private long targetActorRuntimeID;
+    private float data;
+    private ActorSwingSource swingSource;
+    private HandSlot hand;
     /**
-     * @deprecated since v897
+     * @deprecated since v898
      */
     private float rowingTime;
-    private Action action;
-    private long runtimeEntityId;
-    /**
-     * @since v859
-     */
-    private float data;
-    /**
-     * @since v897
-     */
-    private SwingSource swingSource = SwingSource.NONE;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
+    @Override
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.ANIMATE;
-    }
-
-    public enum Action {
-        NO_ACTION,
-        SWING_ARM,
-        WAKE_UP,
-        CRITICAL_HIT,
-        MAGIC_CRITICAL_HIT,
-        /**
-         * @deprecated v800 (1.21.80)
-         */
-        ROW_RIGHT,
-        /**
-         * @deprecated v800 (1.21.80)
-         */
-        ROW_LEFT,
-    }
-
-    public enum SwingSource {
-        NONE("none"),
-        BUILD("build"),
-        MINE("mine"),
-        INTERACT("interact"),
-        ATTACK("attack"),
-        USE_ITEM("useitem"),
-        THROW_ITEM("throwitem"),
-        DROP_ITEM("dropitem"),
-        EVENT("event");
-
-        private static final HashMap<String, SwingSource> BY_NAME = new HashMap<>(values().length, 1);
-
-        static {
-            for (SwingSource value : values()) {
-                BY_NAME.put(value.name, value);
-            }
-        }
-
-        @Getter
-        private final String name;
-
-        SwingSource(String name) {
-            this.name = name;
-        }
-
-        public static SwingSource from(String name) {
-            return BY_NAME.get(name);
-        }
     }
 
     @Override
@@ -91,5 +40,29 @@ public class AnimatePacket implements BedrockPacket {
             throw new AssertionError(e);
         }
     }
-}
 
+    public enum Action {
+        NO_ACTION,
+        SWING,
+        WAKE_UP,
+        CRITICAL_HIT,
+        MAGIC_CRITICAL_HIT,
+        /**
+         * @deprecated since
+         */
+        ROW_LEFT,
+        /**
+         * @deprecated since
+         */
+        ROW_RIGHT;
+
+        private static final Action[] VALUES = values();
+
+        public static Action from(int ordinal) {
+            if (ordinal >= 0 && ordinal < VALUES.length) {
+                return VALUES[ordinal];
+            }
+            throw new UnsupportedOperationException("Detected unknown AnimatePacketPayload::Action ID: " + ordinal);
+        }
+    }
+}

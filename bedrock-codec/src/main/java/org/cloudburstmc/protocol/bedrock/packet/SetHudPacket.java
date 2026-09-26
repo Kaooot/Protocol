@@ -1,27 +1,25 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
-import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.protocol.bedrock.data.HudElement;
-import org.cloudburstmc.protocol.bedrock.data.HudVisibility;
+import org.cloudburstmc.protocol.bedrock.data.player.HudElement;
+import org.cloudburstmc.protocol.bedrock.data.player.HudVisibility;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-import java.util.Set;
+import java.util.List;
 
-/**
- * @since v649
- */
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class SetHudPacket implements BedrockPacket {
-    private final Set<HudElement> elements = new ObjectOpenHashSet<>();
-    private HudVisibility visibility;
+
+    private final List<HudElement> hudElement = new ObjectArrayList<>();
+    private HudVisibility hudVisible;
 
     @Override
-    public PacketSignal handle(BedrockPacketHandler handler) {
+    public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
@@ -39,4 +37,3 @@ public class SetHudPacket implements BedrockPacket {
         }
     }
 }
-

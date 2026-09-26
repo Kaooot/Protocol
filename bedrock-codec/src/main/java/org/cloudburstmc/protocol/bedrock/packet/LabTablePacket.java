@@ -4,23 +4,24 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.math.vector.Vector3i;
-import org.cloudburstmc.protocol.bedrock.data.inventory.LabTableReactionType;
-import org.cloudburstmc.protocol.bedrock.data.inventory.LabTableType;
+import org.cloudburstmc.protocol.bedrock.data.education.LabTableReactionType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class LabTablePacket implements BedrockPacket {
-    private LabTableType type;
+
+    private Type type;
     private Vector3i position;
-    private LabTableReactionType reactionType;
+    private LabTableReactionType reaction;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
+    @Override
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.LAB_TABLE;
     }
@@ -33,5 +34,19 @@ public class LabTablePacket implements BedrockPacket {
             throw new AssertionError(e);
         }
     }
-}
 
+    public enum Type {
+        START_COMBINE,
+        START_REACTION,
+        RESET;
+
+        private static final Type[] VALUES = values();
+
+        public static Type from(int ordinal) {
+            if (ordinal >= 0 && ordinal < VALUES.length) {
+                return VALUES[ordinal];
+            }
+            throw new UnsupportedOperationException("Detected unknown LabTablePacketPayload::Type ID: " + ordinal);
+        }
+    }
+}

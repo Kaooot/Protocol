@@ -1,20 +1,19 @@
 package org.cloudburstmc.protocol.bedrock.data.diagnostics;
 
-import lombok.Value;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.cloudburstmc.math.vector.Vector3f;
 
-@Value
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class EntityDiagnosticTimingInfo {
-    String displayName;
-    String entity;
-    long timeInNs;
-    byte percentOfTotal;
-    /**
-     * @since v2192
-     */
-    Vector3f position;
-    /**
-     * @since v2192
-     */
-    String dimension;
+
+    private String displayName;
+    private String entity;
+    private long timeInNs;
+    private int percentOfTotal;
+    private Vector3f position;
+    private String dimension;
 }

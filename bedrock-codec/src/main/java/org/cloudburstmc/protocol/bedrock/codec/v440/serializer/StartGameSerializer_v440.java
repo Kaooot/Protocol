@@ -15,12 +15,12 @@ public class StartGameSerializer_v440 extends StartGameSerializer_v428 {
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, StartGamePacket packet) {
         super.serialize(buffer, helper, packet);
-        helper.writeString(buffer, packet.getServerEngine());
+        helper.writeString(buffer, packet.getServerVersion());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, StartGamePacket packet) {
         super.deserialize(buffer, helper, packet);
-        packet.setServerEngine(helper.readString(buffer));
+        packet.setServerVersion(helper.readString(buffer));
     }
 }

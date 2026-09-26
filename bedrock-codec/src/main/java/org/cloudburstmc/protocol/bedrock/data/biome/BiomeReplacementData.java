@@ -1,16 +1,21 @@
 package org.cloudburstmc.protocol.bedrock.data.biome;
 
-import lombok.Value;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-@Value
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class BiomeReplacementData {
 
-    int biome;
-    int dimension;
-    List<Short> targetBiomes;
-    float amount;
-    float noiseFrequencyScale;
-    int replacementIndex;
+    private int replacementBiome;
+    private int dimension;
+    private final List<Integer> targetBiomes = new ObjectArrayList<>();
+    private float amount;
+    private float noiseFrequencyScale;
+    private int replacementIndex;
 }

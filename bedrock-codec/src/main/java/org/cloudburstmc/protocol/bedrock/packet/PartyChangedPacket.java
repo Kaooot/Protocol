@@ -3,37 +3,22 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import lombok.Value;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.cloudburstmc.protocol.bedrock.data.player.PlayerPartyInfo;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Sent by the client to provide additional client metadata.
- *
- * @since v944
- */
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class PartyChangedPacket implements BedrockPacket {
 
-    @Nullable
-    private PartyInfo party;
-
-    @Value
-    public static class PartyInfo {
-        String partyId;
-        /**
-         * @since v975
-         */
-        boolean isPartyLeader;
-    }
+    private PlayerPartyInfo partyInfo;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
+    @Override
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.PARTY_CHANGED;
     }

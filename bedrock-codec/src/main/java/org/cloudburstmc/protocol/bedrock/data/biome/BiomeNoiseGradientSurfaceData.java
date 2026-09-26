@@ -1,16 +1,21 @@
 package org.cloudburstmc.protocol.bedrock.data.biome;
 
-import lombok.Value;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.cloudburstmc.protocol.bedrock.data.definitions.BlockDefinition;
+import org.cloudburstmc.protocol.bedrock.data.structure.NoiseDescriptor;
+import org.cloudburstmc.protocol.bedrock.data.structure.SerializedNoiseBlockSpecifier;
 
 import java.util.List;
 
-@Value
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class BiomeNoiseGradientSurfaceData {
 
-    List<Integer> nonReplaceableBlocks;
-    List<NoiseBlockSpecifier> gradientBlocks;
-    // NoiseDescriptor
-    String noise; // "name" in v1001 or "seed" in v975
-    int firstOctave;
-    List<Float> amplitudes;
+    private final List<BlockDefinition> nonreplaceableBlocks = new ObjectArrayList<>();
+    private final List<SerializedNoiseBlockSpecifier> gradientBlocks = new ObjectArrayList<>();
+    private NoiseDescriptor noise;
 }

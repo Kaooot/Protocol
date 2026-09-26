@@ -1,27 +1,14 @@
 package org.cloudburstmc.protocol.bedrock.data.biome;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Value;
-import org.cloudburstmc.protocol.common.util.index.Indexable;
-import org.cloudburstmc.protocol.common.util.index.Unindexed;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Value
-@RequiredArgsConstructor(onConstructor_ = { @Deprecated })
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class BiomeWeightedData {
-    @Getter(AccessLevel.NONE)
-    transient Indexable<String> biome;
-    int weight;
 
-    @JsonCreator
-    public BiomeWeightedData(String biome, int weight) {
-        this.biome = new Unindexed<>(biome);
-        this.weight = weight;
-    }
-
-    public String getBiome() {
-        return biome.get();
-    }
+    private int biomeIdentifier;
+    private int weight;
 }

@@ -1,5 +1,6 @@
 package org.cloudburstmc.protocol.bedrock.codec.v419.serializer;
 
+import org.cloudburstmc.protocol.bedrock.data.player.PlayerInputTick;
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -17,13 +18,13 @@ public class UpdateAttributesSerializer_v419 extends UpdateAttributesSerializer_
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, UpdateAttributesPacket packet) {
         super.serialize(buffer, helper, packet);
 
-        VarInts.writeUnsignedLong(buffer, packet.getTick());
+        VarInts.writeUnsignedLong(buffer, packet.getTick().getInputTick());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, UpdateAttributesPacket packet) {
         super.deserialize(buffer, helper, packet);
 
-        packet.setTick(VarInts.readUnsignedLong(buffer));
+        packet.setTick(new PlayerInputTick(VarInts.readUnsignedLong(buffer)));
     }
 }

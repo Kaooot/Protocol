@@ -3,41 +3,22 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.cloudburstmc.protocol.bedrock.data.education.EducationLevelSettings;
 import org.cloudburstmc.protocol.common.PacketSignal;
-import org.cloudburstmc.protocol.common.util.OptionalBoolean;
 
-import java.util.Optional;
-
-@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class EducationSettingsPacket implements BedrockPacket {
-    private String codeBuilderUri;
-    private String codeBuilderTitle;
-    private boolean canResizeCodeBuilder;
-    /**
-     * @since v465
-     */
-    private boolean disableLegacyTitle;
-    /**
-     * @since v465
-     */
-    private String postProcessFilter;
-    /**
-     * @since v465
-     */
-    private String screenshotBorderPath;
-    private OptionalBoolean entityCapabilities;
-    private Optional<String> overrideUri;
-    private boolean quizAttached;
-    private OptionalBoolean externalLinkSettings;
+
+    private EducationLevelSettings educationLevelSettings;
 
     @Override
-    public PacketSignal handle(BedrockPacketHandler handler) {
+    public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
+    @Override
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.EDUCATION_SETTINGS;
     }
@@ -51,4 +32,3 @@ public class EducationSettingsPacket implements BedrockPacket {
         }
     }
 }
-

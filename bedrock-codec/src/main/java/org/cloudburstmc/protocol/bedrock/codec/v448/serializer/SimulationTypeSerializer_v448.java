@@ -5,7 +5,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
-import org.cloudburstmc.protocol.bedrock.data.SimulationType;
+import org.cloudburstmc.protocol.bedrock.data.world.SimulationType;
 import org.cloudburstmc.protocol.bedrock.packet.SimulationTypePacket;
 
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
@@ -16,11 +16,11 @@ public class SimulationTypeSerializer_v448 implements BedrockPacketSerializer<Si
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, SimulationTypePacket packet) {
-        buffer.writeByte(packet.getType().ordinal());
+        buffer.writeByte(packet.getSimType().ordinal());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, SimulationTypePacket packet) {
-        packet.setType(VALUES[buffer.readUnsignedByte()]);
+        packet.setSimType(VALUES[buffer.readUnsignedByte()]);
     }
 }

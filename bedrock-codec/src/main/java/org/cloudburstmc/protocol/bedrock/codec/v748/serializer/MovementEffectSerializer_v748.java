@@ -1,11 +1,12 @@
 package org.cloudburstmc.protocol.bedrock.codec.v748.serializer;
 
+import org.cloudburstmc.protocol.bedrock.data.player.PlayerInputTick;
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
-import org.cloudburstmc.protocol.bedrock.data.MovementEffectType;
+import org.cloudburstmc.protocol.bedrock.data.actor.MovementEffectType;
 import org.cloudburstmc.protocol.bedrock.packet.MovementEffectPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -15,17 +16,17 @@ public class MovementEffectSerializer_v748 implements BedrockPacketSerializer<Mo
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, MovementEffectPacket packet) {
-        VarInts.writeUnsignedLong(buffer, packet.getEntityRuntimeId());
-        VarInts.writeUnsignedInt(buffer, packet.getEffectType().getId());
-        VarInts.writeUnsignedInt(buffer, packet.getDuration());
-        VarInts.writeUnsignedLong(buffer, packet.getTick());
+        VarInts.writeUnsignedLong(buffer, packet.getTargetRuntimeID());
+        VarInts.writeUnsignedInt(buffer, packet.getEffectID().ordinal());
+        VarInts.writeUnsignedInt(buffer, packet.getEffectDuration());
+        VarInts.writeUnsignedLong(buffer, packet.getTick().getInputTick());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, MovementEffectPacket packet) {
-        packet.setEntityRuntimeId(VarInts.readUnsignedLong(buffer));
-        packet.setEffectType(MovementEffectType.byId(VarInts.readUnsignedInt(buffer)));
-        packet.setDuration(VarInts.readUnsignedInt(buffer));
-        packet.setTick(VarInts.readUnsignedLong(buffer));
+        packet.setTargetRuntimeID(VarInts.readUnsignedLong(buffer));
+        packet.setEffectID(MovementEffectType.from(VarInts.readUnsignedInt(buffer)));
+        packet.setEffectDuration(VarInts.readUnsignedInt(buffer));
+        packet.setTick(new PlayerInputTick(VarInts.readUnsignedLong(buffer)));
     }
-}
+}

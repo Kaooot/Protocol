@@ -16,13 +16,13 @@ public class FullChunkDataSerializer_v291 implements BedrockPacketSerializer<Lev
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, LevelChunkPacket packet) {
         VarInts.writeInt(buffer, packet.getChunkX());
         VarInts.writeInt(buffer, packet.getChunkZ());
-        helper.writeByteBuf(buffer, packet.getData());
+        helper.writeByteBuf(buffer, packet.getSerializedChunkData());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, LevelChunkPacket packet) {
         packet.setChunkX(VarInts.readInt(buffer));
         packet.setChunkZ(VarInts.readInt(buffer));
-        packet.setData(helper.readByteBuf(buffer));
+        packet.setSerializedChunkData(helper.readByteBuf(buffer));
     }
 }

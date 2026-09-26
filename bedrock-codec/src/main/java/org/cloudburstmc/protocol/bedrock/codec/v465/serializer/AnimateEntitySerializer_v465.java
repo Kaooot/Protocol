@@ -22,7 +22,7 @@ public class AnimateEntitySerializer_v465 extends AnimateEntitySerializer_v419 {
         helper.writeString(buffer, packet.getController());
         buffer.writeFloatLE(packet.getBlendOutTime());
 
-        LongList runtimeIds = packet.getRuntimeEntityIds();
+        LongList runtimeIds = packet.getRuntimeIds();
 
         // Don't use helper because it will box the primitive value.
         VarInts.writeUnsignedInt(buffer, runtimeIds.size());
@@ -40,7 +40,7 @@ public class AnimateEntitySerializer_v465 extends AnimateEntitySerializer_v419 {
         packet.setController(helper.readString(buffer));
         packet.setBlendOutTime(buffer.readFloatLE());
 
-        LongList runtimeIds = packet.getRuntimeEntityIds();
+        LongList runtimeIds = packet.getRuntimeIds();
 
         // Don't use helper because it will box the primitive value.
         int count = VarInts.readUnsignedInt(buffer);

@@ -9,6 +9,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class SetDifficultyPacket implements BedrockPacket {
+
     private int difficulty;
 
     @Override
@@ -16,6 +17,7 @@ public class SetDifficultyPacket implements BedrockPacket {
         return handler.handle(this);
     }
 
+    @Override
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.SET_DIFFICULTY;
     }
@@ -29,4 +31,3 @@ public class SetDifficultyPacket implements BedrockPacket {
         }
     }
 }
-

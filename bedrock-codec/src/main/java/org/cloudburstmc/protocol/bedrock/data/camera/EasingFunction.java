@@ -1,0 +1,68 @@
+package org.cloudburstmc.protocol.bedrock.data.camera;
+
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+import java.util.HashMap;
+import java.util.Map;
+
+@Getter
+@RequiredArgsConstructor
+public enum EasingFunction {
+
+    LINEAR("linear"),
+    SPRING("spring"),
+    IN_QUAD("in_quad"),
+    OUT_QUAD("out_quad"),
+    IN_OUT_QUAD("in_out_quad"),
+    IN_CUBIC("in_cubic"),
+    OUT_CUBIC("out_cubic"),
+    IN_OUT_CUBIC("in_out_cubic"),
+    IN_QUART("in_quart"),
+    OUT_QUART("out_quart"),
+    IN_OUT_QUART("in_out_quart"),
+    IN_QUINT("in_quint"),
+    OUT_QUINT("out_quint"),
+    IN_OUT_QUINT("in_out_quint"),
+    IN_SINE("in_sine"),
+    OUT_SINE("out_sine"),
+    IN_OUT_SINE("in_out_sine"),
+    IN_EXPO("in_expo"),
+    OUT_EXPO("out_expo"),
+    IN_OUT_EXPO("in_out_expo"),
+    IN_CIRC("in_circ"),
+    OUT_CIRC("out_circ"),
+    IN_OUT_CIRC("in_out_circ"),
+    IN_BOUNCE("in_bounce"),
+    OUT_BOUNCE("out_bounce"),
+    IN_OUT_BOUNCE("in_out_bounce"),
+    IN_BACK("in_back"),
+    OUT_BACK("out_back"),
+    IN_OUT_BACK("in_out_back"),
+    IN_ELASTIC("in_elastic"),
+    OUT_ELASTIC("out_elastic"),
+    IN_OUT_ELASTIC("in_out_elastic");
+
+    private static final EasingFunction[] VALUES = values();
+
+    private static final Map<String, EasingFunction> SERIALIZE_NAMES = new HashMap<>(VALUES.length);
+
+    static {
+        for (EasingFunction value : VALUES) {
+            SERIALIZE_NAMES.put(value.getSerializeName(), value);
+        }
+    }
+
+    private final String serializeName;
+
+    public static EasingFunction from(int ordinal) {
+        if (ordinal >= 0 && ordinal < VALUES.length) {
+            return VALUES[ordinal];
+        }
+        throw new UnsupportedOperationException("Detected unknown EasingFunction ID: " + ordinal);
+    }
+
+    public static EasingFunction fromName(String serializeName) {
+        return SERIALIZE_NAMES.get(serializeName);
+    }
+}

@@ -11,7 +11,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 public class ClientboundCloseFormPacket implements BedrockPacket {
 
     @Override
-    public PacketSignal handle(BedrockPacketHandler handler) {
+    public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 

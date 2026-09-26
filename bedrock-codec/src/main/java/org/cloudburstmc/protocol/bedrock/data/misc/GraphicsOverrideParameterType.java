@@ -1,0 +1,66 @@
+package org.cloudburstmc.protocol.bedrock.data.misc;
+
+public enum GraphicsOverrideParameterType {
+
+    SKY_ZENITH_COLOR,
+    SKY_HORIZON_COLOR,
+    HORIZON_BLEND_MIN,
+    HORIZON_BLEND_MAX,
+    HORIZON_BLEND_START,
+    HORIZON_BLEND_MIE_START,
+    RAYLEIGH_STRENGTH,
+    SUN_MIE_STRENGTH,
+    MOON_MIE_STRENGTH,
+    SUN_GLARE_SHAPE,
+    CHLOROPHYLL,
+    CDOM,
+    SUSPENDED_SEDIMENT,
+    WAVES_DEPTH,
+    WAVES_FREQUENCY,
+    WAVES_FREQUENCY_SCALING,
+    WAVES_SPEED,
+    WAVES_SPEED_SCALING,
+    WAVES_SHAPE,
+    WAVES_OCTAVES,
+    WAVES_MIX,
+    WAVES_PULL,
+    WAVES_DIRECTION_INCREMENT,
+    MIDTONES_CONTRAST,
+    HIGHLIGHTS_CONTRAST,
+    SHADOWS_CONTRAST,
+    HIGHLIGHTS_GAIN,
+    HIGHLIGHTS_GAMMA,
+    HIGHLIGHTS_OFFSET,
+    HIGHLIGHTS_SATURATION,
+    MIDTONES_GAIN,
+    MIDTONES_GAMMA,
+    MIDTONES_OFFSET,
+    MIDTONES_SATURATION,
+    SHADOWS_GAIN,
+    SHADOWS_GAMMA,
+    SHADOWS_OFFSET,
+    SHADOWS_SATURATION,
+    HIGHLIGHTS_MIN,
+    SHADOWS_MAX,
+    TEMPERATURE,
+    SUN_COLOR,
+    SUN_ILLUMINANCE,
+    MOON_COLOR,
+    MOON_ILLUMINANCE,
+    FLASH_COLOR,
+    FLASH_ILLUMINANCE,
+    AMBIENT_COLOR,
+    AMBIENT_ILLUMINANCE,
+    EMISSIVE_DESATURATION,
+    SKY_INTENSITY,
+    ORBITAL_OFFSET_DEGREES;
+
+    private static final GraphicsOverrideParameterType[] VALUES = values();
+
+    public static GraphicsOverrideParameterType from(int ordinal) {
+        if (ordinal >= 0 && ordinal < VALUES.length) {
+            return VALUES[ordinal];
+        }
+        throw new UnsupportedOperationException("Detected unknown GraphicsOverrideParameterType ID: " + ordinal);
+    }
+}

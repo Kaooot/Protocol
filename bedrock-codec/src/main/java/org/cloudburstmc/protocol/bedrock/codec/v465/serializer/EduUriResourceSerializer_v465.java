@@ -5,7 +5,6 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
-import org.cloudburstmc.protocol.bedrock.data.EduSharedUriResource;
 import org.cloudburstmc.protocol.bedrock.packet.EduUriResourcePacket;
 
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
@@ -14,12 +13,11 @@ public class EduUriResourceSerializer_v465 implements BedrockPacketSerializer<Ed
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, EduUriResourcePacket packet) {
-        helper.writeString(buffer, packet.getEduSharedUriResource().getButtonName());
-        helper.writeString(buffer, packet.getEduSharedUriResource().getLinkUri());
+        helper.writeEduSharedUriResource(buffer, packet.getEduSharedURIResource());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, EduUriResourcePacket packet) {
-        packet.setEduSharedUriResource(new EduSharedUriResource(helper.readString(buffer), helper.readString(buffer)));
+        packet.setEduSharedURIResource(helper.readEduSharedUriResource(buffer));
     }
 }

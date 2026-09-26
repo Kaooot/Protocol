@@ -10,14 +10,16 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class SpawnExperienceOrbPacket implements BedrockPacket {
+
     private Vector3f position;
-    private int amount;
+    private int xpValue;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
+    @Override
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.SPAWN_EXPERIENCE_ORB;
     }
@@ -31,4 +33,3 @@ public class SpawnExperienceOrbPacket implements BedrockPacket {
         }
     }
 }
-

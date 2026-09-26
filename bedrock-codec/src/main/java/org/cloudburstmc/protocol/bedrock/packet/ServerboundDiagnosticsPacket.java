@@ -1,18 +1,23 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.protocol.bedrock.data.diagnostics.*;
+import org.cloudburstmc.protocol.bedrock.data.diagnostics.EntityDiagnosticTimingInfo;
+import org.cloudburstmc.protocol.bedrock.data.diagnostics.MemoryCategoryCounter;
+import org.cloudburstmc.protocol.bedrock.data.diagnostics.SystemCategory;
+import org.cloudburstmc.protocol.bedrock.data.diagnostics.SystemDiagnosticTimingInfo;
+import org.cloudburstmc.protocol.bedrock.data.diagnostics.WhiskerScopeDataSummary;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
-public class ServerboundDiagnosticsPacket implements BedrockPacket{
+public class ServerboundDiagnosticsPacket implements BedrockPacket {
+
     private float avgFps;
     private float avgServerSimTickTimeMS;
     private float avgClientSimTickTimeMS;
@@ -22,26 +27,14 @@ public class ServerboundDiagnosticsPacket implements BedrockPacket{
     private float avgEndFrameTimeMS;
     private float avgRemainderTimePercent;
     private float avgUnaccountedTimePercent;
-    private final List<MemoryCategoryCounter> memoryCategoryValues = new ArrayList<>();
-    /**
-     * @since v975
-     */
-    private final List<EntityDiagnosticTimingInfo> entityDiagnostics = new ArrayList<>();
-    /**
-     * @since v975
-     */
-    private final List<SystemDiagnosticTimingInfo> systemDiagnostics = new ArrayList<>();
-    /**
-     * @since v1001
-     */
-    private final List<WhiskerScopeDataSummary> whiskerScopes = new ArrayList<>();
-    /**
-     * @since v2168
-     */
-    private final List<SystemCategory> systemCategories = new ArrayList<>();
+    private final List<MemoryCategoryCounter> memoryCategoryValues = new ObjectArrayList<>();
+    private final List<EntityDiagnosticTimingInfo> entityDiagnostics = new ObjectArrayList<>();
+    private final List<SystemDiagnosticTimingInfo> systemDiagnostics = new ObjectArrayList<>();
+    private final List<SystemCategory> systemCategories = new ObjectArrayList<>();
+    private final List<WhiskerScopeDataSummary> whiskerScopes = new ObjectArrayList<>();
 
     @Override
-    public PacketSignal handle(BedrockPacketHandler handler) {
+    public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 

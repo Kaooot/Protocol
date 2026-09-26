@@ -1,20 +1,24 @@
 package org.cloudburstmc.protocol.bedrock.codec.v407.serializer;
 
 import io.netty.buffer.ByteBuf;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
-import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerSlotType;
-import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponse;
-import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponseContainer;
-import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponseSlot;
+import org.cloudburstmc.protocol.bedrock.data.misc.RedactableString;
+import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerEnumName;
+import org.cloudburstmc.protocol.bedrock.data.inventory.FullContainerName;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.ItemStackNetId;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackNetResult;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequestId;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponseContainerInfo;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponseInfo;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponseSlotInfo;
 import org.cloudburstmc.protocol.bedrock.packet.ItemStackResponsePacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ItemStackResponseSerializer_v407 implements BedrockPacketSerializer<ItemStackResponsePacket> {
@@ -23,57 +27,57 @@ public class ItemStackResponseSerializer_v407 implements BedrockPacketSerializer
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ItemStackResponsePacket packet) {
-        helper.writeArray(buffer, packet.getEntries(), (buf, response) -> {
-            buf.writeBoolean(response.isSuccess());
-            VarInts.writeInt(buffer, response.getRequestId());
+        helper.writeArray(buffer, packet.getResponses(), (buf, response) -> {
+            buf.writeBoolean(response.getResult() == ItemStackNetResult.SUCCESS);
+            VarInts.writeInt(buffer, response.getClientRequestId().getID());
 
-            if (!response.isSuccess())
+            if (response.getResult() != ItemStackNetResult.SUCCESS)
                 return;
 
             helper.writeArray(buf, response.getContainers(), (buf2, containerEntry) -> {
-                helper.writeContainerSlotType(buf2, containerEntry.getContainer());
-                helper.writeArray(buf2, containerEntry.getItems(), this::writeItemEntry);
+                helper.writeContainerEnumName(buf2, containerEntry.getFullContainerName().getContainerName());
+                helper.writeArray(buf2, containerEntry.getSlots(), this::writeItemEntry);
             });
         });
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ItemStackResponsePacket packet) {
-        List<ItemStackResponse> entries = packet.getEntries();
+        List<ItemStackResponseInfo> entries = packet.getResponses();
         helper.readArray(buffer, entries, buf -> {
             boolean success = buf.readBoolean();
-            int requestId = VarInts.readInt(buf);
+            ItemStackRequestId requestId = new ItemStackRequestId(VarInts.readInt(buf));
 
             if (!success)
-                return new ItemStackResponse(success, requestId, Collections.emptyList());
+                return new ItemStackResponseInfo(ItemStackNetResult.ERROR, requestId, Collections.emptyList());
 
-            List<ItemStackResponseContainer> containerEntries = new ArrayList<>();
+            List<ItemStackResponseContainerInfo> containerEntries = new ArrayList<>();
             helper.readArray(buf, containerEntries, buf2 -> {
-                ContainerSlotType container = helper.readContainerSlotType(buf2);
+                ContainerEnumName container = helper.readContainerEnumName(buf2);
 
-                List<ItemStackResponseSlot> itemEntries = new ArrayList<>();
+                List<ItemStackResponseSlotInfo> itemEntries = new ArrayList<>();
                 helper.readArray(buf2, itemEntries, byteBuf -> this.readItemEntry(byteBuf, helper));
-                return new ItemStackResponseContainer(container, itemEntries, null);
+                return new ItemStackResponseContainerInfo(new FullContainerName(container, null), itemEntries);
             });
-            return new ItemStackResponse(success, requestId, containerEntries);
+            return new ItemStackResponseInfo(ItemStackNetResult.SUCCESS, requestId, containerEntries);
         });
     }
 
-    protected ItemStackResponseSlot readItemEntry(ByteBuf buffer, BedrockCodecHelper helper) {
-        return new ItemStackResponseSlot(
+    protected ItemStackResponseSlotInfo readItemEntry(ByteBuf buffer, BedrockCodecHelper helper) {
+        return new ItemStackResponseSlotInfo(
                 buffer.readUnsignedByte(),
                 buffer.readUnsignedByte(),
                 buffer.readUnsignedByte(),
-                VarInts.readInt(buffer),
-                "",
-                0,
-                "");
+                new ItemStackNetId(VarInts.readInt(buffer)),
+                new RedactableString("", ""),
+                0
+        );
     }
 
-    protected void writeItemEntry(ByteBuf buffer, BedrockCodecHelper helper, ItemStackResponseSlot itemEntry) {
+    protected void writeItemEntry(ByteBuf buffer, BedrockCodecHelper helper, ItemStackResponseSlotInfo itemEntry) {
+        buffer.writeByte(itemEntry.getRequestedSlot());
         buffer.writeByte(itemEntry.getSlot());
-        buffer.writeByte(itemEntry.getHotbarSlot());
-        buffer.writeByte(itemEntry.getCount());
-        VarInts.writeInt(buffer, itemEntry.getStackNetworkId());
+        buffer.writeByte(itemEntry.getAmount());
+        VarInts.writeInt(buffer, itemEntry.getItemStackNetId().getID());
     }
 }

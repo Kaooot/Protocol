@@ -5,7 +5,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.PhotoTransferSerializer_v291;
-import org.cloudburstmc.protocol.bedrock.data.PhotoType;
+import org.cloudburstmc.protocol.bedrock.data.education.PhotoType;
 import org.cloudburstmc.protocol.bedrock.packet.PhotoTransferPacket;
 
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
@@ -15,18 +15,18 @@ public class PhotoTransferSerializer_v465 extends PhotoTransferSerializer_v291 {
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, PhotoTransferPacket packet) {
         super.serialize(buffer, helper, packet);
-        buffer.writeByte(packet.getPhotoType().ordinal());
+        buffer.writeByte(packet.getType().ordinal());
         buffer.writeByte(packet.getSourceType().ordinal());
-        buffer.writeLongLE(packet.getOwnerId());
+        buffer.writeLongLE(packet.getOwnerID());
         helper.writeString(buffer, packet.getNewPhotoName());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, PhotoTransferPacket packet) {
         super.deserialize(buffer, helper, packet);
-        packet.setPhotoType(PhotoType.from(buffer.readByte()));
+        packet.setType(PhotoType.from(buffer.readByte()));
         packet.setSourceType(PhotoType.from(buffer.readByte()));
-        packet.setOwnerId(buffer.readLongLE());
+        packet.setOwnerID(buffer.readLongLE());
         packet.setNewPhotoName(helper.readString(buffer));
     }
 }

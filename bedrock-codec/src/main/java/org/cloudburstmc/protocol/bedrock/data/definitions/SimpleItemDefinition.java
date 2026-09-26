@@ -4,12 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Value;
 import lombok.experimental.NonFinal;
 import org.cloudburstmc.nbt.NbtMap;
-import org.cloudburstmc.protocol.bedrock.data.inventory.ItemVersion;
+import org.cloudburstmc.protocol.bedrock.data.item.ItemVersion;
 
 @Value
 @NonFinal
 @AllArgsConstructor
 public class SimpleItemDefinition implements ItemDefinition {
+
     String identifier;
     int runtimeId;
     ItemVersion version;

@@ -1,41 +1,41 @@
 package org.cloudburstmc.protocol.bedrock.codec.v818;
 
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
-import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
+import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v776.BedrockCodecHelper_v776;
 import org.cloudburstmc.protocol.bedrock.codec.v786.serializer.LevelSoundEventSerializer_v786;
 import org.cloudburstmc.protocol.bedrock.codec.v800.Bedrock_v800;
 import org.cloudburstmc.protocol.bedrock.codec.v818.serializer.*;
 import org.cloudburstmc.protocol.bedrock.data.PacketRecipient;
-import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
+import org.cloudburstmc.protocol.bedrock.data.sound.LevelSoundEvent;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataTypes;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorFlags;
 import org.cloudburstmc.protocol.bedrock.packet.*;
 import org.cloudburstmc.protocol.bedrock.transformer.FlagTransformer;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 
 public class Bedrock_v818 extends Bedrock_v800 {
 
-    protected static final TypeMap<EntityFlag> ENTITY_FLAGS = Bedrock_v800.ENTITY_FLAGS
+    protected static final TypeMap<ActorFlags> ENTITY_FLAGS = Bedrock_v800.ENTITY_FLAGS
             .toBuilder()
-            .insert(124, EntityFlag.BODY_ROTATION_ALWAYS_FOLLOWS_HEAD)
+            .insert(124, ActorFlags.BODY_ROTATION_ALWAYS_FOLLOWS_HEAD)
             .build();
 
-    protected static final EntityDataTypeMap ENTITY_DATA = Bedrock_v800.ENTITY_DATA
+    protected static final ActorDataTypeMap ENTITY_DATA = Bedrock_v800.ENTITY_DATA
             .toBuilder()
-            .update(EntityDataTypes.FLAGS, new FlagTransformer(ENTITY_FLAGS, 0))
-            .update(EntityDataTypes.FLAGS_2, new FlagTransformer(ENTITY_FLAGS, 1))
+            .update(ActorDataTypes.FLAGS, new FlagTransformer(ENTITY_FLAGS, 0))
+            .update(ActorDataTypes.FLAGS_2, new FlagTransformer(ENTITY_FLAGS, 1))
             .build();
 
-    protected static final TypeMap<SoundEvent> SOUND_EVENTS = Bedrock_v800.SOUND_EVENTS
+    protected static final TypeMap<LevelSoundEvent> SOUND_EVENTS = Bedrock_v800.SOUND_EVENTS
             .toBuilder()
-            .replace(555, SoundEvent.RECORD_TEARS)
-            .insert(556, SoundEvent.THE_END_LIGHT_FLASH)
-            .insert(557, SoundEvent.LEAD_LEASH)
-            .insert(558, SoundEvent.LEAD_UNLEASH)
-            .insert(559, SoundEvent.LEAD_BREAK)
-            .insert(560, SoundEvent.UNSADDLE)
-            .insert(561, SoundEvent.UNDEFINED)
+            .replace(555, LevelSoundEvent.RECORD_TEARS)
+            .insert(556, LevelSoundEvent.THE_END_LIGHT_FLASH)
+            .insert(557, LevelSoundEvent.LEAD_LEASH)
+            .insert(558, LevelSoundEvent.LEAD_UNLEASH)
+            .insert(559, LevelSoundEvent.LEAD_BREAK)
+            .insert(560, LevelSoundEvent.UNSADDLE)
+            .insert(561, LevelSoundEvent.UNDEFINED)
             .build();
 
     public static final BedrockCodec CODEC = Bedrock_v800.CODEC.toBuilder()
@@ -52,6 +52,6 @@ public class Bedrock_v818 extends Bedrock_v800 {
             .updateSerializer(CameraPresetsPacket.class, CameraPresetsSerializer_v818.INSTANCE)
             .updateSerializer(CameraInstructionPacket.class, CameraInstructionSerializer_v818.INSTANCE)
             .updateSerializer(StartGamePacket.class, StartGameSerializer_v818.INSTANCE)
-            .registerPacket(DebugDrawerPacket::new, DebugDrawerSerializer_v818.INSTANCE, 328, PacketRecipient.CLIENT)
+            .registerPacket(PrimitiveShapesPacket::new, PrimitiveShapesSerializer_v818.INSTANCE, 328, PacketRecipient.CLIENT)
             .build();
 }

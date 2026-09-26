@@ -9,39 +9,45 @@ import org.cloudburstmc.math.vector.Vector3i;
 import org.cloudburstmc.nbt.NBTInputStream;
 import org.cloudburstmc.nbt.NBTOutputStream;
 import org.cloudburstmc.nbt.NbtMap;
-import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
-import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
+import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v975.BedrockCodecHelper_v975;
-import org.cloudburstmc.protocol.bedrock.data.Ability;
-import org.cloudburstmc.protocol.bedrock.data.GatheringsConfigurationJoinInfo;
+import org.cloudburstmc.protocol.bedrock.data.ability.AbilitiesIndex;
+import org.cloudburstmc.protocol.bedrock.data.connection.GatheringsConfig;
+import org.cloudburstmc.protocol.bedrock.data.connection.PresenceConfig;
 import org.cloudburstmc.protocol.bedrock.data.definitions.ItemDefinition;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataFormat;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataMap;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataType;
-import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerSlotType;
-import org.cloudburstmc.protocol.bedrock.data.inventory.FullContainerName;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataFormat;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataMap;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataType;
+import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerEnumName;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
 import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.*;
-import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequest;
-import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequestSlotData;
-import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.TextProcessingEventOrigin;
-import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.*;
-import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponseSlot;
-import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.InventorySource;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.ItemStackNetId;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequestActionType;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequestSlotInfo;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestCraftRecipeAutoAction;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestCraftRepairAndDisenchantAction;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestCraftResultsDeprecatedAction;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestMineBlockAction;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponseSlotInfo;
+import org.cloudburstmc.protocol.bedrock.data.misc.RedactableString;
+import org.cloudburstmc.protocol.bedrock.data.recipe.RecipeIngredient;
+import org.cloudburstmc.protocol.bedrock.data.recipe.RecipeNetId;
 import org.cloudburstmc.protocol.bedrock.data.skin.*;
-import org.cloudburstmc.protocol.bedrock.data.structure.StructureAnimationMode;
-import org.cloudburstmc.protocol.bedrock.data.structure.StructureMirror;
-import org.cloudburstmc.protocol.bedrock.data.structure.StructureRotation;
+import org.cloudburstmc.protocol.bedrock.data.structure.AnimationMode;
+import org.cloudburstmc.protocol.bedrock.data.structure.Mirror;
+import org.cloudburstmc.protocol.bedrock.data.structure.Rotation;
 import org.cloudburstmc.protocol.bedrock.data.structure.StructureSettings;
+import org.cloudburstmc.protocol.bedrock.data.text.TextProcessingEventOrigin;
 import org.cloudburstmc.protocol.bedrock.transformer.EntityDataTransformer;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 import org.cloudburstmc.protocol.common.util.VarInts;
 import org.cloudburstmc.protocol.common.util.stream.LittleEndianByteBufInputStream;
 import org.cloudburstmc.protocol.common.util.stream.LittleEndianByteBufOutputStream;
 
-import java.awt.Color;
+import java.awt.*;
 import java.io.IOException;
 import java.util.*;
+import java.util.List;
 
 import static java.util.Objects.requireNonNull;
 import static org.cloudburstmc.protocol.common.util.Preconditions.checkArgument;
@@ -49,14 +55,49 @@ import static org.cloudburstmc.protocol.common.util.Preconditions.checkNotNull;
 
 public class BedrockCodecHelper_v2168 extends BedrockCodecHelper_v975 {
 
-    public BedrockCodecHelper_v2168(EntityDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes, TypeMap<ItemStackRequestActionType> stackRequestActionTypes,
-                                    TypeMap<ContainerSlotType> containerSlotTypes, TypeMap<Ability> abilities, TypeMap<TextProcessingEventOrigin> textProcessingEventOrigins) {
-        super(entityData, gameRulesTypes, stackRequestActionTypes, containerSlotTypes, abilities, textProcessingEventOrigins);
+    protected final TypeMap<ItemStackRequestActionType> legacyItemStackRequestActionTypeMap = TypeMap.builder(ItemStackRequestActionType.class)
+            .insert(0, ItemStackRequestActionType.TAKE)
+            .insert(1, ItemStackRequestActionType.PLACE)
+            .insert(2, ItemStackRequestActionType.SWAP)
+            .insert(3, ItemStackRequestActionType.DROP)
+            .insert(4, ItemStackRequestActionType.DESTROY)
+            .insert(5, ItemStackRequestActionType.CONSUME)
+            .insert(6, ItemStackRequestActionType.CREATE)
+            .insert(7, ItemStackRequestActionType.PLACE_IN_ITEM_CONTAINER)
+            .insert(8, ItemStackRequestActionType.TAKE_FROM_ITEM_CONTAINER)
+            .insert(9, ItemStackRequestActionType.SCREEN_LAB_TABLE_COMBINE)
+            .insert(10, ItemStackRequestActionType.SCREEN_BEACON_PAYMENT)
+            .insert(11, ItemStackRequestActionType.SCREEN_HUD_MINE_BLOCK)
+            .insert(12, ItemStackRequestActionType.CRAFT_RECIPE)
+            .insert(13, ItemStackRequestActionType.CRAFT_RECIPE_AUTO)
+            .insert(14, ItemStackRequestActionType.CRAFT_CREATIVE)
+            .insert(15, ItemStackRequestActionType.CRAFT_RECIPE_OPTIONAL)
+            .insert(16, ItemStackRequestActionType.CRAFT_REPAIR_AND_DISENCHANT)
+            .insert(17, ItemStackRequestActionType.CRAFT_LOOM)
+            .insert(18, ItemStackRequestActionType.CRAFT_NON_IMPLEMENTED)
+            .insert(19, ItemStackRequestActionType.CRAFT_RESULTS)
+            .build();
+
+    public BedrockCodecHelper_v2168(ActorDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes, TypeMap<ItemStackRequestActionType> stackRequestActionTypes,
+                                    TypeMap<ContainerEnumName> containerEnumNames, TypeMap<AbilitiesIndex> abilities, TypeMap<TextProcessingEventOrigin> textProcessingEventOrigins) {
+        super(entityData, gameRulesTypes, stackRequestActionTypes, containerEnumNames, abilities, textProcessingEventOrigins);
+        this.itemStackRequestActionsVariant = this.itemStackRequestActionsVariant.toBuilder(
+                        this.stackRequestActionTypes::getId,
+                        (buffer, helper, owner, value) -> VarInts.writeUnsignedInt(buffer, value),
+                        (buffer, helper, owner) -> VarInts.readUnsignedInt(buffer)
+                )
+                .prefix(
+                        (buffer, helper, owner, value) ->
+                                buffer.writeByte(this.legacyItemStackRequestActionTypeMap.getId(this.stackRequestActionTypes.getType(value))),
+                        (buffer, helper, owner) ->
+                                (int) buffer.readUnsignedByte()
+                )
+                .build();
     }
 
     @Override
-    public void readEntityData(ByteBuf buffer, EntityDataMap entityDataMap) {
-        checkNotNull(entityDataMap, "entityDataMap");
+    public void readEntityData(ByteBuf buffer, ActorDataMap actorDataMap) {
+        checkNotNull(actorDataMap, "entityDataMap");
 
         int length = VarInts.readUnsignedInt(buffer);
         checkArgument(this.encodingSettings.maxListSize() <= 0 || length <= this.encodingSettings.maxListSize(), "Entity data size is too big: %s", length);
@@ -69,7 +110,7 @@ public class BedrockCodecHelper_v2168 extends BedrockCodecHelper_v975 {
                 throw new IllegalArgumentException(oneOf + "!=" + type);
             }
 
-            EntityDataFormat format = EntityDataFormat.values()[type];
+            ActorDataFormat format = ActorDataFormat.values()[type];
 
             Object value;
             switch (format) {
@@ -104,14 +145,14 @@ public class BedrockCodecHelper_v2168 extends BedrockCodecHelper_v975 {
                     throw new IllegalArgumentException("Unknown entity data type received");
             }
 
-            EntityDataTypeMap.Definition<?>[] definitions = this.entityData.fromId(id, format);
+            ActorDataTypeMap.Definition<?>[] definitions = this.entityData.fromId(id, format);
             if (definitions != null) {
-                for (EntityDataTypeMap.Definition<?> definition : definitions) {
+                for (ActorDataTypeMap.Definition<?> definition : definitions) {
                     //noinspection unchecked
                     EntityDataTransformer<Object, ?> transformer = (EntityDataTransformer<Object, ?>) definition.getTransformer();
-                    Object transformedValue = transformer.deserialize(this, entityDataMap, value);
+                    Object transformedValue = transformer.deserialize(this, actorDataMap, value);
                     if (transformedValue != null) {
-                        entityDataMap.put(definition.getType(), transformedValue);
+                        actorDataMap.put(definition.getType(), transformedValue);
                     }
                 }
             } else {
@@ -122,18 +163,18 @@ public class BedrockCodecHelper_v2168 extends BedrockCodecHelper_v975 {
 
     @SuppressWarnings("unchecked")
     @Override
-    public void writeEntityData(ByteBuf buffer, EntityDataMap entityDataMap) {
-        checkNotNull(entityDataMap, "entityDataMap");
+    public void writeEntityData(ByteBuf buffer, ActorDataMap actorDataMap) {
+        checkNotNull(actorDataMap, "entityDataMap");
 
         // Collect serialized entries first
-        List<Map.Entry<EntityDataTypeMap.Definition<?>, Object>> serializedEntries = new LinkedList<>();
+        List<Map.Entry<ActorDataTypeMap.Definition<?>, Object>> serializedEntries = new LinkedList<>();
 
-        for (Map.Entry<EntityDataType<?>, Object> entry : entityDataMap.entrySet()) {
-            EntityDataTypeMap.Definition<?> definition = this.entityData.fromType(entry.getKey());
+        for (Map.Entry<ActorDataType<?>, Object> entry : actorDataMap.entrySet()) {
+            ActorDataTypeMap.Definition<?> definition = this.entityData.fromType(entry.getKey());
 
             try {
                 Object value = ((EntityDataTransformer<?, Object>) definition.getTransformer())
-                        .serialize(this, entityDataMap, entry.getValue());
+                        .serialize(this, actorDataMap, entry.getValue());
 
                 // Skip if transformer returns null (indicating this entry shouldn't be serialized)
                 if (value == null) {
@@ -148,8 +189,8 @@ public class BedrockCodecHelper_v2168 extends BedrockCodecHelper_v975 {
 
         VarInts.writeUnsignedInt(buffer, serializedEntries.size());
 
-        for (Map.Entry<EntityDataTypeMap.Definition<?>, Object> entry : serializedEntries) {
-            EntityDataTypeMap.Definition<?> definition = entry.getKey();
+        for (Map.Entry<ActorDataTypeMap.Definition<?>, Object> entry : serializedEntries) {
+            ActorDataTypeMap.Definition<?> definition = entry.getKey();
             Object value = entry.getValue();
 
             VarInts.writeUnsignedInt(buffer, definition.getId());
@@ -465,192 +506,81 @@ public class BedrockCodecHelper_v2168 extends BedrockCodecHelper_v975 {
     }
 
     @Override
-    protected void writeRequestActionData(ByteBuf byteBuf, ItemStackRequestAction action) {
-        byteBuf.writeByte(action.getType().ordinal());
-
-        switch (action.getType()) {
-            case TAKE:
-            case PLACE:
-                byteBuf.writeByte(((TransferItemStackRequestAction) action).getCount());
-                writeStackRequestSlotInfo(byteBuf, ((TransferItemStackRequestAction) action).getSource());
-                writeStackRequestSlotInfo(byteBuf, ((TransferItemStackRequestAction) action).getDestination());
-                break;
-            case SWAP:
-                writeStackRequestSlotInfo(byteBuf, ((SwapAction) action).getSource());
-                writeStackRequestSlotInfo(byteBuf, ((SwapAction) action).getDestination());
-                break;
-            case DROP:
-                byteBuf.writeByte(((DropAction) action).getCount());
-                writeStackRequestSlotInfo(byteBuf, ((DropAction) action).getSource());
-                byteBuf.writeBoolean(((DropAction) action).isRandomly());
-                break;
-            case DESTROY:
-                byteBuf.writeByte(((DestroyAction) action).getCount());
-                writeStackRequestSlotInfo(byteBuf, ((DestroyAction) action).getSource());
-                break;
-            case CONSUME:
-                byteBuf.writeByte(((ConsumeAction) action).getCount());
-                writeStackRequestSlotInfo(byteBuf, ((ConsumeAction) action).getSource());
-                break;
-            case CREATE:
-                byteBuf.writeByte(((CreateAction) action).getSlot());
-                break;
-            case LAB_TABLE_COMBINE:
-                break;
-            case BEACON_PAYMENT:
-                VarInts.writeInt(byteBuf, ((BeaconPaymentAction) action).getPrimaryEffect());
-                VarInts.writeInt(byteBuf, ((BeaconPaymentAction) action).getSecondaryEffect());
-                break;
-            case MINE_BLOCK:
-                VarInts.writeInt(byteBuf, ((MineBlockAction) action).getHotbarSlot());
-                VarInts.writeInt(byteBuf, ((MineBlockAction) action).getPredictedDurability());
-                byteBuf.writeIntLE(((MineBlockAction) action).getStackNetworkId()); // int
-                break;
-            case CRAFT_RECIPE:
-                VarInts.writeUnsignedInt(byteBuf, ((RecipeItemStackRequestAction) action).getRecipeNetworkId());
-                byteBuf.writeByte(((RecipeItemStackRequestAction) action).getNumberOfRequestedCrafts());
-                break;
-            case CRAFT_RECIPE_AUTO:
-                VarInts.writeUnsignedInt(byteBuf, ((AutoCraftRecipeAction) action).getRecipeNetworkId());
-                byteBuf.writeByte(((AutoCraftRecipeAction) action).getNumberOfRequestedCrafts()); // count duplication removed
-                List<ItemDescriptorWithCount> ingredients = ((AutoCraftRecipeAction) action).getIngredients();
-                writeArray(byteBuf, ingredients, this::writeIngredient2);
-                break;
-            case CRAFT_CREATIVE:
-                VarInts.writeUnsignedInt(byteBuf, ((CraftCreativeAction) action).getCreativeItemNetworkId());
-                byteBuf.writeByte(((CraftCreativeAction) action).getNumberOfRequestedCrafts());
-                break;
-            case CRAFT_RECIPE_OPTIONAL:
-                VarInts.writeUnsignedInt(byteBuf, ((CraftRecipeOptionalAction) action).getRecipeNetworkId());
-                byteBuf.writeIntLE(((CraftRecipeOptionalAction) action).getFilteredStringIndex());
-                break;
-            case CRAFT_REPAIR_AND_DISENCHANT:
-                byteBuf.writeIntLE(((CraftGrindstoneAction) action).getRecipeNetworkId()); // int
-                byteBuf.writeByte(((CraftGrindstoneAction) action).getNumberOfRequestedCrafts());
-                VarInts.writeInt(byteBuf, ((CraftGrindstoneAction) action).getRepairCost());
-                break;
-            case CRAFT_LOOM:
-                this.writeString(byteBuf, ((CraftLoomAction) action).getPatternId());
-                byteBuf.writeByte(((CraftLoomAction) action).getTimesCrafted());
-                break;
-            case CRAFT_NON_IMPLEMENTED_DEPRECATED:
-                break;
-            case CRAFT_RESULTS_DEPRECATED:
-                this.writeArray(byteBuf, ((CraftResultsDeprecatedAction) action).getResultItems(), this::writeItemStackRequestNetworkItemInstanceDescriptor);
-                byteBuf.writeByte(((CraftResultsDeprecatedAction) action).getTimesCrafted());
-                break;
-            default:
-                throw new IllegalArgumentException("got " + action.getType());
-        }
-    }
-
-    @Override
-    protected ItemStackRequestAction readRequestActionData(ByteBuf byteBuf, ItemStackRequestActionType type) {
-        int type2 = byteBuf.readByte();
-
-        switch (type) {
-            case TAKE:
-                return new TakeAction(
-                        byteBuf.readUnsignedByte(),
-                        readStackRequestSlotInfo(byteBuf),
-                        readStackRequestSlotInfo(byteBuf)
-                );
-            case PLACE:
-                return new PlaceAction(
-                        byteBuf.readUnsignedByte(),
-                        readStackRequestSlotInfo(byteBuf),
-                        readStackRequestSlotInfo(byteBuf)
-                );
-            case SWAP:
-                return new SwapAction(
-                        readStackRequestSlotInfo(byteBuf),
-                        readStackRequestSlotInfo(byteBuf)
-                );
-            case DROP:
-                return new DropAction(
-                        byteBuf.readUnsignedByte(),
-                        readStackRequestSlotInfo(byteBuf),
-                        byteBuf.readBoolean()
-                );
-            case DESTROY:
-                return new DestroyAction(
-                        byteBuf.readUnsignedByte(),
-                        readStackRequestSlotInfo(byteBuf)
-                );
-            case CONSUME:
-                return new ConsumeAction(
-                        byteBuf.readUnsignedByte(),
-                        readStackRequestSlotInfo(byteBuf)
-                );
-            case CREATE:
-                return new CreateAction(
-                        byteBuf.readUnsignedByte()
-                );
-            case LAB_TABLE_COMBINE:
-                return new LabTableCombineAction();
-            case BEACON_PAYMENT:
-                return new BeaconPaymentAction(
-                        VarInts.readInt(byteBuf),
-                        VarInts.readInt(byteBuf)
-                );
-            case MINE_BLOCK:
-                return new MineBlockAction(
-                        VarInts.readInt(byteBuf), VarInts.readInt(byteBuf), byteBuf.readIntLE() // int
-                );
-            case CRAFT_RECIPE:
-                return new CraftRecipeAction(
-                        VarInts.readUnsignedInt(byteBuf), byteBuf.readByte()
-                );
-            case CRAFT_RECIPE_AUTO:
-                int recipeNetworkId = VarInts.readUnsignedInt(byteBuf);
-                int numberOfRequestedCrafts = byteBuf.readUnsignedByte(); // count duplication removed
-                List<ItemDescriptorWithCount> ingredients = new ObjectArrayList<>();
-                this.readArray(byteBuf, ingredients, this::readIngredient2);
-                return new AutoCraftRecipeAction(recipeNetworkId, numberOfRequestedCrafts, ingredients, numberOfRequestedCrafts);
-            case CRAFT_CREATIVE:
-                return new CraftCreativeAction(
-                        VarInts.readUnsignedInt(byteBuf), byteBuf.readByte()
-                );
-            case CRAFT_RECIPE_OPTIONAL:
-                return new CraftRecipeOptionalAction(
-                        VarInts.readUnsignedInt(byteBuf), byteBuf.readIntLE()
-                );
-            case CRAFT_REPAIR_AND_DISENCHANT:
-                return new CraftGrindstoneAction(
-                        byteBuf.readIntLE(), byteBuf.readByte(), VarInts.readInt(byteBuf) // int
-                );
-            case CRAFT_LOOM:
-                return new CraftLoomAction(
-                        this.readString(byteBuf), byteBuf.readUnsignedByte()
-                );
-            case CRAFT_NON_IMPLEMENTED_DEPRECATED:
-                return new CraftNonImplementedAction();
-            case CRAFT_RESULTS_DEPRECATED:
-                return new CraftResultsDeprecatedAction(
-                        this.readArray(byteBuf, new ItemData[0], this::readItemStackRequestNetworkItemInstanceDescriptor),
-                        byteBuf.readUnsignedByte()
-                );
-            default:
-                throw new IllegalArgumentException("got " + type);
-        }
-    }
-
-    @Override
-    protected ItemStackRequestSlotData readStackRequestSlotInfo(ByteBuf buffer) {
-        FullContainerName containerName = this.readFullContainerName(buffer);
-        return new ItemStackRequestSlotData(
-                containerName.getContainer(),
-                buffer.readUnsignedByte(),
-                buffer.readIntLE(),
-                containerName
-        );
-    }
-
-    @Override
-    protected void writeStackRequestSlotInfo(ByteBuf buffer, ItemStackRequestSlotData data) {
-        this.writeFullContainerName(buffer, data.getContainerName());
+    protected void writeItemStackRequestSlotInfo(ByteBuf buffer, ItemStackRequestSlotInfo data) {
+        this.writeFullContainerName(buffer, data.getFullContainerName());
         buffer.writeByte(data.getSlot());
-        buffer.writeIntLE(data.getStackNetworkId());
+        buffer.writeIntLE(data.getNetIdVariant()); // varint->int
+    }
+
+    @Override
+    protected ItemStackRequestSlotInfo readItemStackRequestSlotInfo(ByteBuf buffer) {
+        final ItemStackRequestSlotInfo info = new ItemStackRequestSlotInfo();
+        info.setFullContainerName(this.readFullContainerName(buffer));
+        info.setSlot(buffer.readUnsignedByte());
+        info.setNetIdVariant(buffer.readIntLE()); // varint->int
+        return info;
+    }
+
+    @Override
+    protected void writeItemStackRequestMineBlockAction(ByteBuf buffer, ItemStackRequestActionType type, ItemStackRequestMineBlockAction action) {
+        VarInts.writeInt(buffer, action.getSlot());
+        VarInts.writeInt(buffer, action.getPredictedDurability());
+        buffer.writeIntLE(action.getNetIdVariant()); // varint->int
+    }
+
+    @Override
+    protected ItemStackRequestMineBlockAction readItemStackRequestMineBlockAction(ByteBuf buffer, ItemStackRequestActionType type) {
+        final ItemStackRequestMineBlockAction action = new ItemStackRequestMineBlockAction();
+        action.setSlot(VarInts.readInt(buffer));
+        action.setPredictedDurability(VarInts.readInt(buffer));
+        action.setNetIdVariant(buffer.readIntLE()); // varint->int
+        return action;
+    }
+
+    @Override
+    protected void writeItemStackRequestCraftRecipeAutoAction(ByteBuf buffer, ItemStackRequestActionType type, ItemStackRequestCraftRecipeAutoAction action) {
+        VarInts.writeUnsignedInt(buffer, action.getRecipeNetId().getRawId());
+        buffer.writeByte(action.getNumberOfRequestedCrafts());
+        this.writeArray(buffer, action.getIngredients(), this::writeIngredient2);
+    }
+
+    @Override
+    protected ItemStackRequestCraftRecipeAutoAction readItemStackRequestCraftRecipeAutoAction(ByteBuf buffer, ItemStackRequestActionType type) {
+        final ItemStackRequestCraftRecipeAutoAction action = new ItemStackRequestCraftRecipeAutoAction();
+        action.setRecipeNetId(new RecipeNetId(VarInts.readUnsignedInt(buffer)));
+        action.setNumberOfRequestedCrafts(buffer.readUnsignedByte());
+        this.readArray(buffer, action.getIngredients(), this::readIngredient2);
+        return action;
+    }
+
+    @Override
+    protected void writeItemStackRequestCraftRepairAndDisenchantAction(ByteBuf buffer, ItemStackRequestActionType type, ItemStackRequestCraftRepairAndDisenchantAction action) {
+        buffer.writeIntLE(action.getRecipeNetId().getRawId()); // unsigned varint -> int
+        buffer.writeByte(action.getNumberOfRequestedCrafts());
+        VarInts.writeInt(buffer, action.getRepairCost());
+    }
+
+    @Override
+    protected ItemStackRequestCraftRepairAndDisenchantAction readItemStackRequestCraftRepairAndDisenchantAction(ByteBuf buffer, ItemStackRequestActionType type) {
+        final ItemStackRequestCraftRepairAndDisenchantAction action = new ItemStackRequestCraftRepairAndDisenchantAction();
+        action.setRecipeNetId(new RecipeNetId(buffer.readIntLE())); // unsigned varint -> int
+        action.setNumberOfRequestedCrafts(buffer.readUnsignedByte());
+        action.setRepairCost(VarInts.readInt(buffer));
+        return action;
+    }
+
+    @Override
+    protected void writeItemStackRequestCraftResultsDeprecatedAction(ByteBuf buffer, ItemStackRequestActionType type, ItemStackRequestCraftResultsDeprecatedAction action) {
+        this.writeArray(buffer, action.getCraftResults(), this::writeItemStackRequestNetworkItemInstanceDescriptor);
+        buffer.writeByte(action.getNumCrafts());
+    }
+
+    @Override
+    protected ItemStackRequestCraftResultsDeprecatedAction readItemStackRequestCraftResultsDeprecatedAction(ByteBuf buffer, ItemStackRequestActionType type) {
+        final ItemStackRequestCraftResultsDeprecatedAction action = new ItemStackRequestCraftResultsDeprecatedAction();
+        this.readArray(buffer, action.getCraftResults(), this::readItemStackRequestNetworkItemInstanceDescriptor);
+        action.setNumCrafts(buffer.readUnsignedByte());
+        return action;
     }
 
     @Override
@@ -668,40 +598,34 @@ public class BedrockCodecHelper_v2168 extends BedrockCodecHelper_v975 {
         String skinId = this.readString(buffer);
         String playFabId = this.readString(buffer);
         String skinResourcePatch = this.readString(buffer);
-        ImageData skinData = this.readImage(buffer, ImageData.SKIN_PERSONA_SIZE);
+        SkinImage skinData = this.readImage(buffer, SkinImage.SKIN_PERSONA_SIZE);
 
-        List<AnimationData> animations = new ObjectArrayList<>();
+        List<AnimatedImageData> animations = new ObjectArrayList<>();
         this.readArray(buffer, animations, (b, h) -> this.readAnimationData(b));
 
-        ImageData capeData = this.readImage(buffer, ImageData.SINGLE_SKIN_SIZE);
+        SkinImage capeData = this.readImage(buffer, SkinImage.SINGLE_SKIN_SIZE);
         String geometryData = this.readStringMaxLen(buffer, this.encodingSettings.maxGeometryDataSize());
         String geometryDataEngineVersion = this.readString(buffer);
         String animationData = this.readString(buffer);
         String capeId = this.readString(buffer);
         String fullSkinId = this.readString(buffer);
 
-        String armSize = buffer.readUnsignedByte() == 1 ? "wide" : "slim";
-        Color color = new Color(buffer.readIntLE(), true);
+        ArmSizeType armSize = ArmSizeType.from(buffer.readUnsignedByte());
+        int skinColor = buffer.readIntLE();
 
-        List<PersonaPieceData> personaPieces = new ObjectArrayList<>();
-        this.readArray(buffer, personaPieces, (buf, h) -> {
-            String pieceId = this.readString(buf);
-            PersonaPieceType pieceType = PersonaPieceType.values()[buf.readIntLE()];
-            UUID packId = this.readUuid(buf);
-            boolean isDefault = buf.readBoolean();
-            String productId = this.readString(buf);
-            return new PersonaPieceData(pieceId, pieceType, packId, isDefault, productId);
-        });
+        List<SerializedPersonaPieceHandle> personaPieces = new ObjectArrayList<>();
+        this.readArray(buffer, personaPieces, (buf, h) -> this.readPersonaPiece(buf));
 
-        List<PersonaPieceTintData> tintColors = new ObjectArrayList<>();
-        this.readArray(buffer, tintColors, (buf, h) -> {
-            PersonaPieceType pieceType = PersonaPieceType.fromName(this.readString(buf));
-            List<Color> colors = new ArrayList<>(4);
-            for (int i = 0; i < 4; i++) {
-                colors.add(new Color(buf.readIntLE(), true));
+        Map<PieceType, TintMapColor> tintColors = new HashMap<>();
+        int tintLength = VarInts.readUnsignedInt(buffer);
+        for (int i = 0; i < tintLength; i++) {
+            PieceType pieceType = PieceType.from(this.readString(buffer));
+            TintMapColor tintMapColor = new TintMapColor();
+            for (int j = 0; j < 4; j++) {
+                tintMapColor.getColors().add(buffer.readIntLE());
             }
-            return new PersonaPieceTintData(pieceType, colors);
-        });
+            tintColors.put(pieceType, tintMapColor);
+        }
 
         boolean premium = buffer.readBoolean();
         boolean persona = buffer.readBoolean();
@@ -709,132 +633,116 @@ public class BedrockCodecHelper_v2168 extends BedrockCodecHelper_v975 {
         boolean primaryUser = buffer.readBoolean();
         boolean overridingPlayerAppearance = buffer.readBoolean();
 
-        boolean trusted = "true".equalsIgnoreCase(this.readString(buffer));
+        TrustedSkinFlag trustedSkinFlag = TrustedSkinFlag.from(this.readString(buffer));
         String profileHash = this.readString(buffer);
 
-        return SerializedSkin.of(skinId, playFabId, skinResourcePatch, skinData, animations, capeData, geometryData, geometryDataEngineVersion,
-                animationData, premium, persona, capeOnClassic, primaryUser, capeId, fullSkinId, armSize, color, personaPieces, tintColors,
-                overridingPlayerAppearance, trusted, profileHash);
+        return SerializedSkin.builder()
+                .ID(skinId)
+                .playFabID(playFabId)
+                .resourcePatch(skinResourcePatch)
+                .imageData(skinData)
+                .animatedImageData(animations)
+                .capeImageData(capeData)
+                .geometryData(geometryData)
+                .geometryDataMinEngineVersion(geometryDataEngineVersion)
+                .animationData(animationData)
+                .capeID(capeId)
+                .fullID(fullSkinId)
+                .armSize(armSize)
+                .skinColor(skinColor)
+                .personaPieces(personaPieces)
+                .pieceTintColors(tintColors)
+                .isPremium(premium)
+                .isPersona(persona)
+                .isPersonaCapeOnClassicSkin(capeOnClassic)
+                .isPrimaryUser(primaryUser)
+                .overridesPlayerAppearance(overridingPlayerAppearance)
+                .trustedSkinFlag(trustedSkinFlag)
+                .profileHash(profileHash)
+                .build();
     }
 
     @Override
     public void writeSkin(ByteBuf buffer, SerializedSkin skin) {
         requireNonNull(skin, "Skin is null");
 
-        this.writeString(buffer, skin.getSkinId());
-        this.writeString(buffer, skin.getPlayFabId());
-        this.writeString(buffer, skin.getSkinResourcePatch());
-        this.writeImage(buffer, skin.getSkinData());
+        this.writeString(buffer, skin.getID());
+        this.writeString(buffer, skin.getPlayFabID());
+        this.writeString(buffer, skin.getResourcePatch());
+        this.writeImage(buffer, skin.getImageData());
 
-        List<AnimationData> animations = skin.getAnimations();
+        List<AnimatedImageData> animations = skin.getAnimatedImageData();
         VarInts.writeUnsignedInt(buffer, animations.size());
-        for (AnimationData animation : animations) {
+        for (AnimatedImageData animation : animations) {
             this.writeAnimationData(buffer, animation);
         }
 
-        this.writeImage(buffer, skin.getCapeData());
+        this.writeImage(buffer, skin.getCapeImageData());
         this.writeString(buffer, skin.getGeometryData());
-        this.writeString(buffer, skin.getGeometryDataEngineVersion());
+        this.writeString(buffer, skin.getGeometryDataMinEngineVersion());
         this.writeString(buffer, skin.getAnimationData());
-        this.writeString(buffer, skin.getCapeId());
-        this.writeString(buffer, skin.getFullSkinId());
+        this.writeString(buffer, skin.getCapeID());
+        this.writeString(buffer, skin.getFullID());
 
-        buffer.writeByte("slim".equalsIgnoreCase(skin.getArmSize()) ? 0 : 1);
-        buffer.writeIntLE(skin.getColor().getRGB());
+        buffer.writeByte(skin.getArmSize().ordinal());
+        buffer.writeIntLE(skin.getSkinColor());
 
-        List<PersonaPieceData> pieces = skin.getPersonaPieces();
+        List<SerializedPersonaPieceHandle> pieces = skin.getPersonaPieces();
         VarInts.writeUnsignedInt(buffer, pieces.size());
-        for (PersonaPieceData piece : pieces) {
-            this.writeString(buffer, piece.getId());
-            buffer.writeIntLE(piece.getPieceType().ordinal());
-            this.writeUuid(buffer, piece.getPackUuid());
-            buffer.writeBoolean(piece.isDefault());
-            this.writeString(buffer, piece.getProductId());
+        for (SerializedPersonaPieceHandle piece : pieces) {
+            this.writePersonaPiece(buffer, piece);
         }
 
-        List<PersonaPieceTintData> tints = skin.getTintColors();
+        Map<PieceType, TintMapColor> tints = skin.getPieceTintColors();
         VarInts.writeUnsignedInt(buffer, tints.size());
-        for (PersonaPieceTintData tint : tints) {
-            this.writeString(buffer, tint.getType());
-            List<Color> colors = tint.getColorsNew();
+        for (Map.Entry<PieceType, TintMapColor> entry : tints.entrySet()) {
+            this.writeString(buffer, entry.getKey().getId());
+            List<Integer> colors = entry.getValue().getColors();
             if (colors.size() != 4) {
-                throw new IllegalArgumentException("Expected 4 colors in PersonaPieceTintData");
+                throw new IllegalArgumentException("Expected 4 colors in TintMapColor");
             }
-            for (Color color : colors) {
-                buffer.writeIntLE(color.getRGB());
+            for (int color : colors) {
+                buffer.writeIntLE(color);
             }
         }
 
         buffer.writeBoolean(skin.isPremium());
         buffer.writeBoolean(skin.isPersona());
-        buffer.writeBoolean(skin.isCapeOnClassic());
+        buffer.writeBoolean(skin.isPersonaCapeOnClassicSkin());
         buffer.writeBoolean(skin.isPrimaryUser());
 
-        buffer.writeBoolean(skin.isOverridingPlayerAppearance());
+        buffer.writeBoolean(skin.isOverridesPlayerAppearance());
 
-        this.writeString(buffer, Boolean.toString(skin.isTrusted()));
+        this.writeString(buffer, skin.getTrustedSkinFlag().getId());
         this.writeString(buffer, skin.getProfileHash());
     }
 
     @Override
-    public AnimationData readAnimationData(ByteBuf buffer) {
-        ImageData image = this.readImage(buffer, ImageData.ANIMATION_SIZE);
-        AnimatedTextureType textureType = TEXTURE_TYPES[VarInts.readUnsignedInt(buffer)];
+    public AnimatedImageData readAnimationData(ByteBuf buffer) {
+        SkinImage image = this.readImage(buffer, SkinImage.ANIMATION_SIZE);
+        PersonaAnimatedTextureType textureType = TEXTURE_TYPES[VarInts.readUnsignedInt(buffer)];
         float frames = buffer.readFloatLE();
-        AnimationExpressionType expressionType = EXPRESSION_TYPES[VarInts.readUnsignedInt(buffer)];
-        return new AnimationData(image, textureType, frames, expressionType);
+        PersonaAnimationExpression expressionType = EXPRESSION_TYPES[VarInts.readUnsignedInt(buffer)];
+        return new AnimatedImageData(image, textureType, frames, expressionType);
     }
 
     @Override
-    public void writeAnimationData(ByteBuf buffer, AnimationData animation) {
-        this.writeImage(buffer, animation.getImage());
-        VarInts.writeUnsignedInt(buffer, animation.getTextureType().ordinal());
+    public void writeAnimationData(ByteBuf buffer, AnimatedImageData animation) {
+        this.writeImage(buffer, animation.getSkinImage());
+        VarInts.writeUnsignedInt(buffer, animation.getAnimatedTextureType().ordinal());
         buffer.writeFloatLE(animation.getFrames());
-        VarInts.writeUnsignedInt(buffer, animation.getExpressionType().ordinal());
+        VarInts.writeUnsignedInt(buffer, animation.getAnimationExpression().ordinal());
     }
 
     @Override
-    public ItemStackRequest readItemStackRequest(ByteBuf buffer) {
-        int requestId = VarInts.readInt(buffer);
-        List<ItemStackRequestAction> actions = new ObjectArrayList<>();
-
-        this.readArray(buffer, actions, byteBuf -> {
-            ItemStackRequestActionType type = this.stackRequestActionTypes.getType(VarInts.readUnsignedInt(byteBuf));
-            return readRequestActionData(byteBuf, type);
-        }, this.getEncodingSettings().maxInventoryActionsOrRequests());
-
-        List<String> filteredStrings = new ObjectArrayList<>();
-        this.readArray(buffer, filteredStrings, this::readString);
-
-        int originVal = buffer.readIntLE();
-        TextProcessingEventOrigin origin = originVal == -1 ? null : this.textProcessingEventOrigins.getType(originVal);
-        return new ItemStackRequest(requestId, actions.toArray(new ItemStackRequestAction[0]), filteredStrings.toArray(new String[0]), origin);
-    }
-
-    @Override
-    public void writeItemStackRequest(ByteBuf buffer, ItemStackRequest request) {
-        VarInts.writeInt(buffer, request.getRequestId());
-
-        this.writeArray(buffer, request.getActions(), (byteBuf, action) -> {
-            VarInts.writeUnsignedInt(byteBuf, this.stackRequestActionTypes.getId(action.getType()));
-            writeRequestActionData(byteBuf, action);
-        });
-
-        this.writeArray(buffer, request.getFilterStrings(), this::writeString);
-
-        TextProcessingEventOrigin origin = request.getTextProcessingEventOrigin();
-        buffer.writeIntLE(origin == null ? -1 : this.textProcessingEventOrigins.getId(origin));
-    }
-
-    @Override
-    public ItemDescriptorWithCount readIngredient(ByteBuf buffer) {
+    public RecipeIngredient readIngredient(ByteBuf buffer) {
         ItemDescriptorType type = DESCRIPTOR_TYPES[VarInts.readUnsignedInt(buffer)];
         ItemDescriptor descriptor = this.readItemDescriptor(buffer, type);
         int count = VarInts.readInt(buffer);
-        return new ItemDescriptorWithCount(descriptor, count);
+        return new RecipeIngredient(descriptor, count);
     }
 
-    protected ItemDescriptorWithCount readIngredient2(ByteBuf buffer) {
+    protected RecipeIngredient readIngredient2(ByteBuf buffer) {
         ItemDescriptorType type = DESCRIPTOR_TYPES[VarInts.readUnsignedInt(buffer)];
 
         int type2 = buffer.readUnsignedByte();
@@ -842,10 +750,10 @@ public class BedrockCodecHelper_v2168 extends BedrockCodecHelper_v975 {
 
         ItemDescriptor descriptor;
         switch (type) {
-            case INVALID:
+            case EMPTY:
                 descriptor = InvalidDescriptor.INSTANCE;
                 break;
-            case DEFAULT:
+            case NAME:
                 String id = this.readString(buffer);
                 int aux = VarInts.readInt(buffer);
                 ItemDefinition definition = this.itemDefinitions.getDefinition(id);
@@ -865,25 +773,25 @@ public class BedrockCodecHelper_v2168 extends BedrockCodecHelper_v975 {
         }
 
         int count = buffer.readUnsignedShortLE();
-        return new ItemDescriptorWithCount(descriptor, count);
+        return new RecipeIngredient(descriptor, count);
     }
 
     @Override
-    public void writeIngredient(ByteBuf buffer, ItemDescriptorWithCount ingredient) {
+    public void writeIngredient(ByteBuf buffer, RecipeIngredient ingredient) {
         VarInts.writeUnsignedInt(buffer, Math.min(ingredient.getDescriptor().getType().ordinal(), 1));
         this.writeItemDescriptor(buffer, ingredient.getDescriptor());
-        VarInts.writeInt(buffer, ingredient.getCount());
+        VarInts.writeInt(buffer, ingredient.getStackSize());
     }
 
-    protected void writeIngredient2(ByteBuf buffer, ItemDescriptorWithCount ingredient) {
+    protected void writeIngredient2(ByteBuf buffer, RecipeIngredient ingredient) {
         VarInts.writeUnsignedInt(buffer, ingredient.getDescriptor().getType().ordinal());
 
         buffer.writeByte(ingredient.getDescriptor().getType().ordinal());
 
         switch (ingredient.getDescriptor().getType()) {
-            case INVALID:
+            case EMPTY:
                 break;
-            case DEFAULT:
+            case NAME:
                 DefaultDescriptor defaultDescriptor = (DefaultDescriptor) ingredient.getDescriptor();
                 this.writeString(buffer, defaultDescriptor.getItemId().getIdentifier());
                 VarInts.writeInt(buffer, defaultDescriptor.getAuxValue());
@@ -901,23 +809,23 @@ public class BedrockCodecHelper_v2168 extends BedrockCodecHelper_v975 {
                 throw new UnsupportedOperationException("ItemDescriptorType");
         }
 
-        buffer.writeShortLE(ingredient.getCount());
+        buffer.writeShortLE(ingredient.getStackSize());
     }
 
     @Override
     protected ItemDescriptor readItemDescriptor(ByteBuf buffer, ItemDescriptorType type) {
         ItemDescriptor descriptor;
-        if (type != ItemDescriptorType.INVALID) {
+        if (type != ItemDescriptorType.EMPTY) {
             String desc = this.readString(buffer);
             type = ItemDescriptorType.fromName(desc);
         }
 
         switch (type) {
-            case INVALID:
+            case EMPTY:
                 int aux_ = VarInts.readInt(buffer);
                 descriptor = InvalidDescriptor.INSTANCE;
                 break;
-            case DEFAULT:
+            case NAME:
                 String id = this.readString(buffer);
                 int aux = VarInts.readInt(buffer);
                 ItemDefinition definition = this.itemDefinitions.getDefinition(id);
@@ -942,15 +850,15 @@ public class BedrockCodecHelper_v2168 extends BedrockCodecHelper_v975 {
 
     @Override
     protected void writeItemDescriptor(ByteBuf buffer, ItemDescriptor descriptor) {
-        if (descriptor.getType() != ItemDescriptorType.INVALID) {
+        if (descriptor.getType() != ItemDescriptorType.EMPTY) {
             this.writeString(buffer, descriptor.getType().getSerializeName());
         }
 
         switch (descriptor.getType()) {
-            case INVALID:
+            case EMPTY:
                 VarInts.writeInt(buffer, 32767);
                 break;
-            case DEFAULT:
+            case NAME:
                 DefaultDescriptor defaultDescriptor = (DefaultDescriptor) descriptor;
                 this.writeString(buffer, defaultDescriptor.getItemId().getIdentifier());
                 VarInts.writeInt(buffer, defaultDescriptor.getAuxValue());
@@ -979,9 +887,9 @@ public class BedrockCodecHelper_v2168 extends BedrockCodecHelper_v975 {
         Vector3i size = this.readBlockPosition(buffer);
         Vector3i offset = this.readBlockPosition(buffer);
         long lastEditedByEntityId = VarInts.readLong(buffer);
-        StructureRotation rotation = StructureRotation.from(buffer.readUnsignedByte());
-        StructureMirror mirror = StructureMirror.from(buffer.readUnsignedByte());
-        StructureAnimationMode animationMode = StructureAnimationMode.from(buffer.readUnsignedByte());
+        Rotation rotation = Rotation.from(buffer.readUnsignedByte());
+        Mirror mirror = Mirror.from(buffer.readUnsignedByte());
+        AnimationMode animationMode = AnimationMode.from(buffer.readUnsignedByte());
         float animationSeconds = buffer.readFloatLE();
         float integrityValue = buffer.readFloatLE();
         int integritySeed = buffer.readIntLE();
@@ -993,29 +901,29 @@ public class BedrockCodecHelper_v2168 extends BedrockCodecHelper_v975 {
     }
 
     @Override
-    protected ItemStackResponseSlot readItemEntry(ByteBuf buffer) {
+    protected ItemStackResponseSlotInfo readItemStackResponseSlotInfo(ByteBuf buffer) {
+        int requestedSlot = buffer.readUnsignedByte();
         int slot = buffer.readUnsignedByte();
-        int hotbarSlot = buffer.readUnsignedByte();
-        int count = buffer.readUnsignedByte();
+        int amount = buffer.readUnsignedByte();
         int stackNetworkId = buffer.readBoolean() && buffer.readBoolean() ? VarInts.readInt(buffer) : 0;
         String customName = this.readString(buffer);
         String filteredCustomName = this.readOptional(buffer, null, this::readString);
         int durabilityCorrection = VarInts.readInt(buffer);
-        return new ItemStackResponseSlot(slot, hotbarSlot, count, stackNetworkId,
-                customName, durabilityCorrection, filteredCustomName);
+        return new ItemStackResponseSlotInfo(requestedSlot, slot, amount, new ItemStackNetId(stackNetworkId),
+                new RedactableString(customName, filteredCustomName), durabilityCorrection);
 
     }
 
     @Override
-    protected void writeItemEntry(ByteBuf buffer, ItemStackResponseSlot itemEntry) {
-        buffer.writeByte(itemEntry.getSlot());
-        buffer.writeByte(itemEntry.getHotbarSlot());
-        buffer.writeByte(itemEntry.getCount());
+    protected void writeItemStackResponseSlotInfo(ByteBuf buffer, ItemStackResponseSlotInfo info) {
+        buffer.writeByte(info.getRequestedSlot());
+        buffer.writeByte(info.getSlot());
+        buffer.writeByte(info.getAmount());
         buffer.writeBoolean(true);
-        this.writeOptional(buffer, id->id > 0, itemEntry.getStackNetworkId(), VarInts::writeInt);
-        this.writeString(buffer, itemEntry.getCustomName());
-        this.writeOptionalNull(buffer, itemEntry.getFilteredCustomName(), this::writeString);
-        VarInts.writeInt(buffer, itemEntry.getDurabilityCorrection());
+        this.writeOptional(buffer, id -> id > 0, info.getItemStackNetId().getID(), VarInts::writeInt);
+        this.writeString(buffer, info.getCustomName().getUnredacted());
+        this.writeOptionalNull(buffer, info.getCustomName().getRedacted(), this::writeString);
+        VarInts.writeInt(buffer, info.getDurabilityCorrection());
     }
 
     private ItemData readItemStackRequestNetworkItemInstanceDescriptor(ByteBuf buffer) {
@@ -1024,12 +932,12 @@ public class BedrockCodecHelper_v2168 extends BedrockCodecHelper_v975 {
         int typeStr = buffer.readUnsignedByte();
 
         ItemDescriptor descriptor = InvalidDescriptor.INSTANCE;
-        if (type != ItemDescriptorType.INVALID) {
+        if (type != ItemDescriptorType.EMPTY) {
             String id = this.readString(buffer);
 
             int aux = VarInts.readInt(buffer);
             ItemDefinition definition = this.itemDefinitions.getDefinition(id);
-            if (definition == null &&log.isDebugEnabled()) {
+            if (definition == null && log.isDebugEnabled()) {
                 log.debug("No ItemDefinition for id {}, did proxy not set itemDefinitions?", id);
             }
             descriptor = new DefaultDescriptor(definition, aux);
@@ -1163,85 +1071,54 @@ public class BedrockCodecHelper_v2168 extends BedrockCodecHelper_v975 {
     }
 
     @Override
-    public void writeGatheringsConfiguration(ByteBuf buf, BedrockCodecHelper h, GatheringsConfigurationJoinInfo info) {
-        h.writeUuid(buf, info.getExperienceId());
-        h.writeString(buf, info.getExperienceName());
-        h.writeOptionalNull(buf, info.getWorldId(), h::writeUuid);
-        h.writeOptionalNull(buf, info.getWorldName(), h::writeString);
-        h.writeString(buf, info.getCreatorId());
-        h.writeOptionalNull(buf, info.getTargetId(), h::writeUuid);
-        h.writeOptionalNull(buf, info.getScenarioId(), h::writeString);
-        h.writeOptionalNull(buf, info.getServerId(), h::writeString);
+    public void writePresenceConfig(ByteBuf buffer, PresenceConfig config) {
+        this.writeOptionalNull(buffer, config.getRichPresenceId(), this::writeString);
     }
 
     @Override
-    public GatheringsConfigurationJoinInfo readGatheringsConfiguration(ByteBuf buf, BedrockCodecHelper h) {
-        return new GatheringsConfigurationJoinInfo(
-                h.readUuid(buf),
-                h.readString(buf),
-                h.readOptional(buf, null, h::readUuid),
-                h.readOptional(buf, null, h::readString),
-                h.readString(buf),
-                h.readOptional(buf, null, h::readUuid),
-                h.readOptional(buf, null, h::readString),
-                h.readOptional(buf, null, h::readString)
-        );
+    public PresenceConfig readPresenceConfig(ByteBuf buffer) {
+        final PresenceConfig config = new PresenceConfig();
+        config.setRichPresenceId(this.readOptional(buffer, null, (buf, helper) -> this.readStringMaxLen(buf, 50)));
+        return config;
     }
 
     @Override
-    public InventorySource readSource(ByteBuf buffer) {
-        InventorySource.Type type = InventorySource.Type.byId(VarInts.readUnsignedInt(buffer));
-
-        int containerId = 0;
-        InventorySource.Flag flag = null;
-        if (buffer.readBoolean() && buffer.readBoolean()) containerId = buffer.readByte();
-        if (buffer.readBoolean() && buffer.readBoolean()) flag = InventorySource.Flag.values()[VarInts.readUnsignedInt(buffer)];
-        switch (type) {
-            case CONTAINER:
-                return InventorySource.fromContainerWindowId(containerId);
-            case GLOBAL:
-                return InventorySource.fromGlobalInventory();
-            case WORLD_INTERACTION:
-                if (flag == null) throw new IllegalStateException();
-                return InventorySource.fromWorldInteraction(flag);
-            case CREATIVE:
-                return InventorySource.fromCreativeInventory();
-            case NON_IMPLEMENTED_TODO:
-                return InventorySource.fromNonImplementedTodo(containerId);
-            case UNTRACKED_INTERACTION_UI:
-                return InventorySource.fromUntrackedInteractionUI(containerId);
-            default:
-                return InventorySource.fromInvalid();
-        }
+    public void writeGatheringsConfig(ByteBuf buffer, GatheringsConfig config) {
+        this.writeUuid(buffer, config.getExperienceId());
+        this.writeString(buffer, config.getExperienceName());
+        this.writeOptionalNull(buffer, config.getWorldId(), this::writeUuid);
+        this.writeOptionalNull(buffer, config.getWorldName(), this::writeString);
+        this.writeString(buffer, config.getCreatorId());
+        this.writeOptionalNull(buffer, config.getTargetId(), this::writeUuid);
+        this.writeOptionalNull(buffer, config.getScenarioId(), this::writeString);
+        this.writeOptionalNull(buffer, config.getServerId(), this::writeString);
     }
 
     @Override
-    public void writeSource(ByteBuf buffer, InventorySource inventorySource) {
-        requireNonNull(inventorySource, "InventorySource was null");
+    public GatheringsConfig readGatheringsConfig(ByteBuf buffer) {
+        final GatheringsConfig config = new GatheringsConfig();
+        config.setExperienceId(this.readUuid(buffer));
+        config.setExperienceName(this.readString(buffer));
+        config.setWorldId(this.readOptional(buffer, null, this::readUuid));
+        config.setWorldName(this.readOptional(buffer, null, this::readString));
+        config.setCreatorId(this.readString(buffer));
+        config.setTargetId(this.readOptional(buffer, null, this::readUuid));
+        config.setScenarioId(this.readOptional(buffer, null, this::readString));
+        config.setServerId(this.readOptional(buffer, null, this::readString));
+        return config;
+    }
 
-        VarInts.writeUnsignedInt(buffer, inventorySource.getType().id());
+    @Override
+    public void writeRedactableString(ByteBuf buffer, RedactableString string) {
+        this.writeString(buffer, string.getUnredacted());
+        this.writeOptionalNull(buffer, string.getRedacted(), this::writeString);
+    }
 
-        buffer.writeBoolean(true);
-        switch (inventorySource.getType()) {
-            case CONTAINER:
-            case NON_IMPLEMENTED_TODO:
-                buffer.writeBoolean(true);
-                buffer.writeByte(inventorySource.getContainerId());
-                break;
-            default:
-                buffer.writeBoolean(false);
-                break;
-        }
-
-        buffer.writeBoolean(true);
-        switch (inventorySource.getType()) {
-            case WORLD_INTERACTION:
-                buffer.writeBoolean(true);
-                VarInts.writeUnsignedInt(buffer, inventorySource.getFlag().ordinal());
-                break;
-            default:
-                buffer.writeBoolean(false);
-                break;
-        }
+    @Override
+    public RedactableString readRedactableString(ByteBuf buffer) {
+        final RedactableString string = new RedactableString();
+        string.setUnredacted(this.readString(buffer));
+        string.setRedacted(this.readOptional(buffer, null, this::readString));
+        return string;
     }
 }

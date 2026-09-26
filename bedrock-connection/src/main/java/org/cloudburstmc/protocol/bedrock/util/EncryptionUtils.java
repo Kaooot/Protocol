@@ -1,10 +1,7 @@
 package org.cloudburstmc.protocol.bedrock.util;
 
 import lombok.experimental.UtilityClass;
-import org.cloudburstmc.protocol.bedrock.data.auth.AuthPayload;
-import org.cloudburstmc.protocol.bedrock.data.auth.AuthType;
-import org.cloudburstmc.protocol.bedrock.data.auth.CertificateChainPayload;
-import org.cloudburstmc.protocol.bedrock.data.auth.TokenPayload;
+import org.cloudburstmc.protocol.bedrock.data.auth.PlayerAuthenticationType;
 import org.jose4j.json.JsonUtil;
 import org.jose4j.json.internal.json_simple.parser.JSONParser;
 import org.jose4j.json.internal.json_simple.parser.ParseException;
@@ -39,7 +36,10 @@ import java.security.interfaces.ECPublicKey;
 import java.security.spec.ECGenParameterSpec;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Base64;
+import java.util.List;
+import java.util.Map;
 
 @UtilityClass
 public class EncryptionUtils {
@@ -223,37 +223,6 @@ public class EncryptionUtils {
         return clientData.getUnverifiedPayloadBytes();
     }
 
-    public static ChainValidationResult validatePayload(AuthPayload payload)
-            throws JoseException, NoSuchAlgorithmException, InvalidKeySpecException, InvalidJwtException {
-        ChainValidationResult result;
-
-        if (payload instanceof CertificateChainPayload) {
-            CertificateChainPayload chainPayload = (CertificateChainPayload) payload;
-            List<String> chain = chainPayload.getChain();
-            if (chain == null || chain.isEmpty()) {
-                throw new IllegalStateException("Certificate chain is empty");
-            }
-            result = validateChain(chain);
-        } else if (payload instanceof TokenPayload) {
-            TokenPayload tokenPayload = (TokenPayload) payload;
-            String token = tokenPayload.getToken();
-            if (token == null || token.isEmpty()) {
-                throw new IllegalStateException("Token is empty");
-            }
-            result = validateToken(payload.getAuthType(), token);
-        } else {
-            throw new IllegalArgumentException("Unsupported AuthPayload type: " + payload.getClass().getName());
-        }
-
-        if (payload.getAuthType() == AuthType.FULL) {
-            if (result.identityClaims().extraData == null || result.identityClaims().extraData.xuid == null || result.identityClaims().extraData.displayName == null) {
-                throw new IllegalStateException("Missing extraData for full auth");
-            }
-        }
-
-        return result;
-    }
-
     public static ChainValidationResult validateChain(List<String> chain)
             throws JoseException, NoSuchAlgorithmException, InvalidKeySpecException {
         switch (chain.size()) {
@@ -298,11 +267,11 @@ public class EncryptionUtils {
         }
     }
 
-    public static ChainValidationResult validateToken(AuthType type, String token) throws InvalidJwtException, JoseException {
-        if (type == AuthType.FULL || type == AuthType.GUEST) {
+    public static ChainValidationResult validateToken(PlayerAuthenticationType type, String token) throws InvalidJwtException, JoseException {
+        if (type == PlayerAuthenticationType.FULL || type == PlayerAuthenticationType.GUEST) {
             JwtContext context = MOJANG_CONSUMER.process(token);
             return new ChainValidationResult(true, context);
-        } else if (type == AuthType.SELF_SIGNED) {
+        } else if (type == PlayerAuthenticationType.SELF_SIGNED) {
             JwtContext context = OFFLINE_CONSUMER.process(token);
             return new ChainValidationResult(false, context);
         }

@@ -9,6 +9,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class SetHealthPacket implements BedrockPacket {
+
     private int health;
 
     @Override
@@ -16,6 +17,7 @@ public class SetHealthPacket implements BedrockPacket {
         return handler.handle(this);
     }
 
+    @Override
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.SET_HEALTH;
     }
@@ -29,4 +31,3 @@ public class SetHealthPacket implements BedrockPacket {
         }
     }
 }
-

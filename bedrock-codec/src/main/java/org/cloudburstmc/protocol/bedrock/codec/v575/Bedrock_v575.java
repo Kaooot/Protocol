@@ -1,7 +1,14 @@
 package org.cloudburstmc.protocol.bedrock.codec.v575;
 
+import org.cloudburstmc.protocol.bedrock.data.world.event.ParticleType;
+
+import org.cloudburstmc.protocol.bedrock.data.world.event.LevelEventType;
+
+import org.cloudburstmc.protocol.bedrock.data.ability.AbilitiesIndex;
+import org.cloudburstmc.protocol.bedrock.data.sound.LevelSoundEvent;
+
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
-import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
+import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelEventSerializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelSoundEvent1Serializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v313.serializer.LevelSoundEvent2Serializer_v313;
@@ -13,10 +20,10 @@ import org.cloudburstmc.protocol.bedrock.codec.v575.serializer.CameraInstruction
 import org.cloudburstmc.protocol.bedrock.codec.v575.serializer.CameraPresetsSerializer_v575;
 import org.cloudburstmc.protocol.bedrock.codec.v575.serializer.PlayerAuthInputSerializer_v575;
 import org.cloudburstmc.protocol.bedrock.codec.v575.serializer.UnlockedRecipesSerializer_v575;
-import org.cloudburstmc.protocol.bedrock.data.*;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandParam;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataTypes;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorFlags;
+import org.cloudburstmc.protocol.bedrock.data.PacketRecipient;
 import org.cloudburstmc.protocol.bedrock.packet.*;
 import org.cloudburstmc.protocol.bedrock.transformer.FlagTransformer;
 import org.cloudburstmc.protocol.bedrock.transformer.TypeMapTransformer;
@@ -24,17 +31,17 @@ import org.cloudburstmc.protocol.common.util.TypeMap;
 
 public class Bedrock_v575 extends Bedrock_v568 {
 
-    protected static final TypeMap<Ability> PLAYER_ABILITIES = Bedrock_v568.PLAYER_ABILITIES
+    protected static final TypeMap<AbilitiesIndex> PLAYER_ABILITIES = Bedrock_v568.PLAYER_ABILITIES
             .toBuilder()
-            .insert(18, Ability.PRIVILEGED_BUILDER)
+            .insert(18, AbilitiesIndex.PRIVILEGED_BUILDER)
             .build();
 
-    protected static final TypeMap<EntityFlag> ENTITY_FLAGS = Bedrock_v568.ENTITY_FLAGS
+    protected static final TypeMap<ActorFlags> ENTITY_FLAGS = Bedrock_v568.ENTITY_FLAGS
             .toBuilder()
-            .insert(110, EntityFlag.SCENTING)
-            .insert(111, EntityFlag.RISING)
-            .insert(112, EntityFlag.FEELING_HAPPY)
-            .insert(113, EntityFlag.SEARCHING)
+            .insert(110, ActorFlags.SCENTING)
+            .insert(111, ActorFlags.RISING)
+            .insert(112, ActorFlags.FEELING_HAPPY)
+            .insert(113, ActorFlags.SEARCHING)
             .build();
 
     protected static final TypeMap<ParticleType> PARTICLE_TYPES = Bedrock_v568.PARTICLE_TYPES
@@ -42,20 +49,20 @@ public class Bedrock_v575 extends Bedrock_v568 {
             .insert(85, ParticleType.BRUSH_DUST)
             .build();
 
-    protected static final EntityDataTypeMap ENTITY_DATA = Bedrock_v568.ENTITY_DATA
+    protected static final ActorDataTypeMap ENTITY_DATA = Bedrock_v568.ENTITY_DATA
             .toBuilder()
-            .update(EntityDataTypes.FLAGS, new FlagTransformer(ENTITY_FLAGS, 0))
-            .update(EntityDataTypes.FLAGS_2, new FlagTransformer(ENTITY_FLAGS, 1))
-            .update(EntityDataTypes.AREA_EFFECT_CLOUD_PARTICLE, new TypeMapTransformer<>(PARTICLE_TYPES))
+            .update(ActorDataTypes.FLAGS, new FlagTransformer(ENTITY_FLAGS, 0))
+            .update(ActorDataTypes.FLAGS_2, new FlagTransformer(ENTITY_FLAGS, 1))
+            .update(ActorDataTypes.AREA_EFFECT_CLOUD_PARTICLE, new TypeMapTransformer<>(PARTICLE_TYPES))
             .build();
 
-    protected static final TypeMap<SoundEvent> SOUND_EVENTS = Bedrock_v568.SOUND_EVENTS
+    protected static final TypeMap<LevelSoundEvent> SOUND_EVENTS = Bedrock_v568.SOUND_EVENTS
             .toBuilder()
-            .replace(462, SoundEvent.BRUSH)
-            .insert(463, SoundEvent.BRUSH_COMPLETED)
-            .insert(464, SoundEvent.SHATTER_DECORATED_POT)
-            .insert(465, SoundEvent.BREAK_DECORATED_POD)
-            .insert(466, SoundEvent.UNDEFINED)
+            .replace(462, LevelSoundEvent.BRUSH)
+            .insert(463, LevelSoundEvent.BRUSH_COMPLETED)
+            .insert(464, LevelSoundEvent.SHATTER_DECORATED_POT)
+            .insert(465, LevelSoundEvent.BREAK_DECORATED_POD)
+            .insert(466, LevelSoundEvent.UNDEFINED)
             .build();
 
     protected static final TypeMap<LevelEventType> LEVEL_EVENTS = Bedrock_v568.LEVEL_EVENTS.toBuilder()
@@ -67,42 +74,42 @@ public class Bedrock_v575 extends Bedrock_v568 {
             .insert(1, CommandParam.INT)
             // .insert(2, CommandParam.FLOAT)
             .insert(3, CommandParam.FLOAT) // FLOAT is actually VALUE
-            .insert(4, CommandParam.VALUE) // and VALUE is actually R_VALUE
+            .insert(4, CommandParam.VAL) // and VALUE is actually R_VALUE
             .insert(5, CommandParam.WILDCARD_INT)
             .insert(6, CommandParam.OPERATOR)
             .insert(7, CommandParam.COMPARE_OPERATOR)
-            .insert(8, CommandParam.TARGET)
-            .insert(9, CommandParam.STANDALONE_TARGET)
-            .insert(10, CommandParam.WILDCARD_TARGET)
-            .insert(11, CommandParam.NON_ID_TARGET)
-            .insert(12, CommandParam.SCORE_ARG)
-            .insert(13, CommandParam.SCORE_ARGS)
+            .insert(8, CommandParam.SELECTION)
+            .insert(9, CommandParam.STANDALONE_SELECTION)
+            .insert(10, CommandParam.WILDCARD_SELECTION)
+            .insert(11, CommandParam.NON_ID_SELECTOR)
+            .insert(12, CommandParam.SCORES_ARG)
+            .insert(13, CommandParam.SCORES_ARGS)
             .insert(14, CommandParam.SCORE_SELECT_PARAM)
             .insert(15, CommandParam.SCORE_SELECTOR)
             .insert(16, CommandParam.TAG_SELECTOR)
             .insert(17, CommandParam.FILE_PATH)
             .insert(18, CommandParam.FILE_PATH_VAL)
             .insert(19, CommandParam.FILE_PATH_CONT)
-            .insert(20, CommandParam.INT_RANGE_VAL)
-            .insert(21, CommandParam.INT_RANGE_POST_VAL)
-            .insert(22, CommandParam.INT_RANGE)
-            .insert(23, CommandParam.INT_RANGE_FULL)
+            .insert(20, CommandParam.INTEGER_RANGE_VAL)
+            .insert(21, CommandParam.INTEGER_RANGE_POST_VAL)
+            .insert(22, CommandParam.INTEGER_RANGE)
+            .insert(23, CommandParam.FULL_INTEGER_RANGE)
             .insert(24, CommandParam.SEL_ARGS)
             .insert(25, CommandParam.ARGS)
             .insert(26, CommandParam.ARG)
             .insert(27, CommandParam.MARG)
             .insert(28, CommandParam.MVALUE)
-            .insert(29, CommandParam.NAME)
-            .insert(30, CommandParam.TYPE)
-            .insert(31, CommandParam.FAMILY)
-            .insert(32, CommandParam.TAG)
+            .insert(29, CommandParam.NAME_ARG)
+            .insert(30, CommandParam.TYPE_ARG)
+            .insert(31, CommandParam.FAMILY_ARG)
+            .insert(32, CommandParam.TAG_ARG)
             .insert(33, CommandParam.HAS_ITEM_ELEMENT)
             .insert(34, CommandParam.HAS_ITEM_ELEMENTS)
-            .insert(35, CommandParam.HAS_ITEM)
-            .insert(36, CommandParam.HAS_ITEMS)
+            .insert(35, CommandParam.HAS_ITEM_ARG)
+            .insert(36, CommandParam.HAS_ITEM_ARGS)
             .insert(37, CommandParam.HAS_ITEM_SELECTOR)
-            .insert(38, CommandParam.EQUIPMENT_SLOTS)
-            .insert(39, CommandParam.STRING)
+            .insert(38, CommandParam.EQUIPMENT_SLOT_ENUM)
+            .insert(39, CommandParam.ID)
             .insert(40, CommandParam.ID_CONT)
             .insert(41, CommandParam.COORD_X_INT)
             .insert(42, CommandParam.COORD_Y_INT)
@@ -110,17 +117,17 @@ public class Bedrock_v575 extends Bedrock_v568 {
             .insert(44, CommandParam.COORD_X_FLOAT)
             .insert(45, CommandParam.COORD_Y_FLOAT)
             .insert(46, CommandParam.COORD_Z_FLOAT)
-            .insert(47, CommandParam.BLOCK_POSITION)
-            .insert(48, CommandParam.POSITION)
-            .insert(49, CommandParam.MESSAGE_XP)
+            .insert(47, CommandParam.POSITION)
+            .insert(48, CommandParam.POSITION_FLOAT)
+            .insert(49, CommandParam.MESSAGE_EXP)
             .insert(50, CommandParam.MESSAGE)
             .insert(51, CommandParam.MESSAGE_ROOT)
             .insert(52, CommandParam.POST_SELECTOR)
-            .insert(53, CommandParam.TEXT)
-            .insert(54, CommandParam.TEXT_CONT)
+            .insert(53, CommandParam.RAW_TEXT)
+            .insert(54, CommandParam.RAW_TEXT_CONT)
             .insert(55, CommandParam.JSON_VALUE)
             .insert(56, CommandParam.JSON_FIELD)
-            .insert(57, CommandParam.JSON)
+            .insert(57, CommandParam.JSON_OBJECT)
             .insert(58, CommandParam.JSON_OBJECT_FIELDS)
             .insert(59, CommandParam.JSON_OBJECT_CONT)
             .insert(60, CommandParam.JSON_ARRAY)
@@ -130,8 +137,8 @@ public class Bedrock_v575 extends Bedrock_v568 {
             .insert(64, CommandParam.BLOCK_STATE_KEY)
             .insert(65, CommandParam.BLOCK_STATE_VALUE)
             .insert(66, CommandParam.BLOCK_STATE_VALUES)
-            .insert(67, CommandParam.BLOCK_STATES)
-            .insert(68, CommandParam.BLOCK_STATES_CONT)
+            .insert(67, CommandParam.BLOCK_STATE_ARRAY)
+            .insert(68, CommandParam.BLOCK_STATE_ARRAY_CONT)
             .insert(69, CommandParam.COMMAND)
             .insert(70, CommandParam.SLASH_COMMAND)
             .build();

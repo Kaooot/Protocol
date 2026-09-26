@@ -9,31 +9,18 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class BookEditPacket implements BedrockPacket {
-    private Action action;
-    private int inventorySlot;
-    private int pageNumber;
-    private int secondaryPageNumber;
-    private CharSequence text;
-    private String photoName;
-    private CharSequence title;
-    private CharSequence author;
-    private String xuid;
+
+    private int bookSlot;
+    private Object operation;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
+    @Override
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.BOOK_EDIT;
-    }
-
-    public enum Action {
-        REPLACE_PAGE,
-        ADD_PAGE,
-        DELETE_PAGE,
-        SWAP_PAGES,
-        SIGN_BOOK
     }
 
     @Override
@@ -44,29 +31,4 @@ public class BookEditPacket implements BedrockPacket {
             throw new AssertionError(e);
         }
     }
-
-    public String getText() {
-        return getText(String.class);
-    }
-
-    public <T extends CharSequence> T getText(Class<T> type) {
-        return type.cast(text);
-    }
-
-    public String getTitle() {
-        return getTitle(String.class);
-    }
-
-    public <T extends CharSequence> T getTitle(Class<T> type) {
-        return type.cast(title);
-    }
-
-    public String getAuthor() {
-        return getAuthor(String.class);
-    }
-
-    public <T extends CharSequence> T getAuthor(Class<T> type) {
-        return type.cast(author);
-    }
 }
-

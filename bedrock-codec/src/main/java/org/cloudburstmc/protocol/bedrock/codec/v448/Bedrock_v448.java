@@ -3,7 +3,7 @@ package org.cloudburstmc.protocol.bedrock.codec.v448;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
-import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
+import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelEventSerializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelSoundEvent1Serializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v313.serializer.LevelSoundEvent2Serializer_v313;
@@ -11,12 +11,12 @@ import org.cloudburstmc.protocol.bedrock.codec.v332.serializer.LevelSoundEventSe
 import org.cloudburstmc.protocol.bedrock.codec.v361.serializer.LevelEventGenericSerializer_v361;
 import org.cloudburstmc.protocol.bedrock.codec.v440.Bedrock_v440;
 import org.cloudburstmc.protocol.bedrock.codec.v448.serializer.*;
-import org.cloudburstmc.protocol.bedrock.data.LevelEventType;
+import org.cloudburstmc.protocol.bedrock.data.world.event.LevelEventType;
 import org.cloudburstmc.protocol.bedrock.data.PacketRecipient;
-import org.cloudburstmc.protocol.bedrock.data.ParticleType;
-import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
+import org.cloudburstmc.protocol.bedrock.data.world.event.ParticleType;
+import org.cloudburstmc.protocol.bedrock.data.sound.LevelSoundEvent;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataTypes;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorFlags;
 import org.cloudburstmc.protocol.bedrock.packet.*;
 import org.cloudburstmc.protocol.bedrock.transformer.FlagTransformer;
 import org.cloudburstmc.protocol.bedrock.transformer.TypeMapTransformer;
@@ -25,9 +25,9 @@ import org.cloudburstmc.protocol.common.util.TypeMap;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Bedrock_v448 extends Bedrock_v440 {
 
-    protected static final TypeMap<EntityFlag> ENTITY_FLAGS = Bedrock_v440.ENTITY_FLAGS.toBuilder()
-            .insert(98, EntityFlag.IN_ASCENDABLE_BLOCK)
-            .insert(99, EntityFlag.OVER_DESCENDABLE_BLOCK)
+    protected static final TypeMap<ActorFlags> ENTITY_FLAGS = Bedrock_v440.ENTITY_FLAGS.toBuilder()
+            .insert(98, ActorFlags.IN_ASCENDABLE_BLOCK)
+            .insert(99, ActorFlags.OVER_DESCENDABLE_BLOCK)
             .build();
 
     protected static final TypeMap<ParticleType> PARTICLE_TYPES = Bedrock_v440.PARTICLE_TYPES.toBuilder()
@@ -35,21 +35,21 @@ public class Bedrock_v448 extends Bedrock_v440 {
             .insert(9, ParticleType.CANDLE_FLAME)
             .build();
 
-    protected static final EntityDataTypeMap ENTITY_DATA = Bedrock_v440.ENTITY_DATA.toBuilder()
-            .update(EntityDataTypes.FLAGS, new FlagTransformer(ENTITY_FLAGS, 0))
-            .update(EntityDataTypes.FLAGS_2, new FlagTransformer(ENTITY_FLAGS, 1))
-            .update(EntityDataTypes.AREA_EFFECT_CLOUD_PARTICLE, new TypeMapTransformer<>(PARTICLE_TYPES))
+    protected static final ActorDataTypeMap ENTITY_DATA = Bedrock_v440.ENTITY_DATA.toBuilder()
+            .update(ActorDataTypes.FLAGS, new FlagTransformer(ENTITY_FLAGS, 0))
+            .update(ActorDataTypes.FLAGS_2, new FlagTransformer(ENTITY_FLAGS, 1))
+            .update(ActorDataTypes.AREA_EFFECT_CLOUD_PARTICLE, new TypeMapTransformer<>(PARTICLE_TYPES))
             .build();
 
     protected static final TypeMap<LevelEventType> LEVEL_EVENTS = Bedrock_v440.LEVEL_EVENTS.toBuilder()
             .insert(LEVEL_EVENT_PARTICLE_TYPE, PARTICLE_TYPES)
             .build();
 
-    protected static final TypeMap<SoundEvent> SOUND_EVENTS = Bedrock_v440.SOUND_EVENTS.toBuilder()
-            .replace(360, SoundEvent.CAKE_ADD_CANDLE)
-            .insert(361, SoundEvent.EXTINGUISH_CANDLE)
-            .insert(362, SoundEvent.AMBIENT_CANDLE)
-            .insert(363, SoundEvent.UNDEFINED)
+    protected static final TypeMap<LevelSoundEvent> SOUND_EVENTS = Bedrock_v440.SOUND_EVENTS.toBuilder()
+            .replace(360, LevelSoundEvent.CAKE_ADD_CANDLE)
+            .insert(361, LevelSoundEvent.EXTINGUISH_CANDLE)
+            .insert(362, LevelSoundEvent.AMBIENT_CANDLE)
+            .insert(363, LevelSoundEvent.UNDEFINED)
             .build();
 
     public static final BedrockCodec CODEC = Bedrock_v440.CODEC.toBuilder()

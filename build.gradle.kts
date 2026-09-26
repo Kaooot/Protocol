@@ -29,6 +29,7 @@ subprojects {
         compileJava {
             options.encoding = Charsets.UTF_8.name();
             options.compilerArgs.add("-parameters")
+            options.compilerArgs.addAll(listOf("-Xmaxerrs", "99000", "-nowarn"))
         }
         test {
             useJUnitPlatform()

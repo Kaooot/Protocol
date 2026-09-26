@@ -1,10 +1,14 @@
 package org.cloudburstmc.protocol.bedrock.data.biome;
 
-import lombok.Value;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Value
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class BiomeWeightedTemperatureData {
 
-    BiomeTemperatureCategory temperature;
-    long weight;
+    private BiomeTemperatureCategory temperature;
+    private int weight;
 }

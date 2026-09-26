@@ -1,28 +1,23 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponse;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponseInfo;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-import java.util.ArrayList;
 import java.util.List;
 
-/**
- * ItemStackResponse is sent by the server in response to an ItemStackRequest packet from the client. This
- * packet is used to either approve or reject ItemStackRequests from the client. If a request is approved, the
- * client will simply continue as normal. If rejected, the client will undo the actions so that the inventory
- * should be in sync with the server again.
- */
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class ItemStackResponsePacket implements BedrockPacket {
-    private final List<ItemStackResponse> entries = new ArrayList<>();
+
+    private final List<ItemStackResponseInfo> responses = new ObjectArrayList<>();
 
     @Override
-    public PacketSignal handle(BedrockPacketHandler handler) {
+    public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
@@ -40,4 +35,3 @@ public class ItemStackResponsePacket implements BedrockPacket {
         }
     }
 }
-

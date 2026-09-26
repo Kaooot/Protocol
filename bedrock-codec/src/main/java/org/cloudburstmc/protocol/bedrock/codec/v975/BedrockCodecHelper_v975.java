@@ -6,15 +6,15 @@ import io.netty.buffer.ByteBufUtil;
 import org.cloudburstmc.nbt.NBTInputStream;
 import org.cloudburstmc.nbt.NBTOutputStream;
 import org.cloudburstmc.nbt.NbtMap;
-import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
+import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v944.BedrockCodecHelper_v944;
-import org.cloudburstmc.protocol.bedrock.data.Ability;
-import org.cloudburstmc.protocol.bedrock.data.definitions.BlockDefinition;
+import org.cloudburstmc.protocol.bedrock.data.ability.AbilitiesIndex;
 import org.cloudburstmc.protocol.bedrock.data.definitions.ItemDefinition;
-import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerSlotType;
+import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerEnumName;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
-import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.TextProcessingEventOrigin;
-import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestActionType;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequestActionType;
+import org.cloudburstmc.protocol.bedrock.data.sound.ServerSoundHandle;
+import org.cloudburstmc.protocol.bedrock.data.text.TextProcessingEventOrigin;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 import org.cloudburstmc.protocol.common.util.VarInts;
 import org.cloudburstmc.protocol.common.util.stream.LittleEndianByteBufInputStream;
@@ -27,9 +27,9 @@ import static org.cloudburstmc.protocol.common.util.Preconditions.checkArgument;
 
 public class BedrockCodecHelper_v975 extends BedrockCodecHelper_v944 {
 
-    public BedrockCodecHelper_v975(EntityDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes, TypeMap<ItemStackRequestActionType> stackRequestActionTypes,
-                                   TypeMap<ContainerSlotType> containerSlotTypes, TypeMap<Ability> abilities, TypeMap<TextProcessingEventOrigin> textProcessingEventOrigins) {
-        super(entityData, gameRulesTypes, stackRequestActionTypes, containerSlotTypes, abilities, textProcessingEventOrigins);
+    public BedrockCodecHelper_v975(ActorDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes, TypeMap<ItemStackRequestActionType> stackRequestActionTypes,
+                                   TypeMap<ContainerEnumName> containerEnumNames, TypeMap<AbilitiesIndex> abilities, TypeMap<TextProcessingEventOrigin> textProcessingEventOrigins) {
+        super(entityData, gameRulesTypes, stackRequestActionTypes, containerEnumNames, abilities, textProcessingEventOrigins);
     }
 
     @Override
@@ -181,5 +181,17 @@ public class BedrockCodecHelper_v975 extends BedrockCodecHelper_v944 {
                 userDataBuf.release();
             }
         }
+    }
+
+    @Override
+    public void writeServerSoundHandle(ByteBuf buffer, ServerSoundHandle handle) {
+        buffer.writeLongLE(handle.getServerSoundHandle());
+    }
+
+    @Override
+    public ServerSoundHandle readServerSoundHandle(ByteBuf buffer) {
+        final ServerSoundHandle serverSoundHandle = new ServerSoundHandle();
+        serverSoundHandle.setServerSoundHandle(buffer.readLongLE());
+        return serverSoundHandle;
     }
 }

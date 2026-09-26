@@ -5,8 +5,8 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
-import org.cloudburstmc.protocol.bedrock.data.HudElement;
-import org.cloudburstmc.protocol.bedrock.data.HudVisibility;
+import org.cloudburstmc.protocol.bedrock.data.player.HudElement;
+import org.cloudburstmc.protocol.bedrock.data.player.HudVisibility;
 import org.cloudburstmc.protocol.bedrock.packet.SetHudPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -20,13 +20,13 @@ public class SetHudSerializer_v649 implements BedrockPacketSerializer<SetHudPack
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, SetHudPacket packet) {
-        helper.writeArray(buffer, packet.getElements(), (buf, element) -> VarInts.writeUnsignedInt(buf, element.ordinal()));
-        buffer.writeByte(packet.getVisibility().ordinal());
+        helper.writeArray(buffer, packet.getHudElement(), (buf, element) -> VarInts.writeUnsignedInt(buf, element.ordinal()));
+        buffer.writeByte(packet.getHudVisible().ordinal());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, SetHudPacket packet) {
-        helper.readArray(buffer, packet.getElements(), buf -> VALUES[VarInts.readUnsignedInt(buf)]);
-        packet.setVisibility(VISIBILITIES[buffer.readUnsignedByte()]);
+        helper.readArray(buffer, packet.getHudElement(), buf -> VALUES[VarInts.readUnsignedInt(buf)]);
+        packet.setHudVisible(VISIBILITIES[buffer.readUnsignedByte()]);
     }
 }

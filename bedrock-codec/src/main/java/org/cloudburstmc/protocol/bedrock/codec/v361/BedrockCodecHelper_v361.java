@@ -3,14 +3,14 @@ package org.cloudburstmc.protocol.bedrock.codec.v361;
 import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.math.vector.Vector3i;
-import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
+import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v340.BedrockCodecHelper_v340;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataFormat;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataMap;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataType;
-import org.cloudburstmc.protocol.bedrock.data.structure.StructureAnimationMode;
-import org.cloudburstmc.protocol.bedrock.data.structure.StructureMirror;
-import org.cloudburstmc.protocol.bedrock.data.structure.StructureRotation;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataFormat;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataMap;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataType;
+import org.cloudburstmc.protocol.bedrock.data.structure.AnimationMode;
+import org.cloudburstmc.protocol.bedrock.data.structure.Mirror;
+import org.cloudburstmc.protocol.bedrock.data.structure.Rotation;
 import org.cloudburstmc.protocol.bedrock.data.structure.StructureSettings;
 import org.cloudburstmc.protocol.bedrock.transformer.EntityDataTransformer;
 import org.cloudburstmc.protocol.common.util.TypeMap;
@@ -23,13 +23,13 @@ import static org.cloudburstmc.protocol.common.util.Preconditions.checkNotNull;
 
 public class BedrockCodecHelper_v361 extends BedrockCodecHelper_v340 {
 
-    public BedrockCodecHelper_v361(EntityDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes) {
+    public BedrockCodecHelper_v361(ActorDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes) {
         super(entityData, gameRulesTypes);
     }
 
     @Override
-    public void readEntityData(ByteBuf buffer, EntityDataMap entityDataMap) {
-        checkNotNull(entityDataMap, "entityDataMap");
+    public void readEntityData(ByteBuf buffer, ActorDataMap actorDataMap) {
+        checkNotNull(actorDataMap, "entityDataMap");
 
         int length = VarInts.readUnsignedInt(buffer);
         checkArgument(this.encodingSettings.maxListSize() <= 0 || length <= this.encodingSettings.maxListSize(), "Entity data size is too big: %s", length);
@@ -37,7 +37,7 @@ public class BedrockCodecHelper_v361 extends BedrockCodecHelper_v340 {
         for (int i = 0; i < length; i++) {
             int id = VarInts.readUnsignedInt(buffer);
             int formatId = VarInts.readUnsignedInt(buffer);
-            EntityDataFormat format = EntityDataFormat.values()[formatId];
+            ActorDataFormat format = ActorDataFormat.values()[formatId];
 
             Object value;
             switch (format) {
@@ -72,14 +72,14 @@ public class BedrockCodecHelper_v361 extends BedrockCodecHelper_v340 {
                     throw new IllegalArgumentException("Unknown entity data type received");
             }
 
-            EntityDataTypeMap.Definition<?>[] definitions = this.entityData.fromId(id, format);
+            ActorDataTypeMap.Definition<?>[] definitions = this.entityData.fromId(id, format);
             if (definitions != null) {
-                for (EntityDataTypeMap.Definition<?> definition : definitions) {
+                for (ActorDataTypeMap.Definition<?> definition : definitions) {
                     //noinspection unchecked
                     EntityDataTransformer<Object, ?> transformer = (EntityDataTransformer<Object, ?>) definition.getTransformer();
-                    Object transformedValue = transformer.deserialize(this, entityDataMap, value);
+                    Object transformedValue = transformer.deserialize(this, actorDataMap, value);
                     if (transformedValue != null) {
-                        entityDataMap.put(definition.getType(), transformedValue);
+                        actorDataMap.put(definition.getType(), transformedValue);
                     }
                 }
             } else {
@@ -90,18 +90,18 @@ public class BedrockCodecHelper_v361 extends BedrockCodecHelper_v340 {
 
     @SuppressWarnings("unchecked")
     @Override
-    public void writeEntityData(ByteBuf buffer, EntityDataMap entityDataMap) {
-        checkNotNull(entityDataMap, "entityDataMap");
+    public void writeEntityData(ByteBuf buffer, ActorDataMap actorDataMap) {
+        checkNotNull(actorDataMap, "entityDataMap");
 
         // Collect serialized entries first
-        List<Map.Entry<EntityDataTypeMap.Definition<?>, Object>> serializedEntries = new LinkedList<>();
+        List<Map.Entry<ActorDataTypeMap.Definition<?>, Object>> serializedEntries = new LinkedList<>();
 
-        for (Map.Entry<EntityDataType<?>, Object> entry : entityDataMap.entrySet()) {
-            EntityDataTypeMap.Definition<?> definition = this.entityData.fromType(entry.getKey());
+        for (Map.Entry<ActorDataType<?>, Object> entry : actorDataMap.entrySet()) {
+            ActorDataTypeMap.Definition<?> definition = this.entityData.fromType(entry.getKey());
 
             try {
                 Object value = ((EntityDataTransformer<?, Object>) definition.getTransformer())
-                        .serialize(this, entityDataMap, entry.getValue());
+                        .serialize(this, actorDataMap, entry.getValue());
 
                 // Skip if transformer returns null (indicating this entry shouldn't be serialized)
                 if (value == null) {
@@ -116,8 +116,8 @@ public class BedrockCodecHelper_v361 extends BedrockCodecHelper_v340 {
 
         VarInts.writeUnsignedInt(buffer, serializedEntries.size());
 
-        for (Map.Entry<EntityDataTypeMap.Definition<?>, Object> entry : serializedEntries) {
-            EntityDataTypeMap.Definition<?> definition = entry.getKey();
+        for (Map.Entry<ActorDataTypeMap.Definition<?>, Object> entry : serializedEntries) {
+            ActorDataTypeMap.Definition<?> definition = entry.getKey();
             Object value = entry.getValue();
             VarInts.writeUnsignedInt(buffer, definition.getId());
             VarInts.writeUnsignedInt(buffer, definition.getFormat().ordinal());
@@ -164,24 +164,24 @@ public class BedrockCodecHelper_v361 extends BedrockCodecHelper_v340 {
         Vector3i size = this.readBlockPosition(buffer);
         Vector3i offset = this.readBlockPosition(buffer);
         long lastEditedByEntityId = VarInts.readLong(buffer);
-        StructureRotation rotation = StructureRotation.from(buffer.readByte());
-        StructureMirror mirror = StructureMirror.from(buffer.readByte());
+        Rotation rotation = Rotation.from(buffer.readByte());
+        Mirror mirror = Mirror.from(buffer.readByte());
         float integrityValue = buffer.readFloatLE();
         int integritySeed = buffer.readIntLE();
 
         return new StructureSettings(paletteName, ignoringEntities, ignoringBlocks, true, size, offset, lastEditedByEntityId,
-                rotation, mirror, StructureAnimationMode.NONE, 0f, integrityValue, integritySeed,
+                rotation, mirror, AnimationMode.NONE, 0f, integrityValue, integritySeed,
                 Vector3f.ZERO);
     }
 
     @Override
     public void writeStructureSettings(ByteBuf buffer, StructureSettings settings) {
-        this.writeString(buffer, settings.getPaletteName());
-        buffer.writeBoolean(settings.isIgnoringEntities());
-        buffer.writeBoolean(settings.isIgnoringBlocks());
-        this.writeBlockPosition(buffer, settings.getSize());
-        this.writeBlockPosition(buffer, settings.getOffset());
-        VarInts.writeLong(buffer, settings.getLastEditedByEntityId());
+        this.writeString(buffer, settings.getStructurePaletteName());
+        buffer.writeBoolean(settings.isShouldIgnoreEntities());
+        buffer.writeBoolean(settings.isShouldIgnoreBlocks());
+        this.writeBlockPosition(buffer, settings.getStructureSize());
+        this.writeBlockPosition(buffer, settings.getStructureOffset());
+        VarInts.writeLong(buffer, settings.getLastEditPlayer());
         buffer.writeByte(settings.getRotation().ordinal());
         buffer.writeByte(settings.getMirror().ordinal());
         buffer.writeFloatLE(settings.getIntegrityValue());

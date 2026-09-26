@@ -6,26 +6,22 @@ import lombok.ToString;
 import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-import static org.cloudburstmc.protocol.bedrock.packet.BedrockPacketType.*;
-
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class UpdateClientInputLocksPacket implements BedrockPacket {
-    private int lockComponentData;
-    /**
-     * @deprecated since v944
-     */
-    private Vector3f serverPosition;
+
+    private int inputLockComponentdata;
+    private Vector3f serverPos;
 
     @Override
-    public PacketSignal handle(BedrockPacketHandler handler) {
+    public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
     @Override
     public BedrockPacketType getPacketType() {
-        return UPDATE_CLIENT_INPUT_LOCKS;
+        return BedrockPacketType.UPDATE_CLIENT_INPUT_LOCKS;
     }
 
     @Override
@@ -37,4 +33,3 @@ public class UpdateClientInputLocksPacket implements BedrockPacket {
         }
     }
 }
-

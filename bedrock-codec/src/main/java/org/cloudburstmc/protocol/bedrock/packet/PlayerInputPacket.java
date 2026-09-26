@@ -10,9 +10,11 @@ import org.cloudburstmc.protocol.common.PacketSignal;
  * @deprecated Removed as of v800 (1.21.80). Server authoritative input is handled by {@link PlayerAuthInputPacket}
  */
 @Data
+@Deprecated
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class PlayerInputPacket implements BedrockPacket {
+
     private Vector2f inputMotion;
     private boolean jumping;
     private boolean sneaking;
@@ -35,4 +37,3 @@ public class PlayerInputPacket implements BedrockPacket {
         }
     }
 }
-

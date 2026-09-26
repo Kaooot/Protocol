@@ -17,7 +17,7 @@ public class ServerboundPackSettingChangePacket implements BedrockPacket {
     private Object packSettingValue;
 
     @Override
-    public PacketSignal handle(BedrockPacketHandler handler) {
+    public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
@@ -33,5 +33,15 @@ public class ServerboundPackSettingChangePacket implements BedrockPacket {
         } catch (CloneNotSupportedException e) {
             throw new AssertionError(e);
         }
+    }
+
+    public enum Type {
+        NUMBER,
+        BOOL,
+        STRING,
+        /**
+         * @since v2192
+         */
+        ARRAY
     }
 }

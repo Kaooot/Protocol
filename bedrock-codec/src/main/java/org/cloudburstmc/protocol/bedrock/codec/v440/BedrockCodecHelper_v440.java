@@ -3,14 +3,14 @@ package org.cloudburstmc.protocol.bedrock.codec.v440;
 import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.math.vector.Vector3i;
-import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
+import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v431.BedrockCodecHelper_v431;
-import org.cloudburstmc.protocol.bedrock.data.GameRuleData;
-import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerSlotType;
-import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestActionType;
-import org.cloudburstmc.protocol.bedrock.data.structure.StructureAnimationMode;
-import org.cloudburstmc.protocol.bedrock.data.structure.StructureMirror;
-import org.cloudburstmc.protocol.bedrock.data.structure.StructureRotation;
+import org.cloudburstmc.protocol.bedrock.data.world.GameRule;
+import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerEnumName;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequestActionType;
+import org.cloudburstmc.protocol.bedrock.data.structure.AnimationMode;
+import org.cloudburstmc.protocol.bedrock.data.structure.Mirror;
+import org.cloudburstmc.protocol.bedrock.data.structure.Rotation;
 import org.cloudburstmc.protocol.bedrock.data.structure.StructureSettings;
 import org.cloudburstmc.protocol.common.util.Preconditions;
 import org.cloudburstmc.protocol.common.util.TypeMap;
@@ -18,21 +18,21 @@ import org.cloudburstmc.protocol.common.util.VarInts;
 
 public class BedrockCodecHelper_v440 extends BedrockCodecHelper_v431 {
 
-    public BedrockCodecHelper_v440(EntityDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes, TypeMap<ItemStackRequestActionType> stackRequestActionTypes,
-                                   TypeMap<ContainerSlotType> containerSlotTypes) {
-        super(entityData, gameRulesTypes, stackRequestActionTypes, containerSlotTypes);
+    public BedrockCodecHelper_v440(ActorDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes, TypeMap<ItemStackRequestActionType> stackRequestActionTypes,
+                                   TypeMap<ContainerEnumName> containerEnumNames) {
+        super(entityData, gameRulesTypes, stackRequestActionTypes, containerEnumNames);
     }
 
     @Override
-    public void writeGameRule(ByteBuf buffer, GameRuleData<?> gameRule) {
+    public void writeGameRule(ByteBuf buffer, GameRule gameRule) {
         Preconditions.checkNotNull(buffer, "buffer");
         Preconditions.checkNotNull(gameRule, "gameRule");
 
-        Object value = gameRule.getValue();
+        Object value = gameRule.getRuleValue();
         int id = this.gameRuleType.getId(value.getClass());
 
-        writeString(buffer, gameRule.getName());
-        buffer.writeBoolean(gameRule.isEditable());
+        writeString(buffer, gameRule.getRuleName());
+        buffer.writeBoolean(gameRule.isRuleCanBeModified());
         VarInts.writeUnsignedInt(buffer, id);
         switch (id) {
             case 1:
@@ -48,7 +48,7 @@ public class BedrockCodecHelper_v440 extends BedrockCodecHelper_v431 {
     }
 
     @Override
-    public GameRuleData<?> readGameRule(ByteBuf buffer) {
+    public GameRule readGameRule(ByteBuf buffer) {
         Preconditions.checkNotNull(buffer, "buffer");
 
         String name = readString(buffer);
@@ -57,11 +57,11 @@ public class BedrockCodecHelper_v440 extends BedrockCodecHelper_v431 {
 
         switch (type) {
             case 1:
-                return new GameRuleData<>(name, editable, buffer.readBoolean());
+                return new GameRule(name, editable, buffer.readBoolean());
             case 2:
-                return new GameRuleData<>(name, editable, VarInts.readUnsignedInt(buffer));
+                return new GameRule(name, editable, VarInts.readUnsignedInt(buffer));
             case 3:
-                return new GameRuleData<>(name, editable, buffer.readFloatLE());
+                return new GameRule(name, editable, buffer.readFloatLE());
         }
         throw new IllegalStateException("Invalid gamerule type received");
     }
@@ -74,9 +74,9 @@ public class BedrockCodecHelper_v440 extends BedrockCodecHelper_v431 {
         Vector3i size = this.readBlockPosition(buffer);
         Vector3i offset = this.readBlockPosition(buffer);
         long lastEditedByEntityId = VarInts.readLong(buffer);
-        StructureRotation rotation = StructureRotation.from(buffer.readByte());
-        StructureMirror mirror = StructureMirror.from(buffer.readByte());
-        StructureAnimationMode animationMode = StructureAnimationMode.from(buffer.readUnsignedByte());
+        Rotation rotation = Rotation.from(buffer.readByte());
+        Mirror mirror = Mirror.from(buffer.readByte());
+        AnimationMode animationMode = AnimationMode.from(buffer.readUnsignedByte());
         float animationSeconds = buffer.readFloatLE();
         float integrityValue = buffer.readFloatLE();
         int integritySeed = buffer.readIntLE();
@@ -88,18 +88,18 @@ public class BedrockCodecHelper_v440 extends BedrockCodecHelper_v431 {
 
     @Override
     public void writeStructureSettings(ByteBuf buffer, StructureSettings settings) {
-        this.writeString(buffer, settings.getPaletteName());
-        buffer.writeBoolean(settings.isIgnoringEntities());
-        buffer.writeBoolean(settings.isIgnoringBlocks());
-        this.writeBlockPosition(buffer, settings.getSize());
-        this.writeBlockPosition(buffer, settings.getOffset());
-        VarInts.writeLong(buffer, settings.getLastEditedByEntityId());
+        this.writeString(buffer, settings.getStructurePaletteName());
+        buffer.writeBoolean(settings.isShouldIgnoreEntities());
+        buffer.writeBoolean(settings.isShouldIgnoreBlocks());
+        this.writeBlockPosition(buffer, settings.getStructureSize());
+        this.writeBlockPosition(buffer, settings.getStructureOffset());
+        VarInts.writeLong(buffer, settings.getLastEditPlayer());
         buffer.writeByte(settings.getRotation().ordinal());
         buffer.writeByte(settings.getMirror().ordinal());
         buffer.writeByte(settings.getAnimationMode().ordinal());
         buffer.writeFloatLE(settings.getAnimationSeconds());
         buffer.writeFloatLE(settings.getIntegrityValue());
         buffer.writeIntLE(settings.getIntegritySeed());
-        this.writeVector3f(buffer, settings.getPivot());
+        this.writeVector3f(buffer, settings.getRotationPivot());
     }
 }

@@ -1,90 +1,125 @@
 package org.cloudburstmc.protocol.bedrock.codec.v2168.serializer;
 
 import io.netty.buffer.ByteBuf;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
+import org.cloudburstmc.protocol.bedrock.codec.VariantCodec;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.SetScoreSerializer_v291;
-import org.cloudburstmc.protocol.bedrock.data.ScoreInfo;
+import org.cloudburstmc.protocol.bedrock.data.scoreboard.*;
 import org.cloudburstmc.protocol.bedrock.packet.SetScorePacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class SetScoreSerializer_v2168 extends SetScoreSerializer_v291 {
-
     public static final SetScoreSerializer_v2168 INSTANCE = new SetScoreSerializer_v2168();
 
-    protected static final String[] TYPES = {"remove", "changeplayer", "changeentity", "changefakeplayer"};
-
-    protected static final Logger log = LoggerFactory.getLogger(SetScoreSerializer_v2168.class);
+    protected VariantCodec<SetScorePacket> scoreInfoVariant = VariantCodec.<ScorePacketEntryAction, SetScorePacket>builder(ScorePacketEntryAction::ordinal)
+            .prefix(
+                    (buffer, helper, owner, value) -> helper.writeString(buffer, ScorePacketEntryAction.from(value).getId()),
+                    (buffer, helper, owner) -> ScorePacketEntryAction.from(helper.readString(buffer)).ordinal()
+            )
+            .add(
+                    ScorePacketEntryAction.REMOVE,
+                    RemoveScore.class,
+                    this::writeRemoveScore,
+                    this::readRemoveScore
+            )
+            .add(
+                    ScorePacketEntryAction.CHANGE_PLAYER,
+                    ChangePlayerScore.class,
+                    this::writeChangePlayerScore,
+                    this::readChangePlayerScore
+            )
+            .add(
+                    ScorePacketEntryAction.CHANGE_ENTITY,
+                    ChangeEntityScore.class,
+                    this::writeChangeEntityScore,
+                    this::readChangeEntityScore
+            )
+            .add(
+                    ScorePacketEntryAction.CHANGE_FAKE_PLAYER,
+                    ChangeFakePlayerScore.class,
+                    this::writeChangeFakePlayerScore,
+                    this::readChangeFakePlayerScore
+            )
+            .build();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, SetScorePacket packet) {
-        helper.writeArray(buffer, packet.getInfos(), (buf, scoreInfo) -> {
-            VarInts.writeUnsignedInt(buffer, scoreInfo.getType().ordinal());
-            helper.writeString(buf, TYPES[scoreInfo.getType().ordinal()]);
-
-            VarInts.writeLong(buf, scoreInfo.getScoreboardId());
-
-            switch (scoreInfo.getType()) {
-                case INVALID:
-                    helper.writeOptional(buf, o-> !o.isEmpty(), scoreInfo.getObjectiveId(), helper::writeString);
-                    break;
-                case ENTITY:
-                case PLAYER:
-                    if (scoreInfo.getObjectiveId().isEmpty() && log.isDebugEnabled()) {
-                        log.debug("SetScorePacket with empty ObjectiveId");
-                    }
-
-                    helper.writeString(buf, scoreInfo.getObjectiveId().isEmpty() ? " " : scoreInfo.getObjectiveId());
-                    buf.writeIntLE(scoreInfo.getScore());
-                    VarInts.writeLong(buf, scoreInfo.getEntityId());
-                    break;
-                case FAKE:
-                    if (scoreInfo.getObjectiveId().isEmpty() && log.isDebugEnabled()) {
-                        log.debug("SetScorePacket with empty ObjectiveId");
-                    }
-                    if (scoreInfo.getName().isEmpty() && log.isDebugEnabled()) {
-                        log.debug("SetScorePacket with empty Name");
-                    }
-
-                    helper.writeString(buf, scoreInfo.getObjectiveId().isEmpty() ? " " : scoreInfo.getObjectiveId());
-                    buf.writeIntLE(scoreInfo.getScore());
-                    helper.writeString(buf, scoreInfo.getName().isEmpty() ? " " : scoreInfo.getName());
-                    break;
-                default:
-                    throw new IllegalStateException("ScoreInfo.ScorerType");
-            }
-        });
+        helper.writeArray(
+                buffer,
+                packet.getScoreInfo(),
+                (buf, codecHelper, object) -> this.scoreInfoVariant.write(buf, codecHelper, packet, object)
+        );
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, SetScorePacket packet) {
-        helper.readArray(buffer, packet.getInfos(), buf -> {
-            ScoreInfo.ScorerType type = ScoreInfo.ScorerType.values()[VarInts.readUnsignedInt(buffer)];
-            helper.readString(buf); //type
+        helper.readArray(
+                buffer,
+                packet.getScoreInfo(),
+                (buf, codecHelper) -> this.scoreInfoVariant.read(buf, codecHelper, packet)
+        );
+    }
 
-            long scoreboardId = VarInts.readLong(buf);
+    protected void writeRemoveScore(ByteBuf buffer, BedrockCodecHelper helper, SetScorePacket packet, RemoveScore score) {
+        VarInts.writeLong(buffer, score.getScoreboardId().getScoreboardId());
+        helper.writeOptionalNull(buffer, score.getObjectiveName(), helper::writeString);
+    }
 
-            String objectiveId;
-            int score;
-            switch (type) {
-                case INVALID:
-                    objectiveId = helper.readOptional(buf, null, helper::readString);
-                    return new ScoreInfo(scoreboardId, objectiveId == null ? "" : objectiveId, 0);
-                case ENTITY:
-                case PLAYER:
-                    objectiveId = helper.readString(buf);
-                    score = buf.readIntLE();
-                    long entityId = VarInts.readLong(buf);
-                    return new ScoreInfo(scoreboardId, objectiveId, score, type, entityId);
-                case FAKE:
-                    objectiveId = helper.readString(buf);
-                    score = buf.readIntLE();
-                    String name = helper.readString(buf);
-                    return new ScoreInfo(scoreboardId, objectiveId, score, name);
-                default:
-                    throw new IllegalStateException("ScoreInfo.ScorerType");
-            }
-        });
+    protected RemoveScore readRemoveScore(ByteBuf buffer, BedrockCodecHelper helper, SetScorePacket packet) {
+        final RemoveScore score = new RemoveScore();
+        score.setScoreboardId(new ScoreboardId(VarInts.readLong(buffer)));
+        score.setObjectiveName(helper.readOptional(buffer, null, helper::readString));
+        return score;
+    }
+
+    protected void writeChangePlayerScore(ByteBuf buffer, BedrockCodecHelper helper, SetScorePacket packet, ChangePlayerScore score) {
+        VarInts.writeLong(buffer, score.getScoreboardId().getScoreboardId());
+        helper.writeString(buffer, score.getObjectiveName());
+        buffer.writeIntLE(score.getScoreValue());
+        VarInts.writeLong(buffer, score.getPlayerUniqueId().getPlayerUniqueId());
+    }
+
+    protected ChangePlayerScore readChangePlayerScore(ByteBuf buffer, BedrockCodecHelper helper, SetScorePacket packet) {
+        final ChangePlayerScore score = new ChangePlayerScore();
+        score.setScoreboardId(new ScoreboardId(VarInts.readLong(buffer)));
+        score.setObjectiveName(helper.readString(buffer));
+        score.setScoreValue(buffer.readIntLE());
+        score.setPlayerUniqueId(new PlayerScoreboardId(VarInts.readLong(buffer)));
+        return score;
+    }
+
+    protected void writeChangeEntityScore(ByteBuf buffer, BedrockCodecHelper helper, SetScorePacket packet, ChangeEntityScore score) {
+        VarInts.writeLong(buffer, score.getScoreboardId().getScoreboardId());
+        helper.writeString(buffer, score.getObjectiveName());
+        buffer.writeIntLE(score.getScoreValue());
+        VarInts.writeLong(buffer, score.getActorId());
+    }
+
+    protected ChangeEntityScore readChangeEntityScore(ByteBuf buffer, BedrockCodecHelper helper, SetScorePacket packet) {
+        final ChangeEntityScore score = new ChangeEntityScore();
+        score.setScoreboardId(new ScoreboardId(VarInts.readLong(buffer)));
+        score.setObjectiveName(helper.readString(buffer));
+        score.setScoreValue(buffer.readIntLE());
+        score.setActorId(VarInts.readLong(buffer));
+        return score;
+    }
+
+    protected void writeChangeFakePlayerScore(ByteBuf buffer, BedrockCodecHelper helper, SetScorePacket packet, ChangeFakePlayerScore score) {
+        VarInts.writeLong(buffer, score.getScoreboardId().getScoreboardId());
+        helper.writeString(buffer, score.getObjectiveName());
+        buffer.writeIntLE(score.getScoreValue());
+        helper.writeString(buffer, score.getFakePlayerName());
+    }
+
+    protected ChangeFakePlayerScore readChangeFakePlayerScore(ByteBuf buffer, BedrockCodecHelper helper, SetScorePacket packet) {
+        final ChangeFakePlayerScore score = new ChangeFakePlayerScore();
+        score.setScoreboardId(new ScoreboardId(VarInts.readLong(buffer)));
+        score.setObjectiveName(helper.readString(buffer));
+        score.setScoreValue(buffer.readIntLE());
+        score.setFakePlayerName(helper.readString(buffer));
+        return score;
     }
 }

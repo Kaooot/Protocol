@@ -15,6 +15,7 @@ public class ClientToServerHandshakePacket implements BedrockPacket {
         return handler.handle(this);
     }
 
+    @Override
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.CLIENT_TO_SERVER_HANDSHAKE;
     }
@@ -28,4 +29,3 @@ public class ClientToServerHandshakePacket implements BedrockPacket {
         }
     }
 }
-

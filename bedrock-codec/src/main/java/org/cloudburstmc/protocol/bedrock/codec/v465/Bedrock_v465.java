@@ -1,10 +1,17 @@
 package org.cloudburstmc.protocol.bedrock.codec.v465;
 
+import org.cloudburstmc.protocol.bedrock.data.world.event.ParticleType;
+
+import org.cloudburstmc.protocol.bedrock.data.world.event.LevelEventType;
+import org.cloudburstmc.protocol.bedrock.data.world.event.LevelEvent;
+
+import org.cloudburstmc.protocol.bedrock.data.sound.LevelSoundEvent;
+
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
-import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
-import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.EntityEventSerializer_v291;
+import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
+import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.ActorEventSerializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelEventSerializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelSoundEvent1Serializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v313.serializer.LevelSoundEvent2Serializer_v313;
@@ -12,9 +19,9 @@ import org.cloudburstmc.protocol.bedrock.codec.v332.serializer.LevelSoundEventSe
 import org.cloudburstmc.protocol.bedrock.codec.v361.serializer.LevelEventGenericSerializer_v361;
 import org.cloudburstmc.protocol.bedrock.codec.v448.Bedrock_v448;
 import org.cloudburstmc.protocol.bedrock.codec.v465.serializer.*;
-import org.cloudburstmc.protocol.bedrock.data.*;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityEventType;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorEvent;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataTypes;
+import org.cloudburstmc.protocol.bedrock.data.PacketRecipient;
 import org.cloudburstmc.protocol.bedrock.packet.*;
 import org.cloudburstmc.protocol.bedrock.transformer.TypeMapTransformer;
 import org.cloudburstmc.protocol.common.util.TypeMap;
@@ -26,12 +33,12 @@ public class Bedrock_v465 extends Bedrock_v448 {
             .insert(82, ParticleType.SHRIEK)
             .build();
 
-    protected static final EntityDataTypeMap ENTITY_DATA = Bedrock_v448.ENTITY_DATA.toBuilder()
-            .update(EntityDataTypes.AREA_EFFECT_CLOUD_PARTICLE, new TypeMapTransformer<>(PARTICLE_TYPES))
+    protected static final ActorDataTypeMap ENTITY_DATA = Bedrock_v448.ENTITY_DATA.toBuilder()
+            .update(ActorDataTypes.AREA_EFFECT_CLOUD_PARTICLE, new TypeMapTransformer<>(PARTICLE_TYPES))
             .build();
 
-    protected static final TypeMap<EntityEventType> ENTITY_EVENTS = Bedrock_v448.ENTITY_EVENTS.toBuilder()
-            .insert(76, EntityEventType.ENTITY_GROW_UP)
+    protected static final TypeMap<ActorEvent> ACTOR_EVENTS = Bedrock_v448.ACTOR_EVENTS.toBuilder()
+            .insert(76, ActorEvent.ACTOR_GROW_UP)
             .build();
 
     protected static final TypeMap<LevelEventType> LEVEL_EVENTS = Bedrock_v448.LEVEL_EVENTS.toBuilder()
@@ -40,15 +47,15 @@ public class Bedrock_v465 extends Bedrock_v448 {
             .insert(LEVEL_EVENT_PARTICLE_TYPE, PARTICLE_TYPES)
             .build();
 
-    protected static final TypeMap<SoundEvent> SOUND_EVENTS = Bedrock_v448.SOUND_EVENTS.toBuilder()
-            .replace(363, SoundEvent.BLOCK_CLICK)
-            .insert(364, SoundEvent.BLOCK_CLICK_FAIL)
-            .insert(366, SoundEvent.SCULK_SHRIEKER_SHRIEK)
-            .insert(367, SoundEvent.WARDEN_NEARBY_CLOSE)
-            .insert(368, SoundEvent.WARDEN_NEARBY_CLOSER)
-            .insert(369, SoundEvent.WARDEN_NEARBY_CLOSEST)
-            .insert(370, SoundEvent.WARDEN_SLIGHTLY_ANGRY)
-            .insert(371, SoundEvent.UNDEFINED)
+    protected static final TypeMap<LevelSoundEvent> SOUND_EVENTS = Bedrock_v448.SOUND_EVENTS.toBuilder()
+            .replace(363, LevelSoundEvent.BLOCK_CLICK)
+            .insert(364, LevelSoundEvent.BLOCK_CLICK_FAIL)
+            .insert(366, LevelSoundEvent.SCULK_SHRIEKER_SHRIEK)
+            .insert(367, LevelSoundEvent.WARDEN_NEARBY_CLOSE)
+            .insert(368, LevelSoundEvent.WARDEN_NEARBY_CLOSER)
+            .insert(369, LevelSoundEvent.WARDEN_NEARBY_CLOSEST)
+            .insert(370, LevelSoundEvent.WARDEN_SLIGHTLY_ANGRY)
+            .insert(371, LevelSoundEvent.UNDEFINED)
             .build();
 
     public static final BedrockCodec CODEC = Bedrock_v448.CODEC.toBuilder()
@@ -56,13 +63,13 @@ public class Bedrock_v465 extends Bedrock_v448 {
             .minecraftVersion("1.17.30")
             .helper(() -> new BedrockCodecHelper_v465(ENTITY_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES))
             .updateSerializer(StartGamePacket.class, StartGameSerializer_v465.INSTANCE)
-            .updateSerializer(EntityEventPacket.class, new EntityEventSerializer_v291(ENTITY_EVENTS))
+            .updateSerializer(ActorEventPacket.class, new ActorEventSerializer_v291(ACTOR_EVENTS))
             .updateSerializer(LevelEventPacket.class, new LevelEventSerializer_v291(LEVEL_EVENTS))
             .updateSerializer(LevelEventGenericPacket.class, new LevelEventGenericSerializer_v361(LEVEL_EVENTS))
             .updateSerializer(LevelSoundEvent1Packet.class, new LevelSoundEvent1Serializer_v291(SOUND_EVENTS))
             .updateSerializer(LevelSoundEvent2Packet.class, new LevelSoundEvent2Serializer_v313(SOUND_EVENTS))
             .updateSerializer(LevelSoundEventPacket.class, new LevelSoundEventSerializer_v332(SOUND_EVENTS))
-            .updateSerializer(EntityPickRequestPacket.class, EntityPickRequestSerializer_v465.INSTANCE)
+            .updateSerializer(ActorPickRequestPacket.class, ActorPickRequestSerializer_v465.INSTANCE)
             .updateSerializer(AddVolumeEntityPacket.class, AddVolumeEntitySerializer_v465.INSTANCE)
             .updateSerializer(AnimateEntityPacket.class, AnimateEntitySerializer_v465.INSTANCE)
             .updateSerializer(PhotoTransferPacket.class, PhotoTransferSerializer_v465.INSTANCE)

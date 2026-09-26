@@ -5,41 +5,44 @@ import org.cloudburstmc.math.vector.Vector2f;
 import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.math.vector.Vector3i;
 import org.cloudburstmc.nbt.NbtType;
-import org.cloudburstmc.protocol.bedrock.data.*;
+import org.cloudburstmc.protocol.bedrock.data.EncodingSettings;
+import org.cloudburstmc.protocol.bedrock.data.misc.RedactableString;
+import org.cloudburstmc.protocol.bedrock.data.ability.SerializedAbilitiesData;
+import org.cloudburstmc.protocol.bedrock.data.actor.PropertySyncData;
+import org.cloudburstmc.protocol.bedrock.data.actor.link.ActorLink;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandEnumData;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandOriginData;
+import org.cloudburstmc.protocol.bedrock.data.connection.ClientStoreEntryPointConfig;
+import org.cloudburstmc.protocol.bedrock.data.connection.GatheringsConfig;
+import org.cloudburstmc.protocol.bedrock.data.connection.PresenceConfig;
+import org.cloudburstmc.protocol.bedrock.data.connection.ServerConfig;
+import org.cloudburstmc.protocol.bedrock.data.datastore.DataStoreUpdate;
 import org.cloudburstmc.protocol.bedrock.data.definitions.BlockDefinition;
 import org.cloudburstmc.protocol.bedrock.data.definitions.ItemDefinition;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataMap;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityLinkData;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityProperties;
-import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerSlotType;
-import org.cloudburstmc.protocol.bedrock.data.inventory.FullContainerName;
-import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
-import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.ItemDescriptorWithCount;
+import org.cloudburstmc.protocol.bedrock.data.education.EduSharedUriResource;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataMap;
+import org.cloudburstmc.protocol.bedrock.data.inventory.*;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequest;
-import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponseContainer;
-import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.InventoryActionData;
-import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.InventorySource;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponseContainerInfo;
+import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.InventoryTransaction;
+import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.ItemUseInventoryTransaction;
+import org.cloudburstmc.protocol.bedrock.data.player.PlayerInputTick;
+import org.cloudburstmc.protocol.bedrock.data.recipe.RecipeIngredient;
 import org.cloudburstmc.protocol.bedrock.data.skin.SerializedSkin;
+import org.cloudburstmc.protocol.bedrock.data.sound.ServerSoundHandle;
 import org.cloudburstmc.protocol.bedrock.data.structure.StructureSettings;
-import org.cloudburstmc.protocol.bedrock.packet.InventoryTransactionPacket;
-import org.cloudburstmc.protocol.common.util.TextConverter;
+import org.cloudburstmc.protocol.bedrock.data.world.Experiments;
+import org.cloudburstmc.protocol.bedrock.data.world.GameRule;
 import org.cloudburstmc.protocol.common.DefinitionRegistry;
 import org.cloudburstmc.protocol.common.NamedDefinition;
+import org.cloudburstmc.protocol.common.util.TextConverter;
 import org.cloudburstmc.protocol.common.util.TriConsumer;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
-import java.util.function.BiConsumer;
-import java.util.function.BiFunction;
-import java.util.function.Function;
-import java.util.function.ObjIntConsumer;
-import java.util.function.Predicate;
-import java.util.function.ToLongFunction;
+import java.util.function.*;
 
 public interface BedrockCodecHelper {
 
@@ -109,9 +112,9 @@ public interface BedrockCodecHelper {
 
     // Encoding methods
 
-    EntityLinkData readEntityLink(ByteBuf buffer);
+    void writeActorLink(ByteBuf buffer, ActorLink link);
 
-    void writeEntityLink(ByteBuf buffer, EntityLinkData link);
+    ActorLink readActorLink(ByteBuf buffer);
 
     ItemData readNetItem(ByteBuf buffer);
 
@@ -129,21 +132,29 @@ public interface BedrockCodecHelper {
 
     void writeItemInstance(ByteBuf buffer, ItemData item);
 
-    CommandOriginData readCommandOrigin(ByteBuf buffer);
+    default ItemData readNetworkItemInstanceDescriptor(ByteBuf buffer) {
+        return this.readItemInstance(buffer);
+    }
 
-    void writeCommandOrigin(ByteBuf buffer, CommandOriginData commandOrigin);
+    default void writeNetworkItemInstanceDescriptor(ByteBuf buffer, ItemData item) {
+        this.writeItemInstance(buffer, item);
+    }
 
-    GameRuleData<?> readGameRule(ByteBuf buffer);
+    CommandOriginData readCommandOriginData(ByteBuf buffer);
 
-    void writeGameRule(ByteBuf buffer, GameRuleData<?> gameRule);
+    void writeCommandOriginData(ByteBuf buffer, CommandOriginData commandOrigin);
 
-    void writeGameRuleInStartGame(ByteBuf buffer, GameRuleData<?> gameRule);
+    GameRule readGameRule(ByteBuf buffer);
 
-    GameRuleData<?> readGameRuleInStartGame(ByteBuf buffer);
+    void writeGameRule(ByteBuf buffer, GameRule gameRule);
 
-    void readEntityData(ByteBuf buffer, EntityDataMap entityData);
+    void writeGameRuleInStartGame(ByteBuf buffer, GameRule gameRule);
 
-    void writeEntityData(ByteBuf buffer, EntityDataMap entityData);
+    GameRule readGameRuleInStartGame(ByteBuf buffer);
+
+    void readEntityData(ByteBuf buffer, ActorDataMap entityData);
+
+    void writeEntityData(ByteBuf buffer, ActorDataMap entityData);
 
     CommandEnumData readCommandEnum(ByteBuf buffer, boolean soft);
 
@@ -215,23 +226,17 @@ public interface BedrockCodecHelper {
 
     void writeTagValue(ByteBuf buffer, Object tag);
 
-    @Deprecated
-    void readItemUse(ByteBuf buffer, InventoryTransactionPacket packet);
+    void readInventoryTransactions(ByteBuf buffer, InventoryTransaction actions);
 
-    @Deprecated
-    void writeItemUse(ByteBuf buffer, InventoryTransactionPacket packet);
+    void writeInventoryTransactions(ByteBuf buffer, InventoryTransaction actions);
 
-    boolean readInventoryActions(ByteBuf buffer, List<InventoryActionData> actions);
+    void writeItemUseInventoryTransaction(ByteBuf buffer, ItemUseInventoryTransaction transaction);
 
-    void writeInventoryActions(ByteBuf buffer, List<InventoryActionData> actions, boolean hasNetworkIds);
+    ItemUseInventoryTransaction readItemUseInventoryTransaction(ByteBuf buffer);
 
-    void readExperiments(ByteBuf buffer, List<ExperimentData> experiments);
+    Experiments readExperiments(ByteBuf buffer);
 
-    InventorySource readSource(ByteBuf buffer);
-
-    void writeSource(ByteBuf buffer, InventorySource inventorySource);
-
-    void writeExperiments(ByteBuf buffer, List<ExperimentData> experiments);
+    void writeExperiments(ByteBuf buffer, Experiments experiments);
 
     ItemStackRequest readItemStackRequest(ByteBuf buffer);
 
@@ -249,25 +254,25 @@ public interface BedrockCodecHelper {
 
     <T> void writeOptionalNull(ByteBuf buffer, T object, TriConsumer<ByteBuf, BedrockCodecHelper, T> consumer);
 
-    void readEntityProperties(ByteBuf buffer, EntityProperties properties);
+    void writePropertySyncData(ByteBuf buffer, PropertySyncData propertySyncData);
 
-    void writeEntityProperties(ByteBuf buffer, EntityProperties properties);
+    void readPropertySyncData(ByteBuf buffer, PropertySyncData propertySyncData);
 
-    ItemDescriptorWithCount readIngredient(ByteBuf buffer);
+    RecipeIngredient readIngredient(ByteBuf buffer);
 
-    void writeIngredient(ByteBuf buffer, ItemDescriptorWithCount ingredient);
+    void writeIngredient(ByteBuf buffer, RecipeIngredient ingredient);
 
-    void writeContainerSlotType(ByteBuf buffer, ContainerSlotType slotType);
+    void writeContainerEnumName(ByteBuf buffer, ContainerEnumName slotType);
 
-    ContainerSlotType readContainerSlotType(ByteBuf buffer);
+    ContainerEnumName readContainerEnumName(ByteBuf buffer);
 
-    void writePlayerAbilities(ByteBuf buffer, PlayerAbilityHolder abilityHolder);
+    void writeSerializedAbilitiesData(ByteBuf buffer, SerializedAbilitiesData data);
 
-    void readPlayerAbilities(ByteBuf buffer, PlayerAbilityHolder abilityHolder);
+    SerializedAbilitiesData readSerializedAbilitiesData(ByteBuf buffer);
 
-    void writeItemStackResponseContainer(ByteBuf buffer, ItemStackResponseContainer container);
+    void writeItemStackResponseContainer(ByteBuf buffer, ItemStackResponseContainerInfo container);
 
-    ItemStackResponseContainer readItemStackResponseContainer(ByteBuf buffer);
+    ItemStackResponseContainerInfo readItemStackResponseContainer(ByteBuf buffer);
 
     void writeFullContainerName(ByteBuf buffer, FullContainerName containerName);
 
@@ -277,11 +282,47 @@ public interface BedrockCodecHelper {
 
     <T extends Enum<?>> void readLargeVarIntFlags(ByteBuf buffer, Set<T> flags, Class<T> clazz);
 
-    void writePresenceConfiguration(ByteBuf buffer, PresenceConfiguration configuration);
+    void writeServerConfig(ByteBuf buffer, ServerConfig config);
 
-    PresenceConfiguration readPresenceConfiguration(ByteBuf buffer);
+    ServerConfig readServerConfig(ByteBuf buffer);
 
-    void writeGatheringsConfiguration(ByteBuf byteBuf, BedrockCodecHelper bedrockCodecHelper, GatheringsConfigurationJoinInfo gatheringsConfigurationJoinInfo);
+    void writePresenceConfig(ByteBuf buffer, PresenceConfig config);
 
-    GatheringsConfigurationJoinInfo readGatheringsConfiguration(ByteBuf byteBuf, BedrockCodecHelper bedrockCodecHelper);
+    PresenceConfig readPresenceConfig(ByteBuf buffer);
+
+    void writeGatheringsConfig(ByteBuf buffer, GatheringsConfig config);
+
+    GatheringsConfig readGatheringsConfig(ByteBuf buffer);
+
+    void writePlayerInputTick(ByteBuf buffer, PlayerInputTick inputTick);
+
+    PlayerInputTick readPlayerInputTick(ByteBuf buffer);
+
+    void writeEduSharedUriResource(ByteBuf buffer, EduSharedUriResource eduSharedUriResource);
+
+    EduSharedUriResource readEduSharedUriResource(ByteBuf buffer);
+
+    void writeServerSoundHandle(ByteBuf buffer, ServerSoundHandle serverSoundHandle);
+
+    ServerSoundHandle readServerSoundHandle(ByteBuf buffer);
+
+    void writeDataStoreUpdate(ByteBuf buffer, DataStoreUpdate update);
+
+    DataStoreUpdate readDataStoreUpdate(ByteBuf buffer);
+
+    void writeClientStoreEntryPointConfig(ByteBuf buffer, BedrockCodecHelper helper, ClientStoreEntryPointConfig config);
+
+    ClientStoreEntryPointConfig readClientStoreEntryPointConfig(ByteBuf buffer, BedrockCodecHelper helper);
+
+    void writeInventorySource(ByteBuf buffer, InventorySource inventorySource);
+
+    InventorySource readInventorySource(ByteBuf buffer);
+
+    void writeInventoryAction(ByteBuf buffer, InventoryAction action);
+
+    InventoryAction readInventoryAction(ByteBuf buffer);
+
+    void writeRedactableString(ByteBuf buffer, RedactableString string);
+
+    RedactableString readRedactableString(ByteBuf buffer);
 }

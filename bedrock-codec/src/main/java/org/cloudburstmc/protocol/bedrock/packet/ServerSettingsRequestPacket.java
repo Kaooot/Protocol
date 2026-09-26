@@ -15,6 +15,7 @@ public class ServerSettingsRequestPacket implements BedrockPacket {
         return handler.handle(this);
     }
 
+    @Override
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.SERVER_SETTINGS_REQUEST;
     }
@@ -28,4 +29,3 @@ public class ServerSettingsRequestPacket implements BedrockPacket {
         }
     }
 }
-

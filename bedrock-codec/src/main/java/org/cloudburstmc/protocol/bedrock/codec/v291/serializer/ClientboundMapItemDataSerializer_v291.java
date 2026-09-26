@@ -1,98 +1,102 @@
 package org.cloudburstmc.protocol.bedrock.codec.v291.serializer;
 
 import io.netty.buffer.ByteBuf;
-import it.unimi.dsi.fastutil.longs.LongArrayList;
+import it.unimi.dsi.fastutil.ints.IntList;
 import it.unimi.dsi.fastutil.longs.LongList;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
-import org.cloudburstmc.protocol.bedrock.data.MapDecoration;
-import org.cloudburstmc.protocol.bedrock.data.MapTrackedObject;
+import org.cloudburstmc.protocol.bedrock.data.map.MapDecoration;
+import org.cloudburstmc.protocol.bedrock.data.map.MapDecorationType;
+import org.cloudburstmc.protocol.bedrock.data.map.MapItemTrackedActorType;
+import org.cloudburstmc.protocol.bedrock.data.map.MapItemTrackedActorUniqueId;
+import org.cloudburstmc.protocol.bedrock.data.world.DimensionType;
 import org.cloudburstmc.protocol.bedrock.packet.ClientboundMapItemDataPacket;
-import org.cloudburstmc.protocol.common.util.Preconditions;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
-import java.util.ArrayList;
+import java.awt.Color;
 import java.util.List;
+
+import static org.cloudburstmc.protocol.common.util.Preconditions.checkArgument;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ClientboundMapItemDataSerializer_v291 implements BedrockPacketSerializer<ClientboundMapItemDataPacket> {
     public static final ClientboundMapItemDataSerializer_v291 INSTANCE = new ClientboundMapItemDataSerializer_v291();
 
+    protected static final int MAX_LENGTH = 65535;
+    protected static final int MAX_PIXELS_LENGTH = 16384;
+
     protected static final int FLAG_TEXTURE_UPDATE = 0x02;
     protected static final int FLAG_DECORATION_UPDATE = 0x04;
     protected static final int FLAG_MAP_CREATION = 0x08;
-    protected static final int FLAG_ALL = FLAG_TEXTURE_UPDATE | FLAG_DECORATION_UPDATE | FLAG_MAP_CREATION;
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ClientboundMapItemDataPacket packet) {
-        VarInts.writeLong(buffer, packet.getUniqueMapId());
+        VarInts.writeLong(buffer, packet.getMapID());
 
         int type = 0;
-        int[] colors = packet.getColors();
-        if (colors != null && colors.length > 0) {
+        IntList colors = packet.getPixels();
+        if (colors != null && !colors.isEmpty()) {
             type |= FLAG_TEXTURE_UPDATE;
         }
-
         List<MapDecoration> decorations = packet.getDecorations();
-        List<MapTrackedObject> trackedObjects = packet.getTrackedObjects();
-        if ((decorations != null && !decorations.isEmpty()) || (trackedObjects != null && !trackedObjects.isEmpty())) {
+        List<MapItemTrackedActorUniqueId> trackedObjects = packet.getTrackedActorIDs();
+        if (!decorations.isEmpty() && !trackedObjects.isEmpty()) {
             type |= FLAG_DECORATION_UPDATE;
         }
-
-        LongList trackedEntityIds = packet.getTrackedEntityIds();
-        if (trackedEntityIds != null && !trackedEntityIds.isEmpty()) {
+        LongList creationMapIds = packet.getCreationMapIDs();
+        if (!creationMapIds.isEmpty()) {
             type |= FLAG_MAP_CREATION;
         }
 
         VarInts.writeUnsignedInt(buffer, type);
-        buffer.writeByte(packet.getDimensionId());
+        buffer.writeByte(packet.getDimension().getValue());
 
         if ((type & FLAG_MAP_CREATION) != 0) {
-            VarInts.writeUnsignedInt(buffer, trackedEntityIds.size());
-            for (long trackedEntityId : trackedEntityIds) {
-                VarInts.writeLong(buffer, trackedEntityId);
+            VarInts.writeUnsignedInt(buffer, creationMapIds.size());
+            for (long creationMapId : creationMapIds) {
+                VarInts.writeLong(buffer, creationMapId);
             }
         }
 
-        if ((type & FLAG_ALL) != 0) {
-            buffer.writeByte(packet.getScale() == null ? 0 : packet.getScale());
+        if ((type & 0xe) != 0) {
+            buffer.writeByte(packet.getScale());
         }
 
         if ((type & FLAG_DECORATION_UPDATE) != 0) {
             VarInts.writeUnsignedInt(buffer, trackedObjects.size());
-            for (MapTrackedObject object : trackedObjects) {
+            for (MapItemTrackedActorUniqueId object : trackedObjects) {
                 switch (object.getType()) {
-                    case BLOCK:
+                    case BLOCK_ENTITY:
                         buffer.writeIntLE(object.getType().ordinal());
-                        helper.writeBlockPosition(buffer, object.getPosition());
+                        helper.writeBlockPosition(buffer, object.getBlockPosition());
                         break;
                     case ENTITY:
                         buffer.writeIntLE(object.getType().ordinal());
-                        VarInts.writeLong(buffer, object.getEntityId());
+                        VarInts.writeLong(buffer, object.getEntityID());
                         break;
                 }
             }
 
             VarInts.writeUnsignedInt(buffer, decorations.size());
             for (MapDecoration decoration : decorations) {
-                buffer.writeByte(decoration.getImage());
+                buffer.writeByte(decoration.getImageType().ordinal());
                 buffer.writeByte(decoration.getRotation());
-                buffer.writeByte(decoration.getXOffset());
-                buffer.writeByte(decoration.getYOffset());
+                buffer.writeByte(decoration.getX());
+                buffer.writeByte(decoration.getY());
                 helper.writeString(buffer, decoration.getLabel());
-                VarInts.writeUnsignedInt(buffer, decoration.getColor());
+                VarInts.writeUnsignedInt(buffer, decoration.getColor().getRGB());
             }
         }
 
         if ((type & FLAG_TEXTURE_UPDATE) != 0) {
             VarInts.writeInt(buffer, packet.getWidth());
             VarInts.writeInt(buffer, packet.getHeight());
-            VarInts.writeInt(buffer, packet.getXOffset());
-            VarInts.writeInt(buffer, packet.getYOffset());
+            VarInts.writeInt(buffer, packet.getStartX());
+            VarInts.writeInt(buffer, packet.getStartY());
 
-            VarInts.writeUnsignedInt(buffer, colors.length);
+            VarInts.writeUnsignedInt(buffer, colors.size());
             for (int color : colors) {
                 VarInts.writeUnsignedInt(buffer, color);
             }
@@ -101,43 +105,42 @@ public class ClientboundMapItemDataSerializer_v291 implements BedrockPacketSeria
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ClientboundMapItemDataPacket packet) {
-        packet.setUniqueMapId(VarInts.readLong(buffer));
+        packet.setMapID(VarInts.readLong(buffer));
         int type = VarInts.readUnsignedInt(buffer);
-        packet.setDimensionId(buffer.readUnsignedByte());
+        packet.setDimension(DimensionType.from(buffer.readUnsignedByte()));
 
-        LongList trackedEntityIds = new LongArrayList();
         if ((type & FLAG_MAP_CREATION) != 0) {
+            LongList creationMapIds = packet.getCreationMapIDs();
             int length = VarInts.readUnsignedInt(buffer);
+            checkArgument(length <= MAX_LENGTH, "Tried to read %s Creation Map IDs but maximum is %s", length, MAX_LENGTH);
             for (int i = 0; i < length; i++) {
-                trackedEntityIds.add(VarInts.readLong(buffer));
+                creationMapIds.add(VarInts.readLong(buffer));
             }
         }
-        packet.setTrackedEntityIds(trackedEntityIds);
 
-        if ((type & FLAG_ALL) != 0) {
-            packet.setScale(buffer.readByte());
-        } else {
-            packet.setScale((byte) 0);
+        if ((type & 0xe) != 0) {
+            packet.setScale((int) buffer.readUnsignedByte());
         }
 
         if ((type & FLAG_DECORATION_UPDATE) != 0) {
-            List<MapTrackedObject> trackedObjects = new ArrayList<>();
+            List<MapItemTrackedActorUniqueId> trackedObjects = packet.getTrackedActorIDs();
             int length = VarInts.readUnsignedInt(buffer);
+            checkArgument(length <= MAX_LENGTH, "Tried to read %s Map Item Tracked Actor IDs but maximum is %s", length, MAX_LENGTH);
             for (int i = 0; i < length; i++) {
-                MapTrackedObject.Type objectType = MapTrackedObject.Type.values()[buffer.readIntLE()];
+                MapItemTrackedActorType objectType = MapItemTrackedActorType.from(buffer.readIntLE());
                 switch (objectType) {
-                    case BLOCK:
-                        trackedObjects.add(new MapTrackedObject(helper.readBlockPosition(buffer)));
+                    case BLOCK_ENTITY:
+                        trackedObjects.add(new MapItemTrackedActorUniqueId(objectType, null, helper.readBlockPosition(buffer)));
                         break;
                     case ENTITY:
-                        trackedObjects.add(new MapTrackedObject(VarInts.readLong(buffer)));
+                        trackedObjects.add(new MapItemTrackedActorUniqueId(objectType, VarInts.readLong(buffer), null));
                         break;
                 }
             }
-            packet.setTrackedObjects(trackedObjects);
 
-            List<MapDecoration> decorations = new ArrayList<>();
+            List<MapDecoration> decorations = packet.getDecorations();
             length = VarInts.readUnsignedInt(buffer);
+            checkArgument(length <= MAX_LENGTH, "Tried to read %s Map Decorations but maximum is %s", length, MAX_LENGTH);
             for (int i = 0; i < length; i++) {
                 int image = buffer.readUnsignedByte();
                 int rotation = buffer.readUnsignedByte();
@@ -145,24 +148,16 @@ public class ClientboundMapItemDataSerializer_v291 implements BedrockPacketSeria
                 int yOffset = buffer.readUnsignedByte();
                 String label = helper.readString(buffer);
                 int color = VarInts.readUnsignedInt(buffer);
-                decorations.add(new MapDecoration(image, rotation, xOffset, yOffset, label, color));
+                decorations.add(new MapDecoration(MapDecorationType.from(image), rotation, xOffset, yOffset, label, new Color(color, true)));
             }
-            packet.setDecorations(decorations);
         }
 
         if ((type & FLAG_TEXTURE_UPDATE) != 0) {
             packet.setWidth(VarInts.readInt(buffer));
             packet.setHeight(VarInts.readInt(buffer));
-            packet.setXOffset(VarInts.readInt(buffer));
-            packet.setYOffset(VarInts.readInt(buffer));
-
-            int length = VarInts.readUnsignedInt(buffer);
-            Preconditions.checkArgument(buffer.isReadable(length), "Not enough readable bytes");
-            int[] colors = new int[length];
-            for (int i = 0; i < length; i++) {
-                colors[i] = VarInts.readUnsignedInt(buffer);
-            }
-            packet.setColors(colors);
+            packet.setStartX(VarInts.readInt(buffer));
+            packet.setStartY(VarInts.readInt(buffer));
+            helper.readArray(buffer, packet.getPixels(), VarInts::readUnsignedInt, MAX_PIXELS_LENGTH);
         }
     }
 }

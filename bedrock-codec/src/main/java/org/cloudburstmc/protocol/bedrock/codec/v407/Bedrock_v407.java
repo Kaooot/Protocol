@@ -1,8 +1,15 @@
 package org.cloudburstmc.protocol.bedrock.codec.v407;
 
+import org.cloudburstmc.protocol.bedrock.data.world.event.ParticleType;
+
+import org.cloudburstmc.protocol.bedrock.data.world.event.LevelEventType;
+import org.cloudburstmc.protocol.bedrock.data.world.event.LevelEvent;
+
+import org.cloudburstmc.protocol.bedrock.data.sound.LevelSoundEvent;
+
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
-import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
-import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.EntityEventSerializer_v291;
+import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
+import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.ActorEventSerializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelEventSerializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelSoundEvent1Serializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v313.serializer.LevelSoundEvent2Serializer_v313;
@@ -10,13 +17,13 @@ import org.cloudburstmc.protocol.bedrock.codec.v332.serializer.LevelSoundEventSe
 import org.cloudburstmc.protocol.bedrock.codec.v361.serializer.LevelEventGenericSerializer_v361;
 import org.cloudburstmc.protocol.bedrock.codec.v390.Bedrock_v390;
 import org.cloudburstmc.protocol.bedrock.codec.v407.serializer.*;
-import org.cloudburstmc.protocol.bedrock.data.*;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataFormat;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityEventType;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
-import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerSlotType;
-import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestActionType;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorEvent;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataFormat;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataTypes;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorFlags;
+import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerEnumName;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequestActionType;
+import org.cloudburstmc.protocol.bedrock.data.PacketRecipient;
 import org.cloudburstmc.protocol.bedrock.packet.*;
 import org.cloudburstmc.protocol.bedrock.transformer.BooleanTransformer;
 import org.cloudburstmc.protocol.bedrock.transformer.FlagTransformer;
@@ -25,12 +32,12 @@ import org.cloudburstmc.protocol.common.util.TypeMap;
 
 public class Bedrock_v407 extends Bedrock_v390 {
 
-    protected static final TypeMap<EntityFlag> ENTITY_FLAGS = Bedrock_v390.ENTITY_FLAGS.toBuilder()
+    protected static final TypeMap<ActorFlags> ENTITY_FLAGS = Bedrock_v390.ENTITY_FLAGS.toBuilder()
             .shift(86, 1)
-            .insert(86, EntityFlag.IS_AVOIDING_BLOCK)
+            .insert(86, ActorFlags.IS_AVOIDING_BLOCK)
             .shift(93, 2)
-            .insert(93, EntityFlag.ADMIRING)
-            .insert(94, EntityFlag.CELEBRATING_SPECIAL)
+            .insert(93, ActorFlags.ADMIRING)
+            .insert(94, ActorFlags.CELEBRATING_SPECIAL)
             .build();
 
     protected static final TypeMap<ParticleType> PARTICLE_TYPES = Bedrock_v390.PARTICLE_TYPES.toBuilder()
@@ -39,21 +46,21 @@ public class Bedrock_v407 extends Bedrock_v390 {
             .insert(70, ParticleType.OBSIDIAN_TEAR)
             .build();
 
-    protected static final EntityDataTypeMap ENTITY_DATA = Bedrock_v390.ENTITY_DATA.toBuilder()
-            .update(EntityDataTypes.FLAGS, new FlagTransformer(ENTITY_FLAGS, 0))
-            .update(EntityDataTypes.FLAGS_2, new FlagTransformer(ENTITY_FLAGS, 1))
-            .update(EntityDataTypes.AREA_EFFECT_CLOUD_PARTICLE, new TypeMapTransformer<>(PARTICLE_TYPES))
-            .insert(EntityDataTypes.LOW_TIER_CURED_TRADE_DISCOUNT, 113, EntityDataFormat.INT)
-            .insert(EntityDataTypes.HIGH_TIER_CURED_TRADE_DISCOUNT, 114, EntityDataFormat.INT)
-            .insert(EntityDataTypes.NEARBY_CURED_TRADE_DISCOUNT, 115, EntityDataFormat.INT)
-            .insert(EntityDataTypes.NEARBY_CURED_DISCOUNT_TIME_STAMP, 116, EntityDataFormat.INT)
-            .insert(EntityDataTypes.HITBOX, 117, EntityDataFormat.NBT)
-            .insert(EntityDataTypes.IS_BUOYANT, 118, EntityDataFormat.BYTE, BooleanTransformer.INSTANCE)
-            .insert(EntityDataTypes.BUOYANCY_DATA, 119, EntityDataFormat.STRING)
+    protected static final ActorDataTypeMap ENTITY_DATA = Bedrock_v390.ENTITY_DATA.toBuilder()
+            .update(ActorDataTypes.FLAGS, new FlagTransformer(ENTITY_FLAGS, 0))
+            .update(ActorDataTypes.FLAGS_2, new FlagTransformer(ENTITY_FLAGS, 1))
+            .update(ActorDataTypes.AREA_EFFECT_CLOUD_PARTICLE, new TypeMapTransformer<>(PARTICLE_TYPES))
+            .insert(ActorDataTypes.LOW_TIER_CURED_TRADE_DISCOUNT, 113, ActorDataFormat.INT)
+            .insert(ActorDataTypes.HIGH_TIER_CURED_TRADE_DISCOUNT, 114, ActorDataFormat.INT)
+            .insert(ActorDataTypes.NEARBY_CURED_TRADE_DISCOUNT, 115, ActorDataFormat.INT)
+            .insert(ActorDataTypes.NEARBY_CURED_DISCOUNT_TIME_STAMP, 116, ActorDataFormat.INT)
+            .insert(ActorDataTypes.HITBOX, 117, ActorDataFormat.NBT)
+            .insert(ActorDataTypes.IS_BUOYANT, 118, ActorDataFormat.BYTE, BooleanTransformer.INSTANCE)
+            .insert(ActorDataTypes.BUOYANCY_DATA, 119, ActorDataFormat.STRING)
             .build();
 
-    protected static final TypeMap<EntityEventType> ENTITY_EVENTS = Bedrock_v390.ENTITY_EVENTS.toBuilder()
-            .insert(75, EntityEventType.LANDED_ON_GROUND)
+    protected static final TypeMap<ActorEvent> ACTOR_EVENTS = Bedrock_v390.ACTOR_EVENTS.toBuilder()
+            .insert(75, ActorEvent.LANDED_ON_GROUND)
             .build();
 
     protected static final TypeMap<LevelEventType> LEVEL_EVENTS = Bedrock_v390.LEVEL_EVENTS.toBuilder()
@@ -66,38 +73,38 @@ public class Bedrock_v407 extends Bedrock_v390 {
             .insert(LEVEL_EVENT_PARTICLE_TYPE, PARTICLE_TYPES)
             .build();
 
-    protected static final TypeMap<SoundEvent> SOUND_EVENTS = Bedrock_v390.SOUND_EVENTS.toBuilder()
-            .replace(287, SoundEvent.JUMP_PREVENT)
-            .insert(288, SoundEvent.AMBIENT_POLLINATE)
-            .insert(289, SoundEvent.BEEHIVE_DRIP)
-            .insert(290, SoundEvent.BEEHIVE_ENTER)
-            .insert(291, SoundEvent.BEEHIVE_EXIT)
-            .insert(292, SoundEvent.BEEHIVE_WORK)
-            .insert(293, SoundEvent.BEEHIVE_SHEAR)
-            .insert(294, SoundEvent.HONEYBOTTLE_DRINK)
-            .insert(295, SoundEvent.AMBIENT_CAVE)
-            .insert(296, SoundEvent.RETREAT)
-            .insert(297, SoundEvent.CONVERT_TO_ZOMBIFIED)
-            .insert(298, SoundEvent.ADMIRE)
-            .insert(299, SoundEvent.STEP_LAVA)
-            .insert(300, SoundEvent.TEMPT)
-            .insert(301, SoundEvent.PANIC)
-            .insert(302, SoundEvent.ANGRY)
-            .insert(303, SoundEvent.AMBIENT_WARPED_FOREST)
-            .insert(304, SoundEvent.AMBIENT_SOULSAND_VALLEY)
-            .insert(305, SoundEvent.AMBIENT_NETHER_WASTES)
-            .insert(306, SoundEvent.AMBIENT_BASALT_DELTAS)
-            .insert(307, SoundEvent.AMBIENT_CRIMSON_FOREST)
-            .insert(308, SoundEvent.RESPAWN_ANCHOR_CHARGE)
-            .insert(309, SoundEvent.RESPAWN_ANCHOR_DEPLETE)
-            .insert(310, SoundEvent.RESPAWN_ANCHOR_SET_SPAWN)
-            .insert(311, SoundEvent.RESPAWN_ANCHOR_AMBIENT)
-            .insert(312, SoundEvent.SOUL_ESCAPE_QUIET)
-            .insert(313, SoundEvent.SOUL_ESCAPE_LOUD)
-            .insert(314, SoundEvent.RECORD_PIGSTEP)
-            .insert(315, SoundEvent.LINK_COMPASS_TO_LODESTONE)
-            .insert(316, SoundEvent.USE_SMITHING_TABLE)
-            .insert(317, SoundEvent.UNDEFINED)
+    protected static final TypeMap<LevelSoundEvent> SOUND_EVENTS = Bedrock_v390.SOUND_EVENTS.toBuilder()
+            .replace(287, LevelSoundEvent.JUMP_PREVENT)
+            .insert(288, LevelSoundEvent.AMBIENT_POLLINATE)
+            .insert(289, LevelSoundEvent.BEEHIVE_DRIP)
+            .insert(290, LevelSoundEvent.BEEHIVE_ENTER)
+            .insert(291, LevelSoundEvent.BEEHIVE_EXIT)
+            .insert(292, LevelSoundEvent.BEEHIVE_WORK)
+            .insert(293, LevelSoundEvent.BEEHIVE_SHEAR)
+            .insert(294, LevelSoundEvent.HONEYBOTTLE_DRINK)
+            .insert(295, LevelSoundEvent.AMBIENT_CAVE)
+            .insert(296, LevelSoundEvent.RETREAT)
+            .insert(297, LevelSoundEvent.CONVERT_TO_ZOMBIFIED)
+            .insert(298, LevelSoundEvent.ADMIRE)
+            .insert(299, LevelSoundEvent.STEP_LAVA)
+            .insert(300, LevelSoundEvent.TEMPT)
+            .insert(301, LevelSoundEvent.PANIC)
+            .insert(302, LevelSoundEvent.ANGRY)
+            .insert(303, LevelSoundEvent.AMBIENT_WARPED_FOREST)
+            .insert(304, LevelSoundEvent.AMBIENT_SOULSAND_VALLEY)
+            .insert(305, LevelSoundEvent.AMBIENT_NETHER_WASTES)
+            .insert(306, LevelSoundEvent.AMBIENT_BASALT_DELTAS)
+            .insert(307, LevelSoundEvent.AMBIENT_CRIMSON_FOREST)
+            .insert(308, LevelSoundEvent.RESPAWN_ANCHOR_CHARGE)
+            .insert(309, LevelSoundEvent.RESPAWN_ANCHOR_DEPLETE)
+            .insert(310, LevelSoundEvent.RESPAWN_ANCHOR_SET_SPAWN)
+            .insert(311, LevelSoundEvent.RESPAWN_ANCHOR_AMBIENT)
+            .insert(312, LevelSoundEvent.SOUL_ESCAPE_QUIET)
+            .insert(313, LevelSoundEvent.SOUL_ESCAPE_LOUD)
+            .insert(314, LevelSoundEvent.RECORD_PIGSTEP)
+            .insert(315, LevelSoundEvent.LINK_COMPASS_TO_LODESTONE)
+            .insert(316, LevelSoundEvent.USE_SMITHING_TABLE)
+            .insert(317, LevelSoundEvent.UNDEFINED)
             .build();
 
     protected static final TypeMap<ItemStackRequestActionType> ITEM_STACK_REQUEST_TYPES = TypeMap.builder(ItemStackRequestActionType.class)
@@ -108,76 +115,76 @@ public class Bedrock_v407 extends Bedrock_v390 {
             .insert(4, ItemStackRequestActionType.DESTROY)
             .insert(5, ItemStackRequestActionType.CONSUME)
             .insert(6, ItemStackRequestActionType.CREATE)
-            .insert(7, ItemStackRequestActionType.LAB_TABLE_COMBINE)
-            .insert(8, ItemStackRequestActionType.BEACON_PAYMENT)
+            .insert(7, ItemStackRequestActionType.SCREEN_LAB_TABLE_COMBINE)
+            .insert(8, ItemStackRequestActionType.SCREEN_BEACON_PAYMENT)
             .insert(9, ItemStackRequestActionType.CRAFT_RECIPE)
             .insert(10, ItemStackRequestActionType.CRAFT_RECIPE_AUTO)
             .insert(11, ItemStackRequestActionType.CRAFT_CREATIVE)
-            .insert(12, ItemStackRequestActionType.CRAFT_NON_IMPLEMENTED_DEPRECATED)
-            .insert(13, ItemStackRequestActionType.CRAFT_RESULTS_DEPRECATED)
+            .insert(12, ItemStackRequestActionType.CRAFT_NON_IMPLEMENTED)
+            .insert(13, ItemStackRequestActionType.CRAFT_RESULTS)
             .build();
 
-    protected static final TypeMap<ContainerSlotType> CONTAINER_SLOT_TYPES = TypeMap.builder(ContainerSlotType.class)
-            .insert(0, ContainerSlotType.ANVIL_INPUT)
-            .insert(1, ContainerSlotType.ANVIL_MATERIAL)
-            .insert(2, ContainerSlotType.ANVIL_RESULT)
-            .insert(3, ContainerSlotType.SMITHING_TABLE_INPUT)
-            .insert(4, ContainerSlotType.SMITHING_TABLE_MATERIAL)
-            .insert(5, ContainerSlotType.SMITHING_TABLE_RESULT)
-            .insert(6, ContainerSlotType.ARMOR)
-            .insert(7, ContainerSlotType.LEVEL_ENTITY)
-            .insert(8, ContainerSlotType.BEACON_PAYMENT)
-            .insert(9, ContainerSlotType.BREWING_INPUT)
-            .insert(10, ContainerSlotType.BREWING_RESULT)
-            .insert(11, ContainerSlotType.BREWING_FUEL)
-            .insert(12, ContainerSlotType.HOTBAR_AND_INVENTORY)
-            .insert(13, ContainerSlotType.CRAFTING_INPUT)
-            .insert(14, ContainerSlotType.CRAFTING_OUTPUT)
-            .insert(15, ContainerSlotType.RECIPE_CONSTRUCTION)
-            .insert(16, ContainerSlotType.RECIPE_NATURE)
-            .insert(17, ContainerSlotType.RECIPE_ITEMS)
-            .insert(18, ContainerSlotType.RECIPE_SEARCH)
-            .insert(19, ContainerSlotType.RECIPE_SEARCH_BAR)
-            .insert(20, ContainerSlotType.RECIPE_EQUIPMENT)
-            .insert(21, ContainerSlotType.ENCHANTING_INPUT)
-            .insert(22, ContainerSlotType.ENCHANTING_MATERIAL)
-            .insert(23, ContainerSlotType.FURNACE_FUEL)
-            .insert(24, ContainerSlotType.FURNACE_INGREDIENT)
-            .insert(25, ContainerSlotType.FURNACE_RESULT)
-            .insert(26, ContainerSlotType.HORSE_EQUIP)
-            .insert(27, ContainerSlotType.HOTBAR)
-            .insert(28, ContainerSlotType.INVENTORY)
-            .insert(29, ContainerSlotType.SHULKER_BOX)
-            .insert(30, ContainerSlotType.TRADE_INGREDIENT_1)
-            .insert(31, ContainerSlotType.TRADE_INGREDIENT_2)
-            .insert(32, ContainerSlotType.TRADE_RESULT)
-            .insert(33, ContainerSlotType.OFFHAND)
-            .insert(34, ContainerSlotType.COMPOUND_CREATOR_INPUT)
-            .insert(35, ContainerSlotType.COMPOUND_CREATOR_OUTPUT)
-            .insert(36, ContainerSlotType.ELEMENT_CONSTRUCTOR_OUTPUT)
-            .insert(37, ContainerSlotType.MATERIAL_REDUCER_INPUT)
-            .insert(38, ContainerSlotType.MATERIAL_REDUCER_OUTPUT)
-            .insert(39, ContainerSlotType.LAB_TABLE_INPUT)
-            .insert(40, ContainerSlotType.LOOM_INPUT)
-            .insert(41, ContainerSlotType.LOOM_DYE)
-            .insert(42, ContainerSlotType.LOOM_MATERIAL)
-            .insert(43, ContainerSlotType.LOOM_RESULT)
-            .insert(44, ContainerSlotType.BLAST_FURNACE_INGREDIENT)
-            .insert(45, ContainerSlotType.SMOKER_INGREDIENT)
-            .insert(46, ContainerSlotType.TRADE2_INGREDIENT_1)
-            .insert(47, ContainerSlotType.TRADE2_INGREDIENT_2)
-            .insert(48, ContainerSlotType.TRADE2_RESULT)
-            .insert(49, ContainerSlotType.GRINDSTONE_INPUT)
-            .insert(50, ContainerSlotType.GRINDSTONE_ADDITIONAL)
-            .insert(51, ContainerSlotType.GRINDSTONE_RESULT)
-            .insert(52, ContainerSlotType.STONECUTTER_INPUT)
-            .insert(53, ContainerSlotType.STONECUTTER_RESULT)
-            .insert(54, ContainerSlotType.CARTOGRAPHY_INPUT)
-            .insert(55, ContainerSlotType.CARTOGRAPHY_ADDITIONAL)
-            .insert(56, ContainerSlotType.CARTOGRAPHY_RESULT)
-            .insert(57, ContainerSlotType.BARREL)
-            .insert(58, ContainerSlotType.CURSOR)
-            .insert(59, ContainerSlotType.CREATED_OUTPUT)
+    protected static final TypeMap<ContainerEnumName> CONTAINER_SLOT_TYPES = TypeMap.builder(ContainerEnumName.class)
+            .insert(0, ContainerEnumName.ANVIL_INPUT_CONTAINER)
+            .insert(1, ContainerEnumName.ANVIL_MATERIAL_CONTAINER)
+            .insert(2, ContainerEnumName.ANVIL_RESULT_PREVIEW_CONTAINER)
+            .insert(3, ContainerEnumName.SMITHING_TABLE_INPUT_CONTAINER)
+            .insert(4, ContainerEnumName.SMITHING_TABLE_MATERIAL_CONTAINER)
+            .insert(5, ContainerEnumName.SMITHING_TABLE_RESULT_PREVIEW_CONTAINER)
+            .insert(6, ContainerEnumName.ARMOR_CONTAINER)
+            .insert(7, ContainerEnumName.LEVEL_ENTITY_CONTAINER)
+            .insert(8, ContainerEnumName.BEACON_PAYMENT_CONTAINER)
+            .insert(9, ContainerEnumName.BREWING_STAND_INPUT_CONTAINER)
+            .insert(10, ContainerEnumName.BREWING_STAND_RESULT_CONTAINER)
+            .insert(11, ContainerEnumName.BREWING_STAND_FUEL_CONTAINER)
+            .insert(12, ContainerEnumName.COMBINED_HOTBAR_AND_INVENTORY_CONTAINER)
+            .insert(13, ContainerEnumName.CRAFTING_INPUT_CONTAINER)
+            .insert(14, ContainerEnumName.CRAFTING_OUTPUT_PREVIEW_CONTAINER)
+            .insert(15, ContainerEnumName.RECIPE_CONSTRUCTION_CONTAINER)
+            .insert(16, ContainerEnumName.RECIPE_NATURE_CONTAINER)
+            .insert(17, ContainerEnumName.RECIPE_ITEMS_CONTAINER)
+            .insert(18, ContainerEnumName.RECIPE_SEARCH_CONTAINER)
+            .insert(19, ContainerEnumName.RECIPE_SEARCH_BAR_CONTAINER)
+            .insert(20, ContainerEnumName.RECIPE_EQUIPMENT_CONTAINER)
+            .insert(21, ContainerEnumName.ENCHANTING_INPUT_CONTAINER)
+            .insert(22, ContainerEnumName.ENCHANTING_MATERIAL_CONTAINER)
+            .insert(23, ContainerEnumName.FURNACE_FUEL_CONTAINER)
+            .insert(24, ContainerEnumName.FURNACE_INGREDIENT_CONTAINER)
+            .insert(25, ContainerEnumName.FURNACE_RESULT_CONTAINER)
+            .insert(26, ContainerEnumName.HORSE_EQUIP_CONTAINER)
+            .insert(27, ContainerEnumName.HOTBAR_CONTAINER)
+            .insert(28, ContainerEnumName.INVENTORY_CONTAINER)
+            .insert(29, ContainerEnumName.SHULKER_BOX_CONTAINER)
+            .insert(30, ContainerEnumName.TRADE_INGREDIENT1CONTAINER)
+            .insert(31, ContainerEnumName.TRADE_INGREDIENT2CONTAINER)
+            .insert(32, ContainerEnumName.TRADE_RESULT_PREVIEW_CONTAINER)
+            .insert(33, ContainerEnumName.OFFHAND_CONTAINER)
+            .insert(34, ContainerEnumName.COMPOUND_CREATOR_INPUT)
+            .insert(35, ContainerEnumName.COMPOUND_CREATOR_OUTPUT_PREVIEW)
+            .insert(36, ContainerEnumName.ELEMENT_CONSTRUCTOR_OUTPUT_PREVIEW)
+            .insert(37, ContainerEnumName.MATERIAL_REDUCER_INPUT)
+            .insert(38, ContainerEnumName.MATERIAL_REDUCER_OUTPUT)
+            .insert(39, ContainerEnumName.LAB_TABLE_INPUT)
+            .insert(40, ContainerEnumName.LOOM_INPUT_CONTAINER)
+            .insert(41, ContainerEnumName.LOOM_DYE_CONTAINER)
+            .insert(42, ContainerEnumName.LOOM_MATERIAL_CONTAINER)
+            .insert(43, ContainerEnumName.LOOM_RESULT_PREVIEW_CONTAINER)
+            .insert(44, ContainerEnumName.BLAST_FURNACE_INGREDIENT_CONTAINER)
+            .insert(45, ContainerEnumName.SMOKER_INGREDIENT_CONTAINER)
+            .insert(46, ContainerEnumName.TRADE2INGREDIENT1CONTAINER)
+            .insert(47, ContainerEnumName.TRADE2INGREDIENT2CONTAINER)
+            .insert(48, ContainerEnumName.TRADE2RESULT_PREVIEW_CONTAINER)
+            .insert(49, ContainerEnumName.GRINDSTONE_INPUT_CONTAINER)
+            .insert(50, ContainerEnumName.GRINDSTONE_ADDITIONAL_CONTAINER)
+            .insert(51, ContainerEnumName.GRINDSTONE_RESULT_PREVIEW_CONTAINER)
+            .insert(52, ContainerEnumName.STONECUTTER_INPUT_CONTAINER)
+            .insert(53, ContainerEnumName.STONECUTTER_RESULT_PREVIEW_CONTAINER)
+            .insert(54, ContainerEnumName.CARTOGRAPHY_INPUT_CONTAINER)
+            .insert(55, ContainerEnumName.CARTOGRAPHY_ADDITIONAL_CONTAINER)
+            .insert(56, ContainerEnumName.CARTOGRAPHY_RESULT_PREVIEW_CONTAINER)
+            .insert(57, ContainerEnumName.BARREL_CONTAINER)
+            .insert(58, ContainerEnumName.CURSOR_CONTAINER)
+            .insert(59, ContainerEnumName.CREATED_OUTPUT_CONTAINER)
             .build();
 
     public static BedrockCodec CODEC = Bedrock_v390.CODEC.toBuilder()
@@ -195,7 +202,7 @@ public class Bedrock_v407 extends Bedrock_v390 {
             .updateSerializer(LevelSoundEvent1Packet.class, new LevelSoundEvent1Serializer_v291(SOUND_EVENTS))
             .updateSerializer(LevelSoundEvent2Packet.class, new LevelSoundEvent2Serializer_v313(SOUND_EVENTS))
             .updateSerializer(LevelSoundEventPacket.class, new LevelSoundEventSerializer_v332(SOUND_EVENTS))
-            .updateSerializer(EntityEventPacket.class, new EntityEventSerializer_v291(ENTITY_EVENTS))
+            .updateSerializer(ActorEventPacket.class, new ActorEventSerializer_v291(ACTOR_EVENTS))
             .updateSerializer(LevelEventPacket.class, new LevelEventSerializer_v291(LEVEL_EVENTS))
             .updateSerializer(LevelEventGenericPacket.class, new LevelEventGenericSerializer_v361(LEVEL_EVENTS))
             .updateSerializer(EducationSettingsPacket.class, EducationSettingsSerializer_v407.INSTANCE)

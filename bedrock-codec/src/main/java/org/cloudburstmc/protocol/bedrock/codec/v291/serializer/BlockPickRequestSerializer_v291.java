@@ -13,15 +13,15 @@ public class BlockPickRequestSerializer_v291 implements BedrockPacketSerializer<
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, BlockPickRequestPacket packet) {
-        helper.writeVector3i(buffer, packet.getBlockPosition());
-        buffer.writeBoolean(packet.isAddUserData());
-        buffer.writeByte(packet.getHotbarSlot());
+        helper.writeVector3i(buffer, packet.getPosition());
+        buffer.writeBoolean(packet.isWithData());
+        buffer.writeByte(packet.getMaxSlots());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, BlockPickRequestPacket packet) {
-        packet.setBlockPosition(helper.readVector3i(buffer));
-        packet.setAddUserData(buffer.readBoolean());
-        packet.setHotbarSlot(buffer.readUnsignedByte());
+        packet.setPosition(helper.readVector3i(buffer));
+        packet.setWithData(buffer.readBoolean());
+        packet.setMaxSlots(buffer.readUnsignedByte());
     }
 }

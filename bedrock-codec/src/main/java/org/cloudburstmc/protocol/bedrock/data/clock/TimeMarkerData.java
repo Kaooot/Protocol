@@ -1,12 +1,12 @@
 package org.cloudburstmc.protocol.bedrock.data.clock;
 
-import lombok.Value;
+import lombok.Data;
 
-@Value
+@Data
 public class TimeMarkerData {
 
-    long id;
-    String name;
-    int time;
-    Integer period; // changelog says required but whatever
+    private long id;
+    private String name;
+    private int time;
+    private Integer period;
 }

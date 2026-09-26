@@ -2,19 +2,21 @@ package org.cloudburstmc.protocol.bedrock.packet;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import org.cloudburstmc.protocol.bedrock.data.actor.EntityNetId;
+import org.cloudburstmc.protocol.bedrock.data.world.DimensionType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
-@EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
+@EqualsAndHashCode(doNotUseGetters = true)
+@ToString(doNotUseGetters = true)
 public class RemoveVolumeEntityPacket implements BedrockPacket {
-    private int id;
-    /**
-     * @since v503
-     */
-    private int dimension;
+
+    private EntityNetId entityNetworkId;
+    private DimensionType dimensionType;
 
     @Override
-    public PacketSignal handle(BedrockPacketHandler handler) {
+    public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
@@ -32,4 +34,3 @@ public class RemoveVolumeEntityPacket implements BedrockPacket {
         }
     }
 }
-

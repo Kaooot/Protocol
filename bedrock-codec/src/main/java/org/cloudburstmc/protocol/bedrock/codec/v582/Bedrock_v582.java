@@ -7,18 +7,18 @@ import org.cloudburstmc.protocol.bedrock.codec.v448.serializer.AvailableCommands
 import org.cloudburstmc.protocol.bedrock.codec.v575.BedrockCodecHelper_v575;
 import org.cloudburstmc.protocol.bedrock.codec.v575.Bedrock_v575;
 import org.cloudburstmc.protocol.bedrock.codec.v582.serializer.*;
-import org.cloudburstmc.protocol.bedrock.data.LevelEvent;
-import org.cloudburstmc.protocol.bedrock.data.LevelEventType;
+import org.cloudburstmc.protocol.bedrock.data.world.event.LevelEvent;
+import org.cloudburstmc.protocol.bedrock.data.world.event.LevelEventType;
 import org.cloudburstmc.protocol.bedrock.data.PacketRecipient;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandParam;
-import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerSlotType;
+import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerEnumName;
 import org.cloudburstmc.protocol.bedrock.packet.*;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 
 public class Bedrock_v582 extends Bedrock_v575 {
 
-    protected static final TypeMap<ContainerSlotType> CONTAINER_SLOT_TYPES = Bedrock_v575.CONTAINER_SLOT_TYPES.toBuilder()
-            .insert(61, ContainerSlotType.SMITHING_TABLE_TEMPLATE)
+    protected static final TypeMap<ContainerEnumName> CONTAINER_SLOT_TYPES = Bedrock_v575.CONTAINER_SLOT_TYPES.toBuilder()
+            .insert(61, ContainerEnumName.SMITHING_TABLE_TEMPLATE_CONTAINER)
             .build();
 
     protected static final TypeMap<LevelEventType> LEVEL_EVENTS = Bedrock_v575.LEVEL_EVENTS.toBuilder()
@@ -37,11 +37,11 @@ public class Bedrock_v582 extends Bedrock_v575 {
 
     protected static final TypeMap<CommandParam> COMMAND_PARAMS = Bedrock_v575.COMMAND_PARAMS.toBuilder()
             .shift(32, 5)
-            .insert(32, CommandParam.PERMISSION)
-            .insert(33, CommandParam.PERMISSIONS)
-            .insert(34, CommandParam.PERMISSION_SELECTOR)
-            .insert(35, CommandParam.PERMISSION_ELEMENT)
-            .insert(36, CommandParam.PERMISSION_ELEMENTS)
+            .insert(32, CommandParam.HAS_PERMISSION_ARG)
+            .insert(33, CommandParam.HAS_PERMISSIONS_ARG)
+            .insert(34, CommandParam.HAS_PERMISSION_SELECTOR)
+            .insert(35, CommandParam.HAS_PERMISSION_ELEMENT)
+            .insert(36, CommandParam.HAS_PERMISSION_ELEMENTS)
             .build();
 
     public static final BedrockCodec CODEC = Bedrock_v575.CODEC.toBuilder()

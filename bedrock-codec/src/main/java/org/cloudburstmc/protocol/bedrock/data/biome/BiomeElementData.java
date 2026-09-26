@@ -1,47 +1,20 @@
 package org.cloudburstmc.protocol.bedrock.data.biome;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Value;
-import org.cloudburstmc.protocol.bedrock.data.ExpressionOp;
-import org.cloudburstmc.protocol.common.util.index.Indexable;
-import org.cloudburstmc.protocol.common.util.index.Unindexed;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Value
-@RequiredArgsConstructor(onConstructor_ = { @Deprecated })
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class BiomeElementData {
-    float noiseFrequencyScale;
-    float noiseLowerBound;
-    float noiseUpperBound;
-    ExpressionOp heightMinType;
-    @Getter(AccessLevel.NONE)
-    transient Indexable<String> heightMin;
-    ExpressionOp heightMaxType;
-    @Getter(AccessLevel.NONE)
-    transient Indexable<String> heightMax;
-    BiomeSurfaceMaterialData adjustedMaterials;
 
-    @JsonCreator
-    public BiomeElementData(float noiseFrequencyScale, float noiseLowerBound, float noiseUpperBound,
-                            ExpressionOp heightMinType, String heightMin, ExpressionOp heightMaxType,
-                            String heightMax, BiomeSurfaceMaterialData adjustedMaterials) {
-        this.noiseFrequencyScale = noiseFrequencyScale;
-        this.noiseLowerBound = noiseLowerBound;
-        this.noiseUpperBound = noiseUpperBound;
-        this.heightMinType = heightMinType;
-        this.heightMin = new Unindexed<>(heightMin);
-        this.heightMaxType = heightMaxType;
-        this.heightMax = new Unindexed<>(heightMax);
-        this.adjustedMaterials = adjustedMaterials;
-    }
-
-    public String getHeightMin() {
-        return heightMin.get();
-    }
-
-    public String getHeightMax() {
-        return heightMax.get();
-    }
+    private float noiseFreqScale;
+    private float noiseLowerBound;
+    private float noiseUpperBound;
+    private ExpressionOp heightMinType;
+    private int heightMin;
+    private ExpressionOp heightMaxType;
+    private int heightMax;
+    private BiomeSurfaceMaterialData adjustedMaterials;
 }

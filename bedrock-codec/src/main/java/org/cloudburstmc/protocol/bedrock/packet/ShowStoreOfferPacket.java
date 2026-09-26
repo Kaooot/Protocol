@@ -3,30 +3,29 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.protocol.bedrock.data.StoreOfferRedirectType;
+import org.cloudburstmc.protocol.bedrock.data.misc.ShowStoreOfferRedirectType;
 import org.cloudburstmc.protocol.common.PacketSignal;
+
+import java.util.UUID;
 
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class ShowStoreOfferPacket implements BedrockPacket {
-    private String offerId;
-    /**
-     * @since v630 deprecated
-     */
-    @Deprecated
-    private boolean shownToAll;
 
+    private UUID offerId;
     /**
-     * @since v630
+     * @deprecated since v630
      */
-    private StoreOfferRedirectType redirectType;
+    private boolean shownToAll;
+    private ShowStoreOfferRedirectType redirectType;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
+    @Override
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.SHOW_STORE_OFFER;
     }
@@ -40,4 +39,3 @@ public class ShowStoreOfferPacket implements BedrockPacket {
         }
     }
 }
-

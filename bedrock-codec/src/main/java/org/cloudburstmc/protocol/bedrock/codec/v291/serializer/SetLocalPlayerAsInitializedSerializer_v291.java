@@ -15,11 +15,11 @@ public class SetLocalPlayerAsInitializedSerializer_v291 implements BedrockPacket
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, SetLocalPlayerAsInitializedPacket packet) {
-        VarInts.writeUnsignedLong(buffer, packet.getRuntimeEntityId());
+        VarInts.writeUnsignedLong(buffer, packet.getPlayerID());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, SetLocalPlayerAsInitializedPacket packet) {
-        packet.setRuntimeEntityId(VarInts.readUnsignedLong(buffer));
+        packet.setPlayerID(VarInts.readUnsignedLong(buffer));
     }
 }

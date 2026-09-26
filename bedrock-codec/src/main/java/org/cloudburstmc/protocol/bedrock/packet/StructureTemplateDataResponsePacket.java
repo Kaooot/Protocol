@@ -11,18 +11,19 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class StructureTemplateDataResponsePacket implements BedrockPacket {
-    private String name;
-    private boolean save;
-    private NbtMap tag;
-    private StructureTemplateResponseType type;
+
+    private String structureName;
+    private NbtMap structuresNbt;
+    private StructureTemplateResponseType responseType;
 
     @Override
-    public PacketSignal handle(BedrockPacketHandler handler) {
+    public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
+    @Override
     public BedrockPacketType getPacketType() {
-        return BedrockPacketType.STRUCTURE_TEMPLATE_DATA_EXPORT_RESPONSE;
+        return BedrockPacketType.STRUCTURE_TEMPLATE_DATA_RESPONSE;
     }
 
     @Override
@@ -34,4 +35,3 @@ public class StructureTemplateDataResponsePacket implements BedrockPacket {
         }
     }
 }
-

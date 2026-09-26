@@ -4,8 +4,7 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.nbt.NbtMap;
-import org.cloudburstmc.protocol.bedrock.data.camera.CameraPreset;
+import org.cloudburstmc.protocol.bedrock.data.camera.CameraPresets;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 import java.util.List;
@@ -14,10 +13,11 @@ import java.util.List;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class CameraPresetsPacket implements BedrockPacket {
-    private final List<CameraPreset> presets = new ObjectArrayList<>();
+
+    private final List<CameraPresets> cameraPresets = new ObjectArrayList<>();
 
     @Override
-    public PacketSignal handle(BedrockPacketHandler handler) {
+    public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
@@ -35,4 +35,3 @@ public class CameraPresetsPacket implements BedrockPacket {
         }
     }
 }
-

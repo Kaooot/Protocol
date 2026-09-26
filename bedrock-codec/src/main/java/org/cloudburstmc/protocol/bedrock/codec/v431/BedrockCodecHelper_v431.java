@@ -6,32 +6,28 @@ import io.netty.buffer.ByteBufUtil;
 import org.cloudburstmc.nbt.NBTInputStream;
 import org.cloudburstmc.nbt.NBTOutputStream;
 import org.cloudburstmc.nbt.NbtMap;
-import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
+import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v428.BedrockCodecHelper_v428;
 import org.cloudburstmc.protocol.bedrock.data.definitions.ItemDefinition;
-import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerSlotType;
+import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerEnumName;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
-import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.CraftResultsDeprecatedAction;
-import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestAction;
-import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestActionType;
-import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.InventoryActionData;
-import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.InventorySource;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequestActionType;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestCraftResultsDeprecatedAction;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 import org.cloudburstmc.protocol.common.util.VarInts;
 import org.cloudburstmc.protocol.common.util.stream.LittleEndianByteBufInputStream;
 import org.cloudburstmc.protocol.common.util.stream.LittleEndianByteBufOutputStream;
 
 import java.io.IOException;
-import java.util.List;
 
 import static java.util.Objects.requireNonNull;
 import static org.cloudburstmc.protocol.common.util.Preconditions.checkArgument;
 
 public class BedrockCodecHelper_v431 extends BedrockCodecHelper_v428 {
 
-    public BedrockCodecHelper_v431(EntityDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes,
-                                   TypeMap<ItemStackRequestActionType> stackRequestActionTypes, TypeMap<ContainerSlotType> containerSlotTypes) {
-        super(entityData, gameRulesTypes, stackRequestActionTypes, containerSlotTypes);
+    public BedrockCodecHelper_v431(ActorDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes,
+                                   TypeMap<ItemStackRequestActionType> stackRequestActionTypes, TypeMap<ContainerEnumName> containerEnumNames) {
+        super(entityData, gameRulesTypes, stackRequestActionTypes, containerEnumNames);
     }
 
     @Override
@@ -309,47 +305,16 @@ public class BedrockCodecHelper_v431 extends BedrockCodecHelper_v428 {
     }
 
     @Override
-    public boolean readInventoryActions(ByteBuf buffer, List<InventoryActionData> actions) {
-        this.readArray(buffer, actions, (buf, helper) -> {
-            InventorySource source = readSource(buf);
-            int slot = VarInts.readUnsignedInt(buf);
-            ItemData fromItem = helper.readItem(buf);
-            ItemData toItem = helper.readItem(buf);
-
-            return new InventoryActionData(source, slot, fromItem, toItem);
-        }, this.encodingSettings.maxInventoryActionsOrRequests());
-        return false;
+    protected void writeItemStackRequestCraftResultsDeprecatedAction(ByteBuf buffer, ItemStackRequestActionType type, ItemStackRequestCraftResultsDeprecatedAction action) {
+        this.writeArray(buffer, action.getCraftResults(), this::writeItemInstance);
+        buffer.writeByte(action.getNumCrafts());
     }
 
     @Override
-    public void writeInventoryActions(ByteBuf buffer, List<InventoryActionData> actions, boolean hasNetworkIds) {
-        this.writeArray(buffer, actions, (buf, helper, action) -> {
-            writeSource(buf, action.getSource());
-            VarInts.writeUnsignedInt(buf, action.getSlot());
-            helper.writeItem(buf, action.getFromItem());
-            helper.writeItem(buf, action.getToItem());
-        });
-    }
-
-    @Override
-    protected ItemStackRequestAction readRequestActionData(ByteBuf byteBuf, ItemStackRequestActionType type) {
-        if (type == ItemStackRequestActionType.CRAFT_RESULTS_DEPRECATED) {
-            return new CraftResultsDeprecatedAction(
-                    this.readArray(byteBuf, new ItemData[0], this::readItemInstance),
-                    byteBuf.readUnsignedByte()
-            );
-        } else {
-            return super.readRequestActionData(byteBuf, type);
-        }
-    }
-
-    @Override
-    protected void writeRequestActionData(ByteBuf byteBuf, ItemStackRequestAction action) {
-        if (action.getType() == ItemStackRequestActionType.CRAFT_RESULTS_DEPRECATED) {
-            this.writeArray(byteBuf, ((CraftResultsDeprecatedAction) action).getResultItems(), this::writeItemInstance);
-            byteBuf.writeByte(((CraftResultsDeprecatedAction) action).getTimesCrafted());
-        } else {
-            super.writeRequestActionData(byteBuf, action);
-        }
+    protected ItemStackRequestCraftResultsDeprecatedAction readItemStackRequestCraftResultsDeprecatedAction(ByteBuf buffer, ItemStackRequestActionType type) {
+        final ItemStackRequestCraftResultsDeprecatedAction action = new ItemStackRequestCraftResultsDeprecatedAction();
+        this.readArray(buffer, action.getCraftResults(), this::readItemInstance);
+        action.setNumCrafts(buffer.readUnsignedByte());
+        return action;
     }
 }

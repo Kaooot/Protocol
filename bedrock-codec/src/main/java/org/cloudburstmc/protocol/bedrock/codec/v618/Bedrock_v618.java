@@ -1,7 +1,7 @@
 package org.cloudburstmc.protocol.bedrock.codec.v618;
 
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
-import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
+import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelEventSerializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelSoundEvent1Serializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v313.serializer.LevelSoundEvent2Serializer_v313;
@@ -9,32 +9,32 @@ import org.cloudburstmc.protocol.bedrock.codec.v332.serializer.LevelSoundEventSe
 import org.cloudburstmc.protocol.bedrock.codec.v361.serializer.LevelEventGenericSerializer_v361;
 import org.cloudburstmc.protocol.bedrock.codec.v575.BedrockCodecHelper_v575;
 import org.cloudburstmc.protocol.bedrock.codec.v594.Bedrock_v594;
-import org.cloudburstmc.protocol.bedrock.codec.v618.serializer.CameraInstructionSerializer_618;
+import org.cloudburstmc.protocol.bedrock.codec.v618.serializer.CameraInstructionSerializer_v618;
 import org.cloudburstmc.protocol.bedrock.codec.v618.serializer.CameraPresetsSerializer_v618;
 import org.cloudburstmc.protocol.bedrock.codec.v618.serializer.RefreshEntitlementsSerializer_v618;
 import org.cloudburstmc.protocol.bedrock.codec.v618.serializer.ResourcePacksInfoSerializer_v618;
-import org.cloudburstmc.protocol.bedrock.data.LevelEventType;
+import org.cloudburstmc.protocol.bedrock.data.world.event.LevelEventType;
 import org.cloudburstmc.protocol.bedrock.data.PacketRecipient;
-import org.cloudburstmc.protocol.bedrock.data.ParticleType;
-import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes;
-import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.TextProcessingEventOrigin;
+import org.cloudburstmc.protocol.bedrock.data.world.event.ParticleType;
+import org.cloudburstmc.protocol.bedrock.data.sound.LevelSoundEvent;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataTypes;
+import org.cloudburstmc.protocol.bedrock.data.text.TextProcessingEventOrigin;
 import org.cloudburstmc.protocol.bedrock.packet.*;
 import org.cloudburstmc.protocol.bedrock.transformer.TypeMapTransformer;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 
 public class Bedrock_v618 extends Bedrock_v594 {
 
-    protected static final TypeMap<SoundEvent> SOUND_EVENTS = Bedrock_v594.SOUND_EVENTS
+    protected static final TypeMap<LevelSoundEvent> SOUND_EVENTS = Bedrock_v594.SOUND_EVENTS
             .toBuilder()
-            .replace(470, SoundEvent.BUMP)
-            .insert(471, SoundEvent.PUMPKIN_CARVE)
-            .insert(472, SoundEvent.CONVERT_HUSK_TO_ZOMBIE)
-            .insert(473, SoundEvent.PIG_DEATH)
-            .insert(474, SoundEvent.HOGLIN_CONVERT_TO_ZOMBIE)
-            .insert(475, SoundEvent.AMBIENT_UNDERWATER_ENTER)
-            .insert(476, SoundEvent.AMBIENT_UNDERWATER_EXIT)
-            .insert(477, SoundEvent.UNDEFINED)
+            .replace(470, LevelSoundEvent.BUMP)
+            .insert(471, LevelSoundEvent.PUMPKIN_CARVE)
+            .insert(472, LevelSoundEvent.CONVERT_HUSK_TO_ZOMBIE)
+            .insert(473, LevelSoundEvent.PIG_DEATH)
+            .insert(474, LevelSoundEvent.HOGLIN_CONVERT_TO_ZOMBIE)
+            .insert(475, LevelSoundEvent.AMBIENT_UNDERWATER_ENTER)
+            .insert(476, LevelSoundEvent.AMBIENT_UNDERWATER_EXIT)
+            .insert(477, LevelSoundEvent.UNDEFINED)
             .build();
 
     protected static final TypeMap<TextProcessingEventOrigin> TEXT_PROCESSING_ORIGINS = Bedrock_v594.TEXT_PROCESSING_ORIGINS
@@ -51,9 +51,9 @@ public class Bedrock_v618 extends Bedrock_v594 {
             .insert(LEVEL_EVENT_PARTICLE_TYPE, PARTICLE_TYPES)
             .build();
 
-    protected static final EntityDataTypeMap ENTITY_DATA = Bedrock_v594.ENTITY_DATA
+    protected static final ActorDataTypeMap ENTITY_DATA = Bedrock_v594.ENTITY_DATA
             .toBuilder()
-            .update(EntityDataTypes.AREA_EFFECT_CLOUD_PARTICLE, new TypeMapTransformer<>(PARTICLE_TYPES))
+            .update(ActorDataTypes.AREA_EFFECT_CLOUD_PARTICLE, new TypeMapTransformer<>(PARTICLE_TYPES))
             .build();
 
     public static final BedrockCodec CODEC = Bedrock_v594.CODEC.toBuilder()
@@ -68,7 +68,7 @@ public class Bedrock_v618 extends Bedrock_v594 {
             .updateSerializer(LevelEventGenericPacket.class, new LevelEventGenericSerializer_v361(LEVEL_EVENTS))
             .updateSerializer(ResourcePacksInfoPacket.class, ResourcePacksInfoSerializer_v618.INSTANCE)
             .updateSerializer(CameraPresetsPacket.class, CameraPresetsSerializer_v618.INSTANCE)
-            .updateSerializer(CameraInstructionPacket.class, new CameraInstructionSerializer_618())
+            .updateSerializer(CameraInstructionPacket.class, new CameraInstructionSerializer_v618())
             .registerPacket(RefreshEntitlementsPacket::new, new RefreshEntitlementsSerializer_v618(), 305, PacketRecipient.SERVER)
             .build();
 }

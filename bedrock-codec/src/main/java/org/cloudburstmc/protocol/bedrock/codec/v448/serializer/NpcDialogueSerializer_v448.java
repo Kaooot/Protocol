@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
+import org.cloudburstmc.protocol.bedrock.data.form.NpcDialogueActionType;
 import org.cloudburstmc.protocol.bedrock.packet.NpcDialoguePacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -12,12 +13,12 @@ import org.cloudburstmc.protocol.common.util.VarInts;
 public class NpcDialogueSerializer_v448 implements BedrockPacketSerializer<NpcDialoguePacket> {
     public static final NpcDialogueSerializer_v448 INSTANCE = new NpcDialogueSerializer_v448();
 
-    private static final NpcDialoguePacket.Action[] VALUES = NpcDialoguePacket.Action.values();
+    private static final NpcDialogueActionType[] VALUES = NpcDialogueActionType.values();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, NpcDialoguePacket packet) {
-        buffer.writeLongLE(packet.getUniqueEntityId());
-        VarInts.writeInt(buffer, packet.getAction().ordinal());
+        buffer.writeLongLE(packet.getNpcIdRawId());
+        VarInts.writeInt(buffer, packet.getNpcDialogueActionType().ordinal());
         helper.writeString(buffer, packet.getDialogue());
         helper.writeString(buffer, packet.getSceneName());
         helper.writeString(buffer, packet.getNpcName());
@@ -26,8 +27,8 @@ public class NpcDialogueSerializer_v448 implements BedrockPacketSerializer<NpcDi
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, NpcDialoguePacket packet) {
-        packet.setUniqueEntityId(buffer.readLongLE());
-        packet.setAction(VALUES[VarInts.readInt(buffer)]);
+        packet.setNpcIdRawId(buffer.readLongLE());
+        packet.setNpcDialogueActionType(VALUES[VarInts.readInt(buffer)]);
         packet.setDialogue(helper.readString(buffer));
         packet.setSceneName(helper.readString(buffer));
         packet.setNpcName(helper.readString(buffer));

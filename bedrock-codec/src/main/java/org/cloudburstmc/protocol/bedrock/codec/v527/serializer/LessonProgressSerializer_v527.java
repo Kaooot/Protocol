@@ -4,7 +4,7 @@ import io.netty.buffer.ByteBuf;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
-import org.cloudburstmc.protocol.bedrock.data.ee.LessonAction;
+import org.cloudburstmc.protocol.bedrock.data.education.LessonAction;
 import org.cloudburstmc.protocol.bedrock.packet.LessonProgressPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -15,14 +15,14 @@ public class LessonProgressSerializer_v527 implements BedrockPacketSerializer<Le
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, LessonProgressPacket packet) {
-        VarInts.writeInt(buffer, packet.getAction().ordinal());
+        VarInts.writeInt(buffer, packet.getLessonAction().ordinal());
         VarInts.writeInt(buffer, packet.getScore());
         helper.writeString(buffer, packet.getActivityId());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, LessonProgressPacket packet) {
-        packet.setAction(ACTIONS[VarInts.readInt(buffer)]);
+        packet.setLessonAction(ACTIONS[VarInts.readInt(buffer)]);
         packet.setScore(VarInts.readInt(buffer));
         packet.setActivityId(helper.readString(buffer));
     }

@@ -5,10 +5,15 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
+/**
+ * @deprecated
+ */
 @Data
+@Deprecated
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class EntityFallPacket implements BedrockPacket {
+
     private long runtimeEntityId;
     private float fallDistance;
     private boolean inVoid;
@@ -31,4 +36,3 @@ public class EntityFallPacket implements BedrockPacket {
         }
     }
 }
-

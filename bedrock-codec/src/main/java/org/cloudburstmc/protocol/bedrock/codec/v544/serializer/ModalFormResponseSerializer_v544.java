@@ -3,7 +3,7 @@ package org.cloudburstmc.protocol.bedrock.codec.v544.serializer;
 import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.ModalFormResponseSerializer_v291;
-import org.cloudburstmc.protocol.bedrock.data.ModalFormCancelReason;
+import org.cloudburstmc.protocol.bedrock.data.form.ModalFormCancelReason;
 import org.cloudburstmc.protocol.bedrock.packet.ModalFormResponsePacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -16,16 +16,16 @@ public class ModalFormResponseSerializer_v544 extends ModalFormResponseSerialize
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ModalFormResponsePacket packet) {
-        VarInts.writeUnsignedInt(buffer, packet.getFormId());
-        helper.writeOptional(buffer, Objects::nonNull, packet.getFormData(), helper::writeString);
-        helper.writeOptional(buffer, Optional::isPresent, packet.getCancelReason(), (buf, reason) ->
-                buf.writeByte(reason.get().ordinal()));
+        VarInts.writeUnsignedInt(buffer, packet.getFormID());
+        helper.writeOptional(buffer, Objects::nonNull, packet.getJsonResponse(), helper::writeString);
+        helper.writeOptionalNull(buffer, packet.getFormCancelReason(), (buf, reason) ->
+                buf.writeByte(reason.ordinal()));
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ModalFormResponsePacket packet) {
-        packet.setFormId(VarInts.readUnsignedInt(buffer));
-        packet.setFormData(helper.readOptional(buffer, null, helper::readString));
-        packet.setCancelReason(helper.readOptional(buffer, Optional.empty(), byteBuf -> Optional.of(VALUES[byteBuf.readByte()])));
+        packet.setFormID(VarInts.readUnsignedInt(buffer));
+        packet.setJsonResponse(helper.readOptional(buffer, null, helper::readString));
+        packet.setFormCancelReason(helper.readOptional(buffer, null, byteBuf -> VALUES[byteBuf.readByte()]));
     }
 }

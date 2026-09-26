@@ -103,7 +103,8 @@ public class DataStoreSerializationTest {
         try {
             ClientboundDataStorePacket decoded = new ClientboundDataStorePacket();
             ClientboundDataStoreSerializer_v924.INSTANCE.deserialize(buffer, HELPER, decoded);
-            return ((DataStoreChange) decoded.getUpdates().get(0)).getNewValue();
+            System.out.println(decoded);
+            return ((DataStoreChange) decoded.getUpdates().get(0)).getTheNewPropertyValue();
         } finally {
             buffer.release();
         }
@@ -128,7 +129,7 @@ public class DataStoreSerializationTest {
         change.setDataStoreName("minecraft");
         change.setProperty("custom_form_data_1");
         change.setUpdateCount(1);
-        change.setNewValue(value);
+        change.setTheNewPropertyValue(value);
 
         ClientboundDataStorePacket packet = new ClientboundDataStorePacket();
         packet.getUpdates().add(change);

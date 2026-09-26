@@ -3,25 +3,20 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.protocol.bedrock.data.ee.AgentActionType;
+import org.cloudburstmc.protocol.bedrock.data.education.AgentActionType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * @since v503
- */
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class AgentActionEventPacket implements BedrockPacket {
+
     private String requestId;
-    private AgentActionType actionType;
-    /**
-     * @see AgentActionType for type specific JSON
-     */
-    private String responseJson;
+    private AgentActionType action;
+    private String response;
 
     @Override
-    public PacketSignal handle(BedrockPacketHandler handler) {
+    public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
@@ -39,4 +34,3 @@ public class AgentActionEventPacket implements BedrockPacket {
         }
     }
 }
-

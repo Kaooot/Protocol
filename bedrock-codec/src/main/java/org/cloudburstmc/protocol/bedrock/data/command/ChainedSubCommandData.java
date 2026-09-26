@@ -13,6 +13,6 @@ public class ChainedSubCommandData {
     @Data
     public static class Value {
         private final String first;
-        private final String second;
+        private final int second;
     }
 }

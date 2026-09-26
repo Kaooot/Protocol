@@ -1,11 +1,16 @@
 package org.cloudburstmc.protocol.bedrock.data.diagnostics;
 
-import lombok.Value;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Value
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class SystemDiagnosticTimingInfo {
-    String displayName;
-    long systemIndex;
-    long timeInNs;
-    byte percentOfTotal;
+
+    private String displayName;
+    private long systemIndex;
+    private long timeInNs;
+    private int percentOfTotal;
 }

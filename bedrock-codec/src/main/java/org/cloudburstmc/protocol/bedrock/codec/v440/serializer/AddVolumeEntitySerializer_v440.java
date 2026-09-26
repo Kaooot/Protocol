@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import org.cloudburstmc.nbt.NbtMap;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
+import org.cloudburstmc.protocol.bedrock.data.actor.EntityNetId;
 import org.cloudburstmc.protocol.bedrock.packet.AddVolumeEntityPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -16,13 +17,13 @@ public class AddVolumeEntitySerializer_v440 implements BedrockPacketSerializer<A
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, AddVolumeEntityPacket packet) {
-        VarInts.writeUnsignedInt(buffer, packet.getId());
-        helper.writeTag(buffer, packet.getData());
+        VarInts.writeUnsignedInt(buffer, packet.getEntityNetworkId().getRawId());
+        helper.writeTag(buffer, packet.getComponents());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, AddVolumeEntityPacket packet) {
-        packet.setId(VarInts.readUnsignedInt(buffer));
-        packet.setData(helper.readTag(buffer, NbtMap.class));
+        packet.setEntityNetworkId(new EntityNetId(VarInts.readUnsignedInt(buffer)));
+        packet.setComponents(helper.readTag(buffer, NbtMap.class));
     }
 }

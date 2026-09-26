@@ -10,17 +10,19 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class UpdateEquipPacket implements BedrockPacket {
-    private short windowId;
-    private short windowType;
-    private int size; // Couldn't find anything on this one. Looks like it isn't used?
-    private long uniqueEntityId;
-    private NbtMap tag;
+
+    private int containerId;
+    private int type;
+    private int size;
+    private long entityUniqueId;
+    private NbtMap data;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
+    @Override
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.UPDATE_EQUIP;
     }
@@ -34,4 +36,3 @@ public class UpdateEquipPacket implements BedrockPacket {
         }
     }
 }
-

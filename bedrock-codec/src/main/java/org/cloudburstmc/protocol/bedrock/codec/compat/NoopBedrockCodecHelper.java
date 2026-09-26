@@ -3,17 +3,16 @@ package org.cloudburstmc.protocol.bedrock.codec.compat;
 import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.protocol.bedrock.codec.BaseBedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
-import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
-import org.cloudburstmc.protocol.bedrock.data.GameRuleData;
-import org.cloudburstmc.protocol.bedrock.data.GatheringsConfigurationJoinInfo;
-import org.cloudburstmc.protocol.bedrock.data.PlayerAbilityHolder;
+import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
+import org.cloudburstmc.protocol.bedrock.data.ability.SerializedAbilitiesData;
+import org.cloudburstmc.protocol.bedrock.data.actor.link.ActorLink;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandEnumData;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandOriginData;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataMap;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityLinkData;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataMap;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
 import org.cloudburstmc.protocol.bedrock.data.skin.SerializedSkin;
 import org.cloudburstmc.protocol.bedrock.data.structure.StructureSettings;
+import org.cloudburstmc.protocol.bedrock.data.world.GameRule;
 import org.cloudburstmc.protocol.common.util.TriConsumer;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 
@@ -26,16 +25,16 @@ public class NoopBedrockCodecHelper extends BaseBedrockCodecHelper {
     public static final NoopBedrockCodecHelper INSTANCE = new NoopBedrockCodecHelper();
 
     private NoopBedrockCodecHelper() {
-        super(EntityDataTypeMap.builder().build(), TypeMap.empty("GameRule"));
+        super(ActorDataTypeMap.builder().build(), TypeMap.empty("GameRule"));
     }
 
     @Override
-    public EntityLinkData readEntityLink(ByteBuf buffer) {
+    public ActorLink readActorLink(ByteBuf buffer) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void writeEntityLink(ByteBuf buffer, EntityLinkData link) {
+    public void writeActorLink(ByteBuf buffer, ActorLink actorLink) {
         throw new UnsupportedOperationException();
     }
 
@@ -80,42 +79,42 @@ public class NoopBedrockCodecHelper extends BaseBedrockCodecHelper {
     }
 
     @Override
-    public CommandOriginData readCommandOrigin(ByteBuf buffer) {
+    public void writeCommandOriginData(ByteBuf buffer, CommandOriginData commandOrigin) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void writeCommandOrigin(ByteBuf buffer, CommandOriginData commandOrigin) {
+    public CommandOriginData readCommandOriginData(ByteBuf buffer) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public GameRuleData<?> readGameRule(ByteBuf buffer) {
+    public GameRule readGameRule(ByteBuf buffer) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void writeGameRule(ByteBuf buffer, GameRuleData<?> gameRule) {
+    public void writeGameRule(ByteBuf buffer, GameRule gameRule) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public GameRuleData<?> readGameRuleInStartGame(ByteBuf buffer) {
+    public GameRule readGameRuleInStartGame(ByteBuf buffer) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void writeGameRuleInStartGame(ByteBuf buffer, GameRuleData<?> gameRule) {
+    public void writeGameRuleInStartGame(ByteBuf buffer, GameRule gameRule) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void readEntityData(ByteBuf buffer, EntityDataMap entityData) {
+    public void readEntityData(ByteBuf buffer, ActorDataMap entityData) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void writeEntityData(ByteBuf buffer, EntityDataMap entityData) {
+    public void writeEntityData(ByteBuf buffer, ActorDataMap entityData) {
         throw new UnsupportedOperationException();
     }
 
@@ -180,22 +179,12 @@ public class NoopBedrockCodecHelper extends BaseBedrockCodecHelper {
     }
 
     @Override
-    public void writePlayerAbilities(ByteBuf buffer, PlayerAbilityHolder abilityHolder) {
+    public void writeSerializedAbilitiesData(ByteBuf buffer, SerializedAbilitiesData data) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void readPlayerAbilities(ByteBuf buffer, PlayerAbilityHolder abilityHolder) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void writeGatheringsConfiguration(ByteBuf byteBuf, BedrockCodecHelper bedrockCodecHelper, GatheringsConfigurationJoinInfo gatheringsConfigurationJoinInfo) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public GatheringsConfigurationJoinInfo readGatheringsConfiguration(ByteBuf byteBuf, BedrockCodecHelper bedrockCodecHelper) {
+    public SerializedAbilitiesData readSerializedAbilitiesData(ByteBuf buffer) {
         throw new UnsupportedOperationException();
     }
 }

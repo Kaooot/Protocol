@@ -2,17 +2,19 @@ package org.cloudburstmc.protocol.bedrock.packet;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.cloudburstmc.protocol.bedrock.data.SimulationType;
+import lombok.ToString;
+import org.cloudburstmc.protocol.bedrock.data.world.SimulationType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
-@EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
+@EqualsAndHashCode(doNotUseGetters = true)
+@ToString(doNotUseGetters = true)
 public class SimulationTypePacket implements BedrockPacket {
 
-    private SimulationType type;
+    private SimulationType simType;
 
     @Override
-    public PacketSignal handle(BedrockPacketHandler handler) {
+    public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 

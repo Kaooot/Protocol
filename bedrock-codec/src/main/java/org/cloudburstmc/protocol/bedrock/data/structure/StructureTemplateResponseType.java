@@ -1,18 +1,17 @@
 package org.cloudburstmc.protocol.bedrock.data.structure;
 
 public enum StructureTemplateResponseType {
+
     NONE,
     EXPORT,
-    QUERY,
-    /**
-     * @since v560
-     * @deprecated since v712
-     */
-    IMPORT;
+    QUERY;
 
-    private static final StructureTemplateResponseType[] VALUES = StructureTemplateResponseType.values();
+    private static final StructureTemplateResponseType[] VALUES = values();
 
-    public static StructureTemplateResponseType from(int id) {
-        return VALUES[id];
+    public static StructureTemplateResponseType from(int ordinal) {
+        if (ordinal >= 0 && ordinal < VALUES.length) {
+            return VALUES[ordinal];
+        }
+        throw new UnsupportedOperationException("Detected unknown StructureTemplateResponseType ID: " + ordinal);
     }
 }

@@ -18,6 +18,6 @@ public class OnScreenTextureAnimationSerializer_v354 implements BedrockPacketSer
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, OnScreenTextureAnimationPacket packet) {
-        packet.setEffectId(buffer.readUnsignedIntLE());
+        packet.setEffectId((int) buffer.readUnsignedIntLE());
     }
 }

@@ -6,17 +6,18 @@ import org.cloudburstmc.protocol.bedrock.codec.v419.serializer.ResourcePackStack
 import org.cloudburstmc.protocol.bedrock.packet.ResourcePackStackPacket;
 
 public class ResourcePackStackSerializer_v671 extends ResourcePackStackSerializer_v419 {
+
     public static final ResourcePackStackSerializer_v671 INSTANCE = new ResourcePackStackSerializer_v671();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ResourcePackStackPacket packet) {
         super.serialize(buffer, helper, packet);
-        buffer.writeBoolean(packet.isHasEditorPacks());
+        buffer.writeBoolean(packet.isIncludeEditorPacks());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ResourcePackStackPacket packet) {
         super.deserialize(buffer, helper, packet);
-        packet.setHasEditorPacks(buffer.readBoolean());
+        packet.setIncludeEditorPacks(buffer.readBoolean());
     }
 }

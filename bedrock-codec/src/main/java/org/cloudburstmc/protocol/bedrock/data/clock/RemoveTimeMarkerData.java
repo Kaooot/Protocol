@@ -1,13 +1,13 @@
 package org.cloudburstmc.protocol.bedrock.data.clock;
 
-import lombok.Value;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import lombok.Data;
 
-import java.util.ArrayList;
 import java.util.List;
 
-@Value
+@Data
 public class RemoveTimeMarkerData implements SyncWorldClocksPayload {
 
-    long clockId;
-    List<Long> timeMarkerIds = new ArrayList<>();
+    private long clockId;
+    private final List<Long> timeMarkerIds = new ObjectArrayList<>();
 }

@@ -5,11 +5,10 @@ import io.netty.buffer.ByteBufInputStream;
 import org.cloudburstmc.nbt.NBTInputStream;
 import org.cloudburstmc.nbt.NbtMap;
 import org.cloudburstmc.nbt.NbtUtils;
-import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
+import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v332.BedrockCodecHelper_v332;
 import org.cloudburstmc.protocol.bedrock.data.definitions.ItemDefinition;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
-import org.cloudburstmc.protocol.bedrock.packet.InventoryTransactionPacket;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -19,7 +18,7 @@ public class BedrockCodecHelper_v340 extends BedrockCodecHelper_v332 {
 
     protected static final String BLOCKING_ID = "minecraft:shield";
 
-    public BedrockCodecHelper_v340(EntityDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes) {
+    public BedrockCodecHelper_v340(ActorDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes) {
         super(entityData, gameRulesTypes);
     }
 
@@ -89,17 +88,4 @@ public class BedrockCodecHelper_v340 extends BedrockCodecHelper_v332 {
         }
     }
 
-    @Override
-    public void readItemUse(ByteBuf buffer, InventoryTransactionPacket packet) {
-        super.readItemUse(buffer, packet);
-
-        packet.setBlockDefinition(this.blockDefinitions.getDefinition(VarInts.readUnsignedInt(buffer)));
-    }
-
-    @Override
-    public void writeItemUse(ByteBuf buffer, InventoryTransactionPacket packet) {
-        super.writeItemUse(buffer, packet);
-
-        VarInts.writeUnsignedInt(buffer, packet.getBlockDefinition().getRuntimeId());
-    }
 }

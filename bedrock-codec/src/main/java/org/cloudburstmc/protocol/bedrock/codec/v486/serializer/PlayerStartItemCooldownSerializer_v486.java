@@ -16,12 +16,12 @@ public class PlayerStartItemCooldownSerializer_v486 implements BedrockPacketSeri
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, PlayerStartItemCooldownPacket packet) {
         helper.writeString(buffer, packet.getItemCategory());
-        VarInts.writeInt(buffer, packet.getCooldownDuration());
+        VarInts.writeInt(buffer, packet.getDurationTicks());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, PlayerStartItemCooldownPacket packet) {
         packet.setItemCategory(helper.readString(buffer));
-        packet.setCooldownDuration(VarInts.readInt(buffer));
+        packet.setDurationTicks(VarInts.readInt(buffer));
     }
 }

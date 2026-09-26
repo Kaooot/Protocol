@@ -9,15 +9,17 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class PlayerHotbarPacket implements BedrockPacket {
-    private int selectedHotbarSlot;
-    private int containerId;
-    private boolean selectHotbarSlot;
+
+    private int selectedSlot;
+    private int containerID;
+    private boolean shouldSelectSlot;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
+    @Override
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.PLAYER_HOTBAR;
     }
@@ -31,4 +33,3 @@ public class PlayerHotbarPacket implements BedrockPacket {
         }
     }
 }
-

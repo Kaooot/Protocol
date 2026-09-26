@@ -3,9 +3,9 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.protocol.bedrock.data.AdventureSetting;
-import org.cloudburstmc.protocol.bedrock.data.PlayerPermission;
-import org.cloudburstmc.protocol.bedrock.data.command.CommandPermission;
+import org.cloudburstmc.protocol.bedrock.data.world.AdventureSetting;
+import org.cloudburstmc.protocol.bedrock.data.player.PlayerPermissionLevel;
+import org.cloudburstmc.protocol.bedrock.data.command.CommandPermissionLevel;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 import java.util.EnumSet;
@@ -19,9 +19,10 @@ import java.util.Set;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class AdventureSettingsPacket implements BedrockPacket {
+
     private final Set<AdventureSetting> settings = EnumSet.noneOf(AdventureSetting.class);
-    private CommandPermission commandPermission = CommandPermission.ANY;
-    private PlayerPermission playerPermission = PlayerPermission.VISITOR;
+    private CommandPermissionLevel commandPermission = CommandPermissionLevel.ANY;
+    private PlayerPermissionLevel playerPermission = PlayerPermissionLevel.VISITOR;
     private long uniqueEntityId;
 
     @Override
@@ -42,4 +43,3 @@ public class AdventureSettingsPacket implements BedrockPacket {
         }
     }
 }
-

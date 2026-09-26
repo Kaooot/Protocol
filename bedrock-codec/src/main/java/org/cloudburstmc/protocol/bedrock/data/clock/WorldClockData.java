@@ -1,15 +1,16 @@
 package org.cloudburstmc.protocol.bedrock.data.clock;
 
-
-import lombok.Value;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import lombok.Data;
 
 import java.util.List;
 
-@Value
+@Data
 public class WorldClockData {
-    long id;
-    String name;
-    int time;
-    boolean paused;
-    List<TimeMarkerData> timeMarkers;
+
+    private long id;
+    private String name;
+    private int time;
+    private boolean isPaused;
+    private final List<TimeMarkerData> timeMarkers = new ObjectArrayList<>();
 }

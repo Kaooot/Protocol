@@ -1,14 +1,24 @@
 package org.cloudburstmc.protocol.bedrock.codec.v2192;
 
 import io.netty.buffer.ByteBuf;
-import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
+import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v2168.BedrockCodecHelper_v2168;
-import org.cloudburstmc.protocol.bedrock.data.Ability;
-import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerSlotType;
-import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.TextProcessingEventOrigin;
-import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestActionType;
-import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponseSlot;
-import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.InventorySource;
+import org.cloudburstmc.protocol.bedrock.data.ability.AbilitiesIndex;
+import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerEnumName;
+import org.cloudburstmc.protocol.bedrock.data.text.TextProcessingEventOrigin;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequestActionType;
+import org.cloudburstmc.protocol.bedrock.data.misc.RedactableString;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.ItemStackNetId;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponseSlotInfo;
+import org.cloudburstmc.protocol.bedrock.data.inventory.InventorySource;
+import org.cloudburstmc.protocol.bedrock.data.inventory.InventorySourceFlags;
+import org.cloudburstmc.protocol.bedrock.data.inventory.InventorySourceType;
+import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.ItemUseActionType;
+import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.ItemUseClientCooldownState;
+import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.ItemUseInventoryTransaction;
+import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.ItemUsePredictedResult;
+import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.ItemUseTriggerType;
+import org.cloudburstmc.protocol.bedrock.data.player.HandSlot;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -16,88 +26,84 @@ import static java.util.Objects.requireNonNull;
 
 public class BedrockCodecHelper_v2192 extends BedrockCodecHelper_v2168 {
 
-    public BedrockCodecHelper_v2192(EntityDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes, TypeMap<ItemStackRequestActionType> stackRequestActionTypes,
-                                    TypeMap<ContainerSlotType> containerSlotTypes, TypeMap<Ability> abilities, TypeMap<TextProcessingEventOrigin> textProcessingEventOrigins) {
-        super(entityData, gameRulesTypes, stackRequestActionTypes, containerSlotTypes, abilities, textProcessingEventOrigins);
+    public BedrockCodecHelper_v2192(ActorDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes, TypeMap<ItemStackRequestActionType> stackRequestActionTypes,
+                                    TypeMap<ContainerEnumName> containerEnumNames, TypeMap<AbilitiesIndex> abilities, TypeMap<TextProcessingEventOrigin> textProcessingEventOrigins) {
+        super(entityData, gameRulesTypes, stackRequestActionTypes, containerEnumNames, abilities, textProcessingEventOrigins);
     }
 
     @Override
-    protected ItemStackResponseSlot readItemEntry(ByteBuf buffer) {
+    protected ItemStackResponseSlotInfo readItemStackResponseSlotInfo(ByteBuf buffer) {
+        int requestedSlot = buffer.readUnsignedByte();
         int slot = buffer.readUnsignedByte();
-        int hotbarSlot = buffer.readUnsignedByte();
-        int count = buffer.readUnsignedByte();
+        int amount = buffer.readUnsignedByte();
         int stackNetworkId = buffer.readBoolean() ? VarInts.readInt(buffer) : 0;
         String customName = this.readString(buffer);
         String filteredCustomName = this.readOptional(buffer, null, this::readString);
         int durabilityCorrection = VarInts.readInt(buffer);
-        return new ItemStackResponseSlot(slot, hotbarSlot, count, stackNetworkId,
-                customName, durabilityCorrection, filteredCustomName);
+        return new ItemStackResponseSlotInfo(requestedSlot, slot, amount, new ItemStackNetId(stackNetworkId),
+                new RedactableString(customName, filteredCustomName), durabilityCorrection);
 
     }
 
     @Override
-    protected void writeItemEntry(ByteBuf buffer, ItemStackResponseSlot itemEntry) {
-        buffer.writeByte(itemEntry.getSlot());
-        buffer.writeByte(itemEntry.getHotbarSlot());
-        buffer.writeByte(itemEntry.getCount());
-        this.writeOptional(buffer, id->id > 0, itemEntry.getStackNetworkId(), VarInts::writeInt);
-        this.writeString(buffer, itemEntry.getCustomName());
-        this.writeOptionalNull(buffer, itemEntry.getFilteredCustomName(), this::writeString);
-        VarInts.writeInt(buffer, itemEntry.getDurabilityCorrection());
+    protected void writeItemStackResponseSlotInfo(ByteBuf buffer, ItemStackResponseSlotInfo info) {
+        buffer.writeByte(info.getRequestedSlot());
+        buffer.writeByte(info.getSlot());
+        buffer.writeByte(info.getAmount());
+        this.writeOptional(buffer, id->id > 0, info.getItemStackNetId().getID(), VarInts::writeInt);
+        this.writeString(buffer, info.getCustomName().getUnredacted());
+        this.writeOptionalNull(buffer, info.getCustomName().getRedacted(), this::writeString);
+        VarInts.writeInt(buffer, info.getDurabilityCorrection());
     }
 
     @Override
-    public InventorySource readSource(ByteBuf buffer) {
-        InventorySource.Type type = InventorySource.Type.byId(VarInts.readUnsignedInt(buffer));
-
-        int containerId = 0;
-        InventorySource.Flag flag = null;
-        if (buffer.readBoolean()) containerId = buffer.readByte();
-        if (buffer.readBoolean()) flag = InventorySource.Flag.values()[VarInts.readUnsignedInt(buffer)];
-        switch (type) {
-            case CONTAINER:
-                return InventorySource.fromContainerWindowId(containerId);
-            case GLOBAL:
-                return InventorySource.fromGlobalInventory();
-            case WORLD_INTERACTION:
-                if (flag == null) throw new IllegalStateException();
-                return InventorySource.fromWorldInteraction(flag);
-            case CREATIVE:
-                return InventorySource.fromCreativeInventory();
-            case NON_IMPLEMENTED_TODO:
-                return InventorySource.fromNonImplementedTodo(containerId);
-            case UNTRACKED_INTERACTION_UI:
-                return InventorySource.fromUntrackedInteractionUI(containerId);
-            default:
-                return InventorySource.fromInvalid();
-        }
+    public void writeInventorySource(ByteBuf buffer, InventorySource source) {
+        VarInts.writeUnsignedInt(buffer, source.getSourceType().ordinal());
+        this.writeOptionalNull(buffer, source.getContainerID(), ByteBuf::writeByte);
+        this.writeOptionalNull(buffer, source.getBitFlags(),
+                (buf, bitFlags) -> VarInts.writeUnsignedInt(buf, bitFlags.ordinal()));
     }
 
     @Override
-    public void writeSource(ByteBuf buffer, InventorySource inventorySource) {
-        requireNonNull(inventorySource, "InventorySource was null");
+    public InventorySource readInventorySource(ByteBuf buffer) {
+        final InventorySource source = new InventorySource();
+        source.setSourceType(InventorySourceType.from(VarInts.readUnsignedInt(buffer)));
+        source.setContainerID(this.readOptional(buffer, null, (buf, helper) -> (int) buf.readByte()));
+        source.setBitFlags(this.readOptional(buffer, null, (buf, helper) -> InventorySourceFlags.from(VarInts.readUnsignedInt(buf))));
+        return source;
+    }
 
-        VarInts.writeUnsignedInt(buffer, inventorySource.getType().id());
+    @Override
+    public void writeItemUseInventoryTransaction(ByteBuf buffer, ItemUseInventoryTransaction transaction) {
+        VarInts.writeInt(buffer, transaction.getActionType().ordinal());
+        buffer.writeByte(transaction.getTriggerType().ordinal());
+        this.writeVector3i(buffer, transaction.getPosition());
+        buffer.writeByte(transaction.getFace());
+        VarInts.writeInt(buffer, transaction.getSlot());
+        buffer.writeByte(transaction.getHand().ordinal());
+        this.writeNetworkItemStackDescriptor(buffer, transaction.getItem());
+        this.writeVector3f(buffer, transaction.getFromPosition());
+        this.writeVector3f(buffer, transaction.getClickPosition());
+        VarInts.writeUnsignedInt(buffer, transaction.getTargetBlockId().getRuntimeId());
+        buffer.writeByte(transaction.getClientInteractPrediction().ordinal());
+        buffer.writeByte(transaction.getClientCooldownState().ordinal());
+    }
 
-        switch (inventorySource.getType()) {
-            case CONTAINER:
-            case NON_IMPLEMENTED_TODO:
-                buffer.writeBoolean(true);
-                buffer.writeByte(inventorySource.getContainerId());
-                break;
-            default:
-                buffer.writeBoolean(false);
-                break;
-        }
-
-        switch (inventorySource.getType()) {
-            case WORLD_INTERACTION:
-                buffer.writeBoolean(true);
-                VarInts.writeUnsignedInt(buffer, inventorySource.getFlag().ordinal());
-                break;
-            default:
-                buffer.writeBoolean(false);
-                break;
-        }
+    @Override
+    public ItemUseInventoryTransaction readItemUseInventoryTransaction(ByteBuf buffer) {
+        final ItemUseInventoryTransaction transaction = new ItemUseInventoryTransaction();
+        transaction.setActionType(ItemUseActionType.from(VarInts.readInt(buffer)));
+        transaction.setTriggerType(ItemUseTriggerType.from(buffer.readUnsignedByte()));
+        transaction.setPosition(this.readVector3i(buffer));
+        transaction.setFace(buffer.readByte());
+        transaction.setSlot(VarInts.readInt(buffer));
+        transaction.setHand(HandSlot.from(buffer.readUnsignedByte()));
+        transaction.setItem(this.readNetworkItemStackDescriptor(buffer));
+        transaction.setFromPosition(this.readVector3f(buffer));
+        transaction.setClickPosition(this.readVector3f(buffer));
+        transaction.setTargetBlockId(this.getBlockDefinitions().getDefinition(VarInts.readUnsignedInt(buffer)));
+        transaction.setClientInteractPrediction(ItemUsePredictedResult.from(buffer.readUnsignedByte()));
+        transaction.setClientCooldownState(ItemUseClientCooldownState.from(buffer.readUnsignedByte()));
+        return transaction;
     }
 }

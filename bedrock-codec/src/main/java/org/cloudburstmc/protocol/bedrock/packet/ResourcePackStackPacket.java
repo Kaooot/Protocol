@@ -4,8 +4,8 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import lombok.Value;
-import org.cloudburstmc.protocol.bedrock.data.ExperimentData;
+import org.cloudburstmc.protocol.bedrock.data.resourcepack.PackInstanceId;
+import org.cloudburstmc.protocol.bedrock.data.world.Experiments;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 import java.util.List;
@@ -14,32 +14,22 @@ import java.util.List;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class ResourcePackStackPacket implements BedrockPacket {
-    private boolean forcedToAccept;
-    private final List<Entry> behaviorPacks = new ObjectArrayList<>();
-    private final List<Entry> resourcePacks = new ObjectArrayList<>();
-    private String gameVersion;
-    private final List<ExperimentData> experiments = new ObjectArrayList<>();
-    private boolean experimentsPreviouslyToggled;
-    /**
-     * @since v671
-     */
-    private boolean hasEditorPacks;
 
+    private boolean texturePackRequired;
+    private final List<PackInstanceId> addonList = new ObjectArrayList<>();
+    private final List<PackInstanceId> texturePackList = new ObjectArrayList<>();
+    private String baseGameVersion;
+    private Experiments experiments;
+    private boolean includeEditorPacks;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
+    @Override
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.RESOURCE_PACK_STACK;
-    }
-
-    @Value
-    public static class Entry {
-        private final String packId;
-        private final String packVersion;
-        private final String subPackName;
     }
 
     @Override
@@ -51,4 +41,3 @@ public class ResourcePackStackPacket implements BedrockPacket {
         }
     }
 }
-

@@ -12,12 +12,12 @@ public class PlaySoundSerializer_v975 extends PlaySoundSerializer_v291 {
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, PlaySoundPacket packet) {
         super.serialize(buffer, helper, packet);
-        helper.writeOptionalNull(buffer, packet.getServerSoundHandle(), ByteBuf::writeLongLE);
+        helper.writeOptionalNull(buffer, packet.getServerSoundHandle(), helper::writeServerSoundHandle);
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, PlaySoundPacket packet) {
         super.deserialize(buffer, helper, packet);
-        packet.setServerSoundHandle(helper.readOptional(buffer, null, ByteBuf::readLongLE));
+        packet.setServerSoundHandle(helper.readOptional(buffer, null, helper::readServerSoundHandle));
     }
 }

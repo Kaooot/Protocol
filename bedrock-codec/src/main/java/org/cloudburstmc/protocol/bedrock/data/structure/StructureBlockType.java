@@ -1,6 +1,7 @@
 package org.cloudburstmc.protocol.bedrock.data.structure;
 
 public enum StructureBlockType {
+
     DATA,
     SAVE,
     LOAD,
@@ -8,9 +9,12 @@ public enum StructureBlockType {
     INVALID,
     EXPORT;
 
-    private static final StructureBlockType[] VALUES = StructureBlockType.values();
+    private static final StructureBlockType[] VALUES = values();
 
-    public static StructureBlockType from(int id) {
-        return VALUES[id];
+    public static StructureBlockType from(int ordinal) {
+        if (ordinal >= 0 && ordinal < VALUES.length) {
+            return VALUES[ordinal];
+        }
+        throw new UnsupportedOperationException("Detected unknown StructureBlockType ID: " + ordinal);
     }
 }

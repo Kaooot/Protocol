@@ -9,14 +9,16 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class NetworkStackLatencyPacket implements BedrockPacket {
-    private long timestamp;
-    private boolean fromServer;
+
+    private long creationTime;
+    private boolean isFromServer;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
+    @Override
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.NETWORK_STACK_LATENCY;
     }
@@ -30,4 +32,3 @@ public class NetworkStackLatencyPacket implements BedrockPacket {
         }
     }
 }
-

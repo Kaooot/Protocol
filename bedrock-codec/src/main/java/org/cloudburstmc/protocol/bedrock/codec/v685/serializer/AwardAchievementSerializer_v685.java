@@ -13,11 +13,11 @@ public class AwardAchievementSerializer_v685 implements BedrockPacketSerializer<
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, AwardAchievementPacket packet) {
-        buffer.writeIntLE(packet.getAchievementId());
+        buffer.writeIntLE(packet.getAchievementID());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, AwardAchievementPacket packet) {
-        packet.setAchievementId(buffer.readIntLE());
+        packet.setAchievementID(buffer.readIntLE());
     }
 }

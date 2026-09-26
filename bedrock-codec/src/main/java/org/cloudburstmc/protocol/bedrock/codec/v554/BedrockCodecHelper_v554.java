@@ -1,69 +1,72 @@
 package org.cloudburstmc.protocol.bedrock.codec.v554;
 
 import io.netty.buffer.ByteBuf;
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
+import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v534.BedrockCodecHelper_v534;
-import org.cloudburstmc.protocol.bedrock.data.Ability;
+import org.cloudburstmc.protocol.bedrock.data.ability.AbilitiesIndex;
 import org.cloudburstmc.protocol.bedrock.data.definitions.ItemDefinition;
-import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerSlotType;
+import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerEnumName;
 import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.*;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequest;
-import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.TextProcessingEventOrigin;
-import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestAction;
-import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestActionType;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequestActionType;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequestId;
+import org.cloudburstmc.protocol.bedrock.data.recipe.RecipeIngredient;
+import org.cloudburstmc.protocol.bedrock.data.text.TextProcessingEventOrigin;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 import org.cloudburstmc.protocol.common.util.VarInts;
-
-import java.util.List;
 
 public class BedrockCodecHelper_v554 extends BedrockCodecHelper_v534 {
 
     protected static final ItemDescriptorType[] DESCRIPTOR_TYPES = ItemDescriptorType.values();
     protected final TypeMap<TextProcessingEventOrigin> textProcessingEventOrigins;
 
-    public BedrockCodecHelper_v554(EntityDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes,
-                                   TypeMap<ItemStackRequestActionType> stackRequestActionTypes, TypeMap<ContainerSlotType> containerSlotTypes,
-                                   TypeMap<Ability> abilities, TypeMap<TextProcessingEventOrigin> textProcessingEventOrigins) {
-        super(entityData, gameRulesTypes, stackRequestActionTypes, containerSlotTypes, abilities);
+    public BedrockCodecHelper_v554(ActorDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes,
+                                   TypeMap<ItemStackRequestActionType> stackRequestActionTypes, TypeMap<ContainerEnumName> containerEnumNames,
+                                   TypeMap<AbilitiesIndex> abilities, TypeMap<TextProcessingEventOrigin> textProcessingEventOrigins) {
+        super(entityData, gameRulesTypes, stackRequestActionTypes, containerEnumNames, abilities);
         this.textProcessingEventOrigins = textProcessingEventOrigins;
     }
 
     @Override
-    public ItemStackRequest readItemStackRequest(ByteBuf buffer) {
-        int requestId = VarInts.readInt(buffer);
-        List<ItemStackRequestAction> actions = new ObjectArrayList<>();
-
-        this.readArray(buffer, actions, byteBuf -> {
-            ItemStackRequestActionType type = this.stackRequestActionTypes.getType(byteBuf.readByte());
-            return readRequestActionData(byteBuf, type);
-        }, 32);
-        List<String> filteredStrings = new ObjectArrayList<>();
-        this.readArray(buffer, filteredStrings, this::readString);
-
-        int originVal = buffer.readIntLE();
-        TextProcessingEventOrigin origin = originVal == -1 ? null : this.textProcessingEventOrigins.getType(originVal);  // new for v552
-        return new ItemStackRequest(requestId, actions.toArray(new ItemStackRequestAction[0]), filteredStrings.toArray(new String[0]), origin);
-    }
-
-    @Override
     public void writeItemStackRequest(ByteBuf buffer, ItemStackRequest request) {
-        super.writeItemStackRequest(buffer, request);
-        TextProcessingEventOrigin origin = request.getTextProcessingEventOrigin();
-        buffer.writeIntLE(origin == null ? -1 : this.textProcessingEventOrigins.getId(origin));  // new for v552
+        VarInts.writeInt(buffer, request.getClientRequestId().getID());
+        this.writeArray(
+                buffer,
+                request.getActions(),
+                (buf, codecHelper, object) -> this.itemStackRequestActionsVariant.write(buf, codecHelper, null, object)
+        );
+        this.writeArray(buffer, request.getStringsToFilter(), this::writeString);
+        final TextProcessingEventOrigin origin = request.getStringsToFilterOrigin(); // new for v554
+        buffer.writeIntLE(origin == null ? -1 : this.textProcessingEventOrigins.getId(origin));
     }
 
     @Override
-    public ItemDescriptorWithCount readIngredient(ByteBuf buffer) {
+    public ItemStackRequest readItemStackRequest(ByteBuf buffer) {
+        final ItemStackRequest request = new ItemStackRequest();
+        request.setClientRequestId(new ItemStackRequestId(VarInts.readInt(buffer)));
+        this.readArray(
+                buffer,
+                request.getActions(),
+                (buf, codecHelper) -> this.itemStackRequestActionsVariant.read(buf, codecHelper, null),
+                this.getEncodingSettings().maxInventoryActionsOrRequests()
+        );
+        this.readArray(buffer, request.getStringsToFilter(), (buf, helper) -> helper.readStringMaxLen(buf, 1000));
+        final int originVal = buffer.readIntLE(); // new for v554
+        request.setStringsToFilterOrigin(originVal == -1 ? null : this.textProcessingEventOrigins.getType(originVal));
+        return request;
+    }
+
+    @Override
+    public RecipeIngredient readIngredient(ByteBuf buffer) {
         ItemDescriptorType type = DESCRIPTOR_TYPES[buffer.readUnsignedByte()];
         ItemDescriptor descriptor = this.readItemDescriptor(buffer, type);
-        return new ItemDescriptorWithCount(descriptor, VarInts.readInt(buffer));
+        return new RecipeIngredient(descriptor, VarInts.readInt(buffer));
     }
 
     protected ItemDescriptor readItemDescriptor(ByteBuf buffer, ItemDescriptorType type) {
         ItemDescriptor descriptor;
         switch (type) {
-            case DEFAULT:
+            case NAME:
                 int itemId = buffer.readShortLE();
                 ItemDefinition definition = itemId == 0 ? ItemDefinition.AIR : this.getItemDefinitions().getDefinition(itemId);
                 int auxValue = itemId != 0 ? buffer.readShortLE() : 0;
@@ -86,15 +89,15 @@ public class BedrockCodecHelper_v554 extends BedrockCodecHelper_v534 {
     }
 
     @Override
-    public void writeIngredient(ByteBuf buffer, ItemDescriptorWithCount ingredient) {
+    public void writeIngredient(ByteBuf buffer, RecipeIngredient ingredient) {
         buffer.writeByte(ingredient.getDescriptor().getType().ordinal());
         this.writeItemDescriptor(buffer, ingredient.getDescriptor());
-        VarInts.writeInt(buffer, ingredient.getCount());
+        VarInts.writeInt(buffer, ingredient.getStackSize());
     }
 
     protected void writeItemDescriptor(ByteBuf buffer, ItemDescriptor descriptor) {
         switch (descriptor.getType()) {
-            case DEFAULT:
+            case NAME:
                 DefaultDescriptor defaultDescriptor = (DefaultDescriptor) descriptor;
                 boolean empty = defaultDescriptor.getItemId() == null || defaultDescriptor.getItemId().getRuntimeId() == 0;
                 buffer.writeShortLE(empty ? 0 : defaultDescriptor.getItemId().getRuntimeId());

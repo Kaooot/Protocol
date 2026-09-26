@@ -1,7 +1,7 @@
 package org.cloudburstmc.protocol.bedrock.codec.v486;
 
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
-import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
+import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelSoundEvent1Serializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v313.serializer.LevelSoundEvent2Serializer_v313;
 import org.cloudburstmc.protocol.bedrock.codec.v332.serializer.LevelSoundEventSerializer_v332;
@@ -9,24 +9,24 @@ import org.cloudburstmc.protocol.bedrock.codec.v465.BedrockCodecHelper_v465;
 import org.cloudburstmc.protocol.bedrock.codec.v475.Bedrock_v475;
 import org.cloudburstmc.protocol.bedrock.codec.v486.serializer.*;
 import org.cloudburstmc.protocol.bedrock.data.PacketRecipient;
-import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
-import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestActionType;
+import org.cloudburstmc.protocol.bedrock.data.sound.LevelSoundEvent;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataTypes;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorFlags;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequestActionType;
 import org.cloudburstmc.protocol.bedrock.packet.*;
 import org.cloudburstmc.protocol.bedrock.transformer.FlagTransformer;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 
 public class Bedrock_v486 extends Bedrock_v475 {
 
-    protected static final TypeMap<EntityFlag> ENTITY_FLAGS = Bedrock_v475.ENTITY_FLAGS.toBuilder()
-            .insert(100, EntityFlag.CROAKING)
-            .insert(101, EntityFlag.EAT_MOB)
+    protected static final TypeMap<ActorFlags> ENTITY_FLAGS = Bedrock_v475.ENTITY_FLAGS.toBuilder()
+            .insert(100, ActorFlags.CROAKING)
+            .insert(101, ActorFlags.EAT_MOB)
             .build();
 
-    protected static final EntityDataTypeMap ENTITY_DATA = Bedrock_v475.ENTITY_DATA.toBuilder()
-            .update(EntityDataTypes.FLAGS, new FlagTransformer(ENTITY_FLAGS, 0))
-            .update(EntityDataTypes.FLAGS_2, new FlagTransformer(ENTITY_FLAGS, 1))
+    protected static final ActorDataTypeMap ENTITY_DATA = Bedrock_v475.ENTITY_DATA.toBuilder()
+            .update(ActorDataTypes.FLAGS, new FlagTransformer(ENTITY_FLAGS, 0))
+            .update(ActorDataTypes.FLAGS_2, new FlagTransformer(ENTITY_FLAGS, 1))
             .build();
 
     protected static final TypeMap<ItemStackRequestActionType> ITEM_STACK_REQUEST_TYPES = Bedrock_v475.ITEM_STACK_REQUEST_TYPES.toBuilder()
@@ -35,11 +35,11 @@ public class Bedrock_v486 extends Bedrock_v475 {
             .insert(8, ItemStackRequestActionType.TAKE_FROM_ITEM_CONTAINER)
             .build();
 
-    protected static final TypeMap<SoundEvent> SOUND_EVENTS = Bedrock_v475.SOUND_EVENTS.toBuilder()
-            .replace(372, SoundEvent.TONGUE)
-            .insert(373, SoundEvent.CRACK_IRON_GOLEM)
-            .insert(374, SoundEvent.REPAIR_IRON_GOLEM)
-            .insert(375, SoundEvent.UNDEFINED)
+    protected static final TypeMap<LevelSoundEvent> SOUND_EVENTS = Bedrock_v475.SOUND_EVENTS.toBuilder()
+            .replace(372, LevelSoundEvent.TONGUE)
+            .insert(373, LevelSoundEvent.CRACK_IRON_GOLEM)
+            .insert(374, LevelSoundEvent.REPAIR_IRON_GOLEM)
+            .insert(375, LevelSoundEvent.UNDEFINED)
             .build();
 
     public static final BedrockCodec CODEC = Bedrock_v475.CODEC.toBuilder()

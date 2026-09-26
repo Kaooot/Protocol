@@ -1,37 +1,42 @@
 package org.cloudburstmc.protocol.bedrock.codec.v898;
 
+import org.cloudburstmc.protocol.bedrock.codec.v898.serializer.LegacyTelemetryEventSerializer_v898;
+
+import org.cloudburstmc.protocol.bedrock.packet.LegacyTelemetryEventPacket;
+
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
-import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.EntityEventSerializer_v291;
+import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.ActorEventSerializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v786.serializer.LevelSoundEventSerializer_v786;
 import org.cloudburstmc.protocol.bedrock.codec.v860.Bedrock_v860;
 import org.cloudburstmc.protocol.bedrock.codec.v898.serializer.*;
 import org.cloudburstmc.protocol.bedrock.data.PacketRecipient;
-import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityEventType;
+import org.cloudburstmc.protocol.bedrock.data.sound.LevelSoundEvent;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorEvent;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorEvent;
 import org.cloudburstmc.protocol.bedrock.packet.*;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 
 public class Bedrock_v898 extends Bedrock_v860 {
 
-    protected static final TypeMap<EntityEventType> ENTITY_EVENTS = Bedrock_v860.ENTITY_EVENTS.toBuilder()
-            .insert(80, EntityEventType.KINETIC_DAMAGE_DEALT)
+    protected static final TypeMap<ActorEvent> ACTOR_EVENTS = Bedrock_v860.ACTOR_EVENTS.toBuilder()
+            .insert(80, ActorEvent.KINETIC_DAMAGE_DEALT)
             .build();
 
-    protected static final TypeMap<SoundEvent> SOUND_EVENTS = Bedrock_v860.SOUND_EVENTS
+    protected static final TypeMap<LevelSoundEvent> SOUND_EVENTS = Bedrock_v860.SOUND_EVENTS
             .toBuilder()
-            .replace(566, SoundEvent.LUNGE_1)
-            .insert(567, SoundEvent.LUNGE_2)
-            .insert(568, SoundEvent.LUNGE_3)
-            .insert(569, SoundEvent.ATTACK_CRITICAL)
-            .insert(570, SoundEvent.SPEAR_ATTACK_HIT)
-            .insert(571, SoundEvent.SPEAR_ATTACK_MISS)
-            .insert(572, SoundEvent.WOODEN_SPEAR_ATTACK_HIT)
-            .insert(573, SoundEvent.WOODEN_SPEAR_ATTACK_MISS)
-            .insert(574, SoundEvent.IMITATE_PARCHED)
-            .insert(575, SoundEvent.IMITATE_CAMEL_HUSK)
-            .insert(576, SoundEvent.SPEAR_USE)
-            .insert(577, SoundEvent.WOODEN_SPEAR_USE)
-            .insert(578, SoundEvent.UNDEFINED)
+            .replace(566, LevelSoundEvent.LUNGE_1)
+            .insert(567, LevelSoundEvent.LUNGE_2)
+            .insert(568, LevelSoundEvent.LUNGE_3)
+            .insert(569, LevelSoundEvent.ATTACK_CRITICAL)
+            .insert(570, LevelSoundEvent.SPEAR_ATTACK_HIT)
+            .insert(571, LevelSoundEvent.SPEAR_ATTACK_MISS)
+            .insert(572, LevelSoundEvent.WOODEN_SPEAR_ATTACK_HIT)
+            .insert(573, LevelSoundEvent.WOODEN_SPEAR_ATTACK_MISS)
+            .insert(574, LevelSoundEvent.IMITATE_PARCHED)
+            .insert(575, LevelSoundEvent.IMITATE_CAMEL_HUSK)
+            .insert(576, LevelSoundEvent.SPEAR_USE)
+            .insert(577, LevelSoundEvent.WOODEN_SPEAR_USE)
+            .insert(578, LevelSoundEvent.UNDEFINED)
             .build();
 
     public static final BedrockCodec CODEC = Bedrock_v860.CODEC.toBuilder()
@@ -43,8 +48,8 @@ public class Bedrock_v898 extends Bedrock_v860 {
             .updateSerializer(CameraAimAssistPresetsPacket.class, CameraAimAssistPresetsSerializer_v898.INSTANCE)
             .updateSerializer(CommandOutputPacket.class, CommandOutputSerializer_v898.INSTANCE)
             .updateSerializer(CommandRequestPacket.class, CommandRequestSerializer_v898.INSTANCE)
-            .updateSerializer(EntityEventPacket.class, new EntityEventSerializer_v291(ENTITY_EVENTS))
-            .updateSerializer(EventPacket.class, EventSerializer_v898.INSTANCE)
+            .updateSerializer(ActorEventPacket.class, new ActorEventSerializer_v291(ACTOR_EVENTS))
+            .updateSerializer(LegacyTelemetryEventPacket.class, LegacyTelemetryEventSerializer_v898.INSTANCE)
             .updateSerializer(InteractPacket.class, InteractSerializer_v898.INSTANCE)
             .updateSerializer(LevelSoundEventPacket.class, new LevelSoundEventSerializer_v786(SOUND_EVENTS))
             .updateSerializer(MobEffectPacket.class, MobEffectSerializer_v898.INSTANCE)

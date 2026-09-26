@@ -10,20 +10,20 @@ public class ChangeMobPropertySerializer_v503 implements BedrockPacketSerializer
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ChangeMobPropertyPacket packet) {
-        VarInts.writeLong(buffer, packet.getUniqueEntityId());
-        helper.writeString(buffer, packet.getProperty());
-        buffer.writeBoolean(packet.isBoolValue());
-        helper.writeString(buffer, packet.getStringValue());
-        VarInts.writeInt(buffer, packet.getIntValue());
-        buffer.writeFloatLE(packet.getFloatValue());
+        VarInts.writeLong(buffer, packet.getActorId());
+        helper.writeString(buffer, packet.getPropertyName());
+        buffer.writeBoolean(packet.isBoolComponentValue());
+        helper.writeString(buffer, packet.getStringComponentValue());
+        VarInts.writeInt(buffer, packet.getIntComponentValue());
+        buffer.writeFloatLE(packet.getFloatComponentValue());
     }
 
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ChangeMobPropertyPacket packet) {
-        packet.setUniqueEntityId(VarInts.readLong(buffer));
-        packet.setProperty(helper.readString(buffer));
-        packet.setBoolValue(buffer.readBoolean());
-        packet.setStringValue(helper.readString(buffer));
-        packet.setIntValue(VarInts.readInt(buffer));
-        packet.setFloatValue(buffer.readFloatLE());
+        packet.setActorId(VarInts.readLong(buffer));
+        packet.setPropertyName(helper.readString(buffer));
+        packet.setBoolComponentValue(buffer.readBoolean());
+        packet.setStringComponentValue(helper.readString(buffer));
+        packet.setIntComponentValue(VarInts.readInt(buffer));
+        packet.setFloatComponentValue(buffer.readFloatLE());
     }
 }

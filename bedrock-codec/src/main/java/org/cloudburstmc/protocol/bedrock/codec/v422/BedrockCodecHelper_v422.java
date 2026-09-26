@@ -1,89 +1,87 @@
 package org.cloudburstmc.protocol.bedrock.codec.v422;
 
 import io.netty.buffer.ByteBuf;
-import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
+import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v419.BedrockCodecHelper_v419;
-import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerSlotType;
+import org.cloudburstmc.protocol.bedrock.data.misc.RedactableString;
+import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerEnumName;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.ItemStackNetId;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequest;
-import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.CraftRecipeOptionalAction;
-import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestAction;
-import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestActionType;
-import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponseSlot;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequestActionType;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequestId;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestCraftRecipeOptionalAction;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponseSlotInfo;
+import org.cloudburstmc.protocol.bedrock.data.recipe.RecipeNetId;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class BedrockCodecHelper_v422 extends BedrockCodecHelper_v419 {
 
-    public BedrockCodecHelper_v422(EntityDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes,
-                                   TypeMap<ItemStackRequestActionType> stackRequestActionTypes, TypeMap<ContainerSlotType> containerSlotTypes) {
-        super(entityData, gameRulesTypes, stackRequestActionTypes, containerSlotTypes);
-    }
-
-    @Override
-    public ItemStackRequest readItemStackRequest(ByteBuf buffer) {
-        int requestId = VarInts.readInt(buffer);
-        List<ItemStackRequestAction> actions = new ArrayList<>();
-
-        this.readArray(buffer, actions, byteBuf -> {
-            ItemStackRequestActionType type = this.stackRequestActionTypes.getType(byteBuf.readByte());
-            return readRequestActionData(byteBuf, type);
-        }, 32);
-        List<String> filteredStrings = new ArrayList<>(); // new for v422
-        this.readArray(buffer, filteredStrings, this::readString);
-        return new ItemStackRequest(requestId, actions.toArray(new ItemStackRequestAction[0]), filteredStrings.toArray(new String[0]));
+    public BedrockCodecHelper_v422(ActorDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes,
+                                   TypeMap<ItemStackRequestActionType> stackRequestActionTypes, TypeMap<ContainerEnumName> containerEnumNames) {
+        super(entityData, gameRulesTypes, stackRequestActionTypes, containerEnumNames);
+        this.itemStackRequestActionsVariant = this.itemStackRequestActionsVariant.toBuilder(this.stackRequestActionTypes::getId)
+                .add(
+                        ItemStackRequestActionType.CRAFT_RECIPE_OPTIONAL,
+                        ItemStackRequestCraftRecipeOptionalAction.class,
+                        (buffer, helper, type, value) -> this.writeItemStackRequestCraftRecipeOptionalAction(buffer, type, value),
+                        (buffer, helper, type) -> this.readItemStackRequestCraftRecipeOptionalAction(buffer, type)
+                )
+                .build();
     }
 
     @Override
     public void writeItemStackRequest(ByteBuf buffer, ItemStackRequest request) {
-        VarInts.writeInt(buffer, request.getRequestId());
-
-        this.writeArray(buffer, request.getActions(), (byteBuf, action) -> {
-            ItemStackRequestActionType type = action.getType();
-            byteBuf.writeByte(this.stackRequestActionTypes.getId(type));
-            writeRequestActionData(byteBuf, action);
-        });
-        this.writeArray(buffer, request.getFilterStrings(), this::writeString); // new for v422
+        VarInts.writeInt(buffer, request.getClientRequestId().getID());
+        this.writeArray(
+                buffer,
+                request.getActions(),
+                (buf, codecHelper, object) -> this.itemStackRequestActionsVariant.write(buf, codecHelper, null, object)
+        );
+        this.writeArray(buffer, request.getStringsToFilter(), this::writeString);
     }
 
     @Override
-    protected ItemStackRequestAction readRequestActionData(ByteBuf byteBuf, ItemStackRequestActionType type) {
-        ItemStackRequestAction action;
-        if (type == ItemStackRequestActionType.CRAFT_RECIPE_OPTIONAL) {
-            action = new CraftRecipeOptionalAction(VarInts.readUnsignedInt(byteBuf), byteBuf.readIntLE());
-        } else {
-            action = super.readRequestActionData(byteBuf, type);
-        }
+    public ItemStackRequest readItemStackRequest(ByteBuf buffer) {
+        final ItemStackRequest request = new ItemStackRequest();
+        request.setClientRequestId(new ItemStackRequestId(VarInts.readInt(buffer)));
+        this.readArray(
+                buffer,
+                request.getActions(),
+                (buf, codecHelper) -> this.itemStackRequestActionsVariant.read(buf, codecHelper, null),
+                this.getEncodingSettings().maxInventoryActionsOrRequests()
+        );
+        this.readArray(buffer, request.getStringsToFilter(), (buf, helper) -> helper.readStringMaxLen(buf, 1000));
+        return request;
+    }
+
+    protected void writeItemStackRequestCraftRecipeOptionalAction(ByteBuf buffer, ItemStackRequestActionType type, ItemStackRequestCraftRecipeOptionalAction action) {
+        VarInts.writeUnsignedInt(buffer, action.getRecipeNetId().getRawId());
+        buffer.writeIntLE(action.getFilteredStringIndex());
+    }
+
+    protected ItemStackRequestCraftRecipeOptionalAction readItemStackRequestCraftRecipeOptionalAction(ByteBuf buffer, ItemStackRequestActionType type) {
+        final ItemStackRequestCraftRecipeOptionalAction action = new ItemStackRequestCraftRecipeOptionalAction();
+        action.setRecipeNetId(new RecipeNetId(VarInts.readUnsignedInt(buffer)));
+        action.setFilteredStringIndex(buffer.readIntLE());
         return action;
     }
 
     @Override
-    protected void writeRequestActionData(ByteBuf byteBuf, ItemStackRequestAction action) {
-        if (action.getType() == ItemStackRequestActionType.CRAFT_RECIPE_OPTIONAL) {
-            VarInts.writeUnsignedInt(byteBuf, ((CraftRecipeOptionalAction) action).getRecipeNetworkId());
-            byteBuf.writeIntLE(((CraftRecipeOptionalAction) action).getFilteredStringIndex());
-        } else {
-            super.writeRequestActionData(byteBuf, action);
-        }
+    protected ItemStackResponseSlotInfo readItemStackResponseSlotInfo(ByteBuf buffer) {
+        return new ItemStackResponseSlotInfo(
+                buffer.readUnsignedByte(),
+                buffer.readUnsignedByte(),
+                buffer.readUnsignedByte(),
+                new ItemStackNetId(VarInts.readInt(buffer)),
+                new RedactableString(this.readString(buffer), ""),
+                0
+        );
     }
 
     @Override
-    protected ItemStackResponseSlot readItemEntry(ByteBuf buffer) {
-        return new ItemStackResponseSlot(
-                buffer.readUnsignedByte(),
-                buffer.readUnsignedByte(),
-                buffer.readUnsignedByte(),
-                VarInts.readInt(buffer),
-                this.readString(buffer),
-                0,
-                "");
-    }
-
-    @Override
-    protected void writeItemEntry(ByteBuf buffer, ItemStackResponseSlot itemEntry) {
-        super.writeItemEntry(buffer, itemEntry);
-        this.writeString(buffer, itemEntry.getCustomName());
+    protected void writeItemStackResponseSlotInfo(ByteBuf buffer, ItemStackResponseSlotInfo info) {
+        super.writeItemStackResponseSlotInfo(buffer, info);
+        this.writeString(buffer, info.getCustomName().getUnredacted());
     }
 }

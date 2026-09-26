@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
+import org.cloudburstmc.protocol.bedrock.data.text.DeathCauseMessageType;
 import org.cloudburstmc.protocol.bedrock.packet.DeathInfoPacket;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -13,13 +14,15 @@ public class DeathInfoSerializer_v534 implements BedrockPacketSerializer<DeathIn
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, DeathInfoPacket packet) {
-        helper.writeString(buffer, packet.getCauseAttackName());
-        helper.writeArray(buffer, packet.getMessageList(), helper::writeString);
+        helper.writeString(buffer, packet.getDeathCauseMessage().getDeathCauseAttackName());
+        helper.writeArray(buffer, packet.getDeathCauseMessage().getDeathCauseMessageList(), helper::writeString);
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, DeathInfoPacket packet) {
-        packet.setCauseAttackName(helper.readString(buffer));
-        helper.readArray(buffer, packet.getMessageList(), helper::readString);
+        final DeathCauseMessageType deathCauseMessage = new DeathCauseMessageType();
+        deathCauseMessage.setDeathCauseAttackName(helper.readString(buffer));
+        helper.readArray(buffer, deathCauseMessage.getDeathCauseMessageList(), helper::readString);
+        packet.setDeathCauseMessage(deathCauseMessage);
     }
 }

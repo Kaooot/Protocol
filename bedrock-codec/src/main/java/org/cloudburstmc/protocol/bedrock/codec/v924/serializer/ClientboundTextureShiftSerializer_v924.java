@@ -8,9 +8,6 @@ import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
 import org.cloudburstmc.protocol.bedrock.packet.ClientboundTextureShiftPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public class ClientboundTextureShiftSerializer_v924 implements BedrockPacketSerializer<ClientboundTextureShiftPacket> {
 
@@ -18,27 +15,25 @@ public class ClientboundTextureShiftSerializer_v924 implements BedrockPacketSeri
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ClientboundTextureShiftPacket packet) {
-        buffer.writeByte(packet.getAction().ordinal());
+        buffer.writeByte(packet.getActionID().ordinal());
         helper.writeString(buffer, packet.getCollectionName());
         helper.writeString(buffer, packet.getFromStep());
         helper.writeString(buffer, packet.getToStep());
         helper.writeArray(buffer, packet.getAllSteps(), helper::writeString);
-        VarInts.writeUnsignedLong(buffer, packet.getCurrentLengthTicks());
-        VarInts.writeUnsignedLong(buffer, packet.getTotalLengthTicks());
+        VarInts.writeUnsignedLong(buffer, packet.getCurrentLengthInTicks());
+        VarInts.writeUnsignedLong(buffer, packet.getTotalLengthInTicks());
         buffer.writeBoolean(packet.isEnabled());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ClientboundTextureShiftPacket packet) {
-        packet.setAction(ClientboundTextureShiftPacket.Action.values()[buffer.readUnsignedByte()]);
+        packet.setActionID(ClientboundTextureShiftPacket.Action.values()[buffer.readUnsignedByte()]);
         packet.setCollectionName(helper.readString(buffer));
         packet.setFromStep(helper.readString(buffer));
         packet.setToStep(helper.readString(buffer));
-        List<String> allSteps = new ArrayList<>();
-        helper.readArray(buffer, allSteps, helper::readString);
-        packet.setAllSteps(allSteps);
-        packet.setCurrentLengthTicks(VarInts.readUnsignedLong(buffer));
-        packet.setTotalLengthTicks(VarInts.readUnsignedLong(buffer));
+        helper.readArray(buffer, packet.getAllSteps(), helper::readString);
+        packet.setCurrentLengthInTicks(VarInts.readUnsignedLong(buffer));
+        packet.setTotalLengthInTicks(VarInts.readUnsignedLong(buffer));
         packet.setEnabled(buffer.readBoolean());
     }
 }

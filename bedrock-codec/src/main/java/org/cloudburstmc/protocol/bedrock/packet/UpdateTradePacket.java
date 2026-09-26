@@ -4,30 +4,31 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.nbt.NbtMap;
-import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class UpdateTradePacket implements BedrockPacket {
+
     private int containerId;
-    private ContainerType containerType;
-    private int size; // Hardcoded to 0
-    private int tradeTier;
-    private long traderUniqueEntityId;
-    private long playerUniqueEntityId;
+    private int type;
+    private int size;
+    private int traderTier;
+    private long entityUniqueId;
+    private long lastTradingPlayer;
     private CharSequence displayName;
-    private NbtMap offers;
-    private boolean newTradingUi;
+    private boolean useNewTradeScreen;
     private boolean recipeAddedOnUpdate;
     private boolean usingEconomyTrade;
+    private NbtMap data;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
+    @Override
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.UPDATE_TRADE;
     }

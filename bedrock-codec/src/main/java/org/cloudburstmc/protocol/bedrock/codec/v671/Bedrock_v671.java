@@ -1,7 +1,11 @@
 package org.cloudburstmc.protocol.bedrock.codec.v671;
 
+import org.cloudburstmc.protocol.bedrock.codec.v671.serializer.LegacyTelemetryEventSerializer_v671;
+
+import org.cloudburstmc.protocol.bedrock.packet.LegacyTelemetryEventPacket;
+
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
-import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
+import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelEventSerializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelSoundEvent1Serializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v313.serializer.LevelSoundEvent2Serializer_v313;
@@ -10,11 +14,11 @@ import org.cloudburstmc.protocol.bedrock.codec.v361.serializer.LevelEventGeneric
 import org.cloudburstmc.protocol.bedrock.codec.v575.BedrockCodecHelper_v575;
 import org.cloudburstmc.protocol.bedrock.codec.v662.Bedrock_v662;
 import org.cloudburstmc.protocol.bedrock.codec.v671.serializer.*;
-import org.cloudburstmc.protocol.bedrock.data.LevelEventType;
-import org.cloudburstmc.protocol.bedrock.data.ParticleType;
-import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
+import org.cloudburstmc.protocol.bedrock.data.world.event.LevelEventType;
+import org.cloudburstmc.protocol.bedrock.data.world.event.ParticleType;
+import org.cloudburstmc.protocol.bedrock.data.sound.LevelSoundEvent;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataTypes;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorFlags;
 import org.cloudburstmc.protocol.bedrock.packet.*;
 import org.cloudburstmc.protocol.bedrock.transformer.FlagTransformer;
 import org.cloudburstmc.protocol.common.util.TypeMap;
@@ -29,26 +33,26 @@ public class Bedrock_v671 extends Bedrock_v662 {
             .insert(LEVEL_EVENT_PARTICLE_TYPE, PARTICLE_TYPES)
             .build();
 
-    protected static final TypeMap<EntityFlag> ENTITY_FLAGS = Bedrock_v662.ENTITY_FLAGS
+    protected static final TypeMap<ActorFlags> ENTITY_FLAGS = Bedrock_v662.ENTITY_FLAGS
             .toBuilder()
-            .insert(118, EntityFlag.BODY_ROTATION_BLOCKED)
+            .insert(118, ActorFlags.BODY_ROTATION_BLOCKED)
             .build();
 
-    protected static final EntityDataTypeMap ENTITY_DATA = Bedrock_v662.ENTITY_DATA
+    protected static final ActorDataTypeMap ENTITY_DATA = Bedrock_v662.ENTITY_DATA
             .toBuilder()
-            .update(EntityDataTypes.FLAGS, new FlagTransformer(ENTITY_FLAGS, 0))
-            .update(EntityDataTypes.FLAGS_2, new FlagTransformer(ENTITY_FLAGS, 1))
+            .update(ActorDataTypes.FLAGS, new FlagTransformer(ENTITY_FLAGS, 0))
+            .update(ActorDataTypes.FLAGS_2, new FlagTransformer(ENTITY_FLAGS, 1))
             .build();
 
-    protected static final TypeMap<SoundEvent> SOUND_EVENTS = Bedrock_v662.SOUND_EVENTS
+    protected static final TypeMap<LevelSoundEvent> SOUND_EVENTS = Bedrock_v662.SOUND_EVENTS
             .toBuilder()
-            .replace(511, SoundEvent.ARMOR_CRACK_WOLF)
-            .insert(512, SoundEvent.ARMOR_BREAK_WOLF)
-            .insert(513, SoundEvent.ARMOR_REPAIR_WOLF)
-            .insert(514, SoundEvent.MACE_SMASH_AIR)
-            .insert(515, SoundEvent.MACE_SMASH_GROUND)
-            .insert(520, SoundEvent.MACE_SMASH_HEAVY_GROUND)
-            .insert(521, SoundEvent.UNDEFINED)
+            .replace(511, LevelSoundEvent.ARMOR_CRACK_WOLF)
+            .insert(512, LevelSoundEvent.ARMOR_BREAK_WOLF)
+            .insert(513, LevelSoundEvent.ARMOR_REPAIR_WOLF)
+            .insert(514, LevelSoundEvent.MACE_SMASH_AIR)
+            .insert(515, LevelSoundEvent.MACE_SMASH_GROUND)
+            .insert(520, LevelSoundEvent.MACE_SMASH_HEAVY_GROUND)
+            .insert(521, LevelSoundEvent.UNDEFINED)
             .build();
 
     public static final BedrockCodec CODEC = Bedrock_v662.CODEC.toBuilder()
@@ -67,7 +71,7 @@ public class Bedrock_v671 extends Bedrock_v662 {
             .updateSerializer(UpdatePlayerGameTypePacket.class, UpdatePlayerGameTypeSerializer_v671.INSTANCE)
             .updateSerializer(StartGamePacket.class, StartGameSerializer_v671.INSTANCE)
             .updateSerializer(CraftingDataPacket.class, CraftingDataSerializer_v671.INSTANCE)
-            .updateSerializer(EventPacket.class, EventSerializer_v671.INSTANCE)
+            .updateSerializer(LegacyTelemetryEventPacket.class, LegacyTelemetryEventSerializer_v671.INSTANCE)
             .deregisterPacket(FilterTextPacket.class)
             .build();
 }

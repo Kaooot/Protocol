@@ -3,20 +3,22 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.protocol.bedrock.data.MovementEffectType;
+import org.cloudburstmc.protocol.bedrock.data.actor.MovementEffectType;
+import org.cloudburstmc.protocol.bedrock.data.player.PlayerInputTick;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class MovementEffectPacket implements BedrockPacket {
-    private long entityRuntimeId;
-    private MovementEffectType effectType;
-    private int duration;
-    private long tick;
+
+    private long targetRuntimeID;
+    private MovementEffectType effectID;
+    private int effectDuration;
+    private PlayerInputTick tick = new PlayerInputTick(0L);
 
     @Override
-    public PacketSignal handle(BedrockPacketHandler handler) {
+    public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 

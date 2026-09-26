@@ -1,9 +1,14 @@
 package org.cloudburstmc.protocol.bedrock.data.diagnostics;
 
-import lombok.Value;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Value
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class SystemCategory {
-    String categoryName;
-    long systemIndex;
+
+    private String categoryName;
+    private long systemIndex;
 }

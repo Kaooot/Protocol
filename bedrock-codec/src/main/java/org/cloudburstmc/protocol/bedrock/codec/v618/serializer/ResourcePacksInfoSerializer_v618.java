@@ -7,10 +7,11 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v448.serializer.ResourcePacksInfoSerializer_v448;
+import org.cloudburstmc.protocol.bedrock.data.resourcepack.PackInfoData;
 import org.cloudburstmc.protocol.bedrock.packet.ResourcePacksInfoPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
-import java.util.LinkedHashMap;
+import java.util.HashMap;
 import java.util.Map;
 
 import static org.cloudburstmc.protocol.common.util.Preconditions.checkArgument;
@@ -37,10 +38,10 @@ public class ResourcePacksInfoSerializer_v618 extends ResourcePacksInfoSerialize
         ByteBuf byteBuf = buffer.alloc().ioBuffer();
         try {
             int size = 0;
-            for (ResourcePacksInfoPacket.Entry info : packet.getResourcePackInfos()) {
-                if (info.getCdnUrl() != null) {
-                    helper.writeString(byteBuf, info.getPackId() + "_" + info.getPackVersion());
-                    helper.writeString(byteBuf, info.getCdnUrl());
+            for (PackInfoData info : packet.getResourcePacks()) {
+                if (info.getCdnURL() != null) {
+                    helper.writeString(byteBuf, info.getPackIdVersion().getPackUUID() + "_" + info.getPackIdVersion().getPackVersion());
+                    helper.writeString(byteBuf, info.getCdnURL());
                     size++;
                 }
             }
@@ -58,21 +59,21 @@ public class ResourcePacksInfoSerializer_v618 extends ResourcePacksInfoSerialize
         int size = VarInts.readUnsignedInt(buffer);
         checkArgument(helper.getEncodingSettings().maxListSize() <= 0 || size <= helper.getEncodingSettings().maxListSize(), "CDN entries size is too big: %s", size);
 
-        if (size == 0 || packet.getResourcePackInfos().isEmpty()) {
+        if (size == 0 || packet.getResourcePacks().isEmpty()) {
             return;
         }
 
-        Map<String, String> cdnUrls = new LinkedHashMap<>();
+        Map<String, String> cdnUrls = new HashMap<>();
         for (int i = 0; i < size; i++) {
             String idVersion = helper.readString(buffer);
             String url = helper.readString(buffer);
             cdnUrls.put(idVersion, url);
         }
 
-        for (ResourcePacksInfoPacket.Entry info : packet.getResourcePackInfos()) {
-            String url = cdnUrls.remove(info.getPackId() + "_" + info.getPackVersion());
+        for (PackInfoData info : packet.getResourcePacks()) {
+            String url = cdnUrls.remove(info.getPackIdVersion().getPackUUID() + "_" + info.getPackIdVersion().getPackVersion());
             if (url != null) {
-                info.setCdnUrl(url);
+                info.setCdnURL(url);
             }
         }
 

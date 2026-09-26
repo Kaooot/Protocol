@@ -5,12 +5,11 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
+import org.cloudburstmc.protocol.bedrock.data.command.CommandOutput;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandOutputMessage;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandOutputType;
 import org.cloudburstmc.protocol.bedrock.packet.CommandOutputPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
-
-import static java.util.Objects.requireNonNull;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CommandOutputSerializer_v291 implements BedrockPacketSerializer<CommandOutputPacket> {
@@ -18,42 +17,47 @@ public class CommandOutputSerializer_v291 implements BedrockPacketSerializer<Com
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, CommandOutputPacket packet) {
-        helper.writeCommandOrigin(buffer, packet.getCommandOriginData());
-        buffer.writeByte(packet.getType().ordinal());
-        VarInts.writeUnsignedInt(buffer, packet.getSuccessCount());
-
-        helper.writeArray(buffer, packet.getMessages(), this::writeMessage);
-
-        if (packet.getType() == CommandOutputType.DATA_SET) {
-            helper.writeString(buffer, packet.getData());
-        }
+        helper.writeCommandOriginData(buffer, packet.getOriginData());
+        this.writeCommandOutput(buffer, helper, packet.getOutput());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, CommandOutputPacket packet) {
-        packet.setCommandOriginData(helper.readCommandOrigin(buffer));
-        packet.setType(CommandOutputType.values()[buffer.readUnsignedByte()]);
-        packet.setSuccessCount(VarInts.readUnsignedInt(buffer));
+        packet.setOriginData(helper.readCommandOriginData(buffer));
+        packet.setOutput(this.readCommandOutput(buffer, helper));
+    }
 
-        helper.readArray(buffer, packet.getMessages(), this::readMessage);
-
-        if (packet.getType() == CommandOutputType.DATA_SET) {
-            packet.setData(helper.readString(buffer));
+    protected void writeCommandOutput(ByteBuf buffer, BedrockCodecHelper helper, CommandOutput output) {
+        buffer.writeByte(output.getOutputType().ordinal());
+        VarInts.writeUnsignedInt(buffer, output.getSuccessCount());
+        helper.writeArray(buffer, output.getOutputMessages(), this::writeCommandOutputMessage);
+        if (output.getOutputType().equals(CommandOutputType.DATA_SET)) {
+            helper.writeString(buffer, output.getDataSet());
         }
     }
 
-    public CommandOutputMessage readMessage(ByteBuf buffer, BedrockCodecHelper helper) {
-        boolean internal = buffer.readBoolean();
-        String messageId = helper.readString(buffer);
-        String[] parameters = helper.readArray(buffer, new String[0], helper::readString);
-        return new CommandOutputMessage(internal, messageId, parameters);
+    protected CommandOutput readCommandOutput(ByteBuf buffer, BedrockCodecHelper helper) {
+        final CommandOutput output = new CommandOutput();
+        output.setOutputType(CommandOutputType.from(buffer.readUnsignedByte()));
+        output.setSuccessCount(VarInts.readUnsignedInt(buffer));
+        helper.readArray(buffer, output.getOutputMessages(), this::readCommandOutputMessage);
+        if (output.getOutputType().equals(CommandOutputType.DATA_SET)) {
+            output.setDataSet(helper.readString(buffer));
+        }
+        return output;
     }
 
-    public void writeMessage(ByteBuf buffer, BedrockCodecHelper helper, CommandOutputMessage outputMessage) {
-        requireNonNull(outputMessage, "CommandOutputMessage is null");
+    protected void writeCommandOutputMessage(ByteBuf buffer, BedrockCodecHelper helper, CommandOutputMessage message) {
+        buffer.writeBoolean(message.isSuccessful());
+        helper.writeString(buffer, message.getMessageID());
+        helper.writeArray(buffer, message.getParameters(), helper::writeString);
+    }
 
-        buffer.writeBoolean(outputMessage.isInternal());
-        helper.writeString(buffer, outputMessage.getMessageId());
-        helper.writeArray(buffer, outputMessage.getParameters(), helper::writeString);
+    protected CommandOutputMessage readCommandOutputMessage(ByteBuf buffer, BedrockCodecHelper helper) {
+        final CommandOutputMessage message = new CommandOutputMessage();
+        message.setSuccessful(buffer.readBoolean());
+        message.setMessageID(helper.readString(buffer));
+        helper.readArray(buffer, message.getParameters(), helper::readString);
+        return message;
     }
 }

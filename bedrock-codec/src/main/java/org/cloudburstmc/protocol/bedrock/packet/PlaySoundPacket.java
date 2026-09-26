@@ -3,35 +3,28 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.checkerframework.checker.nullness.qual.Nullable;
 import org.cloudburstmc.math.vector.Vector3f;
+import org.cloudburstmc.protocol.bedrock.data.sound.ServerSoundHandle;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class PlaySoundPacket implements BedrockPacket {
-    private String sound;
+
+    private String name;
     private Vector3f position;
     private float volume;
     private float pitch;
-    /**
-     * @since v2168
-     */
     private int loopCount;
+    private boolean bypassListenerRangeCheck;
     /**
      * @since v975
      */
-    @Nullable
-    private Long serverSoundHandle;
+    private ServerSoundHandle serverSoundHandle;
     /**
      * @since v2192
      */
-    private boolean bypassListenerRangeCheck;
-    /**
-     * @since v2192
-     */
-    @Nullable
     private Float playbackPositionSeconds;
 
     @Override
@@ -39,6 +32,7 @@ public class PlaySoundPacket implements BedrockPacket {
         return handler.handle(this);
     }
 
+    @Override
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.PLAY_SOUND;
     }
@@ -52,4 +46,3 @@ public class PlaySoundPacket implements BedrockPacket {
         }
     }
 }
-

@@ -5,6 +5,9 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
+import org.cloudburstmc.protocol.bedrock.data.boss.BossBarColor;
+import org.cloudburstmc.protocol.bedrock.data.boss.BossBarOverlay;
+import org.cloudburstmc.protocol.bedrock.data.boss.BossEventUpdateType;
 import org.cloudburstmc.protocol.bedrock.packet.BossEventPacket;
 import org.cloudburstmc.protocol.common.util.TextConverter;
 import org.cloudburstmc.protocol.common.util.VarInts;
@@ -15,41 +18,41 @@ public class BossEventSerializer_v291 implements BedrockPacketSerializer<BossEve
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, BossEventPacket packet) {
-        VarInts.writeLong(buffer, packet.getBossUniqueEntityId());
-        VarInts.writeUnsignedInt(buffer, packet.getAction().ordinal());
+        VarInts.writeLong(buffer, packet.getTargetActorID());
+        VarInts.writeUnsignedInt(buffer, packet.getEventType().ordinal());
         this.serializeAction(buffer, helper, packet);
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, BossEventPacket packet) {
-        packet.setBossUniqueEntityId(VarInts.readLong(buffer));
-        packet.setAction(BossEventPacket.Action.values()[VarInts.readUnsignedInt(buffer)]);
+        packet.setTargetActorID(VarInts.readLong(buffer));
+        packet.setEventType(BossEventUpdateType.from(VarInts.readUnsignedInt(buffer)));
         this.deserializeAction(buffer, helper, packet);
     }
 
     protected void serializeAction(ByteBuf buffer, BedrockCodecHelper helper, BossEventPacket packet) {
         TextConverter converter = helper.getTextConverter();
-        switch (packet.getAction()) {
-            case REGISTER_PLAYER:
-            case UNREGISTER_PLAYER:
-                VarInts.writeLong(buffer, packet.getPlayerUniqueEntityId());
+        switch (packet.getEventType()) {
+            case PLAYER_ADDED:
+            case PLAYER_REMOVED:
+                VarInts.writeLong(buffer, packet.getPlayerID());
                 break;
-            case CREATE:
-                helper.writeString(buffer, converter.serialize(packet.getTitle(CharSequence.class)));
-                buffer.writeFloatLE(packet.getHealthPercentage());
+            case ADD:
+                helper.writeString(buffer, converter.serialize(packet.getName(CharSequence.class)));
+                buffer.writeFloatLE(packet.getHealthPercent());
                 // fall through
             case UPDATE_PROPERTIES:
-                buffer.writeShortLE(packet.getDarkenSky());
+                buffer.writeShortLE(packet.getDarkenScreen());
                 // fall through
             case UPDATE_STYLE:
-                VarInts.writeUnsignedInt(buffer, packet.getColor());
-                VarInts.writeUnsignedInt(buffer, packet.getOverlay());
+                VarInts.writeUnsignedInt(buffer, packet.getColor().ordinal());
+                VarInts.writeUnsignedInt(buffer, packet.getOverlay().ordinal());
                 break;
-            case UPDATE_PERCENTAGE:
-                buffer.writeFloatLE(packet.getHealthPercentage());
+            case UPDATE_PERCENT:
+                buffer.writeFloatLE(packet.getHealthPercent());
                 break;
             case UPDATE_NAME:
-                helper.writeString(buffer, converter.serialize(packet.getTitle(CharSequence.class)));
+                helper.writeString(buffer, converter.serialize(packet.getName(CharSequence.class)));
                 break;
             case REMOVE:
                 break;
@@ -60,27 +63,27 @@ public class BossEventSerializer_v291 implements BedrockPacketSerializer<BossEve
 
     protected void deserializeAction(ByteBuf buffer, BedrockCodecHelper helper, BossEventPacket packet) {
         TextConverter converter = helper.getTextConverter();
-        switch (packet.getAction()) {
-            case REGISTER_PLAYER:
-            case UNREGISTER_PLAYER:
-                packet.setPlayerUniqueEntityId(VarInts.readLong(buffer));
+        switch (packet.getEventType()) {
+            case PLAYER_ADDED:
+            case PLAYER_REMOVED:
+                packet.setPlayerID(VarInts.readLong(buffer));
                 break;
-            case CREATE:
-                packet.setTitle(converter.serialize(helper.readString(buffer)));
-                packet.setHealthPercentage(buffer.readFloatLE());
+            case ADD:
+                packet.setName(converter.serialize(helper.readString(buffer)));
+                packet.setHealthPercent(buffer.readFloatLE());
                 // fall through
             case UPDATE_PROPERTIES:
-                packet.setDarkenSky(buffer.readUnsignedShortLE());
+                packet.setDarkenScreen(buffer.readUnsignedShortLE());
                 // fall through
             case UPDATE_STYLE:
-                packet.setColor(VarInts.readUnsignedInt(buffer));
-                packet.setOverlay(VarInts.readUnsignedInt(buffer));
+                packet.setColor(BossBarColor.from(VarInts.readUnsignedInt(buffer)));
+                packet.setOverlay(BossBarOverlay.from(VarInts.readUnsignedInt(buffer)));
                 break;
-            case UPDATE_PERCENTAGE:
-                packet.setHealthPercentage(buffer.readFloatLE());
+            case UPDATE_PERCENT:
+                packet.setHealthPercent(buffer.readFloatLE());
                 break;
             case UPDATE_NAME:
-                packet.setTitle(converter.serialize(helper.readString(buffer)));
+                packet.setName(converter.serialize(helper.readString(buffer)));
                 break;
         }
     }

@@ -10,26 +10,24 @@ import org.cloudburstmc.protocol.bedrock.packet.ResourcePacksInfoPacket;
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public class ResourcePacksInfoSerializer_v622 extends ResourcePacksInfoSerializer_v618 {
     public static final ResourcePacksInfoSerializer_v622 INSTANCE = new ResourcePacksInfoSerializer_v622();
-    
+
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ResourcePacksInfoPacket packet) {
-        buffer.writeBoolean(packet.isForcedToAccept());
+        buffer.writeBoolean(packet.isResourcePackRequired());
         buffer.writeBoolean(packet.isHasAddonPacks());
-        buffer.writeBoolean(packet.isScriptingEnabled());
-        buffer.writeBoolean(packet.isForcingServerPacksEnabled());
-        writePacks(buffer, packet.getBehaviorPackInfos(), helper, false);
-        writePacks(buffer, packet.getResourcePackInfos(), helper, true);
-        this.writeCDNEntries(buffer, packet, helper);
+        buffer.writeBoolean(packet.isHasScripts());
+        buffer.writeBoolean(false); // force server packs enabled
+        buffer.writeShortLE(0);
+        helper.writeArray(buffer, packet.getResourcePacks(), ByteBuf::writeShortLE, this::writePackInfoData);
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ResourcePacksInfoPacket packet) {
-        packet.setForcedToAccept(buffer.readBoolean());
+        packet.setResourcePackRequired(buffer.readBoolean());
         packet.setHasAddonPacks(buffer.readBoolean());
-        packet.setScriptingEnabled(buffer.readBoolean());
-        packet.setForcingServerPacksEnabled(buffer.readBoolean());
-        readPacks(buffer, packet.getBehaviorPackInfos(), helper, false);
-        readPacks(buffer, packet.getResourcePackInfos(), helper, true);
-        this.readCDNEntries(buffer, packet, helper);
+        packet.setHasScripts(buffer.readBoolean());
+        buffer.readBoolean();
+        buffer.readShortLE();
+        helper.readArray(buffer, packet.getResourcePacks(), ByteBuf::readShortLE, this::readPackInfoData);
     }
 }

@@ -16,7 +16,7 @@ public class InventorySlotSerializer_v748 implements BedrockPacketSerializer<Inv
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, InventorySlotPacket packet) {
         VarInts.writeUnsignedInt(buffer, packet.getContainerId());
         VarInts.writeUnsignedInt(buffer, packet.getSlot());
-        helper.writeFullContainerName(buffer, packet.getContainerNameData());
+        helper.writeFullContainerName(buffer, packet.getFullContainerName());
         helper.writeNetItem(buffer, packet.getStorageItem());
         helper.writeNetItem(buffer, packet.getItem());
     }
@@ -25,7 +25,7 @@ public class InventorySlotSerializer_v748 implements BedrockPacketSerializer<Inv
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, InventorySlotPacket packet) {
         packet.setContainerId(VarInts.readUnsignedInt(buffer));
         packet.setSlot(VarInts.readUnsignedInt(buffer));
-        packet.setContainerNameData(helper.readFullContainerName(buffer));
+        packet.setFullContainerName(helper.readFullContainerName(buffer));
         packet.setStorageItem(helper.readNetItem(buffer));
         packet.setItem(helper.readNetItem(buffer));
     }

@@ -4,7 +4,8 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.protocol.bedrock.data.AttributeData;
+import org.cloudburstmc.protocol.bedrock.data.actor.attribute.AttributeData;
+import org.cloudburstmc.protocol.bedrock.data.player.PlayerInputTick;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 import java.util.List;
@@ -13,15 +14,17 @@ import java.util.List;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class UpdateAttributesPacket implements BedrockPacket {
-    private long runtimeEntityId;
-    private List<AttributeData> attributes = new ObjectArrayList<>();
-    private long tick;
+
+    private long targetRuntimeID;
+    private final List<AttributeData> attributeList = new ObjectArrayList<>();
+    private PlayerInputTick tick = new PlayerInputTick(0L);
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
+    @Override
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.UPDATE_ATTRIBUTES;
     }
@@ -35,4 +38,3 @@ public class UpdateAttributesPacket implements BedrockPacket {
         }
     }
 }
-

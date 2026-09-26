@@ -14,13 +14,13 @@ public class NetworkChunkPublisherUpdateSerializer_v313 implements BedrockPacket
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, NetworkChunkPublisherUpdatePacket packet) {
-        helper.writeVector3i(buffer, packet.getPosition());
-        VarInts.writeUnsignedInt(buffer, packet.getRadius());
+        helper.writeVector3i(buffer, packet.getNewPositionForView());
+        VarInts.writeUnsignedInt(buffer, packet.getNewRadiusForView());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, NetworkChunkPublisherUpdatePacket packet) {
-        packet.setPosition(helper.readVector3i(buffer));
-        packet.setRadius(VarInts.readUnsignedInt(buffer));
+        packet.setNewPositionForView(helper.readVector3i(buffer));
+        packet.setNewRadiusForView(VarInts.readUnsignedInt(buffer));
     }
 }

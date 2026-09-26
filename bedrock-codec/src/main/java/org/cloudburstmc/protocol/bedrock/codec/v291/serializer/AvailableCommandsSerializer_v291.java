@@ -23,7 +23,7 @@ import static org.cloudburstmc.protocol.common.util.Preconditions.checkArgument;
 public class AvailableCommandsSerializer_v291 implements BedrockPacketSerializer<AvailableCommandsPacket> {
 
     protected static final InternalLogger log = InternalLoggerFactory.getInstance(AvailableCommandsSerializer_v291.class);
-    protected static final CommandPermission[] PERMISSIONS = CommandPermission.values();
+    protected static final CommandPermissionLevel[] PERMISSIONS = CommandPermissionLevel.values();
 
     protected static final int ARG_FLAG_VALID = 0x100000;
     protected static final int ARG_FLAG_ENUM = 0x200000;
@@ -164,7 +164,7 @@ public class AvailableCommandsSerializer_v291 implements BedrockPacketSerializer
         helper.writeString(buffer, commandData.getName());
         helper.writeString(buffer, commandData.getDescription());
         this.writeFlags(buffer, commandData.getFlags());
-        CommandPermission permission = commandData.getPermission() == null ? CommandPermission.ANY : commandData.getPermission();
+        CommandPermissionLevel permission = commandData.getPermission() == null ? CommandPermissionLevel.ANY : commandData.getPermission();
         buffer.writeByte(permission.ordinal());
 
         CommandEnumData aliases = commandData.getAliases();
@@ -185,7 +185,7 @@ public class AvailableCommandsSerializer_v291 implements BedrockPacketSerializer
         String name = helper.readString(buffer);
         String description = helper.readString(buffer);
         Set<CommandData.Flag> flags = this.readFlags(buffer);
-        CommandPermission permissions = PERMISSIONS[buffer.readUnsignedByte()];
+        CommandPermissionLevel permissions = PERMISSIONS[buffer.readUnsignedByte()];
         int aliasIndex = buffer.readIntLE();
         CommandEnumData aliases = aliasIndex == -1 ? null : enums.get(aliasIndex);
 

@@ -3,7 +3,7 @@ package org.cloudburstmc.protocol.bedrock.codec.v431;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
-import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
+import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelEventSerializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelSoundEvent1Serializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v313.serializer.LevelSoundEvent2Serializer_v313;
@@ -11,11 +11,11 @@ import org.cloudburstmc.protocol.bedrock.codec.v332.serializer.LevelSoundEventSe
 import org.cloudburstmc.protocol.bedrock.codec.v361.serializer.LevelEventGenericSerializer_v361;
 import org.cloudburstmc.protocol.bedrock.codec.v428.Bedrock_v428;
 import org.cloudburstmc.protocol.bedrock.codec.v428.serializer.PlayerAuthInputSerializer_v428;
-import org.cloudburstmc.protocol.bedrock.data.LevelEvent;
-import org.cloudburstmc.protocol.bedrock.data.LevelEventType;
-import org.cloudburstmc.protocol.bedrock.data.ParticleType;
-import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes;
+import org.cloudburstmc.protocol.bedrock.data.world.event.LevelEvent;
+import org.cloudburstmc.protocol.bedrock.data.world.event.LevelEventType;
+import org.cloudburstmc.protocol.bedrock.data.world.event.ParticleType;
+import org.cloudburstmc.protocol.bedrock.data.sound.LevelSoundEvent;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataTypes;
 import org.cloudburstmc.protocol.bedrock.packet.*;
 import org.cloudburstmc.protocol.bedrock.transformer.TypeMapTransformer;
 import org.cloudburstmc.protocol.common.util.TypeMap;
@@ -29,8 +29,8 @@ public class Bedrock_v431 extends Bedrock_v428 {
             .insert(30, ParticleType.STALACTITE_DRIP_LAVA)
             .build();
 
-    protected static final EntityDataTypeMap ENTITY_DATA = Bedrock_v428.ENTITY_DATA.toBuilder()
-            .update(EntityDataTypes.AREA_EFFECT_CLOUD_PARTICLE, new TypeMapTransformer<>(PARTICLE_TYPES))
+    protected static final ActorDataTypeMap ENTITY_DATA = Bedrock_v428.ENTITY_DATA.toBuilder()
+            .update(ActorDataTypes.AREA_EFFECT_CLOUD_PARTICLE, new TypeMapTransformer<>(PARTICLE_TYPES))
             .build();
 
     protected static final TypeMap<LevelEventType> LEVEL_EVENTS = Bedrock_v428.LEVEL_EVENTS.toBuilder()
@@ -46,15 +46,15 @@ public class Bedrock_v431 extends Bedrock_v428 {
             .insert(LEVEL_EVENT_PARTICLE_TYPE, PARTICLE_TYPES)
             .build();
 
-    protected static final TypeMap<SoundEvent> SOUND_EVENTS = Bedrock_v428.SOUND_EVENTS.toBuilder()
-            .replace(332, SoundEvent.POINTED_DRIPSTONE_CAULDRON_DRIP_LAVA)
-            .insert(333, SoundEvent.POINTED_DRIPSTONE_CAULDRON_DRIP_WATER)
-            .insert(334, SoundEvent.POINTED_DRIPSTONE_DRIP_LAVA)
-            .insert(335, SoundEvent.POINTED_DRIPSTONE_DRIP_WATER)
-            .insert(336, SoundEvent.CAVE_VINES_PICK_BERRIES)
-            .insert(337, SoundEvent.BIG_DRIPLEAF_TILT_DOWN)
-            .insert(338, SoundEvent.BIG_DRIPLEAF_TILT_UP)
-            .insert(339, SoundEvent.UNDEFINED)
+    protected static final TypeMap<LevelSoundEvent> SOUND_EVENTS = Bedrock_v428.SOUND_EVENTS.toBuilder()
+            .replace(332, LevelSoundEvent.POINTED_DRIPSTONE_CAULDRON_DRIP_LAVA)
+            .insert(333, LevelSoundEvent.POINTED_DRIPSTONE_CAULDRON_DRIP_WATER)
+            .insert(334, LevelSoundEvent.POINTED_DRIPSTONE_DRIP_LAVA)
+            .insert(335, LevelSoundEvent.POINTED_DRIPSTONE_DRIP_WATER)
+            .insert(336, LevelSoundEvent.CAVE_VINES_PICK_BERRIES)
+            .insert(337, LevelSoundEvent.BIG_DRIPLEAF_TILT_DOWN)
+            .insert(338, LevelSoundEvent.BIG_DRIPLEAF_TILT_UP)
+            .insert(339, LevelSoundEvent.UNDEFINED)
             .build();
 
     public static BedrockCodec CODEC = Bedrock_v428.CODEC.toBuilder()

@@ -5,10 +5,15 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
+/**
+ * @deprecated since v407
+ */
+@Deprecated
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class VideoStreamConnectPacket implements BedrockPacket {
+
     private String address;
     private float screenshotFrequency;
     private Action action;
@@ -38,4 +43,3 @@ public class VideoStreamConnectPacket implements BedrockPacket {
         }
     }
 }
-

@@ -1,45 +1,37 @@
 package org.cloudburstmc.protocol.bedrock.codec.v712.serializer;
 
+import org.cloudburstmc.protocol.bedrock.data.resourcepack.ContentIdentity;
 import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v662.serializer.ResourcePacksInfoSerializer_v622;
-import org.cloudburstmc.protocol.bedrock.packet.ResourcePacksInfoPacket;
-
-import java.util.Objects;
-import java.util.UUID;
+import org.cloudburstmc.protocol.bedrock.data.resourcepack.PackInfoData;
 
 public class ResourcePacksInfoSerializer_v712 extends ResourcePacksInfoSerializer_v622 {
     public static final ResourcePacksInfoSerializer_v712 INSTANCE = new ResourcePacksInfoSerializer_v712();
 
     @Override
-    public void writeEntry(ByteBuf buffer, BedrockCodecHelper helper, ResourcePacksInfoPacket.Entry entry, boolean resource) {
-        Objects.requireNonNull(entry, "ResourcePacketInfoPacket entry was null");
-
-        helper.writeString(buffer, entry.getPackId().toString());
-        helper.writeString(buffer, entry.getPackVersion());
-        buffer.writeLongLE(entry.getPackSize());
-        helper.writeString(buffer, entry.getContentKey());
-        helper.writeString(buffer, entry.getSubPackName());
-        helper.writeString(buffer, entry.getContentId());
-        buffer.writeBoolean(entry.isScripting());
-        buffer.writeBoolean(entry.isAddonPack());
-        if (resource) {
-            buffer.writeBoolean(entry.isRaytracingCapable());
-        }
+    protected void writePackInfoData(ByteBuf buffer, BedrockCodecHelper helper, PackInfoData data) {
+        this.writePackIdVersion(buffer, helper, data.getPackIdVersion());
+        buffer.writeLongLE(data.getPackSize());
+        helper.writeString(buffer, data.getContentKey());
+        helper.writeString(buffer, data.getSubpackName());
+        helper.writeString(buffer, data.getContentIdentity().getIdentity());
+        buffer.writeBoolean(data.isHasScripts());
+        buffer.writeBoolean(data.isAddonPack()); // added
+        buffer.writeBoolean(data.isRayTracingCapable());
     }
 
     @Override
-    public ResourcePacksInfoPacket.Entry readEntry(ByteBuf buffer, BedrockCodecHelper helper, boolean resource) {
-        UUID packId = UUID.fromString(helper.readString(buffer));
-        String packVersion = helper.readString(buffer);
-        long packSize = buffer.readLongLE();
-        String contentKey = helper.readString(buffer);
-        String subPackName = helper.readString(buffer);
-        String contentId = helper.readString(buffer);
-        boolean isScripting = buffer.readBoolean();
-        boolean isAddonPack = buffer.readBoolean();
-        boolean raytracingCapable = resource && buffer.readBoolean();
-        return new ResourcePacksInfoPacket.Entry(packId, packVersion, packSize, contentKey, subPackName, contentId,
-                isScripting, raytracingCapable, isAddonPack, null);
+    protected PackInfoData readPackInfoData(ByteBuf buffer, BedrockCodecHelper helper) {
+        final PackInfoData data = new PackInfoData();
+        data.setPackIdVersion(this.readPackIdVersion(buffer, helper));
+        data.setPackSize(buffer.readLongLE());
+        data.setContentKey(helper.readString(buffer));
+        data.setSubpackName(helper.readString(buffer));
+        data.setContentIdentity(new ContentIdentity(helper.readString(buffer)));
+        data.setHasScripts(buffer.readBoolean());
+        data.setAddonPack(buffer.readBoolean()); // added
+        data.setRayTracingCapable(buffer.readBoolean());
+        return data;
     }
-}
+}

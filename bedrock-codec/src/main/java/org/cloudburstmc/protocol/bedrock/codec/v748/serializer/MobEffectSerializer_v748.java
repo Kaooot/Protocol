@@ -1,5 +1,6 @@
 package org.cloudburstmc.protocol.bedrock.codec.v748.serializer;
 
+import org.cloudburstmc.protocol.bedrock.data.player.PlayerInputTick;
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -15,12 +16,12 @@ public class MobEffectSerializer_v748 extends MobEffectSerializer_v291 {
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, MobEffectPacket packet) {
         super.serialize(buffer, helper, packet);
-        VarInts.writeUnsignedLong(buffer, packet.getTick());
+        VarInts.writeUnsignedLong(buffer, packet.getTick().getInputTick());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, MobEffectPacket packet) {
         super.deserialize(buffer, helper, packet);
-        packet.setTick(VarInts.readUnsignedLong(buffer));
+        packet.setTick(new PlayerInputTick(VarInts.readUnsignedLong(buffer)));
     }
-}
+}

@@ -1,7 +1,13 @@
 package org.cloudburstmc.protocol.bedrock.codec.v844;
 
+import org.cloudburstmc.protocol.bedrock.data.world.event.ParticleType;
+
+import org.cloudburstmc.protocol.bedrock.data.world.event.LevelEventType;
+
+import org.cloudburstmc.protocol.bedrock.data.sound.LevelSoundEvent;
+
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
-import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
+import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelEventSerializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v361.serializer.LevelEventGenericSerializer_v361;
 import org.cloudburstmc.protocol.bedrock.codec.v786.serializer.LevelSoundEventSerializer_v786;
@@ -9,10 +15,10 @@ import org.cloudburstmc.protocol.bedrock.codec.v827.Bedrock_v827;
 import org.cloudburstmc.protocol.bedrock.codec.v844.serializer.BiomeDefinitionListSerializer_v844;
 import org.cloudburstmc.protocol.bedrock.codec.v844.serializer.PlayerArmorDamageSerializer_v844;
 import org.cloudburstmc.protocol.bedrock.codec.v844.serializer.ServerboundPackSettingChangeSerializer_v844;
-import org.cloudburstmc.protocol.bedrock.data.*;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataFormat;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataFormat;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataTypes;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorFlags;
+import org.cloudburstmc.protocol.bedrock.data.PacketRecipient;
 import org.cloudburstmc.protocol.bedrock.packet.*;
 import org.cloudburstmc.protocol.bedrock.transformer.Byte2IntTransformer;
 import org.cloudburstmc.protocol.bedrock.transformer.FlagTransformer;
@@ -21,25 +27,25 @@ import org.cloudburstmc.protocol.common.util.TypeMap;
 
 public class Bedrock_v844 extends Bedrock_v827 {
 
-    protected static final TypeMap<EntityFlag> ENTITY_FLAGS = Bedrock_v827.ENTITY_FLAGS
+    protected static final TypeMap<ActorFlags> ENTITY_FLAGS = Bedrock_v827.ENTITY_FLAGS
             .toBuilder()
-            .insert(125, EntityFlag.CAN_USE_VERTICAL_MOVEMENT_ACTION)
+            .insert(125, ActorFlags.CAN_USE_VERTICAL_MOVEMENT_ACTION)
             .build();
 
-    protected static final EntityDataTypeMap ENTITY_DATA = Bedrock_v827.ENTITY_DATA
+    protected static final ActorDataTypeMap ENTITY_DATA = Bedrock_v827.ENTITY_DATA
             .toBuilder()
-            .update(EntityDataTypes.FLAGS, new FlagTransformer(ENTITY_FLAGS, 0))
-            .update(EntityDataTypes.FLAGS_2, new FlagTransformer(ENTITY_FLAGS, 1))
-            .replace(EntityDataTypes.SHULKER_ATTACH_FACE, 65, EntityDataFormat.BYTE, Byte2IntTransformer.INSTANCE)
-            .replace(EntityDataTypes.SHULKER_ATTACHED, 66, EntityDataFormat.SHORT, Short2BooleanTransformer.INSTANCE)
+            .update(ActorDataTypes.FLAGS, new FlagTransformer(ENTITY_FLAGS, 0))
+            .update(ActorDataTypes.FLAGS_2, new FlagTransformer(ENTITY_FLAGS, 1))
+            .replace(ActorDataTypes.SHULKER_ATTACH_FACE, 65, ActorDataFormat.BYTE, Byte2IntTransformer.INSTANCE)
+            .replace(ActorDataTypes.SHULKER_ATTACHED, 66, ActorDataFormat.SHORT, Short2BooleanTransformer.INSTANCE)
             .build();
 
-    protected static final TypeMap<SoundEvent> SOUND_EVENTS = Bedrock_v827.SOUND_EVENTS
+    protected static final TypeMap<LevelSoundEvent> SOUND_EVENTS = Bedrock_v827.SOUND_EVENTS
             .toBuilder()
-            .replace(563, SoundEvent.PLACE_ITEM)
-            .insert(564, SoundEvent.SINGLE_ITEM_SWAP)
-            .insert(565, SoundEvent.MULTI_ITEM_SWAP)
-            .insert(566, SoundEvent.UNDEFINED)
+            .replace(563, LevelSoundEvent.PLACE_ITEM)
+            .insert(564, LevelSoundEvent.SINGLE_ITEM_SWAP)
+            .insert(565, LevelSoundEvent.MULTI_ITEM_SWAP)
+            .insert(566, LevelSoundEvent.UNDEFINED)
             .build();
 
     protected static final TypeMap<ParticleType> PARTICLE_TYPES = Bedrock_v827.PARTICLE_TYPES.toBuilder()

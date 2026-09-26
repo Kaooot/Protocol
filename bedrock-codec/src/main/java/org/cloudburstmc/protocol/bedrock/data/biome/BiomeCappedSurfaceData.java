@@ -1,20 +1,21 @@
 package org.cloudburstmc.protocol.bedrock.data.biome;
 
-import lombok.Value;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.data.definitions.BlockDefinition;
 
 import java.util.List;
-import java.util.Optional;
 
-@Value
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class BiomeCappedSurfaceData {
-    List<BlockDefinition> floorBlocks;
-    List<BlockDefinition> ceilingBlocks;
-    @Nullable
-    BlockDefinition seaBlock;
-    @Nullable
-    BlockDefinition foundationBlock;
-    @Nullable
-    BlockDefinition beachBlock;
+
+    private final List<BlockDefinition> floorBlocks = new ObjectArrayList<>();
+    private final List<BlockDefinition> ceilingBlocks = new ObjectArrayList<>();
+    private BlockDefinition seaBlock;
+    private BlockDefinition foundationBlock;
+    private BlockDefinition beachBlock;
 }

@@ -2,31 +2,35 @@ package org.cloudburstmc.protocol.bedrock.codec.v944.serializer;
 
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
+import org.cloudburstmc.protocol.bedrock.data.player.PlayerPartyInfo;
 import org.cloudburstmc.protocol.bedrock.packet.PartyChangedPacket;
 
-@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PartyChangedSerializer_v944 implements BedrockPacketSerializer<PartyChangedPacket> {
-
     public static final PartyChangedSerializer_v944 INSTANCE = new PartyChangedSerializer_v944();
+
+    protected static final int MAX_PARTY_ID_LENGTH = 49;
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, PartyChangedPacket packet) {
-        helper.writeOptionalNull(buffer, packet.getParty(), this::writeParty);
-    }
-
-    protected void writeParty(ByteBuf buffer, BedrockCodecHelper helper, PartyChangedPacket.PartyInfo info) {
-        helper.writeString(buffer, info.getPartyId());
+        this.writePlayerPartyInfo(buffer, helper, packet.getPartyInfo());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, PartyChangedPacket packet) {
-        packet.setParty(helper.readOptional(buffer, null, this::readParty));
+        packet.setPartyInfo(this.readPlayerPartyInfo(buffer, helper));
     }
 
-    protected PartyChangedPacket.PartyInfo readParty(ByteBuf buffer, BedrockCodecHelper helper) {
-        return new PartyChangedPacket.PartyInfo(helper.readString(buffer), false);
+    protected void writePlayerPartyInfo(ByteBuf buffer, BedrockCodecHelper helper, PlayerPartyInfo info) {
+        helper.writeOptionalNull(buffer, info.getPartyId(), helper::writeString);
+    }
+
+    protected PlayerPartyInfo readPlayerPartyInfo(ByteBuf buffer, BedrockCodecHelper helper) {
+        final PlayerPartyInfo info = new PlayerPartyInfo();
+        info.setPartyId(helper.readOptional(buffer, null, (buf, codecHelper) -> codecHelper.readStringMaxLen(buf, MAX_PARTY_ID_LENGTH)));
+        return info;
     }
 }

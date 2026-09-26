@@ -1,26 +1,22 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.math.vector.Vector3i;
-import org.cloudburstmc.protocol.bedrock.data.BlockChangeEntry;
+import org.cloudburstmc.protocol.bedrock.data.chunk.UpdateSubChunkBlocksChangedInfo;
 import org.cloudburstmc.protocol.common.PacketSignal;
-
-import java.util.List;
 
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class UpdateSubChunkBlocksPacket implements BedrockPacket {
-    private Vector3i position;
 
-    private final List<BlockChangeEntry> standardBlocks = new ObjectArrayList<>();
-    private final List<BlockChangeEntry> extraBlocks = new ObjectArrayList<>();
+    private Vector3i subChunkBlockPosition;
+    private UpdateSubChunkBlocksChangedInfo blocksChanged;
 
     @Override
-    public PacketSignal handle(BedrockPacketHandler handler) {
+    public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
@@ -38,4 +34,3 @@ public class UpdateSubChunkBlocksPacket implements BedrockPacket {
         }
     }
 }
-

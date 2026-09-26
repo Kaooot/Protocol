@@ -4,26 +4,23 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.math.vector.Vector3i;
+import org.cloudburstmc.protocol.bedrock.data.sound.ServerSoundHandle;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Sent to notify the client that a record started playing at a block position.
- *
- * @since v2192
- */
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class RecordStartedPacket implements BedrockPacket {
 
-    private Vector3i blockPos;
-    private long serverSoundHandle;
+    private Vector3i blockPosition;
+    private ServerSoundHandle serverSoundHandle;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
+    @Override
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.RECORD_STARTED;
     }

@@ -9,13 +9,15 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class OnScreenTextureAnimationPacket implements BedrockPacket {
-    private long effectId;
+
+    private int effectId;
 
     @Override
-    public PacketSignal handle(BedrockPacketHandler handler) {
+    public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
+    @Override
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.ON_SCREEN_TEXTURE_ANIMATION;
     }
@@ -29,4 +31,3 @@ public class OnScreenTextureAnimationPacket implements BedrockPacket {
         }
     }
 }
-

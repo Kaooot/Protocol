@@ -1,23 +1,40 @@
 package org.cloudburstmc.protocol.bedrock.data.structure;
 
-import lombok.Value;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.math.vector.Vector3i;
 
-@Value
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class StructureSettings {
-    private final String paletteName;
-    private final boolean ignoringEntities;
-    private final boolean ignoringBlocks;
-    private final boolean nonTickingPlayersAndTickingAreasEnabled;
-    private final Vector3i size;
-    private final Vector3i offset;
-    private final long lastEditedByEntityId;
-    private final StructureRotation rotation;
-    private final StructureMirror mirror;
-    private final StructureAnimationMode animationMode;
-    private final float animationSeconds;
-    private final float integrityValue;
-    private final int integritySeed;
-    private final Vector3f pivot;
+
+    private String structurePaletteName;
+    private boolean shouldIgnoreEntities;
+    private boolean shouldIgnoreBlocks;
+    /**
+     * @since v503
+     */
+    private boolean shouldAllowNonTickingPlayerAndTickingAreaChunks;
+    private Vector3i structureSize;
+    private Vector3i structureOffset;
+    private long lastEditPlayer;
+    private Rotation rotation;
+    private Mirror mirror;
+    /**
+     * @since v440
+     */
+    private AnimationMode animationMode;
+    /**
+     * @since v440
+     */
+    private float animationSeconds;
+    private float integrityValue;
+    private int integritySeed;
+    /**
+     * @since v388
+     */
+    private Vector3f rotationPivot;
 }

@@ -3,25 +3,21 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.cloudburstmc.protocol.bedrock.data.player.PlayerInputTick;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class MobEffectPacket implements BedrockPacket {
-    private long runtimeEntityId;
-    private Event event;
-    private int effectId;
-    private int amplifier;
-    private boolean particles;
-    private int duration;
-    /**
-     * @since v662
-     */
-    private long tick;
-    /**
-     * @since v897
-     */
+
+    private long targetRuntimeID;
+    private Event eventID;
+    private int effectID;
+    private int effectAmplifier;
+    private boolean showParticles;
+    private int effectDurationTicks;
+    private PlayerInputTick tick = new PlayerInputTick(0L);
     private boolean ambient;
 
     @Override
@@ -29,15 +25,9 @@ public class MobEffectPacket implements BedrockPacket {
         return handler.handle(this);
     }
 
+    @Override
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.MOB_EFFECT;
-    }
-
-    public enum Event {
-        NONE,
-        ADD,
-        MODIFY,
-        REMOVE,
     }
 
     @Override
@@ -48,5 +38,20 @@ public class MobEffectPacket implements BedrockPacket {
             throw new AssertionError(e);
         }
     }
-}
 
+    public enum Event {
+        INVALID,
+        ADD,
+        UPDATE,
+        REMOVE;
+
+        private static final Event[] VALUES = values();
+
+        public static Event from(int ordinal) {
+            if (ordinal >= 0 && ordinal < VALUES.length) {
+                return VALUES[ordinal];
+            }
+            throw new UnsupportedOperationException("Detected unknown MobEffectPacketPayload::Event ID: " + ordinal);
+        }
+    }
+}

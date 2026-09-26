@@ -2,22 +2,14 @@ package org.cloudburstmc.protocol.bedrock.codec.v291.serializer;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
-import io.netty.util.AsciiString;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
-import org.cloudburstmc.protocol.bedrock.data.auth.AuthPayload;
-import org.cloudburstmc.protocol.bedrock.data.auth.CertificateChainPayload;
-import org.cloudburstmc.protocol.bedrock.packet.LoginPacket;
 import org.cloudburstmc.protocol.bedrock.packet.SubClientLoginPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 import org.jose4j.json.JsonUtil;
-import org.jose4j.json.internal.json_simple.JSONArray;
-import org.jose4j.json.internal.json_simple.JSONObject;
-import org.jose4j.json.internal.json_simple.JSONValue;
-import org.jose4j.json.internal.json_simple.parser.ParseException;
 import org.jose4j.lang.JoseException;
 
 import java.nio.charset.StandardCharsets;
@@ -34,7 +26,7 @@ public class SubClientLoginSerializer_v291 implements BedrockPacketSerializer<Su
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, SubClientLoginPacket packet) {
-        writeJwts(buffer, writeAuthJwt(packet.getAuthPayload()), packet.getClientJwt());
+        this.writeJwts(buffer, this.writeAuthJwt(packet), packet.getClientJwt());
     }
 
     @Override
@@ -42,22 +34,19 @@ public class SubClientLoginSerializer_v291 implements BedrockPacketSerializer<Su
         ByteBuf jwt = buffer.readSlice(VarInts.readUnsignedInt(buffer)); // Get the JWT.
 
         String authJwt = readString(jwt);
-        packet.setAuthPayload(readAuthJwt(authJwt));
+        this.readAuthJwt(authJwt, packet);
 
         String value = (String) jwt.readCharSequence(jwt.readIntLE(), StandardCharsets.UTF_8);
         packet.setClientJwt(value);
     }
 
-    protected String writeAuthJwt(AuthPayload payload) {
-        checkArgument(payload instanceof CertificateChainPayload, "This client only supports CertificateChainPayload for login");
-
+    protected String writeAuthJwt(SubClientLoginPacket packet) {
         Map<String, Object> json = new HashMap<>();
-        json.put("chain", ((CertificateChainPayload) payload).getChain());
-
+        json.put("chain", packet.getChain());
         return JsonUtil.toJson(json);
     }
 
-    protected AuthPayload readAuthJwt(String authJwt) {
+    protected void readAuthJwt(String authJwt, SubClientLoginPacket packet) {
         try {
             Map<String, Object> json = JsonUtil.parseJson(authJwt);
             checkArgument(json != null && json.containsKey("chain") && json.get("chain") instanceof List,
@@ -70,7 +59,7 @@ public class SubClientLoginSerializer_v291 implements BedrockPacketSerializer<Su
                 checkArgument(node instanceof String, "Expected String in login chain");
                 chainList.add((String) node);
             }
-            return new CertificateChainPayload(chainList);
+            packet.setChain(chainList);
         } catch (JoseException e) {
             throw new IllegalArgumentException("Failed to parse auth payload", e);
         }

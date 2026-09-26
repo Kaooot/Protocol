@@ -12,21 +12,21 @@ public class MobArmorEquipmentSerializer_v1001 extends MobArmorEquipmentSerializ
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, MobArmorEquipmentPacket packet) {
-        VarInts.writeUnsignedLong(buffer, packet.getRuntimeEntityId());
-        helper.writeNetworkItemStackDescriptor(buffer, packet.getHelmet());
-        helper.writeNetworkItemStackDescriptor(buffer, packet.getChestplate());
-        helper.writeNetworkItemStackDescriptor(buffer, packet.getLeggings());
-        helper.writeNetworkItemStackDescriptor(buffer, packet.getBoots());
+        VarInts.writeUnsignedLong(buffer, packet.getTargetRuntimeID());
+        helper.writeNetworkItemStackDescriptor(buffer, packet.getHead());
+        helper.writeNetworkItemStackDescriptor(buffer, packet.getTorso());
+        helper.writeNetworkItemStackDescriptor(buffer, packet.getLegs());
+        helper.writeNetworkItemStackDescriptor(buffer, packet.getFeet());
         helper.writeNetworkItemStackDescriptor(buffer, packet.getBody());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, MobArmorEquipmentPacket packet) {
-        packet.setRuntimeEntityId(VarInts.readUnsignedLong(buffer));
-        packet.setHelmet(helper.readNetworkItemStackDescriptor(buffer));
-        packet.setChestplate(helper.readNetworkItemStackDescriptor(buffer));
-        packet.setLeggings(helper.readNetworkItemStackDescriptor(buffer));
-        packet.setBoots(helper.readNetworkItemStackDescriptor(buffer));
+        packet.setTargetRuntimeID(VarInts.readUnsignedLong(buffer));
+        packet.setHead(helper.readNetworkItemStackDescriptor(buffer));
+        packet.setTorso(helper.readNetworkItemStackDescriptor(buffer));
+        packet.setLegs(helper.readNetworkItemStackDescriptor(buffer));
+        packet.setFeet(helper.readNetworkItemStackDescriptor(buffer));
         packet.setBody(helper.readNetworkItemStackDescriptor(buffer));
     }
 }

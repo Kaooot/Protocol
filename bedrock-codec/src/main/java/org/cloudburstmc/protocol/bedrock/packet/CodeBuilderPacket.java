@@ -9,11 +9,12 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class CodeBuilderPacket implements BedrockPacket {
-    private String url;
-    private boolean opening;
+
+    private String URL;
+    private boolean shouldOpenCodeBuilder;
 
     @Override
-    public PacketSignal handle(BedrockPacketHandler handler) {
+    public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
@@ -31,4 +32,3 @@ public class CodeBuilderPacket implements BedrockPacket {
         }
     }
 }
-

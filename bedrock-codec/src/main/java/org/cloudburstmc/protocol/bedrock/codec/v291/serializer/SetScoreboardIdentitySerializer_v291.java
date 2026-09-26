@@ -5,13 +5,12 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
+import org.cloudburstmc.protocol.bedrock.data.scoreboard.ScoreboardIdentityPacketInfo;
+import org.cloudburstmc.protocol.bedrock.data.scoreboard.ScoreboardIdentityPacketType;
 import org.cloudburstmc.protocol.bedrock.packet.SetScoreboardIdentityPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
 import java.util.UUID;
-
-import static org.cloudburstmc.protocol.bedrock.packet.SetScoreboardIdentityPacket.Action;
-import static org.cloudburstmc.protocol.bedrock.packet.SetScoreboardIdentityPacket.Entry;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class SetScoreboardIdentitySerializer_v291 implements BedrockPacketSerializer<SetScoreboardIdentityPacket> {
@@ -20,11 +19,11 @@ public class SetScoreboardIdentitySerializer_v291 implements BedrockPacketSerial
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, SetScoreboardIdentityPacket packet) {
-        SetScoreboardIdentityPacket.Action action = packet.getAction();
-        buffer.writeByte(action.ordinal());
-        helper.writeArray(buffer, packet.getEntries(), (buf, entry) -> {
+        ScoreboardIdentityPacketType scoreboardIdentityPacketType = packet.getScoreboardIdentityPacketType();
+        buffer.writeByte(scoreboardIdentityPacketType.ordinal());
+        helper.writeArray(buffer, packet.getScoreboardIdentityInfo(), (buf, entry) -> {
             VarInts.writeLong(buffer, entry.getScoreboardId());
-            if (action == Action.ADD) {
+            if (scoreboardIdentityPacketType == ScoreboardIdentityPacketType.UPDATE) {
                 helper.writeUuid(buffer, entry.getUuid());
             }
         });
@@ -32,15 +31,18 @@ public class SetScoreboardIdentitySerializer_v291 implements BedrockPacketSerial
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, SetScoreboardIdentityPacket packet) {
-        SetScoreboardIdentityPacket.Action action = Action.values()[buffer.readUnsignedByte()];
-        packet.setAction(action);
-        helper.readArray(buffer, packet.getEntries(), buf -> {
+        ScoreboardIdentityPacketType scoreboardIdentityPacketType = ScoreboardIdentityPacketType.values()[buffer.readUnsignedByte()];
+        packet.setScoreboardIdentityPacketType(scoreboardIdentityPacketType);
+        helper.readArray(buffer, packet.getScoreboardIdentityInfo(), buf -> {
             long scoreboardId = VarInts.readLong(buffer);
             UUID uuid = null;
-            if (action == Action.ADD) {
+            if (scoreboardIdentityPacketType == ScoreboardIdentityPacketType.UPDATE) {
                 uuid = helper.readUuid(buffer);
             }
-            return new Entry(scoreboardId, uuid);
+            final ScoreboardIdentityPacketInfo info = new ScoreboardIdentityPacketInfo();
+            info.setScoreboardId(scoreboardId);
+            info.setUuid(uuid);
+            return info;
         });
     }
 }

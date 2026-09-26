@@ -3,10 +3,9 @@ package org.cloudburstmc.protocol.bedrock.codec.v898.serializer;
 import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v859.serializer.AnimateSerializer_v859;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorSwingSource;
 import org.cloudburstmc.protocol.bedrock.packet.AnimatePacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
-
-import static org.cloudburstmc.protocol.bedrock.packet.AnimatePacket.Action;
 
 public class AnimateSerializer_v898 extends AnimateSerializer_v859 {
 
@@ -14,19 +13,21 @@ public class AnimateSerializer_v898 extends AnimateSerializer_v859 {
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, AnimatePacket packet) {
-        Action action = packet.getAction();
+        AnimatePacket.Action action = packet.getAction();
         buffer.writeByte(types.get(action));
-        VarInts.writeUnsignedLong(buffer, packet.getRuntimeEntityId());
+        VarInts.writeUnsignedLong(buffer, packet.getTargetActorRuntimeID());
         buffer.writeFloatLE(packet.getData());
-        helper.writeOptional(buffer, (source) -> source != AnimatePacket.SwingSource.NONE, packet.getSwingSource(), (buf, source) -> helper.writeString(buf, source.getName()));
+        helper.writeOptional(buffer, (source) -> source != ActorSwingSource.NONE, packet.getSwingSource(),
+                (buf, source) -> helper.writeString(buf, source.getSerializeName()));
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, AnimatePacket packet) {
-        Action action = types.get(buffer.readByte());
+        AnimatePacket.Action action = types.get(buffer.readByte());
         packet.setAction(action);
-        packet.setRuntimeEntityId(VarInts.readUnsignedLong(buffer));
+        packet.setTargetActorRuntimeID(VarInts.readUnsignedLong(buffer));
         packet.setData(buffer.readFloatLE());
-        packet.setSwingSource(helper.readOptional(buffer, AnimatePacket.SwingSource.NONE, (buf, h) -> AnimatePacket.SwingSource.from(h.readString(buf))));
+        packet.setSwingSource(helper.readOptional(buffer, ActorSwingSource.NONE,
+                (buf, h) -> ActorSwingSource.fromName(h.readString(buf))));
     }
 }

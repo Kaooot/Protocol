@@ -5,11 +5,6 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Sent by the client to the server with a party destination cookie response.
- *
- * @since v1001
- */
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
@@ -19,7 +14,7 @@ public class PartyDestinationCookieResponsePacket implements BedrockPacket {
     private boolean accepted;
 
     @Override
-    public PacketSignal handle(BedrockPacketHandler handler) {
+    public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
@@ -29,7 +24,7 @@ public class PartyDestinationCookieResponsePacket implements BedrockPacket {
     }
 
     @Override
-    public BedrockPacket clone() {
+    public PartyDestinationCookieResponsePacket clone() {
         try {
             return (PartyDestinationCookieResponsePacket) super.clone();
         } catch (CloneNotSupportedException e) {

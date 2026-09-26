@@ -15,12 +15,12 @@ public class StopSoundSerializer_v291 implements BedrockPacketSerializer<StopSou
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, StopSoundPacket packet) {
         helper.writeString(buffer, packet.getSoundName());
-        buffer.writeBoolean(packet.isStoppingAllSound());
+        buffer.writeBoolean(packet.isStopAllSounds());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, StopSoundPacket packet) {
         packet.setSoundName(helper.readString(buffer));
-        packet.setStoppingAllSound(buffer.readBoolean());
+        packet.setStopAllSounds(buffer.readBoolean());
     }
 }

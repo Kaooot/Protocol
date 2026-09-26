@@ -14,17 +14,17 @@ public class StructureTemplateDataRequestSerializer_v361 implements BedrockPacke
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, StructureTemplateDataRequestPacket packet) {
-        helper.writeString(buffer, packet.getName());
-        helper.writeBlockPosition(buffer, packet.getPosition());
-        helper.writeStructureSettings(buffer, packet.getSettings());
-        buffer.writeByte(packet.getOperation().ordinal());
+        helper.writeString(buffer, packet.getStructureName());
+        helper.writeBlockPosition(buffer, packet.getStructurePosition());
+        helper.writeStructureSettings(buffer, packet.getStructureSettings());
+        buffer.writeByte(packet.getRequestedOperation().ordinal());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, StructureTemplateDataRequestPacket packet) {
-        packet.setName(helper.readString(buffer));
-        packet.setPosition(helper.readBlockPosition(buffer));
-        packet.setSettings(helper.readStructureSettings(buffer));
-        packet.setOperation(StructureTemplateRequestOperation.from(buffer.readByte()));
+        packet.setStructureName(helper.readString(buffer));
+        packet.setStructurePosition(helper.readBlockPosition(buffer));
+        packet.setStructureSettings(helper.readStructureSettings(buffer));
+        packet.setRequestedOperation(StructureTemplateRequestOperation.from(buffer.readByte()));
     }
 }

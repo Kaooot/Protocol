@@ -4,7 +4,6 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerSlotType;
 import org.cloudburstmc.protocol.bedrock.data.inventory.FullContainerName;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
 import org.cloudburstmc.protocol.common.PacketSignal;
@@ -15,27 +14,23 @@ import java.util.List;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class InventoryContentPacket implements BedrockPacket {
-    private List<ItemData> contents = new ObjectArrayList<>();
+
     private int containerId;
-    /**
-     * @since v712
-     */
-    private FullContainerName containerNameData = new FullContainerName(ContainerSlotType.ANVIL_INPUT, null);
+    private final List<ItemData> slots = new ObjectArrayList<>();
+    private FullContainerName fullContainerName;
     /**
      * @since v729
      * @deprecated since v748. Use storageItem ItemData size instead.
      */
     private int dynamicContainerSize;
-    /**
-     * @since v748
-     */
-    private ItemData storageItem = ItemData.AIR;
+    private ItemData storageItem;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
+    @Override
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.INVENTORY_CONTENT;
     }
@@ -49,4 +44,3 @@ public class InventoryContentPacket implements BedrockPacket {
         }
     }
 }
-

@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
+import org.cloudburstmc.protocol.bedrock.data.scoreboard.ObjectiveSortOrder;
 import org.cloudburstmc.protocol.bedrock.packet.SetDisplayObjectivePacket;
 import org.cloudburstmc.protocol.common.util.TextConverter;
 import org.cloudburstmc.protocol.common.util.VarInts;
@@ -16,21 +17,21 @@ public class SetDisplayObjectiveSerializer_v291 implements BedrockPacketSerializ
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, SetDisplayObjectivePacket packet) {
-        helper.writeString(buffer, packet.getDisplaySlot());
-        helper.writeString(buffer, packet.getObjectiveId());
+        helper.writeString(buffer, packet.getDisplaySlotName());
+        helper.writeString(buffer, packet.getObjectiveName());
         TextConverter converter = helper.getTextConverter();
-        helper.writeString(buffer, converter.serialize(packet.getDisplayName(CharSequence.class)));
-        helper.writeString(buffer, packet.getCriteria());
-        VarInts.writeInt(buffer, packet.getSortOrder());
+        helper.writeString(buffer, converter.serialize(packet.getObjectiveDisplayName(CharSequence.class)));
+        helper.writeString(buffer, packet.getCriteriaName());
+        VarInts.writeInt(buffer, packet.getSortOrder().ordinal());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, SetDisplayObjectivePacket packet) {
-        packet.setDisplaySlot(helper.readString(buffer));
-        packet.setObjectiveId(helper.readString(buffer));
+        packet.setDisplaySlotName(helper.readString(buffer));
+        packet.setObjectiveName(helper.readString(buffer));
         TextConverter converter = helper.getTextConverter();
-        packet.setDisplayName(converter.deserialize(helper.readString(buffer)));
-        packet.setCriteria(helper.readString(buffer));
-        packet.setSortOrder(VarInts.readInt(buffer));
+        packet.setObjectiveDisplayName(converter.deserialize(helper.readString(buffer)));
+        packet.setCriteriaName(helper.readString(buffer));
+        packet.setSortOrder(ObjectiveSortOrder.from(VarInts.readInt(buffer)));
     }
 }

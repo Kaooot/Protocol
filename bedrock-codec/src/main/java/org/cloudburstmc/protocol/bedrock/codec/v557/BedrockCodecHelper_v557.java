@@ -1,83 +1,65 @@
 package org.cloudburstmc.protocol.bedrock.codec.v557;
 
 import io.netty.buffer.ByteBuf;
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
+import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v554.BedrockCodecHelper_v554;
-import org.cloudburstmc.protocol.bedrock.data.Ability;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityProperties;
-import org.cloudburstmc.protocol.bedrock.data.entity.FloatEntityProperty;
-import org.cloudburstmc.protocol.bedrock.data.entity.IntEntityProperty;
-import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerSlotType;
-import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.ItemDescriptorWithCount;
-import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.TextProcessingEventOrigin;
-import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.AutoCraftRecipeAction;
-import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestAction;
-import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestActionType;
+import org.cloudburstmc.protocol.bedrock.data.ability.AbilitiesIndex;
+import org.cloudburstmc.protocol.bedrock.data.actor.PropertySyncData;
+import org.cloudburstmc.protocol.bedrock.data.actor.PropertySyncFloatEntry;
+import org.cloudburstmc.protocol.bedrock.data.actor.PropertySyncIntEntry;
+import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerEnumName;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequestActionType;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestCraftRecipeAutoAction;
+import org.cloudburstmc.protocol.bedrock.data.text.TextProcessingEventOrigin;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
-import java.util.List;
-
 public class BedrockCodecHelper_v557 extends BedrockCodecHelper_v554 {
 
-    public BedrockCodecHelper_v557(EntityDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes,
-                                   TypeMap<ItemStackRequestActionType> stackRequestActionTypes, TypeMap<ContainerSlotType> containerSlotTypes,
-                                   TypeMap<Ability> abilities, TypeMap<TextProcessingEventOrigin> textProcessingEventOrigins) {
-        super(entityData, gameRulesTypes, stackRequestActionTypes, containerSlotTypes, abilities, textProcessingEventOrigins);
+    public BedrockCodecHelper_v557(ActorDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes,
+                                   TypeMap<ItemStackRequestActionType> stackRequestActionTypes, TypeMap<ContainerEnumName> containerEnumNames,
+                                   TypeMap<AbilitiesIndex> abilities, TypeMap<TextProcessingEventOrigin> textProcessingEventOrigins) {
+        super(entityData, gameRulesTypes, stackRequestActionTypes, containerEnumNames, abilities, textProcessingEventOrigins);
     }
 
     @Override
-    public void readEntityProperties(ByteBuf buffer, EntityProperties properties) {
-        readArray(buffer, properties.getIntProperties(), byteBuf -> {
-            int index = VarInts.readUnsignedInt(byteBuf);
-            int value = VarInts.readInt(byteBuf);
-            return new IntEntityProperty(index, value);
+    public void writePropertySyncData(ByteBuf buffer, PropertySyncData propertySyncData) {
+        writeArray(buffer, propertySyncData.getIntEntriesList(), (byteBuf, property) -> {
+            VarInts.writeUnsignedInt(byteBuf, property.getPropertyIndex());
+            VarInts.writeInt(byteBuf, property.getData());
         });
-        readArray(buffer, properties.getFloatProperties(), byteBuf -> {
-            int index = VarInts.readUnsignedInt(byteBuf);
-            float value = byteBuf.readFloatLE();
-            return new FloatEntityProperty(index, value);
+        writeArray(buffer, propertySyncData.getFloatEntriesList(), (byteBuf, property) -> {
+            VarInts.writeUnsignedInt(byteBuf, property.getPropertyIndex());
+            byteBuf.writeFloatLE(property.getData());
         });
     }
 
     @Override
-    public void writeEntityProperties(ByteBuf buffer, EntityProperties properties) {
-        writeArray(buffer, properties.getIntProperties(), (byteBuf, property) -> {
-            VarInts.writeUnsignedInt(byteBuf, property.getIndex());
-            VarInts.writeInt(byteBuf, property.getValue());
+    public void readPropertySyncData(ByteBuf buffer, PropertySyncData propertySyncData) {
+        readArray(buffer, propertySyncData.getIntEntriesList(), byteBuf -> {
+            final PropertySyncIntEntry entry = new PropertySyncIntEntry();
+            entry.setPropertyIndex(VarInts.readUnsignedInt(byteBuf));
+            entry.setData(VarInts.readInt(byteBuf));
+            return entry;
         });
-        writeArray(buffer, properties.getFloatProperties(), (byteBuf, property) -> {
-            VarInts.writeUnsignedInt(byteBuf, property.getIndex());
-            byteBuf.writeFloatLE(property.getValue());
+        readArray(buffer, propertySyncData.getFloatEntriesList(), byteBuf -> {
+            final PropertySyncFloatEntry entry = new PropertySyncFloatEntry();
+            entry.setPropertyIndex(VarInts.readUnsignedInt(byteBuf));
+            entry.setData(byteBuf.readFloatLE());
+            return entry;
         });
     }
 
     @Override
-    protected ItemStackRequestAction readRequestActionData(ByteBuf byteBuf, ItemStackRequestActionType type) {
-        if (type == ItemStackRequestActionType.CRAFT_RECIPE_AUTO) {
-            int recipeId = VarInts.readUnsignedInt(byteBuf);
-            int timesCrafted = byteBuf.readUnsignedByte();
-            List<ItemDescriptorWithCount> ingredients = new ObjectArrayList<>();
-            readArray(byteBuf, ingredients, ByteBuf::readUnsignedByte, (buf, helper) -> helper.readIngredient(buf));
-            return new AutoCraftRecipeAction(
-                    recipeId,
-                    timesCrafted,
-                    ingredients,
-                    0
-            );
-        } else {
-            return super.readRequestActionData(byteBuf, type);
-        }
+    protected void writeItemStackRequestCraftRecipeAutoAction(ByteBuf buffer, ItemStackRequestActionType type, ItemStackRequestCraftRecipeAutoAction action) {
+        super.writeItemStackRequestCraftRecipeAutoAction(buffer, type, action);
+        this.writeArray(buffer, action.getIngredients(), this::writeIngredient);
     }
 
     @Override
-    protected void writeRequestActionData(ByteBuf byteBuf, ItemStackRequestAction action) {
-        super.writeRequestActionData(byteBuf, action);
-        if (action.getType() == ItemStackRequestActionType.CRAFT_RECIPE_AUTO) {
-            List<ItemDescriptorWithCount> ingredients = ((AutoCraftRecipeAction) action).getIngredients();
-            byteBuf.writeByte(ingredients.size());
-            writeArray(byteBuf, ingredients, this::writeIngredient);
-        }
+    protected ItemStackRequestCraftRecipeAutoAction readItemStackRequestCraftRecipeAutoAction(ByteBuf buffer, ItemStackRequestActionType type) {
+        final ItemStackRequestCraftRecipeAutoAction action = super.readItemStackRequestCraftRecipeAutoAction(buffer, type);
+        this.readArray(buffer, action.getIngredients(), ByteBuf::readUnsignedByte, this::readIngredient);
+        return action;
     }
 }

@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
+import org.cloudburstmc.protocol.bedrock.data.connection.party.PartyDestinationCookieIntent;
 import org.cloudburstmc.protocol.bedrock.packet.SendPartyDestinationCookiePacket;
 
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
@@ -20,7 +21,7 @@ public class SendPartyDestinationCookieSerializer_v1001 implements BedrockPacket
 
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, SendPartyDestinationCookiePacket packet) {
         packet.setCookie(helper.readString(buffer));
-        packet.setIntent(SendPartyDestinationCookiePacket.Intent.fromName(helper.readString(buffer)));
+        packet.setIntent(PartyDestinationCookieIntent.fromName(helper.readString(buffer)));
         packet.setDestinationName(helper.readString(buffer));
     }
 }

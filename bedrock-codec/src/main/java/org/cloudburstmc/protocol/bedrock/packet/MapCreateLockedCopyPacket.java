@@ -9,14 +9,16 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class MapCreateLockedCopyPacket implements BedrockPacket {
+
     private long originalMapId;
     private long newMapId;
 
     @Override
-    public PacketSignal handle(BedrockPacketHandler handler) {
+    public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
+    @Override
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.MAP_CREATE_LOCKED_COPY;
     }
@@ -30,4 +32,3 @@ public class MapCreateLockedCopyPacket implements BedrockPacket {
         }
     }
 }
-

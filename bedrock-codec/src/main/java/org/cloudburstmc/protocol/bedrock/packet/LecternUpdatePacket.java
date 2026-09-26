@@ -10,20 +10,24 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class LecternUpdatePacket implements BedrockPacket {
-    private int page;
+
+    private int newPageToShow;
+    /**
+     * @since v354
+     */
     private int totalPages;
-    private Vector3i blockPosition;
+    private Vector3i positionOfLecternToUpdate;
     /**
      * @deprecated since v662
      */
-    @Deprecated
     private boolean droppingBook;
 
     @Override
-    public PacketSignal handle(BedrockPacketHandler handler) {
+    public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
+    @Override
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.LECTERN_UPDATE;
     }
@@ -37,4 +41,3 @@ public class LecternUpdatePacket implements BedrockPacket {
         }
     }
 }
-

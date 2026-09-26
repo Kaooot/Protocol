@@ -6,21 +6,21 @@ import lombok.NoArgsConstructor;
 import org.cloudburstmc.nbt.NbtMap;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
-import org.cloudburstmc.protocol.bedrock.packet.BlockEntityDataPacket;
+import org.cloudburstmc.protocol.bedrock.packet.BlockActorDataPacket;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class BlockEntityDataSerializer_v291 implements BedrockPacketSerializer<BlockEntityDataPacket> {
+public class BlockEntityDataSerializer_v291 implements BedrockPacketSerializer<BlockActorDataPacket> {
     public static final BlockEntityDataSerializer_v291 INSTANCE = new BlockEntityDataSerializer_v291();
 
     @Override
-    public void serialize(ByteBuf buffer, BedrockCodecHelper helper, BlockEntityDataPacket packet) {
+    public void serialize(ByteBuf buffer, BedrockCodecHelper helper, BlockActorDataPacket packet) {
         helper.writeBlockPosition(buffer, packet.getBlockPosition());
-        helper.writeTag(buffer, packet.getData());
+        helper.writeTag(buffer, packet.getActorDataTags());
     }
 
     @Override
-    public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, BlockEntityDataPacket packet) {
+    public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, BlockActorDataPacket packet) {
         packet.setBlockPosition(helper.readBlockPosition(buffer));
-        packet.setData(helper.readTag(buffer, NbtMap.class));
+        packet.setActorDataTags(helper.readTag(buffer, NbtMap.class));
     }
 }

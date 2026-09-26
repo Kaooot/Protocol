@@ -1,11 +1,13 @@
 package org.cloudburstmc.protocol.bedrock.codec.v544.serializer;
 
 import io.netty.buffer.ByteBuf;
+import it.unimi.dsi.fastutil.ints.IntList;
 import it.unimi.dsi.fastutil.longs.LongList;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v354.serializer.ClientboundMapItemDataSerializer_v354;
-import org.cloudburstmc.protocol.bedrock.data.MapDecoration;
-import org.cloudburstmc.protocol.bedrock.data.MapTrackedObject;
+import org.cloudburstmc.protocol.bedrock.data.map.MapDecoration;
+import org.cloudburstmc.protocol.bedrock.data.map.MapItemTrackedActorUniqueId;
+import org.cloudburstmc.protocol.bedrock.data.world.DimensionType;
 import org.cloudburstmc.protocol.bedrock.packet.ClientboundMapItemDataPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -15,44 +17,42 @@ public class ClientboundMapItemDataSerializer_v544 extends ClientboundMapItemDat
 
     public static final ClientboundMapItemDataSerializer_v544 INSTANCE = new ClientboundMapItemDataSerializer_v544();
 
+    public ClientboundMapItemDataSerializer_v544() {
+    }
+
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ClientboundMapItemDataPacket packet) {
-        VarInts.writeLong(buffer, packet.getUniqueMapId());
+        VarInts.writeLong(buffer, packet.getMapID());
 
         int type = 0;
-        int[] colors = packet.getColors();
-        if (colors != null && colors.length > 0) {
+        IntList colors = packet.getPixels();
+        if (colors != null && !colors.isEmpty()) {
             type |= FLAG_TEXTURE_UPDATE;
         }
-
         List<MapDecoration> decorations = packet.getDecorations();
-        List<MapTrackedObject> trackedObjects = packet.getTrackedObjects();
-        if ((decorations != null && !decorations.isEmpty()) || (trackedObjects != null && !trackedObjects.isEmpty())) {
+        List<MapItemTrackedActorUniqueId> trackedObjects = packet.getTrackedActorIDs();
+        if (!decorations.isEmpty() && !trackedObjects.isEmpty()) {
             type |= FLAG_DECORATION_UPDATE;
         }
-
-        LongList trackedEntityIds = packet.getTrackedEntityIds();
-        if (trackedEntityIds != null && !trackedEntityIds.isEmpty()) {
+        LongList creationMapIds = packet.getCreationMapIDs();
+        if (!creationMapIds.isEmpty()) {
             type |= FLAG_MAP_CREATION;
         }
 
         VarInts.writeUnsignedInt(buffer, type);
-        buffer.writeByte(packet.getDimensionId());
+        buffer.writeByte(packet.getDimension().getValue());
         buffer.writeBoolean(packet.isLocked());
-        helper.writeVector3i(buffer, packet.getOrigin());
+        helper.writeBlockPosition(buffer, packet.getMapOrigin());
 
         if ((type & FLAG_MAP_CREATION) != 0) {
             this.writeMapCreation(buffer, helper, packet);
         }
-
         if ((type & FLAG_ALL) != 0) {
-            buffer.writeByte(packet.getScale() == null ? 0 : packet.getScale());
+            buffer.writeByte(packet.getScale());
         }
-
         if ((type & FLAG_DECORATION_UPDATE) != 0) {
             this.writeMapDecorations(buffer, helper, packet);
         }
-
         if ((type & FLAG_TEXTURE_UPDATE) != 0) {
             this.writeTextureUpdate(buffer, helper, packet);
         }
@@ -60,26 +60,21 @@ public class ClientboundMapItemDataSerializer_v544 extends ClientboundMapItemDat
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ClientboundMapItemDataPacket packet) {
-        packet.setUniqueMapId(VarInts.readLong(buffer));
+        packet.setMapID(VarInts.readLong(buffer));
         int type = VarInts.readUnsignedInt(buffer);
-        packet.setDimensionId(buffer.readUnsignedByte());
+        packet.setDimension(DimensionType.from(buffer.readUnsignedByte()));
         packet.setLocked(buffer.readBoolean());
-        packet.setOrigin(helper.readVector3i(buffer));
+        packet.setMapOrigin(helper.readBlockPosition(buffer));
 
         if ((type & FLAG_MAP_CREATION) != 0) {
             this.readMapCreation(buffer, helper, packet);
         }
-
         if ((type & FLAG_ALL) != 0) {
-            packet.setScale(buffer.readByte());
-        } else {
-            packet.setScale((byte) 0);
+            packet.setScale((int) buffer.readUnsignedByte());
         }
-
         if ((type & FLAG_DECORATION_UPDATE) != 0) {
             this.readMapDecorations(buffer, helper, packet);
         }
-
         if ((type & FLAG_TEXTURE_UPDATE) != 0) {
             this.readTextureUpdate(buffer, helper, packet);
         }

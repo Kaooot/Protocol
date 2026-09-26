@@ -9,9 +9,15 @@ import org.cloudburstmc.nbt.NbtMap;
 import org.cloudburstmc.nbt.NbtType;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
-import org.cloudburstmc.protocol.bedrock.data.GamePublishSetting;
-import org.cloudburstmc.protocol.bedrock.data.GameType;
-import org.cloudburstmc.protocol.bedrock.data.PlayerPermission;
+import org.cloudburstmc.protocol.bedrock.data.connection.GamePublishSetting;
+import org.cloudburstmc.protocol.bedrock.data.education.EducationEditionOffer;
+import org.cloudburstmc.protocol.bedrock.data.player.PlayerPermissionLevel;
+import org.cloudburstmc.protocol.bedrock.data.world.Difficulty;
+import org.cloudburstmc.protocol.bedrock.data.world.DimensionType;
+import org.cloudburstmc.protocol.bedrock.data.world.GameType;
+import org.cloudburstmc.protocol.bedrock.data.world.GeneratorType;
+import org.cloudburstmc.protocol.bedrock.data.world.LevelSettings;
+import org.cloudburstmc.protocol.bedrock.data.world.SpawnSettings;
 import org.cloudburstmc.protocol.bedrock.packet.StartGamePacket;
 import org.cloudburstmc.protocol.common.util.TextConverter;
 import org.cloudburstmc.protocol.common.util.VarInts;
@@ -22,27 +28,27 @@ import java.util.List;
 public class StartGameSerializer_v291 implements BedrockPacketSerializer<StartGamePacket> {
     public static final StartGameSerializer_v291 INSTANCE = new StartGameSerializer_v291();
 
-    protected static final PlayerPermission[] PLAYER_PERMISSIONS = PlayerPermission.values();
+    protected static final PlayerPermissionLevel[] PLAYER_PERMISSIONS = PlayerPermissionLevel.values();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, StartGamePacket packet) {
-        VarInts.writeLong(buffer, packet.getUniqueEntityId());
-        VarInts.writeUnsignedLong(buffer, packet.getRuntimeEntityId());
-        VarInts.writeInt(buffer, packet.getPlayerGameType().ordinal());
-        helper.writeVector3f(buffer, packet.getPlayerPosition());
+        VarInts.writeLong(buffer, packet.getEntityID());
+        VarInts.writeUnsignedLong(buffer, packet.getRuntimeID());
+        VarInts.writeInt(buffer, packet.getGameType().ordinal());
+        helper.writeVector3f(buffer, packet.getPosition());
         helper.writeVector2f(buffer, packet.getRotation());
 
-        this.writeLevelSettings(buffer, helper, packet);
+        this.writeLevelSettings(buffer, helper, packet.getSettings());
 
-        helper.writeString(buffer, packet.getLevelId());
-        TextConverter converter = helper.getTextConverter();
+        helper.writeString(buffer, packet.getLevelID());
+        final TextConverter converter = helper.getTextConverter();
         helper.writeString(buffer, converter.serialize(packet.getLevelName(CharSequence.class)));
-        helper.writeString(buffer, packet.getPremiumWorldTemplateId());
+        helper.writeString(buffer, packet.getTemplateContentIdentity());
         buffer.writeBoolean(packet.isTrial());
-        buffer.writeLongLE(packet.getCurrentTick());
+        buffer.writeLongLE(packet.getLevelCurrentTime());
         VarInts.writeInt(buffer, packet.getEnchantmentSeed());
 
-        NbtList<NbtMap> palette = packet.getBlockPalette();
+        List<NbtMap> palette = packet.getBlockPalette();
         VarInts.writeUnsignedInt(buffer, palette.size());
         for (NbtMap entry : palette) {
             NbtMap blockTag = entry.getCompound("block");
@@ -55,20 +61,20 @@ public class StartGameSerializer_v291 implements BedrockPacketSerializer<StartGa
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, StartGamePacket packet) {
-        packet.setUniqueEntityId(VarInts.readLong(buffer));
-        packet.setRuntimeEntityId(VarInts.readUnsignedLong(buffer));
-        packet.setPlayerGameType(GameType.from(VarInts.readInt(buffer)));
-        packet.setPlayerPosition(helper.readVector3f(buffer));
+        packet.setEntityID(VarInts.readLong(buffer));
+        packet.setRuntimeID(VarInts.readUnsignedLong(buffer));
+        packet.setGameType(GameType.from(VarInts.readInt(buffer)));
+        packet.setPosition(helper.readVector3f(buffer));
         packet.setRotation(helper.readVector2f(buffer));
 
-        this.readLevelSettings(buffer, helper, packet);
+        this.readLevelSettings(buffer, helper, packet.getSettings());
 
-        packet.setLevelId(helper.readString(buffer));
+        packet.setLevelID(helper.readString(buffer));
         TextConverter converter = helper.getTextConverter();
         packet.setLevelName(converter.deserialize(helper.readString(buffer)));
-        packet.setPremiumWorldTemplateId(helper.readString(buffer));
+        packet.setTemplateContentIdentity(helper.readString(buffer));
         packet.setTrial(buffer.readBoolean());
-        packet.setCurrentTick(buffer.readLongLE());
+        packet.setLevelCurrentTime(buffer.readLongLE());
         packet.setEnchantmentSeed(VarInts.readInt(buffer));
 
         int paletteLength = VarInts.readUnsignedInt(buffer);
@@ -81,77 +87,85 @@ public class StartGameSerializer_v291 implements BedrockPacketSerializer<StartGa
                     .putShort("meta", buffer.readShortLE())
                     .build());
         }
-        packet.setBlockPalette(new NbtList<>(NbtType.COMPOUND, palette));
+        packet.getBlockPalette().addAll(new NbtList<>(NbtType.COMPOUND, palette));
 
         packet.setMultiplayerCorrelationId(helper.readString(buffer));
     }
 
-    protected void writeLevelSettings(ByteBuf buffer, BedrockCodecHelper helper, StartGamePacket packet) {
-        writeSeed(buffer, packet.getSeed());
-        VarInts.writeInt(buffer, packet.getDimensionId());
-        VarInts.writeInt(buffer, packet.getGeneratorId());
-        VarInts.writeInt(buffer, packet.getLevelGameType().ordinal());
-        VarInts.writeInt(buffer, packet.getDifficulty());
-        helper.writeBlockPosition(buffer, packet.getDefaultSpawn());
-        buffer.writeBoolean(packet.isAchievementsDisabled());
-        VarInts.writeInt(buffer, packet.getDayCycleStopTime());
-        buffer.writeBoolean(packet.getEduEditionOffers() != 0); // Is Education world
-        buffer.writeBoolean(packet.isEduFeaturesEnabled());
-        buffer.writeFloatLE(packet.getRainLevel());
-        buffer.writeFloatLE(packet.getLightningLevel());
-        buffer.writeBoolean(packet.isMultiplayerGame());
-        buffer.writeBoolean(packet.isBroadcastingToLan());
-        buffer.writeBoolean(packet.getXblBroadcastMode() != GamePublishSetting.NO_MULTI_PLAY);
-        buffer.writeBoolean(packet.isCommandsEnabled());
-        buffer.writeBoolean(packet.isTexturePacksRequired());
-        helper.writeArray(buffer, packet.getGamerules(), helper::writeGameRule);
-        buffer.writeBoolean(packet.isBonusChestEnabled());
-        buffer.writeBoolean(packet.isStartingWithMap());
-        buffer.writeBoolean(packet.isTrustingPlayers());
-        VarInts.writeInt(buffer, packet.getDefaultPlayerPermission().ordinal());
-        VarInts.writeInt(buffer, packet.getXblBroadcastMode().ordinal());
-        buffer.writeIntLE(packet.getServerChunkTickRange());
-        buffer.writeBoolean(packet.getPlatformBroadcastMode() != GamePublishSetting.NO_MULTI_PLAY);
-        VarInts.writeInt(buffer, packet.getPlatformBroadcastMode().ordinal());
-        buffer.writeBoolean(packet.getXblBroadcastMode() != GamePublishSetting.NO_MULTI_PLAY);
-        buffer.writeBoolean(packet.isBehaviorPackLocked());
-        buffer.writeBoolean(packet.isResourcePackLocked());
-        buffer.writeBoolean(packet.isFromLockedWorldTemplate());
-        buffer.writeBoolean(packet.isUsingMsaGamertagsOnly());
+    protected void writeLevelSettings(ByteBuf buffer, BedrockCodecHelper helper, LevelSettings settings) {
+        this.writeSeed(buffer, settings.getSeed());
+        this.writeSpawnSettings(buffer, helper, settings.getSpawnSettings());
+        VarInts.writeInt(buffer, settings.getGeneratorType().ordinal());
+        VarInts.writeInt(buffer, settings.getGameType().ordinal());
+        VarInts.writeInt(buffer, settings.getGameDifficulty().ordinal());
+        helper.writeBlockPosition(buffer, settings.getDefaultSpawnBlockPosition());
+        buffer.writeBoolean(settings.isAchievementsDisabled());
+        VarInts.writeInt(buffer, settings.getDayCycleStopTime());
+        buffer.writeBoolean(!settings.getEducationEditionOffer().equals(EducationEditionOffer.NONE)); // Is Education world
+        buffer.writeBoolean(settings.isEducationFeaturesEnabled());
+        buffer.writeFloatLE(settings.getRainLevel());
+        buffer.writeFloatLE(settings.getLightningLevel());
+        buffer.writeBoolean(settings.isMultiplayerGameIntent());
+        buffer.writeBoolean(settings.isLanBroadcastIntent());
+        buffer.writeBoolean(settings.getXboxLiveBroadcastSetting() != GamePublishSetting.NO_MULTI_PLAY);
+        buffer.writeBoolean(settings.isCommandsEnabled());
+        buffer.writeBoolean(settings.isTexturePacksRequired());
+        helper.writeArray(buffer, settings.getRuleData().getRulesList(), helper::writeGameRule);
+        buffer.writeBoolean(settings.isHasBonusChestEnabled());
+        buffer.writeBoolean(settings.isStartWithMapEnabled());
+        buffer.writeBoolean(settings.isTrustingPlayers());
+        VarInts.writeInt(buffer, settings.getPlayerPermissions().ordinal());
+        VarInts.writeInt(buffer, settings.getXboxLiveBroadcastSetting().ordinal());
+        buffer.writeIntLE(settings.getServerChunkTickRange());
+        buffer.writeBoolean(settings.getPlatformBroadcastSetting() != GamePublishSetting.NO_MULTI_PLAY);
+        VarInts.writeInt(buffer, settings.getPlatformBroadcastSetting().ordinal());
+        buffer.writeBoolean(settings.getXboxLiveBroadcastSetting() != GamePublishSetting.NO_MULTI_PLAY);
+        buffer.writeBoolean(settings.isHasLockedBehaviorPack());
+        buffer.writeBoolean(settings.isHasLockedResourcePack());
+        buffer.writeBoolean(settings.isFromLockedTemplate());
+        buffer.writeBoolean(settings.isUseMsaGamertagsOnly());
     }
 
-    protected void readLevelSettings(ByteBuf buffer, BedrockCodecHelper helper, StartGamePacket packet) {
-        packet.setSeed(readSeed(buffer));
-        packet.setDimensionId(VarInts.readInt(buffer));
-        packet.setGeneratorId(VarInts.readInt(buffer));
-        packet.setLevelGameType(GameType.from(VarInts.readInt(buffer)));
-        packet.setDifficulty(VarInts.readInt(buffer));
-        packet.setDefaultSpawn(helper.readBlockPosition(buffer));
-        packet.setAchievementsDisabled(buffer.readBoolean());
-        packet.setDayCycleStopTime(VarInts.readInt(buffer));
-        packet.setEduEditionOffers(buffer.readBoolean() ? 1 : 0); // Is Education world
-        packet.setEduFeaturesEnabled(buffer.readBoolean());
-        packet.setRainLevel(buffer.readFloatLE());
-        packet.setLightningLevel(buffer.readFloatLE());
-        packet.setMultiplayerGame(buffer.readBoolean());
-        packet.setBroadcastingToLan(buffer.readBoolean());
+    protected void readLevelSettings(ByteBuf buffer, BedrockCodecHelper helper, LevelSettings settings) {
+        settings.setSeed(readSeed(buffer));
+        this.readSpawnSettings(buffer, helper, settings.getSpawnSettings());
+        settings.setGeneratorType(GeneratorType.from(VarInts.readInt(buffer)));
+        settings.setGameType(GameType.from(VarInts.readInt(buffer)));
+        settings.setGameDifficulty(Difficulty.from(VarInts.readInt(buffer)));
+        settings.setDefaultSpawnBlockPosition(helper.readBlockPosition(buffer));
+        settings.setAchievementsDisabled(buffer.readBoolean());
+        settings.setDayCycleStopTime(VarInts.readInt(buffer));
+        settings.setEducationEditionOffer(EducationEditionOffer.from(buffer.readUnsignedByte())); // Is Education world
+        settings.setEducationFeaturesEnabled(buffer.readBoolean());
+        settings.setRainLevel(buffer.readFloatLE());
+        settings.setLightningLevel(buffer.readFloatLE());
+        settings.setMultiplayerGameIntent(buffer.readBoolean());
+        settings.setLanBroadcastIntent(buffer.readBoolean());
         buffer.readBoolean(); // broadcasting to XBL
-        packet.setCommandsEnabled(buffer.readBoolean());
-        packet.setTexturePacksRequired(buffer.readBoolean());
-        helper.readArray(buffer, packet.getGamerules(), helper::readGameRule);
-        packet.setBonusChestEnabled(buffer.readBoolean());
-        packet.setStartingWithMap(buffer.readBoolean());
-        packet.setTrustingPlayers(buffer.readBoolean());
-        packet.setDefaultPlayerPermission(PLAYER_PERMISSIONS[VarInts.readInt(buffer)]);
-        packet.setXblBroadcastMode(GamePublishSetting.byId(VarInts.readInt(buffer)));
-        packet.setServerChunkTickRange(buffer.readIntLE());
+        settings.setCommandsEnabled(buffer.readBoolean());
+        settings.setTexturePacksRequired(buffer.readBoolean());
+        helper.readArray(buffer, settings.getRuleData().getRulesList(), helper::readGameRule);
+        settings.setHasBonusChestEnabled(buffer.readBoolean());
+        settings.setStartWithMapEnabled(buffer.readBoolean());
+        settings.setTrustingPlayers(buffer.readBoolean());
+        settings.setPlayerPermissions(PlayerPermissionLevel.from(VarInts.readInt(buffer)));
+        settings.setXboxLiveBroadcastSetting(GamePublishSetting.from(VarInts.readInt(buffer)));
+        settings.setServerChunkTickRange(buffer.readIntLE());
         buffer.readBoolean(); // Broadcasting to Platform
-        packet.setPlatformBroadcastMode(GamePublishSetting.byId(VarInts.readInt(buffer)));
+        settings.setPlatformBroadcastSetting(GamePublishSetting.from(VarInts.readInt(buffer)));
         buffer.readBoolean(); // Intent on XBL broadcast
-        packet.setBehaviorPackLocked(buffer.readBoolean());
-        packet.setResourcePackLocked(buffer.readBoolean());
-        packet.setFromLockedWorldTemplate(buffer.readBoolean());
-        packet.setUsingMsaGamertagsOnly(buffer.readBoolean());
+        settings.setHasLockedBehaviorPack(buffer.readBoolean());
+        settings.setHasLockedResourcePack(buffer.readBoolean());
+        settings.setFromLockedTemplate(buffer.readBoolean());
+        settings.setUseMsaGamertagsOnly(buffer.readBoolean());
+    }
+
+    protected void writeSpawnSettings(ByteBuf buffer, BedrockCodecHelper helper, SpawnSettings settings) {
+        VarInts.writeInt(buffer, settings.getDimension().getValue());
+    }
+
+    protected void readSpawnSettings(ByteBuf buffer, BedrockCodecHelper helper, SpawnSettings settings) {
+        settings.setDimension(DimensionType.from(VarInts.readInt(buffer)));
     }
 
     protected long readSeed(ByteBuf buffer) {

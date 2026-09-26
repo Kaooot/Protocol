@@ -13,11 +13,11 @@ public class ClientCacheStatusSerializer_v361 implements BedrockPacketSerializer
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ClientCacheStatusPacket packet) {
-        buffer.writeBoolean(packet.isSupported());
+        buffer.writeBoolean(packet.isCacheSupported());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ClientCacheStatusPacket packet) {
-        packet.setSupported(buffer.readBoolean());
+        packet.setCacheSupported(buffer.readBoolean());
     }
 }

@@ -5,11 +5,14 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v419.serializer.PlayerAuthInputSerializer_v419;
-import org.cloudburstmc.protocol.bedrock.data.PlayerActionType;
-import org.cloudburstmc.protocol.bedrock.data.PlayerAuthInputData;
-import org.cloudburstmc.protocol.bedrock.data.PlayerBlockActionData;
-import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.ItemUseTransaction;
-import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.LegacySetItemSlotData;
+import org.cloudburstmc.protocol.bedrock.data.inventory.LegacySetSlot;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.ItemStackLegacyRequestId;
+import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.ItemUseActionType;
+import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.ItemUseInventoryTransaction;
+import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.PackedItemUseLegacyInventoryTransaction;
+import org.cloudburstmc.protocol.bedrock.data.player.input.PlayerActionType;
+import org.cloudburstmc.protocol.bedrock.data.player.input.PlayerAuthInputData;
+import org.cloudburstmc.protocol.bedrock.data.player.PlayerBlockActionData;
 import org.cloudburstmc.protocol.bedrock.packet.PlayerAuthInputPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -23,7 +26,7 @@ public class PlayerAuthInputSerializer_v428 extends PlayerAuthInputSerializer_v4
         super.serialize(buffer, helper, packet);
 
         if (packet.getInputData().contains(PlayerAuthInputData.PERFORM_ITEM_INTERACTION)) {
-            this.writeItemUseTransaction(buffer, helper, packet.getItemUseTransaction());
+            this.writePackedItemUseLegacyInventoryTransaction(buffer, helper, packet.getItemUseTransaction());
         }
 
         if (packet.getInputData().contains(PlayerAuthInputData.PERFORM_ITEM_STACK_REQUEST)) {
@@ -31,8 +34,8 @@ public class PlayerAuthInputSerializer_v428 extends PlayerAuthInputSerializer_v4
         }
 
         if (packet.getInputData().contains(PlayerAuthInputData.PERFORM_BLOCK_ACTIONS)) {
-            VarInts.writeInt(buffer, packet.getPlayerActions().size());
-            for (PlayerBlockActionData actionData : packet.getPlayerActions()) {
+            VarInts.writeInt(buffer, packet.getPlayerBlockActions().size());
+            for (PlayerBlockActionData actionData : packet.getPlayerBlockActions()) {
                 writePlayerBlockActionData(buffer, helper, actionData);
             }
         }
@@ -43,7 +46,7 @@ public class PlayerAuthInputSerializer_v428 extends PlayerAuthInputSerializer_v4
         super.deserialize(buffer, helper, packet);
 
         if (packet.getInputData().contains(PlayerAuthInputData.PERFORM_ITEM_INTERACTION)) {
-            packet.setItemUseTransaction(this.readItemUseTransaction(buffer, helper));
+            packet.setItemUseTransaction(this.readPackedItemUseLegacyInventoryTransaction(buffer, helper));
         }
 
         if (packet.getInputData().contains(PlayerAuthInputData.PERFORM_ITEM_STACK_REQUEST)) {
@@ -51,84 +54,102 @@ public class PlayerAuthInputSerializer_v428 extends PlayerAuthInputSerializer_v4
         }
 
         if (packet.getInputData().contains(PlayerAuthInputData.PERFORM_BLOCK_ACTIONS)) {
-            helper.readArray(buffer, packet.getPlayerActions(), VarInts::readInt, this::readPlayerBlockActionData, 32); // 32 is more than enough
+            helper.readArray(buffer, packet.getPlayerBlockActions(), VarInts::readInt, this::readPlayerBlockActionData, helper.getEncodingSettings().maxPlayerBlockActionDataSize());
         }
     }
 
     protected void writePlayerBlockActionData(ByteBuf buffer, BedrockCodecHelper helper, PlayerBlockActionData actionData) {
-        VarInts.writeInt(buffer, actionData.getAction().ordinal());
-        switch (actionData.getAction()) {
-            case START_BREAK:
-            case ABORT_BREAK:
-            case CONTINUE_BREAK:
-            case BLOCK_PREDICT_DESTROY:
-            case BLOCK_CONTINUE_DESTROY:
-                helper.writeVector3i(buffer, actionData.getBlockPosition());
-                VarInts.writeInt(buffer, actionData.getFace());
+        VarInts.writeInt(buffer, actionData.getPlayerActionType().ordinal());
+        switch (actionData.getPlayerActionType()) {
+            case START_DESTROY_BLOCK:
+            case ABORT_DESTROY_BLOCK:
+            case CRACK_BLOCK:
+            case PREDICT_DESTROY_BLOCK:
+            case CONTINUE_DESTROY_BLOCK:
+                helper.writeVector3i(buffer, actionData.getPosition());
+                VarInts.writeInt(buffer, actionData.getFacing());
         }
     }
 
     protected PlayerBlockActionData readPlayerBlockActionData(ByteBuf buffer, BedrockCodecHelper helper) {
         PlayerBlockActionData actionData = new PlayerBlockActionData();
-        actionData.setAction(PlayerActionType.values()[VarInts.readInt(buffer)]);
-        switch (actionData.getAction()) {
-            case START_BREAK:
-            case ABORT_BREAK:
-            case CONTINUE_BREAK:
-            case BLOCK_PREDICT_DESTROY:
-            case BLOCK_CONTINUE_DESTROY:
-                actionData.setBlockPosition(helper.readVector3i(buffer));
-                actionData.setFace(VarInts.readInt(buffer));
+        actionData.setPlayerActionType(PlayerActionType.values()[VarInts.readInt(buffer)]);
+        switch (actionData.getPlayerActionType()) {
+            case START_DESTROY_BLOCK:
+            case ABORT_DESTROY_BLOCK:
+            case CRACK_BLOCK:
+            case PREDICT_DESTROY_BLOCK:
+            case CONTINUE_DESTROY_BLOCK:
+                actionData.setPosition(helper.readVector3i(buffer));
+                actionData.setFacing(VarInts.readInt(buffer));
         }
         return actionData;
     }
 
-    protected void writeItemUseTransaction(ByteBuf buffer, BedrockCodecHelper helper, ItemUseTransaction transaction) {
-        //TODO use inventory transaction packet serialization?
-        int legacyRequestId = transaction.getLegacyRequestId();
-        VarInts.writeInt(buffer, legacyRequestId);
+    protected void writePackedItemUseLegacyInventoryTransaction(ByteBuf buffer, BedrockCodecHelper helper, PackedItemUseLegacyInventoryTransaction transaction) {
+        this.writeLegacyRequestId(buffer, helper, transaction.getLegacyRequestID());
 
-        if (legacyRequestId < -1 && (legacyRequestId & 1) == 0) {
-            helper.writeArray(buffer, transaction.getLegacySlots(), (buf, packetHelper, data) -> {
-                buf.writeByte(data.getContainerId());
-                packetHelper.writeByteArray(buf, data.getSlots());
-            });
+        if (transaction.getLegacyRequestID().getID() < -1 && (transaction.getLegacyRequestID().getID() & 1) == 0) {
+            helper.writeArray(buffer, transaction.getLegacySetItemSlots(), this::writeLegacySetSlot);
         }
-
-        helper.writeInventoryActions(buffer, transaction.getActions(), transaction.isUsingNetIds());
-        VarInts.writeUnsignedInt(buffer, transaction.getActionType());
-        helper.writeBlockPosition(buffer, transaction.getBlockPosition());
-        VarInts.writeInt(buffer, transaction.getBlockFace());
-        VarInts.writeInt(buffer, transaction.getHotbarSlot());
-        helper.writeItem(buffer, transaction.getItemInHand());
-        helper.writeVector3f(buffer, transaction.getPlayerPosition());
-        helper.writeVector3f(buffer, transaction.getClickPosition());
-        VarInts.writeUnsignedInt(buffer, transaction.getBlockDefinition().getRuntimeId());
+        helper.writeArray(buffer, transaction.getActions(), helper::writeInventoryAction);
+        this.writeItemUseInventoryTransaction(buffer, helper, transaction.getTransaction());
     }
 
-    protected ItemUseTransaction readItemUseTransaction(ByteBuf buffer, BedrockCodecHelper helper) {
-        ItemUseTransaction itemTransaction = new ItemUseTransaction();
+    protected PackedItemUseLegacyInventoryTransaction readPackedItemUseLegacyInventoryTransaction(ByteBuf buffer, BedrockCodecHelper helper) {
+        final PackedItemUseLegacyInventoryTransaction transaction = new PackedItemUseLegacyInventoryTransaction();
+        transaction.setLegacyRequestID(this.readLegacyRequestId(buffer, helper));
 
-        int legacyRequestId = VarInts.readInt(buffer);
-        itemTransaction.setLegacyRequestId(legacyRequestId);
-
-        if (legacyRequestId < -1 && (legacyRequestId & 1) == 0) {
-            helper.readArray(buffer, itemTransaction.getLegacySlots(), (buf, packetHelper) -> {
-                byte containerId = buf.readByte();
-                byte[] slots = packetHelper.readByteArray(buf, 89);
-                return new LegacySetItemSlotData(containerId, slots);
-            });
+        if (transaction.getLegacyRequestID().getID() < -1 && (transaction.getLegacyRequestID().getID() & 1) == 0) {
+            helper.readArray(buffer, transaction.getLegacySetItemSlots(), this::readLegacySetSlot);
         }
 
-        boolean hasNetIds = helper.readInventoryActions(buffer, itemTransaction.getActions());
-        itemTransaction.setActionType(VarInts.readUnsignedInt(buffer));
-        itemTransaction.setBlockPosition(helper.readBlockPosition(buffer));
-        itemTransaction.setBlockFace(VarInts.readInt(buffer));
-        itemTransaction.setHotbarSlot(VarInts.readInt(buffer));
-        itemTransaction.setItemInHand(helper.readItem(buffer));
-        itemTransaction.setPlayerPosition(helper.readVector3f(buffer));
-        itemTransaction.setClickPosition(helper.readVector3f(buffer));
-        itemTransaction.setBlockDefinition(helper.getBlockDefinitions().getDefinition(VarInts.readUnsignedInt(buffer)));
-        return itemTransaction;
+        helper.readArray(buffer, transaction.getActions(), helper::readInventoryAction);
+        transaction.setTransaction(this.readItemUseInventoryTransaction(buffer, helper));
+        return transaction;
+    }
+
+    protected void writeLegacyRequestId(ByteBuf buffer, BedrockCodecHelper helper, ItemStackLegacyRequestId id) {
+        VarInts.writeInt(buffer, id.getID());
+    }
+
+    protected ItemStackLegacyRequestId readLegacyRequestId(ByteBuf buffer, BedrockCodecHelper helper) {
+        return new ItemStackLegacyRequestId(VarInts.readInt(buffer));
+    }
+
+    protected void writeLegacySetSlot(ByteBuf buffer, BedrockCodecHelper helper, LegacySetSlot slot) {
+        helper.writeContainerEnumName(buffer, slot.getContainerEnum());
+        helper.writeByteArray(buffer, slot.getSlots());
+    }
+
+    protected LegacySetSlot readLegacySetSlot(ByteBuf buffer, BedrockCodecHelper helper) {
+        final LegacySetSlot slot = new LegacySetSlot();
+        slot.setContainerEnum(helper.readContainerEnumName(buffer));
+        slot.setSlots(helper.readByteArray(buffer, 89));
+        return slot;
+    }
+
+    protected void writeItemUseInventoryTransaction(ByteBuf buffer, BedrockCodecHelper helper, ItemUseInventoryTransaction transaction) {
+        VarInts.writeUnsignedInt(buffer, transaction.getActionType().ordinal());
+        helper.writeVector3i(buffer, transaction.getPosition());
+        VarInts.writeInt(buffer, transaction.getFace());
+        VarInts.writeUnsignedInt(buffer, transaction.getSlot());
+        helper.writeItem(buffer, transaction.getItem());
+        helper.writeVector3f(buffer, transaction.getFromPosition());
+        helper.writeVector3f(buffer, transaction.getClickPosition());
+        VarInts.writeUnsignedInt(buffer, transaction.getTargetBlockId().getRuntimeId());
+    }
+
+    protected ItemUseInventoryTransaction readItemUseInventoryTransaction(ByteBuf buffer, BedrockCodecHelper helper) {
+        final ItemUseInventoryTransaction transaction = new ItemUseInventoryTransaction();
+        transaction.setActionType(ItemUseActionType.from(VarInts.readUnsignedInt(buffer)));
+        transaction.setPosition(helper.readVector3i(buffer));
+        transaction.setFace(VarInts.readInt(buffer));
+        transaction.setSlot(VarInts.readUnsignedInt(buffer));
+        transaction.setItem(helper.readItem(buffer));
+        transaction.setFromPosition(helper.readVector3f(buffer));
+        transaction.setClickPosition(helper.readVector3f(buffer));
+        transaction.setTargetBlockId(helper.getBlockDefinitions().getDefinition(VarInts.readUnsignedInt(buffer)));
+        return transaction;
     }
 }

@@ -5,7 +5,9 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
-import org.cloudburstmc.protocol.bedrock.data.SerializableVoxelShape;
+import org.cloudburstmc.protocol.bedrock.data.block.SerializableCells;
+import org.cloudburstmc.protocol.bedrock.data.block.SerializableVoxelShape;
+import org.cloudburstmc.protocol.bedrock.data.block.VoxelShapesRegistryHandle;
 import org.cloudburstmc.protocol.bedrock.packet.VoxelShapesPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -33,45 +35,37 @@ public class VoxelShapesSerializer_v924 implements BedrockPacketSerializer<Voxel
         VarInts.writeUnsignedInt(buffer, packet.getNameMap().size());
         packet.getNameMap().forEach((k, v) -> {
             helper.writeString(buffer, k);
-            buffer.writeShortLE(v);
+            buffer.writeShortLE(v.getValue());
         });
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, VoxelShapesPacket packet) {
-        List<SerializableVoxelShape> shapes = new ArrayList<>();
+        helper.readArray(buffer, packet.getShapes(), (buf, h) -> {
+            SerializableCells cells = new SerializableCells();
+            cells.setXSize(buf.readUnsignedByte());
+            cells.setYSize(buf.readUnsignedByte());
+            cells.setZSize(buf.readUnsignedByte());
 
-        helper.readArray(buffer, shapes, (buf, h) -> {
-            short xSize = buf.readUnsignedByte();
-            short ySize = buf.readUnsignedByte();
-            short zSize = buf.readUnsignedByte();
+            helper.readArray(buf, cells.getStorage(), b -> (int) b.readUnsignedByte());
 
-            List<Short> storage = new ArrayList<>();
-            helper.readArray(buf, storage, (ByteBuf::readUnsignedByte));
+            SerializableVoxelShape shape = new SerializableVoxelShape();
+            shape.setCells(cells);
+            helper.readArray(buf, shape.getXCoordinates(), ByteBuf::readFloatLE);
+            helper.readArray(buf, shape.getYCoordinates(), ByteBuf::readFloatLE);
+            helper.readArray(buf, shape.getZCoordinates(), ByteBuf::readFloatLE);
 
-            SerializableVoxelShape.SerializableCells cells = new SerializableVoxelShape.SerializableCells(xSize, ySize, zSize, storage);
-
-            List<Float> xCoordinates = new ArrayList<>();
-            helper.readArray(buf, xCoordinates, (ByteBuf::readFloatLE));
-
-            List<Float> yCoordinates = new ArrayList<>();
-            helper.readArray(buf, yCoordinates, (ByteBuf::readFloatLE));
-
-            List<Float> zCoordinates = new ArrayList<>();
-            helper.readArray(buf, zCoordinates, (ByteBuf::readFloatLE));
-
-            return new SerializableVoxelShape(cells, xCoordinates, yCoordinates, zCoordinates);
+            return shape;
         });
 
-        packet.setShapes(shapes);
-
-        Map<String, Integer> nameMap = new LinkedHashMap<>();
+        Map<String, VoxelShapesRegistryHandle> nameMap = packet.getNameMap();
 
         int size = VarInts.readUnsignedInt(buffer);
         for (int i = 0; i < size; i++) {
-            nameMap.put(helper.readString(buffer), buffer.readUnsignedShortLE());
+            String name = helper.readString(buffer);
+            VoxelShapesRegistryHandle handle = new VoxelShapesRegistryHandle();
+            handle.setValue(buffer.readUnsignedShortLE());
+            nameMap.put(name, handle);
         }
-
-        packet.setNameMap(nameMap);
     }
 }

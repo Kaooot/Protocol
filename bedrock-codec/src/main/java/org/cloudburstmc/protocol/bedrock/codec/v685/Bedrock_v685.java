@@ -1,7 +1,19 @@
 package org.cloudburstmc.protocol.bedrock.codec.v685;
 
+import org.cloudburstmc.protocol.bedrock.data.world.event.ParticleType;
+
+import org.cloudburstmc.protocol.bedrock.data.world.event.LevelEventType;
+import org.cloudburstmc.protocol.bedrock.data.world.event.LevelEvent;
+
+import org.cloudburstmc.protocol.bedrock.codec.v685.serializer.LegacyTelemetryEventSerializer_v685;
+
+import org.cloudburstmc.protocol.bedrock.data.PacketRecipient;
+import org.cloudburstmc.protocol.bedrock.packet.LegacyTelemetryEventPacket;
+
+import org.cloudburstmc.protocol.bedrock.data.sound.LevelSoundEvent;
+
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
-import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
+import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelEventSerializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelSoundEvent1Serializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v313.serializer.LevelSoundEvent2Serializer_v313;
@@ -11,10 +23,9 @@ import org.cloudburstmc.protocol.bedrock.codec.v575.BedrockCodecHelper_v575;
 import org.cloudburstmc.protocol.bedrock.codec.v594.serializer.AvailableCommandsSerializer_v594;
 import org.cloudburstmc.protocol.bedrock.codec.v671.Bedrock_v671;
 import org.cloudburstmc.protocol.bedrock.codec.v685.serializer.*;
-import org.cloudburstmc.protocol.bedrock.data.*;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandParam;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataFormat;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataFormat;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataTypes;
 import org.cloudburstmc.protocol.bedrock.packet.*;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 
@@ -24,21 +35,21 @@ public class Bedrock_v685 extends Bedrock_v671 {
             .insert(93, ParticleType.OMINOUS_ITEM_SPAWNER)
             .build();
 
-    protected static final TypeMap<SoundEvent> SOUND_EVENTS = Bedrock_v671.SOUND_EVENTS
+    protected static final TypeMap<LevelSoundEvent> SOUND_EVENTS = Bedrock_v671.SOUND_EVENTS
             .toBuilder()
-            .insert(516, SoundEvent.TRIAL_SPAWNER_CHARGE_ACTIVATE)
-            .insert(517, SoundEvent.TRIAL_SPAWNER_AMBIENT_OMINOUS)
-            .insert(518, SoundEvent.OMINOUS_ITEM_SPAWNER_SPAWN_ITEM)
-            .insert(519, SoundEvent.OMINOUS_BOTTLE_END_USE)
-            .replace(521, SoundEvent.OMINOUS_ITEM_SPAWNER_SPAWN_ITEM_BEGIN)
-            .insert(523, SoundEvent.APPLY_EFFECT_BAD_OMEN)
-            .insert(524, SoundEvent.APPLY_EFFECT_RAID_OMEN)
-            .insert(525, SoundEvent.APPLY_EFFECT_TRIAL_OMEN)
-            .insert(526, SoundEvent.OMINOUS_ITEM_SPAWNER_ABOUT_TO_SPAWN_ITEM)
-            .insert(527, SoundEvent.RECORD_CREATOR)
-            .insert(528, SoundEvent.RECORD_CREATOR_MUSIC_BOX)
-            .insert(529, SoundEvent.RECORD_PRECIPICE)
-            .insert(530, SoundEvent.UNDEFINED)
+            .insert(516, LevelSoundEvent.TRIAL_SPAWNER_CHARGE_ACTIVATE)
+            .insert(517, LevelSoundEvent.TRIAL_SPAWNER_AMBIENT_OMINOUS)
+            .insert(518, LevelSoundEvent.OMINOUS_ITEM_SPAWNER_SPAWN_ITEM)
+            .insert(519, LevelSoundEvent.OMINOUS_BOTTLE_END_USE)
+            .replace(521, LevelSoundEvent.OMINOUS_ITEM_SPAWNER_SPAWN_ITEM_BEGIN)
+            .insert(523, LevelSoundEvent.APPLY_EFFECT_BAD_OMEN)
+            .insert(524, LevelSoundEvent.APPLY_EFFECT_RAID_OMEN)
+            .insert(525, LevelSoundEvent.APPLY_EFFECT_TRIAL_OMEN)
+            .insert(526, LevelSoundEvent.OMINOUS_ITEM_SPAWNER_ABOUT_TO_SPAWN_ITEM)
+            .insert(527, LevelSoundEvent.RECORD_CREATOR)
+            .insert(528, LevelSoundEvent.RECORD_CREATOR_MUSIC_BOX)
+            .insert(529, LevelSoundEvent.RECORD_PRECIPICE)
+            .insert(530, LevelSoundEvent.UNDEFINED)
             .build();
 
     protected static final TypeMap<CommandParam> COMMAND_PARAMS = Bedrock_v671.COMMAND_PARAMS.toBuilder()
@@ -50,9 +61,9 @@ public class Bedrock_v685 extends Bedrock_v671 {
             .insert(134217728, CommandParam.CHAINED_COMMAND)//reinsert, avoid shift
             .build();
 
-    protected static final EntityDataTypeMap ENTITY_DATA = Bedrock_v671.ENTITY_DATA
+    protected static final ActorDataTypeMap ENTITY_DATA = Bedrock_v671.ENTITY_DATA
             .toBuilder()
-            .insert(EntityDataTypes.VISIBLE_MOB_EFFECTS, 131, EntityDataFormat.LONG)
+            .insert(ActorDataTypes.VISIBLE_MOB_EFFECTS, 131, ActorDataFormat.LONG)
             .build();
 
     protected static final TypeMap<LevelEventType> LEVEL_EVENTS = Bedrock_v671.LEVEL_EVENTS.toBuilder()
@@ -78,7 +89,7 @@ public class Bedrock_v685 extends Bedrock_v671 {
             .updateSerializer(ContainerClosePacket.class, ContainerCloseSerializer_v685.INSTANCE)
             .updateSerializer(CraftingDataPacket.class, CraftingDataSerializer_v685.INSTANCE)
             .updateSerializer(CodeBuilderSourcePacket.class, CodeBuilderSourceSerializer_v685.INSTANCE)
-            .updateSerializer(EventPacket.class, EventSerializer_v685.INSTANCE)
+            .updateSerializer(LegacyTelemetryEventPacket.class, LegacyTelemetryEventSerializer_v685.INSTANCE)
             .updateSerializer(StartGamePacket.class, StartGameSerializer_v685.INSTANCE)
             .updateSerializer(TextPacket.class, TextSerializer_v685.INSTANCE)
             .registerPacket(AwardAchievementPacket::new, AwardAchievementSerializer_v685.INSTANCE, 309, PacketRecipient.CLIENT)

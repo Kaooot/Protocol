@@ -1,61 +1,75 @@
 package org.cloudburstmc.protocol.bedrock.codec.v419;
 
 import io.netty.buffer.ByteBuf;
-import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
+import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
+import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v407.BedrockCodecHelper_v407;
-import org.cloudburstmc.protocol.bedrock.data.ExperimentData;
-import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerSlotType;
-import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestActionType;
-import org.cloudburstmc.protocol.bedrock.data.skin.AnimatedTextureType;
-import org.cloudburstmc.protocol.bedrock.data.skin.AnimationData;
-import org.cloudburstmc.protocol.bedrock.data.skin.AnimationExpressionType;
-import org.cloudburstmc.protocol.bedrock.data.skin.ImageData;
+import org.cloudburstmc.protocol.bedrock.data.world.Experiments;
+import org.cloudburstmc.protocol.bedrock.data.world.ExperimentToggle;
+import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerEnumName;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequestActionType;
+import org.cloudburstmc.protocol.bedrock.data.player.PlayerInputTick;
+import org.cloudburstmc.protocol.bedrock.data.skin.PersonaAnimatedTextureType;
+import org.cloudburstmc.protocol.bedrock.data.skin.AnimatedImageData;
+import org.cloudburstmc.protocol.bedrock.data.skin.PersonaAnimationExpression;
+import org.cloudburstmc.protocol.bedrock.data.skin.SkinImage;
 import org.cloudburstmc.protocol.common.util.TypeMap;
-
-import java.util.List;
+import org.cloudburstmc.protocol.common.util.VarInts;
 
 public class BedrockCodecHelper_v419 extends BedrockCodecHelper_v407 {
 
-    protected static final AnimationExpressionType[] EXPRESSION_TYPES = AnimationExpressionType.values();
+    protected static final PersonaAnimationExpression[] EXPRESSION_TYPES = PersonaAnimationExpression.values();
 
-    public BedrockCodecHelper_v419(EntityDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes,
-                                   TypeMap<ItemStackRequestActionType> stackRequestActionTypes, TypeMap<ContainerSlotType> containerSlotTypes) {
-        super(entityData, gameRulesTypes, stackRequestActionTypes, containerSlotTypes);
+    public BedrockCodecHelper_v419(ActorDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes,
+                                   TypeMap<ItemStackRequestActionType> stackRequestActionTypes, TypeMap<ContainerEnumName> containerEnumNames) {
+        super(entityData, gameRulesTypes, stackRequestActionTypes, containerEnumNames);
     }
 
     @Override
-    public void readExperiments(ByteBuf buffer, List<ExperimentData> experiments) {
-        int count = buffer.readIntLE(); // No size compression
-        for (int i = 0; i < count; i++) {
-            experiments.add(new ExperimentData(
-                    this.readString(buffer),
-                    buffer.readBoolean() // Hardcoded to true in 414
-            ));
-        }
+    public void writeExperiments(ByteBuf buffer,  Experiments experiments) {
+        this.writeArray(buffer, experiments.getToggles(), ByteBuf::writeIntLE, this::writeExperimentToggle);
+        buffer.writeBoolean(experiments.isExperimentsEverToggled());
     }
 
     @Override
-    public void writeExperiments(ByteBuf buffer, List<ExperimentData> experiments) {
-        buffer.writeIntLE(experiments.size());
+    public Experiments readExperiments(ByteBuf buffer) {
+        final Experiments experiments = new Experiments();
+        this.readArray(buffer, experiments.getToggles(), ByteBuf::readIntLE, this::readExperimentToggle);
+        experiments.setExperimentsEverToggled(buffer.readBoolean());
+        return experiments;
+    }
 
-        for (ExperimentData experiment : experiments) {
-            this.writeString(buffer, experiment.getName());
-            buffer.writeBoolean(experiment.isEnabled());
-        }
+    protected void writeExperimentToggle(ByteBuf buffer, BedrockCodecHelper helper, ExperimentToggle toggle) {
+        helper.writeString(buffer, toggle.getName());
+        buffer.writeBoolean(toggle.isEnabled());
+    }
+
+    protected ExperimentToggle readExperimentToggle(ByteBuf buffer, BedrockCodecHelper helper) {
+        return new ExperimentToggle(helper.readString(buffer), buffer.readBoolean());
     }
 
     @Override
-    public AnimationData readAnimationData(ByteBuf buffer) {
-        ImageData image = this.readImage(buffer, ImageData.ANIMATION_SIZE);
-        AnimatedTextureType textureType = TEXTURE_TYPES[buffer.readIntLE()];
+    public AnimatedImageData readAnimationData(ByteBuf buffer) {
+        SkinImage image = this.readImage(buffer, SkinImage.ANIMATION_SIZE);
+        PersonaAnimatedTextureType textureType = TEXTURE_TYPES[buffer.readIntLE()];
         float frames = buffer.readFloatLE();
-        AnimationExpressionType expressionType = EXPRESSION_TYPES[buffer.readIntLE()];
-        return new AnimationData(image, textureType, frames, expressionType);
+        PersonaAnimationExpression expressionType = EXPRESSION_TYPES[buffer.readIntLE()];
+        return new AnimatedImageData(image, textureType, frames, expressionType);
     }
 
     @Override
-    public void writeAnimationData(ByteBuf buffer, AnimationData animation) {
+    public void writeAnimationData(ByteBuf buffer, AnimatedImageData animation) {
         super.writeAnimationData(buffer, animation);
-        buffer.writeIntLE(animation.getExpressionType().ordinal());
+        buffer.writeIntLE(animation.getAnimationExpression().ordinal());
+    }
+
+    @Override
+    public void writePlayerInputTick(ByteBuf buffer, PlayerInputTick inputTick) {
+        VarInts.writeUnsignedLong(buffer, inputTick.getInputTick());
+    }
+
+    @Override
+    public PlayerInputTick readPlayerInputTick(ByteBuf buffer) {
+        return new PlayerInputTick(VarInts.readUnsignedLong(buffer));
     }
 }

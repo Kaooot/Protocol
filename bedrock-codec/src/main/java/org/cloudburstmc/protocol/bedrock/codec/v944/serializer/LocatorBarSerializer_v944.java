@@ -1,70 +1,87 @@
 package org.cloudburstmc.protocol.bedrock.codec.v944.serializer;
 
 import io.netty.buffer.ByteBuf;
+import java.awt.Color;
 import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
+import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
-import org.cloudburstmc.protocol.bedrock.data.LocatorBarWaypoint;
+import org.cloudburstmc.protocol.bedrock.data.world.WorldPosition;
+import org.cloudburstmc.protocol.bedrock.data.world.DimensionType;
+import org.cloudburstmc.protocol.bedrock.data.waypoint.LocatorBarWaypointPayload;
+import org.cloudburstmc.protocol.bedrock.data.waypoint.ServerWaypointGroupAction;
+import org.cloudburstmc.protocol.bedrock.data.waypoint.ServerWaypointPayload;
+import org.cloudburstmc.protocol.bedrock.data.waypoint.VanillaWaypointManagerConstants;
+import org.cloudburstmc.protocol.bedrock.data.waypoint.WaypointGroupWaypointHandle;
 import org.cloudburstmc.protocol.bedrock.packet.LocatorBarPacket;
+import org.cloudburstmc.protocol.common.util.OptionalBoolean;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
-import java.awt.Color;
-import java.util.UUID;
+import java.util.Set;
 
-@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class LocatorBarSerializer_v944 implements BedrockPacketSerializer<LocatorBarPacket> {
-
     public static final LocatorBarSerializer_v944 INSTANCE = new LocatorBarSerializer_v944();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, LocatorBarPacket packet) {
-        helper.writeArray(buffer, packet.getWaypoints(), (buf, payload) -> writePayload(buf, helper, payload));
+        helper.writeArray(buffer, packet.getWaypoints(), this::writeLocatorBarWaypointPayload);
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, LocatorBarPacket packet) {
-        helper.readArray(buffer, packet.getWaypoints(), buf -> readPayload(buf, helper), 40000);
+        helper.readArray(buffer, packet.getWaypoints(), this::readLocatorBarWaypointPayload, 40000);
     }
 
-    private void writePayload(ByteBuf buf, BedrockCodecHelper helper, LocatorBarPacket.Payload payload) {
-        helper.writeUuid(buf, payload.getGroupHandle());
-        writeWaypoint(buf, helper, payload.getWaypoint());
-        buf.writeByte(payload.getActionFlag().ordinal());
+    protected void writeLocatorBarWaypointPayload(ByteBuf buffer, BedrockCodecHelper helper, LocatorBarWaypointPayload payload) {
+        helper.writeUuid(buffer, payload.getGroupHandle().getUuid());
+        this.writeServerWaypointPayload(buffer, helper, payload.getServerWaypointPayload());
+        VarInts.writeUnsignedInt(buffer, payload.getActionFlag().ordinal());
     }
 
-    private LocatorBarPacket.Payload readPayload(ByteBuf buf, BedrockCodecHelper helper) {
-        UUID groupHandle = helper.readUuid(buf);
-        LocatorBarWaypoint waypoint = readWaypoint(buf, helper);
-        LocatorBarPacket.Action actionFlag = LocatorBarPacket.Action.values()[buf.readUnsignedByte()];
-        return new LocatorBarPacket.Payload(actionFlag, groupHandle, waypoint);
+    protected LocatorBarWaypointPayload readLocatorBarWaypointPayload(ByteBuf buffer, BedrockCodecHelper helper) {
+        final LocatorBarWaypointPayload payload = new LocatorBarWaypointPayload();
+        final WaypointGroupWaypointHandle groupHandle = new WaypointGroupWaypointHandle();
+        groupHandle.setUuid(helper.readUuid(buffer));
+        payload.setGroupHandle(groupHandle);
+        payload.setServerWaypointPayload(this.readServerWaypointPayload(buffer, helper));
+        payload.setActionFlag(ServerWaypointGroupAction.from(VarInts.readUnsignedInt(buffer)));
+        return payload;
     }
 
-    protected void writeWaypoint(ByteBuf buf, BedrockCodecHelper helper, LocatorBarWaypoint waypoint) {
-        buf.writeIntLE(waypoint.getUpdateFlag());
-        helper.writeOptionalNull(buf, waypoint.getVisible(), ByteBuf::writeBoolean);
-        helper.writeOptionalNull(buf, waypoint.getWorldPosition(), (buf1, h, pos) -> {
-            h.writeVector3f(buf1, pos.getPosition());
-            VarInts.writeInt(buf1, pos.getDimension());
-        });
-        helper.writeOptionalNull(buf, waypoint.getTextureId(), ByteBuf::writeIntLE);
-        helper.writeOptionalNull(buf, waypoint.getColor(), (buf1, h, c) -> buf1.writeIntLE(c.getRGB()));
-        helper.writeOptionalNull(buf, waypoint.getClientPositionAuthority(), ByteBuf::writeBoolean);
-        helper.writeOptionalNull(buf, waypoint.getEntityUniqueId(), VarInts::writeLong);
+    protected void writeServerWaypointPayload(ByteBuf buffer, BedrockCodecHelper helper, ServerWaypointPayload payload) {
+        buffer.writeIntLE(payload.getUpdateFlag());
+        helper.writeOptional(buffer, OptionalBoolean::isPresent, payload.getIsVisible(),
+                (buf, aHelper, isVisible) -> buf.writeBoolean(isVisible.getAsBoolean()));
+        helper.writeOptionalNull(buffer, payload.getWorldPosition(), this::writeWorldPosition);
+        helper.writeOptionalNull(buffer, payload.getTextureId(), (buf, imageType) -> buf.writeIntLE(imageType.ordinal()));
+        helper.writeOptionalNull(buffer, payload.getColor(), (buf, color) -> buf.writeIntLE(color.getRGB()));
+        helper.writeOptional(buffer, OptionalBoolean::isPresent, payload.getClientPositionAuthority(),
+                (buf, aHelper, clientPositionAuthority) -> buf.writeBoolean(clientPositionAuthority.getAsBoolean()));
+        helper.writeOptionalNull(buffer, payload.getActorUniqueID(), VarInts::writeLong);
     }
 
-    protected LocatorBarWaypoint readWaypoint(ByteBuf buf, BedrockCodecHelper helper) {
-        LocatorBarWaypoint waypoint = new LocatorBarWaypoint();
-        waypoint.setUpdateFlag((int) buf.readUnsignedIntLE());
-        waypoint.setVisible(helper.readOptional(buf, null, ByteBuf::readBoolean));
-        waypoint.setWorldPosition(helper.readOptional(buf, null, (buf1, h) ->
-                new LocatorBarWaypoint.WorldPosition(h.readVector3f(buf1), VarInts.readInt(buf1))));
-        Long id = helper.readOptional(buf, null, ByteBuf::readUnsignedIntLE);
-        waypoint.setTextureId(id == null ? null : id.intValue());
-        waypoint.setColor(helper.readOptional(buf, null, (buf1, h) ->
-                new Color(buf1.readIntLE(), true)));
-        waypoint.setClientPositionAuthority(helper.readOptional(buf, null, ByteBuf::readBoolean));
-        waypoint.setEntityUniqueId(helper.readOptional(buf, null, VarInts::readLong));
-        return waypoint;
+    protected ServerWaypointPayload readServerWaypointPayload(ByteBuf buffer, BedrockCodecHelper helper) {
+        final ServerWaypointPayload payload = new ServerWaypointPayload();
+        payload.setUpdateFlag(buffer.readIntLE());
+        payload.setIsVisible(helper.readOptional(buffer, OptionalBoolean.empty(), buf -> OptionalBoolean.of(buf.readBoolean())));
+        payload.setWorldPosition(helper.readOptional(buffer, null, this::readWorldPosition));
+        payload.setTextureId(helper.readOptional(buffer, null, buf -> VanillaWaypointManagerConstants.ImageType.from(buf.readIntLE())));
+        payload.setColor(helper.readOptional(buffer, null, buf -> new Color(buf.readIntLE(), true)));
+        payload.setClientPositionAuthority(helper.readOptional(buffer, OptionalBoolean.empty(), buf -> OptionalBoolean.of(buf.readBoolean())));
+        payload.setActorUniqueID(helper.readOptional(buffer, null, VarInts::readLong));
+        return payload;
+    }
+
+    protected void writeWorldPosition(ByteBuf buffer, BedrockCodecHelper helper, WorldPosition position) {
+        helper.writeVector3f(buffer, position.getPosition());
+        VarInts.writeInt(buffer, position.getDimensionType().getValue());
+    }
+
+    protected WorldPosition readWorldPosition(ByteBuf buffer, BedrockCodecHelper helper) {
+        final Vector3f position = helper.readVector3f(buffer);
+        final DimensionType dimensionType = DimensionType.from(VarInts.readInt(buffer));
+        return new WorldPosition(position, dimensionType);
     }
 }

@@ -9,14 +9,16 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class ServerSettingsResponsePacket implements BedrockPacket {
-    private int formId;
-    private String formData;
+
+    private int formID;
+    private String formUiJson;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
+    @Override
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.SERVER_SETTINGS_RESPONSE;
     }
@@ -30,4 +32,3 @@ public class ServerSettingsResponsePacket implements BedrockPacket {
         }
     }
 }
-

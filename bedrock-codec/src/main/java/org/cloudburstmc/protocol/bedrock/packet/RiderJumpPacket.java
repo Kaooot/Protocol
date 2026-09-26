@@ -9,9 +9,11 @@ import org.cloudburstmc.protocol.common.PacketSignal;
  * @deprecated Removed as of v800 (1.21.80). Server authoritative jump is handled by {@link PlayerAuthInputPacket}
  */
 @Data
+@Deprecated
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class RiderJumpPacket implements BedrockPacket {
+
     private int jumpStrength;
 
     @Override
@@ -32,4 +34,3 @@ public class RiderJumpPacket implements BedrockPacket {
         }
     }
 }
-

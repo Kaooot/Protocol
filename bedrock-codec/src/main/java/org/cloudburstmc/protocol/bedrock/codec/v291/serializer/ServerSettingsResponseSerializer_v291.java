@@ -15,13 +15,13 @@ public class ServerSettingsResponseSerializer_v291 implements BedrockPacketSeria
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ServerSettingsResponsePacket packet) {
-        VarInts.writeUnsignedInt(buffer, packet.getFormId());
-        helper.writeString(buffer, packet.getFormData());
+        VarInts.writeUnsignedInt(buffer, packet.getFormID());
+        helper.writeString(buffer, packet.getFormUiJson());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ServerSettingsResponsePacket packet) {
-        packet.setFormId(VarInts.readUnsignedInt(buffer));
-        packet.setFormData(helper.readString(buffer));
+        packet.setFormID(VarInts.readUnsignedInt(buffer));
+        packet.setFormUiJson(helper.readString(buffer));
     }
 }

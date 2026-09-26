@@ -1,13 +1,17 @@
 package org.cloudburstmc.protocol.bedrock.data.diagnostics;
 
-import lombok.Value;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Value
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class WhiskerScopeDataSummary {
 
-    String label;
-    String indentation;
-    long totalHighCostNS;
-    long totalMidCostNS;
-    long totalLowCostNS;
+    private String label;
+    private String indentation;
+    private long totalHighCostNS;
+    private long totalMidCostNS;
+    private long totalLowCostNS;
 }

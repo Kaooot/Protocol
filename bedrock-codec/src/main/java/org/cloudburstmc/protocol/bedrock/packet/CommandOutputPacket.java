@@ -1,34 +1,26 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.checkerframework.checker.nullness.qual.Nullable;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandOriginData;
-import org.cloudburstmc.protocol.bedrock.data.command.CommandOutputMessage;
-import org.cloudburstmc.protocol.bedrock.data.command.CommandOutputType;
+import org.cloudburstmc.protocol.bedrock.data.command.CommandOutput;
 import org.cloudburstmc.protocol.common.PacketSignal;
-
-import java.util.List;
-
 
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class CommandOutputPacket implements BedrockPacket {
-    private final List<CommandOutputMessage> messages = new ObjectArrayList<>();
-    private CommandOriginData commandOriginData;
-    private CommandOutputType type;
-    private int successCount;
-    @Nullable
-    private String data;
+
+    private CommandOriginData originData;
+    private CommandOutput output;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
+    @Override
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.COMMAND_OUTPUT;
     }
@@ -42,4 +34,3 @@ public class CommandOutputPacket implements BedrockPacket {
         }
     }
 }
-

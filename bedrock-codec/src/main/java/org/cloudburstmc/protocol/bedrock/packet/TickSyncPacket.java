@@ -7,11 +7,15 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Used to maintain synchronization with a server running in authoritative mode.
+ *
+ * @deprecated since v685
  */
+@Deprecated
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class TickSyncPacket implements BedrockPacket {
+
     private long requestTimestamp;
     private long responseTimestamp;
 
@@ -33,4 +37,3 @@ public class TickSyncPacket implements BedrockPacket {
         }
     }
 }
-

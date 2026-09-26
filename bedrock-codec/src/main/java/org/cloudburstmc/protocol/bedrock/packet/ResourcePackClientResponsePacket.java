@@ -4,6 +4,7 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.cloudburstmc.protocol.bedrock.data.resourcepack.ResourcePackResponse;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 import java.util.List;
@@ -12,27 +13,18 @@ import java.util.List;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class ResourcePackClientResponsePacket implements BedrockPacket {
-    private final List<String> packIds = new ObjectArrayList<>();
-    private Status status;
+
+    private final List<String> downloadingPacks = new ObjectArrayList<>();
+    private ResourcePackResponse response;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
+    @Override
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.RESOURCE_PACK_CLIENT_RESPONSE;
-    }
-
-    public enum Status {
-        /**
-         * @deprecated since v2168
-         */
-        NONE,
-        REFUSED,
-        SEND_PACKS,
-        HAVE_ALL_PACKS,
-        COMPLETED
     }
 
     @Override
@@ -44,4 +36,3 @@ public class ResourcePackClientResponsePacket implements BedrockPacket {
         }
     }
 }
-

@@ -3,21 +3,23 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.protocol.bedrock.data.inventory.ItemUseType;
+import org.cloudburstmc.protocol.bedrock.data.world.ItemUseMethod;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class CompletedUsingItemPacket implements BedrockPacket {
+
     private int itemId;
-    private ItemUseType type;
+    private ItemUseMethod itemUseMethod;
 
     @Override
-    public PacketSignal handle(BedrockPacketHandler handler) {
+    public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
+    @Override
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.COMPLETED_USING_ITEM;
     }
@@ -31,4 +33,3 @@ public class CompletedUsingItemPacket implements BedrockPacket {
         }
     }
 }
-

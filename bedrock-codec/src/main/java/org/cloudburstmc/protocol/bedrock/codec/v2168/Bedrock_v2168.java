@@ -1,28 +1,28 @@
 package org.cloudburstmc.protocol.bedrock.codec.v2168;
 
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
-import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
+import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v1001.Bedrock_v1001;
 import org.cloudburstmc.protocol.bedrock.codec.v1001.serializer.LevelSoundEventSerializer_v1001;
 import org.cloudburstmc.protocol.bedrock.codec.v2168.serializer.*;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelEventSerializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v361.serializer.LevelEventGenericSerializer_v361;
-import org.cloudburstmc.protocol.bedrock.data.LevelEventType;
-import org.cloudburstmc.protocol.bedrock.data.ParticleType;
-import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataFormat;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
-import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestActionType;
+import org.cloudburstmc.protocol.bedrock.data.world.event.LevelEventType;
+import org.cloudburstmc.protocol.bedrock.data.world.event.ParticleType;
+import org.cloudburstmc.protocol.bedrock.data.sound.LevelSoundEvent;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataFormat;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataTypes;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorFlags;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequestActionType;
 import org.cloudburstmc.protocol.bedrock.packet.*;
 import org.cloudburstmc.protocol.bedrock.transformer.*;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 
 public class Bedrock_v2168 extends Bedrock_v1001 {
 
-    protected static final TypeMap<EntityFlag> ENTITY_FLAGS = Bedrock_v1001.ENTITY_FLAGS
+    protected static final TypeMap<ActorFlags> ENTITY_FLAGS = Bedrock_v1001.ENTITY_FLAGS
             .toBuilder()
-            .insert(130, EntityFlag.NOT_PICKABLE_FROM_INSIDE)
+            .insert(130, ActorFlags.NOT_PICKABLE_FROM_INSIDE)
             .build();
 
     protected static final TypeMap<ParticleType> PARTICLE_TYPES = Bedrock_v1001.PARTICLE_TYPES.toBuilder()
@@ -31,17 +31,17 @@ public class Bedrock_v2168 extends Bedrock_v1001 {
             .insert(104, ParticleType.YELLOW_POPLAR_LEAVES)
             .build();
 
-    protected static final EntityDataTypeMap ENTITY_DATA = Bedrock_v1001.ENTITY_DATA
+    protected static final ActorDataTypeMap ENTITY_DATA = Bedrock_v1001.ENTITY_DATA
             .toBuilder()
-            .update(EntityDataTypes.AREA_EFFECT_CLOUD_PARTICLE, new TypeMapTransformer<>(PARTICLE_TYPES))
-            .update(EntityDataTypes.FLAGS, new FlagTransformer(ENTITY_FLAGS, 0))
-            .update(EntityDataTypes.FLAGS_2, new FlagTransformer(ENTITY_FLAGS, 1))
+            .update(ActorDataTypes.AREA_EFFECT_CLOUD_PARTICLE, new TypeMapTransformer<>(PARTICLE_TYPES))
+            .update(ActorDataTypes.FLAGS, new FlagTransformer(ENTITY_FLAGS, 0))
+            .update(ActorDataTypes.FLAGS_2, new FlagTransformer(ENTITY_FLAGS, 1))
             .remove(16)
-            .insert(EntityDataTypes.DISPLAY_BLOCK_STATE, 16, EntityDataFormat.INT, new BlockDefinitionTransformer())
-            .insert(EntityDataTypes.DISPLAY_FIREWORK, 16, EntityDataFormat.NBT)
-            .insert(EntityDataTypes.HORSE_FLAGS, 16, EntityDataFormat.LONG, Long2IntTransformer.INSTANCE)
-            .insert(EntityDataTypes.WITHER_SKULL_DANGEROUS, 16, EntityDataFormat.BYTE)
-            .insert(EntityDataTypes.UNKNOWN_HORSE_INT_25, 25, EntityDataFormat.INT)
+            .insert(ActorDataTypes.DISPLAY_BLOCK_STATE, 16, ActorDataFormat.INT, new BlockDefinitionTransformer())
+            .insert(ActorDataTypes.DISPLAY_FIREWORK, 16, ActorDataFormat.NBT)
+            .insert(ActorDataTypes.HORSE_FLAGS, 16, ActorDataFormat.LONG, Long2IntTransformer.INSTANCE)
+            .insert(ActorDataTypes.WITHER_SKULL_DANGEROUS, 16, ActorDataFormat.BYTE)
+            .insert(ActorDataTypes.UNKNOWN_HORSE_INT_25, 25, ActorDataFormat.INT)
             .build();
 
     protected static final TypeMap<LevelEventType> LEVEL_EVENTS = Bedrock_v1001.LEVEL_EVENTS.toBuilder()
@@ -56,25 +56,25 @@ public class Bedrock_v2168 extends Bedrock_v1001 {
             .insert(4, ItemStackRequestActionType.DESTROY)
             .insert(5, ItemStackRequestActionType.CONSUME)
             .insert(6, ItemStackRequestActionType.CREATE)
-            .insert(7, ItemStackRequestActionType.LAB_TABLE_COMBINE)
-            .insert(8, ItemStackRequestActionType.BEACON_PAYMENT)
-            .insert(9, ItemStackRequestActionType.MINE_BLOCK)
+            .insert(7, ItemStackRequestActionType.SCREEN_LAB_TABLE_COMBINE)
+            .insert(8, ItemStackRequestActionType.SCREEN_BEACON_PAYMENT)
+            .insert(9, ItemStackRequestActionType.SCREEN_HUD_MINE_BLOCK)
             .insert(10, ItemStackRequestActionType.CRAFT_RECIPE)
             .insert(11, ItemStackRequestActionType.CRAFT_RECIPE_AUTO)
             .insert(12, ItemStackRequestActionType.CRAFT_CREATIVE)
             .insert(13, ItemStackRequestActionType.CRAFT_RECIPE_OPTIONAL)
             .insert(14, ItemStackRequestActionType.CRAFT_REPAIR_AND_DISENCHANT)
             .insert(15, ItemStackRequestActionType.CRAFT_LOOM)
-            .insert(16, ItemStackRequestActionType.CRAFT_NON_IMPLEMENTED_DEPRECATED)
-            .insert(17, ItemStackRequestActionType.CRAFT_RESULTS_DEPRECATED)
+            .insert(16, ItemStackRequestActionType.CRAFT_NON_IMPLEMENTED)
+            .insert(17, ItemStackRequestActionType.CRAFT_RESULTS)
             .build();
 
-    protected static final TypeMap<SoundEvent> SOUND_EVENTS = Bedrock_v1001.SOUND_EVENTS
+    protected static final TypeMap<LevelSoundEvent> SOUND_EVENTS = Bedrock_v1001.SOUND_EVENTS
             .toBuilder()
-            .replace(611, SoundEvent.MOUNT)
-            .insert(612, SoundEvent.DISMOUNT)
-            .insert(613, SoundEvent.STRAW_BED_BREAK_LEAVE)
-            .insert(614, SoundEvent.UNDEFINED)
+            .replace(611, LevelSoundEvent.MOUNT)
+            .insert(612, LevelSoundEvent.DISMOUNT)
+            .insert(613, LevelSoundEvent.STRAW_BED_BREAK_LEAVE)
+            .insert(614, LevelSoundEvent.UNDEFINED)
             .build();
 
     public static final BedrockCodec CODEC = Bedrock_v1001.CODEC.toBuilder()
@@ -92,7 +92,7 @@ public class Bedrock_v2168 extends Bedrock_v1001 {
             .updateSerializer(LevelEventPacket.class, new LevelEventSerializer_v291(LEVEL_EVENTS))
             .updateSerializer(LevelEventGenericPacket.class, new LevelEventGenericSerializer_v361(LEVEL_EVENTS))
             .updateSerializer(LevelSoundEventPacket.class, new LevelSoundEventSerializer_v1001(SOUND_EVENTS))
-            .updateSerializer(MoveEntityDeltaPacket.class, MoveEntityDeltaSerializer_v2168.INSTANCE)
+            .updateSerializer(MoveActorDeltaPacket.class, MoveActorDeltaSerializer_v2168.INSTANCE)
             .updateSerializer(MovePlayerPacket.class, MovePlayerSerializer_v2168.INSTANCE)
             .updateSerializer(PlayerAuthInputPacket.class, PlayerAuthInputSerializer_v2168.INSTANCE)
             .updateSerializer(PlayerListPacket.class, PlayerListSerializer_v2168.INSTANCE)

@@ -4,7 +4,6 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.protocol.bedrock.data.ScoreInfo;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 import java.util.List;
@@ -13,27 +12,17 @@ import java.util.List;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class SetScorePacket implements BedrockPacket {
-    /**
-     * @deprecated since v2168, now uses ScorerType from ScoreInfo
-     */
-    private Action action;
-    private List<ScoreInfo> infos = new ObjectArrayList<>();
+
+    private final List<Object> scoreInfo = new ObjectArrayList<>();
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
+    @Override
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.SET_SCORE;
-    }
-
-    /**
-     * @deprecated since v2168
-     */
-    public enum Action {
-        SET,
-        REMOVE
     }
 
     @Override
@@ -45,4 +34,3 @@ public class SetScorePacket implements BedrockPacket {
         }
     }
 }
-

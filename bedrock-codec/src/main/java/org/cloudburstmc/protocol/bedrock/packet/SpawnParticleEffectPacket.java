@@ -4,26 +4,26 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.math.vector.Vector3f;
+import org.cloudburstmc.protocol.bedrock.data.world.DimensionType;
 import org.cloudburstmc.protocol.common.PacketSignal;
-
-import java.util.Optional;
 
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
-@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 public class SpawnParticleEffectPacket implements BedrockPacket {
-    private int dimensionId;
-    private long uniqueEntityId = -1;
+
+    private DimensionType dimensionId;
+    private long actorId = -1L;
     private Vector3f position;
-    private String identifier;
-    private Optional<String> molangVariablesJson;
+    private String effectName;
+    private String molangVariables;
 
     @Override
-    public PacketSignal handle(BedrockPacketHandler handler) {
+    public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
+    @Override
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.SPAWN_PARTICLE_EFFECT;
     }
@@ -37,4 +37,3 @@ public class SpawnParticleEffectPacket implements BedrockPacket {
         }
     }
 }
-

@@ -3,23 +3,26 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.cloudburstmc.protocol.bedrock.data.scoreboard.ObjectiveSortOrder;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class SetDisplayObjectivePacket implements BedrockPacket {
-    private String displaySlot;
-    private String objectiveId;
-    private CharSequence displayName;
-    private String criteria;
-    private int sortOrder;
+
+    private String displaySlotName;
+    private String objectiveName;
+    private CharSequence objectiveDisplayName;
+    private String criteriaName;
+    private ObjectiveSortOrder sortOrder;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
+    @Override
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.SET_DISPLAY_OBJECTIVE;
     }
@@ -33,12 +36,7 @@ public class SetDisplayObjectivePacket implements BedrockPacket {
         }
     }
 
-    public String getDisplayName() {
-        return getDisplayName(String.class);
-    }
-
-    public <T extends CharSequence> T getDisplayName(Class<T> type) {
-        return type.cast(displayName);
+    public <T extends CharSequence> T getObjectiveDisplayName(Class<T> type) {
+        return type.cast(this.objectiveDisplayName);
     }
 }
-

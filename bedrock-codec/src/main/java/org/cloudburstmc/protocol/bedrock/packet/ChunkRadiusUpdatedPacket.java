@@ -9,13 +9,15 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class ChunkRadiusUpdatedPacket implements BedrockPacket {
-    private int radius;
+
+    private int chunkRadius;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
+    @Override
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.CHUNK_RADIUS_UPDATED;
     }
@@ -29,4 +31,3 @@ public class ChunkRadiusUpdatedPacket implements BedrockPacket {
         }
     }
 }
-

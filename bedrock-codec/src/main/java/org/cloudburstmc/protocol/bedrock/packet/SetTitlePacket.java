@@ -9,43 +9,27 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class SetTitlePacket implements BedrockPacket {
-    private Type type;
-    private CharSequence text;
+
+    private TitleType titleType;
+    private CharSequence titleText;
     private int fadeInTime;
     private int stayTime;
     private int fadeOutTime;
-    /**
-     * @since v448
-     */
     private String xuid;
-    /**
-     * @since v448
-     */
     private String platformOnlineId;
     /**
      * @since v712
      */
-    private CharSequence filteredTitleText = "";
+    private CharSequence filteredTitleMessage = "";
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
+    @Override
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.SET_TITLE;
-    }
-
-    public enum Type {
-        CLEAR,
-        RESET,
-        TITLE,
-        SUBTITLE,
-        ACTIONBAR,
-        TIMES,
-        TITLE_JSON,
-        SUBTITLE_JSON,
-        ACTIONBAR_JSON
     }
 
     @Override
@@ -57,20 +41,32 @@ public class SetTitlePacket implements BedrockPacket {
         }
     }
 
-    public String getText() {
-        return getText(String.class);
+    public enum TitleType {
+        CLEAR,
+        RESET,
+        TITLE,
+        SUBTITLE,
+        ACTIONBAR,
+        TIMES,
+        TITLE_TEXT_OBJECT,
+        SUBTITLE_TEXT_OBJECT,
+        ACTIONBAR_TEXT_OBJECT;
+
+        private static final TitleType[] VALUES = values();
+
+        public static TitleType from(int ordinal) {
+            if (ordinal >= 0 && ordinal < VALUES.length) {
+                return VALUES[ordinal];
+            }
+            throw new UnsupportedOperationException("Detected unknown SetTitlePacket::TitleType ID: " + ordinal);
+        }
     }
 
-    public <T extends CharSequence> T getText(Class<T> type) {
-        return type.cast(text);
+    public <T extends CharSequence> T getTitleText(Class<T> type) {
+        return type.cast(this.titleText);
     }
 
-    public String getFilteredTitleText() {
-        return getFilteredTitleText(String.class);
-    }
-
-    public <T extends CharSequence> T getFilteredTitleText(Class<T> type) {
-        return type.cast(filteredTitleText);
+    public <T extends CharSequence> T getFilteredTitleMessage(Class<T> type) {
+        return type.cast(this.filteredTitleMessage);
     }
 }
-

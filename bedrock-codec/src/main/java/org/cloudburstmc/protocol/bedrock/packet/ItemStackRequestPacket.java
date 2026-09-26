@@ -1,22 +1,23 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequest;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class ItemStackRequestPacket implements BedrockPacket {
-    private final List<ItemStackRequest> requests = new ArrayList<>();
+
+    private final List<ItemStackRequest> requests = new ObjectArrayList<>();
 
     @Override
-    public PacketSignal handle(BedrockPacketHandler handler) {
+    public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
@@ -24,7 +25,6 @@ public class ItemStackRequestPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.ITEM_STACK_REQUEST;
     }
-
 
     @Override
     public ItemStackRequestPacket clone() {
@@ -35,4 +35,3 @@ public class ItemStackRequestPacket implements BedrockPacket {
         }
     }
 }
-

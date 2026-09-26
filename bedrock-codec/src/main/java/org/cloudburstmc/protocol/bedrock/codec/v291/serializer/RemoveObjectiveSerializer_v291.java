@@ -14,11 +14,11 @@ public class RemoveObjectiveSerializer_v291 implements BedrockPacketSerializer<R
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, RemoveObjectivePacket packet) {
-        helper.writeString(buffer, packet.getObjectiveId());
+        helper.writeString(buffer, packet.getObjectiveName());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, RemoveObjectivePacket packet) {
-        packet.setObjectiveId(helper.readString(buffer));
+        packet.setObjectiveName(helper.readString(buffer));
     }
 }

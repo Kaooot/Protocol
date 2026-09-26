@@ -5,7 +5,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.AddPlayerSerializer_v291;
-import org.cloudburstmc.protocol.bedrock.data.BuildPlatform;
+import org.cloudburstmc.protocol.bedrock.data.connection.BuildPlatform;
 import org.cloudburstmc.protocol.bedrock.packet.AddPlayerPacket;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -15,14 +15,12 @@ public class AddPlayerSerializer_v388 extends AddPlayerSerializer_v291 {
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, AddPlayerPacket packet) {
         super.serialize(buffer, helper, packet);
-
         buffer.writeIntLE(packet.getBuildPlatform().getId());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, AddPlayerPacket packet) {
         super.deserialize(buffer, helper, packet);
-
         packet.setBuildPlatform(BuildPlatform.from(buffer.readIntLE()));
     }
 }

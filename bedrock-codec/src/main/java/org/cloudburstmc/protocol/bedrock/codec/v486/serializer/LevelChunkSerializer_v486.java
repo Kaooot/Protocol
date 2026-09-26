@@ -9,6 +9,8 @@ import org.cloudburstmc.protocol.bedrock.codec.v361.serializer.LevelChunkSeriali
 import org.cloudburstmc.protocol.bedrock.packet.LevelChunkPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
+import static org.cloudburstmc.protocol.common.util.Preconditions.checkArgument;
+
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class LevelChunkSerializer_v486 extends LevelChunkSerializer_v361 {
     public static final LevelChunkSerializer_v486 INSTANCE = new LevelChunkSerializer_v486();
@@ -17,18 +19,18 @@ public class LevelChunkSerializer_v486 extends LevelChunkSerializer_v361 {
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, LevelChunkPacket packet) {
         this.writeChunkLocation(buffer, packet);
 
-        if (!packet.isRequestSubChunks()) {
-            VarInts.writeUnsignedInt(buffer, packet.getSubChunksLength());
-        } else if (packet.getSubChunkLimit() < 0) {
+        if (!packet.isClientNeedsToRequestSubChunks()) {
+            VarInts.writeUnsignedInt(buffer, packet.getSubChunksCount());
+        } else if (packet.getClientRequestSubChunkLimit() < 0) {
             VarInts.writeUnsignedInt(buffer, -1);
         } else {
             VarInts.writeUnsignedInt(buffer, -2);
-            buffer.writeShortLE(packet.getSubChunkLimit());
+            buffer.writeShortLE(packet.getClientRequestSubChunkLimit());
         }
 
-        buffer.writeBoolean(packet.isCachingEnabled());
-        if (packet.isCachingEnabled()) {
-            LongList blobIds = packet.getBlobIds();
+        buffer.writeBoolean(packet.isCacheEnabled());
+        if (packet.isCacheEnabled()) {
+            LongList blobIds = packet.getCacheBlobs();
             VarInts.writeUnsignedInt(buffer, blobIds.size());
 
             for (long blobId : blobIds) {
@@ -36,7 +38,7 @@ public class LevelChunkSerializer_v486 extends LevelChunkSerializer_v361 {
             }
         }
 
-        helper.writeByteBuf(buffer, packet.getData());
+        helper.writeByteBuf(buffer, packet.getSerializedChunkData());
     }
 
     @Override
@@ -45,27 +47,28 @@ public class LevelChunkSerializer_v486 extends LevelChunkSerializer_v361 {
 
         int subChunksCount = VarInts.readUnsignedInt(buffer);
         if (subChunksCount >= 0) {
-            packet.setSubChunksLength(subChunksCount);
+            packet.setSubChunksCount(subChunksCount);
         } else {
-            packet.setRequestSubChunks(true);
+            packet.setClientNeedsToRequestSubChunks(true);
             if (subChunksCount == -1) {
-                packet.setSubChunkLimit(subChunksCount);
+                packet.setClientRequestSubChunkLimit(subChunksCount);
             } else if (subChunksCount == -2) {
-                packet.setSubChunkLimit(buffer.readUnsignedShortLE());
+                packet.setClientRequestSubChunkLimit(buffer.readUnsignedShortLE());
             }
         }
 
-        packet.setCachingEnabled(buffer.readBoolean());
+        packet.setCacheEnabled(buffer.readBoolean());
 
-        if (packet.isCachingEnabled()) {
-            LongList blobIds = packet.getBlobIds();
+        if (packet.isCacheEnabled()) {
+            LongList blobIds = packet.getCacheBlobs();
             int length = VarInts.readUnsignedInt(buffer);
+            checkArgument(length <= MAX_BLOBS, "Tried to read %s Blob IDs but maximum is %s", length, MAX_BLOBS);
 
             for (int i = 0; i < length; i++) {
                 blobIds.add(buffer.readLongLE());
             }
         }
-        packet.setData(helper.readByteBuf(buffer));
+        packet.setSerializedChunkData(helper.readByteBuf(buffer));
     }
 
     protected void writeChunkLocation(ByteBuf buffer, LevelChunkPacket packet) {

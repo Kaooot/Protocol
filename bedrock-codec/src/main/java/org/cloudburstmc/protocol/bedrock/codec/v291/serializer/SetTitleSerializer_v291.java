@@ -13,12 +13,11 @@ import org.cloudburstmc.protocol.common.util.VarInts;
 public class SetTitleSerializer_v291 implements BedrockPacketSerializer<SetTitlePacket> {
     public static final SetTitleSerializer_v291 INSTANCE = new SetTitleSerializer_v291();
 
-
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, SetTitlePacket packet) {
-        VarInts.writeInt(buffer, packet.getType().ordinal());
-        TextConverter converter = helper.getTextConverter();
-        helper.writeString(buffer, converter.serialize(packet.getText(CharSequence.class)));
+        VarInts.writeInt(buffer, packet.getTitleType().ordinal());
+        final TextConverter converter = helper.getTextConverter();
+        helper.writeString(buffer, converter.serialize(packet.getTitleText(CharSequence.class)));
         VarInts.writeInt(buffer, packet.getFadeInTime());
         VarInts.writeInt(buffer, packet.getStayTime());
         VarInts.writeInt(buffer, packet.getFadeOutTime());
@@ -26,9 +25,9 @@ public class SetTitleSerializer_v291 implements BedrockPacketSerializer<SetTitle
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, SetTitlePacket packet) {
-        packet.setType(SetTitlePacket.Type.values()[VarInts.readInt(buffer)]);
+        packet.setTitleType(SetTitlePacket.TitleType.values()[VarInts.readInt(buffer)]);
         TextConverter converter = helper.getTextConverter();
-        packet.setText(converter.deserialize(helper.readString(buffer)));
+        packet.setTitleText(converter.deserialize(helper.readString(buffer)));
         packet.setFadeInTime(VarInts.readInt(buffer));
         packet.setStayTime(VarInts.readInt(buffer));
         packet.setFadeOutTime(VarInts.readInt(buffer));

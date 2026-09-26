@@ -3,31 +3,20 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.protocol.bedrock.data.PhotoType;
+import org.cloudburstmc.protocol.bedrock.data.education.PhotoType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class PhotoTransferPacket implements BedrockPacket {
-    private String name;
-    private byte[] data;
-    private String bookId;
-    /**
-     * @since v465
-     */
-    private PhotoType photoType;
-    /**
-     * @since v465
-     */
+
+    private String photoName;
+    private String photoData;
+    private String bookID;
+    private PhotoType type;
     private PhotoType sourceType;
-    /**
-     * @since v465
-     */
-    private long ownerId;
-    /**
-     * @since v465
-     */
+    private long ownerID;
     private String newPhotoName;
 
     @Override
@@ -35,6 +24,7 @@ public class PhotoTransferPacket implements BedrockPacket {
         return handler.handle(this);
     }
 
+    @Override
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.PHOTO_TRANSFER;
     }
@@ -48,4 +38,3 @@ public class PhotoTransferPacket implements BedrockPacket {
         }
     }
 }
-

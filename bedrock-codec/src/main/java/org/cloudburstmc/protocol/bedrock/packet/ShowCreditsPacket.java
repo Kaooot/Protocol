@@ -9,21 +9,18 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class ShowCreditsPacket implements BedrockPacket {
-    private long runtimeEntityId;
-    private Status status;
+
+    private long playerRuntimeID;
+    private CreditsState creditsState;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
+    @Override
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.SHOW_CREDITS;
-    }
-
-    public enum Status {
-        START_CREDITS,
-        END_CREDITS
     }
 
     @Override
@@ -34,5 +31,18 @@ public class ShowCreditsPacket implements BedrockPacket {
             throw new AssertionError(e);
         }
     }
-}
 
+    public enum CreditsState {
+        START_CREDITS,
+        END_CREDITS;
+
+        private static final CreditsState[] VALUES = values();
+
+        public static CreditsState from(int ordinal) {
+            if (ordinal >= 0 && ordinal < VALUES.length) {
+                return VALUES[ordinal];
+            }
+            throw new UnsupportedOperationException("Detected unknown CreditsState ID: " + ordinal);
+        }
+    }
+}

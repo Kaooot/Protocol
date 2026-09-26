@@ -4,8 +4,8 @@ import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
 import lombok.RequiredArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataMap;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataMap;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorFlags;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 
 import java.util.EnumMap;
@@ -21,11 +21,11 @@ import java.util.Map;
  * <p>
  */
 @RequiredArgsConstructor
-public final class FlagTransformer implements EntityDataTransformer<Long, EnumMap<EntityFlag, Boolean>> {
+public final class FlagTransformer implements EntityDataTransformer<Long, EnumMap<ActorFlags, Boolean>> {
 
     private static final InternalLogger log = InternalLoggerFactory.getInstance(FlagTransformer.class);
 
-    private final TypeMap<EntityFlag> typeMap;
+    private final TypeMap<ActorFlags> typeMap;
     /**
      * The index of this flag group (0 for FLAGS, 1 for FLAGS_2)
      */
@@ -47,7 +47,7 @@ public final class FlagTransformer implements EntityDataTransformer<Long, EnumMa
      * @return the packed long value containing flags for this group, or null if no flags exist
      */
     @Override
-    public Long serialize(BedrockCodecHelper helper, EntityDataMap map, EnumMap<EntityFlag, Boolean> flags) {
+    public Long serialize(BedrockCodecHelper helper, ActorDataMap map, EnumMap<ActorFlags, Boolean> flags) {
         long value = 0;
         // Calculate the range of flag indices this transformer handles
         int lower = this.index * 64;
@@ -55,8 +55,8 @@ public final class FlagTransformer implements EntityDataTransformer<Long, EnumMa
         // Track whether any flags in this range exist (even if set to false)
         boolean exists = false;
 
-        for (Map.Entry<EntityFlag, Boolean> entry : flags.entrySet()) {
-            EntityFlag flag = entry.getKey();
+        for (Map.Entry<ActorFlags, Boolean> entry : flags.entrySet()) {
+            ActorFlags flag = entry.getKey();
             Boolean data = entry.getValue();
             if (data == null) {
                 continue;
@@ -100,8 +100,8 @@ public final class FlagTransformer implements EntityDataTransformer<Long, EnumMa
      * @return the updated flag map
      */
     @Override
-    public EnumMap<EntityFlag, Boolean> deserialize(BedrockCodecHelper helper, EntityDataMap map, Long value) {
-        EnumMap<EntityFlag, Boolean> flags = map.getOrCreateFlags();
+    public EnumMap<ActorFlags, Boolean> deserialize(BedrockCodecHelper helper, ActorDataMap map, Long value) {
+        EnumMap<ActorFlags, Boolean> flags = map.getOrCreateFlags();
 
         // Calculate the range of flag indices this transformer handles
         int lower = this.index * 64;
@@ -112,7 +112,7 @@ public final class FlagTransformer implements EntityDataTransformer<Long, EnumMa
             // Get the bit position within this 64-bit group (0-63)
             int idx = i & 0x3f;
 
-            EntityFlag flag = this.typeMap.getTypeUnsafe(i);
+            ActorFlags flag = this.typeMap.getTypeUnsafe(i);
 
             // Check if the bit at this position is set
             boolean set = (value & (1L << idx)) != 0;

@@ -1,10 +1,14 @@
 package org.cloudburstmc.protocol.bedrock.data.biome;
 
-import lombok.Value;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-@Value
+@Data
 public class BiomeLegacyWorldGenRulesData {
-    List<BiomeConditionalTransformationData> legacyPreHills;
+
+    private final List<BiomeConditionalTransformationData> legacyPreHillsEdge = new ObjectArrayList<>();
 }

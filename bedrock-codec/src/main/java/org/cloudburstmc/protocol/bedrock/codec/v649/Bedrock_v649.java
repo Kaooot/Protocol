@@ -1,7 +1,14 @@
 package org.cloudburstmc.protocol.bedrock.codec.v649;
 
+import org.cloudburstmc.protocol.bedrock.data.world.event.ParticleType;
+
+import org.cloudburstmc.protocol.bedrock.data.world.event.LevelEventType;
+import org.cloudburstmc.protocol.bedrock.data.world.event.LevelEvent;
+
+import org.cloudburstmc.protocol.bedrock.data.sound.LevelSoundEvent;
+
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
-import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
+import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelEventSerializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelSoundEvent1Serializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v313.serializer.LevelSoundEvent2Serializer_v313;
@@ -10,8 +17,8 @@ import org.cloudburstmc.protocol.bedrock.codec.v361.serializer.LevelEventGeneric
 import org.cloudburstmc.protocol.bedrock.codec.v575.BedrockCodecHelper_v575;
 import org.cloudburstmc.protocol.bedrock.codec.v630.Bedrock_v630;
 import org.cloudburstmc.protocol.bedrock.codec.v649.serializer.*;
-import org.cloudburstmc.protocol.bedrock.data.*;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataTypes;
+import org.cloudburstmc.protocol.bedrock.data.PacketRecipient;
 import org.cloudburstmc.protocol.bedrock.packet.*;
 import org.cloudburstmc.protocol.bedrock.transformer.TypeMapTransformer;
 import org.cloudburstmc.protocol.common.util.TypeMap;
@@ -34,22 +41,22 @@ public class Bedrock_v649 extends Bedrock_v630 {
             .insert(LEVEL_EVENT_PARTICLE_TYPE, PARTICLE_TYPES)
             .build();
 
-    protected static final EntityDataTypeMap ENTITY_DATA = Bedrock_v630.ENTITY_DATA
+    protected static final ActorDataTypeMap ENTITY_DATA = Bedrock_v630.ENTITY_DATA
             .toBuilder()
-            .update(EntityDataTypes.AREA_EFFECT_CLOUD_PARTICLE, new TypeMapTransformer<>(PARTICLE_TYPES))
+            .update(ActorDataTypes.AREA_EFFECT_CLOUD_PARTICLE, new TypeMapTransformer<>(PARTICLE_TYPES))
             .build();
 
-    protected static final TypeMap<SoundEvent> SOUND_EVENTS = Bedrock_v630.SOUND_EVENTS
+    protected static final TypeMap<LevelSoundEvent> SOUND_EVENTS = Bedrock_v630.SOUND_EVENTS
             .toBuilder()
-            .replace(492, SoundEvent.AMBIENT_IN_AIR)
-            .insert(493, SoundEvent.WIND_BURST)
-            .insert(494, SoundEvent.IMITATE_BREEZE)
-            .insert(495, SoundEvent.ARMADILLO_BRUSH)
-            .insert(496, SoundEvent.ARMADILLO_SCUTE_DROP)
-            .insert(497, SoundEvent.EQUIP_WOLF)
-            .insert(498, SoundEvent.UNEQUIP_WOLF)
-            .insert(499, SoundEvent.REFLECT)
-            .insert(500, SoundEvent.UNDEFINED)
+            .replace(492, LevelSoundEvent.AMBIENT_IN_AIR)
+            .insert(493, LevelSoundEvent.WIND_BURST)
+            .insert(494, LevelSoundEvent.IMITATE_BREEZE)
+            .insert(495, LevelSoundEvent.ARMADILLO_BRUSH)
+            .insert(496, LevelSoundEvent.ARMADILLO_SCUTE_DROP)
+            .insert(497, LevelSoundEvent.EQUIP_WOLF)
+            .insert(498, LevelSoundEvent.UNEQUIP_WOLF)
+            .insert(499, LevelSoundEvent.REFLECT)
+            .insert(500, LevelSoundEvent.UNDEFINED)
             .build();
 
     public static final BedrockCodec CODEC = Bedrock_v630.CODEC.toBuilder()

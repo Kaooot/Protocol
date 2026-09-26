@@ -2,32 +2,30 @@ package org.cloudburstmc.protocol.bedrock.packet;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import org.cloudburstmc.protocol.bedrock.data.form.NpcDialogueActionType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
-@EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
+@EqualsAndHashCode(doNotUseGetters = true)
+@ToString(doNotUseGetters = true)
 public class NpcDialoguePacket implements BedrockPacket {
 
-    private long uniqueEntityId;
-    private Action action;
+    private long npcIdRawId;
+    private NpcDialogueActionType npcDialogueActionType;
     private String dialogue;
     private String sceneName;
     private String npcName;
     private String actionJson;
 
     @Override
-    public PacketSignal handle(BedrockPacketHandler handler) {
+    public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
     @Override
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.NPC_DIALOGUE;
-    }
-
-    public enum Action {
-        OPEN,
-        CLOSE
     }
 
     @Override
@@ -39,4 +37,3 @@ public class NpcDialoguePacket implements BedrockPacket {
         }
     }
 }
-

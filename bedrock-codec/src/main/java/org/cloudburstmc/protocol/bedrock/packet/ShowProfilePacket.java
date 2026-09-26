@@ -9,13 +9,15 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class ShowProfilePacket implements BedrockPacket {
-    private String xuid;
+
+    private String playerXuid;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
+    @Override
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.SHOW_PROFILE;
     }
@@ -29,4 +31,3 @@ public class ShowProfilePacket implements BedrockPacket {
         }
     }
 }
-

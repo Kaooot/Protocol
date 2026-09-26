@@ -5,11 +5,6 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Allows the server to tell the client to reload the Data Driven UI.
- *
- * @since v924
- */
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
@@ -20,8 +15,9 @@ public class ClientboundDataDrivenUIReloadPacket implements BedrockPacket {
         return handler.handle(this);
     }
 
+    @Override
     public BedrockPacketType getPacketType() {
-        return BedrockPacketType.CLIENTBOUND_DATA_DRIVEN_UI_RELOAD;
+        return BedrockPacketType.CLIENTBOUND_DATA_DRIVEN_U_I_RELOAD;
     }
 
     @Override

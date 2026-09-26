@@ -3,7 +3,8 @@ package org.cloudburstmc.protocol.bedrock.codec.v975.serializer;
 import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.MoveEntityAbsoluteSerializer_v291;
-import org.cloudburstmc.protocol.bedrock.packet.MoveEntityAbsolutePacket;
+import org.cloudburstmc.protocol.bedrock.data.actor.MoveActorAbsoluteData;
+import org.cloudburstmc.protocol.bedrock.packet.MoveActorAbsolutePacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
 public class MoveEntityAbsoluteSerializer_v975 extends MoveEntityAbsoluteSerializer_v291 {
@@ -19,35 +20,37 @@ public class MoveEntityAbsoluteSerializer_v975 extends MoveEntityAbsoluteSeriali
     private static final int FLAG_FORCE_COMPLETION = 0x8;
 
     @Override
-    public void serialize(ByteBuf buffer, BedrockCodecHelper helper, MoveEntityAbsolutePacket packet) {
-        VarInts.writeUnsignedLong(buffer, packet.getRuntimeEntityId());
+    public void serialize(ByteBuf buffer, BedrockCodecHelper helper, MoveActorAbsolutePacket packet) {
+        VarInts.writeUnsignedLong(buffer, packet.getMoveData().getActorRuntimeID());
         int flags = 0;
-        if (packet.isOnGround()) {
+        if (packet.getMoveData().isOnGround()) {
             flags |= FLAG_ON_GROUND;
         }
-        if (packet.isTeleported()) {
+        if (packet.getMoveData().isTeleported()) {
             flags |= FLAG_TELEPORTED;
         }
-        if (packet.isForceMove()) {
+        if (packet.getMoveData().isForceMove()) {
             flags |= FLAG_FORCE_MOVE;
         }
-        if (packet.isForceCompletion()) {
+        if (packet.getMoveData().isForceCompletion()) {
             flags |= FLAG_FORCE_COMPLETION;
         }
         buffer.writeByte(flags);
-        helper.writeVector3f(buffer, packet.getPosition());
-        this.writeByteRotation(buffer, helper, packet.getRotation());
+        helper.writeVector3f(buffer, packet.getMoveData().getPos());
+        this.writeByteRotation(buffer, helper, packet.getMoveData().getRotation());
     }
 
     @Override
-    public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, MoveEntityAbsolutePacket packet) {
-        packet.setRuntimeEntityId(VarInts.readUnsignedLong(buffer));
+    public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, MoveActorAbsolutePacket packet) {
+        final MoveActorAbsoluteData moveData = new MoveActorAbsoluteData();
+        moveData.setActorRuntimeID(VarInts.readUnsignedLong(buffer));
         int flags = buffer.readUnsignedByte();
-        packet.setOnGround((flags & FLAG_ON_GROUND) != 0);
-        packet.setTeleported((flags & FLAG_TELEPORTED) != 0);
-        packet.setForceMove((flags & FLAG_FORCE_MOVE) != 0);
-        packet.setForceCompletion((flags & FLAG_FORCE_COMPLETION) != 0);
-        packet.setPosition(helper.readVector3f(buffer));
-        packet.setRotation(this.readByteRotation(buffer, helper));
+        moveData.setOnGround((flags & FLAG_ON_GROUND) != 0);
+        moveData.setTeleported((flags & FLAG_TELEPORTED) != 0);
+        moveData.setForceMove((flags & FLAG_FORCE_MOVE) != 0);
+        moveData.setForceCompletion((flags & FLAG_FORCE_COMPLETION) != 0);
+        moveData.setPos(helper.readVector3f(buffer));
+        moveData.setRotation(this.readByteRotation(buffer, helper));
+        packet.setMoveData(moveData);
     }
 }

@@ -14,7 +14,7 @@ public class PlaySoundSerializer_v291 implements BedrockPacketSerializer<PlaySou
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, PlaySoundPacket packet) {
-        helper.writeString(buffer, packet.getSound());
+        helper.writeString(buffer, packet.getName());
         helper.writeBlockPosition(buffer, packet.getPosition().mul(8).toInt());
         buffer.writeFloatLE(packet.getVolume());
         buffer.writeFloatLE(packet.getPitch());
@@ -22,7 +22,7 @@ public class PlaySoundSerializer_v291 implements BedrockPacketSerializer<PlaySou
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, PlaySoundPacket packet) {
-        packet.setSound(helper.readString(buffer));
+        packet.setName(helper.readString(buffer));
         packet.setPosition(helper.readBlockPosition(buffer).toFloat().div(8));
         packet.setVolume(buffer.readFloatLE());
         packet.setPitch(buffer.readFloatLE());

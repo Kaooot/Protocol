@@ -4,30 +4,26 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.nbt.NbtMap;
+import org.cloudburstmc.protocol.bedrock.data.positiontracking.PositionTrackingId;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class PositionTrackingDBServerBroadcastPacket implements BedrockPacket {
+
     private Action action;
-    private int trackingId;
-    private NbtMap tag;
+    private PositionTrackingId id;
+    private NbtMap positionTrackingData;
 
     @Override
-    public PacketSignal handle(BedrockPacketHandler handler) {
+    public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
     @Override
     public BedrockPacketType getPacketType() {
-        return BedrockPacketType.POSITION_TRACKING_DB_SERVER_BROADCAST;
-    }
-
-    public enum Action {
-        UPDATE,
-        DESTROY,
-        NOT_FOUND
+        return BedrockPacketType.POSITION_TRACKING_D_B_SERVER_BROADCAST;
     }
 
     @Override
@@ -38,5 +34,19 @@ public class PositionTrackingDBServerBroadcastPacket implements BedrockPacket {
             throw new AssertionError(e);
         }
     }
-}
 
+    public enum Action {
+        UPDATE,
+        DESTROY,
+        NOT_FOUND;
+
+        private static final Action[] VALUES = values();
+
+        public static Action from(int ordinal) {
+            if (ordinal >= 0 && ordinal < VALUES.length) {
+                return VALUES[ordinal];
+            }
+            throw new UnsupportedOperationException("Detected unknown PositionTrackingDBServerBroadcastPacketPayload::Action ID: " + ordinal);
+        }
+    }
+}

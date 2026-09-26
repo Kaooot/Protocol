@@ -5,5 +5,14 @@ public enum BiomeTemperatureCategory {
     WARM,
     LUKEWARM,
     COLD,
-    FROZEN
+    FROZEN;
+
+    private static final BiomeTemperatureCategory[] VALUES = values();
+
+    public static BiomeTemperatureCategory from(int ordinal) {
+        if (ordinal >= 0 && ordinal < VALUES.length) {
+            return VALUES[ordinal];
+        }
+        throw new UnsupportedOperationException("Detected unknown BiomeTemperatureCategory ID: " + ordinal);
+    }
 }

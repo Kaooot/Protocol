@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
 import org.cloudburstmc.protocol.bedrock.packet.ResourcePackDataInfoPacket;
-import org.cloudburstmc.protocol.common.util.Preconditions;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
 import java.util.UUID;
@@ -19,28 +18,26 @@ public class ResourcePackDataInfoSerializer_v291 implements BedrockPacketSeriali
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ResourcePackDataInfoPacket packet) {
         String packInfo = packet.getPackId().toString() + (packet.getPackVersion() == null ? "" : '_' + packet.getPackVersion());
         helper.writeString(buffer, packInfo);
-        buffer.writeIntLE((int) packet.getMaxChunkSize());
-        buffer.writeIntLE((int) packet.getChunkCount());
-        buffer.writeLongLE(packet.getCompressedPackSize());
-        byte[] hash = packet.getHash();
+        buffer.writeIntLE((int) packet.getChunkSize());
+        buffer.writeIntLE((int) packet.getNumberOfChunks());
+        buffer.writeLongLE(packet.getFileSize());
+        byte[] hash = packet.getFileHash();
         VarInts.writeUnsignedInt(buffer, hash.length);
         buffer.writeBytes(hash);
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ResourcePackDataInfoPacket packet) {
-        String[] packInfo = helper.readStringMaxLen(buffer, 100).split("_", 3);
+        String[] packInfo = helper.readString(buffer).split("_");
         packet.setPackId(UUID.fromString(packInfo[0]));
         if (packInfo.length > 1) {
             packet.setPackVersion(packInfo[1]);
         }
-        packet.setMaxChunkSize(buffer.readIntLE());
-        packet.setChunkCount(buffer.readIntLE());
-        packet.setCompressedPackSize(buffer.readLongLE());
-        int length = VarInts.readUnsignedInt(buffer);
-        Preconditions.checkArgument(buffer.isReadable(length), "Not enough readable bytes");
-        byte[] hash = new byte[length];
+        packet.setChunkSize(buffer.readIntLE());
+        packet.setNumberOfChunks(buffer.readIntLE());
+        packet.setFileSize(buffer.readLongLE());
+        byte[] hash = new byte[VarInts.readUnsignedInt(buffer)];
         buffer.readBytes(hash);
-        packet.setHash(hash);
+        packet.setFileHash(hash);
     }
 }

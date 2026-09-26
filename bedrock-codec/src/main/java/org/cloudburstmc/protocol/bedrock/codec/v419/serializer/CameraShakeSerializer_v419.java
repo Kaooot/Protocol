@@ -5,7 +5,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
-import org.cloudburstmc.protocol.bedrock.data.CameraShakeType;
+import org.cloudburstmc.protocol.bedrock.data.camera.CameraShakeType;
 import org.cloudburstmc.protocol.bedrock.packet.CameraShakePacket;
 
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
@@ -16,14 +16,14 @@ public class CameraShakeSerializer_v419 implements BedrockPacketSerializer<Camer
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, CameraShakePacket packet) {
         buffer.writeFloatLE(packet.getIntensity());
-        buffer.writeFloatLE(packet.getDuration());
+        buffer.writeFloatLE(packet.getSeconds());
         buffer.writeByte(packet.getShakeType().ordinal());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, CameraShakePacket packet) {
         packet.setIntensity(buffer.readFloatLE());
-        packet.setDuration(buffer.readFloatLE());
-        packet.setShakeType(CameraShakeType.values()[buffer.readByte()]);
+        packet.setSeconds(buffer.readFloatLE());
+        packet.setShakeType(CameraShakeType.from(buffer.readByte()));
     }
 }

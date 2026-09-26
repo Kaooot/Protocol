@@ -13,7 +13,7 @@ public class InvalidDescriptor implements ItemDescriptor {
 
     @Override
     public ItemDescriptorType getType() {
-        return ItemDescriptorType.INVALID;
+        return ItemDescriptorType.EMPTY;
     }
 
     @Override

@@ -4,13 +4,13 @@ import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.cloudburstmc.math.vector.Vector2f;
-import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
-import org.cloudburstmc.protocol.bedrock.data.ClientPlayMode;
-import org.cloudburstmc.protocol.bedrock.data.InputMode;
-import org.cloudburstmc.protocol.bedrock.data.PlayerAuthInputData;
+import org.cloudburstmc.protocol.bedrock.data.player.input.ClientPlayMode;
+import org.cloudburstmc.protocol.bedrock.data.player.input.InputMode;
+import org.cloudburstmc.protocol.bedrock.data.player.input.PlayerAuthInputData;
 import org.cloudburstmc.protocol.bedrock.packet.PlayerAuthInputPacket;
+import org.cloudburstmc.protocol.common.util.TypeMap;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
 import java.util.Set;
@@ -20,40 +20,47 @@ public class PlayerAuthInputSerializer_v388 implements BedrockPacketSerializer<P
 
     public static final PlayerAuthInputSerializer_v388 INSTANCE = new PlayerAuthInputSerializer_v388();
 
-    protected static final InputMode[] INPUT_MODES = InputMode.values();
-    protected static final ClientPlayMode[] CLIENT_PLAY_MODES = ClientPlayMode.values();
+    protected static final TypeMap<ClientPlayMode> CLIENT_PLAY_MODES = TypeMap.builder(ClientPlayMode.class)
+            .insert(0, ClientPlayMode.NORMAL)
+            .insert(1, ClientPlayMode.TEASER)
+            .insert(2, ClientPlayMode.SCREEN)
+            .insert(3, ClientPlayMode.VIEWER)
+            .insert(4, ClientPlayMode.REALITY)
+            .insert(5, ClientPlayMode.PLACEMENT)
+            .insert(6, ClientPlayMode.LIVING_ROOM)
+            .insert(7, ClientPlayMode.EXIT_LEVEL)
+            .insert(8, ClientPlayMode.EXIT_LEVEL_LIVING_ROOM)
+            .insert(9, ClientPlayMode.NUM_MODES)
+            .build();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, PlayerAuthInputPacket packet) {
-        Vector3f rotation = packet.getRotation();
+        Vector2f rotation = packet.getPlayerRotation();
         buffer.writeFloatLE(rotation.getX());
         buffer.writeFloatLE(rotation.getY());
         helper.writeVector3f(buffer, packet.getPosition());
-        buffer.writeFloatLE(packet.getMotion().getX());
-        buffer.writeFloatLE(packet.getMotion().getY());
-        buffer.writeFloatLE(rotation.getZ());
+        helper.writeVector2f(buffer, packet.getMoveVector());
+        buffer.writeFloatLE(packet.getPlayerHeadRotation());
         long flagValue = 0;
         for (PlayerAuthInputData data : packet.getInputData()) {
             flagValue |= (1L << data.ordinal());
         }
         VarInts.writeUnsignedLong(buffer, flagValue);
         VarInts.writeUnsignedInt(buffer, packet.getInputMode().ordinal());
-        VarInts.writeUnsignedInt(buffer, packet.getPlayMode().ordinal());
+        VarInts.writeUnsignedInt(buffer, CLIENT_PLAY_MODES.getId(packet.getPlayMode()));
         writeInteractionModel(buffer, helper, packet);
 
-        if (packet.getPlayMode() == ClientPlayMode.REALITY) {
+        if (packet.getPlayMode().equals(ClientPlayMode.REALITY)) {
             helper.writeVector3f(buffer, packet.getVrGazeDirection());
         }
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, PlayerAuthInputPacket packet) {
-        float x = buffer.readFloatLE();
-        float y = buffer.readFloatLE();
+        packet.setPlayerRotation(Vector2f.from(buffer.readFloatLE(), buffer.readFloatLE()));
         packet.setPosition(helper.readVector3f(buffer));
-        packet.setMotion(Vector2f.from(buffer.readFloatLE(), buffer.readFloatLE()));
-        float z = buffer.readFloatLE();
-        packet.setRotation(Vector3f.from(x, y, z));
+        packet.setMoveVector(Vector2f.from(buffer.readFloatLE(), buffer.readFloatLE()));
+        packet.setPlayerHeadRotation(buffer.readFloatLE());
         long flagValue = VarInts.readUnsignedLong(buffer);
         Set<PlayerAuthInputData> flags = packet.getInputData();
         for (PlayerAuthInputData flag : PlayerAuthInputData.values()) {
@@ -61,11 +68,11 @@ public class PlayerAuthInputSerializer_v388 implements BedrockPacketSerializer<P
                 flags.add(flag);
             }
         }
-        packet.setInputMode(INPUT_MODES[VarInts.readUnsignedInt(buffer)]);
-        packet.setPlayMode(CLIENT_PLAY_MODES[VarInts.readUnsignedInt(buffer)]);
+        packet.setInputMode(InputMode.from(VarInts.readUnsignedInt(buffer)));
+        packet.setPlayMode(CLIENT_PLAY_MODES.getType(VarInts.readUnsignedInt(buffer)));
         readInteractionModel(buffer, helper, packet);
 
-        if (packet.getPlayMode() == ClientPlayMode.REALITY) {
+        if (packet.getPlayMode().equals(ClientPlayMode.REALITY)) {
             packet.setVrGazeDirection(helper.readVector3f(buffer));
         }
     }

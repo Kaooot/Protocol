@@ -4,25 +4,25 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandOriginData;
+import org.cloudburstmc.protocol.bedrock.data.command.CurrentCmdVersion;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class CommandRequestPacket implements BedrockPacket {
+
     private String command;
-    private CommandOriginData commandOriginData;
-    private boolean internal;
-    /**
-     * @since v567
-     */
-    private int version;
+    private CommandOriginData origin;
+    private boolean isInternal;
+    private CurrentCmdVersion version;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
+    @Override
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.COMMAND_REQUEST;
     }
@@ -36,4 +36,3 @@ public class CommandRequestPacket implements BedrockPacket {
         }
     }
 }
-

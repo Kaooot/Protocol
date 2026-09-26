@@ -2,18 +2,52 @@ package org.cloudburstmc.protocol.bedrock.codec.v390;
 
 import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
+import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v388.BedrockCodecHelper_v388;
 import org.cloudburstmc.protocol.bedrock.data.skin.*;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static java.util.Objects.requireNonNull;
 
 public class BedrockCodecHelper_v390 extends BedrockCodecHelper_v388 {
 
-    public BedrockCodecHelper_v390(EntityDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes) {
+    protected TypeMap<PieceType> personaPieceTypeMap = TypeMap.builder(PieceType.class)
+            .insert(0, PieceType.UNKNOWN)
+            .insert(1, PieceType.SKELETON)
+            .insert(2, PieceType.BODY)
+            .insert(3, PieceType.SKIN)
+            .insert(4, PieceType.BOTTOM)
+            .insert(5, PieceType.FEET)
+            .insert(6, PieceType.DRESS)
+            .insert(7, PieceType.TOP)
+            .insert(8, PieceType.HIGH_PANTS)
+            .insert(9, PieceType.HANDS)
+            .insert(10, PieceType.OUTERWEAR)
+            .insert(11, PieceType.FACIAL_HAIR)
+            .insert(12, PieceType.MOUTH)
+            .insert(13, PieceType.EYES)
+            .insert(14, PieceType.HAIR)
+            .insert(15, PieceType.HOOD)
+            .insert(16, PieceType.BACK)
+            .insert(17, PieceType.FACE_ACCESSORY)
+            .insert(18, PieceType.HEAD)
+            .insert(19, PieceType.LEGS)
+            .insert(20, PieceType.LEFT_LEG)
+            .insert(21, PieceType.RIGHT_LEG)
+            .insert(22, PieceType.ARMS)
+            .insert(23, PieceType.LEFT_ARM)
+            .insert(24, PieceType.RIGHT_ARM)
+            .insert(25, PieceType.CAPES)
+            .insert(26, PieceType.CLASSIC_SKIN)
+            .insert(27, PieceType.EMOTE)
+            .insert(28, PieceType.UNSUPPORTED)
+            .build();
+
+    public BedrockCodecHelper_v390(ActorDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes) {
         super(entityData, gameRulesTypes);
     }
 
@@ -21,12 +55,12 @@ public class BedrockCodecHelper_v390 extends BedrockCodecHelper_v388 {
     public SerializedSkin readSkin(ByteBuf buffer) {
         String skinId = this.readString(buffer);
         String skinResourcePatch = this.readString(buffer);
-        ImageData skinData = this.readImage(buffer, ImageData.SKIN_PERSONA_SIZE);
+        SkinImage skinData = this.readImage(buffer, SkinImage.SKIN_PERSONA_SIZE);
 
-        List<AnimationData> animations = new ObjectArrayList<>();
+        List<AnimatedImageData> animations = new ObjectArrayList<>();
         this.readArray(buffer, animations, ByteBuf::readIntLE, (b, h) -> this.readAnimationData(b));
 
-        ImageData capeData = this.readImage(buffer, ImageData.SINGLE_SKIN_SIZE);
+        SkinImage capeData = this.readImage(buffer, SkinImage.SINGLE_SKIN_SIZE);
         String geometryData = this.readStringMaxLen(buffer, this.encodingSettings.maxGeometryDataSize());
         String animationData = this.readString(buffer);
         boolean premium = buffer.readBoolean();
@@ -34,75 +68,109 @@ public class BedrockCodecHelper_v390 extends BedrockCodecHelper_v388 {
         boolean capeOnClassic = buffer.readBoolean();
         String capeId = this.readString(buffer);
         String fullSkinId = this.readString(buffer);
-        String armSize = this.readString(buffer);
-        String skinColor = this.readString(buffer);
+        ArmSizeType armSize = ArmSizeType.from(buffer.readUnsignedByte());
+        int skinColor = buffer.readIntLE();
 
-        List<PersonaPieceData> personaPieces = new ObjectArrayList<>();
-        this.readArray(buffer, personaPieces, ByteBuf::readIntLE, (buf, h) -> {
-            String pieceId = this.readString(buf);
-            String pieceType = this.readString(buf);
-            String packId = this.readString(buf);
-            boolean isDefault = buf.readBoolean();
-            String productId = this.readString(buf);
-            return new PersonaPieceData(pieceId, pieceType, packId, isDefault, productId);
-        });
+        List<SerializedPersonaPieceHandle> personaPieces = new ObjectArrayList<>();
+        this.readArray(buffer, personaPieces, ByteBuf::readIntLE, (buf, h) -> this.readPersonaPiece(buf));
 
-        List<PersonaPieceTintData> tintColors = new ObjectArrayList<>();
-        this.readArray(buffer, tintColors, ByteBuf::readIntLE, (buf, h) -> {
-            String pieceType = this.readString(buf);
-            List<String> colors = new ObjectArrayList<>();
-            int colorsLength = buf.readIntLE();
-            for (int i2 = 0; i2 < colorsLength; i2++) {
-                colors.add(this.readString(buf));
-            }
-            return new PersonaPieceTintData(pieceType, colors);
-        });
-        return SerializedSkin.of(skinId, "", skinResourcePatch, skinData, animations, capeData, geometryData, animationData,
-                premium, persona, capeOnClassic, capeId, fullSkinId, armSize, skinColor, personaPieces, tintColors);
+        Map<PieceType, TintMapColor> tintColors = this.readPieceTintColors(buffer);
+
+        return SerializedSkin.builder()
+                .ID(skinId)
+                .resourcePatch(skinResourcePatch)
+                .imageData(skinData)
+                .animatedImageData(animations)
+                .capeImageData(capeData)
+                .geometryData(geometryData)
+                .animationData(animationData)
+                .isPremium(premium)
+                .isPersona(persona)
+                .isPersonaCapeOnClassicSkin(capeOnClassic)
+                .capeID(capeId)
+                .fullID(fullSkinId)
+                .armSize(armSize)
+                .skinColor(skinColor)
+                .personaPieces(personaPieces)
+                .pieceTintColors(tintColors)
+                .build();
     }
 
     @Override
     public void writeSkin(ByteBuf buffer, SerializedSkin skin) {
         requireNonNull(skin, "Skin is null");
 
-        this.writeString(buffer, skin.getSkinId());
-        this.writeString(buffer, skin.getSkinResourcePatch());
-        this.writeImage(buffer, skin.getSkinData());
+        this.writeString(buffer, skin.getID());
+        this.writeString(buffer, skin.getResourcePatch());
+        this.writeImage(buffer, skin.getImageData());
 
-        List<AnimationData> animations = skin.getAnimations();
+        List<AnimatedImageData> animations = skin.getAnimatedImageData();
         buffer.writeIntLE(animations.size());
-        for (AnimationData animation : animations) {
+        for (AnimatedImageData animation : animations) {
             this.writeAnimationData(buffer, animation);
         }
 
-        this.writeImage(buffer, skin.getCapeData());
+        this.writeImage(buffer, skin.getCapeImageData());
         this.writeString(buffer, skin.getGeometryData());
         this.writeString(buffer, skin.getAnimationData());
         buffer.writeBoolean(skin.isPremium());
         buffer.writeBoolean(skin.isPersona());
-        buffer.writeBoolean(skin.isCapeOnClassic());
-        this.writeString(buffer, skin.getCapeId());
-        this.writeString(buffer, skin.getFullSkinId());
-        this.writeString(buffer, skin.getArmSize());
-        this.writeString(buffer, skin.getSkinColor());
-        List<PersonaPieceData> pieces = skin.getPersonaPieces();
+        buffer.writeBoolean(skin.isPersonaCapeOnClassicSkin());
+        this.writeString(buffer, skin.getCapeID());
+        this.writeString(buffer, skin.getFullID());
+        buffer.writeByte(skin.getArmSize().ordinal());
+        buffer.writeIntLE(skin.getSkinColor());
+
+        List<SerializedPersonaPieceHandle> pieces = skin.getPersonaPieces();
         buffer.writeIntLE(pieces.size());
-        for (PersonaPieceData piece : pieces) {
-            this.writeString(buffer, piece.getId());
-            this.writeString(buffer, piece.getType());
-            this.writeString(buffer, piece.getPackId());
-            buffer.writeBoolean(piece.isDefault());
-            this.writeString(buffer, piece.getProductId());
+        for (SerializedPersonaPieceHandle piece : pieces) {
+            this.writePersonaPiece(buffer, piece);
         }
 
-        List<PersonaPieceTintData> tints = skin.getTintColors();
-        buffer.writeIntLE(tints.size());
-        for (PersonaPieceTintData tint : tints) {
-            this.writeString(buffer, tint.getType());
-            List<String> colors = tint.getColors();
+        this.writePieceTintColors(buffer, skin.getPieceTintColors());
+    }
+
+    protected SerializedPersonaPieceHandle readPersonaPiece(ByteBuf buffer) {
+        SerializedPersonaPieceHandle piece = new SerializedPersonaPieceHandle();
+        piece.setPieceId(this.readString(buffer));
+        piece.setPieceType(this.personaPieceTypeMap.getType(buffer.readIntLE()));
+        piece.setPackId(this.readUuid(buffer));
+        piece.setDefaultPiece(buffer.readBoolean());
+        piece.setProductId(this.readString(buffer));
+        return piece;
+    }
+
+    protected void writePersonaPiece(ByteBuf buffer, SerializedPersonaPieceHandle piece) {
+        this.writeString(buffer, piece.getPieceId());
+        buffer.writeIntLE(this.personaPieceTypeMap.getId(piece.getPieceType()));
+        this.writeUuid(buffer, piece.getPackId());
+        buffer.writeBoolean(piece.isDefaultPiece());
+        this.writeString(buffer, piece.getProductId());
+    }
+
+    protected Map<PieceType, TintMapColor> readPieceTintColors(ByteBuf buffer) {
+        Map<PieceType, TintMapColor> tintColors = new HashMap<>();
+        int length = buffer.readIntLE();
+        for (int i = 0; i < length; i++) {
+            PieceType pieceType = PieceType.from(this.readString(buffer));
+            TintMapColor tintMapColor = new TintMapColor();
+            int colorsLength = buffer.readIntLE();
+            for (int j = 0; j < colorsLength; j++) {
+                tintMapColor.getColors().add(buffer.readIntLE());
+            }
+            tintColors.put(pieceType, tintMapColor);
+        }
+        return tintColors;
+    }
+
+    protected void writePieceTintColors(ByteBuf buffer, Map<PieceType, TintMapColor> tintColors) {
+        buffer.writeIntLE(tintColors.size());
+        for (Map.Entry<PieceType, TintMapColor> entry : tintColors.entrySet()) {
+            this.writeString(buffer, entry.getKey().getId());
+            List<Integer> colors = entry.getValue().getColors();
             buffer.writeIntLE(colors.size());
-            for (String color : colors) {
-                this.writeString(buffer, color);
+            for (int color : colors) {
+                buffer.writeIntLE(color);
             }
         }
     }

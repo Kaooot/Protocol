@@ -5,7 +5,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
-import org.cloudburstmc.protocol.bedrock.data.GraphicsMode;
+import org.cloudburstmc.protocol.bedrock.data.connection.GraphicsMode;
 import org.cloudburstmc.protocol.bedrock.packet.UpdateClientOptionsPacket;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -14,11 +14,11 @@ public class UpdateClientOptionsSerializer_v786 implements BedrockPacketSerializ
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, UpdateClientOptionsPacket packet) {
-        helper.writeOptionalNull(buffer, packet.getGraphicsMode(), (buf, graphicsMode) -> buf.writeByte(graphicsMode.ordinal()));
+        helper.writeOptionalNull(buffer, packet.getGraphicsModeChange(), (buf, graphicsMode) -> buf.writeByte(graphicsMode.ordinal()));
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, UpdateClientOptionsPacket packet) {
-        packet.setGraphicsMode(helper.readOptional(buffer, null, buf -> GraphicsMode.from(buffer.readUnsignedByte())));
+        packet.setGraphicsModeChange(helper.readOptional(buffer, null, buf -> GraphicsMode.from(buffer.readUnsignedByte())));
     }
 }

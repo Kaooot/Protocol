@@ -9,13 +9,15 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class SetLocalPlayerAsInitializedPacket implements BedrockPacket {
-    private long runtimeEntityId;
+
+    private long playerID;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
+    @Override
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.SET_LOCAL_PLAYER_AS_INITIALIZED;
     }
@@ -29,4 +31,3 @@ public class SetLocalPlayerAsInitializedPacket implements BedrockPacket {
         }
     }
 }
-

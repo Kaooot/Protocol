@@ -7,16 +7,16 @@ import org.cloudburstmc.protocol.bedrock.codec.v332.serializer.LevelSoundEventSe
 import org.cloudburstmc.protocol.bedrock.codec.v545.Bedrock_v545;
 import org.cloudburstmc.protocol.bedrock.codec.v554.serializer.*;
 import org.cloudburstmc.protocol.bedrock.data.PacketRecipient;
-import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
-import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.TextProcessingEventOrigin;
+import org.cloudburstmc.protocol.bedrock.data.sound.LevelSoundEvent;
+import org.cloudburstmc.protocol.bedrock.data.text.TextProcessingEventOrigin;
 import org.cloudburstmc.protocol.bedrock.packet.*;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 
 public class Bedrock_v554 extends Bedrock_v545 {
 
-    protected static final TypeMap<SoundEvent> SOUND_EVENTS = Bedrock_v545.SOUND_EVENTS.toBuilder()
-            .replace(442, SoundEvent.ENCHANTING_TABLE_USE)
-            .insert(443, SoundEvent.UNDEFINED)
+    protected static final TypeMap<LevelSoundEvent> SOUND_EVENTS = Bedrock_v545.SOUND_EVENTS.toBuilder()
+            .replace(442, LevelSoundEvent.ENCHANTING_TABLE_USE)
+            .insert(443, LevelSoundEvent.UNDEFINED)
             .build();
 
     protected static final TypeMap<TextProcessingEventOrigin> TEXT_PROCESSING_ORIGINS = TypeMap.fromEnum(TextProcessingEventOrigin.class, 13);
@@ -26,7 +26,6 @@ public class Bedrock_v554 extends Bedrock_v545 {
             .protocolVersion(554)
             .minecraftVersion("1.19.30")
             .helper(() -> new BedrockCodecHelper_v554(ENTITY_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES, PLAYER_ABILITIES, TEXT_PROCESSING_ORIGINS))
-            .updateSerializer(TextPacket.class, new TextSerializer_v554())
             .updateSerializer(NetworkSettingsPacket.class, new NetworkSettingsSerializer_v554())
             .updateSerializer(StructureBlockUpdatePacket.class, new StructureBlockUpdateSerializer_v554())
             .updateSerializer(LevelSoundEvent1Packet.class, new LevelSoundEvent1Serializer_v291(SOUND_EVENTS))

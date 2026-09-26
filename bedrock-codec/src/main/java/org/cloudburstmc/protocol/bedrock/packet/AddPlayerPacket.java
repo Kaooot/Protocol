@@ -4,17 +4,15 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.cloudburstmc.math.vector.Vector2f;
 import org.cloudburstmc.math.vector.Vector3f;
-import org.cloudburstmc.protocol.bedrock.data.AbilityLayer;
-import org.cloudburstmc.protocol.bedrock.data.BuildPlatform;
-import org.cloudburstmc.protocol.bedrock.data.GameType;
-import org.cloudburstmc.protocol.bedrock.data.PlayerAbilityHolder;
-import org.cloudburstmc.protocol.bedrock.data.PlayerPermission;
-import org.cloudburstmc.protocol.bedrock.data.command.CommandPermission;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataMap;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityLinkData;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityProperties;
+import org.cloudburstmc.protocol.bedrock.data.ability.SerializedAbilitiesData;
+import org.cloudburstmc.protocol.bedrock.data.actor.PropertySyncData;
+import org.cloudburstmc.protocol.bedrock.data.actor.link.ActorLink;
+import org.cloudburstmc.protocol.bedrock.data.connection.BuildPlatform;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataMap;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
+import org.cloudburstmc.protocol.bedrock.data.world.GameType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 import java.util.List;
@@ -23,62 +21,49 @@ import java.util.UUID;
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
-public class AddPlayerPacket implements BedrockPacket, PlayerAbilityHolder {
-    private EntityDataMap metadata = new EntityDataMap();
-    private List<EntityLinkData> entityLinks = new ObjectArrayList<>();
+public class AddPlayerPacket implements BedrockPacket {
+
     private UUID uuid;
-    private String username;
-    private long uniqueEntityId;
-    private long runtimeEntityId;
+    private String playerName;
+    /**
+     * @deprecated since v534
+     */
+    private long targetActorID;
+    private long targetRuntimeID;
     private String platformChatId;
     private Vector3f position;
-    private Vector3f motion;
-    private Vector3f rotation;
-    private ItemData hand;
-    private AdventureSettingsPacket adventureSettings = new AdventureSettingsPacket();
-    private String deviceId;
-    private BuildPlatform buildPlatform = BuildPlatform.UNKNOWN;
-    private GameType gameType;
-
+    private Vector3f velocity;
+    private Vector2f rotation;
+    private float yHeadRotation;
+    private ItemData carriedItem;
     /**
-     * @since v534
+     * @since v503
      */
-    private List<AbilityLayer> abilityLayers = new ObjectArrayList<>();
+    private GameType playerGameType;
+    private ActorDataMap entityData = new ActorDataMap();
     /**
      * @since v557
      */
-    private final EntityProperties properties = new EntityProperties();
+    private PropertySyncData synchedProperties = new PropertySyncData();
+    /**
+     * @since v534
+     */
+    private SerializedAbilitiesData abilitiesData = new SerializedAbilitiesData();
+    private final List<ActorLink> actorLinks = new ObjectArrayList<>();
+    private String deviceId;
+    /**
+     * @since v388
+     */
+    private BuildPlatform buildPlatform;
 
-    public void setUniqueEntityId(long uniqueEntityId) {
-        this.uniqueEntityId = uniqueEntityId;
-        this.adventureSettings.setUniqueEntityId(uniqueEntityId);
-    }
-
-    @Override
-    public PlayerPermission getPlayerPermission() {
-        return this.adventureSettings.getPlayerPermission();
-    }
-
-    @Override
-    public void setPlayerPermission(PlayerPermission playerPermission) {
-        this.adventureSettings.setPlayerPermission(playerPermission);
-    }
-
-    @Override
-    public CommandPermission getCommandPermission() {
-        return this.adventureSettings.getCommandPermission();
-    }
-
-    @Override
-    public void setCommandPermission(CommandPermission commandPermission) {
-        this.adventureSettings.setCommandPermission(commandPermission);
-    }
+    private AdventureSettingsPacket adventureSettings = new AdventureSettingsPacket();
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
+    @Override
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.ADD_PLAYER;
     }
@@ -92,4 +77,3 @@ public class AddPlayerPacket implements BedrockPacket, PlayerAbilityHolder {
         }
     }
 }
-

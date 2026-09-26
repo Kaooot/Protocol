@@ -3,7 +3,7 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.protocol.bedrock.data.ControlScheme;
+import org.cloudburstmc.protocol.bedrock.data.player.ControlScheme;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
@@ -11,10 +11,10 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @ToString(doNotUseGetters = true)
 public class ClientboundControlSchemeSetPacket implements BedrockPacket {
 
-    private ControlScheme scheme;
+    private ControlScheme controlScheme;
 
     @Override
-    public PacketSignal handle(BedrockPacketHandler handler) {
+    public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
@@ -24,7 +24,7 @@ public class ClientboundControlSchemeSetPacket implements BedrockPacket {
     }
 
     @Override
-    public BedrockPacket clone() {
+    public ClientboundControlSchemeSetPacket clone() {
         try {
             return (ClientboundControlSchemeSetPacket) super.clone();
         } catch (CloneNotSupportedException e) {

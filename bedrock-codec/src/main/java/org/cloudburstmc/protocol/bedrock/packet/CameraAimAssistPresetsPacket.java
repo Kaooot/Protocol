@@ -4,10 +4,10 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.protocol.bedrock.data.camera.CameraAimAssistCategories;
-import org.cloudburstmc.protocol.bedrock.data.camera.CameraAimAssistCategory;
-import org.cloudburstmc.protocol.bedrock.data.camera.CameraAimAssistOperation;
-import org.cloudburstmc.protocol.bedrock.data.camera.CameraAimAssistPresetDefinition;
+import org.cloudburstmc.protocol.bedrock.data.camera.aimassist.CameraAimAssistCategories;
+import org.cloudburstmc.protocol.bedrock.data.camera.aimassist.CameraAimAssistCategoryDefinition;
+import org.cloudburstmc.protocol.bedrock.data.camera.aimassist.CameraAimAssistPresetDefinition;
+import org.cloudburstmc.protocol.bedrock.data.camera.aimassist.CameraAimAssistPresetsPacketOperation;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 import java.util.List;
@@ -16,22 +16,20 @@ import java.util.List;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class CameraAimAssistPresetsPacket implements BedrockPacket {
+
     /**
-     * @deprecated since v800 (1.21.80). Use {@link #categoryDefinitions} instead.
+     * @deprecated since v800
      */
-    private final List<CameraAimAssistCategories> categories = new ObjectArrayList<>();
-    /**
-     * @since v800 (1.21.80)
-     */
-    private final List<CameraAimAssistCategory> categoryDefinitions = new ObjectArrayList<>();
-    private final List<CameraAimAssistPresetDefinition> presets = new ObjectArrayList<>();
+    private final List<CameraAimAssistCategories> cameraAimAssistCategoriesDeprecated = new ObjectArrayList<>();
+    private final List<CameraAimAssistCategoryDefinition> cameraAimAssistCategories = new ObjectArrayList<>();
+    private final List<CameraAimAssistPresetDefinition> cameraAimAssistPresets = new ObjectArrayList<>();
     /**
      * @since v776
      */
-    private CameraAimAssistOperation operation;
+    private CameraAimAssistPresetsPacketOperation operation;
 
     @Override
-    public PacketSignal handle(BedrockPacketHandler handler) {
+    public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 

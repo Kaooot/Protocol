@@ -3,63 +3,51 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.checkerframework.checker.nullness.qual.Nullable;
-import org.cloudburstmc.protocol.bedrock.data.sound.*;
+import org.cloudburstmc.protocol.bedrock.data.sound.ServerSoundHandle;
+import org.cloudburstmc.protocol.bedrock.data.sound.SoundDataEvent;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Sent to update sound data.
- *
- * @since v1001
- */
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class ClientboundUpdateSoundDataPacket implements BedrockPacket {
 
-    private long serverSoundHandle;
+    private ServerSoundHandle serverSoundHandle;
     /**
      * @deprecated since v2168
      */
-    private String type;
+    private SoundDataEvent soundEvent;
     /**
      * @since v2168
      */
-    @Nullable
-    private FadeSoundData fade;
+    private Object stop;
     /**
      * @since v2168
      */
-    @Nullable
-    private PauseSoundData pause;
+    private Object setVolume;
     /**
      * @since v2168
      */
-    @Nullable
-    private ResumeSoundData resume;
+    private Object setPitch;
     /**
      * @since v2168
      */
-    @Nullable
-    private SeekToSoundData seekTo;
+    private Object fade;
     /**
      * @since v2168
      */
-    @Nullable
-    private SetPitchSoundData pitch;
+    private Object seekTo;
     /**
      * @since v2168
      */
-    @Nullable
-    private SetVolumeSoundData volume;
+    private Object pause;
     /**
      * @since v2168
      */
-    @Nullable
-    private StopSoundData stop;
+    private Object resume;
 
     @Override
-    public PacketSignal handle(BedrockPacketHandler handler) {
+    public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
@@ -69,7 +57,7 @@ public class ClientboundUpdateSoundDataPacket implements BedrockPacket {
     }
 
     @Override
-    public BedrockPacket clone() {
+    public ClientboundUpdateSoundDataPacket clone() {
         try {
             return (ClientboundUpdateSoundDataPacket) super.clone();
         } catch (CloneNotSupportedException e) {

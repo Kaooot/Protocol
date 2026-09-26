@@ -1,19 +1,18 @@
 package org.cloudburstmc.protocol.bedrock.data.structure;
 
 public enum StructureTemplateRequestOperation {
+
     NONE,
-    EXPORT_FROM_SAVED_MODE,
+    EXPORT_FROM_SAVE_MODE,
     EXPORT_FROM_LOAD_MODE,
-    QUERY_SAVED_STRUCTURE,
-    /**
-     * @since v560
-     * @deprecated since v712
-     */
-    IMPORT;
+    QUERY_SAVED_STRUCTURE;
 
-    private static final StructureTemplateRequestOperation[] VALUES = StructureTemplateRequestOperation.values();
+    private static final StructureTemplateRequestOperation[] VALUES = values();
 
-    public static StructureTemplateRequestOperation from(int id) {
-        return VALUES[id];
+    public static StructureTemplateRequestOperation from(int ordinal) {
+        if (ordinal >= 0 && ordinal < VALUES.length) {
+            return VALUES[ordinal];
+        }
+        throw new UnsupportedOperationException("Detected unknown StructureTemplateRequestOperation ID: " + ordinal);
     }
 }

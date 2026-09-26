@@ -16,19 +16,19 @@ public class UpdateEquipSerializer_v291 implements BedrockPacketSerializer<Updat
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, UpdateEquipPacket packet) {
-        buffer.writeByte(packet.getWindowId());
-        buffer.writeByte(packet.getWindowType());
+        buffer.writeByte(packet.getContainerId());
+        buffer.writeByte(packet.getType());
         VarInts.writeInt(buffer, packet.getSize());
-        VarInts.writeLong(buffer, packet.getUniqueEntityId());
-        helper.writeTag(buffer, packet.getTag());
+        VarInts.writeLong(buffer, packet.getEntityUniqueId());
+        helper.writeTag(buffer, packet.getData());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, UpdateEquipPacket packet) {
-        packet.setWindowId(buffer.readUnsignedByte());
-        packet.setWindowType(buffer.readUnsignedByte());
+        packet.setContainerId(buffer.readUnsignedByte());
+        packet.setType(buffer.readUnsignedByte());
         packet.setSize(VarInts.readInt(buffer));
-        packet.setUniqueEntityId(VarInts.readLong(buffer));
-        packet.setTag(helper.readTag(buffer, NbtMap.class));
+        packet.setEntityUniqueId(VarInts.readLong(buffer));
+        packet.setData(helper.readTag(buffer, NbtMap.class));
     }
 }

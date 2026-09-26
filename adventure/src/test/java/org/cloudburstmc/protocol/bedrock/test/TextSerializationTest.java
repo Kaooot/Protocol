@@ -18,13 +18,13 @@ import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v557.serializer.AddPlayerSerializer_v557;
 import org.cloudburstmc.protocol.bedrock.codec.v685.serializer.TextSerializer_v685;
 import org.cloudburstmc.protocol.bedrock.codec.v776.Bedrock_v776;
-import org.cloudburstmc.protocol.bedrock.data.Ability;
+import org.cloudburstmc.protocol.bedrock.data.ability.AbilitiesIndex;
 import org.cloudburstmc.protocol.bedrock.data.AbilityLayer;
 import org.cloudburstmc.protocol.bedrock.data.BuildPlatform;
 import org.cloudburstmc.protocol.bedrock.data.GameType;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataMap;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataMap;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataTypes;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorFlags;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
 import org.cloudburstmc.protocol.bedrock.packet.AddPlayerPacket;
 import org.cloudburstmc.protocol.bedrock.packet.TextPacket;
@@ -276,15 +276,15 @@ public class TextSerializationTest {
         layer.setLayerType(AbilityLayer.Type.BASE);
         layer.setWalkSpeed(0.0F);
         layer.setFlySpeed(0.0F);
-        layer.getAbilitiesSet().addAll(Arrays.asList(Ability.values()));
-        layer.getAbilityValues().add(Ability.BUILD);
-        layer.getAbilityValues().add(Ability.MINE);
-        layer.getAbilityValues().add(Ability.DOORS_AND_SWITCHES);
+        layer.getAbilitiesSet().addAll(Arrays.asList(AbilitiesIndex.values()));
+        layer.getAbilityValues().add(AbilitiesIndex.BUILD);
+        layer.getAbilityValues().add(AbilitiesIndex.MINE);
+        layer.getAbilityValues().add(AbilitiesIndex.DOORS_AND_SWITCHES);
         packet.getAbilityLayers().add(layer);
 
-        packet.getMetadata().put(EntityDataTypes.NAME, new BedrockComponent(Component.text("Custom Name")));
-        packet.getMetadata().put(EntityDataTypes.NAMETAG_ALWAYS_SHOW, (byte) 1);
-        packet.getMetadata().putFlags(EntityDataMap.flagsOf(EntityFlag.SILENT));
+        packet.getMetadata().put(ActorDataTypes.NAME, new BedrockComponent(Component.text("Custom Name")));
+        packet.getMetadata().put(ActorDataTypes.NAMETAG_ALWAYS_SHOW, (byte) 1);
+        packet.getMetadata().putFlags(ActorDataMap.flagsOf(ActorFlags.SILENT));
 
         ByteBuf buf = Unpooled.buffer();
         PLAYER_SERIALIZER.serialize(buf, CODEC_HELPER, packet);
@@ -292,6 +292,6 @@ public class TextSerializationTest {
         AddPlayerPacket out = new AddPlayerPacket();
         PLAYER_SERIALIZER.deserialize(buf, CODEC_HELPER, out);
 
-        assertEquals(Component.text("Custom Name"), out.getMetadata().get(EntityDataTypes.NAME, BedrockComponent.class).asComponent());
+        assertEquals(Component.text("Custom Name"), out.getMetadata().get(ActorDataTypes.NAME, BedrockComponent.class).asComponent());
     }
 }

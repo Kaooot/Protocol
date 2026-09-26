@@ -17,35 +17,35 @@ import static org.cloudburstmc.protocol.common.util.Preconditions.checkArgument;
 public class ClientCacheBlobStatusSerializer_v361 implements BedrockPacketSerializer<ClientCacheBlobStatusPacket> {
     public static final ClientCacheBlobStatusSerializer_v361 INSTANCE = new ClientCacheBlobStatusSerializer_v361();
 
+    protected static final int MAX_ITEMS = 4095;
+
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ClientCacheBlobStatusPacket packet) {
-        LongList nacks = packet.getNaks();
-        LongList acks = packet.getAcks();
-        VarInts.writeUnsignedInt(buffer, nacks.size());
-        VarInts.writeUnsignedInt(buffer, acks.size());
+        LongList missingIds = packet.getMissingIds();
+        LongList foundIds = packet.getFoundIds();
+        VarInts.writeUnsignedInt(buffer, missingIds.size());
+        VarInts.writeUnsignedInt(buffer, foundIds.size());
 
-        nacks.forEach((LongConsumer) buffer::writeLongLE);
-        acks.forEach((LongConsumer) buffer::writeLongLE);
+        missingIds.forEach((LongConsumer) buffer::writeLongLE);
+        foundIds.forEach((LongConsumer) buffer::writeLongLE);
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ClientCacheBlobStatusPacket packet) {
-        int maxLength = helper.getEncodingSettings().maxListSize();
+        final int missingIdsLength = VarInts.readUnsignedInt(buffer);
+        checkArgument(missingIdsLength <= MAX_ITEMS, "Tried to read %s Missing Ids but maximum is %s", missingIdsLength, MAX_ITEMS);
 
-        int naksLength = VarInts.readUnsignedInt(buffer);
-        checkArgument(maxLength <= 0 || naksLength <= maxLength, "Tried to read %s Nacks but maximum is %s", naksLength, maxLength);
+        final int foundIdsLength = VarInts.readUnsignedInt(buffer);
+        checkArgument(foundIdsLength <= MAX_ITEMS, "Tried to read %s Found Ids but maximum is %s", foundIdsLength, MAX_ITEMS);
 
-        int acksLength = VarInts.readUnsignedInt(buffer);
-        checkArgument(maxLength <= 0 || acksLength <= maxLength, "Tried to read %s Nacks but maximum is %s", acksLength, maxLength);
-
-        LongList naks = packet.getNaks();
-        for (int i = 0; i < naksLength; i++) {
-            naks.add(buffer.readLongLE());
+        final LongList missingIds = packet.getMissingIds();
+        for (int i = 0; i < missingIdsLength; i++) {
+            missingIds.add(buffer.readLongLE());
         }
 
-        LongList acks = packet.getAcks();
-        for (int i = 0; i < acksLength; i++) {
-            acks.add(buffer.readLongLE());
+        final LongList foundId = packet.getFoundIds();
+        for (int i = 0; i < foundIdsLength; i++) {
+            foundId.add(buffer.readLongLE());
         }
     }
 }

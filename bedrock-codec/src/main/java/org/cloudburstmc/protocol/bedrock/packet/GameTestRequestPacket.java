@@ -4,22 +4,24 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.math.vector.Vector3i;
+import org.cloudburstmc.protocol.bedrock.data.structure.Rotation;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
-@EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
+@EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class GameTestRequestPacket implements BedrockPacket {
+
     private int maxTestsPerBatch;
     private int repeatCount;
-    private int rotation;
-    private boolean stoppingOnFailure;
+    private Rotation rotation;
+    private boolean stopOnFailure;
     private Vector3i testPos;
     private int testsPerRow;
     private String testName;
 
     @Override
-    public PacketSignal handle(BedrockPacketHandler handler) {
+    public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 

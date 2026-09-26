@@ -3,29 +3,25 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.protocol.bedrock.data.GatheringsConfigurationJoinInfo;
+import org.cloudburstmc.protocol.bedrock.data.connection.GatheringsConfig;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class TransferPacket implements BedrockPacket {
-    private String address;
-    private int port;
-    /**
-     * @since v729
-     */
+
+    private String serverAddress;
+    private int serverPort;
     private boolean reloadWorld;
-    /**
-     * @since v2168
-     */
-    private GatheringsConfigurationJoinInfo gatheringsConfigurationJoinInfo;
+    private GatheringsConfig gatheringsConfiguration;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
+    @Override
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.TRANSFER;
     }
@@ -39,4 +35,3 @@ public class TransferPacket implements BedrockPacket {
         }
     }
 }
-

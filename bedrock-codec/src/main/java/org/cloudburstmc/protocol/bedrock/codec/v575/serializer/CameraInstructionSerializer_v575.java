@@ -1,23 +1,19 @@
 package org.cloudburstmc.protocol.bedrock.codec.v575.serializer;
 
 import io.netty.buffer.ByteBuf;
-import org.cloudburstmc.math.vector.Vector2f;
 import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.nbt.NbtMap;
 import org.cloudburstmc.nbt.NbtMapBuilder;
 import org.cloudburstmc.nbt.NbtType;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
-import org.cloudburstmc.protocol.bedrock.data.camera.CameraEase;
-import org.cloudburstmc.protocol.bedrock.data.camera.CameraFadeInstruction;
-import org.cloudburstmc.protocol.bedrock.data.camera.CameraSetInstruction;
+import org.cloudburstmc.protocol.bedrock.data.camera.*;
 import org.cloudburstmc.protocol.bedrock.packet.CameraInstructionPacket;
 import org.cloudburstmc.protocol.common.NamedDefinition;
 import org.cloudburstmc.protocol.common.util.DefinitionUtils;
 import org.cloudburstmc.protocol.common.util.OptionalBoolean;
 import org.cloudburstmc.protocol.common.util.Preconditions;
 
-import java.awt.*;
 import java.util.List;
 
 public class CameraInstructionSerializer_v575 implements BedrockPacketSerializer<CameraInstructionPacket> {
@@ -26,8 +22,9 @@ public class CameraInstructionSerializer_v575 implements BedrockPacketSerializer
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, CameraInstructionPacket packet) {
         NbtMapBuilder tag = NbtMap.builder();
 
-        if (packet.getSetInstruction() != null) {
-            CameraSetInstruction set = packet.getSetInstruction();
+        final CameraInstruction cameraInstruction = packet.getCameraInstruction();
+        if (cameraInstruction != null && packet.getCameraInstruction().getSet() != null) {
+            CameraSetInstruction set = packet.getCameraInstruction().getSet();
             DefinitionUtils.checkDefinition(helper.getCameraPresetDefinitions(), set.getPreset());
 
             NbtMapBuilder builder = NbtMap.builder()
@@ -35,14 +32,14 @@ public class CameraInstructionSerializer_v575 implements BedrockPacketSerializer
 
             if (set.getEase() != null) {
                 builder.putCompound("ease", NbtMap.builder()
-                        .putString("type", set.getEase().getEaseType().getSerializeName())
+                        .putString("type", set.getEase().getType().getSerializeName())
                         .putFloat("time", set.getEase().getTime())
                         .build());
             }
 
             if (set.getPos() != null) {
                 builder.putCompound("pos", NbtMap.builder()
-                        .putList("pos", NbtType.FLOAT, set.getPos().getX(), set.getPos().getY(), set.getPos().getZ())
+                        .putList("pos", NbtType.FLOAT, set.getPos().getPos().getX(), set.getPos().getPos().getY(), set.getPos().getPos().getZ())
                         .build());
             }
 
@@ -53,26 +50,26 @@ public class CameraInstructionSerializer_v575 implements BedrockPacketSerializer
                         .build());
             }
 
-            if (set.getDefaultPreset().isPresent()) {
-                builder.putBoolean("default", set.getDefaultPreset().getAsBoolean());
+            if (set.getDefaultValue().isPresent()) {
+                builder.putBoolean("default", set.getDefaultValue().getAsBoolean());
             }
 
             tag.put("set", builder.build());
         }
 
-        if (packet.getClear().isPresent()) {
-            tag.putBoolean("clear", packet.getClear().getAsBoolean());
+        if (cameraInstruction != null && cameraInstruction.getClear().isPresent()) {
+            tag.putBoolean("clear", cameraInstruction.getClear().getAsBoolean());
         }
 
-        if (packet.getFadeInstruction() != null) {
-            CameraFadeInstruction fade = packet.getFadeInstruction();
+        if (cameraInstruction != null && cameraInstruction.getFade() != null) {
+            CameraFadeInstruction fade = cameraInstruction.getFade();
             NbtMapBuilder builder = NbtMap.builder();
 
-            if (fade.getTimeData() != null) {
+            if (fade.getTime() != null) {
                 builder.putCompound("time", NbtMap.builder()
-                        .putFloat("fadeIn", fade.getTimeData().getFadeInTime())
-                        .putFloat("hold", fade.getTimeData().getWaitTime())
-                        .putFloat("fadeOut", fade.getTimeData().getFadeOutTime())
+                        .putFloat("fadeIn", fade.getTime().getFadeInTime())
+                        .putFloat("hold", fade.getTime().getHoldTime())
+                        .putFloat("fadeOut", fade.getTime().getFadeOutTime())
                         .build());
             }
 
@@ -86,12 +83,15 @@ public class CameraInstructionSerializer_v575 implements BedrockPacketSerializer
 
             tag.put("fade", builder.build());
         }
+
         helper.writeTag(buffer, tag.build());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, CameraInstructionPacket packet) {
         NbtMap tag = helper.readTag(buffer, NbtMap.class);
+
+        final CameraInstruction cameraInstruction = packet.getCameraInstruction();
 
         if (tag.containsKey("set", NbtType.COMPOUND)) {
             CameraSetInstruction set = new CameraSetInstruction();
@@ -104,9 +104,14 @@ public class CameraInstructionSerializer_v575 implements BedrockPacketSerializer
 
             if (setTag.containsKey("ease", NbtType.COMPOUND)) {
                 NbtMap easeTag = setTag.getCompound("ease");
-                CameraEase type = CameraEase.fromName(easeTag.getString("type"));
+                EasingFunction type = EasingFunction.fromName(easeTag.getString("type"));
                 float time = easeTag.getFloat("time");
-                set.setEase(new CameraSetInstruction.EaseData(type, time));
+
+                final EaseOption easeOption = new EaseOption();
+                easeOption.setType(type);
+                easeOption.setTime(time);
+
+                set.setEase(easeOption);
             }
 
             if (setTag.containsKey("pos", NbtType.COMPOUND)) {
@@ -115,24 +120,33 @@ public class CameraInstructionSerializer_v575 implements BedrockPacketSerializer
                 float x = floats.size() > 0 ? floats.get(0) : 0;
                 float y = floats.size() > 1 ? floats.get(1) : 0;
                 float z = floats.size() > 2 ? floats.get(2) : 0;
-                set.setPos(Vector3f.from(x, y, z));
+
+                final PosOption posOption = new PosOption();
+                posOption.setPos(Vector3f.from(x, y, z));
+
+                set.setPos(posOption);
             }
 
             if (setTag.containsKey("rot", NbtType.COMPOUND)) {
                 NbtMap rot = setTag.getCompound("rot");
                 float pitch = rot.containsKey("x", NbtType.FLOAT) ? rot.getFloat("x") : 0;
                 float yaw = rot.containsKey("y", NbtType.FLOAT) ? rot.getFloat("y") : 0;
-                set.setRot(Vector2f.from(pitch, yaw));
+
+                final RotOption rotOption = new RotOption();
+                rotOption.setX(pitch);
+                rotOption.setY(yaw);
+
+                set.setRot(rotOption);
             }
 
             if (setTag.containsKey("default", NbtType.BYTE)) {
-                set.setDefaultPreset(OptionalBoolean.of(setTag.getBoolean("default")));
+                set.setDefaultValue(OptionalBoolean.of(setTag.getBoolean("default")));
             }
-            packet.setSetInstruction(set);
+            cameraInstruction.setSet(set);
         }
 
         if (tag.containsKey("clear", NbtType.BYTE)) {
-            packet.setClear(OptionalBoolean.of(tag.getBoolean("clear")));
+            cameraInstruction.setClear(OptionalBoolean.of(tag.getBoolean("clear")));
         }
 
         if (tag.containsKey("fade", NbtType.COMPOUND)) {
@@ -142,22 +156,31 @@ public class CameraInstructionSerializer_v575 implements BedrockPacketSerializer
             if (fadeTag.containsKey("time", NbtType.COMPOUND)) {
                 NbtMap timeTag = fadeTag.getCompound("time");
                 float fadeIn = timeTag.getFloat("fadeIn");
-                float wait = timeTag.getFloat("hold");
+                float hold = timeTag.getFloat("hold");
                 float fadeout = timeTag.getFloat("fadeOut");
-                fade.setTimeData(new CameraFadeInstruction.TimeData(fadeIn, wait, fadeout));
+
+                final TimeOption timeOption = new TimeOption();
+                timeOption.setFadeInTime(fadeIn);
+                timeOption.setHoldTime(hold);
+                timeOption.setFadeOutTime(fadeout);
+
+                fade.setTime(timeOption);
             }
 
             if (fadeTag.containsKey("color", NbtType.COMPOUND)) {
                 NbtMap colorTag = tag.getCompound("color");
 
-                fade.setColor(new Color(
-                        (int) (colorTag.getFloat("r") * 255),
-                        (int) (colorTag.getFloat("b") * 255), // game is sending blue as green and green as blue
-                        (int) (colorTag.getFloat("g") * 255)
-                ));
+                final ColorOption colorOption = new ColorOption();
+                colorOption.setRed((int) (colorTag.getFloat("r") * 255));
+                colorOption.setGreen((int) (colorTag.getFloat("b") * 255)); // game is sending blue as green and green as blue
+                colorOption.setBlue((int) (colorTag.getFloat("g") * 255));
+
+                fade.setColor(colorOption);
             }
 
-            packet.setFadeInstruction(fade);
+            cameraInstruction.setFade(fade);
         }
+
+        packet.setCameraInstruction(cameraInstruction);
     }
 }

@@ -1,15 +1,19 @@
 package org.cloudburstmc.protocol.bedrock.data.biome;
 
-import lombok.Value;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.data.definitions.BlockDefinition;
 
-@Value
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class BiomeSurfaceMaterialData {
 
-    BlockDefinition topBlock;
-    BlockDefinition midBlock;
-    BlockDefinition seaFloorBlock;
-    BlockDefinition foundationBlock;
-    BlockDefinition seaBlock;
-    int seaFloorDepth;
+    private BlockDefinition topBlock;
+    private BlockDefinition midBlock;
+    private BlockDefinition seaFloorBlock;
+    private BlockDefinition foundationBlock;
+    private BlockDefinition seaBlock;
+    private int seaFloorDepth;
 }

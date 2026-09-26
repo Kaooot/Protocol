@@ -7,6 +7,7 @@ import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.math.vector.Vector3i;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
+import org.cloudburstmc.protocol.bedrock.data.misc.RedactableString;
 import org.cloudburstmc.protocol.bedrock.data.structure.*;
 import org.cloudburstmc.protocol.bedrock.packet.StructureBlockUpdatePacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
@@ -17,35 +18,35 @@ public class StructureBlockUpdateSerializer_v291 implements BedrockPacketSeriali
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, StructureBlockUpdatePacket packet) {
-        StructureEditorData editorData = packet.getEditorData();
-        StructureSettings settings = editorData.getSettings();
+        StructureEditorData editorData = packet.getStructureData();
+        StructureSettings settings = editorData.getStructureSettings();
 
         helper.writeBlockPosition(buffer, packet.getBlockPosition());
-        VarInts.writeUnsignedInt(buffer, editorData.getType().ordinal());
+        VarInts.writeUnsignedInt(buffer, editorData.getStructureBlockType().ordinal());
         // Structure Editor Data start
-        helper.writeString(buffer, editorData.getName());
-        helper.writeString(buffer, editorData.getName());
-        helper.writeBlockPosition(buffer, settings.getOffset());
-        helper.writeBlockPosition(buffer, settings.getSize());
-        buffer.writeBoolean(!settings.isIgnoringEntities());
-        buffer.writeBoolean(settings.isIgnoringBlocks());
-        buffer.writeBoolean(editorData.isIncludingPlayers());
+        helper.writeString(buffer, editorData.getStructureName().getUnredacted());
+        helper.writeString(buffer, editorData.getStructureName().getRedacted());
+        helper.writeBlockPosition(buffer, settings.getStructureOffset());
+        helper.writeBlockPosition(buffer, settings.getStructureSize());
+        buffer.writeBoolean(!settings.isShouldIgnoreEntities());
+        buffer.writeBoolean(settings.isShouldIgnoreBlocks());
+        buffer.writeBoolean(editorData.isShouldIncludePlayers());
         buffer.writeBoolean(false); // show air
         // Structure Settings start
         buffer.writeFloatLE(settings.getIntegrityValue());
         VarInts.writeUnsignedInt(buffer, settings.getIntegritySeed());
         VarInts.writeUnsignedInt(buffer, settings.getMirror().ordinal());
         VarInts.writeUnsignedInt(buffer, settings.getRotation().ordinal());
-        buffer.writeBoolean(settings.isIgnoringEntities());
+        buffer.writeBoolean(settings.isShouldIgnoreEntities());
         buffer.writeBoolean(true); // ignore structure blocks
-        Vector3i min = packet.getBlockPosition().add(settings.getOffset());
+        Vector3i min = packet.getBlockPosition().add(settings.getStructureOffset());
         helper.writeVector3i(buffer, min);
-        Vector3i max = min.add(settings.getSize());
+        Vector3i max = min.add(settings.getStructureSize());
         helper.writeVector3i(buffer, max);
         // Structure Settings end
         // Structure Editor Data end
-        buffer.writeBoolean(editorData.isBoundingBoxVisible());
-        buffer.writeBoolean(packet.isPowered());
+        buffer.writeBoolean(editorData.isShouldShowBoundingBox());
+        buffer.writeBoolean(packet.isTrigger());
     }
 
     @Override
@@ -64,8 +65,8 @@ public class StructureBlockUpdateSerializer_v291 implements BedrockPacketSeriali
         // Structure Settings start
         float structureIntegrity = buffer.readFloatLE();
         int integritySeed = VarInts.readUnsignedInt(buffer);
-        StructureMirror mirror = StructureMirror.from(VarInts.readUnsignedInt(buffer));
-        StructureRotation rotation = StructureRotation.from(VarInts.readUnsignedInt(buffer));
+        Mirror mirror = Mirror.from(VarInts.readUnsignedInt(buffer));
+        Rotation rotation = Rotation.from(VarInts.readUnsignedInt(buffer));
         boolean ignoreEntities = buffer.readBoolean();
         buffer.readBoolean(); // ignore structure bocks
         helper.readVector3i(buffer); // bounding box min
@@ -75,12 +76,12 @@ public class StructureBlockUpdateSerializer_v291 implements BedrockPacketSeriali
         boolean boundingBoxVisible = buffer.readBoolean();
 
         StructureSettings settings = new StructureSettings("", ignoreEntities, ignoreBlocks, true, size, offset,
-                -1, rotation, mirror, StructureAnimationMode.NONE, 0f,
+                -1, rotation, mirror, AnimationMode.NONE, 0f,
                 structureIntegrity, integritySeed, Vector3f.ZERO);
-        StructureEditorData editorData = new StructureEditorData(name, "", dataField, includePlayers, boundingBoxVisible,
+        StructureEditorData editorData = new StructureEditorData(new RedactableString(name, ""), dataField, includePlayers, boundingBoxVisible,
                 structureType, settings, StructureRedstoneSaveMode.SAVES_TO_DISK);
 
-        packet.setEditorData(editorData);
-        packet.setPowered(buffer.readBoolean());
+        packet.setStructureData(editorData);
+        packet.setTrigger(buffer.readBoolean());
     }
 }

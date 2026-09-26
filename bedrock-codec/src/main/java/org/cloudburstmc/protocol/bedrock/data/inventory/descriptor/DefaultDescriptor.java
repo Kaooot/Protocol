@@ -11,7 +11,7 @@ public class DefaultDescriptor implements ItemDescriptor {
 
     @Override
     public ItemDescriptorType getType() {
-        return ItemDescriptorType.DEFAULT;
+        return ItemDescriptorType.NAME;
     }
 
     @Override

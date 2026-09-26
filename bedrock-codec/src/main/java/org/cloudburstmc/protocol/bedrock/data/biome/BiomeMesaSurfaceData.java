@@ -1,13 +1,17 @@
 package org.cloudburstmc.protocol.bedrock.data.biome;
 
-import lombok.Value;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.data.definitions.BlockDefinition;
 
-@Value
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class BiomeMesaSurfaceData {
 
-    BlockDefinition clayMaterial;
-    BlockDefinition hardClayMaterial;
-    boolean brycePillars;
-    boolean hasForest;
+    private BlockDefinition clayMaterial;
+    private BlockDefinition hardClayMaterial;
+    private boolean brycePillars;
+    private boolean hasForest;
 }

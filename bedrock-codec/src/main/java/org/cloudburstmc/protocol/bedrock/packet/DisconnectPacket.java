@@ -3,26 +3,24 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.protocol.bedrock.data.DisconnectFailReason;
+import org.cloudburstmc.protocol.bedrock.data.connection.DisconnectFailReason;
+import org.cloudburstmc.protocol.bedrock.data.connection.DisconnectPacketMessages;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class DisconnectPacket implements BedrockPacket {
-    private DisconnectFailReason reason = DisconnectFailReason.UNKNOWN;
-    private boolean messageSkipped;
-    private CharSequence kickMessage;
-    /**
-     * @since v712
-     */
-    private CharSequence filteredMessage = "";
+
+    private DisconnectFailReason reason;
+    private DisconnectPacketMessages messages;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
+    @Override
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.DISCONNECT;
     }
@@ -35,21 +33,4 @@ public class DisconnectPacket implements BedrockPacket {
             throw new AssertionError(e);
         }
     }
-
-    public String getKickMessage() {
-        return getKickMessage(String.class);
-    }
-
-    public <T extends CharSequence> T getKickMessage(Class<T> type) {
-        return type.cast(kickMessage);
-    }
-
-    public String getFilteredMessage() {
-        return getFilteredMessage(String.class);
-    }
-
-    public <T extends CharSequence> T getFilteredMessage(Class<T> type) {
-        return type.cast(filteredMessage);
-    }
 }
-

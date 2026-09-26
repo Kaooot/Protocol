@@ -13,17 +13,17 @@ public class LecternUpdateSerializer_v354 implements BedrockPacketSerializer<Lec
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, LecternUpdatePacket packet) {
-        buffer.writeByte(packet.getPage());
+        buffer.writeByte(packet.getNewPageToShow());
         buffer.writeByte(packet.getTotalPages());
-        helper.writeBlockPosition(buffer, packet.getBlockPosition());
+        helper.writeBlockPosition(buffer, packet.getPositionOfLecternToUpdate());
         buffer.writeBoolean(packet.isDroppingBook());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, LecternUpdatePacket packet) {
-        packet.setPage(buffer.readUnsignedByte());
+        packet.setNewPageToShow(buffer.readUnsignedByte());
         packet.setTotalPages(buffer.readUnsignedByte());
-        packet.setBlockPosition(helper.readBlockPosition(buffer));
+        packet.setPositionOfLecternToUpdate(helper.readBlockPosition(buffer));
         packet.setDroppingBook(buffer.readBoolean());
     }
 }

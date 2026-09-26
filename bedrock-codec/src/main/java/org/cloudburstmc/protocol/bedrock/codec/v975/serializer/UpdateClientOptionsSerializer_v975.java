@@ -4,6 +4,7 @@ import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v786.serializer.UpdateClientOptionsSerializer_v786;
 import org.cloudburstmc.protocol.bedrock.packet.UpdateClientOptionsPacket;
+import org.cloudburstmc.protocol.common.util.OptionalBoolean;
 
 public class UpdateClientOptionsSerializer_v975 extends UpdateClientOptionsSerializer_v786 {
 
@@ -12,12 +13,14 @@ public class UpdateClientOptionsSerializer_v975 extends UpdateClientOptionsSeria
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, UpdateClientOptionsPacket packet) {
         super.serialize(buffer, helper, packet);
-        helper.writeOptionalNull(buffer, packet.getFilterProfanityChange(), ByteBuf::writeBoolean);
+        helper.writeOptional(buffer, OptionalBoolean::isPresent, packet.getFilterProfanityChange(),
+                (buf, filterProfanityChange) -> buf.writeBoolean(filterProfanityChange.getAsBoolean()));
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, UpdateClientOptionsPacket packet) {
         super.deserialize(buffer, helper, packet);
-        packet.setFilterProfanityChange(helper.readOptional(buffer, null, ByteBuf::readBoolean));
+        packet.setFilterProfanityChange(helper.readOptional(buffer, OptionalBoolean.empty(),
+                (buf, codecHelper) -> OptionalBoolean.of(buf.readBoolean())));
     }
 }

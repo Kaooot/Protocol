@@ -5,8 +5,8 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v361.serializer.CraftingDataSerializer_v361;
-import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.ContainerMixData;
-import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.PotionMixData;
+import org.cloudburstmc.protocol.bedrock.data.recipe.ContainerMixDataEntry;
+import org.cloudburstmc.protocol.bedrock.data.recipe.PotionMixDataEntry;
 import org.cloudburstmc.protocol.bedrock.packet.CraftingDataPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -16,47 +16,45 @@ public class CraftingDataSerializer_v388 extends CraftingDataSerializer_v361 {
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, CraftingDataPacket packet) {
-        helper.writeArray(buffer, packet.getCraftingData(), this::writeEntry);
-        // Changes start
-        helper.writeArray(buffer, packet.getPotionMixData(), this::writePotionMixData);
-        helper.writeArray(buffer, packet.getContainerMixData(), this::writeContainerMixData);
-        // Changes end
-        buffer.writeBoolean(packet.isCleanRecipes());
+        this.writeEntries(buffer, helper, packet);
+        helper.writeArray(buffer, packet.getPotionMixes(), this::writePotionMixDataEntry);
+        helper.writeArray(buffer, packet.getContainerMixes(), this::writeContainerMixDataEntry);
+        buffer.writeBoolean(packet.isClearRecipes());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, CraftingDataPacket packet) {
-        helper.readArray(buffer, packet.getCraftingData(), this::readEntry);
-        // Changes start
-        helper.readArray(buffer, packet.getPotionMixData(), this::readPotionMixData);
-        helper.readArray(buffer, packet.getContainerMixData(), this::readContainerMixData);
-        // Changes end
-        packet.setCleanRecipes(buffer.readBoolean());
+        this.readEntries(buffer, helper, packet);
+        helper.readArray(buffer, packet.getPotionMixes(), this::readPotionMixDataEntry);
+        helper.readArray(buffer, packet.getContainerMixes(), this::readContainerMixDataEntry);
+        packet.setClearRecipes(buffer.readBoolean());
     }
 
-    protected PotionMixData readPotionMixData(ByteBuf buffer, BedrockCodecHelper helper) {
-        int fromPotionId = VarInts.readInt(buffer);
-        int ingredient = VarInts.readInt(buffer);
-        int toPotionId = VarInts.readInt(buffer);
-        return new PotionMixData(fromPotionId, 0, ingredient, 0, toPotionId, 0);
+    protected void writePotionMixDataEntry(ByteBuf buffer, BedrockCodecHelper helper, PotionMixDataEntry entry) {
+        VarInts.writeInt(buffer, entry.getFromPotionId());
+        VarInts.writeInt(buffer, entry.getReagentItemId());
+        VarInts.writeInt(buffer, entry.getToPotionId());
     }
 
-    protected void writePotionMixData(ByteBuf buffer, BedrockCodecHelper helper, PotionMixData potionMixData) {
-        VarInts.writeInt(buffer, potionMixData.getInputId());
-        VarInts.writeInt(buffer, potionMixData.getReagentId());
-        VarInts.writeInt(buffer, potionMixData.getOutputId());
+    protected PotionMixDataEntry readPotionMixDataEntry(ByteBuf buffer, BedrockCodecHelper helper) {
+        final PotionMixDataEntry entry = new PotionMixDataEntry();
+        entry.setFromPotionId(VarInts.readInt(buffer));
+        entry.setReagentItemId(VarInts.readInt(buffer));
+        entry.setToPotionId(VarInts.readInt(buffer));
+        return entry;
     }
 
-    protected ContainerMixData readContainerMixData(ByteBuf buffer, BedrockCodecHelper helper) {
-        int fromItemId = VarInts.readInt(buffer);
-        int ingredient = VarInts.readInt(buffer);
-        int toItemId = VarInts.readInt(buffer);
-        return new ContainerMixData(fromItemId, ingredient, toItemId);
+    protected void writeContainerMixDataEntry(ByteBuf buffer, BedrockCodecHelper helper, ContainerMixDataEntry entry) {
+        VarInts.writeInt(buffer, entry.getFromItemId());
+        VarInts.writeInt(buffer, entry.getReagentItemId());
+        VarInts.writeInt(buffer, entry.getOutputItemId());
     }
 
-    protected void writeContainerMixData(ByteBuf buffer, BedrockCodecHelper helper, ContainerMixData containerMixData) {
-        VarInts.writeInt(buffer, containerMixData.getInputId());
-        VarInts.writeInt(buffer, containerMixData.getReagentId());
-        VarInts.writeInt(buffer, containerMixData.getOutputId());
+    protected ContainerMixDataEntry readContainerMixDataEntry(ByteBuf buffer, BedrockCodecHelper helper) {
+        final ContainerMixDataEntry entry = new ContainerMixDataEntry();
+        entry.setFromItemId(VarInts.readInt(buffer));
+        entry.setReagentItemId(VarInts.readInt(buffer));
+        entry.setOutputItemId(VarInts.readInt(buffer));
+        return entry;
     }
 }

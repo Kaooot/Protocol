@@ -9,12 +9,13 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class PlayerVideoCapturePacket implements BedrockPacket {
+
     private Action action;
     private int frameRate;
     private String filePrefix;
 
     @Override
-    public PacketSignal handle(BedrockPacketHandler handler) {
+    public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
@@ -24,7 +25,7 @@ public class PlayerVideoCapturePacket implements BedrockPacket {
     }
 
     @Override
-    public BedrockPacket clone() {
+    public PlayerVideoCapturePacket clone() {
         try {
             return (PlayerVideoCapturePacket) super.clone();
         } catch (CloneNotSupportedException e) {

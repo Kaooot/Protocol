@@ -11,27 +11,20 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class StructureBlockUpdatePacket implements BedrockPacket {
+
     private Vector3i blockPosition;
-    private StructureEditorData editorData;
-    private boolean powered;
-    /**
-     * @since v553
-     */
-    private boolean waterlogged;
+    private StructureEditorData structureData;
+    private boolean trigger;
+    private boolean isWaterlogged;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
+    @Override
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.STRUCTURE_BLOCK_UPDATE;
-    }
-
-    public enum Type {
-        NONE,
-        SAVE,
-        LOAD,
     }
 
     @Override
@@ -43,4 +36,3 @@ public class StructureBlockUpdatePacket implements BedrockPacket {
         }
     }
 }
-

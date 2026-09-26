@@ -3,7 +3,7 @@ package org.cloudburstmc.protocol.bedrock.codec.v589.serializer;
 import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v582.serializer.StartGameSerializer_v582;
-import org.cloudburstmc.protocol.bedrock.data.NetworkPermissions;
+import org.cloudburstmc.protocol.bedrock.data.ability.NetworkPermissions;
 import org.cloudburstmc.protocol.bedrock.packet.StartGamePacket;
 
 public class StartGameSerializer_v589 extends StartGameSerializer_v582 {
@@ -26,7 +26,7 @@ public class StartGameSerializer_v589 extends StartGameSerializer_v582 {
     }
 
     protected void writeNetworkPermissions(ByteBuf buffer, BedrockCodecHelper helper, NetworkPermissions permissions) {
-        buffer.writeBoolean(permissions.isServerAuthSounds());
+        buffer.writeBoolean(permissions.isServerAuthSoundEnabled());
     }
 
     // Avoid code duplication with (de)serialize as they added TickDeathSystemsEnabled before NetworkPermissions in v827

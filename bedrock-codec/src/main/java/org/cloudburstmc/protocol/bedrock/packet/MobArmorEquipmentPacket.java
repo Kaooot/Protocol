@@ -10,14 +10,12 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class MobArmorEquipmentPacket implements BedrockPacket {
-    private long runtimeEntityId;
-    private ItemData helmet;
-    private ItemData chestplate;
-    private ItemData leggings;
-    private ItemData boots;
-    /**
-     * @since v712
-     */
+
+    private long targetRuntimeID;
+    private ItemData head;
+    private ItemData torso;
+    private ItemData legs;
+    private ItemData feet;
     private ItemData body;
 
     @Override
@@ -25,6 +23,7 @@ public class MobArmorEquipmentPacket implements BedrockPacket {
         return handler.handle(this);
     }
 
+    @Override
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.MOB_ARMOR_EQUIPMENT;
     }
@@ -38,4 +37,3 @@ public class MobArmorEquipmentPacket implements BedrockPacket {
         }
     }
 }
-

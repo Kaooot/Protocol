@@ -3,19 +3,20 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.protocol.bedrock.data.ee.LessonAction;
+import org.cloudburstmc.protocol.bedrock.data.education.LessonAction;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class LessonProgressPacket implements BedrockPacket {
-    private LessonAction action;
+
+    private LessonAction lessonAction;
     private int score;
     private String activityId;
 
     @Override
-    public PacketSignal handle(BedrockPacketHandler handler) {
+    public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
@@ -33,4 +34,3 @@ public class LessonProgressPacket implements BedrockPacket {
         }
     }
 }
-

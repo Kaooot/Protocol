@@ -6,15 +6,15 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v419.serializer.UpdateAttributesSerializer_v419;
-import org.cloudburstmc.protocol.bedrock.data.AttributeData;
-import org.cloudburstmc.protocol.bedrock.data.attribute.AttributeModifierData;
-import org.cloudburstmc.protocol.bedrock.data.attribute.AttributeOperation;
+import org.cloudburstmc.protocol.bedrock.data.actor.attribute.AttributeData;
+import org.cloudburstmc.protocol.bedrock.data.actor.attribute.AttributeModifier;
+import org.cloudburstmc.protocol.bedrock.data.actor.attribute.AttributeModifierOperation;
+import org.cloudburstmc.protocol.bedrock.data.actor.attribute.AttributeOperands;
 
 import java.util.List;
 
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public class UpdateAttributesSerializer_v544 extends UpdateAttributesSerializer_v419 {
-    protected static final AttributeOperation[] VALUES = AttributeOperation.values();
 
     public static final UpdateAttributesSerializer_v544 INSTANCE = new UpdateAttributesSerializer_v544();
 
@@ -33,29 +33,36 @@ public class UpdateAttributesSerializer_v544 extends UpdateAttributesSerializer_
         float def = buffer.readFloatLE();
         String name = helper.readString(buffer);
 
-        List<AttributeModifierData> modifiers = new ObjectArrayList<>();
+        List<AttributeModifier> modifiers = new ObjectArrayList<>();
         helper.readArray(buffer, modifiers, this::readModifier);
 
-        return new AttributeData(name, min, max, val, def, modifiers);
+        AttributeData attribute = new AttributeData();
+        attribute.setName(name);
+        attribute.setMinValue(min);
+        attribute.setMaxValue(max);
+        attribute.setCurrentValue(val);
+        attribute.setDefaultValue(def);
+        attribute.getModifiers().addAll(modifiers);
+        return attribute;
     }
 
-    public void writeModifier(ByteBuf buffer, BedrockCodecHelper helper, AttributeModifierData modifier) {
+    public void writeModifier(ByteBuf buffer, BedrockCodecHelper helper, AttributeModifier modifier) {
         helper.writeString(buffer, modifier.getId());
         helper.writeString(buffer, modifier.getName());
         buffer.writeFloatLE(modifier.getAmount());
         buffer.writeIntLE(modifier.getOperation().ordinal());
-        buffer.writeIntLE(modifier.getOperand());
+        buffer.writeIntLE(modifier.getOperand().ordinal());
         buffer.writeBoolean(modifier.isSerializable());
     }
 
-    public AttributeModifierData readModifier(ByteBuf buffer, BedrockCodecHelper helper) {
+    public AttributeModifier readModifier(ByteBuf buffer, BedrockCodecHelper helper) {
         String id = helper.readString(buffer);
         String name = helper.readString(buffer);
         float amount = buffer.readFloatLE();
-        AttributeOperation operation = VALUES[buffer.readIntLE()];
-        int operand = buffer.readIntLE();
+        AttributeModifierOperation operation = AttributeModifierOperation.from(buffer.readIntLE());
+        AttributeOperands operand = AttributeOperands.from(buffer.readIntLE());
         boolean serializable = buffer.readBoolean();
 
-        return new AttributeModifierData(id, name, amount, operation, operand, serializable);
+        return new AttributeModifier(id, name, amount, operation, operand, serializable);
     }
 }

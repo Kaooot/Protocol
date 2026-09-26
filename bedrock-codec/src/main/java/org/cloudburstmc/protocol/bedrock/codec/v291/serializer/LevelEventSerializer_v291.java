@@ -4,7 +4,7 @@ import io.netty.buffer.ByteBuf;
 import lombok.RequiredArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
-import org.cloudburstmc.protocol.bedrock.data.LevelEventType;
+import org.cloudburstmc.protocol.bedrock.data.world.event.LevelEventType;
 import org.cloudburstmc.protocol.bedrock.packet.LevelEventPacket;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 import org.cloudburstmc.protocol.common.util.VarInts;
@@ -16,7 +16,7 @@ public class LevelEventSerializer_v291 implements BedrockPacketSerializer<LevelE
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, LevelEventPacket packet) {
-        VarInts.writeInt(buffer, typeMap.getId(packet.getType()));
+        VarInts.writeInt(buffer, typeMap.getId(packet.getEventId()));
         helper.writeVector3f(buffer, packet.getPosition());
         VarInts.writeInt(buffer, packet.getData());
     }
@@ -24,7 +24,7 @@ public class LevelEventSerializer_v291 implements BedrockPacketSerializer<LevelE
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, LevelEventPacket packet) {
         int eventId = VarInts.readInt(buffer);
-        packet.setType(typeMap.getType(eventId));
+        packet.setEventId(typeMap.getType(eventId));
         packet.setPosition(helper.readVector3f(buffer));
         packet.setData(VarInts.readInt(buffer));
     }

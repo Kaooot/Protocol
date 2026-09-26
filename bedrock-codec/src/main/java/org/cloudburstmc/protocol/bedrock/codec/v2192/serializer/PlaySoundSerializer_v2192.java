@@ -15,7 +15,7 @@ public class PlaySoundSerializer_v2192 extends PlaySoundSerializer_v291 { // v29
         super.serialize(buffer, helper, packet);
         VarInts.writeUnsignedInt(buffer, packet.getLoopCount());
         buffer.writeBoolean(packet.isBypassListenerRangeCheck());
-        helper.writeOptionalNull(buffer, packet.getServerSoundHandle(), ByteBuf::writeLongLE);
+        helper.writeOptionalNull(buffer, packet.getServerSoundHandle(), helper::writeServerSoundHandle);
         helper.writeOptionalNull(buffer, packet.getPlaybackPositionSeconds(), ByteBuf::writeFloatLE);
     }
 
@@ -24,7 +24,7 @@ public class PlaySoundSerializer_v2192 extends PlaySoundSerializer_v291 { // v29
         super.deserialize(buffer, helper, packet);
         packet.setLoopCount(VarInts.readUnsignedInt(buffer));
         packet.setBypassListenerRangeCheck(buffer.readBoolean());
-        packet.setServerSoundHandle(helper.readOptional(buffer, null, ByteBuf::readLongLE));
+        packet.setServerSoundHandle(helper.readOptional(buffer, null, helper::readServerSoundHandle));
         packet.setPlaybackPositionSeconds(helper.readOptional(buffer, null, ByteBuf::readFloatLE));
     }
 }

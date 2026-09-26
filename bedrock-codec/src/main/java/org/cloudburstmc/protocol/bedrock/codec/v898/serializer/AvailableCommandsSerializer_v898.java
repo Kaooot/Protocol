@@ -29,7 +29,7 @@ public class AvailableCommandsSerializer_v898 extends AvailableCommandsSerialize
         helper.writeString(buffer, commandData.getName());
         helper.writeString(buffer, commandData.getDescription());
         this.writeFlags(buffer, commandData.getFlags());
-        CommandPermission permission = commandData.getPermission() == null ? CommandPermission.ANY : commandData.getPermission();
+        CommandPermissionLevel permission = commandData.getPermission() == null ? CommandPermissionLevel.ANY : commandData.getPermission();
         helper.writeString(buffer, PERMISSION_LEVEL.get(permission.ordinal()));
 
         CommandEnumData aliases = commandData.getAliases();
@@ -58,7 +58,7 @@ public class AvailableCommandsSerializer_v898 extends AvailableCommandsSerialize
         String name = helper.readString(buffer);
         String description = helper.readString(buffer);
         Set<CommandData.Flag> flags = this.readFlags(buffer);
-        CommandPermission permissions = PERMISSIONS[PERMISSION_LEVEL.indexOf(helper.readString(buffer))];
+        CommandPermissionLevel permissions = PERMISSIONS[PERMISSION_LEVEL.indexOf(helper.readString(buffer))];
         int aliasIndex = buffer.readIntLE();
         CommandEnumData aliases = aliasIndex == -1 ? null : enums.get(aliasIndex);
 
@@ -115,11 +115,8 @@ public class AvailableCommandsSerializer_v898 extends AvailableCommandsSerialize
             int first = values.indexOf(val.getFirst());
             checkArgument(first > -1, "Invalid enum value detected: %s", val.getFirst());
 
-            int second = values.indexOf(val.getSecond());
-            checkArgument(second > -1, "Invalid enum value detected: %s", val.getSecond());
-
             VarInts.writeUnsignedInt(buf, first);
-            VarInts.writeUnsignedInt(buf, second);
+            VarInts.writeUnsignedInt(buf, val.getSecond());
         });
     }
 
@@ -131,7 +128,7 @@ public class AvailableCommandsSerializer_v898 extends AvailableCommandsSerialize
         helper.readArray(buffer, data.getValues(), buf -> {
             int first = VarInts.readUnsignedInt(buf);
             int second = VarInts.readUnsignedInt(buf);
-            return new ChainedSubCommandData.Value(values.get(first), values.get(second));
+            return new ChainedSubCommandData.Value(values.get(first), second);
         });
         return data;
     }

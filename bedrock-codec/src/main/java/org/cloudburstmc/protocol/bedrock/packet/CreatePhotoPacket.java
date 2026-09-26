@@ -9,12 +9,13 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class CreatePhotoPacket implements BedrockPacket {
-    private long id;
+
+    private long rawID;
     private String photoName;
     private String photoItemName;
 
     @Override
-    public PacketSignal handle(BedrockPacketHandler handler) {
+    public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
@@ -32,4 +33,3 @@ public class CreatePhotoPacket implements BedrockPacket {
         }
     }
 }
-

@@ -13,14 +13,14 @@ public class CreatePhotoSerializer_v465 implements BedrockPacketSerializer<Creat
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, CreatePhotoPacket packet) {
-        buffer.writeLongLE(packet.getId());
+        buffer.writeLongLE(packet.getRawID());
         helper.writeString(buffer, packet.getPhotoName());
         helper.writeString(buffer, packet.getPhotoItemName());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, CreatePhotoPacket packet) {
-        packet.setId(buffer.readLongLE());
+        packet.setRawID(buffer.readLongLE());
         packet.setPhotoName(helper.readString(buffer));
         packet.setPhotoItemName(helper.readString(buffer));
     }

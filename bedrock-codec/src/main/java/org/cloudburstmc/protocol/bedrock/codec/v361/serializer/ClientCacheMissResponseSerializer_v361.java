@@ -1,13 +1,15 @@
 package org.cloudburstmc.protocol.bedrock.codec.v361.serializer;
 
 import io.netty.buffer.ByteBuf;
-import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
+import org.cloudburstmc.protocol.bedrock.data.chunk.MissingBlobData;
 import org.cloudburstmc.protocol.bedrock.packet.ClientCacheMissResponsePacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
+
+import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ClientCacheMissResponseSerializer_v361 implements BedrockPacketSerializer<ClientCacheMissResponsePacket> {
@@ -15,24 +17,24 @@ public class ClientCacheMissResponseSerializer_v361 implements BedrockPacketSeri
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ClientCacheMissResponsePacket packet) {
-        Long2ObjectMap<ByteBuf> blobs = packet.getBlobs();
-
+        final List<MissingBlobData> blobs = packet.getMissingBlobs();
         VarInts.writeUnsignedInt(buffer, blobs.size());
-        for (Long2ObjectMap.Entry<ByteBuf> entry : blobs.long2ObjectEntrySet()) {
-            buffer.writeLongLE(entry.getLongKey());
-            helper.writeByteBuf(buffer, entry.getValue());
+        for (MissingBlobData missingBlobData : blobs) {
+            buffer.writeLongLE(missingBlobData.getBlobId());
+            helper.writeByteBuf(buffer, missingBlobData.getBlobData());
         }
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ClientCacheMissResponsePacket packet) {
-        Long2ObjectMap<ByteBuf> blobs = packet.getBlobs();
-
-        int length = VarInts.readUnsignedInt(buffer);
+        final List<MissingBlobData> blobs = packet.getMissingBlobs();
+        final int length = VarInts.readUnsignedInt(buffer);
         for (int i = 0; i < length; i++) {
-            long id = buffer.readLongLE();
-            ByteBuf blob = helper.readByteBuf(buffer);
-            blobs.put(id, blob);
+            final MissingBlobData missingBlobData = new MissingBlobData();
+            missingBlobData.setBlobId(buffer.readLongLE());
+            missingBlobData.setBlobData(helper.readByteBuf(buffer));
+
+            blobs.add(missingBlobData);
         }
     }
 }

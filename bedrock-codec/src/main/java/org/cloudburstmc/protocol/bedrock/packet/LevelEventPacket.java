@@ -4,14 +4,15 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.math.vector.Vector3f;
-import org.cloudburstmc.protocol.bedrock.data.LevelEventType;
+import org.cloudburstmc.protocol.bedrock.data.world.event.LevelEventType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class LevelEventPacket implements BedrockPacket {
-    private LevelEventType type;
+
+    private LevelEventType eventId;
     private Vector3f position;
     private int data;
 
@@ -20,6 +21,7 @@ public class LevelEventPacket implements BedrockPacket {
         return handler.handle(this);
     }
 
+    @Override
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.LEVEL_EVENT;
     }
@@ -33,4 +35,3 @@ public class LevelEventPacket implements BedrockPacket {
         }
     }
 }
-

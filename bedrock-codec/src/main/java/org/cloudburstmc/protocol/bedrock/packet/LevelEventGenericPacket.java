@@ -3,22 +3,24 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-
-import org.cloudburstmc.protocol.bedrock.data.LevelEventType;
+import org.cloudburstmc.nbt.NbtMap;
+import org.cloudburstmc.protocol.bedrock.data.world.event.LevelEventType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class LevelEventGenericPacket implements BedrockPacket {
-    private LevelEventType type;
-    private Object tag;
+
+    private LevelEventType eventId;
+    private NbtMap data;
 
     @Override
-    public PacketSignal handle(BedrockPacketHandler handler) {
+    public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
+    @Override
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.LEVEL_EVENT_GENERIC;
     }
@@ -32,4 +34,3 @@ public class LevelEventGenericPacket implements BedrockPacket {
         }
     }
 }
-

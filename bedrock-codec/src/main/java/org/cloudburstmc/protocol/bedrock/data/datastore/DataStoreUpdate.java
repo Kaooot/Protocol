@@ -3,17 +3,21 @@ package org.cloudburstmc.protocol.bedrock.data.datastore;
 import lombok.Data;
 
 @Data
-public class DataStoreUpdate implements DataStoreAction {
+public class DataStoreUpdate {
 
     private String dataStoreName;
     private String property;
     private String path;
     private Object data;
-    private int updateCount;
+    private int propertyUpdateCount;
+    /**
+     * @since v924
+     */
     private int pathUpdateCount;
 
-    @Override
-    public int getType() {
-        return 0;
+    public enum Type {
+        DOUBLE,
+        BOOLEAN,
+        STRING
     }
 }

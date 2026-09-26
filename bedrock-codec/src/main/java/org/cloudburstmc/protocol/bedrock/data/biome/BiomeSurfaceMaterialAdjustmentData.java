@@ -1,10 +1,14 @@
 package org.cloudburstmc.protocol.bedrock.data.biome;
 
-import lombok.Value;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-@Value
+@Data
 public class BiomeSurfaceMaterialAdjustmentData {
-    List<BiomeElementData> biomeElements;
+
+    private final List<BiomeElementData> adjustments = new ObjectArrayList<>();
 }

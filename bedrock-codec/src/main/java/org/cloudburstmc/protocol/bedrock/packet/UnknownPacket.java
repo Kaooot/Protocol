@@ -12,6 +12,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 public final class UnknownPacket implements BedrockPacket, BedrockPacketSerializer<UnknownPacket>, ReferenceCounted {
+
     private int packetId;
     private ByteBuf payload;
 
@@ -91,4 +92,3 @@ public final class UnknownPacket implements BedrockPacket, BedrockPacketSerializ
         throw new UnsupportedOperationException("Can not clone reference counted packet");
     }
 }
-

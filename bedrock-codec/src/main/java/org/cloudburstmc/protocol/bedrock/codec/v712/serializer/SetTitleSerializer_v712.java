@@ -13,13 +13,13 @@ public class SetTitleSerializer_v712 extends SetTitleSerializer_v448 {
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, SetTitlePacket packet) {
         super.serialize(buffer, helper, packet);
         TextConverter converter = helper.getTextConverter();
-        helper.writeString(buffer, converter.serialize(packet.getFilteredTitleText(CharSequence.class)));
+        helper.writeString(buffer, converter.serialize(packet.getFilteredTitleMessage(CharSequence.class)));
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, SetTitlePacket packet) {
         super.deserialize(buffer, helper, packet);
         TextConverter converter = helper.getTextConverter();
-        packet.setFilteredTitleText(converter.deserialize(helper.readString(buffer)));
+        packet.setFilteredTitleMessage(converter.deserialize(helper.readString(buffer)));
     }
 }

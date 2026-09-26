@@ -4,7 +4,7 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.protocol.bedrock.data.command.CommandData;
+import org.cloudburstmc.protocol.bedrock.data.command.*;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 import java.util.List;
@@ -13,6 +13,7 @@ import java.util.List;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class AvailableCommandsPacket implements BedrockPacket {
+
     private final List<CommandData> commands = new ObjectArrayList<>();
 
     @Override
@@ -20,6 +21,7 @@ public class AvailableCommandsPacket implements BedrockPacket {
         return handler.handle(this);
     }
 
+    @Override
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.AVAILABLE_COMMANDS;
     }
@@ -33,4 +35,3 @@ public class AvailableCommandsPacket implements BedrockPacket {
         }
     }
 }
-

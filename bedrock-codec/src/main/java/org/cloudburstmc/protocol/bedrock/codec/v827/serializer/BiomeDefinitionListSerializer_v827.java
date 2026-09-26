@@ -1,10 +1,13 @@
 package org.cloudburstmc.protocol.bedrock.codec.v827.serializer;
 
 import io.netty.buffer.ByteBuf;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v800.serializer.BiomeDefinitionListSerializer_v800;
 import org.cloudburstmc.protocol.bedrock.data.biome.BiomeDefinitionData;
 
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class BiomeDefinitionListSerializer_v827 extends BiomeDefinitionListSerializer_v800 {
 
     public static final BiomeDefinitionListSerializer_v827 INSTANCE = new BiomeDefinitionListSerializer_v827();

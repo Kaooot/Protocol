@@ -1,19 +1,22 @@
 package org.cloudburstmc.protocol.bedrock.data.definitions;
 
 import lombok.Value;
+import org.cloudburstmc.protocol.bedrock.data.world.GeneratorType;
+import org.cloudburstmc.protocol.bedrock.data.world.DimensionType;
 
 import java.util.UUID;
 
 @Value
 public class DimensionDefinition {
-    String id;
-    int maximumHeight;
-    int minimumHeight;
-    int generatorType;
+
+    String name;
+    int heightMaximum;
+    int heightMinimum;
+    GeneratorType generatorType;
     /**
      * @since v975
      */
-    int dimensionType;
+    DimensionType dimensionType;
     /**
      * @since v2168
      */
@@ -22,4 +25,12 @@ public class DimensionDefinition {
      * @since v2192
      */
     String defaultBiome;
+    /**
+     * @since v2207
+     */
+    int cloudHeight;
+    /**
+     * @since v2207
+     */
+    boolean renderClouds;
 }

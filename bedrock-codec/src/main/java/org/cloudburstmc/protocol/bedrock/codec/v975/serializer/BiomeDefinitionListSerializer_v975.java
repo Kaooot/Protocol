@@ -1,129 +1,114 @@
 package org.cloudburstmc.protocol.bedrock.codec.v975.serializer;
 
 import io.netty.buffer.ByteBuf;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v924.serializer.BiomeDefinitionListSerializer_v924;
-import org.cloudburstmc.protocol.bedrock.data.VillageType;
-import org.cloudburstmc.protocol.bedrock.data.biome.*;
-import org.cloudburstmc.protocol.common.util.SequencedHashSet;
+import org.cloudburstmc.protocol.bedrock.data.biome.BiomeDefinitionChunkGenData;
+import org.cloudburstmc.protocol.bedrock.data.biome.BiomeNoiseGradientSurfaceData;
+import org.cloudburstmc.protocol.bedrock.data.biome.BiomeReplacementsData;
+import org.cloudburstmc.protocol.bedrock.data.biome.BiomeSurfaceBuilderData;
+import org.cloudburstmc.protocol.bedrock.data.structure.NoiseDescriptor;
+import org.cloudburstmc.protocol.bedrock.data.structure.SerializedNoiseBlockSpecifier;
+import org.cloudburstmc.protocol.bedrock.data.world.VillageType;
 
-import java.util.ArrayList;
-import java.util.List;
-
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class BiomeDefinitionListSerializer_v975 extends BiomeDefinitionListSerializer_v924 {
-
     public static final BiomeDefinitionListSerializer_v975 INSTANCE = new BiomeDefinitionListSerializer_v975();
 
     @Override
-    protected void writeDefinitionChunkGen(ByteBuf buffer, BedrockCodecHelper helper, BiomeDefinitionChunkGenData definitionChunkGen, SequencedHashSet<String> strings) {
+    protected void writeBiomeDefinitionChunkGenData(ByteBuf buffer, BedrockCodecHelper helper, BiomeDefinitionChunkGenData definitionChunkGen) {
         helper.writeOptionalNull(buffer, definitionChunkGen.getClimate(), this::writeClimate);
-
-        helper.writeOptionalNull(buffer, definitionChunkGen.getConsolidatedFeatures(),
-                (buf, aHelper, consolidatedFeatures) -> this.writeConsolidatedFeatures(buf, aHelper, consolidatedFeatures, strings));
-
-        helper.writeOptionalNull(buffer, definitionChunkGen.getMountainParams(), this::writeMountainParamsData);
-
-        helper.writeOptionalNull(buffer, definitionChunkGen.getSurfaceMaterialAdjustment(),
-                (buf, aHelper, surfaceMaterialAdjustment) -> this.writeSurfaceMaterialAdjustment(buf, aHelper, surfaceMaterialAdjustment, strings));
-
-        helper.writeOptionalNull(buffer, definitionChunkGen.getOverworldGenRules(),
-                (buf, aHelper, overworldGenRules) -> this.writeOverworldGenRules(buf, aHelper, overworldGenRules, strings));
-
-        helper.writeOptionalNull(buffer, definitionChunkGen.getMultinoiseGenRules(), this::writeMultinoiseGenRules);
-
-        helper.writeOptionalNull(buffer, definitionChunkGen.getLegacyWorldGenRules(),
-                (buf, aHelper, legacyWorldGenRules) -> this.writeLegacyWorldGenRules(buf, aHelper, legacyWorldGenRules, strings));
-
-        helper.writeOptionalNull(buffer, definitionChunkGen.getBiomeReplacements(), this::writeBiomeReplacementsData);
-
-        helper.writeOptionalNull(buffer, definitionChunkGen.getVillageType(), (b, n) -> b.writeByte(n.ordinal()));
-
-        writeBiomeSurfaceBuilderData(buffer, helper, definitionChunkGen.getSurfaceBuilderData());
-
-        writeBiomeSurfaceBuilderData(buffer, helper, definitionChunkGen.getSubsurfaceBuilderData());
-    }
-
-    protected void writeBiomeSurfaceBuilderData(ByteBuf buffer, BedrockCodecHelper helper, BiomeSurfaceBuilderData data) {
-        helper.writeOptionalNull(buffer, data.getSurfaceMaterials(), this::writeSurfaceMaterial);
-        buffer.writeBoolean(data.isHasDefaultOverworldSurface());
-        buffer.writeBoolean(data.isHasSwampSurface());
-        buffer.writeBoolean(data.isHasFrozenOceanSurface());
-        buffer.writeBoolean(data.isHasTheEndSurface());
-        helper.writeOptionalNull(buffer, data.getMesaSurface(), this::writeMesaSurface);
-        helper.writeOptionalNull(buffer, data.getCappedSurface(), this::writeCappedSurface);
-        helper.writeOptionalNull(buffer, data.getNoiseGradientSurface(), this::writeNoiseGradientSurface);
-    }
-
-    protected void writeNoiseGradientSurface(ByteBuf buffer, BedrockCodecHelper helper, BiomeNoiseGradientSurfaceData data) {
-        helper.writeArray(buffer, data.getNonReplaceableBlocks(), ByteBuf::writeIntLE);
-        helper.writeArray(buffer, data.getGradientBlocks(), (buf, val) ->
-                buf.writeIntLE(val.getBlock()));
-        helper.writeString(buffer, data.getNoise());
-        buffer.writeIntLE(data.getFirstOctave());
-        helper.writeArray(buffer, data.getAmplitudes(), ByteBuf::writeFloatLE);
+        helper.writeOptionalNull(buffer, definitionChunkGen.getConsolidatedFeatures(), this::writeBiomeConsolidatedFeaturesData);
+        helper.writeOptionalNull(buffer, definitionChunkGen.getMountainParams(), this::writeBiomeMountainParamsData);
+        helper.writeOptionalNull(buffer, definitionChunkGen.getSurfaceMaterialAdjustments(), this::writeBiomeSurfaceMaterialAdjustmentData);
+        helper.writeOptionalNull(buffer, definitionChunkGen.getOverworldGenRules(), this::writeBiomeOverworldGenRulesData);
+        helper.writeOptionalNull(buffer, definitionChunkGen.getMultinoiseGenRules(), this::writeBiomeMultinoiseGenRulesData);
+        helper.writeOptionalNull(buffer, definitionChunkGen.getLegacyWorldGenRules(), this::writeBiomeLegacyWorldGenRulesData);
+        helper.writeOptionalNull(buffer, definitionChunkGen.getReplacementBiomes(), this::writeBiomeReplacementsData);
+        helper.writeOptionalNull(buffer, definitionChunkGen.getVillageType(), (byteBuf, villageType) -> byteBuf.writeByte(villageType.ordinal()));
+        helper.writeOptionalNull(buffer, definitionChunkGen.getSurfaceBuilderData(), this::writeBiomeSurfaceBuilderData);
+        helper.writeOptionalNull(buffer, definitionChunkGen.getSubsurfaceBuilderData(), this::writeBiomeSurfaceBuilderData);
     }
 
     @Override
-    protected BiomeDefinitionChunkGenData readDefinitionChunkGen(ByteBuf buffer, BedrockCodecHelper helper, List<String> strings) {
-        BiomeClimateData climate = helper.readOptional(buffer, null, this::readClimate);
-
-        List<BiomeConsolidatedFeatureData> consolidatedFeatures = helper.readOptional(buffer, null,
-                (buf, aHelper) -> this.readConsolidatedFeatures(buf, aHelper, strings));
-
-        BiomeMountainParamsData mountainParams = helper.readOptional(buffer, null, this::readMountainParamsData);
-
-        BiomeSurfaceMaterialAdjustmentData surfaceMaterialAdjustment = helper.readOptional(buffer, null,
-                (buf, aHelper) -> this.readSurfaceMaterialAdjustment(buf, aHelper, strings));
-
-        BiomeOverworldGenRulesData overworldGenRules = helper.readOptional(buffer, null,
-                (buf, aHelper) -> this.readOverworldGenRules(buf, aHelper, strings));
-
-        BiomeMultinoiseGenRulesData multinoiseGenRules = helper.readOptional(buffer, null, this::readMultinoiseGenRules);
-
-        BiomeLegacyWorldGenRulesData legacyWorldGenRules = helper.readOptional(buffer, null,
-                (buf, aHelper) -> this.readLegacyWorldGenRules(buf, aHelper, strings));
-
-        List<BiomeReplacementData> replacementsData = helper.readOptional(buffer, null, this::readBiomeReplacementsData);
-
-        VillageType villageType = helper.readOptional(buffer, null, buf -> VillageType.values()[buf.readUnsignedByte()]);
-
-        BiomeSurfaceBuilderData surfaceBuilderData = helper.readOptional(buffer, null, this::readBiomeSurfaceBuilderData);
-
-        BiomeSurfaceBuilderData subsurfaceBuilderData = helper.readOptional(buffer, null, this::readBiomeSurfaceBuilderData);
-
-        return new BiomeDefinitionChunkGenData(climate, consolidatedFeatures,
-                mountainParams, surfaceMaterialAdjustment,
-                null, false, false,
-                false, false,
-                null, null,
-                overworldGenRules, multinoiseGenRules,
-                legacyWorldGenRules, replacementsData, villageType, surfaceBuilderData, subsurfaceBuilderData);
+    protected BiomeDefinitionChunkGenData readBiomeDefinitionChunkGenData(ByteBuf buffer, BedrockCodecHelper helper) {
+        final BiomeDefinitionChunkGenData data = new BiomeDefinitionChunkGenData();
+        data.setClimate(helper.readOptional(buffer, null, this::readClimate));
+        data.setConsolidatedFeatures(helper.readOptional(buffer, null, this::readBiomeConsolidatedFeaturesData));
+        data.setMountainParams(helper.readOptional(buffer, null, this::readBiomeMountainParamsData));
+        data.setSurfaceMaterialAdjustments(helper.readOptional(buffer, null, this::readBiomeSurfaceMaterialAdjustmentData));
+        data.setOverworldGenRules(helper.readOptional(buffer, null, this::readBiomeOverworldGenRulesData));
+        data.setMultinoiseGenRules(helper.readOptional(buffer, null, this::readBiomeMultinoiseGenRulesData));
+        data.setLegacyWorldGenRules(helper.readOptional(buffer, null, this::readBiomeLegacyWorldGenRulesData));
+        data.setReplacementBiomes(helper.readOptional(buffer, null, this::readBiomeReplacementsData));
+        data.setVillageType(helper.readOptional(buffer, null, (byteBuf, codecHelper) -> VillageType.from(byteBuf.readUnsignedByte())));
+        data.setSurfaceBuilderData(helper.readOptional(buffer, null, this::readBiomeSurfaceBuilderData));
+        data.setSubsurfaceBuilderData(helper.readOptional(buffer, null, this::readBiomeSurfaceBuilderData));
+        return data;
     }
 
+    @Override
+    protected void writeBiomeReplacementsData(ByteBuf buffer, BedrockCodecHelper helper, BiomeReplacementsData data) {
+        helper.writeArray(buffer, data.getBiomeReplacements(), this::writeBiomeReplacementData);
+    }
+
+    @Override
+    protected BiomeReplacementsData readBiomeReplacementsData(ByteBuf buffer, BedrockCodecHelper helper) {
+        final BiomeReplacementsData data = new BiomeReplacementsData();
+        helper.readArray(buffer, data.getBiomeReplacements(), this::readBiomeReplacementData);
+        return data;
+    }
+
+    @Override
+    protected void writeBiomeSurfaceBuilderData(ByteBuf buffer, BedrockCodecHelper helper, BiomeSurfaceBuilderData data) {
+        super.writeBiomeSurfaceBuilderData(buffer, helper, data);
+        helper.writeOptionalNull(buffer, data.getNoiseGradientSurface(), this::writeBiomeNoiseGradientSurfaceData);
+    }
+
+    @Override
     protected BiomeSurfaceBuilderData readBiomeSurfaceBuilderData(ByteBuf buffer, BedrockCodecHelper helper) {
-        BiomeSurfaceMaterialData surfaceMaterials = helper.readOptional(buffer, null, this::readSurfaceMaterial);
-        boolean hasDefaultOverworldSurface = buffer.readBoolean();
-        boolean hasSwampSurface = buffer.readBoolean();
-        boolean hasFrozenOceanSurface = buffer.readBoolean();
-        boolean hasTheEndSurface = buffer.readBoolean();
-        BiomeMesaSurfaceData mesaSurface = helper.readOptional(buffer, null, this::readMesaSurface);
-        BiomeCappedSurfaceData cappedSurface = helper.readOptional(buffer, null, this::readCappedSurface);
-        BiomeNoiseGradientSurfaceData noiseGradientSurface = helper.readOptional(buffer, null, this::readNoiseGradientSurface);
-
-        return new BiomeSurfaceBuilderData(surfaceMaterials, hasDefaultOverworldSurface,hasSwampSurface,
-                hasFrozenOceanSurface, hasTheEndSurface, mesaSurface, cappedSurface, noiseGradientSurface);
+        final BiomeSurfaceBuilderData data = super.readBiomeSurfaceBuilderData(buffer, helper);
+        data.setNoiseGradientSurface(helper.readOptional(buffer, null, this::readBiomeNoiseGradientSurfaceData));
+        return data;
     }
 
-    protected BiomeNoiseGradientSurfaceData readNoiseGradientSurface(ByteBuf buffer, BedrockCodecHelper helper) {
-        List<Integer> nonReplaceableBlocks = new ArrayList<>();
-        helper.readArray(buffer, nonReplaceableBlocks, (buf, h) -> (int) buf.readUnsignedIntLE());
-        List<NoiseBlockSpecifier> gradientBlocks = new ArrayList<>();
-        helper.readArray(buffer, gradientBlocks, (buf, h) ->
-                new NoiseBlockSpecifier(null, 0, 0, 0, (int) buf.readUnsignedIntLE()));
-        String noiseSeedString = helper.readString(buffer);
-        int firstOctave = buffer.readIntLE();
-        List<Float> amplitudes = new ArrayList<>();
-        helper.readArray(buffer, amplitudes, (buf, h) -> buf.readFloatLE());
-        return new BiomeNoiseGradientSurfaceData(nonReplaceableBlocks, gradientBlocks, noiseSeedString, firstOctave, amplitudes);
+    protected void writeBiomeNoiseGradientSurfaceData(ByteBuf buffer, BedrockCodecHelper helper, BiomeNoiseGradientSurfaceData data) {
+        helper.writeArray(buffer, data.getNonreplaceableBlocks(), this::writeBlock);
+        helper.writeArray(buffer, data.getGradientBlocks(), this::writeSerializedNoiseBlockSpecifier);
+        this.writeNoiseDescriptor(buffer, helper, data.getNoise());
+    }
+
+    protected BiomeNoiseGradientSurfaceData readBiomeNoiseGradientSurfaceData(ByteBuf buffer, BedrockCodecHelper helper) {
+        final BiomeNoiseGradientSurfaceData data = new BiomeNoiseGradientSurfaceData();
+        helper.readArray(buffer, data.getNonreplaceableBlocks(), this::readBlock);
+        helper.readArray(buffer, data.getGradientBlocks(), this::readSerializedNoiseBlockSpecifier);
+        data.setNoise(this.readNoiseDescriptor(buffer, helper));
+        return data;
+    }
+
+    protected void writeSerializedNoiseBlockSpecifier(ByteBuf buffer, BedrockCodecHelper helper, SerializedNoiseBlockSpecifier specifier) {
+        this.writeBlock(buffer, helper, specifier.getBlock());
+    }
+
+    protected SerializedNoiseBlockSpecifier readSerializedNoiseBlockSpecifier(ByteBuf buffer, BedrockCodecHelper helper) {
+        final SerializedNoiseBlockSpecifier serializedNoiseBlockSpecifier = new SerializedNoiseBlockSpecifier();
+        serializedNoiseBlockSpecifier.setBlock(this.readBlock(buffer, helper));
+        return serializedNoiseBlockSpecifier;
+    }
+
+    protected void writeNoiseDescriptor(ByteBuf buffer, BedrockCodecHelper helper, NoiseDescriptor descriptor) {
+        helper.writeString(buffer, descriptor.getName());
+        buffer.writeIntLE(descriptor.getFirstOctave());
+        helper.writeArray(buffer, descriptor.getAmplitudes(), ByteBuf::writeFloatLE);
+    }
+
+    protected NoiseDescriptor readNoiseDescriptor(ByteBuf buffer, BedrockCodecHelper helper) {
+        final NoiseDescriptor noiseDescriptor = new NoiseDescriptor();
+        noiseDescriptor.setName(helper.readString(buffer));
+        noiseDescriptor.setFirstOctave(buffer.readIntLE());
+        helper.readArray(buffer, noiseDescriptor.getAmplitudes(), ByteBuf::readFloatLE, 100);
+        return noiseDescriptor;
     }
 }

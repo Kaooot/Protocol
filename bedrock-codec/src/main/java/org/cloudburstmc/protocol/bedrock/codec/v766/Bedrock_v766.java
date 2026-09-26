@@ -1,5 +1,12 @@
 package org.cloudburstmc.protocol.bedrock.codec.v766;
 
+import org.cloudburstmc.protocol.bedrock.data.world.event.ParticleType;
+
+import org.cloudburstmc.protocol.bedrock.data.world.event.LevelEventType;
+import org.cloudburstmc.protocol.bedrock.data.world.event.LevelEvent;
+
+import org.cloudburstmc.protocol.bedrock.data.sound.LevelSoundEvent;
+
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelEventSerializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelSoundEvent1Serializer_v291;
@@ -8,27 +15,27 @@ import org.cloudburstmc.protocol.bedrock.codec.v332.serializer.LevelSoundEventSe
 import org.cloudburstmc.protocol.bedrock.codec.v361.serializer.LevelEventGenericSerializer_v361;
 import org.cloudburstmc.protocol.bedrock.codec.v748.Bedrock_v748;
 import org.cloudburstmc.protocol.bedrock.codec.v766.serializer.*;
-import org.cloudburstmc.protocol.bedrock.data.*;
+import org.cloudburstmc.protocol.bedrock.data.PacketRecipient;
 import org.cloudburstmc.protocol.bedrock.packet.*;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 
 public class Bedrock_v766 extends Bedrock_v748 {
 
-    protected static final TypeMap<SoundEvent> SOUND_EVENTS = Bedrock_v748.SOUND_EVENTS
+    protected static final TypeMap<LevelSoundEvent> SOUND_EVENTS = Bedrock_v748.SOUND_EVENTS
             .toBuilder()
-            .insert(532, SoundEvent.IMITATE_CREAKING)
-            .replace(534, SoundEvent.SPONGE_ABSORB)
-            .insert(536, SoundEvent.BLOCK_CREAKING_HEART_TRAIL)
-            .insert(537, SoundEvent.CREAKING_HEART_SPAWN)
-            .insert(538, SoundEvent.ACTIVATE)
-            .insert(539, SoundEvent.DEACTIVATE)
-            .insert(540, SoundEvent.FREEZE)
-            .insert(541, SoundEvent.UNFREEZE)
-            .insert(542, SoundEvent.OPEN)
-            .insert(543, SoundEvent.OPEN_LONG)
-            .insert(544, SoundEvent.CLOSE)
-            .insert(545, SoundEvent.CLOSE_LONG)
-            .insert(546, SoundEvent.UNDEFINED)
+            .insert(532, LevelSoundEvent.IMITATE_CREAKING)
+            .replace(534, LevelSoundEvent.SPONGE_ABSORB)
+            .insert(536, LevelSoundEvent.BLOCK_CREAKING_HEART_TRAIL)
+            .insert(537, LevelSoundEvent.CREAKING_HEART_SPAWN)
+            .insert(538, LevelSoundEvent.ACTIVATE)
+            .insert(539, LevelSoundEvent.DEACTIVATE)
+            .insert(540, LevelSoundEvent.FREEZE)
+            .insert(541, LevelSoundEvent.UNFREEZE)
+            .insert(542, LevelSoundEvent.OPEN)
+            .insert(543, LevelSoundEvent.OPEN_LONG)
+            .insert(544, LevelSoundEvent.CLOSE)
+            .insert(545, LevelSoundEvent.CLOSE_LONG)
+            .insert(546, LevelSoundEvent.UNDEFINED)
             .build();
 
     protected static final TypeMap<ParticleType> PARTICLE_TYPES = Bedrock_v748.PARTICLE_TYPES.toBuilder()

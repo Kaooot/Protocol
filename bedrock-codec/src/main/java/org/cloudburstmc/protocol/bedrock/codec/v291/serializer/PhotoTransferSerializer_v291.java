@@ -16,21 +16,15 @@ public class PhotoTransferSerializer_v291 implements BedrockPacketSerializer<Pho
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, PhotoTransferPacket packet) {
-        helper.writeString(buffer, packet.getName());
-        byte[] data = packet.getData();
-        VarInts.writeUnsignedInt(buffer, data.length);
-        buffer.writeBytes(data);
-        helper.writeString(buffer, packet.getBookId());
+        helper.writeString(buffer, packet.getPhotoName());
+        helper.writeString(buffer, packet.getPhotoData());
+        helper.writeString(buffer, packet.getBookID());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, PhotoTransferPacket packet) {
-        packet.setName(helper.readString(buffer));
-        int length = VarInts.readUnsignedInt(buffer);
-        Preconditions.checkArgument(buffer.isReadable(length), "Not enough readable bytes");
-        byte[] data = new byte[length];
-        buffer.readBytes(data);
-        packet.setData(data);
-        packet.setBookId(helper.readString(buffer));
+        packet.setPhotoName(helper.readString(buffer));
+        packet.setPhotoData(helper.readString(buffer));
+        packet.setBookID(helper.readString(buffer));
     }
 }

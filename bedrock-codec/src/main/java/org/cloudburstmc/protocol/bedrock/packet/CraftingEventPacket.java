@@ -19,6 +19,7 @@ import java.util.UUID;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class CraftingEventPacket implements BedrockPacket {
+
     private final List<ItemData> inputs = new ObjectArrayList<>();
     private final List<ItemData> outputs = new ObjectArrayList<>();
     private byte containerId;
@@ -43,4 +44,3 @@ public class CraftingEventPacket implements BedrockPacket {
         }
     }
 }
-

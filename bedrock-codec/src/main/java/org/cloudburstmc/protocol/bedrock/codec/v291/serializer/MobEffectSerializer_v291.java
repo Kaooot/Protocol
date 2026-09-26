@@ -12,24 +12,23 @@ import org.cloudburstmc.protocol.common.util.VarInts;
 public class MobEffectSerializer_v291 implements BedrockPacketSerializer<MobEffectPacket> {
     public static final MobEffectSerializer_v291 INSTANCE = new MobEffectSerializer_v291();
 
-
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, MobEffectPacket packet) {
-        VarInts.writeUnsignedLong(buffer, packet.getRuntimeEntityId());
-        buffer.writeByte(packet.getEvent().ordinal());
-        VarInts.writeInt(buffer, packet.getEffectId());
-        VarInts.writeInt(buffer, packet.getAmplifier());
-        buffer.writeBoolean(packet.isParticles());
-        VarInts.writeInt(buffer, packet.getDuration());
+        VarInts.writeUnsignedLong(buffer, packet.getTargetRuntimeID());
+        buffer.writeByte(packet.getEventID().ordinal());
+        VarInts.writeInt(buffer, packet.getEffectID());
+        VarInts.writeInt(buffer, packet.getEffectAmplifier());
+        buffer.writeBoolean(packet.isShowParticles());
+        VarInts.writeInt(buffer, packet.getEffectDurationTicks());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, MobEffectPacket packet) {
-        packet.setRuntimeEntityId(VarInts.readUnsignedLong(buffer));
-        packet.setEvent(MobEffectPacket.Event.values()[buffer.readUnsignedByte()]);
-        packet.setEffectId(VarInts.readInt(buffer));
-        packet.setAmplifier(VarInts.readInt(buffer));
-        packet.setParticles(buffer.readBoolean());
-        packet.setDuration(VarInts.readInt(buffer));
+        packet.setTargetRuntimeID(VarInts.readUnsignedLong(buffer));
+        packet.setEventID(MobEffectPacket.Event.from(buffer.readUnsignedByte()));
+        packet.setEffectID(VarInts.readInt(buffer));
+        packet.setEffectAmplifier(VarInts.readInt(buffer));
+        packet.setShowParticles(buffer.readBoolean());
+        packet.setEffectDurationTicks(VarInts.readInt(buffer));
     }
 }

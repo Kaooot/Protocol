@@ -3,9 +3,9 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.protocol.bedrock.data.CodeBuilderCategoryType;
-import org.cloudburstmc.protocol.bedrock.data.CodeBuilderCodeStatus;
-import org.cloudburstmc.protocol.bedrock.data.CodeBuilderOperationType;
+import org.cloudburstmc.protocol.bedrock.data.education.CodeBuilderExecutionStateCodeStatus;
+import org.cloudburstmc.protocol.bedrock.data.education.CodeBuilderStorageQueryOptionsCategory;
+import org.cloudburstmc.protocol.bedrock.data.education.CodeBuilderStorageQueryOptionsOperation;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
@@ -13,19 +13,12 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @ToString(doNotUseGetters = true)
 public class CodeBuilderSourcePacket implements BedrockPacket {
 
-    private CodeBuilderOperationType operation;
-    private CodeBuilderCategoryType category;
-    /**
-     * @deprecated since v685
-     */
-    private String value;
-    /**
-     * @since v685
-     */
-    private CodeBuilderCodeStatus codeStatus;
+    private CodeBuilderStorageQueryOptionsOperation operation;
+    private CodeBuilderStorageQueryOptionsCategory category;
+    private CodeBuilderExecutionStateCodeStatus codeStatus;
 
     @Override
-    public PacketSignal handle(BedrockPacketHandler handler) {
+    public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
@@ -43,4 +36,3 @@ public class CodeBuilderSourcePacket implements BedrockPacket {
         }
     }
 }
-

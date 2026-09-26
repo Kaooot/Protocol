@@ -39,7 +39,7 @@ public class ServerboundDataStoreSerializer_v898 implements BedrockPacketSeriali
                 throw new IllegalStateException("Invalid data store data type");
         }
 
-        buffer.writeIntLE(packet.getUpdate().getUpdateCount());
+        buffer.writeIntLE(packet.getUpdate().getPropertyUpdateCount());
     }
 
     @Override
@@ -64,6 +64,6 @@ public class ServerboundDataStoreSerializer_v898 implements BedrockPacketSeriali
                 throw new IllegalStateException("Invalid data store data type: " + type);
         }
 
-        packet.getUpdate().setUpdateCount((int) buffer.readUnsignedIntLE());
+        packet.getUpdate().setPropertyUpdateCount((int) buffer.readUnsignedIntLE());
     }
 }

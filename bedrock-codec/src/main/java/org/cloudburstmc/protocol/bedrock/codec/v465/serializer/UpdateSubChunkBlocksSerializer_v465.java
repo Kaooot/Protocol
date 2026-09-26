@@ -5,7 +5,8 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
-import org.cloudburstmc.protocol.bedrock.data.BlockChangeEntry;
+import org.cloudburstmc.protocol.bedrock.data.chunk.UpdateSubChunkBlocksChangedInfo;
+import org.cloudburstmc.protocol.bedrock.data.chunk.UpdateSubChunkNetworkBlockInfo;
 import org.cloudburstmc.protocol.bedrock.packet.UpdateSubChunkBlocksPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -13,37 +14,38 @@ import org.cloudburstmc.protocol.common.util.VarInts;
 public class UpdateSubChunkBlocksSerializer_v465 implements BedrockPacketSerializer<UpdateSubChunkBlocksPacket> {
     public static final UpdateSubChunkBlocksSerializer_v465 INSTANCE = new UpdateSubChunkBlocksSerializer_v465();
 
-    private static final BlockChangeEntry.MessageType[] VALUES = BlockChangeEntry.MessageType.values();
-
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, UpdateSubChunkBlocksPacket packet) {
-        helper.writeBlockPosition(buffer, packet.getPosition());
-        helper.writeArray(buffer, packet.getStandardBlocks(), this::writeBlockChangeEntry);
-        helper.writeArray(buffer, packet.getExtraBlocks(), this::writeBlockChangeEntry);
+        helper.writeBlockPosition(buffer, packet.getSubChunkBlockPosition());
+        UpdateSubChunkBlocksChangedInfo blocksChanged = packet.getBlocksChanged();
+        helper.writeArray(buffer, blocksChanged.getBlocksChangedStandards(), this::writeBlockChangeEntry);
+        helper.writeArray(buffer, blocksChanged.getBlocksChangedExtras(), this::writeBlockChangeEntry);
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, UpdateSubChunkBlocksPacket packet) {
-        packet.setPosition(helper.readBlockPosition(buffer));
-        helper.readArray(buffer, packet.getStandardBlocks(), this::readBlockChangeEntry);
-        helper.readArray(buffer, packet.getExtraBlocks(), this::readBlockChangeEntry);
+        packet.setSubChunkBlockPosition(helper.readBlockPosition(buffer));
+        UpdateSubChunkBlocksChangedInfo blocksChanged = new UpdateSubChunkBlocksChangedInfo();
+        helper.readArray(buffer, blocksChanged.getBlocksChangedStandards(), this::readBlockChangeEntry);
+        helper.readArray(buffer, blocksChanged.getBlocksChangedExtras(), this::readBlockChangeEntry);
+        packet.setBlocksChanged(blocksChanged);
     }
 
-    protected void writeBlockChangeEntry(ByteBuf buffer, BedrockCodecHelper helper, BlockChangeEntry entry) {
-        helper.writeBlockPosition(buffer, entry.getPosition());
+    protected void writeBlockChangeEntry(ByteBuf buffer, BedrockCodecHelper helper, UpdateSubChunkNetworkBlockInfo entry) {
+        helper.writeBlockPosition(buffer, entry.getPos());
         VarInts.writeUnsignedInt(buffer, entry.getDefinition().getRuntimeId());
         VarInts.writeUnsignedInt(buffer, entry.getUpdateFlags());
-        VarInts.writeUnsignedLong(buffer, entry.getMessageEntityId());
-        VarInts.writeUnsignedInt(buffer, entry.getMessageType().ordinal());
+        VarInts.writeUnsignedLong(buffer, entry.getSyncMessageEntityUniqueID());
+        VarInts.writeUnsignedInt(buffer, entry.getSyncMessageMessage());
     }
 
-    protected BlockChangeEntry readBlockChangeEntry(ByteBuf buffer, BedrockCodecHelper helper) {
-        return new BlockChangeEntry(
-                helper.readBlockPosition(buffer),
-                helper.getBlockDefinitions().getDefinition(VarInts.readUnsignedInt(buffer)),
-                VarInts.readUnsignedInt(buffer),
-                VarInts.readUnsignedLong(buffer),
-                VALUES[VarInts.readUnsignedInt(buffer)]
-        );
+    protected UpdateSubChunkNetworkBlockInfo readBlockChangeEntry(ByteBuf buffer, BedrockCodecHelper helper) {
+        UpdateSubChunkNetworkBlockInfo entry = new UpdateSubChunkNetworkBlockInfo();
+        entry.setPos(helper.readBlockPosition(buffer));
+        entry.setDefinition(helper.getBlockDefinitions().getDefinition(VarInts.readUnsignedInt(buffer)));
+        entry.setUpdateFlags(VarInts.readUnsignedInt(buffer));
+        entry.setSyncMessageEntityUniqueID(VarInts.readUnsignedLong(buffer));
+        entry.setSyncMessageMessage(VarInts.readUnsignedInt(buffer));
+        return entry;
     }
 }

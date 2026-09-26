@@ -3,30 +3,26 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.checkerframework.checker.nullness.qual.Nullable;
 import org.cloudburstmc.math.vector.Vector3f;
-import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
+import org.cloudburstmc.protocol.bedrock.data.sound.LevelSoundEvent;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class LevelSoundEventPacket implements BedrockPacket {
-    private SoundEvent sound;
+
+    private LevelSoundEvent sound;
     private Vector3f position;
-    private int extraData;
-    private String identifier;
-    private boolean babySound;
-    private boolean relativeVolumeDisabled;
-    private long entityUniqueId;
-    /**
-     * @since v975
-     */
-    @Nullable
+    private int data;
+    private String actorIdentifier;
+    private boolean isBaby;
+    private boolean isGlobal;
+    private long actorUniqueId;
     private Vector3f fireAtPosition;
 
     @Override
-    public PacketSignal handle(BedrockPacketHandler handler) {
+    public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 

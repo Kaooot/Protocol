@@ -1,11 +1,12 @@
 package org.cloudburstmc.protocol.bedrock.data.clock;
 
-import lombok.Value;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import lombok.Data;
 
 import java.util.List;
 
-@Value
+@Data
 public class SyncStateData implements SyncWorldClocksPayload {
 
-    List<SyncWorldClockStateData> clockData;
+    private final List<SyncWorldClockStateData> clockData = new ObjectArrayList<>();
 }

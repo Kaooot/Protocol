@@ -1,17 +1,21 @@
 package org.cloudburstmc.protocol.bedrock.data.biome;
 
-import lombok.Value;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 
 import java.util.List;
 
-@Value
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
 public class BiomeOverworldGenRulesData {
 
-    List<BiomeWeightedData> hillsTransformations;
-    List<BiomeWeightedData> mutateTransformations;
-    List<BiomeWeightedData> riverTransformations;
-    List<BiomeWeightedData> shoreTransformations;
-    List<BiomeConditionalTransformationData> preHillsEdgeTransformations;
-    List<BiomeConditionalTransformationData> postShoreTransformations;
-    List<BiomeWeightedTemperatureData> climateTransformations;
+    private final List<BiomeWeightedData> hillsTransformations = new ObjectArrayList<>();
+    private final List<BiomeWeightedData> mutateTransformations = new ObjectArrayList<>();
+    private final List<BiomeWeightedData> riverTransformations = new ObjectArrayList<>();
+    private final List<BiomeWeightedData> shoreTransformations = new ObjectArrayList<>();
+    private final List<BiomeConditionalTransformationData> preHillsEdge = new ObjectArrayList<>();
+    private final List<BiomeConditionalTransformationData> postShoreEdge = new ObjectArrayList<>();
+    private final List<BiomeWeightedTemperatureData> climate = new ObjectArrayList<>();
 }

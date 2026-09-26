@@ -15,13 +15,13 @@ public class ModalFormRequestSerializer_v291 implements BedrockPacketSerializer<
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ModalFormRequestPacket packet) {
-        VarInts.writeUnsignedInt(buffer, packet.getFormId());
-        helper.writeString(buffer, packet.getFormData());
+        VarInts.writeUnsignedInt(buffer, packet.getFormID());
+        helper.writeString(buffer, packet.getFormUiJson());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ModalFormRequestPacket packet) {
-        packet.setFormId(VarInts.readUnsignedInt(buffer));
-        packet.setFormData(helper.readString(buffer));
+        packet.setFormID(VarInts.readUnsignedInt(buffer));
+        packet.setFormUiJson(helper.readString(buffer));
     }
 }

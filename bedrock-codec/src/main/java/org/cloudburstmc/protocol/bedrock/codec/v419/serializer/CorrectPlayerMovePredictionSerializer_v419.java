@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
 import org.cloudburstmc.protocol.bedrock.packet.CorrectPlayerMovePredictionPacket;
-import org.cloudburstmc.protocol.common.util.VarInts;
 
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public class CorrectPlayerMovePredictionSerializer_v419 implements BedrockPacketSerializer<CorrectPlayerMovePredictionPacket> {
@@ -15,17 +14,17 @@ public class CorrectPlayerMovePredictionSerializer_v419 implements BedrockPacket
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, CorrectPlayerMovePredictionPacket packet) {
-        helper.writeVector3f(buffer, packet.getPosition());
-        helper.writeVector3f(buffer, packet.getDelta());
+        helper.writeVector3f(buffer, packet.getPos());
+        helper.writeVector3f(buffer, packet.getPosDelta());
         buffer.writeBoolean(packet.isOnGround());
-        VarInts.writeUnsignedLong(buffer, packet.getTick());
+        helper.writePlayerInputTick(buffer, packet.getTick());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, CorrectPlayerMovePredictionPacket packet) {
-        packet.setPosition(helper.readVector3f(buffer));
-        packet.setDelta(helper.readVector3f(buffer));
+        packet.setPos(helper.readVector3f(buffer));
+        packet.setPosDelta(helper.readVector3f(buffer));
         packet.setOnGround(buffer.readBoolean());
-        packet.setTick(VarInts.readUnsignedLong(buffer));
+        packet.setTick(helper.readPlayerInputTick(buffer));
     }
 }

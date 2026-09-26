@@ -7,6 +7,8 @@ import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
 import org.cloudburstmc.protocol.bedrock.packet.ShowStoreOfferPacket;
 
+import java.util.UUID;
+
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ShowStoreOfferSerializer_v291 implements BedrockPacketSerializer<ShowStoreOfferPacket> {
     public static final ShowStoreOfferSerializer_v291 INSTANCE = new ShowStoreOfferSerializer_v291();
@@ -14,13 +16,13 @@ public class ShowStoreOfferSerializer_v291 implements BedrockPacketSerializer<Sh
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ShowStoreOfferPacket packet) {
-        helper.writeString(buffer, packet.getOfferId());
+        helper.writeString(buffer, packet.getOfferId().toString());
         buffer.writeBoolean(packet.isShownToAll());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ShowStoreOfferPacket packet) {
-        packet.setOfferId(helper.readString(buffer));
+        packet.setOfferId(UUID.fromString(helper.readString(buffer)));
         packet.setShownToAll(buffer.readBoolean());
     }
 }

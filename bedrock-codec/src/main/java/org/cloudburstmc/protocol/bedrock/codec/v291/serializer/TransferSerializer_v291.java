@@ -14,13 +14,13 @@ public class TransferSerializer_v291 implements BedrockPacketSerializer<Transfer
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, TransferPacket packet) {
-        helper.writeString(buffer, packet.getAddress());
-        buffer.writeShortLE(packet.getPort());
+        helper.writeString(buffer, packet.getServerAddress());
+        buffer.writeShortLE(packet.getServerPort());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, TransferPacket packet) {
-        packet.setAddress(helper.readString(buffer));
-        packet.setPort(buffer.readShortLE());
+        packet.setServerAddress(helper.readString(buffer));
+        packet.setServerPort(buffer.readShortLE());
     }
 }

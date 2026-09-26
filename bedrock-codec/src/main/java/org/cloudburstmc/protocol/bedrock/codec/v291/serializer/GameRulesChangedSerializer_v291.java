@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
+import org.cloudburstmc.protocol.bedrock.data.world.GameRulesChangedPacketData;
 import org.cloudburstmc.protocol.bedrock.packet.GameRulesChangedPacket;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -13,11 +14,13 @@ public class GameRulesChangedSerializer_v291 implements BedrockPacketSerializer<
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, GameRulesChangedPacket packet) {
-        helper.writeArray(buffer, packet.getGameRules(), helper::writeGameRule);
+        helper.writeArray(buffer, packet.getRuleData().getRulesList(), helper::writeGameRule);
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, GameRulesChangedPacket packet) {
-        helper.readArray(buffer, packet.getGameRules(), helper::readGameRule);
+        GameRulesChangedPacketData ruleData = new GameRulesChangedPacketData();
+        helper.readArray(buffer, ruleData.getRulesList(), helper::readGameRule);
+        packet.setRuleData(ruleData);
     }
 }

@@ -4,8 +4,8 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v776.Bedrock_v776;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataMap;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataMap;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorFlags;
 import org.cloudburstmc.protocol.bedrock.transformer.FlagTransformer;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 import org.junit.jupiter.api.AssertionFailureBuilder;
@@ -18,13 +18,13 @@ import java.util.EnumMap;
 public class FlagSerializationTest {
     private static final BedrockCodecHelper CODEC_HELPER = Bedrock_v776.CODEC.createHelper();
 
-    private static final TypeMap<EntityFlag> ENTITY_FLAGS;
+    private static final TypeMap<ActorFlags> ENTITY_FLAGS;
 
     static {
         try {
             Field field = Bedrock_v776.class.getDeclaredField("ENTITY_FLAGS");
             field.setAccessible(true);
-            ENTITY_FLAGS = (TypeMap<EntityFlag>) field.get(null);
+            ENTITY_FLAGS = (TypeMap<ActorFlags>) field.get(null);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -34,34 +34,34 @@ public class FlagSerializationTest {
 
     @Test
     public void testFlagSerialization() {
-        EntityDataMap dataMap = new EntityDataMap();
-        dataMap.setFlag(EntityFlag.BLOCKING, true); // FLAGS_2
+        ActorDataMap dataMap = new ActorDataMap();
+        dataMap.setFlag(ActorFlags.BLOCKING, true); // FLAGS_2
 
         testSerializationRoundTrip(dataMap);
         verifyTransformerOutput(dataMap, false, true);
 
-        dataMap = new EntityDataMap();
-        dataMap.setFlag(EntityFlag.HAS_GRAVITY, true); // FLAGS
+        dataMap = new ActorDataMap();
+        dataMap.setFlag(ActorFlags.HAS_GRAVITY, true); // FLAGS
 
         testSerializationRoundTrip(dataMap);
         verifyTransformerOutput(dataMap, true, false);
 
-        dataMap = new EntityDataMap();
-        dataMap.setFlag(EntityFlag.HAS_GRAVITY, true); // FLAGS
-        dataMap.setFlag(EntityFlag.BLOCKING, true); // FLAGS_2
+        dataMap = new ActorDataMap();
+        dataMap.setFlag(ActorFlags.HAS_GRAVITY, true); // FLAGS
+        dataMap.setFlag(ActorFlags.BLOCKING, true); // FLAGS_2
 
         testSerializationRoundTrip(dataMap);
         verifyTransformerOutput(dataMap, true, true);
 
-        dataMap = new EntityDataMap();
-        dataMap.setFlag(EntityFlag.HAS_GRAVITY, false); // FLAGS
-        dataMap.setFlag(EntityFlag.BLOCKING, true); // FLAGS_2
+        dataMap = new ActorDataMap();
+        dataMap.setFlag(ActorFlags.HAS_GRAVITY, false); // FLAGS
+        dataMap.setFlag(ActorFlags.BLOCKING, true); // FLAGS_2
 
         testSerializationRoundTrip(dataMap);
         verifyTransformerOutput(dataMap, true, true);
     }
 
-    private void verifyTransformerOutput(EntityDataMap dataMap, boolean shouldHaveFlags, boolean shouldHaveFlags2) {
+    private void verifyTransformerOutput(ActorDataMap dataMap, boolean shouldHaveFlags, boolean shouldHaveFlags2) {
         Long serializedFlags = FLAGS_TRANSFORMER.serialize(CODEC_HELPER, dataMap, dataMap.getFlags());
         if (shouldHaveFlags && serializedFlags == null) {
             AssertionFailureBuilder.assertionFailure()
@@ -93,20 +93,20 @@ public class FlagSerializationTest {
         }
     }
 
-    private void testSerializationRoundTrip(EntityDataMap originalDataMap) {
+    private void testSerializationRoundTrip(ActorDataMap originalDataMap) {
         ByteBuf buffer = Unpooled.buffer();
         CODEC_HELPER.writeEntityData(buffer, originalDataMap);
 
-        EntityDataMap deserializedDataMap = new EntityDataMap();
+        ActorDataMap deserializedDataMap = new ActorDataMap();
         CODEC_HELPER.readEntityData(buffer, deserializedDataMap);
 
         assertFlagsMatch(originalDataMap, deserializedDataMap);
     }
 
-    private void assertFlagsMatch(EntityDataMap expected, EntityDataMap actual) {
-        EnumMap<EntityFlag, Boolean> expectedFlags = expected.getFlags();
-        EnumMap<EntityFlag, Boolean> actualFlags = actual.getFlags();
-        for (EntityFlag flag : EntityFlag.values()) {
+    private void assertFlagsMatch(ActorDataMap expected, ActorDataMap actual) {
+        EnumMap<ActorFlags, Boolean> expectedFlags = expected.getFlags();
+        EnumMap<ActorFlags, Boolean> actualFlags = actual.getFlags();
+        for (ActorFlags flag : ActorFlags.values()) {
             Boolean actualValue = actualFlags.get(flag);
             Boolean expectedValue = expectedFlags.get(flag);
             if (expectedValue == null && Boolean.TRUE.equals(actualValue)) {

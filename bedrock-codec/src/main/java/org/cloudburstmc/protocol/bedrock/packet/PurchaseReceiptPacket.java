@@ -12,13 +12,15 @@ import java.util.List;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class PurchaseReceiptPacket implements BedrockPacket {
-    private final List<String> receipts = new ObjectArrayList<>();
+
+    private final List<String> purchaseReceipts = new ObjectArrayList<>();
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
+    @Override
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.PURCHASE_RECEIPT;
     }
@@ -32,4 +34,3 @@ public class PurchaseReceiptPacket implements BedrockPacket {
         }
     }
 }
-

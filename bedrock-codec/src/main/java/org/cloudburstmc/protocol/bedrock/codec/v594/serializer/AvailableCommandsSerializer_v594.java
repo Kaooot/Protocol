@@ -52,10 +52,6 @@ public class AvailableCommandsSerializer_v594 extends AvailableCommandsSerialize
                     if (!subCommandValues.contains(value.getFirst())) {
                         subCommandValues.add(value.getFirst());
                     }
-
-                    if (!subCommandValues.contains(value.getSecond())) {
-                        subCommandValues.add(value.getSecond());
-                    }
                 }
             }
 
@@ -135,7 +131,7 @@ public class AvailableCommandsSerializer_v594 extends AvailableCommandsSerialize
         helper.writeString(buffer, commandData.getName());
         helper.writeString(buffer, commandData.getDescription());
         this.writeFlags(buffer, commandData.getFlags());
-        CommandPermission permission = commandData.getPermission() == null ? CommandPermission.ANY : commandData.getPermission();
+        CommandPermissionLevel permission = commandData.getPermission() == null ? CommandPermissionLevel.ANY : commandData.getPermission();
         buffer.writeByte(permission.ordinal());
 
         CommandEnumData aliases = commandData.getAliases();
@@ -163,7 +159,7 @@ public class AvailableCommandsSerializer_v594 extends AvailableCommandsSerialize
         String name = helper.readString(buffer);
         String description = helper.readString(buffer);
         Set<CommandData.Flag> flags = this.readFlags(buffer);
-        CommandPermission permissions = PERMISSIONS[buffer.readUnsignedByte()];
+        CommandPermissionLevel permissions = PERMISSIONS[buffer.readUnsignedByte()];
         int aliasIndex = buffer.readIntLE();
         CommandEnumData aliases = aliasIndex == -1 ? null : enums.get(aliasIndex);
 
@@ -191,11 +187,8 @@ public class AvailableCommandsSerializer_v594 extends AvailableCommandsSerialize
             int first = values.indexOf(val.getFirst());
             checkArgument(first > -1, "Invalid enum value detected: %s", val.getFirst());
 
-            int second = values.indexOf(val.getSecond());
-            checkArgument(second > -1, "Invalid enum value detected: %s", val.getSecond());
-
             buf.writeShortLE(first);
-            buf.writeShortLE(second);
+            buf.writeShortLE(val.getSecond());
         });
     }
 
@@ -206,7 +199,7 @@ public class AvailableCommandsSerializer_v594 extends AvailableCommandsSerialize
         helper.readArray(buffer, data.getValues(), buf -> {
             int first = buf.readUnsignedShortLE();
             int second = buf.readUnsignedShortLE();
-            return new ChainedSubCommandData.Value(values.get(first), values.get(second));
+            return new ChainedSubCommandData.Value(values.get(first), second);
         });
         return data;
     }

@@ -1,51 +1,25 @@
 package org.cloudburstmc.protocol.bedrock.data.biome;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Value;
-import org.cloudburstmc.protocol.bedrock.data.CoordinateEvaluationOrder;
-import org.cloudburstmc.protocol.bedrock.data.ExpressionOp;
-import org.cloudburstmc.protocol.common.util.index.Indexable;
-import org.cloudburstmc.protocol.common.util.index.Unindexed;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 
 import java.util.List;
 
-@Value
-@RequiredArgsConstructor(onConstructor_ = { @Deprecated })
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.cloudburstmc.protocol.bedrock.data.structure.CoordinateEvaluationOrder;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class BiomeScatterParamData {
 
-    List<BiomeCoordinateData> coordinates;
-    CoordinateEvaluationOrder evalOrder;
-    ExpressionOp chancePercentType;
-    @Getter(AccessLevel.NONE)
-    transient Indexable<String> chancePercent;
-    int chanceNumerator;
-    int changeDenominator;
-    ExpressionOp iterationsType;
-    @Getter(AccessLevel.NONE)
-    transient Indexable<String> iterations;
-
-    @JsonCreator
-    public BiomeScatterParamData(List<BiomeCoordinateData> coordinates, CoordinateEvaluationOrder evalOrder,
-                                 ExpressionOp chancePercentType, String chancePercent, int chanceNumerator,
-                                 int changeDenominator, ExpressionOp iterationsType, String iterations) {
-        this.coordinates = coordinates;
-        this.evalOrder = evalOrder;
-        this.chancePercentType = chancePercentType;
-        this.chancePercent = new Unindexed<>(chancePercent);
-        this.chanceNumerator = chanceNumerator;
-        this.changeDenominator = changeDenominator;
-        this.iterationsType = iterationsType;
-        this.iterations = new Unindexed<>(iterations);
-    }
-
-    public String getChancePercent() {
-        return chancePercent.get();
-    }
-
-    public String getIterations() {
-        return iterations.get();
-    }
+    private final List<BiomeCoordinateData> coordinates = new ObjectArrayList<>();
+    private CoordinateEvaluationOrder evalOrder;
+    private ExpressionOp chancePercentType;
+    private int chancePercent;
+    private int chanceNumerator;
+    private int chanceDenominator;
+    private ExpressionOp iterationsType;
+    private int iterations;
 }

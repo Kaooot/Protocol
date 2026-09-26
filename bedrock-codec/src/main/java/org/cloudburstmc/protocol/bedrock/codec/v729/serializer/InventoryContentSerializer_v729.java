@@ -15,14 +15,14 @@ public class InventoryContentSerializer_v729 extends InventoryContentSerializer_
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, InventoryContentPacket packet) {
         super.serialize(buffer, helper, packet);
-        helper.writeFullContainerName(buffer, packet.getContainerNameData());
+        helper.writeFullContainerName(buffer, packet.getFullContainerName());
         VarInts.writeUnsignedInt(buffer, packet.getDynamicContainerSize());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, InventoryContentPacket packet) {
         super.deserialize(buffer, helper, packet);
-        packet.setContainerNameData(helper.readFullContainerName(buffer));
+        packet.setFullContainerName(helper.readFullContainerName(buffer));
         packet.setDynamicContainerSize(VarInts.readUnsignedInt(buffer));
     }
 }

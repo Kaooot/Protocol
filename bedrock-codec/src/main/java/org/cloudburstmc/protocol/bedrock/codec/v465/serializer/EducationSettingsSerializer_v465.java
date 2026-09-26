@@ -5,46 +5,75 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v407.serializer.EducationSettingsSerializer_v407;
-import org.cloudburstmc.protocol.bedrock.packet.EducationSettingsPacket;
+import org.cloudburstmc.protocol.bedrock.data.education.ExternalLinkSettings;
+import org.cloudburstmc.protocol.bedrock.data.education.AgentCapabilities;
+import org.cloudburstmc.protocol.bedrock.data.education.EducationLevelSettings;
 import org.cloudburstmc.protocol.common.util.OptionalBoolean;
 
-import java.util.Optional;
-
-@SuppressWarnings("OptionalGetWithoutIsPresent")
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public class EducationSettingsSerializer_v465 extends EducationSettingsSerializer_v407 {
     public static final EducationSettingsSerializer_v465 INSTANCE = new EducationSettingsSerializer_v465();
 
     @Override
-    public void serialize(ByteBuf buffer, BedrockCodecHelper helper, EducationSettingsPacket packet) {
-        helper.writeString(buffer, packet.getCodeBuilderUri());
-        helper.writeString(buffer, packet.getCodeBuilderTitle());
-        buffer.writeBoolean(packet.isCanResizeCodeBuilder());
-        buffer.writeBoolean(packet.isDisableLegacyTitle());
-        helper.writeString(buffer, packet.getPostProcessFilter());
-        helper.writeString(buffer, packet.getScreenshotBorderPath());
-        helper.writeOptional(buffer, OptionalBoolean::isPresent, packet.getEntityCapabilities(),
-                (byteBuf, optional) -> byteBuf.writeBoolean(optional.getAsBoolean()));
-        helper.writeOptional(buffer, Optional::isPresent, packet.getOverrideUri(),
-                (byteBuf, optional) -> helper.writeString(byteBuf, optional.get()));
-        buffer.writeBoolean(packet.isQuizAttached());
-        helper.writeOptional(buffer, OptionalBoolean::isPresent, packet.getExternalLinkSettings(),
-                (byteBuf, optional) -> byteBuf.writeBoolean(optional.getAsBoolean()));
+    protected void writeEducationLevelSettings(ByteBuf buffer, BedrockCodecHelper helper, EducationLevelSettings settings) {
+        helper.writeString(buffer, settings.getCodeBuilderDefaultURI());
+        helper.writeString(buffer, settings.getCodeBuilderTitle());
+        buffer.writeBoolean(settings.isCanResizeCodeBuilder());
+        buffer.writeBoolean(settings.isDisableLegacyTitleBar());
+        helper.writeString(buffer, settings.getPostProcessFilter());
+        helper.writeString(buffer, settings.getScreenshotBorderResourcePath());
+        this.writeAgentCapabilities(buffer, helper, settings.getAgentCapabilities());
+        helper.writeOptionalNull(buffer, settings.getLocalSettings(), this::writeEducationLocalLevelSettings);
+        buffer.writeBoolean(settings.isDeprecatedAlwaysFalse());
+        helper.writeOptionalNull(buffer, settings.getExternalLinkSettings(), this::writeExternalLinkSettings);
     }
 
     @Override
-    public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, EducationSettingsPacket packet) {
-        packet.setCodeBuilderUri(helper.readString(buffer));
-        packet.setCodeBuilderTitle(helper.readString(buffer));
-        packet.setCanResizeCodeBuilder(buffer.readBoolean());
-        packet.setDisableLegacyTitle(buffer.readBoolean());
-        packet.setPostProcessFilter(helper.readString(buffer));
-        packet.setScreenshotBorderPath(helper.readString(buffer));
-        packet.setEntityCapabilities(helper.readOptional(buffer, OptionalBoolean.empty(),
-                byteBuf -> OptionalBoolean.of(buffer.readBoolean())));
-        packet.setOverrideUri(helper.readOptional(buffer, Optional.empty(), byteBuf -> Optional.of(helper.readString(byteBuf))));
-        packet.setQuizAttached(buffer.readBoolean());
-        packet.setExternalLinkSettings(helper.readOptional(buffer, OptionalBoolean.empty(),
-                byteBuf -> OptionalBoolean.of(buffer.readBoolean())));
+    protected EducationLevelSettings readEducationLevelSettings(ByteBuf buffer, BedrockCodecHelper helper) {
+        final EducationLevelSettings settings = new EducationLevelSettings();
+        settings.setCodeBuilderDefaultURI(helper.readString(buffer));
+        settings.setCodeBuilderTitle(helper.readString(buffer));
+        settings.setCanResizeCodeBuilder(buffer.readBoolean());
+        settings.setDisableLegacyTitleBar(buffer.readBoolean());
+        settings.setPostProcessFilter(helper.readString(buffer));
+        settings.setScreenshotBorderResourcePath(helper.readString(buffer));
+        settings.setAgentCapabilities(this.readAgentCapabilities(buffer, helper));
+        settings.setLocalSettings(helper.readOptional(buffer, null, this::readEducationLocalLevelSettings));
+        settings.setDeprecatedAlwaysFalse(buffer.readBoolean());
+        settings.setExternalLinkSettings(helper.readOptional(buffer, null, this::readExternalLinkSettings));
+        return settings;
+    }
+
+    protected void writeAgentCapabilities(ByteBuf buffer, BedrockCodecHelper helper, AgentCapabilities agentCapabilities) {
+        helper.writeOptional(
+                buffer,
+                OptionalBoolean::isPresent,
+                agentCapabilities.getCanModifyBlocks(),
+                (buf, optional) -> buf.writeBoolean(optional.getAsBoolean())
+        );
+    }
+
+    protected AgentCapabilities readAgentCapabilities(ByteBuf buffer, BedrockCodecHelper helper) {
+        final AgentCapabilities agentCapabilities = new AgentCapabilities();
+        agentCapabilities.setCanModifyBlocks(
+                helper.readOptional(
+                        buffer,
+                        OptionalBoolean.empty(),
+                        buf -> OptionalBoolean.of(buf.readBoolean())
+                )
+        );
+        return agentCapabilities;
+    }
+
+    protected void writeExternalLinkSettings(ByteBuf buffer, BedrockCodecHelper helper, ExternalLinkSettings settings) {
+        helper.writeString(buffer, settings.getURL());
+        helper.writeString(buffer, settings.getDisplayName());
+    }
+
+    protected ExternalLinkSettings readExternalLinkSettings(ByteBuf buffer, BedrockCodecHelper helper) {
+        final ExternalLinkSettings settings = new ExternalLinkSettings();
+        settings.setURL(helper.readString(buffer));
+        settings.setDisplayName(helper.readString(buffer));
+        return settings;
     }
 }

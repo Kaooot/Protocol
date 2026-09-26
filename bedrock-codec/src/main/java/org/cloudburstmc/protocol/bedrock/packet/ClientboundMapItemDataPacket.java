@@ -1,13 +1,17 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
+import it.unimi.dsi.fastutil.ints.IntArrayList;
+import it.unimi.dsi.fastutil.ints.IntList;
+import it.unimi.dsi.fastutil.longs.LongArrayList;
 import it.unimi.dsi.fastutil.longs.LongList;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.checkerframework.checker.nullness.qual.Nullable;
 import org.cloudburstmc.math.vector.Vector3i;
-import org.cloudburstmc.protocol.bedrock.data.MapDecoration;
-import org.cloudburstmc.protocol.bedrock.data.MapTrackedObject;
+import org.cloudburstmc.protocol.bedrock.data.map.MapDecoration;
+import org.cloudburstmc.protocol.bedrock.data.map.MapItemTrackedActorUniqueId;
+import org.cloudburstmc.protocol.bedrock.data.world.DimensionType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 import java.util.List;
@@ -16,38 +20,27 @@ import java.util.List;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class ClientboundMapItemDataPacket implements BedrockPacket {
-    @Nullable
-    private LongList trackedEntityIds;
-    @Nullable
-    private List<MapTrackedObject> trackedObjects;
-    @Nullable
-    private List<MapDecoration> decorations;
-    private long uniqueMapId;
-    private int dimensionId;
-    private boolean locked;
-    /**
-     * The world-relative position of the map's origin.
-     *
-     * @since 1.19.20
-     */
-    private Vector3i origin;
-    @Nullable
-    private Byte scale;
-    @Nullable
-    private Integer height;
-    @Nullable
+
+    private long mapID;
+    private DimensionType dimension;
+    private boolean isLocked;
+    private Vector3i mapOrigin;
+    private LongList creationMapIDs = new LongArrayList();
+    private Integer scale;
+    private List<MapItemTrackedActorUniqueId> trackedActorIDs = new ObjectArrayList<>();
+    private List<MapDecoration> decorations = new ObjectArrayList<>();
     private Integer width;
-    @Nullable
-    private Integer xOffset;
-    @Nullable
-    private Integer yOffset;
-    private int[] colors;
+    private Integer height;
+    private Integer startX;
+    private Integer startY;
+    private IntList pixels = new IntArrayList();
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
+    @Override
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.CLIENTBOUND_MAP_ITEM_DATA;
     }
@@ -61,4 +54,3 @@ public class ClientboundMapItemDataPacket implements BedrockPacket {
         }
     }
 }
-

@@ -1,15 +1,19 @@
 package org.cloudburstmc.protocol.bedrock.codec.v2168.serializer;
 
 import io.netty.buffer.ByteBuf;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v975.serializer.DimensionDataSerializer_v975;
+import org.cloudburstmc.protocol.bedrock.data.world.GeneratorType;
 import org.cloudburstmc.protocol.bedrock.data.definitions.DimensionDefinition;
+import org.cloudburstmc.protocol.bedrock.data.world.DimensionType;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
 import java.util.UUID;
 
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class DimensionDataSerializer_v2168 extends DimensionDataSerializer_v975 {
-
     public static final DimensionDataSerializer_v2168 INSTANCE = new DimensionDataSerializer_v2168();
 
     @Override
@@ -20,12 +24,12 @@ public class DimensionDataSerializer_v2168 extends DimensionDataSerializer_v975 
 
     @Override
     protected DimensionDefinition readDefinition(ByteBuf buffer, BedrockCodecHelper helper) {
-        String id = helper.readString(buffer);
-        int maximumHeight = VarInts.readInt(buffer);
-        int minimumHeight = VarInts.readInt(buffer);
-        int generatorType = VarInts.readInt(buffer);
-        int dimensionType = VarInts.readInt(buffer);
-        UUID packId = helper.readUuid(buffer);
-        return new DimensionDefinition(id, maximumHeight, minimumHeight, generatorType, dimensionType, packId, null);
+        final String id = helper.readStringMaxLen(buffer, 256);
+        final int maximumHeight = VarInts.readInt(buffer);
+        final int minimumHeight = VarInts.readInt(buffer);
+        final GeneratorType generatorType = GeneratorType.from(VarInts.readInt(buffer));
+        final DimensionType dimensionType = DimensionType.from(VarInts.readInt(buffer));
+        final UUID packId = helper.readUuid(buffer);
+        return new DimensionDefinition(id, maximumHeight, minimumHeight, generatorType, dimensionType, packId, null, 0, false);
     }
 }

@@ -1,21 +1,23 @@
 package org.cloudburstmc.protocol.bedrock.data.biome;
 
-import lombok.Value;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Value
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class BiomeSurfaceBuilderData {
 
-    @Nullable
-    BiomeSurfaceMaterialData surfaceMaterials;
-    boolean hasDefaultOverworldSurface;
-    boolean hasSwampSurface;
-    boolean hasFrozenOceanSurface;
-    boolean hasTheEndSurface;
-    @Nullable
-    BiomeMesaSurfaceData mesaSurface;
-    @Nullable
-    BiomeCappedSurfaceData cappedSurface;
-    @Nullable
-    BiomeNoiseGradientSurfaceData noiseGradientSurface;
+    private BiomeSurfaceMaterialData surfaceMaterials;
+    /**
+     * @since v844
+     */
+    private boolean hasDefaultOverworldSurface;
+    private boolean hasSwampSurface;
+    private boolean hasFrozenOceanSurface;
+    private boolean hasTheEndSurface;
+    private BiomeMesaSurfaceData mesaSurface;
+    private BiomeCappedSurfaceData cappedSurface;
+    private BiomeNoiseGradientSurfaceData noiseGradientSurface;
 }

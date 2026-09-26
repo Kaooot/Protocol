@@ -1,7 +1,14 @@
 package org.cloudburstmc.protocol.bedrock.codec.v527;
 
+import org.cloudburstmc.protocol.bedrock.data.world.event.ParticleType;
+
+import org.cloudburstmc.protocol.bedrock.data.world.event.LevelEventType;
+import org.cloudburstmc.protocol.bedrock.data.world.event.LevelEvent;
+
+import org.cloudburstmc.protocol.bedrock.data.sound.LevelSoundEvent;
+
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
-import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
+import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelEventSerializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelSoundEvent1Serializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v313.serializer.LevelSoundEvent2Serializer_v313;
@@ -11,11 +18,11 @@ import org.cloudburstmc.protocol.bedrock.codec.v448.serializer.AvailableCommands
 import org.cloudburstmc.protocol.bedrock.codec.v503.BedrockCodecHelper_v503;
 import org.cloudburstmc.protocol.bedrock.codec.v503.Bedrock_v503;
 import org.cloudburstmc.protocol.bedrock.codec.v527.serializer.*;
-import org.cloudburstmc.protocol.bedrock.data.*;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandParam;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataFormat;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataFormat;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataTypes;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorFlags;
+import org.cloudburstmc.protocol.bedrock.data.PacketRecipient;
 import org.cloudburstmc.protocol.bedrock.packet.*;
 import org.cloudburstmc.protocol.bedrock.transformer.BooleanTransformer;
 import org.cloudburstmc.protocol.bedrock.transformer.FlagTransformer;
@@ -24,27 +31,27 @@ import org.cloudburstmc.protocol.common.util.TypeMap;
 
 public class Bedrock_v527 extends Bedrock_v503 {
 
-    protected static final TypeMap<EntityFlag> ENTITY_FLAGS = Bedrock_v503.ENTITY_FLAGS.toBuilder()
-            .insert(106, EntityFlag.SONIC_BOOM)
+    protected static final TypeMap<ActorFlags> ENTITY_FLAGS = Bedrock_v503.ENTITY_FLAGS.toBuilder()
+            .insert(106, ActorFlags.SONIC_BOOM)
             .build();
 
     protected static final TypeMap<ParticleType> PARTICLE_TYPES = Bedrock_v503.PARTICLE_TYPES.toBuilder()
             .insert(84, ParticleType.SONIC_EXPLOSION)
             .build();
 
-    protected static final EntityDataTypeMap ENTITY_DATA = Bedrock_v503.ENTITY_DATA.toBuilder()
-            .update(EntityDataTypes.FLAGS, new FlagTransformer(ENTITY_FLAGS, 0))
-            .update(EntityDataTypes.FLAGS_2, new FlagTransformer(ENTITY_FLAGS, 1))
-            .update(EntityDataTypes.AREA_EFFECT_CLOUD_PARTICLE, new TypeMapTransformer<>(PARTICLE_TYPES))
-            .insert(EntityDataTypes.PLAYER_LAST_DEATH_POS, 128, EntityDataFormat.VECTOR3I)
-            .insert(EntityDataTypes.PLAYER_LAST_DEATH_DIMENSION, 129, EntityDataFormat.INT)
-            .insert(EntityDataTypes.PLAYER_HAS_DIED, 130, EntityDataFormat.BYTE, BooleanTransformer.INSTANCE)
+    protected static final ActorDataTypeMap ENTITY_DATA = Bedrock_v503.ENTITY_DATA.toBuilder()
+            .update(ActorDataTypes.FLAGS, new FlagTransformer(ENTITY_FLAGS, 0))
+            .update(ActorDataTypes.FLAGS_2, new FlagTransformer(ENTITY_FLAGS, 1))
+            .update(ActorDataTypes.AREA_EFFECT_CLOUD_PARTICLE, new TypeMapTransformer<>(PARTICLE_TYPES))
+            .insert(ActorDataTypes.PLAYER_LAST_DEATH_POS, 128, ActorDataFormat.VECTOR3I)
+            .insert(ActorDataTypes.PLAYER_LAST_DEATH_DIMENSION, 129, ActorDataFormat.INT)
+            .insert(ActorDataTypes.PLAYER_HAS_DIED, 130, ActorDataFormat.BYTE, BooleanTransformer.INSTANCE)
             .build();
 
     protected static final TypeMap<CommandParam> COMMAND_PARAMS = Bedrock_v503.COMMAND_PARAMS.toBuilder()
             .shift(7, 1)
             .insert(7, CommandParam.COMPARE_OPERATOR)
-            .insert(23, CommandParam.INT_RANGE)
+            .insert(23, CommandParam.INTEGER_RANGE)
             .build();
 
     protected static final TypeMap<LevelEventType> LEVEL_EVENTS = Bedrock_v503.LEVEL_EVENTS.toBuilder()
@@ -52,23 +59,23 @@ public class Bedrock_v527 extends Bedrock_v503 {
             .insert(LEVEL_EVENT_PARTICLE_TYPE, PARTICLE_TYPES)
             .build();
 
-    protected static final TypeMap<SoundEvent> SOUND_EVENTS = Bedrock_v503.SOUND_EVENTS.toBuilder()
+    protected static final TypeMap<LevelSoundEvent> SOUND_EVENTS = Bedrock_v503.SOUND_EVENTS.toBuilder()
             .remove(423)
-            .insert(426, SoundEvent.IMITATE_WARDEN)
-            .insert(427, SoundEvent.LISTENING_ANGRY)
-            .insert(428, SoundEvent.ITEM_GIVEN)
-            .insert(429, SoundEvent.ITEM_TAKEN)
-            .insert(430, SoundEvent.DISAPPEARED)
-            .insert(431, SoundEvent.REAPPEARED)
-            .insert(433, SoundEvent.FROGSPAWN_HATCHED)
-            .insert(434, SoundEvent.LAY_SPAWN)
-            .insert(435, SoundEvent.FROGSPAWN_BREAK)
-            .insert(436, SoundEvent.SONIC_BOOM)
-            .insert(437, SoundEvent.SONIC_CHARGE)
-            .insert(438, SoundEvent.ITEM_THROWN)
-            .insert(439, SoundEvent.RECORD_5)
-            .insert(440, SoundEvent.CONVERT_TO_FROG)
-            .insert(441, SoundEvent.UNDEFINED)
+            .insert(426, LevelSoundEvent.IMITATE_WARDEN)
+            .insert(427, LevelSoundEvent.LISTENING_ANGRY)
+            .insert(428, LevelSoundEvent.ITEM_GIVEN)
+            .insert(429, LevelSoundEvent.ITEM_TAKEN)
+            .insert(430, LevelSoundEvent.DISAPPEARED)
+            .insert(431, LevelSoundEvent.REAPPEARED)
+            .insert(433, LevelSoundEvent.FROGSPAWN_HATCHED)
+            .insert(434, LevelSoundEvent.LAY_SPAWN)
+            .insert(435, LevelSoundEvent.FROGSPAWN_BREAK)
+            .insert(436, LevelSoundEvent.SONIC_BOOM)
+            .insert(437, LevelSoundEvent.SONIC_CHARGE)
+            .insert(438, LevelSoundEvent.ITEM_THROWN)
+            .insert(439, LevelSoundEvent.RECORD_5)
+            .insert(440, LevelSoundEvent.CONVERT_TO_FROG)
+            .insert(441, LevelSoundEvent.UNDEFINED)
             .build();
 
     public static final BedrockCodec CODEC = Bedrock_v503.CODEC.toBuilder()

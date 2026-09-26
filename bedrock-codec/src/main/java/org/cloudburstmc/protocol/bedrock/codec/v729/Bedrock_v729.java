@@ -7,18 +7,18 @@ import org.cloudburstmc.protocol.bedrock.codec.v332.serializer.LevelSoundEventSe
 import org.cloudburstmc.protocol.bedrock.codec.v712.Bedrock_v712;
 import org.cloudburstmc.protocol.bedrock.codec.v729.serializer.*;
 import org.cloudburstmc.protocol.bedrock.data.PacketRecipient;
-import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
+import org.cloudburstmc.protocol.bedrock.data.sound.LevelSoundEvent;
 import org.cloudburstmc.protocol.bedrock.packet.*;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 
 public class Bedrock_v729 extends Bedrock_v712 {
 
-    protected static final TypeMap<SoundEvent> SOUND_EVENTS = Bedrock_v712.SOUND_EVENTS
+    protected static final TypeMap<LevelSoundEvent> SOUND_EVENTS = Bedrock_v712.SOUND_EVENTS
             .toBuilder()
-            .replace(531, SoundEvent.IMITATE_DROWNED)
+            .replace(531, LevelSoundEvent.IMITATE_DROWNED)
             // skip 532
-            .insert(533, SoundEvent.BUNDLE_INSERT_FAILED)
-            .insert(534, SoundEvent.UNDEFINED)
+            .insert(533, LevelSoundEvent.BUNDLE_INSERT_FAILED)
+            .insert(534, LevelSoundEvent.UNDEFINED)
             .build();
 
     public static final BedrockCodec CODEC = Bedrock_v712.CODEC.toBuilder()

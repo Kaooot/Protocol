@@ -3,17 +3,10 @@ package org.cloudburstmc.protocol.bedrock.codec.v924.serializer;
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
-import org.cloudburstmc.protocol.bedrock.data.camera.CameraEase;
-import org.cloudburstmc.protocol.bedrock.data.camera.CameraSplineDefinition;
-import org.cloudburstmc.protocol.bedrock.data.camera.CameraSplineInstruction;
-import org.cloudburstmc.protocol.bedrock.data.camera.CameraSplineType;
+import org.cloudburstmc.protocol.bedrock.data.camera.*;
 import org.cloudburstmc.protocol.bedrock.packet.CameraSplinePacket;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public class CameraSplineSerializer_v924 implements BedrockPacketSerializer<CameraSplinePacket> {
@@ -22,51 +15,69 @@ public class CameraSplineSerializer_v924 implements BedrockPacketSerializer<Came
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, CameraSplinePacket packet) {
-        helper.writeArray(buffer, packet.getSplines(), (buf, spline) -> {
-            helper.writeString(buf, spline.getName());
-            buf.writeFloatLE(spline.getInstruction().getTotalTime());
-            helper.writeString(buf, spline.getInstruction().getType().getSerializeName());
-            helper.writeArray(buf, spline.getInstruction().getCurve(), helper::writeVector3f);
-            helper.writeArray(buf, spline.getInstruction().getProgressKeyFrames(), (buf2, frame) -> {
-                buf2.writeFloatLE(frame.getValue());
-                buf2.writeFloatLE(frame.getTime());
-                helper.writeString(buf2, frame.getEase().getSerializeName());
-            });
-            helper.writeArray(buf, spline.getInstruction().getRotationOption(), (buf2, rotationOption) -> {
-                helper.writeVector3f(buf2, rotationOption.getKeyFrameValues());
-                buf2.writeFloatLE(rotationOption.getKeyFrameTimes());
-                helper.writeString(buf2, rotationOption.getEase().getSerializeName());
-            });
-        });
+        helper.writeArray(buffer, packet.getCameraDataSplines(), this::writeCameraSplineDefinition);
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, CameraSplinePacket packet) {
-        List<CameraSplineDefinition> splines = new ArrayList<>();
+        helper.readArray(buffer, packet.getCameraDataSplines(), this::readCameraSplineDefinition);
+    }
 
-        helper.readArray(buffer, splines, (buf, h) -> {
-            String name = helper.readString(buf);
-            float totalTime = buf.readFloatLE();
-            CameraSplineType type = CameraSplineType.fromName(helper.readString(buf));
-            List<Vector3f> curve = new ArrayList<>();
-            helper.readArray(buf, curve, helper::readVector3f);
-            List<CameraSplineInstruction.SplineProgressOption> progressKeyFrames = new ArrayList<>();
-            helper.readArray(buf, progressKeyFrames, buf2 -> {
-                float value = buf2.readFloatLE();
-                float time = buf2.readFloatLE();
-                CameraEase ease = CameraEase.fromName(helper.readString(buf2));
-                return new CameraSplineInstruction.SplineProgressOption(value, time, ease);
-            });
-            List<CameraSplineInstruction.SplineRotationOption> rotationOption = new ArrayList<>();
-            helper.readArray(buf, rotationOption, buf2 -> {
-                Vector3f keyFrameValues = helper.readVector3f(buf2);
-                float keyFrameTimes = buf2.readFloatLE();
-                CameraEase ease = CameraEase.fromName(helper.readString(buf2));
-                return new CameraSplineInstruction.SplineRotationOption(keyFrameValues, keyFrameTimes, ease);
-            });
-            return new CameraSplineDefinition(name, new CameraSplineInstruction(totalTime, type, curve, progressKeyFrames, rotationOption));
-        });
+    protected void writeCameraSplineDefinition(ByteBuf buffer, BedrockCodecHelper helper, CameraSplineDefinition definition) {
+        helper.writeString(buffer, definition.getName());
+        buffer.writeFloatLE(definition.getTotalTime());
+        helper.writeString(buffer, definition.getSplineType().getSerializeName());
+        helper.writeArray(buffer, definition.getControlPoints(), this::writeCameraSplineControlPoint);
+        helper.writeArray(buffer, definition.getProgressKeyFrames(), this::writeCameraSplineProgressKeyFrame);
+        helper.writeArray(buffer, definition.getRotationKeyFrames(), this::writeCameraSplineRotationKeyFrame);
+    }
 
-        packet.setSplines(splines);
+    protected CameraSplineDefinition readCameraSplineDefinition(ByteBuf buffer, BedrockCodecHelper helper) {
+        final CameraSplineDefinition definition = new CameraSplineDefinition();
+        definition.setName(helper.readString(buffer));
+        definition.setTotalTime(buffer.readFloatLE());
+        definition.setSplineType(CameraSplineType.fromName(helper.readString(buffer)));
+        helper.readArray(buffer, definition.getControlPoints(), this::readCameraSplineControlPoint);
+        helper.readArray(buffer, definition.getProgressKeyFrames(), this::readCameraSplineProgressKeyFrame);
+        helper.readArray(buffer, definition.getRotationKeyFrames(), this::readCameraSplineRotationKeyFrame);
+        return definition;
+    }
+
+    protected void writeCameraSplineControlPoint(ByteBuf buffer, BedrockCodecHelper helper, CameraSplineControlPoint controlPoint) {
+        helper.writeVector3f(buffer, controlPoint.getPosition());
+    }
+
+    protected CameraSplineControlPoint readCameraSplineControlPoint(ByteBuf buffer, BedrockCodecHelper helper) {
+        final CameraSplineControlPoint controlPoint = new CameraSplineControlPoint();
+        controlPoint.setPosition(helper.readVector3f(buffer));
+        return controlPoint;
+    }
+
+    protected void writeCameraSplineProgressKeyFrame(ByteBuf buffer, BedrockCodecHelper helper, CameraSplineProgressKeyFrame progressKeyFrame) {
+        buffer.writeFloatLE(progressKeyFrame.getProgress());
+        buffer.writeFloatLE(progressKeyFrame.getTime());
+        helper.writeString(buffer, progressKeyFrame.getEasing().getSerializeName());
+    }
+
+    private CameraSplineProgressKeyFrame readCameraSplineProgressKeyFrame(ByteBuf buffer, BedrockCodecHelper helper) {
+        final CameraSplineProgressKeyFrame progressKeyFrame = new CameraSplineProgressKeyFrame();
+        progressKeyFrame.setProgress(buffer.readFloatLE());
+        progressKeyFrame.setTime(buffer.readFloatLE());
+        progressKeyFrame.setEasing(EasingFunction.fromName(helper.readString(buffer)));
+        return progressKeyFrame;
+    }
+
+    protected void writeCameraSplineRotationKeyFrame(ByteBuf buffer, BedrockCodecHelper helper, CameraSplineRotationKeyFrame keyFrame) {
+        helper.writeVector3f(buffer, keyFrame.getRotation());
+        buffer.writeFloatLE(keyFrame.getTime());
+        helper.writeString(buffer, keyFrame.getEasing().getSerializeName());
+    }
+
+    private CameraSplineRotationKeyFrame readCameraSplineRotationKeyFrame(ByteBuf buffer, BedrockCodecHelper helper) {
+        final CameraSplineRotationKeyFrame rotationKeyFrame = new CameraSplineRotationKeyFrame();
+        rotationKeyFrame.setRotation(helper.readVector3f(buffer));
+        rotationKeyFrame.setTime(buffer.readFloatLE());
+        rotationKeyFrame.setEasing(EasingFunction.fromName(helper.readString(buffer)));
+        return rotationKeyFrame;
     }
 }

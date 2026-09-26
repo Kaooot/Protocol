@@ -1,0 +1,77 @@
+package org.cloudburstmc.protocol.bedrock.data.player.input;
+
+public enum PlayerAuthInputData {
+
+    ASCEND,
+    DESCEND,
+    JUMP_DOWN,
+    SPRINT_DOWN,
+    CHANGE_HEIGHT,
+    JUMPING,
+    AUTO_JUMPING_IN_WATER,
+    SNEAKING,
+    SNEAK_DOWN,
+    UP,
+    DOWN,
+    LEFT,
+    RIGHT,
+    UP_LEFT,
+    UP_RIGHT,
+    WANT_UP,
+    WANT_DOWN,
+    WANT_DOWN_SLOW,
+    WANT_UP_SLOW,
+    SPRINTING,
+    ASCEND_BLOCK,
+    DESCEND_BLOCK,
+    SNEAK_TOGGLE_DOWN,
+    PERSIST_SNEAK,
+    START_SPRINTING,
+    STOP_SPRINTING,
+    START_SNEAKING,
+    STOP_SNEAKING,
+    START_SWIMMING,
+    STOP_SWIMMING,
+    START_JUMPING,
+    START_GLIDING,
+    STOP_GLIDING,
+    PERFORM_ITEM_INTERACTION,
+    PERFORM_BLOCK_ACTIONS,
+    PERFORM_ITEM_STACK_REQUEST,
+    HANDLED_TELEPORT,
+    EMOTING,
+    MISSED_SWING,
+    START_CRAWLING,
+    STOP_CRAWLING,
+    START_FLYING,
+    STOP_FLYING,
+    CLIENT_ACK_SERVER_DATA,
+    IS_IN_CLIENT_PREDICTED_VEHICLE,
+    PADDLING_LEFT,
+    PADDLING_RIGHT,
+    BLOCK_BREAKING_DELAY_ENABLED,
+    HORIZONTAL_COLLISION,
+    VERTICAL_COLLISION,
+    DOWN_LEFT,
+    DOWN_RIGHT,
+    START_USING_ITEM,
+    START_SPIN_ATTACK,
+    STOP_SPIN_ATTACK,
+    IS_HOTBAR_ONLY_TOUCH,
+    JUMP_RELEASED_RAW,
+    JUMP_PRESSED_RAW,
+    JUMP_CURRENT_RAW,
+    SNEAK_RELEASED_RAW,
+    SNEAK_PRESSED_RAW,
+    SNEAK_CURRENT_RAW,
+    INTERNAL_UPDATE;
+
+    private static final PlayerAuthInputData[] VALUES = values();
+
+    public static PlayerAuthInputData from(int ordinal) {
+        if (ordinal >= 0 && ordinal < VALUES.length) {
+            return VALUES[ordinal];
+        }
+        throw new UnsupportedOperationException("Detected unknown PlayerAuthInputData ID: " + ordinal);
+    }
+}

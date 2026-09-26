@@ -5,10 +5,15 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
+/**
+ * @deprecated
+ */
+@Deprecated
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class PhotoInfoRequestPacket implements BedrockPacket {
+
     private long photoId;
 
     @Override
@@ -30,4 +35,3 @@ public class PhotoInfoRequestPacket implements BedrockPacket {
         }
     }
 }
-

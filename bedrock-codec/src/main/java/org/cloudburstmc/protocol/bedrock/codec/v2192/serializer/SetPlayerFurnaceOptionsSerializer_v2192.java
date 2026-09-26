@@ -5,7 +5,9 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
-import org.cloudburstmc.protocol.bedrock.data.FurnaceOptions;
+import org.cloudburstmc.protocol.bedrock.data.inventory.FurnaceLayout;
+import org.cloudburstmc.protocol.bedrock.data.inventory.FurnaceLeftTabIndex;
+import org.cloudburstmc.protocol.bedrock.data.inventory.FurnaceOptions;
 import org.cloudburstmc.protocol.bedrock.packet.SetPlayerFurnaceOptionsPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -16,27 +18,27 @@ public class SetPlayerFurnaceOptionsSerializer_v2192 implements BedrockPacketSer
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, SetPlayerFurnaceOptionsPacket packet) {
-        buffer.writeByte(packet.getType().ordinal());
-        writeFurnaceOptions(buffer, packet.getOptions());
+        buffer.writeByte(packet.getFurnaceType().ordinal());
+        writeFurnaceOptions(buffer, packet.getFurnaceOptions());
     }
 
     private void writeFurnaceOptions(ByteBuf buffer, FurnaceOptions options) {
-        VarInts.writeInt(buffer, options.getLeftTabIndex().ordinal());
+        VarInts.writeInt(buffer, options.getLeftFurnaceTab().ordinal());
         buffer.writeBoolean(options.isFiltering());
         VarInts.writeInt(buffer, options.getLayout().ordinal());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, SetPlayerFurnaceOptionsPacket packet) {
-        packet.setType(SetPlayerFurnaceOptionsPacket.FurnaceType.values()[buffer.readUnsignedByte()]);
-        packet.setOptions(readFurnaceOptions(buffer));
+        packet.setFurnaceType(SetPlayerFurnaceOptionsPacket.FurnaceType.from(buffer.readUnsignedByte()));
+        packet.setFurnaceOptions(readFurnaceOptions(buffer));
     }
 
     private FurnaceOptions readFurnaceOptions(ByteBuf buffer) {
         return new FurnaceOptions(
-                FurnaceOptions.FurnaceLeftTabIndex.values()[VarInts.readInt(buffer)],
+                FurnaceLeftTabIndex.values()[VarInts.readInt(buffer)],
                 buffer.readBoolean(),
-                FurnaceOptions.FurnaceLayout.values()[VarInts.readInt(buffer)]
+                FurnaceLayout.values()[VarInts.readInt(buffer)]
         );
     }
 }

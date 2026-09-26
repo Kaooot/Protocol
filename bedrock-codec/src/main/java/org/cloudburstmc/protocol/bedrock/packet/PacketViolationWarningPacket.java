@@ -3,27 +3,28 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.protocol.bedrock.data.PacketViolationSeverity;
-import org.cloudburstmc.protocol.bedrock.data.PacketViolationType;
+import org.cloudburstmc.protocol.bedrock.data.connection.PacketViolationSeverity;
+import org.cloudburstmc.protocol.bedrock.data.connection.PacketViolationType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class PacketViolationWarningPacket implements BedrockPacket {
-    private PacketViolationType type;
-    private PacketViolationSeverity severity;
-    private int packetCauseId;
-    private String context;
+
+    private PacketViolationType violationType;
+    private PacketViolationSeverity violationSeverity;
+    private int violationPacketid;
+    private String violationContext;
 
     @Override
-    public PacketSignal handle(BedrockPacketHandler handler) {
+    public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
     @Override
     public BedrockPacketType getPacketType() {
-        return BedrockPacketType.PACKET_VIOLATION_WARNING;
+        return BedrockPacketType.VIOLATION_WARNING;
     }
 
     @Override
@@ -35,4 +36,3 @@ public class PacketViolationWarningPacket implements BedrockPacket {
         }
     }
 }
-

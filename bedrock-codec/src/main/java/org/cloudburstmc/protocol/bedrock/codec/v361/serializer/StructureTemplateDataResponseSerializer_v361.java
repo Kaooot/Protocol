@@ -14,24 +14,24 @@ public class StructureTemplateDataResponseSerializer_v361 implements BedrockPack
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, StructureTemplateDataResponsePacket packet) {
-        helper.writeString(buffer, packet.getName());
-        boolean save = packet.isSave();
+        helper.writeString(buffer, packet.getStructureName());
+        NbtMap structuresNbt = packet.getStructuresNbt();
+        boolean save = structuresNbt != null;
         buffer.writeBoolean(save);
 
         if (save) {
-            helper.writeTag(buffer, packet.getTag());
+            helper.writeTag(buffer, structuresNbt);
         }
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, StructureTemplateDataResponsePacket packet) {
-        packet.setName(helper.readString(buffer));
+        packet.setStructureName(helper.readString(buffer));
 
         boolean save = buffer.readBoolean();
-        packet.setSave(save);
 
         if (save) {
-            packet.setTag(helper.readTag(buffer, NbtMap.class));
+            packet.setStructuresNbt(helper.readTag(buffer, NbtMap.class));
         }
     }
 }

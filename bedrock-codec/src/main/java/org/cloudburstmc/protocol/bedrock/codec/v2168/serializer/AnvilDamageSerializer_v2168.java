@@ -11,11 +11,11 @@ public class AnvilDamageSerializer_v2168 extends AnvilDamageSerializer_v388 {
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, AnvilDamagePacket packet) {
-        helper.writeBlockPosition(buffer, packet.getPosition());
+        helper.writeBlockPosition(buffer, packet.getBlockPosition());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, AnvilDamagePacket packet) {
-        packet.setPosition(helper.readBlockPosition(buffer));
+        packet.setBlockPosition(helper.readBlockPosition(buffer));
     }
 }

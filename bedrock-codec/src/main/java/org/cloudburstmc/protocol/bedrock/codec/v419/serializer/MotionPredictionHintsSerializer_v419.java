@@ -15,14 +15,14 @@ public class MotionPredictionHintsSerializer_v419 implements BedrockPacketSerial
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, MotionPredictionHintsPacket packet) {
-        VarInts.writeUnsignedLong(buffer, packet.getRuntimeEntityId());
+        VarInts.writeUnsignedLong(buffer, packet.getRuntimeId());
         helper.writeVector3f(buffer, packet.getMotion());
         buffer.writeBoolean(packet.isOnGround());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, MotionPredictionHintsPacket packet) {
-        packet.setRuntimeEntityId(VarInts.readUnsignedLong(buffer));
+        packet.setRuntimeId(VarInts.readUnsignedLong(buffer));
         packet.setMotion(helper.readVector3f(buffer));
         packet.setOnGround(buffer.readBoolean());
     }
