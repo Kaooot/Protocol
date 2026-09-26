@@ -4,7 +4,6 @@
 * ActorDataTypes migration
 * fix tests
 * UpdateClientInputLocksPacket bitset
-* containerType and ContainerId 
-* PhotoTransferPacket: fix photo data
+* containerType and ContainerId
 * replace color ints with colors?
 * fix asymmetric serializers

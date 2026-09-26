@@ -12,7 +12,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 public class PhotoTransferPacket implements BedrockPacket {
 
     private String photoName;
-    private String photoData;
+    private byte[] photoData;
     private String bookID;
     private PhotoType type;
     private PhotoType sourceType;
