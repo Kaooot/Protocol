@@ -15,7 +15,7 @@ public class BossEventPacket implements BedrockPacket {
 
     private long targetActorID;
     /**
-     * @deprecated since v2192
+     * @deprecated since v2193
      */
     private long playerID;
     private BossEventUpdateType eventType;

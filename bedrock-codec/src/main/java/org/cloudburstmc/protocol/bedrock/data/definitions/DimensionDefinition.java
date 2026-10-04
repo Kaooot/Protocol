@@ -10,8 +10,12 @@ import java.util.UUID;
 public class DimensionDefinition {
 
     String name;
-    int heightMaximum;
-    int heightMinimum;
+    /**
+     * maximumY before v2193
+     * @since v2193: maximumY = minimumY + heightRange
+     */
+    int heightRange;
+    int minimumY;
     GeneratorType generatorType;
     /**
      * @since v975
@@ -22,7 +26,7 @@ public class DimensionDefinition {
      */
     UUID packId;
     /**
-     * @since v2192
+     * @since v2193
      */
     String defaultBiome;
     /**

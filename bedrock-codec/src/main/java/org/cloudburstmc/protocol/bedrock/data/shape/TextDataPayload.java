@@ -17,7 +17,7 @@ public class TextDataPayload {
      */
     private Integer backgroundColor;
     /**
-     * @since v2192
+     * @since v2193
      */
     private float lineGapHeight;
     /**

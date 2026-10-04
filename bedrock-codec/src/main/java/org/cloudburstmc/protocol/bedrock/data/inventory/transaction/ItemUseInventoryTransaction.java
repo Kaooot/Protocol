@@ -17,7 +17,7 @@ public class ItemUseInventoryTransaction implements InventoryTransactionData {
     private int face;
     private int slot;
     /**
-     * @since v2192
+     * @since v2193
      */
     private HandSlot hand;
     private ItemData item;

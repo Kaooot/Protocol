@@ -23,7 +23,7 @@ public class PlaySoundPacket implements BedrockPacket {
      */
     private ServerSoundHandle serverSoundHandle;
     /**
-     * @since v2192
+     * @since v2193
      */
     private Float playbackPositionSeconds;
 

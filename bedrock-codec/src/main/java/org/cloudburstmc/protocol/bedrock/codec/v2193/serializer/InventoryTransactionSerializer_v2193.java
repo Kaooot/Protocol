@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.codec.v2192.serializer;
+package org.cloudburstmc.protocol.bedrock.codec.v2193.serializer;
 
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
@@ -11,8 +11,8 @@ import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.*;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class InventoryTransactionSerializer_v2192 extends InventoryTransactionSerializer_v1001 {
-    public static final InventoryTransactionSerializer_v2192 INSTANCE = new InventoryTransactionSerializer_v2192();
+public class InventoryTransactionSerializer_v2193 extends InventoryTransactionSerializer_v1001 {
+    public static final InventoryTransactionSerializer_v2193 INSTANCE = new InventoryTransactionSerializer_v2193();
 
     @Override
     protected void writeInventoryTransactionVariant(ByteBuf buffer, BedrockCodecHelper helper, InventoryTransactionData transaction) {

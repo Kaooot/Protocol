@@ -40,7 +40,7 @@ public class ServerboundPackSettingChangePacket implements BedrockPacket {
         BOOL,
         STRING,
         /**
-         * @since v2192
+         * @since v2193
          */
         ARRAY
     }

@@ -77,11 +77,11 @@ public class CameraPresets {
      */
     private ControlScheme controlScheme;
     /**
-     * @since v2192
+     * @since v2193
      */
     private boolean applyInheritedStartingRotation;
     /**
-     * @since v2192
+     * @since v2193
      */
     private Vector2f startingRotation;
 }

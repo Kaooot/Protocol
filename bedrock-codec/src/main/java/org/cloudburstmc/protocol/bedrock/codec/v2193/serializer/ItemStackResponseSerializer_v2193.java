@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.codec.v2192.serializer;
+package org.cloudburstmc.protocol.bedrock.codec.v2193.serializer;
 
 import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
@@ -14,9 +14,9 @@ import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemS
 import org.cloudburstmc.protocol.common.util.VarInts;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ItemStackResponseSerializer_v2192 extends ItemStackResponseSerializer_v2168 {
+public class ItemStackResponseSerializer_v2193 extends ItemStackResponseSerializer_v2168 {
 
-    public static final ItemStackResponseSerializer_v2192 INSTANCE = new ItemStackResponseSerializer_v2192();
+    public static final ItemStackResponseSerializer_v2193 INSTANCE = new ItemStackResponseSerializer_v2193();
 
     @Override
     protected void writeItemStackResponseInfo(ByteBuf buffer, BedrockCodecHelper helper, ItemStackResponseInfo info) {
