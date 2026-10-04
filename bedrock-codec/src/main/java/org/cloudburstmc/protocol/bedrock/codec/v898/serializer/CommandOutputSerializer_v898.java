@@ -6,7 +6,6 @@ import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.CommandOutputSeri
 import org.cloudburstmc.protocol.bedrock.data.command.CommandOutput;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandOutputMessage;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandOutputType;
-import org.cloudburstmc.protocol.common.util.VarInts;
 
 public class CommandOutputSerializer_v898 extends CommandOutputSerializer_v291 {
 
@@ -24,7 +23,7 @@ public class CommandOutputSerializer_v898 extends CommandOutputSerializer_v291 {
     protected CommandOutput readCommandOutput(ByteBuf buffer, BedrockCodecHelper helper) {
         final CommandOutput output = new CommandOutput();
         output.setOutputType(CommandOutputType.fromName(helper.readString(buffer)));
-        output.setSuccessCount(VarInts.readUnsignedInt(buffer));
+        output.setSuccessCount(buffer.readIntLE());
         helper.readArray(buffer, output.getOutputMessages(), this::readCommandOutputMessage);
         output.setDataSet(helper.readOptional(buffer, null, helper::readString));
         return output;
