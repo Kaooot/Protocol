@@ -12,7 +12,6 @@ public class DimensionDefinition {
     String name;
     /**
      * maximumY before v2193
-     * @since v2193: maximumY = minimumY + heightRange
      */
     int heightRange;
     int minimumY;
@@ -37,4 +36,11 @@ public class DimensionDefinition {
      * @since v2207
      */
     boolean renderClouds;
+
+    /**
+     * @since v2193
+     */
+    public int getMaximumY() {
+        return this.minimumY + this.heightRange;
+    }
 }
