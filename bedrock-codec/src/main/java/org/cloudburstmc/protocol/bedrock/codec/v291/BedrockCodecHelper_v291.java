@@ -11,6 +11,9 @@ import org.cloudburstmc.nbt.NbtUtils;
 import org.cloudburstmc.protocol.bedrock.codec.BaseBedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
+import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.InventoryTransaction;
+import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.ItemUseActionType;
+import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.ItemUseInventoryTransaction;
 import org.cloudburstmc.protocol.bedrock.data.misc.RedactableString;
 import org.cloudburstmc.protocol.bedrock.data.actor.link.ActorLink;
 import org.cloudburstmc.protocol.bedrock.data.actor.link.ActorLinkType;
@@ -460,5 +463,33 @@ public class BedrockCodecHelper_v291 extends BaseBedrockCodecHelper {
         final RedactableString string = new RedactableString();
         string.setUnredacted(this.readString(buffer));
         return string;
+    }
+
+    @Override
+    public void writeItemUseInventoryTransaction(ByteBuf buffer, ItemUseInventoryTransaction transaction) {
+        this.writeInventoryTransactions(buffer, transaction.getActions());
+        VarInts.writeUnsignedInt(buffer, transaction.getActionType().ordinal());
+        this.writeVector3i(buffer, transaction.getPosition());
+        VarInts.writeInt(buffer, transaction.getFace());
+        VarInts.writeInt(buffer, transaction.getSlot());
+        this.writeItem(buffer, transaction.getItem());
+        this.writeVector3f(buffer, transaction.getFromPosition());
+        this.writeVector3f(buffer, transaction.getClickPosition());
+    }
+
+    @Override
+    public ItemUseInventoryTransaction readItemUseInventoryTransaction(ByteBuf buffer) {
+        final InventoryTransaction actions = new InventoryTransaction();
+        this.readInventoryTransactions(buffer, actions);
+        final ItemUseInventoryTransaction transaction = new ItemUseInventoryTransaction();
+        transaction.setActions(actions);
+        transaction.setActionType(ItemUseActionType.from(VarInts.readUnsignedInt(buffer)));
+        transaction.setPosition(this.readVector3i(buffer));
+        transaction.setFace(VarInts.readInt(buffer));
+        transaction.setSlot(VarInts.readInt(buffer));
+        transaction.setItem(this.readItem(buffer));
+        transaction.setFromPosition(this.readVector3f(buffer));
+        transaction.setClickPosition(this.readVector3f(buffer));
+        return transaction;
     }
 }

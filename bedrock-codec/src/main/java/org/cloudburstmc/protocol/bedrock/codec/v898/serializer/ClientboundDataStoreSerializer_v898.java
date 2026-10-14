@@ -136,11 +136,12 @@ public class ClientboundDataStoreSerializer_v898 implements BedrockPacketSeriali
     }
 
     protected void writeDynamicValue(ByteBuf buffer, BedrockCodecHelper helper, ClientboundDataStorePacket packet, Object value) {
-        this.dynamicValueVariant.write(buffer, helper, packet, value);
+        this.dynamicValueVariant.write(buffer, helper, packet, value == null ? new NullType() : value);
     }
 
     protected Object readDynamicValue(ByteBuf buffer, BedrockCodecHelper helper, ClientboundDataStorePacket packet) {
-        return this.dynamicValueVariant.read(buffer, helper, packet);
+        final Object value = this.dynamicValueVariant.read(buffer, helper, packet);
+        return value instanceof NullType ? null : value;
     }
 
     protected void writeDynamicValueArray(ByteBuf buffer, BedrockCodecHelper helper, ClientboundDataStorePacket packet, List<Object> value) {

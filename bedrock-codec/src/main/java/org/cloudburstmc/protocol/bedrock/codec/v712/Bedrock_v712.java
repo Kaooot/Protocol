@@ -51,7 +51,6 @@ public class Bedrock_v712 extends Bedrock_v686 {
             .updateSerializer(InventorySlotPacket.class, InventorySlotSerializer_v712.INSTANCE)
             .updateSerializer(MobArmorEquipmentPacket.class, MobArmorEquipmentSerializer_v712.INSTANCE)
             .updateSerializer(PlayerArmorDamagePacket.class, PlayerArmorDamageSerializer_v712.INSTANCE)
-            .updateSerializer(PlayerAuthInputPacket.class, PlayerAuthInputSerializer_v712.INSTANCE)
             .updateSerializer(ResourcePacksInfoPacket.class, ResourcePacksInfoSerializer_v712.INSTANCE)
             .updateSerializer(SetTitlePacket.class, SetTitleSerializer_v712.INSTANCE)
             .updateSerializer(StopSoundPacket.class, StopSoundSerializer_v712.INSTANCE)

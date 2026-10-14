@@ -8,10 +8,13 @@ import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
 import org.cloudburstmc.protocol.bedrock.data.player.HandSlot;
 
 @Data
-public class ItemUseInventoryTransaction implements InventoryTransactionData {
+public class ItemUseInventoryTransaction {
 
     private InventoryTransaction actions;
     private ItemUseActionType actionType;
+    /**
+     * @since v712
+     */
     private ItemUseTriggerType triggerType;
     private Vector3i position;
     private int face;
@@ -35,9 +38,4 @@ public class ItemUseInventoryTransaction implements InventoryTransactionData {
      * @since v944
      */
     private ItemUseClientCooldownState clientCooldownState;
-
-    @Override
-    public InventoryTransactionDataType getType() {
-        return InventoryTransactionDataType.ITEM_USE;
-    }
 }

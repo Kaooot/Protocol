@@ -19,7 +19,6 @@ import org.cloudburstmc.nbt.NBTOutputStream;
 import org.cloudburstmc.nbt.NbtType;
 import org.cloudburstmc.nbt.NbtUtils;
 import org.cloudburstmc.protocol.bedrock.data.EncodingSettings;
-import org.cloudburstmc.protocol.bedrock.data.misc.RedactableString;
 import org.cloudburstmc.protocol.bedrock.data.ability.SerializedAbilitiesData;
 import org.cloudburstmc.protocol.bedrock.data.actor.PropertySyncData;
 import org.cloudburstmc.protocol.bedrock.data.connection.ClientStoreEntryPointConfig;
@@ -35,6 +34,7 @@ import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemSt
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponseContainerInfo;
 import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.InventoryTransaction;
 import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.ItemUseInventoryTransaction;
+import org.cloudburstmc.protocol.bedrock.data.misc.RedactableString;
 import org.cloudburstmc.protocol.bedrock.data.player.PlayerInputTick;
 import org.cloudburstmc.protocol.bedrock.data.recipe.RecipeIngredient;
 import org.cloudburstmc.protocol.bedrock.data.skin.AnimatedImageData;

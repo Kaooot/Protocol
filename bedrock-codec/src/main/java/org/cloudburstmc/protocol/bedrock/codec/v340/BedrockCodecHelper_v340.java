@@ -9,6 +9,7 @@ import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v332.BedrockCodecHelper_v332;
 import org.cloudburstmc.protocol.bedrock.data.definitions.ItemDefinition;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
+import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.ItemUseInventoryTransaction;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -88,4 +89,16 @@ public class BedrockCodecHelper_v340 extends BedrockCodecHelper_v332 {
         }
     }
 
+    @Override
+    public void writeItemUseInventoryTransaction(ByteBuf buffer, ItemUseInventoryTransaction transaction) {
+        super.writeItemUseInventoryTransaction(buffer, transaction);
+        VarInts.writeUnsignedInt(buffer, transaction.getTargetBlockId().getRuntimeId());
+    }
+
+    @Override
+    public ItemUseInventoryTransaction readItemUseInventoryTransaction(ByteBuf buffer) {
+        final ItemUseInventoryTransaction transaction = super.readItemUseInventoryTransaction(buffer);
+        transaction.setTargetBlockId(this.getBlockDefinitions().getDefinition(VarInts.readUnsignedInt(buffer)));
+        return transaction;
+    }
 }

@@ -1,22 +1,31 @@
 package org.cloudburstmc.protocol.bedrock.codec.v1001.serializer;
 
 import io.netty.buffer.ByteBuf;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
-import org.cloudburstmc.protocol.bedrock.codec.v944.serializer.InventoryTransactionSerializer_v944;
-import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.InventoryTransaction;
-import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.ItemReleaseActionType;
-import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.ItemUseOnActorActionType;
-import org.cloudburstmc.protocol.bedrock.data.inventory.InventoryMismatchData;
-import org.cloudburstmc.protocol.bedrock.data.inventory.LegacySetSlot;
+import org.cloudburstmc.protocol.bedrock.codec.v407.serializer.InventoryTransactionSerializer_v407;
 import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.*;
 import org.cloudburstmc.protocol.bedrock.packet.InventoryTransactionPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class InventoryTransactionSerializer_v1001 extends InventoryTransactionSerializer_v944 {
+public class InventoryTransactionSerializer_v1001 extends InventoryTransactionSerializer_v407 {
     public static final InventoryTransactionSerializer_v1001 INSTANCE = new InventoryTransactionSerializer_v1001();
+
+    protected InventoryTransactionSerializer_v1001() {
+        this.inventoryTransactionVariant = this.inventoryTransactionVariant.toBuilder(
+                        InventoryTransactionType::ordinal,
+                        (buffer, helper, owner, value) ->
+                                helper.writeOptionalNull(buffer, value, VarInts::writeUnsignedInt),
+                        (buffer, helper, owner) -> helper.readOptional(buffer, 0, VarInts::readUnsignedInt)
+                )
+                .prefix(
+                        (buffer, helper, owner, value) -> buffer.writeBoolean(true),
+                        (buffer, helper, owner) -> {
+                            buffer.readBoolean(); // transaction has value
+                            return -1;
+                        }
+                )
+                .build();
+    }
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, InventoryTransactionPacket packet) {
@@ -26,7 +35,7 @@ public class InventoryTransactionSerializer_v1001 extends InventoryTransactionSe
         if (legacySetSlotsHasValue) {
             helper.writeArray(buffer, packet.getLegacySetItemSlots(), this::writeLegacySetSlot);
         }
-        this.writeInventoryTransactionVariant(buffer, helper, packet.getTransaction());
+        this.inventoryTransactionVariant.write(buffer, helper, packet, packet.getTransaction());
     }
 
     @Override
@@ -37,62 +46,12 @@ public class InventoryTransactionSerializer_v1001 extends InventoryTransactionSe
         if (legacySetSlotsHasValue) {
             helper.readArray(buffer, packet.getLegacySetItemSlots(), this::readLegacySetSlot);
         }
-        packet.setTransaction(this.readInventoryTransactionVariant(buffer, helper));
-    }
-
-    protected void writeInventoryTransactionVariant(ByteBuf buffer, BedrockCodecHelper helper, InventoryTransactionData transaction) {
-        helper.writeOptionalNull(buffer, transaction.getType().ordinal(), VarInts::writeUnsignedInt);
-        buffer.writeBoolean(true); // transactionDataHasValue
-        helper.writeInventoryTransactions(buffer, transaction.getActions());
-        switch (transaction.getType()) {
-            case ITEM_USE:
-                helper.writeItemUseInventoryTransaction(buffer, ((ItemUseInventoryTransaction) transaction));
-                break;
-            case ITEM_USE_ON_ACTOR:
-                this.writeItemUseOnActorInventoryTransaction(buffer, helper, ((ItemUseOnActorInventoryTransaction) transaction));
-                break;
-            case ITEM_RELEASE:
-                this.writeItemReleaseInventoryTransaction(buffer, helper, ((ItemReleaseInventoryTransaction) transaction));
-                break;
-        }
-    }
-
-    protected InventoryTransactionData readInventoryTransactionVariant(ByteBuf buffer, BedrockCodecHelper helper) {
-        final int ordinal = helper.readOptional(buffer, 0, VarInts::readUnsignedInt);
-        final InventoryTransactionDataType type = InventoryTransactionDataType.values()[ordinal];
-        final InventoryTransaction actions = new InventoryTransaction();
-        final boolean transactionDataHasValue = buffer.readBoolean();
-
-        if (transactionDataHasValue) {
-            helper.readInventoryTransactions(buffer, actions);
-            final InventoryTransactionData data;
-            switch (type) {
-                case NORMAL:
-                    data = new NormalTransactionData();
-                    break;
-                case MISMATCH:
-                    data = new InventoryMismatchData();
-                    break;
-                case ITEM_USE:
-                    data = helper.readItemUseInventoryTransaction(buffer);
-                    break;
-                case ITEM_USE_ON_ACTOR:
-                    data = this.readItemUseOnActorInventoryTransaction(buffer, helper);
-                    break;
-                case ITEM_RELEASE:
-                    data = this.readItemReleaseInventoryTransaction(buffer, helper);
-                    break;
-                default:
-                    throw new IllegalStateException("Received invalid InventoryTransactionDataType");
-            }
-            data.setActions(actions);
-            return data;
-        }
-        return null;
+        packet.setTransaction(this.inventoryTransactionVariant.read(buffer, helper, packet));
     }
 
     @Override
-    protected void writeItemUseOnActorInventoryTransaction(ByteBuf buffer, BedrockCodecHelper helper, ItemUseOnActorInventoryTransaction transaction) {
+    protected void writeItemUseOnActorInventoryTransaction(ByteBuf buffer, BedrockCodecHelper helper, InventoryTransactionPacket packet, ItemUseOnActorInventoryTransaction transaction) {
+        helper.writeInventoryTransactions(buffer, transaction.getActions());
         VarInts.writeUnsignedLong(buffer, transaction.getRuntimeId());
         VarInts.writeInt(buffer, transaction.getActionType().ordinal());
         VarInts.writeInt(buffer, transaction.getSlot());
@@ -102,8 +61,11 @@ public class InventoryTransactionSerializer_v1001 extends InventoryTransactionSe
     }
 
     @Override
-    protected ItemUseOnActorInventoryTransaction readItemUseOnActorInventoryTransaction(ByteBuf buffer, BedrockCodecHelper helper) {
+    protected ItemUseOnActorInventoryTransaction readItemUseOnActorInventoryTransaction(ByteBuf buffer, BedrockCodecHelper helper, InventoryTransactionPacket packet) {
+        final InventoryTransaction actions = new InventoryTransaction();
+        helper.readInventoryTransactions(buffer, actions);
         final ItemUseOnActorInventoryTransaction transaction = new ItemUseOnActorInventoryTransaction();
+        transaction.setActions(actions);
         transaction.setRuntimeId(VarInts.readUnsignedLong(buffer));
         transaction.setActionType(ItemUseOnActorActionType.from(VarInts.readInt(buffer)));
         transaction.setSlot(VarInts.readInt(buffer));
@@ -114,7 +76,8 @@ public class InventoryTransactionSerializer_v1001 extends InventoryTransactionSe
     }
 
     @Override
-    protected void writeItemReleaseInventoryTransaction(ByteBuf buffer, BedrockCodecHelper helper, ItemReleaseInventoryTransaction transaction) {
+    protected void writeItemReleaseInventoryTransaction(ByteBuf buffer, BedrockCodecHelper helper, InventoryTransactionPacket packet, ItemReleaseInventoryTransaction transaction) {
+        helper.writeInventoryTransactions(buffer, transaction.getActions());
         VarInts.writeInt(buffer, transaction.getActionType().ordinal());
         VarInts.writeInt(buffer, transaction.getSlot());
         helper.writeNetworkItemStackDescriptor(buffer, transaction.getItem());
@@ -122,8 +85,11 @@ public class InventoryTransactionSerializer_v1001 extends InventoryTransactionSe
     }
 
     @Override
-    protected ItemReleaseInventoryTransaction readItemReleaseInventoryTransaction(ByteBuf buffer, BedrockCodecHelper helper) {
+    protected ItemReleaseInventoryTransaction readItemReleaseInventoryTransaction(ByteBuf buffer, BedrockCodecHelper helper, InventoryTransactionPacket packet) {
+        final InventoryTransaction actions = new InventoryTransaction();
+        helper.readInventoryTransactions(buffer, actions);
         final ItemReleaseInventoryTransaction transaction = new ItemReleaseInventoryTransaction();
+        transaction.setActions(actions);
         transaction.setActionType(ItemReleaseActionType.from(VarInts.readInt(buffer)));
         transaction.setSlot(VarInts.readInt(buffer));
         transaction.setItem(helper.readNetworkItemStackDescriptor(buffer));

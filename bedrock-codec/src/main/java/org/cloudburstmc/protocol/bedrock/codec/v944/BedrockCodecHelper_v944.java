@@ -11,6 +11,7 @@ import org.cloudburstmc.protocol.bedrock.data.connection.PresenceConfig;
 import org.cloudburstmc.protocol.bedrock.data.connection.ServerConfig;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerEnumName;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequestActionType;
+import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.*;
 import org.cloudburstmc.protocol.bedrock.data.text.TextProcessingEventOrigin;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 import org.cloudburstmc.protocol.common.util.VarInts;
@@ -83,5 +84,18 @@ public class BedrockCodecHelper_v944 extends BedrockCodecHelper_v924 {
         configuration.setStoreId(helper.readString(buffer));
         configuration.setStoreName(helper.readString(buffer));
         return configuration;
+    }
+
+    @Override
+    public void writeItemUseInventoryTransaction(ByteBuf buffer, ItemUseInventoryTransaction transaction) {
+        super.writeItemUseInventoryTransaction(buffer, transaction);
+        buffer.writeByte(transaction.getClientCooldownState().ordinal());
+    }
+
+    @Override
+    public ItemUseInventoryTransaction readItemUseInventoryTransaction(ByteBuf buffer) {
+        final ItemUseInventoryTransaction transaction = super.readItemUseInventoryTransaction(buffer);
+        transaction.setClientCooldownState(ItemUseClientCooldownState.from(buffer.readUnsignedByte()));
+        return transaction;
     }
 }

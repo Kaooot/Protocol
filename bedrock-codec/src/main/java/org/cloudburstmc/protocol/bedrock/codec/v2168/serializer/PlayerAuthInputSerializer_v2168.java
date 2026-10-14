@@ -4,7 +4,7 @@ import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
-import org.cloudburstmc.protocol.bedrock.codec.v1001.serializer.PlayerAuthInputSerializer_v1001;
+import org.cloudburstmc.protocol.bedrock.codec.v766.serializer.PlayerAuthInputSerializer_v766;
 import org.cloudburstmc.protocol.bedrock.data.inventory.LegacySetSlot;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.ItemStackLegacyRequestId;
 import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.PackedItemUseLegacyInventoryTransaction;
@@ -17,7 +17,7 @@ import org.cloudburstmc.protocol.bedrock.packet.PlayerAuthInputPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class PlayerAuthInputSerializer_v2168 extends PlayerAuthInputSerializer_v1001 {
+public class PlayerAuthInputSerializer_v2168 extends PlayerAuthInputSerializer_v766 {
     public static final PlayerAuthInputSerializer_v2168 INSTANCE = new PlayerAuthInputSerializer_v2168();
 
     @Override

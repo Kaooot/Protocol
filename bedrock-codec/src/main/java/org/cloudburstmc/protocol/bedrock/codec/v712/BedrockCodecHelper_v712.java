@@ -12,6 +12,7 @@ import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemSt
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.*;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponseContainerInfo;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponseSlotInfo;
+import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.*;
 import org.cloudburstmc.protocol.bedrock.data.recipe.RecipeNetId;
 import org.cloudburstmc.protocol.bedrock.data.text.TextProcessingEventOrigin;
 import org.cloudburstmc.protocol.common.util.TypeMap;
@@ -151,5 +152,39 @@ public class BedrockCodecHelper_v712 extends BedrockCodecHelper_v575 {
     @Override
     public FullContainerName readFullContainerName(ByteBuf buffer) {
         return new FullContainerName(this.readContainerEnumName(buffer), buffer.readIntLE());
+    }
+
+    @Override
+    public void writeItemUseInventoryTransaction(ByteBuf buffer, ItemUseInventoryTransaction transaction) {
+        this.writeInventoryTransactions(buffer, transaction.getActions());
+        VarInts.writeUnsignedInt(buffer, transaction.getActionType().ordinal());
+        buffer.writeByte(transaction.getTriggerType().ordinal());
+        this.writeVector3i(buffer, transaction.getPosition());
+        VarInts.writeInt(buffer, transaction.getFace());
+        VarInts.writeInt(buffer, transaction.getSlot());
+        this.writeItem(buffer, transaction.getItem());
+        this.writeVector3f(buffer, transaction.getFromPosition());
+        this.writeVector3f(buffer, transaction.getClickPosition());
+        VarInts.writeUnsignedInt(buffer, transaction.getTargetBlockId().getRuntimeId());
+        buffer.writeByte(transaction.getClientInteractPrediction().ordinal());
+    }
+
+    @Override
+    public ItemUseInventoryTransaction readItemUseInventoryTransaction(ByteBuf buffer) {
+        final InventoryTransaction actions = new InventoryTransaction();
+        this.readInventoryTransactions(buffer, actions);
+        final ItemUseInventoryTransaction transaction = new ItemUseInventoryTransaction();
+        transaction.setActions(actions);
+        transaction.setActionType(ItemUseActionType.from(VarInts.readUnsignedInt(buffer)));
+        transaction.setTriggerType(ItemUseTriggerType.from(buffer.readUnsignedByte()));
+        transaction.setPosition(this.readVector3i(buffer));
+        transaction.setFace(VarInts.readInt(buffer));
+        transaction.setSlot(VarInts.readInt(buffer));
+        transaction.setItem(this.readItem(buffer));
+        transaction.setFromPosition(this.readVector3f(buffer));
+        transaction.setClickPosition(this.readVector3f(buffer));
+        transaction.setTargetBlockId(this.getBlockDefinitions().getDefinition(VarInts.readUnsignedInt(buffer)));
+        transaction.setClientInteractPrediction(ItemUsePredictedResult.from(buffer.readUnsignedByte()));
+        return transaction;
     }
 }

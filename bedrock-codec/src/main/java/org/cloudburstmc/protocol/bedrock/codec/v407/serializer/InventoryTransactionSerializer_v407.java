@@ -4,14 +4,14 @@ import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
-import org.cloudburstmc.protocol.bedrock.codec.v340.serializer.InventoryTransactionSerializer_v340;
+import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.InventoryTransactionSerializer_v291;
 import org.cloudburstmc.protocol.bedrock.data.inventory.LegacySetSlot;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.ItemStackLegacyRequestId;
 import org.cloudburstmc.protocol.bedrock.packet.InventoryTransactionPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class InventoryTransactionSerializer_v407 extends InventoryTransactionSerializer_v340 {
+public class InventoryTransactionSerializer_v407 extends InventoryTransactionSerializer_v291 {
     public static final InventoryTransactionSerializer_v407 INSTANCE = new InventoryTransactionSerializer_v407();
 
     @Override
@@ -22,7 +22,7 @@ public class InventoryTransactionSerializer_v407 extends InventoryTransactionSer
             helper.writeArray(buffer, packet.getLegacySetItemSlots(), this::writeLegacySetSlot);
         }
 
-        this.writeInventoryTransactionVariant(buffer, helper, packet.getTransaction());
+        this.inventoryTransactionVariant.write(buffer, helper, packet, packet.getTransaction());
     }
 
     @Override
@@ -33,7 +33,7 @@ public class InventoryTransactionSerializer_v407 extends InventoryTransactionSer
             helper.readArray(buffer, packet.getLegacySetItemSlots(), this::readLegacySetSlot);
         }
 
-        packet.setTransaction(this.readInventoryTransactionVariant(buffer, helper));
+        packet.setTransaction(this.inventoryTransactionVariant.read(buffer, helper, packet));
     }
 
     protected void writeLegacyRequestId(ByteBuf buffer, BedrockCodecHelper helper, ItemStackLegacyRequestId id) {

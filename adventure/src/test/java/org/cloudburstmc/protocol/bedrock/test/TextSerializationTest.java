@@ -9,6 +9,7 @@ import net.kyori.adventure.text.TranslatableComponent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.Style;
 import net.kyori.adventure.text.format.TextDecoration;
+import org.cloudburstmc.math.vector.Vector2f;
 import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.protocol.adventure.AdventureTextConverter;
 import org.cloudburstmc.protocol.adventure.BedrockComponent;
@@ -19,13 +20,20 @@ import org.cloudburstmc.protocol.bedrock.codec.v557.serializer.AddPlayerSerializ
 import org.cloudburstmc.protocol.bedrock.codec.v685.serializer.TextSerializer_v685;
 import org.cloudburstmc.protocol.bedrock.codec.v776.Bedrock_v776;
 import org.cloudburstmc.protocol.bedrock.data.ability.AbilitiesIndex;
-import org.cloudburstmc.protocol.bedrock.data.AbilityLayer;
-import org.cloudburstmc.protocol.bedrock.data.BuildPlatform;
-import org.cloudburstmc.protocol.bedrock.data.GameType;
+import org.cloudburstmc.protocol.bedrock.data.ability.SerializedAbilitiesData;
+import org.cloudburstmc.protocol.bedrock.data.ability.SerializedAbilitiesDataSerializedLayer;
+import org.cloudburstmc.protocol.bedrock.data.ability.SerializedLayer;
+import org.cloudburstmc.protocol.bedrock.data.command.CommandPermissionLevel;
+import org.cloudburstmc.protocol.bedrock.data.connection.BuildPlatform;
+import org.cloudburstmc.protocol.bedrock.data.player.PlayerPermissionLevel;
+import org.cloudburstmc.protocol.bedrock.data.world.GameType;
 import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataMap;
 import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataTypes;
 import org.cloudburstmc.protocol.bedrock.data.actor.ActorFlags;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
+import org.cloudburstmc.protocol.bedrock.data.text.MessageAndParams;
+import org.cloudburstmc.protocol.bedrock.data.text.MessageOnly;
+import org.cloudburstmc.protocol.bedrock.data.text.TextPacketType;
 import org.cloudburstmc.protocol.bedrock.packet.AddPlayerPacket;
 import org.cloudburstmc.protocol.bedrock.packet.TextPacket;
 import org.junit.jupiter.api.Test;
@@ -62,21 +70,25 @@ public class TextSerializationTest {
 
     private static TextPacket systemTextPacket(BedrockComponent message) {
         TextPacket packet = new TextPacket();
-        packet.setType(TextPacket.Type.SYSTEM);
-        packet.setMessage(message);
-        packet.setSourceName("");
-        packet.setXuid("");
-        packet.setPlatformChatId("");
+        packet.setMessageType(TextPacketType.SYSTEM_MESSAGE);
+        packet.setLocalize(false);
+        MessageOnly body = new MessageOnly();
+        body.setMessage(message);
+        packet.setBody(body);
+        packet.setSendersXUID("");
+        packet.setPlatformId("");
         return packet;
     }
 
     private static TextPacket translationTextPacket(BedrockComponent message) {
         TextPacket packet = new TextPacket();
-        packet.setType(TextPacket.Type.TRANSLATION);
-        packet.setMessage(message);
-        packet.setSourceName("");
-        packet.setXuid("");
-        packet.setPlatformChatId("");
+        packet.setMessageType(TextPacketType.TRANSLATE);
+        packet.setLocalize(true);
+        MessageAndParams body = new MessageAndParams();
+        body.setMessage(message);
+        packet.setBody(body);
+        packet.setSendersXUID("");
+        packet.setPlatformId("");
         return packet;
     }
 
@@ -125,7 +137,7 @@ public class TextSerializationTest {
         TextPacket out = new TextPacket();
         TEXT_SERIALIZER.deserialize(buf, CODEC_HELPER, out);
 
-        assertEquals(legacyText, serialize(out.getMessage(BedrockComponent.class).asComponent()));
+        assertEquals(legacyText, serialize(((MessageOnly) out.getBody()).getMessage(BedrockComponent.class).asComponent()));
     }
 
     @Test
@@ -139,7 +151,7 @@ public class TextSerializationTest {
         TextPacket out = new TextPacket();
         TEXT_SERIALIZER.deserialize(buf, CODEC_HELPER, out);
 
-        assertEquals(message, out.getMessage(BedrockComponent.class));
+        assertEquals(message, ((MessageAndParams) out.getBody()).getMessage(BedrockComponent.class));
     }
 
     @Test
@@ -259,32 +271,37 @@ public class TextSerializationTest {
     @Test
     public void testBedrockComponentSurvivesAddPlayerPacketRoundTrip() {
         AddPlayerPacket packet = new AddPlayerPacket();
-        packet.setUsername("Test");
-        packet.setRuntimeEntityId(0);
-        packet.setUniqueEntityId(0);
+        packet.setPlayerName("Test");
+        packet.setTargetRuntimeID(0);
+        packet.setTargetActorID(0);
         packet.setUuid(new UUID(0, 0));
         packet.setPosition(Vector3f.ZERO);
-        packet.setMotion(Vector3f.ZERO);
-        packet.setRotation(Vector3f.ZERO);
+        packet.setVelocity(Vector3f.ZERO);
+        packet.setRotation(Vector2f.ZERO);
+        packet.setYHeadRotation(0.0F);
         packet.setDeviceId("");
-        packet.setHand(ItemData.AIR);
+        packet.setCarriedItem(ItemData.AIR);
         packet.setBuildPlatform(BuildPlatform.UNKNOWN);
-        packet.setGameType(GameType.SURVIVAL);
+        packet.setPlayerGameType(GameType.SURVIVAL);
         packet.setPlatformChatId("");
 
-        AbilityLayer layer = new AbilityLayer();
-        layer.setLayerType(AbilityLayer.Type.BASE);
+        SerializedAbilitiesData abilitiesData = packet.getAbilitiesData();
+        abilitiesData.setPlayerPermissions(PlayerPermissionLevel.MEMBER);
+        abilitiesData.setCommandPermissions(CommandPermissionLevel.ANY);
+
+        SerializedAbilitiesDataSerializedLayer layer = new SerializedAbilitiesDataSerializedLayer();
+        layer.setSerializedLayer(SerializedLayer.BASE);
         layer.setWalkSpeed(0.0F);
         layer.setFlySpeed(0.0F);
         layer.getAbilitiesSet().addAll(Arrays.asList(AbilitiesIndex.values()));
         layer.getAbilityValues().add(AbilitiesIndex.BUILD);
         layer.getAbilityValues().add(AbilitiesIndex.MINE);
         layer.getAbilityValues().add(AbilitiesIndex.DOORS_AND_SWITCHES);
-        packet.getAbilityLayers().add(layer);
+        abilitiesData.getLayers().add(layer);
 
-        packet.getMetadata().put(ActorDataTypes.NAME, new BedrockComponent(Component.text("Custom Name")));
-        packet.getMetadata().put(ActorDataTypes.NAMETAG_ALWAYS_SHOW, (byte) 1);
-        packet.getMetadata().putFlags(ActorDataMap.flagsOf(ActorFlags.SILENT));
+        packet.getEntityData().put(ActorDataTypes.NAME, new BedrockComponent(Component.text("Custom Name")));
+        packet.getEntityData().put(ActorDataTypes.NAMETAG_ALWAYS_SHOW, (byte) 1);
+        packet.getEntityData().putFlags(ActorDataMap.flagsOf(ActorFlags.SILENT));
 
         ByteBuf buf = Unpooled.buffer();
         PLAYER_SERIALIZER.serialize(buf, CODEC_HELPER, packet);
@@ -292,6 +309,6 @@ public class TextSerializationTest {
         AddPlayerPacket out = new AddPlayerPacket();
         PLAYER_SERIALIZER.deserialize(buf, CODEC_HELPER, out);
 
-        assertEquals(Component.text("Custom Name"), out.getMetadata().get(ActorDataTypes.NAME, BedrockComponent.class).asComponent());
+        assertEquals(Component.text("Custom Name"), out.getEntityData().get(ActorDataTypes.NAME, BedrockComponent.class).asComponent());
     }
 }

@@ -52,11 +52,6 @@ public final class VariantCodec<O> {
     @SuppressWarnings("unchecked")
     public <A> void write(ByteBuf buffer, BedrockCodecHelper helper, O owner, A object) {
         final Class<A> clazz = (Class<A>) object.getClass();
-        Preconditions.checkArgument(
-                this.writers.containsKey(clazz),
-                "Control Value Type for %s not found",
-                clazz.getName()
-        );
         IndexedWriter<A, O> writer = (IndexedWriter<A, O>) this.writers.get(clazz);
         if (writer == null) {
             // fallback to the first registered key assignable from the runtime type
@@ -67,6 +62,11 @@ public final class VariantCodec<O> {
                 }
             }
         }
+        Preconditions.checkArgument(
+                writer != null,
+                "Control Value Type for %s not found",
+                clazz.getName()
+        );
         final int index = writer.getIndex();
         this.indexWriter.write(buffer, helper, owner, index);
         if (this.prefixWriter != null) {
@@ -94,7 +94,6 @@ public final class VariantCodec<O> {
 
     public <T> VariantCodec.Builder<T, O> toBuilder(ToIntFunction<T> controlValueTypeMap, IndexWriter<O> indexWriter, IndexReader<O> indexReader) {
         final Builder<T, O> builder = new Builder<>(controlValueTypeMap, indexWriter, indexReader);
-        // Preserve the already-registered variants; toBuilder starts from this codec's state.
         builder.codec.writers.putAll(this.writers);
         builder.codec.readers.putAll(this.readers);
         builder.codec.prefixWriter = this.prefixWriter;

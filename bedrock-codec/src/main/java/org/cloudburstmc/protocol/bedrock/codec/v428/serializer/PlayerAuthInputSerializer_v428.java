@@ -92,8 +92,7 @@ public class PlayerAuthInputSerializer_v428 extends PlayerAuthInputSerializer_v4
         if (transaction.getLegacyRequestID().getID() < -1 && (transaction.getLegacyRequestID().getID() & 1) == 0) {
             helper.writeArray(buffer, transaction.getLegacySetItemSlots(), this::writeLegacySetSlot);
         }
-        helper.writeArray(buffer, transaction.getActions(), helper::writeInventoryAction);
-        this.writeItemUseInventoryTransaction(buffer, helper, transaction.getTransaction());
+        helper.writeItemUseInventoryTransaction(buffer, transaction.getTransaction());
     }
 
     protected PackedItemUseLegacyInventoryTransaction readPackedItemUseLegacyInventoryTransaction(ByteBuf buffer, BedrockCodecHelper helper) {
@@ -104,8 +103,7 @@ public class PlayerAuthInputSerializer_v428 extends PlayerAuthInputSerializer_v4
             helper.readArray(buffer, transaction.getLegacySetItemSlots(), this::readLegacySetSlot);
         }
 
-        helper.readArray(buffer, transaction.getActions(), helper::readInventoryAction);
-        transaction.setTransaction(this.readItemUseInventoryTransaction(buffer, helper));
+        transaction.setTransaction(helper.readItemUseInventoryTransaction(buffer));
         return transaction;
     }
 
@@ -127,29 +125,5 @@ public class PlayerAuthInputSerializer_v428 extends PlayerAuthInputSerializer_v4
         slot.setContainerEnum(helper.readContainerEnumName(buffer));
         slot.setSlots(helper.readByteArray(buffer, 89));
         return slot;
-    }
-
-    protected void writeItemUseInventoryTransaction(ByteBuf buffer, BedrockCodecHelper helper, ItemUseInventoryTransaction transaction) {
-        VarInts.writeUnsignedInt(buffer, transaction.getActionType().ordinal());
-        helper.writeVector3i(buffer, transaction.getPosition());
-        VarInts.writeInt(buffer, transaction.getFace());
-        VarInts.writeUnsignedInt(buffer, transaction.getSlot());
-        helper.writeItem(buffer, transaction.getItem());
-        helper.writeVector3f(buffer, transaction.getFromPosition());
-        helper.writeVector3f(buffer, transaction.getClickPosition());
-        VarInts.writeUnsignedInt(buffer, transaction.getTargetBlockId().getRuntimeId());
-    }
-
-    protected ItemUseInventoryTransaction readItemUseInventoryTransaction(ByteBuf buffer, BedrockCodecHelper helper) {
-        final ItemUseInventoryTransaction transaction = new ItemUseInventoryTransaction();
-        transaction.setActionType(ItemUseActionType.from(VarInts.readUnsignedInt(buffer)));
-        transaction.setPosition(helper.readVector3i(buffer));
-        transaction.setFace(VarInts.readInt(buffer));
-        transaction.setSlot(VarInts.readUnsignedInt(buffer));
-        transaction.setItem(helper.readItem(buffer));
-        transaction.setFromPosition(helper.readVector3f(buffer));
-        transaction.setClickPosition(helper.readVector3f(buffer));
-        transaction.setTargetBlockId(helper.getBlockDefinitions().getDefinition(VarInts.readUnsignedInt(buffer)));
-        return transaction;
     }
 }
