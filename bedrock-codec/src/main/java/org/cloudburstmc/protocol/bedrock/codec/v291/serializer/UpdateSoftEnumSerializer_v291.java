@@ -34,6 +34,6 @@ public class UpdateSoftEnumSerializer_v291 implements BedrockPacketSerializer<Up
         CommandEnumData softEnum = helper.readCommandEnum(buffer, true);
         packet.setEnumName(softEnum.getName());
         packet.getValues().addAll(softEnum.getValues().keySet());
-        packet.setUpdateType(SoftEnumUpdateType.values()[buffer.readByte()]);
+        packet.setUpdateType(SoftEnumUpdateType.from(buffer.readByte()));
     }
 }

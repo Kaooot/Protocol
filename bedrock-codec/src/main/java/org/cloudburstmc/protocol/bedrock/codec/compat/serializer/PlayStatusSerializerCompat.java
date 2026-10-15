@@ -16,7 +16,7 @@ public class PlayStatusSerializerCompat implements BedrockPacketSerializer<PlayS
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, PlayStatusPacket packet) {
-        packet.setStatus(PlayStatus.values()[buffer.readInt()]);
+        packet.setStatus(PlayStatus.from(buffer.readInt()));
     }
 }
 

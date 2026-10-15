@@ -27,7 +27,7 @@ public class ClientboundTextureShiftSerializer_v924 implements BedrockPacketSeri
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ClientboundTextureShiftPacket packet) {
-        packet.setActionID(ClientboundTextureShiftPacket.Action.values()[buffer.readUnsignedByte()]);
+        packet.setActionID(ClientboundTextureShiftPacket.Action.from(buffer.readUnsignedByte()));
         packet.setCollectionName(helper.readString(buffer));
         packet.setFromStep(helper.readString(buffer));
         packet.setToStep(helper.readString(buffer));

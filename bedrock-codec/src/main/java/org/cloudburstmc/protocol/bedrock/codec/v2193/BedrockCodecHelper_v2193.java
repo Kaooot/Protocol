@@ -74,7 +74,7 @@ public class BedrockCodecHelper_v2193 extends BedrockCodecHelper_v2168 {
         this.writeInventoryTransactions(buffer, transaction.getActions());
         VarInts.writeInt(buffer, transaction.getActionType().ordinal());
         buffer.writeByte(transaction.getTriggerType().ordinal());
-        this.writeVector3i(buffer, transaction.getPosition());
+        this.writeBlockPosition(buffer, transaction.getPosition());
         buffer.writeByte(transaction.getFace());
         VarInts.writeInt(buffer, transaction.getSlot());
         buffer.writeByte(transaction.getHand().ordinal());
@@ -94,7 +94,7 @@ public class BedrockCodecHelper_v2193 extends BedrockCodecHelper_v2168 {
         transaction.setActions(actions);
         transaction.setActionType(ItemUseActionType.from(VarInts.readInt(buffer)));
         transaction.setTriggerType(ItemUseTriggerType.from(buffer.readUnsignedByte()));
-        transaction.setPosition(this.readVector3i(buffer));
+        transaction.setPosition(this.readBlockPosition(buffer));
         transaction.setFace(buffer.readByte());
         transaction.setSlot(VarInts.readInt(buffer));
         transaction.setHand(HandSlot.from(buffer.readUnsignedByte()));

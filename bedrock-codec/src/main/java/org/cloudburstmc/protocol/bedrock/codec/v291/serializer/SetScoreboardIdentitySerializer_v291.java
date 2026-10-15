@@ -31,7 +31,7 @@ public class SetScoreboardIdentitySerializer_v291 implements BedrockPacketSerial
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, SetScoreboardIdentityPacket packet) {
-        ScoreboardIdentityPacketType scoreboardIdentityPacketType = ScoreboardIdentityPacketType.values()[buffer.readUnsignedByte()];
+        ScoreboardIdentityPacketType scoreboardIdentityPacketType = ScoreboardIdentityPacketType.from(buffer.readUnsignedByte());
         packet.setScoreboardIdentityPacketType(scoreboardIdentityPacketType);
         helper.readArray(buffer, packet.getScoreboardIdentityInfo(), buf -> {
             long scoreboardId = VarInts.readLong(buffer);

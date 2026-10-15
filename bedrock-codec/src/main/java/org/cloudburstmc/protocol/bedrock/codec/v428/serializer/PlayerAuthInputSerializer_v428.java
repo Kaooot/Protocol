@@ -73,7 +73,7 @@ public class PlayerAuthInputSerializer_v428 extends PlayerAuthInputSerializer_v4
 
     protected PlayerBlockActionData readPlayerBlockActionData(ByteBuf buffer, BedrockCodecHelper helper) {
         PlayerBlockActionData actionData = new PlayerBlockActionData();
-        actionData.setPlayerActionType(PlayerActionType.values()[VarInts.readInt(buffer)]);
+        actionData.setPlayerActionType(PlayerActionType.from(VarInts.readInt(buffer)));
         switch (actionData.getPlayerActionType()) {
             case START_DESTROY_BLOCK:
             case ABORT_DESTROY_BLOCK:

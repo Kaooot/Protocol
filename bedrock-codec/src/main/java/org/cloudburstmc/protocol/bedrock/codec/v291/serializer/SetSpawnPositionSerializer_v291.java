@@ -23,7 +23,7 @@ public class SetSpawnPositionSerializer_v291 implements BedrockPacketSerializer<
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, SetSpawnPositionPacket packet) {
-        packet.setSpawnPositionType(SpawnPositionType.values()[VarInts.readInt(buffer)]);
+        packet.setSpawnPositionType(SpawnPositionType.from(VarInts.readInt(buffer)));
         packet.setBlockPosition(helper.readBlockPosition(buffer));
         packet.setSpawnForced(buffer.readBoolean());
     }

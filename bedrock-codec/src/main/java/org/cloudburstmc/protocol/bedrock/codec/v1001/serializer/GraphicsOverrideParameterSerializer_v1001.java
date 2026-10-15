@@ -38,7 +38,7 @@ public class GraphicsOverrideParameterSerializer_v1001 extends GraphicsOverrideP
         packet.setVec3Value(helper.readOptional(buffer, null, (buf, h) -> h.readVector3f(buf)));
         packet.setBiomeIdentifier(helper.readString(buffer));
         packet.setPlayerIdentifier(helper.readOptional(buffer, null, (buf, h) -> h.readString(buf))); // new
-        packet.setIdentifierForParameter(GraphicsOverrideParameterType.values()[buffer.readUnsignedByte()]);
+        packet.setIdentifierForParameter(GraphicsOverrideParameterType.from(buffer.readUnsignedByte()));
         packet.setResetParameter(buffer.readBoolean());
     }
 }

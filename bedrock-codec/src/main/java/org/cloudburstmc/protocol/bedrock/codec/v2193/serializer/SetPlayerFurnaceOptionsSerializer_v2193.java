@@ -36,9 +36,9 @@ public class SetPlayerFurnaceOptionsSerializer_v2193 implements BedrockPacketSer
 
     private FurnaceOptions readFurnaceOptions(ByteBuf buffer) {
         return new FurnaceOptions(
-                FurnaceLeftTabIndex.values()[VarInts.readInt(buffer)],
+                FurnaceLeftTabIndex.from(VarInts.readInt(buffer)),
                 buffer.readBoolean(),
-                FurnaceLayout.values()[VarInts.readInt(buffer)]
+                FurnaceLayout.from(VarInts.readInt(buffer))
         );
     }
 }

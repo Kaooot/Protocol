@@ -25,7 +25,7 @@ public class DisconnectSerializer_v975 extends DisconnectSerializer_v712 {
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, DisconnectPacket packet) {
-        packet.setReason(DisconnectFailReason.values()[VarInts.readInt(buffer)]);
+        packet.setReason(DisconnectFailReason.from(VarInts.readInt(buffer)));
         int type = VarInts.readUnsignedInt(buffer);
         if (type == 0) {
             DisconnectPacketMessages messages = new DisconnectPacketMessages();

@@ -19,6 +19,6 @@ public class SetMovementAuthoritySerializer_v748 implements BedrockPacketSeriali
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, SetMovementAuthorityPacket packet) {
-        packet.setMovementMode(ServerAuthMovementMode.values()[buffer.readUnsignedByte()]);
+        packet.setMovementMode(ServerAuthMovementMode.from(buffer.readUnsignedByte()));
     }
 }

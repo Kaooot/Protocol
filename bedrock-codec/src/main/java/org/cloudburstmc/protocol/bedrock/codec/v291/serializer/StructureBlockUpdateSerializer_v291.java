@@ -52,7 +52,7 @@ public class StructureBlockUpdateSerializer_v291 implements BedrockPacketSeriali
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, StructureBlockUpdatePacket packet) {
         packet.setBlockPosition(helper.readBlockPosition(buffer));
-        StructureBlockType structureType = StructureBlockType.values()[VarInts.readUnsignedInt(buffer)];
+        StructureBlockType structureType = StructureBlockType.from(VarInts.readUnsignedInt(buffer));
         // Structure Editor Data start
         String name = helper.readString(buffer);
         String dataField = helper.readString(buffer);

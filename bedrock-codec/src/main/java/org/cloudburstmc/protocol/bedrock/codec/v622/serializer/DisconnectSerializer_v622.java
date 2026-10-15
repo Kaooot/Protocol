@@ -21,7 +21,7 @@ public class DisconnectSerializer_v622 extends DisconnectSerializer_v291 {
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, DisconnectPacket packet) {
-        packet.setReason(DisconnectFailReason.values()[VarInts.readInt(buffer)]);
+        packet.setReason(DisconnectFailReason.from(VarInts.readInt(buffer)));
         super.deserialize(buffer, helper, packet);
     }
 }

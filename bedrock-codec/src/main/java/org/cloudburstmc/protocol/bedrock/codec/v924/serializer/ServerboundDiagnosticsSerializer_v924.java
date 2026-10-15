@@ -26,6 +26,6 @@ public class ServerboundDiagnosticsSerializer_v924 extends ServerboundDiagnostic
         super.deserialize(buffer, helper, packet);
 
         helper.readArray(buffer, packet.getMemoryCategoryValues(), (buf, h) ->
-                new MemoryCategoryCounter(MemoryCategory.values()[buf.readUnsignedByte()], buffer.readLongLE()));
+                new MemoryCategoryCounter(MemoryCategory.from(buf.readUnsignedByte()), buffer.readLongLE()));
     }
 }

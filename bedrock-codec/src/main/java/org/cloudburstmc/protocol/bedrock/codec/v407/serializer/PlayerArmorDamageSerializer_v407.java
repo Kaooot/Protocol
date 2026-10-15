@@ -43,7 +43,7 @@ public class PlayerArmorDamageSerializer_v407 implements BedrockPacketSerializer
         for (int i = 0; i <= this.getMaxFlagIndex(); i++) {
             if ((flagsVal & (1 << i)) != 0) {
                 ArmorSlotAndDamagePair pair = new ArmorSlotAndDamagePair();
-                pair.setArmorSlot(ArmorSlot.values()[i]);
+                pair.setArmorSlot(ArmorSlot.from(i));
                 pair.setDamage(VarInts.readInt(buffer));
                 packet.getArmorSlotAndDamagePairs().add(pair);
             }

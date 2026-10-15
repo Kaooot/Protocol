@@ -24,7 +24,7 @@ public class DisconnectSerializer_v712 implements BedrockPacketSerializer<Discon
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, DisconnectPacket packet) {
-        packet.setReason(DisconnectFailReason.values()[VarInts.readInt(buffer)]);
+        packet.setReason(DisconnectFailReason.from(VarInts.readInt(buffer)));
         boolean skipMessage = buffer.readBoolean();
         if (!skipMessage) {
             DisconnectPacketMessages messages = new DisconnectPacketMessages();

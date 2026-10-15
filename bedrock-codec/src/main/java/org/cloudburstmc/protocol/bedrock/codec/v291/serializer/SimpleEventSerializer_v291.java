@@ -20,6 +20,6 @@ public class SimpleEventSerializer_v291 implements BedrockPacketSerializer<Simpl
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, SimpleEventPacket packet) {
-        packet.setType(Subtype.values()[buffer.readUnsignedShortLE()]);
+        packet.setType(Subtype.from(buffer.readUnsignedShortLE()));
     }
 }

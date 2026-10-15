@@ -20,8 +20,8 @@ public class CodeBuilderSourceSerializer_v685 implements BedrockPacketSerializer
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, CodeBuilderSourcePacket packet) {
-        packet.setOperation(CodeBuilderStorageQueryOptionsOperation.values()[buffer.readByte()]);
-        packet.setCategory(CodeBuilderStorageQueryOptionsCategory.values()[buffer.readByte()]);
-        packet.setCodeStatus(CodeBuilderExecutionStateCodeStatus.values()[buffer.readByte()]);
+        packet.setOperation(CodeBuilderStorageQueryOptionsOperation.from(buffer.readByte()));
+        packet.setCategory(CodeBuilderStorageQueryOptionsCategory.from(buffer.readByte()));
+        packet.setCodeStatus(CodeBuilderExecutionStateCodeStatus.from(buffer.readByte()));
     }
 }

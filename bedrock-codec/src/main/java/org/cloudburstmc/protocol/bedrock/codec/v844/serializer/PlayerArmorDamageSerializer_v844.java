@@ -27,7 +27,7 @@ public class PlayerArmorDamageSerializer_v844 extends PlayerArmorDamageSerialize
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, PlayerArmorDamagePacket packet) {
         helper.readArray(buffer, packet.getArmorSlotAndDamagePairs(), (buf, h) -> {
             ArmorSlotAndDamagePair pair = new ArmorSlotAndDamagePair();
-            pair.setArmorSlot(ArmorSlot.values()[VarInts.readInt(buf)]);
+            pair.setArmorSlot(ArmorSlot.from(VarInts.readInt(buf)));
             pair.setDamage(buf.readShortLE());
             return pair;
         });

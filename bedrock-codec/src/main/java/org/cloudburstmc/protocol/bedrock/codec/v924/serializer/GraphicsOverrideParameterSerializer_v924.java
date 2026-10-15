@@ -40,7 +40,7 @@ public class GraphicsOverrideParameterSerializer_v924 extends GraphicsOverridePa
         packet.setFloatValue(helper.readOptional(buffer, null, ByteBuf::readFloatLE));
         packet.setVec3Value(helper.readOptional(buffer, null, (buf, h) -> h.readVector3f(buf)));
         packet.setBiomeIdentifier(helper.readString(buffer));
-        packet.setIdentifierForParameter(GraphicsOverrideParameterType.values()[buffer.readUnsignedByte()]);
+        packet.setIdentifierForParameter(GraphicsOverrideParameterType.from(buffer.readUnsignedByte()));
         packet.setResetParameter(buffer.readBoolean());
     }
 }

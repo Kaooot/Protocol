@@ -25,7 +25,7 @@ public class SetTitleSerializer_v291 implements BedrockPacketSerializer<SetTitle
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, SetTitlePacket packet) {
-        packet.setTitleType(SetTitlePacket.TitleType.values()[VarInts.readInt(buffer)]);
+        packet.setTitleType(SetTitlePacket.TitleType.from(VarInts.readInt(buffer)));
         TextConverter converter = helper.getTextConverter();
         packet.setTitleText(converter.deserialize(helper.readString(buffer)));
         packet.setFadeInTime(VarInts.readInt(buffer));

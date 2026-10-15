@@ -35,7 +35,7 @@ public class GraphicsOverrideParameterSerializer_v859 implements BedrockPacketSe
             packet.getParameterKeyframeValues().put(key, value);
         }
         packet.setBiomeIdentifier(helper.readString(buffer));
-        packet.setIdentifierForParameter(GraphicsOverrideParameterType.values()[buffer.readUnsignedByte()]);
+        packet.setIdentifierForParameter(GraphicsOverrideParameterType.from(buffer.readUnsignedByte()));
         packet.setResetParameter(buffer.readBoolean());
     }
 }

@@ -24,7 +24,7 @@ public class NpcRequestSerializer_v291 implements BedrockPacketSerializer<NpcReq
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, NpcRequestPacket packet) {
         packet.setNpcRuntimeID(VarInts.readUnsignedLong(buffer));
-        packet.setRequestType(NpcRequestPacket.RequestType.values()[buffer.readUnsignedByte()]);
+        packet.setRequestType(NpcRequestPacket.RequestType.from(buffer.readUnsignedByte()));
         packet.setActions(helper.readString(buffer));
         packet.setActionIndex(buffer.readUnsignedByte());
     }
