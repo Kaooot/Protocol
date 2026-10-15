@@ -70,6 +70,7 @@ public class BedrockCodecHelper_v1001 extends BedrockCodecHelper_v975 {
 
     @Override
     public void writeItemUseInventoryTransaction(ByteBuf buffer, ItemUseInventoryTransaction transaction) {
+        this.writeInventoryTransactions(buffer, transaction.getActions());
         VarInts.writeInt(buffer, transaction.getActionType().ordinal());
         buffer.writeByte(transaction.getTriggerType().ordinal());
         this.writeVector3i(buffer, transaction.getPosition());
@@ -85,7 +86,10 @@ public class BedrockCodecHelper_v1001 extends BedrockCodecHelper_v975 {
 
     @Override
     public ItemUseInventoryTransaction readItemUseInventoryTransaction(ByteBuf buffer) {
+        final InventoryTransaction actions = new InventoryTransaction();
+        this.readInventoryTransactions(buffer, actions);
         final ItemUseInventoryTransaction transaction = new ItemUseInventoryTransaction();
+        transaction.setActions(actions);
         transaction.setActionType(ItemUseActionType.from(VarInts.readInt(buffer)));
         transaction.setTriggerType(ItemUseTriggerType.from(buffer.readUnsignedByte()));
         transaction.setPosition(this.readVector3i(buffer));

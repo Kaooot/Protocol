@@ -5,6 +5,7 @@ import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v2168.BedrockCodecHelper_v2168;
 import org.cloudburstmc.protocol.bedrock.data.ability.AbilitiesIndex;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerEnumName;
+import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.*;
 import org.cloudburstmc.protocol.bedrock.data.text.TextProcessingEventOrigin;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequestActionType;
 import org.cloudburstmc.protocol.bedrock.data.misc.RedactableString;
@@ -13,11 +14,6 @@ import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemS
 import org.cloudburstmc.protocol.bedrock.data.inventory.InventorySource;
 import org.cloudburstmc.protocol.bedrock.data.inventory.InventorySourceFlags;
 import org.cloudburstmc.protocol.bedrock.data.inventory.InventorySourceType;
-import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.ItemUseActionType;
-import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.ItemUseClientCooldownState;
-import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.ItemUseInventoryTransaction;
-import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.ItemUsePredictedResult;
-import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.ItemUseTriggerType;
 import org.cloudburstmc.protocol.bedrock.data.player.HandSlot;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 import org.cloudburstmc.protocol.common.util.VarInts;
@@ -75,6 +71,7 @@ public class BedrockCodecHelper_v2193 extends BedrockCodecHelper_v2168 {
 
     @Override
     public void writeItemUseInventoryTransaction(ByteBuf buffer, ItemUseInventoryTransaction transaction) {
+        this.writeInventoryTransactions(buffer, transaction.getActions());
         VarInts.writeInt(buffer, transaction.getActionType().ordinal());
         buffer.writeByte(transaction.getTriggerType().ordinal());
         this.writeVector3i(buffer, transaction.getPosition());
@@ -91,7 +88,10 @@ public class BedrockCodecHelper_v2193 extends BedrockCodecHelper_v2168 {
 
     @Override
     public ItemUseInventoryTransaction readItemUseInventoryTransaction(ByteBuf buffer) {
+        final InventoryTransaction actions = new InventoryTransaction();
+        this.readInventoryTransactions(buffer, actions);
         final ItemUseInventoryTransaction transaction = new ItemUseInventoryTransaction();
+        transaction.setActions(actions);
         transaction.setActionType(ItemUseActionType.from(VarInts.readInt(buffer)));
         transaction.setTriggerType(ItemUseTriggerType.from(buffer.readUnsignedByte()));
         transaction.setPosition(this.readVector3i(buffer));

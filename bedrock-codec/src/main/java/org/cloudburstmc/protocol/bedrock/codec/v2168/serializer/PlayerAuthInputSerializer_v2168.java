@@ -7,8 +7,8 @@ import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v766.serializer.PlayerAuthInputSerializer_v766;
 import org.cloudburstmc.protocol.bedrock.data.inventory.LegacySetSlot;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.ItemStackLegacyRequestId;
-import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.PackedItemUseLegacyInventoryTransaction;
-import org.cloudburstmc.protocol.bedrock.data.player.*;
+import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.*;
+import org.cloudburstmc.protocol.bedrock.data.player.PlayerBlockActionData;
 import org.cloudburstmc.protocol.bedrock.data.player.input.InputMode;
 import org.cloudburstmc.protocol.bedrock.data.player.input.NewInteractionModel;
 import org.cloudburstmc.protocol.bedrock.data.player.input.PlayerActionType;
@@ -117,10 +117,7 @@ public class PlayerAuthInputSerializer_v2168 extends PlayerAuthInputSerializer_v
                 codecHelper.writeByteArray(buf, slot.getSlots());
             });
         }
-        buffer.writeBoolean(true);
-        buffer.writeBoolean(true);
-        helper.writeArray(buffer, transaction.getActions(), helper::writeInventoryAction);
-        helper.writeItemUseInventoryTransaction(buffer, transaction.getTransaction());
+        this.writeItemUseInventoryTransaction(buffer, helper, transaction.getTransaction());
     }
 
     @Override
@@ -135,10 +132,45 @@ public class PlayerAuthInputSerializer_v2168 extends PlayerAuthInputSerializer_v
                 return slot;
             });
         }
+        transaction.setTransaction(this.readItemUseInventoryTransaction(buffer, helper));
+        return transaction;
+    }
+
+    private void writeItemUseInventoryTransaction(ByteBuf buffer, BedrockCodecHelper helper, ItemUseInventoryTransaction transaction) {
+        buffer.writeBoolean(true);
+        buffer.writeBoolean(true);
+        helper.writeInventoryTransactions(buffer, transaction.getActions());
+        VarInts.writeInt(buffer, transaction.getActionType().ordinal());
+        buffer.writeByte(transaction.getTriggerType().ordinal());
+        helper.writeVector3i(buffer, transaction.getPosition());
+        buffer.writeByte(transaction.getFace());
+        VarInts.writeInt(buffer, transaction.getSlot());
+        helper.writeNetworkItemStackDescriptor(buffer, transaction.getItem());
+        helper.writeVector3f(buffer, transaction.getFromPosition());
+        helper.writeVector3f(buffer, transaction.getClickPosition());
+        VarInts.writeUnsignedInt(buffer, transaction.getTargetBlockId().getRuntimeId());
+        buffer.writeByte(transaction.getClientInteractPrediction().ordinal());
+        buffer.writeByte(transaction.getClientCooldownState().ordinal());
+    }
+
+    private ItemUseInventoryTransaction readItemUseInventoryTransaction(ByteBuf buffer, BedrockCodecHelper helper) {
+        final ItemUseInventoryTransaction transaction = new ItemUseInventoryTransaction();
         if (buffer.readBoolean() && buffer.readBoolean()) {
-            helper.readArray(buffer, transaction.getActions(), helper::readInventoryAction, helper.getEncodingSettings().maxInventoryActionsOrRequests());
+            final InventoryTransaction actions = new InventoryTransaction();
+            helper.readInventoryTransactions(buffer, actions);
+            transaction.setActions(actions);
         }
-        transaction.setTransaction(helper.readItemUseInventoryTransaction(buffer));
+        transaction.setActionType(ItemUseActionType.from(VarInts.readInt(buffer)));
+        transaction.setTriggerType(ItemUseTriggerType.from(buffer.readUnsignedByte()));
+        transaction.setPosition(helper.readVector3i(buffer));
+        transaction.setFace(buffer.readByte());
+        transaction.setSlot(VarInts.readInt(buffer));
+        transaction.setItem(helper.readNetworkItemStackDescriptor(buffer));
+        transaction.setFromPosition(helper.readVector3f(buffer));
+        transaction.setClickPosition(helper.readVector3f(buffer));
+        transaction.setTargetBlockId(helper.getBlockDefinitions().getDefinition(VarInts.readUnsignedInt(buffer)));
+        transaction.setClientInteractPrediction(ItemUsePredictedResult.from(buffer.readUnsignedByte()));
+        transaction.setClientCooldownState(ItemUseClientCooldownState.from(buffer.readUnsignedByte()));
         return transaction;
     }
 }
