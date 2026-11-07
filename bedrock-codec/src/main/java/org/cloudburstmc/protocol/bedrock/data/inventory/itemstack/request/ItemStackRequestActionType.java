@@ -30,6 +30,10 @@ public enum ItemStackRequestActionType {
      * @since v471
      */
     CRAFT_LOOM,
+    /**
+     * @since v2225
+     */
+    CRAFT_RESERVED_ACTION,
     CRAFT_NON_IMPLEMENTED,
     CRAFT_RESULTS,
     /**

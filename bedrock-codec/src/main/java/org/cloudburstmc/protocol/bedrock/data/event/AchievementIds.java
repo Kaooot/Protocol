@@ -83,14 +83,6 @@ public enum AchievementIds {
     GETTING_AN_UPGRADE,
     MONSTER_HUNTER,
     DIAMONDS,
-    PLETHORA_OF_CATS;
-
-    private static final AchievementIds[] VALUES = values();
-
-    public static AchievementIds from(int ordinal) {
-        if (ordinal >= 0 && ordinal < VALUES.length) {
-            return VALUES[ordinal];
-        }
-        throw new UnsupportedOperationException("Detected unknown AchievementIds ID: " + ordinal);
-    }
+    PLETHORA_OF_CATS,
+    WHAT_GOES_AROUND_COMES_AROUND;
 }

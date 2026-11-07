@@ -3,7 +3,8 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.protocol.bedrock.data.connection.MatchmakingState;
+import org.cloudburstmc.protocol.bedrock.data.connection.matchmaking.MatchmakingState;
+import org.cloudburstmc.protocol.bedrock.data.connection.matchmaking.MatchmakingStateOptions;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
@@ -13,6 +14,7 @@ public class ClientboundMatchmakingStatePacket implements BedrockPacket {
 
     private MatchmakingState state;
     private String destinationName;
+    private MatchmakingStateOptions options;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

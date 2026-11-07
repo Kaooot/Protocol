@@ -99,7 +99,6 @@ public class Bedrock_v2168 extends Bedrock_v1001 {
             .updateSerializer(PlayerLocationPacket.class, PlayerLocationSerializer_v2168.INSTANCE)
             .updateSerializer(PlayerSkinPacket.class, PlayerSkinSerializer_v2168.INSTANCE)
             .updateSerializer(PlayerUpdateEntityOverridesPacket.class, PlayerUpdateEntityOverridesSerializer_v2168.INSTANCE)
-            .updateSerializer(PlaySoundPacket.class, PlaySoundSerializer_v2168.INSTANCE)
             .updateSerializer(ResourcePackClientResponsePacket.class, ResourcePackClientResponseSerializer_v2168.INSTANCE)
             .updateSerializer(ResourcePacksInfoPacket.class, ResourcePacksInfoSerializer_v2168.INSTANCE)
             .updateSerializer(SetScorePacket.class, SetScoreSerializer_v2168.INSTANCE)

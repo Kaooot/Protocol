@@ -5,7 +5,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
-import org.cloudburstmc.protocol.bedrock.data.sound.SoundDataEvent;
+import org.cloudburstmc.protocol.bedrock.data.sound.SoundDataEventType;
 import org.cloudburstmc.protocol.bedrock.packet.ClientboundUpdateSoundDataPacket;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -22,6 +22,6 @@ public class ClientboundUpdateSoundDataSerializer_v1001 implements BedrockPacket
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ClientboundUpdateSoundDataPacket packet) {
         packet.setServerSoundHandle(helper.readServerSoundHandle(buffer));
-        packet.setSoundEvent(SoundDataEvent.from(buffer.readIntLE()));
+        packet.setSoundEvent(SoundDataEventType.from(buffer.readIntLE()));
     }
 }

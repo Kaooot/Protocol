@@ -14,7 +14,7 @@ public class ItemReleaseInventoryTransaction {
     private ItemData item;
     private Vector3f fromPosition;
     /**
-     * @since v2207
+     * @since v2225
      */
     private HandSlot hand;
 }

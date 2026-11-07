@@ -14,41 +14,41 @@ public class ClientboundUpdateSoundDataSerializer_v2168 extends ClientboundUpdat
 
     public static final ClientboundUpdateSoundDataSerializer_v2168 INSTANCE = new ClientboundUpdateSoundDataSerializer_v2168();
 
-    protected final VariantCodec<ClientboundUpdateSoundDataPacket> soundDataVariant = VariantCodec.<SoundDataEvent, ClientboundUpdateSoundDataPacket>builder(SoundDataEvent::ordinal)
+    protected final VariantCodec<ClientboundUpdateSoundDataPacket> soundDataVariant = VariantCodec.<SoundDataEventType, ClientboundUpdateSoundDataPacket>builder(SoundDataEventType::ordinal)
             .add(
-                    SoundDataEvent.STOP,
+                    SoundDataEventType.STOP,
                     Stop.class
             )
             .add(
-                    SoundDataEvent.SET_VOLUME,
+                    SoundDataEventType.SET_VOLUME,
                     SetVolume.class,
                     this::writeSetVolume,
                     this::readSetVolume
             )
             .add(
-                    SoundDataEvent.SET_PITCH,
+                    SoundDataEventType.SET_PITCH,
                     SetPitch.class,
                     this::writeSetPitch,
                     this::readSetPitch
             )
             .add(
-                    SoundDataEvent.FADE,
+                    SoundDataEventType.FADE,
                     Fade.class,
                     this::writeFade,
                     this::readFade
             )
             .add(
-                    SoundDataEvent.SEEK_TO,
+                    SoundDataEventType.SEEK_TO,
                     SeekTo.class,
                     this::writeSeekTo,
                     this::readSeekTo
             )
             .add(
-                    SoundDataEvent.PAUSE,
+                    SoundDataEventType.PAUSE,
                     Pause.class
             )
             .add(
-                    SoundDataEvent.RESUME,
+                    SoundDataEventType.RESUME,
                     Resume.class
             )
             .build();

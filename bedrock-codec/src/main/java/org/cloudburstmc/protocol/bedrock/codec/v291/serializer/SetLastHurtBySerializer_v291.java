@@ -5,7 +5,6 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
-import org.cloudburstmc.protocol.bedrock.data.actor.ActorType;
 import org.cloudburstmc.protocol.bedrock.packet.SetLastHurtByPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -16,11 +15,11 @@ public class SetLastHurtBySerializer_v291 implements BedrockPacketSerializer<Set
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, SetLastHurtByPacket packet) {
-        VarInts.writeInt(buffer, packet.getLastHurtBy().ordinal());
+        VarInts.writeInt(buffer, packet.getLastHurtBy());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, SetLastHurtByPacket packet) {
-        packet.setLastHurtBy(ActorType.from(VarInts.readInt(buffer)));
+        packet.setLastHurtBy(VarInts.readInt(buffer));
     }
 }

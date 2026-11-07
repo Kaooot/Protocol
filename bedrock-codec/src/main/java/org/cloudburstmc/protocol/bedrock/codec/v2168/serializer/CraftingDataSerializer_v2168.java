@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
 import org.cloudburstmc.protocol.bedrock.data.definitions.ItemDefinition;
+import org.cloudburstmc.protocol.bedrock.data.definitions.SimpleItemDefinition;
 import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.*;
 import org.cloudburstmc.protocol.bedrock.data.recipe.*;
 import org.cloudburstmc.protocol.bedrock.packet.CraftingDataPacket;
@@ -281,7 +282,11 @@ public class CraftingDataSerializer_v2168 implements BedrockPacketSerializer<Cra
         ItemDescriptor descriptor;
         switch (type) {
             case NAME:
-                final ItemDefinition definition = helper.getItemDefinitions().getDefinition(helper.readString(buffer));
+                final String itemName = helper.readString(buffer);
+                ItemDefinition definition = helper.getItemDefinitions().getDefinition(itemName);
+                if (definition == null) {
+                    definition = new SimpleItemDefinition(itemName, 0, false);
+                }
                 final int auxValue = this.fromAuxValue(VarInts.readInt(buffer));
                 descriptor = new NameDescriptor(definition, auxValue);
                 break;

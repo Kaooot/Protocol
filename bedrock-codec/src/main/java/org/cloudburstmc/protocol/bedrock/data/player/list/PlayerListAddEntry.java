@@ -14,7 +14,7 @@ public class PlayerListAddEntry {
     private String playerName;
     private String xblXUID;
     /**
-     * @since v2207
+     * @since v2225
      */
     private String playFabID;
     private String platformOnlineID;

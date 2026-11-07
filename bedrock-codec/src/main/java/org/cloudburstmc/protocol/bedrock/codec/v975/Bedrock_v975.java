@@ -175,7 +175,6 @@ public class Bedrock_v975 extends Bedrock_v944 {
             .updateSerializer(MoveActorAbsolutePacket.class, MoveEntityAbsoluteSerializer_v975.INSTANCE)
             .updateSerializer(ClientMovementPredictionSyncPacket.class, ClientMovementPredictionSyncSerializer_v975.INSTANCE)
             .updateSerializer(PartyChangedPacket.class, PartyChangedSerializer_v975.INSTANCE)
-            .updateSerializer(PlaySoundPacket.class, PlaySoundSerializer_v975.INSTANCE)
             .updateSerializer(PlayerEnchantOptionsPacket.class, PlayerEnchantOptionsSerializer_v975.INSTANCE)
             .updateSerializer(ServerboundDiagnosticsPacket.class, ServerboundDiagnosticsSerializer_v975.INSTANCE)
             .updateSerializer(UpdateClientOptionsPacket.class, UpdateClientOptionsSerializer_v975.INSTANCE)

@@ -30,6 +30,7 @@ public class SerializedSkin {
     private String ID;
     /**
      * @since v428
+     * @deprecated since v2225
      */
     @Builder.Default
     private String playFabID = "";

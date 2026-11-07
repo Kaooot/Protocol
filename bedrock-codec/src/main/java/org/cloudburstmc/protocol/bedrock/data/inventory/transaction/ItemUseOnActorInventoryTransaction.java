@@ -13,7 +13,7 @@ public class ItemUseOnActorInventoryTransaction {
     private ItemUseOnActorActionType actionType;
     private int slot;
     /**
-     * @since v2207
+     * @since v2225
      */
     private HandSlot hand;
     private ItemData item;

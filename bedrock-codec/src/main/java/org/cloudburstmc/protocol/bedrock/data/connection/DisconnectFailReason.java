@@ -151,7 +151,11 @@ public enum DisconnectFailReason {
     NOT_AUTHENTICATED_FAST_FAIL,
     EDITOR_NOT_ALLOWED,
     MISSING_STRUCTURE_DATA,
-    UNSUPPORTED_TRANSPORT;
+    UNSUPPORTED_TRANSPORT,
+    /**
+     * @since v2225
+     */
+    SUB_CLIENT_LOGIN_NOT_BOUND;
 
     private static final DisconnectFailReason[] VALUES = values();
 

@@ -9,5 +9,8 @@ public class TransitionSettingsData {
     private int totalTransitionTicks;
     private int currentTransitionTicks;
     private EasingFunction easing;
+    /**
+     * @since v2225
+     */
     private String clockName;
 }

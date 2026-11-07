@@ -261,6 +261,10 @@ public class BedrockPacketType {
     public static final BedrockPacketType CRAFTING_EVENT = new BedrockPacketType("CRAFTING_EVENT");
     public static final BedrockPacketType CLIENT_CHEAT_ABILITY = new BedrockPacketType("CLIENT_CHEAT_ABILITY");
     public static final BedrockPacketType PHOTO_INFO_REQUEST = new BedrockPacketType("PHOTO_INFO_REQUEST");
+    public static final BedrockPacketType SET_PASSENGER_OF_BLOCK = new BedrockPacketType("SET_PASSENGER_OF_BLOCK");
+    public static final BedrockPacketType SERVERBOUND_CURSOR_ITEM_DRAG = new BedrockPacketType("SERVERBOUND_CURSOR_ITEM_DRAG");
+    public static final BedrockPacketType CLIENTBOUND_PLAY_AUDIO_CONTENT = new BedrockPacketType("CLIENTBOUND_PLAY_AUDIO_CONTENT");
+    public static final BedrockPacketType SERVERBOUND_REGISTER_AUDIO_CONTENT = new BedrockPacketType("SERVERBOUND_REGISTER_AUDIO_CONTENT");
 
     @Getter
     private final String name;

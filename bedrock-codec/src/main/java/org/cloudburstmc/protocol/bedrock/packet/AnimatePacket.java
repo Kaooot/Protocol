@@ -16,6 +16,9 @@ public class AnimatePacket implements BedrockPacket {
     private long targetActorRuntimeID;
     private float data;
     private ActorSwingSource swingSource;
+    /**
+     * @since v2225
+     */
     private HandSlot hand;
     /**
      * @deprecated since v898

@@ -21,7 +21,6 @@ public class Bedrock_v2193 extends Bedrock_v2169 {
             .updateSerializer(ItemStackResponsePacket.class, ItemStackResponseSerializer_v2193.INSTANCE)
             .updateSerializer(MoveActorDeltaPacket.class, MoveActorDeltaSerializer_v2193.INSTANCE)
             .updateSerializer(PlayerAuthInputPacket.class, PlayerAuthInputSerializer_v2193.INSTANCE)
-            .updateSerializer(PlaySoundPacket.class, PlaySoundSerializer_v2193.INSTANCE)
             .updateSerializer(SubChunkPacket.class, SubChunkSerializer_v2193.INSTANCE)
             .updateSerializer(ServerboundDiagnosticsPacket.class, ServerboundDiagnosticsSerializer_v2193.INSTANCE)
             .updateSerializer(ServerboundPackSettingChangePacket.class, ServerboundPackSettingChangeSerializer_v2193.INSTANCE)

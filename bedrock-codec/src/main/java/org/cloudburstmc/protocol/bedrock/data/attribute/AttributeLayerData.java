@@ -12,6 +12,7 @@ public class AttributeLayerData {
     private String name;
     /**
      * @since v1001
+     * @deprecated since v2225
      */
     private String noiseName;
     private DimensionType dimension;

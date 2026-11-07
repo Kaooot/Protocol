@@ -6,6 +6,7 @@ import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.math.vector.Vector3i;
 import org.cloudburstmc.nbt.NbtType;
 import org.cloudburstmc.protocol.bedrock.data.EncodingSettings;
+import org.cloudburstmc.protocol.bedrock.data.actor.passenger.PassengerOfBlockArguments;
 import org.cloudburstmc.protocol.bedrock.data.misc.RedactableString;
 import org.cloudburstmc.protocol.bedrock.data.ability.SerializedAbilitiesData;
 import org.cloudburstmc.protocol.bedrock.data.actor.PropertySyncData;
@@ -29,7 +30,9 @@ import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.ItemUseInven
 import org.cloudburstmc.protocol.bedrock.data.player.PlayerInputTick;
 import org.cloudburstmc.protocol.bedrock.data.recipe.RecipeIngredient;
 import org.cloudburstmc.protocol.bedrock.data.skin.SerializedSkin;
+import org.cloudburstmc.protocol.bedrock.data.sound.PlaySoundPacketPayload;
 import org.cloudburstmc.protocol.bedrock.data.sound.ServerSoundHandle;
+import org.cloudburstmc.protocol.bedrock.data.sound.audio.SignedAudioContent;
 import org.cloudburstmc.protocol.bedrock.data.structure.StructureSettings;
 import org.cloudburstmc.protocol.bedrock.data.world.Experiments;
 import org.cloudburstmc.protocol.bedrock.data.world.GameRule;
@@ -325,4 +328,16 @@ public interface BedrockCodecHelper {
     void writeRedactableString(ByteBuf buffer, RedactableString string);
 
     RedactableString readRedactableString(ByteBuf buffer);
+
+    void writeSignedAudioContent(ByteBuf buffer, SignedAudioContent content);
+
+    SignedAudioContent readSignedAudioContent(ByteBuf buffer);
+
+    void writePlaySoundPacketPayload(ByteBuf buffer, PlaySoundPacketPayload payload);
+
+    PlaySoundPacketPayload readPlaySoundPacketPayload(ByteBuf buffer);
+
+    void writePassengerOfBlockArguments(ByteBuf buffer, PassengerOfBlockArguments arguments);
+
+    PassengerOfBlockArguments readPassengerOfBlockArguments(ByteBuf buffer);
 }

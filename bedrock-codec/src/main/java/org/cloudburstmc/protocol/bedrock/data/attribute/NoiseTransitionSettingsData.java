@@ -10,8 +10,17 @@ public class NoiseTransitionSettingsData {
     private int totalTransitionTicks;
     private int currentTransitionTicks;
     private EasingFunction easing;
+    /**
+     * @since v2225
+     */
     private String clockName;
+    /**
+     * @since v1001
+     */
     private int localTransitionTicks;
+    /**
+     * @since v2225
+     */
     private String noiseName;
     private NoiseAlignment noiseAlignment;
 }

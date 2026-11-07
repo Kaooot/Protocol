@@ -1,8 +1,10 @@
 package org.cloudburstmc.protocol.bedrock.codec.v291.serializer;
 
 import io.netty.buffer.ByteBuf;
+
 import java.util.EnumMap;
 import java.util.function.BiFunction;
+
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
 import org.cloudburstmc.protocol.bedrock.data.event.Achievement;
@@ -24,12 +26,99 @@ import org.cloudburstmc.protocol.bedrock.data.event.SlashCommand;
 import org.cloudburstmc.protocol.bedrock.packet.LegacyTelemetryEventPacket;
 import org.cloudburstmc.protocol.common.util.Preconditions;
 import org.cloudburstmc.protocol.common.util.TriConsumer;
+import org.cloudburstmc.protocol.common.util.TypeMap;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
 public class LegacyTelemetryEventSerializer_v291 implements BedrockPacketSerializer<LegacyTelemetryEventPacket> {
     public static final LegacyTelemetryEventSerializer_v291 INSTANCE = new LegacyTelemetryEventSerializer_v291();
 
     protected static final LegacyTelemetryEventPacket.Type[] VALUES = LegacyTelemetryEventPacket.Type.values();
+
+    protected static final TypeMap<AchievementIds> ACHIEVEMENTS = TypeMap.builder(AchievementIds.class)
+            .insert(7, AchievementIds.CHEST_FULL_OF_COBBLESTONE)
+            .insert(10, AchievementIds.DIAMOND_FOR_YOU)
+            .insert(20, AchievementIds.IRON_BELLY)
+            .insert(21, AchievementIds.IRON_MAN)
+            .insert(29, AchievementIds.ON_ARAIL)
+            .insert(30, AchievementIds.OVERKILL)
+            .insert(37, AchievementIds.RETURN_TO_SENDER)
+            .insert(38, AchievementIds.SNIPER_DUEL)
+            .insert(39, AchievementIds.STAYIN_FROSTY)
+            .insert(40, AchievementIds.TAKE_INVENTORY)
+            .insert(50, AchievementIds.MAP_ROOM)
+            .insert(52, AchievementIds.FREIGHT_STATION)
+            .insert(53, AchievementIds.SMELT_EVERYTHING)
+            .insert(54, AchievementIds.TASTE_OF_YOUR_OWN_MEDICINE)
+            .insert(56, AchievementIds.WHEN_PIGS_FLY)
+            .insert(58, AchievementIds.INCEPTION)
+            .insert(60, AchievementIds.ARTIFICIAL_SELECTION)
+            .insert(61, AchievementIds.FREE_DIVER)
+            .insert(62, AchievementIds.SPAWN_THE_WITHER)
+            .insert(63, AchievementIds.BEACONATOR)
+            .insert(64, AchievementIds.GREAT_VIEW)
+            .insert(65, AchievementIds.SUPER_SONIC)
+            .insert(66, AchievementIds.THE_END_AGAIN)
+            .insert(67, AchievementIds.TREASURE_HUNTER)
+            .insert(68, AchievementIds.SHOOTING_STAR)
+            .insert(69, AchievementIds.FASHION_SHOW)
+            .insert(71, AchievementIds.SELF_PUBLISHED_AUTHOR)
+            .insert(72, AchievementIds.ALTERNATIVE_FUEL)
+            .insert(73, AchievementIds.SLEEP_WITH_THE_FISHES)
+            .insert(74, AchievementIds.CASTAWAY)
+            .insert(75, AchievementIds.IM_AMARINE_BIOLOGIST)
+            .insert(76, AchievementIds.SAIL_THE7SEAS)
+            .insert(77, AchievementIds.ME_GOLD)
+            .insert(78, AchievementIds.AHOY)
+            .insert(79, AchievementIds.ATLANTIS)
+            .insert(80, AchievementIds.ONE_PICKLE_TWO_PICKLE_SEA_PICKLE_FOUR)
+            .insert(81, AchievementIds.DOA_BARREL_ROLL)
+            .insert(82, AchievementIds.MOSKSTRAUMEN)
+            .insert(83, AchievementIds.ECHOLOCATION)
+            .insert(84, AchievementIds.WHERE_HAVE_YOU_BEEN)
+            .insert(85, AchievementIds.TOP_OF_THE_WORLD)
+            .insert(86, AchievementIds.FRUIT_ON_THE_LOOM)
+            .insert(87, AchievementIds.SOUND_THE_ALARM)
+            .insert(88, AchievementIds.BUY_LOW_SELL_HIGH)
+            .insert(89, AchievementIds.DISENCHANTED)
+            .insert(90, AchievementIds.TIME_FOR_STEW)
+            .insert(91, AchievementIds.BEE_OUR_GUEST)
+            .insert(92, AchievementIds.TOTAL_BEE_LOCATION)
+            .insert(93, AchievementIds.STICKY_SITUATION)
+            .insert(94, AchievementIds.COVER_ME_IN_DEBRIS)
+            .insert(95, AchievementIds.FLOAT_YOUR_GOAT)
+            .insert(96, AchievementIds.FRIEND)
+            .insert(97, AchievementIds.WAX_ON_WAX_OFF)
+            .insert(98, AchievementIds.STRIDER_RIDDEN_IN_LAVA_IN_OVERWORLD)
+            .insert(99, AchievementIds.GOAT_HORN_ACQUIRED)
+            .insert(100, AchievementIds.JUKEBOX_USED_IN_MEADOWS)
+            .insert(101, AchievementIds.TRADED_AT_WORLD_HEIGHT)
+            .insert(102, AchievementIds.SURVIVED_FALL_FROM_WORLD_HEIGHT)
+            .insert(103, AchievementIds.SNEAK_CLOSE_TO_SCULK_SENSOR)
+            .insert(104, AchievementIds.IT_SPREADS)
+            .insert(105, AchievementIds.BIRTHDAY_SONG)
+            .insert(106, AchievementIds.WITH_OUR_POWERS_COMBINED)
+            .insert(107, AchievementIds.PLANTING_THE_PAST)
+            .insert(108, AchievementIds.CAREFUL_RESTORATION)
+            .insert(109, AchievementIds.REVAULTING)
+            .insert(110, AchievementIds.CRAFTERS_CRAFTING_CRAFTERS)
+            .insert(111, AchievementIds.WHO_NEEDS_ROCKETS)
+            .insert(112, AchievementIds.OVER_OVERKILL)
+            .insert(113, AchievementIds.HEART_TRANSPLANTER)
+            .insert(114, AchievementIds.STAY_HYDRATED)
+            .insert(115, AchievementIds.MOB_KABOB)
+            .insert(116, AchievementIds.ADVENTURING_TIME)
+            .insert(117, AchievementIds.UH_OH)
+            .insert(118, AchievementIds.GETTING_WOOD)
+            .insert(119, AchievementIds.BENCH_MAKING)
+            .insert(120, AchievementIds.TIME_TO_MINE)
+            .insert(121, AchievementIds.HOT_TOPIC)
+            .insert(122, AchievementIds.ACQUIRE_HARDWARE)
+            .insert(123, AchievementIds.GETTING_AN_UPGRADE)
+            .insert(124, AchievementIds.MONSTER_HUNTER)
+            .insert(125, AchievementIds.DIAMONDS)
+            .insert(126, AchievementIds.PLETHORA_OF_CATS)
+            .insert(127, AchievementIds.WHAT_GOES_AROUND_COMES_AROUND)
+            .build();
 
     protected final EnumMap<LegacyTelemetryEventPacket.Type, BiFunction<ByteBuf, BedrockCodecHelper, Object>> readers = new EnumMap<>(LegacyTelemetryEventPacket.Type.class);
     protected final EnumMap<LegacyTelemetryEventPacket.Type, TriConsumer<ByteBuf, BedrockCodecHelper, Object>> writers = new EnumMap<>(LegacyTelemetryEventPacket.Type.class);
@@ -97,13 +186,13 @@ public class LegacyTelemetryEventSerializer_v291 implements BedrockPacketSeriali
 
     protected Achievement readAchievement(ByteBuf buffer, BedrockCodecHelper helper) {
         Achievement event = new Achievement();
-        event.setAchievementID(AchievementIds.from(VarInts.readInt(buffer)));
+        event.setAchievementID(ACHIEVEMENTS.getType(VarInts.readInt(buffer)));
         return event;
     }
 
     protected void writeAchievement(ByteBuf buffer, BedrockCodecHelper helper, Object eventData) {
         Achievement event = (Achievement) eventData;
-        VarInts.writeInt(buffer, event.getAchievementID().ordinal());
+        VarInts.writeInt(buffer, ACHIEVEMENTS.getId(event.getAchievementID()));
     }
 
     protected Interaction readInteraction(ByteBuf buffer, BedrockCodecHelper helper) {

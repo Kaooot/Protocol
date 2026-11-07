@@ -3,8 +3,7 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.math.vector.Vector3f;
-import org.cloudburstmc.protocol.bedrock.data.sound.ServerSoundHandle;
+import org.cloudburstmc.protocol.bedrock.data.sound.PlaySoundPacketPayload;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
@@ -12,20 +11,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @ToString(doNotUseGetters = true)
 public class PlaySoundPacket implements BedrockPacket {
 
-    private String name;
-    private Vector3f position;
-    private float volume;
-    private float pitch;
-    private int loopCount;
-    private boolean bypassListenerRangeCheck;
-    /**
-     * @since v975
-     */
-    private ServerSoundHandle serverSoundHandle;
-    /**
-     * @since v2193
-     */
-    private Float playbackPositionSeconds;
+    private PlaySoundPacketPayload payload;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

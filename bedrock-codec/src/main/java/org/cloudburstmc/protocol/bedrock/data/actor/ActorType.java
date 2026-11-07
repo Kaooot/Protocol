@@ -163,7 +163,15 @@ public enum ActorType {
     PARCHED,
     CAMEL_HUSK,
     SULFUR_CUBE,
-    CUSHION;
+    CUSHION,
+    /**
+     * @since v2225
+     */
+    FROSTBITE,
+    /**
+     * @since v2225
+     */
+    ICE_BALL;
 
     private static final ActorType[] VALUES = values();
 

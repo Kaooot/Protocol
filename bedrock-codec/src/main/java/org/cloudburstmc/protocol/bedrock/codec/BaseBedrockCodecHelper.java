@@ -21,6 +21,7 @@ import org.cloudburstmc.nbt.NbtUtils;
 import org.cloudburstmc.protocol.bedrock.data.EncodingSettings;
 import org.cloudburstmc.protocol.bedrock.data.ability.SerializedAbilitiesData;
 import org.cloudburstmc.protocol.bedrock.data.actor.PropertySyncData;
+import org.cloudburstmc.protocol.bedrock.data.actor.passenger.PassengerOfBlockArguments;
 import org.cloudburstmc.protocol.bedrock.data.connection.ClientStoreEntryPointConfig;
 import org.cloudburstmc.protocol.bedrock.data.connection.GatheringsConfig;
 import org.cloudburstmc.protocol.bedrock.data.connection.PresenceConfig;
@@ -40,7 +41,9 @@ import org.cloudburstmc.protocol.bedrock.data.recipe.RecipeIngredient;
 import org.cloudburstmc.protocol.bedrock.data.skin.AnimatedImageData;
 import org.cloudburstmc.protocol.bedrock.data.skin.SerializedSkin;
 import org.cloudburstmc.protocol.bedrock.data.skin.SkinImage;
+import org.cloudburstmc.protocol.bedrock.data.sound.PlaySoundPacketPayload;
 import org.cloudburstmc.protocol.bedrock.data.sound.ServerSoundHandle;
+import org.cloudburstmc.protocol.bedrock.data.sound.audio.SignedAudioContent;
 import org.cloudburstmc.protocol.bedrock.data.structure.StructureSettings;
 import org.cloudburstmc.protocol.bedrock.data.world.Experiments;
 import org.cloudburstmc.protocol.common.DefinitionRegistry;
@@ -710,6 +713,36 @@ public abstract class BaseBedrockCodecHelper implements BedrockCodecHelper {
 
     @Override
     public RedactableString readRedactableString(ByteBuf buffer) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void writeSignedAudioContent(ByteBuf buffer, SignedAudioContent content) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public SignedAudioContent readSignedAudioContent(ByteBuf buffer) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void writePlaySoundPacketPayload(ByteBuf buffer, PlaySoundPacketPayload payload) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public PlaySoundPacketPayload readPlaySoundPacketPayload(ByteBuf buffer) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void writePassengerOfBlockArguments(ByteBuf buffer, PassengerOfBlockArguments arguments) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public PassengerOfBlockArguments readPassengerOfBlockArguments(ByteBuf buffer) {
         throw new UnsupportedOperationException();
     }
 }

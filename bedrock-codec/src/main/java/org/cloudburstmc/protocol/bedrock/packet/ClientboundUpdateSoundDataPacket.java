@@ -4,7 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.protocol.bedrock.data.sound.ServerSoundHandle;
-import org.cloudburstmc.protocol.bedrock.data.sound.SoundDataEvent;
+import org.cloudburstmc.protocol.bedrock.data.sound.SoundDataEventType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
@@ -16,35 +16,46 @@ public class ClientboundUpdateSoundDataPacket implements BedrockPacket {
     /**
      * @deprecated since v2168
      */
-    private SoundDataEvent soundEvent;
+    private SoundDataEventType soundEvent;
     /**
      * @since v2168
+     * @deprecated since v2225
      */
     private Object stop;
     /**
      * @since v2168
+     * @deprecated since v2225
      */
     private Object setVolume;
     /**
      * @since v2168
+     * @deprecated since v2225
      */
     private Object setPitch;
     /**
      * @since v2168
+     * @deprecated since v2225
      */
     private Object fade;
     /**
      * @since v2168
+     * @deprecated since v2225
      */
     private Object seekTo;
     /**
      * @since v2168
+     * @deprecated since v2225
      */
     private Object pause;
     /**
      * @since v2168
+     * @deprecated since v2225
      */
     private Object resume;
+    /**
+     * @since v2225
+     */
+    private Object event;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

@@ -9,6 +9,7 @@ import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.protocol.bedrock.data.ability.SerializedAbilitiesData;
 import org.cloudburstmc.protocol.bedrock.data.actor.PropertySyncData;
 import org.cloudburstmc.protocol.bedrock.data.actor.link.ActorLink;
+import org.cloudburstmc.protocol.bedrock.data.actor.passenger.PassengerOfBlockArguments;
 import org.cloudburstmc.protocol.bedrock.data.connection.BuildPlatform;
 import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataMap;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
@@ -50,6 +51,10 @@ public class AddPlayerPacket implements BedrockPacket {
      */
     private SerializedAbilitiesData abilitiesData = new SerializedAbilitiesData();
     private final List<ActorLink> actorLinks = new ObjectArrayList<>();
+    /**
+     * @since v2225
+     */
+    private PassengerOfBlockArguments passengerBlockData;
     private String deviceId;
     /**
      * @since v388

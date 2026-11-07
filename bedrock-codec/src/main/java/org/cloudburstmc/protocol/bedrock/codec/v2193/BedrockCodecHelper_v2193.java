@@ -6,6 +6,7 @@ import org.cloudburstmc.protocol.bedrock.codec.v2168.BedrockCodecHelper_v2168;
 import org.cloudburstmc.protocol.bedrock.data.ability.AbilitiesIndex;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerEnumName;
 import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.*;
+import org.cloudburstmc.protocol.bedrock.data.sound.PlaySoundPacketPayload;
 import org.cloudburstmc.protocol.bedrock.data.text.TextProcessingEventOrigin;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequestActionType;
 import org.cloudburstmc.protocol.bedrock.data.misc.RedactableString;
@@ -105,5 +106,31 @@ public class BedrockCodecHelper_v2193 extends BedrockCodecHelper_v2168 {
         transaction.setClientInteractPrediction(ItemUsePredictedResult.from(buffer.readUnsignedByte()));
         transaction.setClientCooldownState(ItemUseClientCooldownState.from(buffer.readUnsignedByte()));
         return transaction;
+    }
+
+    @Override
+    public void writePlaySoundPacketPayload(ByteBuf buffer, PlaySoundPacketPayload payload) {
+        this.writeString(buffer, payload.getName());
+        this.writeBlockPosition(buffer, payload.getPosition().mul(8).toInt());
+        buffer.writeFloatLE(payload.getVolume());
+        buffer.writeFloatLE(payload.getPitch());
+        VarInts.writeInt(buffer, payload.getLoopCount());
+        buffer.writeBoolean(payload.isBypassListenerRangeCheck());
+        this.writeOptionalNull(buffer, payload.getServerSoundHandle(), this::writeServerSoundHandle);
+        this.writeOptionalNull(buffer, payload.getPlaybackPositionSeconds(), ByteBuf::writeFloatLE);
+    }
+
+    @Override
+    public PlaySoundPacketPayload readPlaySoundPacketPayload(ByteBuf buffer) {
+        final PlaySoundPacketPayload payload = new PlaySoundPacketPayload();
+        payload.setName(this.readString(buffer));
+        payload.setPosition(this.readBlockPosition(buffer).div(8));
+        payload.setVolume(buffer.readFloatLE());
+        payload.setPitch(buffer.readFloatLE());
+        payload.setLoopCount(VarInts.readInt(buffer));
+        payload.setBypassListenerRangeCheck(buffer.readBoolean());
+        payload.setServerSoundHandle(this.readOptional(buffer, null, this::readServerSoundHandle));
+        payload.setPlaybackPositionSeconds(this.readOptional(buffer, null, ByteBuf::readFloatLE));
+        return payload;
     }
 }

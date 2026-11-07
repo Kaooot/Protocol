@@ -33,6 +33,7 @@ import org.cloudburstmc.protocol.bedrock.data.misc.RedactableString;
 import org.cloudburstmc.protocol.bedrock.data.recipe.RecipeIngredient;
 import org.cloudburstmc.protocol.bedrock.data.recipe.RecipeNetId;
 import org.cloudburstmc.protocol.bedrock.data.skin.*;
+import org.cloudburstmc.protocol.bedrock.data.sound.PlaySoundPacketPayload;
 import org.cloudburstmc.protocol.bedrock.data.structure.AnimationMode;
 import org.cloudburstmc.protocol.bedrock.data.structure.Mirror;
 import org.cloudburstmc.protocol.bedrock.data.structure.Rotation;
@@ -1120,5 +1121,27 @@ public class BedrockCodecHelper_v2168 extends BedrockCodecHelper_v975 {
         string.setUnredacted(this.readString(buffer));
         string.setRedacted(this.readOptional(buffer, null, this::readString));
         return string;
+    }
+
+    @Override
+    public void writePlaySoundPacketPayload(ByteBuf buffer, PlaySoundPacketPayload payload) {
+        this.writeString(buffer, payload.getName());
+        this.writeBlockPosition(buffer, payload.getPosition().mul(8).toInt());
+        buffer.writeFloatLE(payload.getVolume());
+        buffer.writeFloatLE(payload.getPitch());
+        VarInts.writeInt(buffer, payload.getLoopCount());
+        this.writeOptionalNull(buffer, payload.getServerSoundHandle(), this::writeServerSoundHandle);
+    }
+
+    @Override
+    public PlaySoundPacketPayload readPlaySoundPacketPayload(ByteBuf buffer) {
+        final PlaySoundPacketPayload payload = new PlaySoundPacketPayload();
+        payload.setName(this.readString(buffer));
+        payload.setPosition(this.readBlockPosition(buffer).div(8));
+        payload.setVolume(buffer.readFloatLE());
+        payload.setPitch(buffer.readFloatLE());
+        payload.setLoopCount(VarInts.readInt(buffer));
+        payload.setServerSoundHandle(this.readOptional(buffer, null, this::readServerSoundHandle));
+        return payload;
     }
 }

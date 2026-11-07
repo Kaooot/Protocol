@@ -26,15 +26,16 @@ public class LevelChunkPacket extends AbstractReferenceCounted implements Bedroc
      * @since v485
      */
     private Integer clientRequestSubChunkLimit;
-
     private final LongList cacheBlobs = new LongArrayList();
-
     private ByteBuf serializedChunkData;
-
     /**
      * @since v649
      */
     private DimensionType dimension;
+    /**
+     * @since v2225
+     */
+    private boolean isClientBiomeUpdate;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

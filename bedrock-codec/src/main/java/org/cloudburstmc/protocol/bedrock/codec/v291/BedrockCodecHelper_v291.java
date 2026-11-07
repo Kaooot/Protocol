@@ -26,6 +26,7 @@ import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataFormat;
 import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataMap;
 import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataType;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
+import org.cloudburstmc.protocol.bedrock.data.sound.PlaySoundPacketPayload;
 import org.cloudburstmc.protocol.bedrock.data.world.GameRule;
 import org.cloudburstmc.protocol.bedrock.transformer.EntityDataTransformer;
 import org.cloudburstmc.protocol.common.util.TriConsumer;
@@ -491,5 +492,23 @@ public class BedrockCodecHelper_v291 extends BaseBedrockCodecHelper {
         transaction.setFromPosition(this.readVector3f(buffer));
         transaction.setClickPosition(this.readVector3f(buffer));
         return transaction;
+    }
+
+    @Override
+    public void writePlaySoundPacketPayload(ByteBuf buffer, PlaySoundPacketPayload payload) {
+        this.writeString(buffer, payload.getName());
+        this.writeBlockPosition(buffer, payload.getPosition().mul(8).toInt());
+        buffer.writeFloatLE(payload.getVolume());
+        buffer.writeFloatLE(payload.getPitch());
+    }
+
+    @Override
+    public PlaySoundPacketPayload readPlaySoundPacketPayload(ByteBuf buffer) {
+        final PlaySoundPacketPayload payload = new PlaySoundPacketPayload();
+        payload.setName(this.readString(buffer));
+        payload.setPosition(this.readBlockPosition(buffer).div(8));
+        payload.setVolume(buffer.readFloatLE());
+        payload.setPitch(buffer.readFloatLE());
+        return payload;
     }
 }
