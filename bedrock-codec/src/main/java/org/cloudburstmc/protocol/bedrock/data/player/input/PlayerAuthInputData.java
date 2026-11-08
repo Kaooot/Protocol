@@ -4,6 +4,10 @@ public enum PlayerAuthInputData {
 
     ASCEND,
     DESCEND,
+    /**
+     * @deprecated since v685
+     */
+    NORTH_JUMP,
     JUMP_DOWN,
     SPRINT_DOWN,
     CHANGE_HEIGHT,
@@ -55,6 +59,11 @@ public enum PlayerAuthInputData {
     DOWN_LEFT,
     DOWN_RIGHT,
     START_USING_ITEM,
+    /**
+     * @since v748
+     * @deprecated since v2168
+     */
+    CAMERA_RELATIVE_MOVEMENT_ENABLED,
     START_SPIN_ATTACK,
     STOP_SPIN_ATTACK,
     IS_HOTBAR_ONLY_TOUCH,
