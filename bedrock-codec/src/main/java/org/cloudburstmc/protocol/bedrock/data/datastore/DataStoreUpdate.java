@@ -5,19 +5,29 @@ import lombok.Data;
 @Data
 public class DataStoreUpdate {
 
-    private String dataStoreName;
-    private String property;
-    private String path;
+    private String variableName;
     private Object data;
+    private int updateCount;
+
+    /**
+     * @deprecated since v2259
+     */
+    private String dataStoreName;
+    /**
+     * @deprecated since v2259
+     */
+    private String property;
+    /**
+     * @deprecated since v2259
+     */
+    private String path;
+    /**
+     * @deprecated since v2259
+     */
     private int propertyUpdateCount;
     /**
      * @since v924
+     * @deprecated since v2259
      */
     private int pathUpdateCount;
-
-    public enum Type {
-        DOUBLE,
-        BOOLEAN,
-        STRING
-    }
 }

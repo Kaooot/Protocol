@@ -73,7 +73,7 @@ public enum PlayerAuthInputData {
     SNEAK_RELEASED_RAW,
     SNEAK_PRESSED_RAW,
     SNEAK_CURRENT_RAW,
-    INTERNAL_UPDATE;
+    SWAP_OFFHAND;
 
     private static final PlayerAuthInputData[] VALUES = values();
 

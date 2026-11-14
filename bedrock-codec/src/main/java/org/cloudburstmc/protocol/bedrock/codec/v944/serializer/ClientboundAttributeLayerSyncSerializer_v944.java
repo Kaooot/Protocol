@@ -45,7 +45,7 @@ public class ClientboundAttributeLayerSyncSerializer_v944 implements BedrockPack
             )
             .build();
 
-    protected final VariantCodec<ClientboundAttributeLayerSyncPacket> attributeDataVariant = VariantCodec.<AttributeDataType, ClientboundAttributeLayerSyncPacket>builder(AttributeDataType::ordinal)
+    protected VariantCodec<ClientboundAttributeLayerSyncPacket> attributeDataVariant = VariantCodec.<AttributeDataType, ClientboundAttributeLayerSyncPacket>builder(AttributeDataType::ordinal)
             .add(
                     AttributeDataType.BOOL,
                     BoolAttributeData.class,
@@ -231,7 +231,7 @@ public class ClientboundAttributeLayerSyncSerializer_v944 implements BedrockPack
 
     protected void writeBoolAttributeData(ByteBuf buffer, BedrockCodecHelper helper, ClientboundAttributeLayerSyncPacket packet, BoolAttributeData data) {
         buffer.writeBoolean(data.isValue());
-        helper.writeOptionalNull(buffer, data.getOperation().name(), helper::writeString);
+        helper.writeOptionalNull(buffer, data.getOperation().getSerializeName(), helper::writeString);
     }
 
     protected BoolAttributeData readBoolAttributeData(ByteBuf buffer, BedrockCodecHelper helper, ClientboundAttributeLayerSyncPacket packet) {
@@ -244,7 +244,7 @@ public class ClientboundAttributeLayerSyncSerializer_v944 implements BedrockPack
 
     protected void writeFloatAttributeData(ByteBuf buffer, BedrockCodecHelper helper, ClientboundAttributeLayerSyncPacket packet, FloatAttributeData data) {
         buffer.writeFloatLE(data.getValue());
-        helper.writeOptionalNull(buffer, data.getOperation().name(), helper::writeString);
+        helper.writeOptionalNull(buffer, data.getOperation().getSerializeName(), helper::writeString);
         helper.writeOptionalNull(buffer, data.getConstraintMin(), ByteBuf::writeFloatLE);
         helper.writeOptionalNull(buffer, data.getConstraintMax(), ByteBuf::writeFloatLE);
     }
@@ -261,7 +261,7 @@ public class ClientboundAttributeLayerSyncSerializer_v944 implements BedrockPack
 
     protected void writeColorAttributeData(ByteBuf buffer, BedrockCodecHelper helper, ClientboundAttributeLayerSyncPacket packet, ColorAttributeData data) {
         this.writeColor255RGBA(buffer, helper, data.getColor());
-        helper.writeOptionalNull(buffer, data.getOperation().name(), helper::writeString);
+        helper.writeOptionalNull(buffer, data.getOperation().getSerializeName(), helper::writeString);
     }
 
     protected ColorAttributeData readColorAttributeData(ByteBuf buffer, BedrockCodecHelper helper, ClientboundAttributeLayerSyncPacket packet) {

@@ -1,25 +1,23 @@
 package org.cloudburstmc.protocol.bedrock.codec.v428.serializer;
 
 import io.netty.buffer.ByteBuf;
-import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v419.serializer.PlayerAuthInputSerializer_v419;
 import org.cloudburstmc.protocol.bedrock.data.inventory.LegacySetSlot;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.ItemStackLegacyRequestId;
-import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.ItemUseActionType;
-import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.ItemUseInventoryTransaction;
 import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.PackedItemUseLegacyInventoryTransaction;
+import org.cloudburstmc.protocol.bedrock.data.player.PlayerBlockActionData;
 import org.cloudburstmc.protocol.bedrock.data.player.input.PlayerActionType;
 import org.cloudburstmc.protocol.bedrock.data.player.input.PlayerAuthInputData;
-import org.cloudburstmc.protocol.bedrock.data.player.PlayerBlockActionData;
 import org.cloudburstmc.protocol.bedrock.packet.PlayerAuthInputPacket;
+import org.cloudburstmc.protocol.common.util.TypeMap;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
-@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
+@RequiredArgsConstructor
 public class PlayerAuthInputSerializer_v428 extends PlayerAuthInputSerializer_v419 {
 
-    public static final PlayerAuthInputSerializer_v428 INSTANCE = new PlayerAuthInputSerializer_v428();
+    protected final TypeMap<PlayerActionType> playerActionTypes;
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, PlayerAuthInputPacket packet) {
@@ -59,7 +57,7 @@ public class PlayerAuthInputSerializer_v428 extends PlayerAuthInputSerializer_v4
     }
 
     protected void writePlayerBlockActionData(ByteBuf buffer, BedrockCodecHelper helper, PlayerBlockActionData actionData) {
-        VarInts.writeInt(buffer, actionData.getPlayerActionType().ordinal());
+        VarInts.writeInt(buffer, this.playerActionTypes.getId(actionData.getPlayerActionType()));
         switch (actionData.getPlayerActionType()) {
             case START_DESTROY_BLOCK:
             case ABORT_DESTROY_BLOCK:
@@ -73,7 +71,7 @@ public class PlayerAuthInputSerializer_v428 extends PlayerAuthInputSerializer_v4
 
     protected PlayerBlockActionData readPlayerBlockActionData(ByteBuf buffer, BedrockCodecHelper helper) {
         PlayerBlockActionData actionData = new PlayerBlockActionData();
-        actionData.setPlayerActionType(PlayerActionType.from(VarInts.readInt(buffer)));
+        actionData.setPlayerActionType(this.playerActionTypes.getType(VarInts.readInt(buffer)));
         switch (actionData.getPlayerActionType()) {
             case START_DESTROY_BLOCK:
             case ABORT_DESTROY_BLOCK:

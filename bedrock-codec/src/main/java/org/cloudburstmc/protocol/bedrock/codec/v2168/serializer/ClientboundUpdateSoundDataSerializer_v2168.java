@@ -51,6 +51,13 @@ public class ClientboundUpdateSoundDataSerializer_v2168 extends ClientboundUpdat
                     SoundDataEventType.RESUME,
                     Resume.class
             )
+            .prefix(
+                    (buffer, helper, owner, value) -> buffer.writeByte(value),
+                    (buffer, helper, owner) -> {
+                        buffer.readUnsignedByte();
+                        return -1;
+                    }
+            )
             .build();
 
     @Override

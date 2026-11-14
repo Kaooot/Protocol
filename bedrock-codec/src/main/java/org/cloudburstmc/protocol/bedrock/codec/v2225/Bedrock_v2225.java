@@ -56,17 +56,17 @@ public class Bedrock_v2225 extends Bedrock_v2193 {
             .insert(13, ItemStackRequestActionType.CRAFT_RECIPE_OPTIONAL)
             .insert(14, ItemStackRequestActionType.CRAFT_REPAIR_AND_DISENCHANT)
             .insert(15, ItemStackRequestActionType.CRAFT_LOOM)
-            .insert(16, ItemStackRequestActionType.CRAFT_RESERVED_ACTION)
+            .insert(16, ItemStackRequestActionType.CRAFT_DISC_PRESS)
             .insert(17, ItemStackRequestActionType.CRAFT_NON_IMPLEMENTED)
             .insert(18, ItemStackRequestActionType.CRAFT_RESULTS)
             .build();
 
     protected static final TypeMap<ContainerEnumName> CONTAINER_SLOT_TYPES = Bedrock_v2193.CONTAINER_SLOT_TYPES
             .toBuilder()
-            .insert(67, ContainerEnumName.RESERVED_CONTAINER_A)
-            .insert(68, ContainerEnumName.RESERVED_CONTAINER_B)
-            .insert(69, ContainerEnumName.RESERVED_CONTAINER_C)
-            .insert(70, ContainerEnumName.RESERVED_CONTAINER_D)
+            .insert(67, ContainerEnumName.DISC_PRESS_BLOCK_CONTAINER)
+            .insert(68, ContainerEnumName.DISC_PRESS_DYE_CONTAINER)
+            .insert(69, ContainerEnumName.DISC_PRESS_DISC_CONTAINER)
+            .insert(70, ContainerEnumName.DISC_PRESS_RESULT_PREVIEW_CONTAINER)
             .build();
 
     public static final BedrockCodec CODEC = Bedrock_v2193.CODEC.toBuilder()

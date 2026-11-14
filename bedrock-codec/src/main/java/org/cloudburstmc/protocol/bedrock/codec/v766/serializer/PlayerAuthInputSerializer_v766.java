@@ -1,20 +1,20 @@
 package org.cloudburstmc.protocol.bedrock.codec.v766.serializer;
 
 import io.netty.buffer.ByteBuf;
-import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v748.serializer.PlayerAuthInputSerializer_v748;
-import org.cloudburstmc.protocol.bedrock.data.player.input.InputMode;
-import org.cloudburstmc.protocol.bedrock.data.player.input.PlayerAuthInputData;
 import org.cloudburstmc.protocol.bedrock.data.player.PlayerBlockActionData;
+import org.cloudburstmc.protocol.bedrock.data.player.input.PlayerActionType;
+import org.cloudburstmc.protocol.bedrock.data.player.input.PlayerAuthInputData;
 import org.cloudburstmc.protocol.bedrock.packet.PlayerAuthInputPacket;
+import org.cloudburstmc.protocol.common.util.TypeMap;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
-@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public class PlayerAuthInputSerializer_v766 extends PlayerAuthInputSerializer_v748 {
 
-    public static final PlayerAuthInputSerializer_v766 INSTANCE = new PlayerAuthInputSerializer_v766();
+    public PlayerAuthInputSerializer_v766(TypeMap<PlayerActionType> playerActionTypes) {
+        super(playerActionTypes);
+    }
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, PlayerAuthInputPacket packet) {
@@ -23,7 +23,7 @@ public class PlayerAuthInputSerializer_v766 extends PlayerAuthInputSerializer_v7
         helper.writeVector2f(buffer, packet.getMoveVector());
         buffer.writeFloatLE(packet.getPlayerHeadRotation());
         helper.writeLargeVarIntFlags(buffer, packet.getInputData(), PlayerAuthInputData.class);
-        VarInts.writeUnsignedInt(buffer, packet.getInputMode().ordinal());
+        VarInts.writeUnsignedInt(buffer, this.inputModeTypeMap.getId(packet.getInputMode()));
         VarInts.writeUnsignedInt(buffer, packet.getPlayMode().ordinal());
         writeInteractionModel(buffer, helper, packet);
         helper.writeVector2f(buffer, packet.getInteractRotation());
@@ -57,7 +57,7 @@ public class PlayerAuthInputSerializer_v766 extends PlayerAuthInputSerializer_v7
         packet.setMoveVector(helper.readVector2f(buffer));
         packet.setPlayerHeadRotation(buffer.readFloatLE());
         helper.readLargeVarIntFlags(buffer, packet.getInputData(), PlayerAuthInputData.class);
-        packet.setInputMode(InputMode.from(VarInts.readUnsignedInt(buffer)));
+        packet.setInputMode(this.inputModeTypeMap.getType(VarInts.readUnsignedInt(buffer)));
         packet.setPlayMode(CLIENT_PLAY_MODES.getType(VarInts.readUnsignedInt(buffer)));
         readInteractionModel(buffer, helper, packet);
         packet.setInteractRotation(helper.readVector2f(buffer));

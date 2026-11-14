@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.protocol.bedrock.data.connection.GatheringsConfig;
+import org.cloudburstmc.protocol.bedrock.data.connection.TransferPlayerUIOptions;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
@@ -13,8 +14,18 @@ public class TransferPacket implements BedrockPacket {
 
     private String serverAddress;
     private int serverPort;
+    /**
+     * @since v729
+     */
     private boolean reloadWorld;
+    /**
+     * @since v2168
+     */
     private GatheringsConfig gatheringsConfiguration;
+    /**
+     * @since v2259
+     */
+    private TransferPlayerUIOptions serverTransferSettings;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

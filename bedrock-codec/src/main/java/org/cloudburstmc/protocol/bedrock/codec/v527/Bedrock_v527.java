@@ -1,14 +1,7 @@
 package org.cloudburstmc.protocol.bedrock.codec.v527;
 
-import org.cloudburstmc.protocol.bedrock.data.world.event.ParticleType;
-
-import org.cloudburstmc.protocol.bedrock.data.world.event.LevelEventType;
-import org.cloudburstmc.protocol.bedrock.data.world.event.LevelEvent;
-
-import org.cloudburstmc.protocol.bedrock.data.sound.LevelSoundEvent;
-
-import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
 import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
+import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelEventSerializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelSoundEvent1Serializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v313.serializer.LevelSoundEvent2Serializer_v313;
@@ -18,11 +11,16 @@ import org.cloudburstmc.protocol.bedrock.codec.v448.serializer.AvailableCommands
 import org.cloudburstmc.protocol.bedrock.codec.v503.BedrockCodecHelper_v503;
 import org.cloudburstmc.protocol.bedrock.codec.v503.Bedrock_v503;
 import org.cloudburstmc.protocol.bedrock.codec.v527.serializer.*;
-import org.cloudburstmc.protocol.bedrock.data.command.CommandParam;
+import org.cloudburstmc.protocol.bedrock.data.PacketRecipient;
 import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataFormat;
 import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataTypes;
 import org.cloudburstmc.protocol.bedrock.data.actor.ActorFlags;
-import org.cloudburstmc.protocol.bedrock.data.PacketRecipient;
+import org.cloudburstmc.protocol.bedrock.data.command.CommandParam;
+import org.cloudburstmc.protocol.bedrock.data.player.input.PlayerActionType;
+import org.cloudburstmc.protocol.bedrock.data.sound.LevelSoundEvent;
+import org.cloudburstmc.protocol.bedrock.data.world.event.LevelEvent;
+import org.cloudburstmc.protocol.bedrock.data.world.event.LevelEventType;
+import org.cloudburstmc.protocol.bedrock.data.world.event.ParticleType;
 import org.cloudburstmc.protocol.bedrock.packet.*;
 import org.cloudburstmc.protocol.bedrock.transformer.BooleanTransformer;
 import org.cloudburstmc.protocol.bedrock.transformer.FlagTransformer;
@@ -78,6 +76,12 @@ public class Bedrock_v527 extends Bedrock_v503 {
             .insert(441, LevelSoundEvent.UNDEFINED)
             .build();
 
+    protected static final TypeMap<PlayerActionType> PLAYER_ACTION_TYPES = Bedrock_v503.PLAYER_ACTION_TYPES.toBuilder()
+            .replace(28, PlayerActionType.START_ITEM_USE_ON)
+            .insert(29, PlayerActionType.STOP_ITEM_USE_ON)
+            .insert(30, PlayerActionType.COUNT)
+            .build();
+
     public static final BedrockCodec CODEC = Bedrock_v503.CODEC.toBuilder()
             .protocolVersion(527)
             .minecraftVersion("1.19.0")
@@ -89,8 +93,8 @@ public class Bedrock_v527 extends Bedrock_v503 {
             .updateSerializer(LevelSoundEvent1Packet.class, new LevelSoundEvent1Serializer_v291(SOUND_EVENTS))
             .updateSerializer(LevelSoundEvent2Packet.class, new LevelSoundEvent2Serializer_v313(SOUND_EVENTS))
             .updateSerializer(LevelSoundEventPacket.class, new LevelSoundEventSerializer_v332(SOUND_EVENTS))
-            .updateSerializer(PlayerActionPacket.class, new PlayerActionSerializer_v527())
-            .updateSerializer(PlayerAuthInputPacket.class, new PlayerAuthInputSerializer_v527())
+            .updateSerializer(PlayerActionPacket.class, new PlayerActionSerializer_v527(PLAYER_ACTION_TYPES))
+            .updateSerializer(PlayerAuthInputPacket.class, new PlayerAuthInputSerializer_v527(PLAYER_ACTION_TYPES))
             .registerPacket(LessonProgressPacket::new, new LessonProgressSerializer_v527(), 183, PacketRecipient.CLIENT)
             .registerPacket(RequestAbilityPacket::new, new RequestAbilitySerializer_v527(), 184, PacketRecipient.SERVER)
             .registerPacket(RequestPermissionsPacket::new, new RequestPermissionsSerializer_v527(), 185, PacketRecipient.SERVER)

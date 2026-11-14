@@ -39,6 +39,7 @@ public class Bedrock_v859 extends Bedrock_v844 {
             .updateSerializer(AnimatePacket.class, AnimateSerializer_v859.INSTANCE)
             .updateSerializer(BiomeDefinitionListPacket.class, BiomeDefinitionListSerializer_v859.INSTANCE)
             .updateSerializer(CameraInstructionPacket.class, CameraInstructionSerializer_v859.INSTANCE)
+            .updateSerializer(PlayerAuthInputPacket.class, new PlayerAuthInputSerializer_v859(PLAYER_ACTION_TYPES))
             .updateSerializer(PrimitiveShapesPacket.class, PrimitiveShapesSerializer_v859.INSTANCE)
             .updateSerializer(ActorEventPacket.class, new ActorEventSerializer_v291(ACTOR_EVENTS))
             .updateSerializer(ShowStoreOfferPacket.class, ShowStoreOfferSerializer_v859.INSTANCE)

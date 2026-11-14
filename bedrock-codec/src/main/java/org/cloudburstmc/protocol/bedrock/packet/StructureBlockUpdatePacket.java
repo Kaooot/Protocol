@@ -16,6 +16,10 @@ public class StructureBlockUpdatePacket implements BedrockPacket {
     private StructureEditorData structureData;
     private boolean trigger;
     private boolean isWaterlogged;
+    /**
+     * @since v2259
+     */
+    private boolean keepStructureVoid;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

@@ -20,7 +20,7 @@ public class Bedrock_v748 extends Bedrock_v729 {
             .updateSerializer(InventoryContentPacket.class, InventoryContentSerializer_v748.INSTANCE)
             .updateSerializer(InventorySlotPacket.class, InventorySlotSerializer_v748.INSTANCE)
             .updateSerializer(MobEffectPacket.class, MobEffectSerializer_v748.INSTANCE)
-            .updateSerializer(PlayerAuthInputPacket.class, PlayerAuthInputSerializer_v748.INSTANCE)
+            .updateSerializer(PlayerAuthInputPacket.class, new PlayerAuthInputSerializer_v748(PLAYER_ACTION_TYPES))
             .updateSerializer(ResourcePacksInfoPacket.class, ResourcePacksInfoSerializer_v748.INSTANCE)
             .registerPacket(MovementEffectPacket::new, MovementEffectSerializer_v748.INSTANCE, 318, PacketRecipient.CLIENT)
             .registerPacket(SetMovementAuthorityPacket::new, SetMovementAuthoritySerializer_v748.INSTANCE, 319, PacketRecipient.CLIENT)

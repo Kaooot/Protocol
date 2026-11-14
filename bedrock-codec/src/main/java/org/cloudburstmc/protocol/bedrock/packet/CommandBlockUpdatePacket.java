@@ -18,6 +18,10 @@ public class CommandBlockUpdatePacket implements BedrockPacket {
     private boolean trackOutput;
     private int tickDelay;
     private boolean executeOnFirstTick;
+    /**
+     * @since v2259
+     */
+    private boolean lastOutputIsRawMessage;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

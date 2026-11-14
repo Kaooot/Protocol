@@ -5,8 +5,27 @@ import lombok.Data;
 @Data
 public class DataStoreChange {
 
-    private String dataStoreName;
-    private String property;
+    /**
+     * @since v2259
+     */
+    private String variableName;
     private int updateCount;
+    /**
+     * @since v2259
+     */
+    private Object theNewVariableValue;
+
+    /**
+     * @deprecated since v2259
+     */
+    private String dataStoreName;
+    /**
+     * @deprecated since v2259
+     */
+    private String property;
+
+    /**
+     * @deprecated since v2259
+     */
     private Object theNewPropertyValue;
 }

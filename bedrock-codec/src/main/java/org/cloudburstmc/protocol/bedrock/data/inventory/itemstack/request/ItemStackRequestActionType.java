@@ -33,7 +33,7 @@ public enum ItemStackRequestActionType {
     /**
      * @since v2225
      */
-    CRAFT_RESERVED_ACTION,
+    CRAFT_DISC_PRESS,
     CRAFT_NON_IMPLEMENTED,
     CRAFT_RESULTS,
     /**

@@ -7,12 +7,16 @@ import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelSoundEvent1S
 import org.cloudburstmc.protocol.bedrock.codec.v313.serializer.LevelSoundEvent2Serializer_v313;
 import org.cloudburstmc.protocol.bedrock.codec.v332.serializer.LevelSoundEventSerializer_v332;
 import org.cloudburstmc.protocol.bedrock.codec.v361.serializer.LevelEventGenericSerializer_v361;
+import org.cloudburstmc.protocol.bedrock.codec.v527.serializer.PlayerActionSerializer_v527;
 import org.cloudburstmc.protocol.bedrock.codec.v575.BedrockCodecHelper_v575;
+import org.cloudburstmc.protocol.bedrock.codec.v575.serializer.PlayerAuthInputSerializer_v575;
+import org.cloudburstmc.protocol.bedrock.codec.v589.Bedrock_v589;
 import org.cloudburstmc.protocol.bedrock.codec.v594.Bedrock_v594;
 import org.cloudburstmc.protocol.bedrock.codec.v618.serializer.CameraInstructionSerializer_v618;
 import org.cloudburstmc.protocol.bedrock.codec.v618.serializer.CameraPresetsSerializer_v618;
 import org.cloudburstmc.protocol.bedrock.codec.v618.serializer.RefreshEntitlementsSerializer_v618;
 import org.cloudburstmc.protocol.bedrock.codec.v618.serializer.ResourcePacksInfoSerializer_v618;
+import org.cloudburstmc.protocol.bedrock.data.player.input.PlayerActionType;
 import org.cloudburstmc.protocol.bedrock.data.world.event.LevelEventType;
 import org.cloudburstmc.protocol.bedrock.data.PacketRecipient;
 import org.cloudburstmc.protocol.bedrock.data.world.event.ParticleType;
@@ -56,6 +60,12 @@ public class Bedrock_v618 extends Bedrock_v594 {
             .update(ActorDataTypes.AREA_EFFECT_CLOUD_PARTICLE, new TypeMapTransformer<>(PARTICLE_TYPES))
             .build();
 
+    protected static final TypeMap<PlayerActionType> PLAYER_ACTION_TYPES = Bedrock_v594.PLAYER_ACTION_TYPES.toBuilder()
+            .replace(34, PlayerActionType.START_FLYING)
+            .insert(35, PlayerActionType.STOP_FLYING)
+            .insert(36, PlayerActionType.COUNT)
+            .build();
+
     public static final BedrockCodec CODEC = Bedrock_v594.CODEC.toBuilder()
             .raknetProtocolVersion(11)
             .protocolVersion(618)
@@ -69,6 +79,8 @@ public class Bedrock_v618 extends Bedrock_v594 {
             .updateSerializer(ResourcePacksInfoPacket.class, ResourcePacksInfoSerializer_v618.INSTANCE)
             .updateSerializer(CameraPresetsPacket.class, CameraPresetsSerializer_v618.INSTANCE)
             .updateSerializer(CameraInstructionPacket.class, new CameraInstructionSerializer_v618())
+            .updateSerializer(PlayerActionPacket.class, new PlayerActionSerializer_v527(PLAYER_ACTION_TYPES))
+            .updateSerializer(PlayerAuthInputPacket.class, new PlayerAuthInputSerializer_v575(PLAYER_ACTION_TYPES))
             .registerPacket(RefreshEntitlementsPacket::new, new RefreshEntitlementsSerializer_v618(), 305, PacketRecipient.SERVER)
             .build();
 }

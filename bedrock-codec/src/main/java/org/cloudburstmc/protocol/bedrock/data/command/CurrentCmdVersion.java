@@ -57,6 +57,8 @@ public enum CurrentCmdVersion {
     LOCATE_STRUCTURE_OUTPUT("locatestructureoutput"),
     POST_BLOCK_FLATTENING("postblockflattening"),
     TEST_FOR_BLOCK_COMMAND_DOES_NOT_IGNORE_BLOCK_STATE("testforblockcommanddoesnotignoreblockstate"),
+    GAME_TEST_RUN_SET_MULTI_TAG("gametestrunsetmultitag"),
+    SAME_ACTOR_BLOCK_REPLACEMENT_RETAINS_ITEMS_FIX("sameactorblockreplacementretainsitemsfix"),
     COUNT("count"),
     LATEST("latest");
 

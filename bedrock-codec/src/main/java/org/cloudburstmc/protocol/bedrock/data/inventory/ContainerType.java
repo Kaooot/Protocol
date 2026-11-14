@@ -54,7 +54,15 @@ public enum ContainerType {
     /**
      * @since v2193
      */
-    DATA_DRIVEN_CONTAINER(37);
+    DATA_DRIVEN_CONTAINER(37),
+    /**
+     * @since v2259
+     */
+    DISC_PRESS(38),
+    /**
+     * @since v2259
+     */
+    VIRTUAL_CONTAINER(39);
 
     public static final ContainerType[] VALUES;
 

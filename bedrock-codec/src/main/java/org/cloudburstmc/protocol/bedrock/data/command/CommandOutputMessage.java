@@ -2,6 +2,7 @@ package org.cloudburstmc.protocol.bedrock.data.command;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
+import org.cloudburstmc.protocol.bedrock.data.attribute.StringAttributeData;
 
 import java.util.List;
 
@@ -11,4 +12,8 @@ public class CommandOutputMessage {
     private String messageID;
     private boolean successful;
     private final List<String> parameters = new ObjectArrayList<>();
+    /**
+     * @since v2259
+     */
+    private String rawMessage;
 }

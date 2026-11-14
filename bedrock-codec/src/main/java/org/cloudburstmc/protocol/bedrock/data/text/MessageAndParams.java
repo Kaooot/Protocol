@@ -10,6 +10,10 @@ public class MessageAndParams {
 
     private CharSequence message;
     private final List<String> parameterList = new ObjectArrayList<>();
+    /**
+     * @since v2259
+     */
+    private boolean queue;
 
     public <T extends CharSequence> T getMessage(Class<T> type) {
         return type.cast(this.message);

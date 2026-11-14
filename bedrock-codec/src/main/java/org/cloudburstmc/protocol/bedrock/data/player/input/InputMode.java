@@ -6,14 +6,13 @@ public enum InputMode {
     MOUSE,
     TOUCH,
     GAME_PAD,
-    COUNT;
-
-    private static final InputMode[] VALUES = values();
-
-    public static InputMode from(int ordinal) {
-        if (ordinal >= 0 && ordinal < VALUES.length) {
-            return VALUES[ordinal];
-        }
-        throw new UnsupportedOperationException("Detected unknown InputMode ID: " + ordinal);
-    }
+    /**
+     * @deprecated since v859
+     */
+    MOTION_CONTROLLER,
+    /**
+     * @since v2259
+     */
+    GAME_PAD_AND_MOUSE,
+    COUNT
 }

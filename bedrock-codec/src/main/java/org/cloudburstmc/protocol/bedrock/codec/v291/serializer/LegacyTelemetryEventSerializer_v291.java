@@ -186,13 +186,13 @@ public class LegacyTelemetryEventSerializer_v291 implements BedrockPacketSeriali
 
     protected Achievement readAchievement(ByteBuf buffer, BedrockCodecHelper helper) {
         Achievement event = new Achievement();
-        event.setAchievementID(ACHIEVEMENTS.getType(VarInts.readInt(buffer)));
+        event.setAchievementID(VarInts.readInt(buffer));
         return event;
     }
 
     protected void writeAchievement(ByteBuf buffer, BedrockCodecHelper helper, Object eventData) {
         Achievement event = (Achievement) eventData;
-        VarInts.writeInt(buffer, ACHIEVEMENTS.getId(event.getAchievementID()));
+        VarInts.writeInt(buffer, event.getAchievementID());
     }
 
     protected Interaction readInteraction(ByteBuf buffer, BedrockCodecHelper helper) {

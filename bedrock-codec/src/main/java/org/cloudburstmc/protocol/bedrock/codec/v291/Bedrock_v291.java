@@ -1,5 +1,6 @@
 package org.cloudburstmc.protocol.bedrock.codec.v291;
 
+import org.cloudburstmc.protocol.bedrock.data.player.input.PlayerActionType;
 import org.cloudburstmc.protocol.bedrock.data.world.event.ParticleType;
 
 import org.cloudburstmc.protocol.bedrock.data.world.event.LevelEventType;
@@ -633,6 +634,33 @@ public class Bedrock_v291 {
             .insert(41, CommandParam.COMMAND)
             .build();
 
+    protected static final TypeMap<PlayerActionType> PLAYER_ACTION_TYPES = TypeMap.builder(PlayerActionType.class)
+            .insert(-1, PlayerActionType.UNKNOWN)
+            .insert(0, PlayerActionType.START_DESTROY_BLOCK)
+            .insert(1, PlayerActionType.ABORT_DESTROY_BLOCK)
+            .insert(2, PlayerActionType.STOP_DESTROY_BLOCK)
+            .insert(5, PlayerActionType.START_SLEEPING)
+            .insert(6, PlayerActionType.STOP_SLEEPING)
+            .insert(7, PlayerActionType.RESPAWN)
+            .insert(8, PlayerActionType.START_JUMP)
+            .insert(9, PlayerActionType.START_SPRINTING)
+            .insert(10, PlayerActionType.STOP_SPRINTING)
+            .insert(11, PlayerActionType.START_SNEAKING)
+            .insert(12, PlayerActionType.STOP_SNEAKING)
+            .insert(13, PlayerActionType.CREATIVE_DESTROY_BLOCK)
+            .insert(14, PlayerActionType.CHANGE_DIMENSION_ACK)
+            .insert(15, PlayerActionType.START_GLIDING)
+            .insert(16, PlayerActionType.STOP_GLIDING)
+            .insert(17, PlayerActionType.DENY_DESTROY_BLOCK)
+            .insert(18, PlayerActionType.CRACK_BLOCK)
+            .insert(21, PlayerActionType.START_SWIMMING)
+            .insert(22, PlayerActionType.STOP_SWIMMING)
+            .insert(23, PlayerActionType.START_SPIN_ATTACK)
+            .insert(24, PlayerActionType.STOP_SPIN_ATTACK)
+            .insert(25, PlayerActionType.BLOCK_INTERACT)
+            .insert(26, PlayerActionType.COUNT)
+            .build();
+
     public static final BedrockCodec CODEC = BedrockCodec.builder()
             .protocolVersion(291)
             .minecraftVersion("1.7.0")
@@ -672,7 +700,7 @@ public class Bedrock_v291 {
             .registerPacket(InteractPacket::new, InteractSerializer_v291.INSTANCE, 33, PacketRecipient.SERVER)
             .registerPacket(BlockPickRequestPacket::new, BlockPickRequestSerializer_v291.INSTANCE, 34, PacketRecipient.SERVER)
             .registerPacket(ActorPickRequestPacket::new, ActorPickRequestSerializer_v291.INSTANCE, 35, PacketRecipient.SERVER)
-            .registerPacket(PlayerActionPacket::new, PlayerActionSerializer_v291.INSTANCE, 36, PacketRecipient.BOTH)
+            .registerPacket(PlayerActionPacket::new, new PlayerActionSerializer_v291(PLAYER_ACTION_TYPES), 36, PacketRecipient.BOTH)
             .registerPacket(EntityFallPacket::new, EntityFallSerializer_v291.INSTANCE, 37, PacketRecipient.SERVER)
             .registerPacket(HurtArmorPacket::new, HurtArmorSerializer_v291.INSTANCE, 38, PacketRecipient.CLIENT)
             .registerPacket(SetActorDataPacket::new, SetEntityDataSerializer_v291.INSTANCE, 39, PacketRecipient.BOTH)

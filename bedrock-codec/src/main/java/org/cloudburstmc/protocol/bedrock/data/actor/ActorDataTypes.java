@@ -325,4 +325,9 @@ public class ActorDataTypes {
      * @since v975
      */
     public static final ActorDataType<Float> NAMEPLATE_RENDER_DISTANCE_MAX = new ActorDataType<>(Float.class, "NAMEPLATE_RENDER_DISTANCE_MAX");
+    /**
+     * @since v2225
+     */
+    public static final ActorDataType<Boolean> INTERACTION_RESULT = new ActorDataType<>(Boolean.class, "INTERACTION_RESULT");
+    public static final ActorDataType<Byte> COUNT = new ActorDataType<>(Byte.class, "COUNT");
 }

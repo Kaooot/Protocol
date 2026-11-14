@@ -10,13 +10,17 @@ import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.ItemStackLegac
 import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.PackedItemUseLegacyInventoryTransaction;
 import org.cloudburstmc.protocol.bedrock.data.player.input.InputMode;
 import org.cloudburstmc.protocol.bedrock.data.player.input.NewInteractionModel;
+import org.cloudburstmc.protocol.bedrock.data.player.input.PlayerActionType;
 import org.cloudburstmc.protocol.bedrock.data.player.input.PlayerAuthInputData;
 import org.cloudburstmc.protocol.bedrock.packet.PlayerAuthInputPacket;
+import org.cloudburstmc.protocol.common.util.TypeMap;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PlayerAuthInputSerializer_v2193 extends PlayerAuthInputSerializer_v2168 {
-    public static final PlayerAuthInputSerializer_v2193 INSTANCE = new PlayerAuthInputSerializer_v2193();
+
+    public PlayerAuthInputSerializer_v2193(TypeMap<PlayerActionType> playerActionTypes) {
+        super(playerActionTypes);
+    }
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, PlayerAuthInputPacket packet) {
@@ -26,7 +30,7 @@ public class PlayerAuthInputSerializer_v2193 extends PlayerAuthInputSerializer_v
         buffer.writeFloatLE(packet.getPlayerHeadRotation());
         helper.writeArray(buffer, packet.getInputData(),
                 (buf, codecHelper, inputData) -> VarInts.writeInt(buf, inputData.ordinal()));
-        VarInts.writeUnsignedInt(buffer, packet.getInputMode().ordinal());
+        VarInts.writeUnsignedInt(buffer, this.inputModeTypeMap.getId(packet.getInputMode()));
         VarInts.writeUnsignedInt(buffer, packet.getPlayMode().ordinal());
         VarInts.writeInt(buffer, packet.getNewInteractionModel().ordinal());
         helper.writeVector2f(buffer, packet.getInteractRotation());
@@ -56,7 +60,7 @@ public class PlayerAuthInputSerializer_v2193 extends PlayerAuthInputSerializer_v
         packet.setPlayerHeadRotation(buffer.readFloatLE());
         helper.readArray(buffer, packet.getInputData(),
                 (buf, codecHelper) -> PlayerAuthInputData.from(VarInts.readInt(buf)));
-        packet.setInputMode(InputMode.from(VarInts.readUnsignedInt(buffer)));
+        packet.setInputMode(this.inputModeTypeMap.getType(VarInts.readUnsignedInt(buffer)));
         packet.setPlayMode(CLIENT_PLAY_MODES.getType(VarInts.readUnsignedInt(buffer)));
         packet.setNewInteractionModel(NewInteractionModel.from(VarInts.readInt(buffer)));
         packet.setInteractRotation(helper.readVector2f(buffer));

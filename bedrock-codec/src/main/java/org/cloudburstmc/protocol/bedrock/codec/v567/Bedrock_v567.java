@@ -4,6 +4,8 @@ import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelSoundEvent1Serializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v313.serializer.LevelSoundEvent2Serializer_v313;
 import org.cloudburstmc.protocol.bedrock.codec.v332.serializer.LevelSoundEventSerializer_v332;
+import org.cloudburstmc.protocol.bedrock.codec.v527.serializer.PlayerActionSerializer_v527;
+import org.cloudburstmc.protocol.bedrock.codec.v527.serializer.PlayerAuthInputSerializer_v527;
 import org.cloudburstmc.protocol.bedrock.codec.v557.BedrockCodecHelper_v557;
 import org.cloudburstmc.protocol.bedrock.codec.v560.Bedrock_v560;
 import org.cloudburstmc.protocol.bedrock.codec.v567.serializer.ClientCheatAbilitySerializer_v567;
@@ -11,6 +13,7 @@ import org.cloudburstmc.protocol.bedrock.codec.v567.serializer.CommandRequestSer
 import org.cloudburstmc.protocol.bedrock.codec.v567.serializer.CraftingDataSerializer_v567;
 import org.cloudburstmc.protocol.bedrock.codec.v567.serializer.StartGameSerializer_v567;
 import org.cloudburstmc.protocol.bedrock.data.PacketRecipient;
+import org.cloudburstmc.protocol.bedrock.data.player.input.PlayerActionType;
 import org.cloudburstmc.protocol.bedrock.data.sound.LevelSoundEvent;
 import org.cloudburstmc.protocol.bedrock.packet.*;
 import org.cloudburstmc.protocol.common.util.TypeMap;
@@ -26,6 +29,11 @@ public class Bedrock_v567 extends Bedrock_v560 {
             .insert(462, LevelSoundEvent.UNDEFINED)
             .build();
 
+    protected static final TypeMap<PlayerActionType> PLAYER_ACTION_TYPES = Bedrock_v560.PLAYER_ACTION_TYPES.toBuilder()
+            .replace(30, PlayerActionType.HANDLED_TELEPORT)
+            .insert(31, PlayerActionType.COUNT)
+            .build();
+
     public static final BedrockCodec CODEC = Bedrock_v560.CODEC.toBuilder()
             .raknetProtocolVersion(11)
             .protocolVersion(567)
@@ -37,6 +45,8 @@ public class Bedrock_v567 extends Bedrock_v560 {
             .updateSerializer(LevelSoundEvent2Packet.class, new LevelSoundEvent2Serializer_v313(SOUND_EVENTS))
             .updateSerializer(LevelSoundEventPacket.class, new LevelSoundEventSerializer_v332(SOUND_EVENTS))
             .updateSerializer(CraftingDataPacket.class, new CraftingDataSerializer_v567())
+            .updateSerializer(PlayerActionPacket.class, new PlayerActionSerializer_v527(PLAYER_ACTION_TYPES))
+            .updateSerializer(PlayerAuthInputPacket.class, new PlayerAuthInputSerializer_v527(PLAYER_ACTION_TYPES))
             .registerPacket(ClientCheatAbilityPacket::new, new ClientCheatAbilitySerializer_v567(), 197, PacketRecipient.CLIENT)
             .build();
 }

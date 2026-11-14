@@ -8,4 +8,5 @@ public class ServerConfig {
     private GatheringsConfig gathering;
     private ClientStoreEntryPointConfig clientStoreEntryPoint;
     private PresenceConfig presence;
+    private ManagedChatJoinInfo managedChat;
 }

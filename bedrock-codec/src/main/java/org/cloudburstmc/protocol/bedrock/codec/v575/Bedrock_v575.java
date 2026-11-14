@@ -153,7 +153,7 @@ public class Bedrock_v575 extends Bedrock_v568 {
             .updateSerializer(LevelSoundEventPacket.class, new LevelSoundEventSerializer_v332(SOUND_EVENTS))
             .updateSerializer(LevelEventPacket.class, new LevelEventSerializer_v291(LEVEL_EVENTS))
             .updateSerializer(LevelEventGenericPacket.class, new LevelEventGenericSerializer_v361(LEVEL_EVENTS))
-            .updateSerializer(PlayerAuthInputPacket.class, new PlayerAuthInputSerializer_v575())
+            .updateSerializer(PlayerAuthInputPacket.class, new PlayerAuthInputSerializer_v575(PLAYER_ACTION_TYPES))
             .updateSerializer(AvailableCommandsPacket.class, new AvailableCommandsSerializer_v448(COMMAND_PARAMS))
             .registerPacket(CameraPresetsPacket::new, new CameraPresetsSerializer_v575(), 198, PacketRecipient.CLIENT)
             .registerPacket(UnlockedRecipesPacket::new, new UnlockedRecipesSerializer_v575(), 199, PacketRecipient.CLIENT)

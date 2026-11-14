@@ -155,7 +155,19 @@ public enum DisconnectFailReason {
     /**
      * @since v2225
      */
-    SUB_CLIENT_LOGIN_NOT_BOUND;
+    SUB_CLIENT_LOGIN_NOT_BOUND,
+    /**
+     * @since v2259
+     */
+    SESSION_RUNTIME_ERROR,
+    SESSION_INVALID_RESPONSE,
+    SESSION_NETWORK_ERROR,
+    SESSION_SERVICE_ERROR,
+    SESSION_SERVICE_UNAVAILABLE,
+    SESSION_THROTTLED,
+    SESSION_REQUEST_REJECTED,
+    SESSION_UNKNOWN_ERROR,
+    BROKEN_DATA;
 
     private static final DisconnectFailReason[] VALUES = values();
 

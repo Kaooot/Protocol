@@ -1042,4 +1042,32 @@ public interface BedrockPacketHandler extends PacketHandler {
     default PacketSignal handle(ServerboundRegisterAudioContentPacket packet) {
         return PacketSignal.UNHANDLED;
     }
+
+    default PacketSignal handle(ChatPacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
+
+    default PacketSignal handle(ServerboundRequestOnlineMusicPlaybackPacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
+
+    default PacketSignal handle(ClientboundOnlineMusicPlaybackResponsePacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
+
+    default PacketSignal handle(PlayerToggleArmorVisibilityRequestPacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
+
+    default PacketSignal handle(ClientboundMusicPlaybackFailurePacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
+
+    default PacketSignal handle(VirtualContainerOpenPacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
+
+    default PacketSignal handle(VirtualContainerClosePacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
 }

@@ -26,4 +26,12 @@ public class PlaySoundPacketPayload {
      * @since v2193
      */
     private Float playbackPositionSeconds;
+    /**
+     * @since v2259
+     */
+    private Float startDelaySeconds;
+    /**
+     * @since v2259
+     */
+    private SoundAttachOptions attachOptions;
 }

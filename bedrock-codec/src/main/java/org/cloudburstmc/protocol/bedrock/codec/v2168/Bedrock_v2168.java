@@ -1,21 +1,26 @@
 package org.cloudburstmc.protocol.bedrock.codec.v2168;
 
-import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
 import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
+import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
 import org.cloudburstmc.protocol.bedrock.codec.v1001.Bedrock_v1001;
 import org.cloudburstmc.protocol.bedrock.codec.v1001.serializer.LevelSoundEventSerializer_v1001;
 import org.cloudburstmc.protocol.bedrock.codec.v2168.serializer.*;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelEventSerializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v361.serializer.LevelEventGenericSerializer_v361;
-import org.cloudburstmc.protocol.bedrock.data.world.event.LevelEventType;
-import org.cloudburstmc.protocol.bedrock.data.world.event.ParticleType;
-import org.cloudburstmc.protocol.bedrock.data.sound.LevelSoundEvent;
+import org.cloudburstmc.protocol.bedrock.codec.v527.serializer.PlayerActionSerializer_v527;
 import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataFormat;
 import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataTypes;
 import org.cloudburstmc.protocol.bedrock.data.actor.ActorFlags;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequestActionType;
+import org.cloudburstmc.protocol.bedrock.data.player.input.PlayerActionType;
+import org.cloudburstmc.protocol.bedrock.data.sound.LevelSoundEvent;
+import org.cloudburstmc.protocol.bedrock.data.world.event.LevelEventType;
+import org.cloudburstmc.protocol.bedrock.data.world.event.ParticleType;
 import org.cloudburstmc.protocol.bedrock.packet.*;
-import org.cloudburstmc.protocol.bedrock.transformer.*;
+import org.cloudburstmc.protocol.bedrock.transformer.BlockDefinitionTransformer;
+import org.cloudburstmc.protocol.bedrock.transformer.FlagTransformer;
+import org.cloudburstmc.protocol.bedrock.transformer.Long2IntTransformer;
+import org.cloudburstmc.protocol.bedrock.transformer.TypeMapTransformer;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 
 public class Bedrock_v2168 extends Bedrock_v1001 {
@@ -77,6 +82,11 @@ public class Bedrock_v2168 extends Bedrock_v1001 {
             .insert(614, LevelSoundEvent.UNDEFINED)
             .build();
 
+    protected static final TypeMap<PlayerActionType> PLAYER_ACTION_TYPES = Bedrock_v1001.PLAYER_ACTION_TYPES.toBuilder()
+            .replace(38, PlayerActionType.SWAP_OFFHAND)
+            .insert(39, PlayerActionType.COUNT)
+            .build();
+
     public static final BedrockCodec CODEC = Bedrock_v1001.CODEC.toBuilder()
             .protocolVersion(2168)
             .minecraftVersion("1.26.40")
@@ -94,7 +104,8 @@ public class Bedrock_v2168 extends Bedrock_v1001 {
             .updateSerializer(LevelSoundEventPacket.class, new LevelSoundEventSerializer_v1001(SOUND_EVENTS))
             .updateSerializer(MoveActorDeltaPacket.class, MoveActorDeltaSerializer_v2168.INSTANCE)
             .updateSerializer(MovePlayerPacket.class, MovePlayerSerializer_v2168.INSTANCE)
-            .updateSerializer(PlayerAuthInputPacket.class, PlayerAuthInputSerializer_v2168.INSTANCE)
+            .updateSerializer(PlayerAuthInputPacket.class, new PlayerAuthInputSerializer_v2168(PLAYER_ACTION_TYPES))
+            .updateSerializer(PlayerActionPacket.class, new PlayerActionSerializer_v527(PLAYER_ACTION_TYPES))
             .updateSerializer(PlayerListPacket.class, PlayerListSerializer_v2168.INSTANCE)
             .updateSerializer(PlayerLocationPacket.class, PlayerLocationSerializer_v2168.INSTANCE)
             .updateSerializer(PlayerSkinPacket.class, PlayerSkinSerializer_v2168.INSTANCE)

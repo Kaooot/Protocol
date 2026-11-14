@@ -8,7 +8,7 @@ import org.cloudburstmc.protocol.bedrock.data.ability.AbilitiesIndex;
 import org.cloudburstmc.protocol.bedrock.data.actor.passenger.PassengerOfBlockArguments;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerEnumName;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequestActionType;
-import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestCraftReservedAction;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestCraftDiscPressAction;
 import org.cloudburstmc.protocol.bedrock.data.skin.*;
 import org.cloudburstmc.protocol.bedrock.data.sound.audio.SignedAudioContent;
 import org.cloudburstmc.protocol.bedrock.data.text.TextProcessingEventOrigin;
@@ -42,7 +42,7 @@ public class BedrockCodecHelper_v2225 extends BedrockCodecHelper_v2193 {
             .insert(15, ItemStackRequestActionType.CRAFT_RECIPE_OPTIONAL)
             .insert(16, ItemStackRequestActionType.CRAFT_REPAIR_AND_DISENCHANT)
             .insert(17, ItemStackRequestActionType.CRAFT_LOOM)
-            .insert(18, ItemStackRequestActionType.CRAFT_RESERVED_ACTION)
+            .insert(18, ItemStackRequestActionType.CRAFT_DISC_PRESS)
             .insert(19, ItemStackRequestActionType.CRAFT_NON_IMPLEMENTED)
             .insert(20, ItemStackRequestActionType.CRAFT_RESULTS)
             .build();
@@ -55,11 +55,11 @@ public class BedrockCodecHelper_v2225 extends BedrockCodecHelper_v2193 {
                 .build();
         this.itemStackRequestActionsVariant = this.itemStackRequestActionsVariant.toBuilder(this.stackRequestActionTypes::getId)
                 .add(
-                        ItemStackRequestActionType.CRAFT_RESERVED_ACTION,
-                        ItemStackRequestCraftReservedAction.class,
+                        ItemStackRequestActionType.CRAFT_DISC_PRESS,
+                        ItemStackRequestCraftDiscPressAction.class,
                         (buffer, helper, owner, value) -> {
                         },
-                        (buffer, helper, owner) -> new ItemStackRequestCraftReservedAction()
+                        (buffer, helper, owner) -> new ItemStackRequestCraftDiscPressAction()
                 )
                 .prefix(
                         (buffer, helper, owner, value) ->

@@ -265,6 +265,13 @@ public class BedrockPacketType {
     public static final BedrockPacketType SERVERBOUND_CURSOR_ITEM_DRAG = new BedrockPacketType("SERVERBOUND_CURSOR_ITEM_DRAG");
     public static final BedrockPacketType CLIENTBOUND_PLAY_AUDIO_CONTENT = new BedrockPacketType("CLIENTBOUND_PLAY_AUDIO_CONTENT");
     public static final BedrockPacketType SERVERBOUND_REGISTER_AUDIO_CONTENT = new BedrockPacketType("SERVERBOUND_REGISTER_AUDIO_CONTENT");
+    public static final BedrockPacketType CHAT = new BedrockPacketType("CHAT");
+    public static final BedrockPacketType SERVERBOUND_REQUEST_ONLINE_MUSIC_PLAYBACK = new BedrockPacketType("SERVERBOUND_REQUEST_ONLINE_MUSIC_PLAYBACK");
+    public static final BedrockPacketType CLIENTBOUND_ONLINE_MUSIC_PLAYBACK_RESPONSE = new BedrockPacketType("CLIENTBOUND_ONLINE_MUSIC_PLAYBACK_RESPONSE");
+    public static final BedrockPacketType PLAYER_TOGGLE_ARMOR_VISIBILITY_REQUEST = new BedrockPacketType("PLAYER_TOGGLE_ARMOR_VISIBILITY_REQUEST");
+    public static final BedrockPacketType CLIENTBOUND_MUSIC_PLAYBACK_FAILURE = new BedrockPacketType("CLIENTBOUND_MUSIC_PLAYBACK_FAILURE");
+    public static final BedrockPacketType VIRTUAL_CONTAINER_OPEN = new BedrockPacketType("VIRTUAL_CONTAINER_OPEN");
+    public static final BedrockPacketType VIRTUAL_CONTAINER_CLOSE = new BedrockPacketType("VIRTUAL_CONTAINER_CLOSE");
 
     @Getter
     private final String name;

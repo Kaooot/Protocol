@@ -6,6 +6,7 @@ import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
 import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelEventSerializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelSoundEvent1Serializer_v291;
+import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.PlayerActionSerializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v313.serializer.LevelSoundEvent2Serializer_v313;
 import org.cloudburstmc.protocol.bedrock.codec.v332.serializer.LevelSoundEventSerializer_v332;
 import org.cloudburstmc.protocol.bedrock.codec.v361.serializer.LevelEventGenericSerializer_v361;
@@ -15,6 +16,7 @@ import org.cloudburstmc.protocol.bedrock.codec.v428.serializer.CameraShakeSerial
 import org.cloudburstmc.protocol.bedrock.codec.v428.serializer.ClientboundDebugRendererSerializer_v428;
 import org.cloudburstmc.protocol.bedrock.codec.v428.serializer.PlayerAuthInputSerializer_v428;
 import org.cloudburstmc.protocol.bedrock.codec.v428.serializer.StartGameSerializer_v428;
+import org.cloudburstmc.protocol.bedrock.data.player.input.PlayerActionType;
 import org.cloudburstmc.protocol.bedrock.data.world.event.LevelEvent;
 import org.cloudburstmc.protocol.bedrock.data.world.event.LevelEventType;
 import org.cloudburstmc.protocol.bedrock.data.PacketRecipient;
@@ -81,12 +83,18 @@ public class Bedrock_v428 extends Bedrock_v422 {
             .insert(9, ItemStackRequestActionType.SCREEN_HUD_MINE_BLOCK)
             .build();
 
+    protected static final TypeMap<PlayerActionType> PLAYER_ACTION_TYPES = Bedrock_v422.PLAYER_ACTION_TYPES.toBuilder()
+            .replace(26, PlayerActionType.PREDICT_DESTROY_BLOCK)
+            .insert(27, PlayerActionType.CONTINUE_DESTROY_BLOCK)
+            .insert(28, PlayerActionType.COUNT)
+            .build();
+
     public static final BedrockCodec CODEC = Bedrock_v422.CODEC.toBuilder()
             .protocolVersion(428)
             .minecraftVersion("1.16.210")
             .helper(() -> new BedrockCodecHelper_v428(ENTITY_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES))
             .updateSerializer(StartGamePacket.class, StartGameSerializer_v428.INSTANCE)
-            .updateSerializer(PlayerAuthInputPacket.class, PlayerAuthInputSerializer_v428.INSTANCE)
+            .updateSerializer(PlayerAuthInputPacket.class, new PlayerAuthInputSerializer_v428(PLAYER_ACTION_TYPES))
             .updateSerializer(CameraShakePacket.class, CameraShakeSerializer_v428.INSTANCE)
             .updateSerializer(LevelSoundEvent1Packet.class, new LevelSoundEvent1Serializer_v291(SOUND_EVENTS))
             .updateSerializer(LevelSoundEvent2Packet.class, new LevelSoundEvent2Serializer_v313(SOUND_EVENTS))
@@ -94,6 +102,7 @@ public class Bedrock_v428 extends Bedrock_v422 {
             .updateSerializer(AvailableCommandsPacket.class, new AvailableCommandsSerializer_v388(COMMAND_PARAMS))
             .updateSerializer(LevelEventPacket.class, new LevelEventSerializer_v291(LEVEL_EVENTS))
             .updateSerializer(LevelEventGenericPacket.class, new LevelEventGenericSerializer_v361(LEVEL_EVENTS))
+            .updateSerializer(PlayerActionPacket.class, new PlayerActionSerializer_v291(PLAYER_ACTION_TYPES))
             .registerPacket(ClientboundDebugRendererPacket::new, ClientboundDebugRendererSerializer_v428.INSTANCE, 164, PacketRecipient.CLIENT)
             .build();
 }

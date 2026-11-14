@@ -11,5 +11,5 @@ public class Achievement {
     /**
      * The identifier of the achievement, see MinecraftEventing::AchievementIds
      */
-    private AchievementIds achievementID;
+    private int achievementID;
 }

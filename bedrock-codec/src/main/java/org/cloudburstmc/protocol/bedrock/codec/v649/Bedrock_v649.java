@@ -71,7 +71,7 @@ public class Bedrock_v649 extends Bedrock_v630 {
             .updateSerializer(LevelSoundEventPacket.class, new LevelSoundEventSerializer_v332(SOUND_EVENTS))
             .updateSerializer(CorrectPlayerMovePredictionPacket.class, CorrectPlayerMovePredictionSerializer_v649.INSTANCE)
             .updateSerializer(LevelChunkPacket.class, LevelChunkSerializer_v649.INSTANCE)
-            .updateSerializer(PlayerAuthInputPacket.class, new PlayerAuthInputSerializer_v649())
+            .updateSerializer(PlayerAuthInputPacket.class, new PlayerAuthInputSerializer_v649(PLAYER_ACTION_TYPES))
             .updateSerializer(PlayerListPacket.class, PlayerListSerializer_v649.INSTANCE)
             .registerPacket(SetHudPacket::new, SetHudSerializer_v649.INSTANCE, 308, PacketRecipient.CLIENT)
             .build();

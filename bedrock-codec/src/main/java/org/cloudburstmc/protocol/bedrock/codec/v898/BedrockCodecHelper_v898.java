@@ -8,6 +8,7 @@ import org.cloudburstmc.protocol.bedrock.data.ability.AbilitiesIndex;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandOriginData;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandOriginType;
 import org.cloudburstmc.protocol.bedrock.data.datastore.DataStoreUpdate;
+import org.cloudburstmc.protocol.bedrock.data.datastore.DataStoreVariableType;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerEnumName;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequestActionType;
 import org.cloudburstmc.protocol.bedrock.data.text.TextProcessingEventOrigin;
@@ -15,21 +16,21 @@ import org.cloudburstmc.protocol.common.util.TypeMap;
 
 public class BedrockCodecHelper_v898 extends BedrockCodecHelper_v844 {
 
-    protected final VariantCodec<DataStoreUpdate> dataStoreUpdateDataTypeVariant = VariantCodec.<DataStoreUpdate.Type, DataStoreUpdate>builder(DataStoreUpdate.Type::ordinal)
+    protected final VariantCodec<DataStoreUpdate> dataStoreUpdateDataTypeVariant = VariantCodec.<DataStoreVariableType, DataStoreUpdate>builder(DataStoreVariableType::ordinal)
             .add(
-                    DataStoreUpdate.Type.DOUBLE,
+                    DataStoreVariableType.DOUBLE,
                     Double.class,
                     (buffer, helper, owner, value) -> buffer.writeDoubleLE(value),
                     (buffer, helper, owner) -> buffer.readDoubleLE()
             )
             .add(
-                    DataStoreUpdate.Type.BOOLEAN,
+                    DataStoreVariableType.BOOLEAN,
                     Boolean.class,
                     (buffer, helper, owner, value) -> buffer.writeBoolean(value),
                     (buffer, helper, owner) -> buffer.readBoolean()
             )
             .add(
-                    DataStoreUpdate.Type.STRING,
+                    DataStoreVariableType.STRING,
                     String.class,
                     (buffer, helper, owner, value) -> helper.writeString(buffer, value),
                     (buffer, helper, owner) -> helper.readString(buffer)

@@ -1,24 +1,24 @@
 package org.cloudburstmc.protocol.bedrock.codec.v2168.serializer;
 
 import io.netty.buffer.ByteBuf;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
-import org.cloudburstmc.protocol.bedrock.codec.v766.serializer.PlayerAuthInputSerializer_v766;
+import org.cloudburstmc.protocol.bedrock.codec.v859.serializer.PlayerAuthInputSerializer_v859;
 import org.cloudburstmc.protocol.bedrock.data.inventory.LegacySetSlot;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.ItemStackLegacyRequestId;
 import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.*;
 import org.cloudburstmc.protocol.bedrock.data.player.PlayerBlockActionData;
-import org.cloudburstmc.protocol.bedrock.data.player.input.InputMode;
 import org.cloudburstmc.protocol.bedrock.data.player.input.NewInteractionModel;
 import org.cloudburstmc.protocol.bedrock.data.player.input.PlayerActionType;
 import org.cloudburstmc.protocol.bedrock.data.player.input.PlayerAuthInputData;
 import org.cloudburstmc.protocol.bedrock.packet.PlayerAuthInputPacket;
+import org.cloudburstmc.protocol.common.util.TypeMap;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class PlayerAuthInputSerializer_v2168 extends PlayerAuthInputSerializer_v766 {
-    public static final PlayerAuthInputSerializer_v2168 INSTANCE = new PlayerAuthInputSerializer_v2168();
+public class PlayerAuthInputSerializer_v2168 extends PlayerAuthInputSerializer_v859 {
+
+    public PlayerAuthInputSerializer_v2168(TypeMap<PlayerActionType> playerActionTypes) {
+        super(playerActionTypes);
+    }
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, PlayerAuthInputPacket packet) {
@@ -29,7 +29,7 @@ public class PlayerAuthInputSerializer_v2168 extends PlayerAuthInputSerializer_v
         buffer.writeBoolean(true);
         helper.writeArray(buffer, packet.getInputData(),
                 (buf, codecHelper, inputData) -> VarInts.writeInt(buf, inputData.ordinal()));
-        VarInts.writeUnsignedInt(buffer, packet.getInputMode().ordinal());
+        VarInts.writeUnsignedInt(buffer, this.inputModeTypeMap.getId(packet.getInputMode()));
         VarInts.writeUnsignedInt(buffer, packet.getPlayMode().ordinal());
         VarInts.writeInt(buffer, packet.getNewInteractionModel().ordinal());
         helper.writeVector2f(buffer, packet.getInteractRotation());
@@ -64,7 +64,7 @@ public class PlayerAuthInputSerializer_v2168 extends PlayerAuthInputSerializer_v
             helper.readArray(buffer, packet.getInputData(),
                     (buf, codecHelper) -> PlayerAuthInputData.from(VarInts.readInt(buf)));
         }
-        packet.setInputMode(InputMode.from(VarInts.readUnsignedInt(buffer)));
+        packet.setInputMode(this.inputModeTypeMap.getType(VarInts.readUnsignedInt(buffer)));
         packet.setPlayMode(CLIENT_PLAY_MODES.getType(VarInts.readUnsignedInt(buffer)));
         packet.setNewInteractionModel(NewInteractionModel.from(VarInts.readInt(buffer)));
         packet.setInteractRotation(helper.readVector2f(buffer));
@@ -92,7 +92,7 @@ public class PlayerAuthInputSerializer_v2168 extends PlayerAuthInputSerializer_v
 
     @Override
     protected void writePlayerBlockActionData(ByteBuf buffer, BedrockCodecHelper helper, PlayerBlockActionData data) {
-        VarInts.writeInt(buffer, data.getPlayerActionType().ordinal());
+        VarInts.writeInt(buffer, this.playerActionTypes.getId(data.getPlayerActionType()));
         helper.writeBlockPosition(buffer, data.getPosition());
         VarInts.writeInt(buffer, data.getFacing());
     }
@@ -100,7 +100,7 @@ public class PlayerAuthInputSerializer_v2168 extends PlayerAuthInputSerializer_v
     @Override
     protected PlayerBlockActionData readPlayerBlockActionData(ByteBuf buffer, BedrockCodecHelper helper) {
         final PlayerBlockActionData data = new PlayerBlockActionData();
-        data.setPlayerActionType(PlayerActionType.from(VarInts.readInt(buffer)));
+        data.setPlayerActionType(this.playerActionTypes.getType(VarInts.readInt(buffer)));
         data.setPosition(helper.readBlockPosition(buffer));
         data.setFacing(VarInts.readInt(buffer));
         return data;

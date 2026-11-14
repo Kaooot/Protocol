@@ -1,21 +1,20 @@
 package org.cloudburstmc.protocol.bedrock.codec.v766;
 
-import org.cloudburstmc.protocol.bedrock.data.world.event.ParticleType;
-
-import org.cloudburstmc.protocol.bedrock.data.world.event.LevelEventType;
-import org.cloudburstmc.protocol.bedrock.data.world.event.LevelEvent;
-
-import org.cloudburstmc.protocol.bedrock.data.sound.LevelSoundEvent;
-
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelEventSerializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelSoundEvent1Serializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v313.serializer.LevelSoundEvent2Serializer_v313;
 import org.cloudburstmc.protocol.bedrock.codec.v332.serializer.LevelSoundEventSerializer_v332;
 import org.cloudburstmc.protocol.bedrock.codec.v361.serializer.LevelEventGenericSerializer_v361;
+import org.cloudburstmc.protocol.bedrock.codec.v527.serializer.PlayerActionSerializer_v527;
 import org.cloudburstmc.protocol.bedrock.codec.v748.Bedrock_v748;
 import org.cloudburstmc.protocol.bedrock.codec.v766.serializer.*;
 import org.cloudburstmc.protocol.bedrock.data.PacketRecipient;
+import org.cloudburstmc.protocol.bedrock.data.player.input.PlayerActionType;
+import org.cloudburstmc.protocol.bedrock.data.sound.LevelSoundEvent;
+import org.cloudburstmc.protocol.bedrock.data.world.event.LevelEvent;
+import org.cloudburstmc.protocol.bedrock.data.world.event.LevelEventType;
+import org.cloudburstmc.protocol.bedrock.data.world.event.ParticleType;
 import org.cloudburstmc.protocol.bedrock.packet.*;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 
@@ -50,6 +49,11 @@ public class Bedrock_v766 extends Bedrock_v748 {
             .insert(9816, LevelEvent.PARTICLE_CREAKING_HEART_TRIAL)
             .build();
 
+    protected static final TypeMap<PlayerActionType> PLAYER_ACTION_TYPES = Bedrock_v748.PLAYER_ACTION_TYPES.toBuilder()
+            .replace(37, PlayerActionType.START_USING_ITEM)
+            .insert(38, PlayerActionType.COUNT)
+            .build();
+
     public static final BedrockCodec CODEC = Bedrock_v748.CODEC.toBuilder()
             .raknetProtocolVersion(11)
             .protocolVersion(766)
@@ -62,7 +66,8 @@ public class Bedrock_v766 extends Bedrock_v748 {
             .updateSerializer(LevelSoundEventPacket.class, new LevelSoundEventSerializer_v332(SOUND_EVENTS))
             .updateSerializer(CameraAimAssistPacket.class, CameraAimAssistSerializer_v766.INSTANCE)
             .updateSerializer(ResourcePacksInfoPacket.class, ResourcePacksInfoSerializer_v766.INSTANCE)
-            .updateSerializer(PlayerAuthInputPacket.class, PlayerAuthInputSerializer_v766.INSTANCE)
+            .updateSerializer(PlayerAuthInputPacket.class, new PlayerAuthInputSerializer_v766(PLAYER_ACTION_TYPES))
+            .updateSerializer(PlayerActionPacket.class, new PlayerActionSerializer_v527(PLAYER_ACTION_TYPES))
             .updateSerializer(CameraPresetsPacket.class, CameraPresetsSerializer_v766.INSTANCE)
             .registerPacket(CameraAimAssistPresetsPacket::new, CameraAimAssistPresetsSerializer_v766.INSTANCE, 320, PacketRecipient.CLIENT)
             .build();

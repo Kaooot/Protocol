@@ -1184,11 +1184,37 @@ public enum LevelSoundEvent {
     STRAW_BED_BREAK_LEAVE("straw_bed.break_leave"),
     /**
      * @since v2225
+     * @deprecated since v2259
      */
     ICE_BALL_BREAK("ice_ball.break"),
+    /**
+     * @since v2259
+     */
+    CONVERT_TO_FROSTBITE("convert_to_frostbite"),
+    /**
+     * @since v2259
+     */
+    CONVERT_TO_ZOMBIE("convert_to_zombie"),
+    /**
+     * @since v2259
+     */
+    CRACK("crack"),
+    /**
+     * @since v2259
+     */
+    ICE_BALL_THROW("ice_ball.throw"),
+    /**
+     * @since v2259
+     */
+    RECORD_FLURRY("record.flurry"),
+    /**
+     * @since v2259
+     */
+    IMITATE_FROSTBITE("imitate.frostbite"),
     UNDEFINED("undefined");
 
     private static final Map<String, LevelSoundEvent> serializeNames = new HashMap<>(values().length, 1);
+
     static {
         for (LevelSoundEvent value : values()) {
             serializeNames.put(value.getSerializeName(), value);
