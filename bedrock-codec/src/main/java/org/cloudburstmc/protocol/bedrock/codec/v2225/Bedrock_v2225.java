@@ -8,6 +8,7 @@ import org.cloudburstmc.protocol.bedrock.codec.v2225.serializer.*;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelEventSerializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v361.serializer.LevelEventGenericSerializer_v361;
 import org.cloudburstmc.protocol.bedrock.data.PacketRecipient;
+import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataFormat;
 import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataTypes;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerEnumName;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequestActionType;
@@ -33,6 +34,8 @@ public class Bedrock_v2225 extends Bedrock_v2193 {
     protected static final ActorDataTypeMap ENTITY_DATA = Bedrock_v2193.ENTITY_DATA
             .toBuilder()
             .update(ActorDataTypes.AREA_EFFECT_CLOUD_PARTICLE, new TypeMapTransformer<>(PARTICLE_TYPES))
+            .insert(ActorDataTypes.INTERACTION_RESULT, 141, ActorDataFormat.BYTE)
+            .insert(ActorDataTypes.COUNT, 142, ActorDataFormat.BYTE)
             .build();
 
     protected static final TypeMap<LevelEventType> LEVEL_EVENTS = Bedrock_v2193.LEVEL_EVENTS.toBuilder()

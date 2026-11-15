@@ -32,11 +32,6 @@ public class Bedrock_v2259 extends Bedrock_v2225 {
             .insert(71, ContainerEnumName.VIRTUAL_CONTAINER)
             .build();
 
-    protected static final ActorDataTypeMap ENTITY_DATA = Bedrock_v2225.ENTITY_DATA.toBuilder()
-            .insert(ActorDataTypes.INTERACTION_RESULT, 141, ActorDataFormat.BYTE, BooleanTransformer.INSTANCE)
-            .insert(ActorDataTypes.COUNT, 142, ActorDataFormat.BYTE)
-            .build();
-
     public static final BedrockCodec CODEC = Bedrock_v2225.CODEC.toBuilder()
             .protocolVersion(2259)
             .minecraftVersion("1.26.70")

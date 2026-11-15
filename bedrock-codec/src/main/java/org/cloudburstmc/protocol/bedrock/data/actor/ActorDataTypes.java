@@ -328,6 +328,6 @@ public class ActorDataTypes {
     /**
      * @since v2225
      */
-    public static final ActorDataType<Boolean> INTERACTION_RESULT = new ActorDataType<>(Boolean.class, "INTERACTION_RESULT");
+    public static final ActorDataType<Byte> INTERACTION_RESULT = new ActorDataType<>(Byte.class, "INTERACTION_RESULT");
     public static final ActorDataType<Byte> COUNT = new ActorDataType<>(Byte.class, "COUNT");
 }
