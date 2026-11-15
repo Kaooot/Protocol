@@ -19,7 +19,7 @@ public class ClientMovementPredictionSyncSerializer_v776 implements BedrockPacke
         helper.writeLargeVarIntFlags(buffer, packet.getActorDataFlag().getActorFlagBitsetData(), ActorFlags.class);
         helper.writeVector3f(buffer, packet.getActorBoundingBox().getActorDataBoundingBox());
         this.writeMovementAttributesComponent(buffer, helper, packet.getMovementAttributes());
-        VarInts.writeUnsignedLong(buffer, packet.getActorID());
+        VarInts.writeLong(buffer, packet.getActorID());
     }
 
     @Override
@@ -27,7 +27,7 @@ public class ClientMovementPredictionSyncSerializer_v776 implements BedrockPacke
         helper.readLargeVarIntFlags(buffer, packet.getActorDataFlag().getActorFlagBitsetData(), ActorFlags.class);
         packet.getActorBoundingBox().setActorDataBoundingBox(helper.readVector3f(buffer));
         packet.setMovementAttributes(this.readMovementAttributesComponent(buffer, helper));
-        packet.setActorID(VarInts.readUnsignedInt(buffer));
+        packet.setActorID(VarInts.readLong(buffer));
     }
 
     protected void writeMovementAttributesComponent(ByteBuf buffer, BedrockCodecHelper helper, MovementAttributesComponent movementAttributes) {
