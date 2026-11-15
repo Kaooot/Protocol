@@ -22,16 +22,16 @@ import org.cloudburstmc.protocol.common.util.TypeMap;
 
 public class Bedrock_v594 extends Bedrock_v589 {
 
-    protected static final TypeMap<ActorFlags> ENTITY_FLAGS = Bedrock_v575.ENTITY_FLAGS
+    protected static final TypeMap<ActorFlags> ACTOR_FLAGS = Bedrock_v575.ACTOR_FLAGS
             .toBuilder()
             .insert(114, ActorFlags.CRAWLING)
             .build();
 
-    protected static final ActorDataTypeMap ENTITY_DATA = Bedrock_v589.ENTITY_DATA
+    protected static final ActorDataTypeMap ACTOR_DATA = Bedrock_v589.ACTOR_DATA
             .toBuilder()
             .insert(ActorDataTypes.COLLISION_BOX, 130, ActorDataFormat.VECTOR3F)
-            .update(ActorDataTypes.FLAGS, new FlagTransformer(ENTITY_FLAGS, 0))
-            .update(ActorDataTypes.FLAGS_2, new FlagTransformer(ENTITY_FLAGS, 1))
+            .update(ActorDataTypes.FLAGS, new FlagTransformer(ACTOR_FLAGS, 0))
+            .update(ActorDataTypes.FLAGS_2, new FlagTransformer(ACTOR_FLAGS, 1))
             .build();
 
     protected static final TypeMap<CommandParam> COMMAND_PARAMS = Bedrock_v582.COMMAND_PARAMS.toBuilder()
@@ -50,7 +50,7 @@ public class Bedrock_v594 extends Bedrock_v589 {
             .raknetProtocolVersion(11)
             .protocolVersion(594)
             .minecraftVersion("1.20.10")
-            .helper(() -> new BedrockCodecHelper_v575(ENTITY_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES, PLAYER_ABILITIES, TEXT_PROCESSING_ORIGINS))
+            .helper(() -> new BedrockCodecHelper_v575(ACTOR_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_ENUM_NAMES, PLAYER_ABILITIES, TEXT_PROCESSING_ORIGINS))
             .deregisterPacket(ScriptCustomEventPacket.class)
             .updateSerializer(AvailableCommandsPacket.class, new AvailableCommandsSerializer_v594(COMMAND_PARAMS))
             .updateSerializer(PlayerActionPacket.class, new PlayerActionSerializer_v527(PLAYER_ACTION_TYPES))

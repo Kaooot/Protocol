@@ -26,7 +26,7 @@ import org.cloudburstmc.protocol.common.util.TypeMap;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Bedrock_v291 {
 
-    protected static final TypeMap<ActorFlags> ENTITY_FLAGS = TypeMap.builder(ActorFlags.class)
+    protected static final TypeMap<ActorFlags> ACTOR_FLAGS = TypeMap.builder(ActorFlags.class)
             .insert(0, ActorFlags.ON_FIRE)
             .insert(1, ActorFlags.SNEAKING)
             .insert(2, ActorFlags.RIDING)
@@ -138,8 +138,8 @@ public class Bedrock_v291 {
             .insert(44, ParticleType.FOOD)
             .build();
 
-    protected static final ActorDataTypeMap ENTITY_DATA = ActorDataTypeMap.builder()
-            .insert(ActorDataTypes.FLAGS, 0, ActorDataFormat.LONG, new FlagTransformer(ENTITY_FLAGS, 0))
+    protected static final ActorDataTypeMap ACTOR_DATA = ActorDataTypeMap.builder()
+            .insert(ActorDataTypes.FLAGS, 0, ActorDataFormat.LONG, new FlagTransformer(ACTOR_FLAGS, 0))
             .insert(ActorDataTypes.STRUCTURAL_INTEGRITY, 1, ActorDataFormat.INT)
             .insert(ActorDataTypes.VARIANT, 2, ActorDataFormat.INT)
             .insert(ActorDataTypes.BLOCK, 2, ActorDataFormat.INT, new BlockDefinitionTransformer())
@@ -664,7 +664,7 @@ public class Bedrock_v291 {
     public static final BedrockCodec CODEC = BedrockCodec.builder()
             .protocolVersion(291)
             .minecraftVersion("1.7.0")
-            .helper(() -> new BedrockCodecHelper_v291(ENTITY_DATA, GAME_RULE_TYPES))
+            .helper(() -> new BedrockCodecHelper_v291(ACTOR_DATA, GAME_RULE_TYPES))
             .registerPacket(LoginPacket::new, LoginSerializer_v291.INSTANCE, 1, PacketRecipient.SERVER)
             .registerPacket(PlayStatusPacket::new, PlayStatusSerializer_v291.INSTANCE, 2, PacketRecipient.CLIENT)
             .registerPacket(ServerToClientHandshakePacket::new, ServerToClientHandshakeSerializer_v291.INSTANCE, 3, PacketRecipient.CLIENT)

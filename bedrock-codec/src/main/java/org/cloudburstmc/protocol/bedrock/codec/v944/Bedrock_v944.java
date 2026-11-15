@@ -19,7 +19,7 @@ import org.cloudburstmc.protocol.common.util.TypeMap;
 
 public class Bedrock_v944 extends Bedrock_v924 {
 
-    protected static final TypeMap<ContainerEnumName> CONTAINER_SLOT_TYPES = Bedrock_v924.CONTAINER_SLOT_TYPES
+    protected static final TypeMap<ContainerEnumName> CONTAINER_ENUM_NAMES = Bedrock_v924.CONTAINER_ENUM_NAMES
             .toBuilder()
             .insert(64, ContainerEnumName.RECIPE_FOOD_CONTAINER)
             .insert(65, ContainerEnumName.RECIPE_BLOCKS_CONTAINER)
@@ -31,7 +31,7 @@ public class Bedrock_v944 extends Bedrock_v924 {
             .insert(100, ParticleType.RESET_MOB_GROWTH)
             .build();
 
-    protected static final ActorDataTypeMap ENTITY_DATA = Bedrock_v924.ENTITY_DATA
+    protected static final ActorDataTypeMap ACTOR_DATA = Bedrock_v924.ACTOR_DATA
             .toBuilder()
             .update(ActorDataTypes.AREA_EFFECT_CLOUD_PARTICLE, new TypeMapTransformer<>(PARTICLE_TYPES))
             .build();
@@ -50,7 +50,7 @@ public class Bedrock_v944 extends Bedrock_v924 {
     public static final BedrockCodec CODEC = Bedrock_v924.CODEC.toBuilder()
             .protocolVersion(944)
             .minecraftVersion("1.26.10")
-            .helper(() -> new BedrockCodecHelper_v944(ENTITY_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES, PLAYER_ABILITIES, TEXT_PROCESSING_ORIGINS))
+            .helper(() -> new BedrockCodecHelper_v944(ACTOR_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_ENUM_NAMES, PLAYER_ABILITIES, TEXT_PROCESSING_ORIGINS))
             .updateSerializer(CameraInstructionPacket.class, CameraInstructionSerializer_v944.INSTANCE)
             .updateSerializer(CameraSplinePacket.class, CameraSplineSerializer_v944.INSTANCE)
             .updateSerializer(ClientboundDataDrivenUICloseScreenPacket.class, ClientboundDataDrivenUICloseScreenSerializer_v944.INSTANCE)

@@ -33,7 +33,7 @@ public class Bedrock_v465 extends Bedrock_v448 {
             .insert(82, ParticleType.SHRIEK)
             .build();
 
-    protected static final ActorDataTypeMap ENTITY_DATA = Bedrock_v448.ENTITY_DATA.toBuilder()
+    protected static final ActorDataTypeMap ACTOR_DATA = Bedrock_v448.ACTOR_DATA.toBuilder()
             .update(ActorDataTypes.AREA_EFFECT_CLOUD_PARTICLE, new TypeMapTransformer<>(PARTICLE_TYPES))
             .build();
 
@@ -61,7 +61,7 @@ public class Bedrock_v465 extends Bedrock_v448 {
     public static final BedrockCodec CODEC = Bedrock_v448.CODEC.toBuilder()
             .protocolVersion(465)
             .minecraftVersion("1.17.30")
-            .helper(() -> new BedrockCodecHelper_v465(ENTITY_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES))
+            .helper(() -> new BedrockCodecHelper_v465(ACTOR_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_ENUM_NAMES))
             .updateSerializer(StartGamePacket.class, StartGameSerializer_v465.INSTANCE)
             .updateSerializer(ActorEventPacket.class, new ActorEventSerializer_v291(ACTOR_EVENTS))
             .updateSerializer(LevelEventPacket.class, new LevelEventSerializer_v291(LEVEL_EVENTS))

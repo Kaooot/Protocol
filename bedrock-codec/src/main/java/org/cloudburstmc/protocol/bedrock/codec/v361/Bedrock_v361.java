@@ -24,7 +24,7 @@ import org.cloudburstmc.protocol.common.util.TypeMap;
 
 public class Bedrock_v361 extends Bedrock_v354 {
 
-    protected static final TypeMap<ActorFlags> ENTITY_FLAGS = Bedrock_v354.ENTITY_FLAGS.toBuilder()
+    protected static final TypeMap<ActorFlags> ACTOR_FLAGS = Bedrock_v354.ACTOR_FLAGS.toBuilder()
             .insert(87, ActorFlags.HIDDEN_WHEN_INVISIBLE)
             .build();
 
@@ -37,9 +37,9 @@ public class Bedrock_v361 extends Bedrock_v354 {
             .insert(24, ParticleType.WATER_SPLASH_MANUAL)
             .build();
 
-    protected static final ActorDataTypeMap ENTITY_DATA = Bedrock_v354.ENTITY_DATA.toBuilder()
-            .update(ActorDataTypes.FLAGS, new FlagTransformer(ENTITY_FLAGS, 0))
-            .update(ActorDataTypes.FLAGS_2, new FlagTransformer(ENTITY_FLAGS, 1))
+    protected static final ActorDataTypeMap ACTOR_DATA = Bedrock_v354.ACTOR_DATA.toBuilder()
+            .update(ActorDataTypes.FLAGS, new FlagTransformer(ACTOR_FLAGS, 0))
+            .update(ActorDataTypes.FLAGS_2, new FlagTransformer(ACTOR_FLAGS, 1))
             .update(ActorDataTypes.AREA_EFFECT_CLOUD_PARTICLE, new TypeMapTransformer<>(PARTICLE_TYPES))
             .replace(ActorDataTypes.NPC_DATA, 40, ActorDataFormat.STRING)
             .insert(ActorDataTypes.SKIN_ID, 103, ActorDataFormat.INT)
@@ -67,7 +67,7 @@ public class Bedrock_v361 extends Bedrock_v354 {
     public static BedrockCodec CODEC = Bedrock_v354.CODEC.toBuilder()
             .protocolVersion(361)
             .minecraftVersion("1.12.0")
-            .helper(() -> new BedrockCodecHelper_v361(ENTITY_DATA, GAME_RULE_TYPES))
+            .helper(() -> new BedrockCodecHelper_v361(ACTOR_DATA, GAME_RULE_TYPES))
             .deregisterPacket(AddHangingEntityPacket.class)
             .deregisterPacket(LecternUpdatePacket.class)
             .deregisterPacket(VideoStreamConnectPacket.class)

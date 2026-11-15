@@ -22,7 +22,7 @@ import org.cloudburstmc.protocol.common.util.TypeMap;
 
 public class Bedrock_v560 extends Bedrock_v557 {
 
-    protected static final TypeMap<ActorFlags> ENTITY_FLAGS = Bedrock_v557.ENTITY_FLAGS.toBuilder()
+    protected static final TypeMap<ActorFlags> ACTOR_FLAGS = Bedrock_v557.ACTOR_FLAGS.toBuilder()
             .shift(46, 1)
             .insert(46, ActorFlags.CAN_DASH)
             .insert(96, ActorFlags.OUT_OF_CONTROL)
@@ -30,12 +30,12 @@ public class Bedrock_v560 extends Bedrock_v557 {
             .insert(109, ActorFlags.PUSH_TOWARDS_CLOSEST_SPACE)
             .build();
 
-    protected static final ActorDataTypeMap ENTITY_DATA = Bedrock_v557.ENTITY_DATA.toBuilder()
-            .update(ActorDataTypes.FLAGS, new FlagTransformer(ENTITY_FLAGS, 0))
-            .update(ActorDataTypes.FLAGS_2, new FlagTransformer(ENTITY_FLAGS, 1))
+    protected static final ActorDataTypeMap ACTOR_DATA = Bedrock_v557.ACTOR_DATA.toBuilder()
+            .update(ActorDataTypes.FLAGS, new FlagTransformer(ACTOR_FLAGS, 0))
+            .update(ActorDataTypes.FLAGS_2, new FlagTransformer(ACTOR_FLAGS, 1))
             .build();
 
-    protected static final TypeMap<ContainerEnumName> CONTAINER_SLOT_TYPES = Bedrock_v557.CONTAINER_SLOT_TYPES.toBuilder()
+    protected static final TypeMap<ContainerEnumName> CONTAINER_ENUM_NAMES = Bedrock_v557.CONTAINER_ENUM_NAMES.toBuilder()
             .shift(21, 1)
             .insert(21, ContainerEnumName.RECIPE_BOOK_CONTAINER)
             .build();
@@ -59,7 +59,7 @@ public class Bedrock_v560 extends Bedrock_v557 {
             .raknetProtocolVersion(11)
             .protocolVersion(560)
             .minecraftVersion("1.19.50")
-            .helper(() -> new BedrockCodecHelper_v557(ENTITY_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES, PLAYER_ABILITIES, TEXT_PROCESSING_ORIGINS))
+            .helper(() -> new BedrockCodecHelper_v557(ACTOR_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_ENUM_NAMES, PLAYER_ABILITIES, TEXT_PROCESSING_ORIGINS))
             .updateSerializer(LevelSoundEvent1Packet.class, new LevelSoundEvent1Serializer_v291(SOUND_EVENTS))
             .updateSerializer(LevelSoundEvent2Packet.class, new LevelSoundEvent2Serializer_v313(SOUND_EVENTS))
             .updateSerializer(LevelSoundEventPacket.class, new LevelSoundEventSerializer_v332(SOUND_EVENTS))

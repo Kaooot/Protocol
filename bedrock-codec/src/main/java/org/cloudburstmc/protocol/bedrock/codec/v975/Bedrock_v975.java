@@ -124,7 +124,7 @@ public class Bedrock_v975 extends Bedrock_v944 {
             .insert(81, ActorEvent.HURT_WITHOUT_RECEIVING_DAMAGE)
             .build();
 
-    protected static final TypeMap<ActorFlags> ENTITY_FLAGS = Bedrock_v944.ENTITY_FLAGS
+    protected static final TypeMap<ActorFlags> ACTOR_FLAGS = Bedrock_v944.ACTOR_FLAGS
             .toBuilder()
             .insert(127, ActorFlags.USES_LEGACY_FRICTION)
             .insert(128, ActorFlags.USES_UNIFORM_AIR_DRAG)
@@ -135,11 +135,11 @@ public class Bedrock_v975 extends Bedrock_v944 {
             .insert(101, ParticleType.SULFUR_CUBE)
             .build();
 
-    protected static final ActorDataTypeMap ENTITY_DATA = Bedrock_v944.ENTITY_DATA
+    protected static final ActorDataTypeMap ACTOR_DATA = Bedrock_v944.ACTOR_DATA
             .toBuilder()
             .update(ActorDataTypes.AREA_EFFECT_CLOUD_PARTICLE, new TypeMapTransformer<>(PARTICLE_TYPES))
-            .update(ActorDataTypes.FLAGS, new FlagTransformer(ENTITY_FLAGS, 0))
-            .update(ActorDataTypes.FLAGS_2, new FlagTransformer(ENTITY_FLAGS, 1))
+            .update(ActorDataTypes.FLAGS, new FlagTransformer(ACTOR_FLAGS, 0))
+            .update(ActorDataTypes.FLAGS_2, new FlagTransformer(ACTOR_FLAGS, 1))
             .insert(ActorDataTypes.RESERVED_139, 139, ActorDataFormat.LONG)
             .insert(ActorDataTypes.NAMEPLATE_RENDER_DISTANCE_MAX, 140, ActorDataFormat.FLOAT)
             .build();
@@ -158,7 +158,7 @@ public class Bedrock_v975 extends Bedrock_v944 {
     public static final BedrockCodec CODEC = Bedrock_v944.CODEC.toBuilder()
             .protocolVersion(975)
             .minecraftVersion("1.26.20")
-            .helper(() -> new BedrockCodecHelper_v975(ENTITY_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES, PLAYER_ABILITIES, TEXT_PROCESSING_ORIGINS))
+            .helper(() -> new BedrockCodecHelper_v975(ACTOR_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_ENUM_NAMES, PLAYER_ABILITIES, TEXT_PROCESSING_ORIGINS))
             .updateSerializer(AvailableCommandsPacket.class, new AvailableCommandsSerializer_v898(COMMAND_PARAMS))
             .updateSerializer(BiomeDefinitionListPacket.class, BiomeDefinitionListSerializer_v975.INSTANCE)
             .updateSerializer(ClientboundAttributeLayerSyncPacket.class, ClientboundAttributeLayerSyncSerializer_v975.INSTANCE)

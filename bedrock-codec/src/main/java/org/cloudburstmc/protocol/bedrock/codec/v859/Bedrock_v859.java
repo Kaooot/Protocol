@@ -16,15 +16,15 @@ import org.cloudburstmc.protocol.common.util.TypeMap;
 
 public class Bedrock_v859 extends Bedrock_v844 {
 
-    protected static final TypeMap<ActorFlags> ENTITY_FLAGS = Bedrock_v844.ENTITY_FLAGS
+    protected static final TypeMap<ActorFlags> ACTOR_FLAGS = Bedrock_v844.ACTOR_FLAGS
             .toBuilder()
             .insert(126, ActorFlags.BODY_ROTATION_LOCKED_TO_VEHICLE)
             .build();
 
-    protected static final ActorDataTypeMap ENTITY_DATA = Bedrock_v844.ENTITY_DATA
+    protected static final ActorDataTypeMap ACTOR_DATA = Bedrock_v844.ACTOR_DATA
             .toBuilder()
-            .update(ActorDataTypes.FLAGS, new FlagTransformer(ENTITY_FLAGS, 0))
-            .update(ActorDataTypes.FLAGS_2, new FlagTransformer(ENTITY_FLAGS, 1))
+            .update(ActorDataTypes.FLAGS, new FlagTransformer(ACTOR_FLAGS, 0))
+            .update(ActorDataTypes.FLAGS_2, new FlagTransformer(ACTOR_FLAGS, 1))
             .build();
 
     protected static final TypeMap<ActorEvent> ACTOR_EVENTS = Bedrock_v844.ACTOR_EVENTS.toBuilder()
@@ -35,7 +35,7 @@ public class Bedrock_v859 extends Bedrock_v844 {
             .raknetProtocolVersion(11)
             .protocolVersion(859)
             .minecraftVersion("1.21.120")
-            .helper(() -> new BedrockCodecHelper_v844(ENTITY_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES, PLAYER_ABILITIES, TEXT_PROCESSING_ORIGINS))
+            .helper(() -> new BedrockCodecHelper_v844(ACTOR_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_ENUM_NAMES, PLAYER_ABILITIES, TEXT_PROCESSING_ORIGINS))
             .updateSerializer(AnimatePacket.class, AnimateSerializer_v859.INSTANCE)
             .updateSerializer(BiomeDefinitionListPacket.class, BiomeDefinitionListSerializer_v859.INSTANCE)
             .updateSerializer(CameraInstructionPacket.class, CameraInstructionSerializer_v859.INSTANCE)

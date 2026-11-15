@@ -14,7 +14,7 @@ import org.cloudburstmc.protocol.common.util.TypeMap;
 
 public class Bedrock_v924 extends Bedrock_v898 {
 
-    protected static final ActorDataTypeMap ENTITY_DATA = Bedrock_v898.ENTITY_DATA
+    protected static final ActorDataTypeMap ACTOR_DATA = Bedrock_v898.ACTOR_DATA
             .toBuilder()
             .insert(ActorDataTypes.ARROW_SHOOTER_ID, 17, ActorDataFormat.LONG)
             .insert(ActorDataTypes.FIREWORK_DIRECTION, 17, ActorDataFormat.VECTOR3F)
@@ -52,7 +52,7 @@ public class Bedrock_v924 extends Bedrock_v898 {
     public static final BedrockCodec CODEC = Bedrock_v898.CODEC.toBuilder()
             .protocolVersion(924)
             .minecraftVersion("1.26.0")
-            .helper(() -> new BedrockCodecHelper_v924(ENTITY_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES, PLAYER_ABILITIES, TEXT_PROCESSING_ORIGINS))
+            .helper(() -> new BedrockCodecHelper_v924(ACTOR_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_ENUM_NAMES, PLAYER_ABILITIES, TEXT_PROCESSING_ORIGINS))
             .updateSerializer(BiomeDefinitionListPacket.class, BiomeDefinitionListSerializer_v924.INSTANCE)
             .updateSerializer(BookEditPacket.class, BookEditSerializer_v924.INSTANCE)
             .updateSerializer(CameraAimAssistPresetsPacket.class, CameraAimAssistPresetsSerializer_v924.INSTANCE)

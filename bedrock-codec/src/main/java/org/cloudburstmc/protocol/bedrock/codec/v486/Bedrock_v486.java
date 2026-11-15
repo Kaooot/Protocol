@@ -19,14 +19,14 @@ import org.cloudburstmc.protocol.common.util.TypeMap;
 
 public class Bedrock_v486 extends Bedrock_v475 {
 
-    protected static final TypeMap<ActorFlags> ENTITY_FLAGS = Bedrock_v475.ENTITY_FLAGS.toBuilder()
+    protected static final TypeMap<ActorFlags> ACTOR_FLAGS = Bedrock_v475.ACTOR_FLAGS.toBuilder()
             .insert(100, ActorFlags.CROAKING)
             .insert(101, ActorFlags.EAT_MOB)
             .build();
 
-    protected static final ActorDataTypeMap ENTITY_DATA = Bedrock_v475.ENTITY_DATA.toBuilder()
-            .update(ActorDataTypes.FLAGS, new FlagTransformer(ENTITY_FLAGS, 0))
-            .update(ActorDataTypes.FLAGS_2, new FlagTransformer(ENTITY_FLAGS, 1))
+    protected static final ActorDataTypeMap ACTOR_DATA = Bedrock_v475.ACTOR_DATA.toBuilder()
+            .update(ActorDataTypes.FLAGS, new FlagTransformer(ACTOR_FLAGS, 0))
+            .update(ActorDataTypes.FLAGS_2, new FlagTransformer(ACTOR_FLAGS, 1))
             .build();
 
     protected static final TypeMap<ItemStackRequestActionType> ITEM_STACK_REQUEST_TYPES = Bedrock_v475.ITEM_STACK_REQUEST_TYPES.toBuilder()
@@ -45,7 +45,7 @@ public class Bedrock_v486 extends Bedrock_v475 {
     public static final BedrockCodec CODEC = Bedrock_v475.CODEC.toBuilder()
             .protocolVersion(486)
             .minecraftVersion("1.18.10")
-            .helper(() -> new BedrockCodecHelper_v465(ENTITY_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES))
+            .helper(() -> new BedrockCodecHelper_v465(ACTOR_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_ENUM_NAMES))
             .updateSerializer(AddVolumeEntityPacket.class, AddVolumeEntitySerializer_v486.INSTANCE)
             .updateSerializer(BossEventPacket.class, BossEventSerializer_v486.INSTANCE)
             .updateSerializer(LevelSoundEvent1Packet.class, new LevelSoundEvent1Serializer_v291(SOUND_EVENTS))

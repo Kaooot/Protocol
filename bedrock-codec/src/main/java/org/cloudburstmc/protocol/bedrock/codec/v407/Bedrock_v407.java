@@ -32,7 +32,7 @@ import org.cloudburstmc.protocol.common.util.TypeMap;
 
 public class Bedrock_v407 extends Bedrock_v390 {
 
-    protected static final TypeMap<ActorFlags> ENTITY_FLAGS = Bedrock_v390.ENTITY_FLAGS.toBuilder()
+    protected static final TypeMap<ActorFlags> ACTOR_FLAGS = Bedrock_v390.ACTOR_FLAGS.toBuilder()
             .shift(86, 1)
             .insert(86, ActorFlags.IS_AVOIDING_BLOCK)
             .shift(93, 2)
@@ -46,9 +46,9 @@ public class Bedrock_v407 extends Bedrock_v390 {
             .insert(70, ParticleType.OBSIDIAN_TEAR)
             .build();
 
-    protected static final ActorDataTypeMap ENTITY_DATA = Bedrock_v390.ENTITY_DATA.toBuilder()
-            .update(ActorDataTypes.FLAGS, new FlagTransformer(ENTITY_FLAGS, 0))
-            .update(ActorDataTypes.FLAGS_2, new FlagTransformer(ENTITY_FLAGS, 1))
+    protected static final ActorDataTypeMap ACTOR_DATA = Bedrock_v390.ACTOR_DATA.toBuilder()
+            .update(ActorDataTypes.FLAGS, new FlagTransformer(ACTOR_FLAGS, 0))
+            .update(ActorDataTypes.FLAGS_2, new FlagTransformer(ACTOR_FLAGS, 1))
             .update(ActorDataTypes.AREA_EFFECT_CLOUD_PARTICLE, new TypeMapTransformer<>(PARTICLE_TYPES))
             .insert(ActorDataTypes.LOW_TIER_CURED_TRADE_DISCOUNT, 113, ActorDataFormat.INT)
             .insert(ActorDataTypes.HIGH_TIER_CURED_TRADE_DISCOUNT, 114, ActorDataFormat.INT)
@@ -124,7 +124,7 @@ public class Bedrock_v407 extends Bedrock_v390 {
             .insert(13, ItemStackRequestActionType.CRAFT_RESULTS)
             .build();
 
-    protected static final TypeMap<ContainerEnumName> CONTAINER_SLOT_TYPES = TypeMap.builder(ContainerEnumName.class)
+    protected static final TypeMap<ContainerEnumName> CONTAINER_ENUM_NAMES = TypeMap.builder(ContainerEnumName.class)
             .insert(0, ContainerEnumName.ANVIL_INPUT_CONTAINER)
             .insert(1, ContainerEnumName.ANVIL_MATERIAL_CONTAINER)
             .insert(2, ContainerEnumName.ANVIL_RESULT_PREVIEW_CONTAINER)
@@ -190,7 +190,7 @@ public class Bedrock_v407 extends Bedrock_v390 {
     public static BedrockCodec CODEC = Bedrock_v390.CODEC.toBuilder()
             .protocolVersion(407)
             .minecraftVersion("1.16.0")
-            .helper(() -> new BedrockCodecHelper_v407(ENTITY_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES))
+            .helper(() -> new BedrockCodecHelper_v407(ACTOR_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_ENUM_NAMES))
             .deregisterPacket(VideoStreamConnectPacket.class)
             .updateSerializer(StartGamePacket.class, StartGameSerializer_v407.INSTANCE)
             .updateSerializer(InventoryTransactionPacket.class, InventoryTransactionSerializer_v407.INSTANCE)

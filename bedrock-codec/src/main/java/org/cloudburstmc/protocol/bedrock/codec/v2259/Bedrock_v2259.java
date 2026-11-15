@@ -1,17 +1,13 @@
 package org.cloudburstmc.protocol.bedrock.codec.v2259;
 
-import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
 import org.cloudburstmc.protocol.bedrock.codec.v1001.serializer.LevelSoundEventSerializer_v1001;
 import org.cloudburstmc.protocol.bedrock.codec.v2225.Bedrock_v2225;
 import org.cloudburstmc.protocol.bedrock.codec.v2259.serializer.*;
 import org.cloudburstmc.protocol.bedrock.data.PacketRecipient;
-import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataFormat;
-import org.cloudburstmc.protocol.bedrock.data.actor.ActorDataTypes;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerEnumName;
 import org.cloudburstmc.protocol.bedrock.data.sound.LevelSoundEvent;
 import org.cloudburstmc.protocol.bedrock.packet.*;
-import org.cloudburstmc.protocol.bedrock.transformer.BooleanTransformer;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 
 public class Bedrock_v2259 extends Bedrock_v2225 {
@@ -27,7 +23,7 @@ public class Bedrock_v2259 extends Bedrock_v2225 {
             .insert(620, LevelSoundEvent.UNDEFINED)
             .build();
 
-    protected static final TypeMap<ContainerEnumName> CONTAINER_SLOT_TYPES = Bedrock_v2225.CONTAINER_SLOT_TYPES
+    protected static final TypeMap<ContainerEnumName> CONTAINER_ENUM_NAMES = Bedrock_v2225.CONTAINER_ENUM_NAMES
             .toBuilder()
             .insert(71, ContainerEnumName.VIRTUAL_CONTAINER)
             .build();
@@ -35,7 +31,7 @@ public class Bedrock_v2259 extends Bedrock_v2225 {
     public static final BedrockCodec CODEC = Bedrock_v2225.CODEC.toBuilder()
             .protocolVersion(2259)
             .minecraftVersion("1.26.70")
-            .helper(() -> new BedrockCodecHelper_v2259(ENTITY_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES, PLAYER_ABILITIES, TEXT_PROCESSING_ORIGINS))
+            .helper(() -> new BedrockCodecHelper_v2259(ACTOR_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_ENUM_NAMES, PLAYER_ABILITIES, TEXT_PROCESSING_ORIGINS))
             .updateSerializer(ClientboundAttributeLayerSyncPacket.class, ClientboundAttributeLayerSyncSerializer_v2259.INSTANCE)
             .updateSerializer(ClientboundDataStorePacket.class, ClientboundDataStoreSerializer_v2259.INSTANCE)
             .updateSerializer(CommandBlockUpdatePacket.class, CommandBlockUpdateSerializer_v2259.INSTANCE)

@@ -26,7 +26,7 @@ public class Bedrock_v332 extends Bedrock_v313 {
             .shift(26, 2)
             .build();
 
-    protected static final ActorDataTypeMap ENTITY_DATA = Bedrock_v313.ENTITY_DATA.toBuilder()
+    protected static final ActorDataTypeMap ACTOR_DATA = Bedrock_v313.ACTOR_DATA.toBuilder()
             .insert(ActorDataTypes.AREA_EFFECT_CLOUD_DURATION, 94, ActorDataFormat.INT)
             .insert(ActorDataTypes.AREA_EFFECT_CLOUD_SPAWN_TIME, 95, ActorDataFormat.INT)
             .insert(ActorDataTypes.AREA_EFFECT_CLOUD_CHANGE_RATE, 96, ActorDataFormat.FLOAT)
@@ -42,7 +42,7 @@ public class Bedrock_v332 extends Bedrock_v313 {
     public static final BedrockCodec CODEC = Bedrock_v313.CODEC.toBuilder()
             .protocolVersion(332)
             .minecraftVersion("1.9.0")
-            .helper(() -> new BedrockCodecHelper_v332(ENTITY_DATA, GAME_RULE_TYPES))
+            .helper(() -> new BedrockCodecHelper_v332(ACTOR_DATA, GAME_RULE_TYPES))
             .updateSerializer(ResourcePacksInfoPacket.class, ResourcePacksInfoSerializer_v332.INSTANCE)
             .updateSerializer(StartGamePacket.class, StartGameSerializer_v332.INSTANCE)
             .updateSerializer(AddPaintingPacket.class, AddPaintingSerializer_v332.INSTANCE)

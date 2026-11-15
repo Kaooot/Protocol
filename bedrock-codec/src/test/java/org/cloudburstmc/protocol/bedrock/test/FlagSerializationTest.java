@@ -18,19 +18,19 @@ import java.util.EnumMap;
 public class FlagSerializationTest {
     private static final BedrockCodecHelper CODEC_HELPER = Bedrock_v776.CODEC.createHelper();
 
-    private static final TypeMap<ActorFlags> ENTITY_FLAGS;
+    private static final TypeMap<ActorFlags> ACTOR_FLAGS;
 
     static {
         try {
-            Field field = Bedrock_v776.class.getDeclaredField("ENTITY_FLAGS");
+            Field field = Bedrock_v776.class.getDeclaredField("ACTOR_FLAGS");
             field.setAccessible(true);
-            ENTITY_FLAGS = (TypeMap<ActorFlags>) field.get(null);
+            ACTOR_FLAGS = (TypeMap<ActorFlags>) field.get(null);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
-    private static final FlagTransformer FLAGS_TRANSFORMER = new FlagTransformer(ENTITY_FLAGS, 0);
-    private static final FlagTransformer FLAGS_2_TRANSFORMER = new FlagTransformer(ENTITY_FLAGS, 1);
+    private static final FlagTransformer FLAGS_TRANSFORMER = new FlagTransformer(ACTOR_FLAGS, 0);
+    private static final FlagTransformer FLAGS_2_TRANSFORMER = new FlagTransformer(ACTOR_FLAGS, 1);
 
     @Test
     public void testFlagSerialization() {

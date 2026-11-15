@@ -26,7 +26,7 @@ import org.cloudburstmc.protocol.common.util.TypeMap;
 
 public class Bedrock_v354 extends Bedrock_v340 {
 
-    protected static final TypeMap<ActorFlags> ENTITY_FLAGS = Bedrock_v340.ENTITY_FLAGS.toBuilder()
+    protected static final TypeMap<ActorFlags> ACTOR_FLAGS = Bedrock_v340.ACTOR_FLAGS.toBuilder()
             .shift(74, 1)
             .insert(74, ActorFlags.BLOCKED_USING_DAMAGED_SHIELD)
             .insert(81, ActorFlags.IS_ILLAGER_CAPTAIN)
@@ -37,9 +37,9 @@ public class Bedrock_v354 extends Bedrock_v340 {
             .insert(86, ActorFlags.FACING_TARGET_TO_RANGE_ATTACK)
             .build();
 
-    protected static final ActorDataTypeMap ENTITY_DATA = Bedrock_v340.ENTITY_DATA.toBuilder()
-            .update(ActorDataTypes.FLAGS, new FlagTransformer(ENTITY_FLAGS, 0))
-            .update(ActorDataTypes.FLAGS_2, new FlagTransformer(ENTITY_FLAGS, 1))
+    protected static final ActorDataTypeMap ACTOR_DATA = Bedrock_v340.ACTOR_DATA.toBuilder()
+            .update(ActorDataTypes.FLAGS, new FlagTransformer(ACTOR_FLAGS, 0))
+            .update(ActorDataTypes.FLAGS_2, new FlagTransformer(ACTOR_FLAGS, 1))
             .insert(ActorDataTypes.TRADE_EXPERIENCE, 102, ActorDataFormat.INT)
             .build();
 
@@ -73,7 +73,7 @@ public class Bedrock_v354 extends Bedrock_v340 {
     public static final BedrockCodec CODEC = Bedrock_v340.CODEC.toBuilder()
             .protocolVersion(354)
             .minecraftVersion("1.11.0")
-            .helper(() -> new BedrockCodecHelper_v340(ENTITY_DATA, GAME_RULE_TYPES))
+            .helper(() -> new BedrockCodecHelper_v340(ACTOR_DATA, GAME_RULE_TYPES))
             .updateSerializer(CraftingDataPacket.class, CraftingDataSerializer_v354.INSTANCE)
             .updateSerializer(LegacyTelemetryEventPacket.class, LegacyTelemetryEventSerializer_v354.INSTANCE)
             .updateSerializer(ClientboundMapItemDataPacket.class, ClientboundMapItemDataSerializer_v354.INSTANCE)

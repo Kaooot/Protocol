@@ -35,16 +35,16 @@ import org.cloudburstmc.protocol.common.util.TypeMap;
 
 public class Bedrock_v388 extends Bedrock_v361 {
 
-    protected static final TypeMap<ActorFlags> ENTITY_FLAGS = Bedrock_v361.ENTITY_FLAGS.toBuilder()
+    protected static final TypeMap<ActorFlags> ACTOR_FLAGS = Bedrock_v361.ACTOR_FLAGS.toBuilder()
             .insert(88, ActorFlags.IS_IN_UI)
             .insert(89, ActorFlags.STALKING)
             .insert(90, ActorFlags.EMOTING)
             .insert(91, ActorFlags.CELEBRATING)
             .build();
 
-    protected static final ActorDataTypeMap ENTITY_DATA = Bedrock_v361.ENTITY_DATA.toBuilder()
-            .update(ActorDataTypes.FLAGS, new FlagTransformer(ENTITY_FLAGS, 0))
-            .update(ActorDataTypes.FLAGS_2, new FlagTransformer(ENTITY_FLAGS, 1))
+    protected static final ActorDataTypeMap ACTOR_DATA = Bedrock_v361.ACTOR_DATA.toBuilder()
+            .update(ActorDataTypes.FLAGS, new FlagTransformer(ACTOR_FLAGS, 0))
+            .update(ActorDataTypes.FLAGS_2, new FlagTransformer(ACTOR_FLAGS, 1))
             .update(ActorDataTypes.AREA_EFFECT_CLOUD_PARTICLE, new TypeMapTransformer<>(PARTICLE_TYPES))
             .insert(ActorDataTypes.AMBIENT_SOUND_INTERVAL, 107, ActorDataFormat.FLOAT)
             .insert(ActorDataTypes.AMBIENT_SOUND_INTERVAL_RANGE, 108, ActorDataFormat.FLOAT)
@@ -102,7 +102,7 @@ public class Bedrock_v388 extends Bedrock_v361 {
     public static final BedrockCodec CODEC = Bedrock_v361.CODEC.toBuilder()
             .protocolVersion(388)
             .minecraftVersion("1.13.0")
-            .helper(() -> new BedrockCodecHelper_v388(ENTITY_DATA, GAME_RULE_TYPES))
+            .helper(() -> new BedrockCodecHelper_v388(ACTOR_DATA, GAME_RULE_TYPES))
             .deregisterPacket(ExplodePacket.class)
             .updateSerializer(ResourcePackDataInfoPacket.class, new ResourcePackDataInfoSerializer_v361(RESOURCE_PACK_TYPES))
             .updateSerializer(ResourcePackStackPacket.class, ResourcePackStackSerializer_v388.INSTANCE)

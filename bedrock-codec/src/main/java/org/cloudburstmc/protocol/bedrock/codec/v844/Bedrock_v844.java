@@ -27,15 +27,15 @@ import org.cloudburstmc.protocol.common.util.TypeMap;
 
 public class Bedrock_v844 extends Bedrock_v827 {
 
-    protected static final TypeMap<ActorFlags> ENTITY_FLAGS = Bedrock_v827.ENTITY_FLAGS
+    protected static final TypeMap<ActorFlags> ACTOR_FLAGS = Bedrock_v827.ACTOR_FLAGS
             .toBuilder()
             .insert(125, ActorFlags.CAN_USE_VERTICAL_MOVEMENT_ACTION)
             .build();
 
-    protected static final ActorDataTypeMap ENTITY_DATA = Bedrock_v827.ENTITY_DATA
+    protected static final ActorDataTypeMap ACTOR_DATA = Bedrock_v827.ACTOR_DATA
             .toBuilder()
-            .update(ActorDataTypes.FLAGS, new FlagTransformer(ENTITY_FLAGS, 0))
-            .update(ActorDataTypes.FLAGS_2, new FlagTransformer(ENTITY_FLAGS, 1))
+            .update(ActorDataTypes.FLAGS, new FlagTransformer(ACTOR_FLAGS, 0))
+            .update(ActorDataTypes.FLAGS_2, new FlagTransformer(ACTOR_FLAGS, 1))
             .replace(ActorDataTypes.SHULKER_ATTACH_FACE, 65, ActorDataFormat.BYTE, Byte2IntTransformer.INSTANCE)
             .replace(ActorDataTypes.SHULKER_ATTACHED, 66, ActorDataFormat.SHORT, Short2BooleanTransformer.INSTANCE)
             .build();
@@ -60,7 +60,7 @@ public class Bedrock_v844 extends Bedrock_v827 {
             .raknetProtocolVersion(11)
             .protocolVersion(844)
             .minecraftVersion("1.21.111")
-            .helper(() -> new BedrockCodecHelper_v844(ENTITY_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES, PLAYER_ABILITIES, TEXT_PROCESSING_ORIGINS))
+            .helper(() -> new BedrockCodecHelper_v844(ACTOR_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_ENUM_NAMES, PLAYER_ABILITIES, TEXT_PROCESSING_ORIGINS))
             .updateSerializer(BiomeDefinitionListPacket.class, BiomeDefinitionListSerializer_v844.INSTANCE)
             .updateSerializer(LevelEventPacket.class, new LevelEventSerializer_v291(LEVEL_EVENTS))
             .updateSerializer(LevelEventGenericPacket.class, new LevelEventGenericSerializer_v361(LEVEL_EVENTS))

@@ -31,7 +31,7 @@ public class Bedrock_v2225 extends Bedrock_v2193 {
             .insert(105, ParticleType.ICE_BALL_BREAK)
             .build();
 
-    protected static final ActorDataTypeMap ENTITY_DATA = Bedrock_v2193.ENTITY_DATA
+    protected static final ActorDataTypeMap ACTOR_DATA = Bedrock_v2193.ACTOR_DATA
             .toBuilder()
             .update(ActorDataTypes.AREA_EFFECT_CLOUD_PARTICLE, new TypeMapTransformer<>(PARTICLE_TYPES))
             .insert(ActorDataTypes.INTERACTION_RESULT, 141, ActorDataFormat.BYTE)
@@ -64,7 +64,7 @@ public class Bedrock_v2225 extends Bedrock_v2193 {
             .insert(18, ItemStackRequestActionType.CRAFT_RESULTS)
             .build();
 
-    protected static final TypeMap<ContainerEnumName> CONTAINER_SLOT_TYPES = Bedrock_v2193.CONTAINER_SLOT_TYPES
+    protected static final TypeMap<ContainerEnumName> CONTAINER_ENUM_NAMES = Bedrock_v2193.CONTAINER_ENUM_NAMES
             .toBuilder()
             .insert(67, ContainerEnumName.DISC_PRESS_BLOCK_CONTAINER)
             .insert(68, ContainerEnumName.DISC_PRESS_DYE_CONTAINER)
@@ -75,7 +75,7 @@ public class Bedrock_v2225 extends Bedrock_v2193 {
     public static final BedrockCodec CODEC = Bedrock_v2193.CODEC.toBuilder()
             .protocolVersion(2225)
             .minecraftVersion("1.26.60")
-            .helper(() -> new BedrockCodecHelper_v2225(ENTITY_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES, PLAYER_ABILITIES, TEXT_PROCESSING_ORIGINS))
+            .helper(() -> new BedrockCodecHelper_v2225(ACTOR_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_ENUM_NAMES, PLAYER_ABILITIES, TEXT_PROCESSING_ORIGINS))
             .updateSerializer(AddActorPacket.class, AddActorSerializer_v2225.INSTANCE)
             .updateSerializer(AddPlayerPacket.class, AddPlayerSerializer_v2225.INSTANCE)
             .updateSerializer(AnimatePacket.class, AnimateSerializer_v2225.INSTANCE)

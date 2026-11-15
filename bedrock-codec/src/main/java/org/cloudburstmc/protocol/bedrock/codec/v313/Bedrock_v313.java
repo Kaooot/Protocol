@@ -32,7 +32,7 @@ import org.cloudburstmc.protocol.common.util.TypeMap;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Bedrock_v313 extends Bedrock_v291 {
 
-    protected static final TypeMap<ActorFlags> ENTITY_FLAGS = Bedrock_v291.ENTITY_FLAGS.toBuilder()
+    protected static final TypeMap<ActorFlags> ACTOR_FLAGS = Bedrock_v291.ACTOR_FLAGS.toBuilder()
             .insert(61, ActorFlags.TRANSITION_SITTING)
             .insert(62, ActorFlags.EATING)
             .insert(63, ActorFlags.LAYING_DOWN)
@@ -62,13 +62,13 @@ public class Bedrock_v313 extends Bedrock_v291 {
             .shift(24, 2)
             .build();
 
-    protected static final ActorDataTypeMap ENTITY_DATA = Bedrock_v291.ENTITY_DATA.toBuilder()
-            .update(ActorDataTypes.FLAGS, new FlagTransformer(ENTITY_FLAGS, 0))
+    protected static final ActorDataTypeMap ACTOR_DATA = Bedrock_v291.ACTOR_DATA.toBuilder()
+            .update(ActorDataTypes.FLAGS, new FlagTransformer(ACTOR_FLAGS, 0))
             .update(ActorDataTypes.AREA_EFFECT_CLOUD_PARTICLE, new TypeMapTransformer<>(PARTICLE_TYPES))
             .insert(ActorDataTypes.SITTING_AMOUNT, 88, ActorDataFormat.FLOAT)
             .insert(ActorDataTypes.SITTING_AMOUNT_PREVIOUS, 89, ActorDataFormat.FLOAT)
             .insert(ActorDataTypes.EATING_COUNTER, 90, ActorDataFormat.INT)
-            .insert(ActorDataTypes.FLAGS_2, 91, ActorDataFormat.LONG, new FlagTransformer(ENTITY_FLAGS, 1))
+            .insert(ActorDataTypes.FLAGS_2, 91, ActorDataFormat.LONG, new FlagTransformer(ACTOR_FLAGS, 1))
             .insert(ActorDataTypes.LAYING_AMOUNT, 92, ActorDataFormat.FLOAT)
             .insert(ActorDataTypes.LAYING_AMOUNT_PREVIOUS, 93, ActorDataFormat.FLOAT)
             .build();
@@ -105,7 +105,7 @@ public class Bedrock_v313 extends Bedrock_v291 {
     public static final BedrockCodec CODEC = Bedrock_v291.CODEC.toBuilder()
             .protocolVersion(313)
             .minecraftVersion("1.8.0")
-            .helper(() -> new BedrockCodecHelper_v313(ENTITY_DATA, GAME_RULE_TYPES))
+            .helper(() -> new BedrockCodecHelper_v313(ACTOR_DATA, GAME_RULE_TYPES))
             .updateSerializer(ResourcePackStackPacket.class, ResourcePackStackSerializer_v313.INSTANCE)
             .updateSerializer(StartGamePacket.class, StartGameSerializer_v313.INSTANCE)
             .updateSerializer(AddActorPacket.class, AddActorSerializer_v313.INSTANCE)

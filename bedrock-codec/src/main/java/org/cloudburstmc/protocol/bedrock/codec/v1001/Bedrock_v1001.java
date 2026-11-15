@@ -28,7 +28,7 @@ public class Bedrock_v1001 extends Bedrock_v975 {
     public static final BedrockCodec CODEC = Bedrock_v975.CODEC.toBuilder()
             .protocolVersion(1001)
             .minecraftVersion("1.26.30")
-            .helper(() -> new BedrockCodecHelper_v1001(ENTITY_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES, PLAYER_ABILITIES, TEXT_PROCESSING_ORIGINS))
+            .helper(() -> new BedrockCodecHelper_v1001(ACTOR_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_ENUM_NAMES, PLAYER_ABILITIES, TEXT_PROCESSING_ORIGINS))
             .updateSerializer(BiomeDefinitionListPacket.class, BiomeDefinitionListSerializer_v1001.INSTANCE)
             .updateSerializer(BossEventPacket.class, BossEventSerializer_v1001.INSTANCE)
             .updateSerializer(ClientboundAttributeLayerSyncPacket.class, ClientboundAttributeLayerSyncSerializer_v1001.INSTANCE)

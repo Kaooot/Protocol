@@ -25,7 +25,7 @@ import org.cloudburstmc.protocol.common.util.TypeMap;
 
 public class Bedrock_v2168 extends Bedrock_v1001 {
 
-    protected static final TypeMap<ActorFlags> ENTITY_FLAGS = Bedrock_v1001.ENTITY_FLAGS
+    protected static final TypeMap<ActorFlags> ACTOR_FLAGS = Bedrock_v1001.ACTOR_FLAGS
             .toBuilder()
             .insert(130, ActorFlags.NOT_PICKABLE_FROM_INSIDE)
             .build();
@@ -36,11 +36,11 @@ public class Bedrock_v2168 extends Bedrock_v1001 {
             .insert(104, ParticleType.YELLOW_POPLAR_LEAVES)
             .build();
 
-    protected static final ActorDataTypeMap ENTITY_DATA = Bedrock_v1001.ENTITY_DATA
+    protected static final ActorDataTypeMap ACTOR_DATA = Bedrock_v1001.ACTOR_DATA
             .toBuilder()
             .update(ActorDataTypes.AREA_EFFECT_CLOUD_PARTICLE, new TypeMapTransformer<>(PARTICLE_TYPES))
-            .update(ActorDataTypes.FLAGS, new FlagTransformer(ENTITY_FLAGS, 0))
-            .update(ActorDataTypes.FLAGS_2, new FlagTransformer(ENTITY_FLAGS, 1))
+            .update(ActorDataTypes.FLAGS, new FlagTransformer(ACTOR_FLAGS, 0))
+            .update(ActorDataTypes.FLAGS_2, new FlagTransformer(ACTOR_FLAGS, 1))
             .remove(16)
             .insert(ActorDataTypes.DISPLAY_BLOCK_STATE, 16, ActorDataFormat.INT, new BlockDefinitionTransformer())
             .insert(ActorDataTypes.DISPLAY_FIREWORK, 16, ActorDataFormat.NBT)
@@ -90,7 +90,7 @@ public class Bedrock_v2168 extends Bedrock_v1001 {
     public static final BedrockCodec CODEC = Bedrock_v1001.CODEC.toBuilder()
             .protocolVersion(2168)
             .minecraftVersion("1.26.40")
-            .helper(() -> new BedrockCodecHelper_v2168(ENTITY_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES, PLAYER_ABILITIES, TEXT_PROCESSING_ORIGINS))
+            .helper(() -> new BedrockCodecHelper_v2168(ACTOR_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_ENUM_NAMES, PLAYER_ABILITIES, TEXT_PROCESSING_ORIGINS))
             .updateSerializer(AnvilDamagePacket.class, AnvilDamageSerializer_v2168.INSTANCE)
             .updateSerializer(ClientboundMapItemDataPacket.class, ClientboundMapItemDataSerializer_v2168.INSTANCE)
             .updateSerializer(ClientboundUpdateSoundDataPacket.class, ClientboundUpdateSoundDataSerializer_v2168.INSTANCE)
