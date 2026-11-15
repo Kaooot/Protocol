@@ -49,14 +49,14 @@ public class CameraInstructionSerializer_v748 extends CameraInstructionSerialize
         instruction.setPreset(definition);
         instruction.setEase(helper.readOptional(buffer, null, this::readEaseOption));
         instruction.setPos(
-                helper.readOptional(buffer, null, (buf, codecHelper) -> {
+                helper.readOptional(buffer, new PosOption(), (buf, codecHelper) -> {
                     final PosOption value = new PosOption();
                     value.setPos(codecHelper.readVector3f(buf));
                     return value;
                 })
         );
         instruction.setRot(
-                helper.readOptional(buffer, null, (buf, codecHelper) -> {
+                helper.readOptional(buffer, new RotOption(), (buf, codecHelper) -> {
                     final RotOption value = new RotOption();
                     value.setX(buf.readFloatLE());
                     value.setY(buf.readFloatLE());
@@ -64,14 +64,14 @@ public class CameraInstructionSerializer_v748 extends CameraInstructionSerialize
                 })
         );
         instruction.setFacing(
-                helper.readOptional(buffer, null, (buf, codecHelper) -> {
+                helper.readOptional(buffer, new FacingOption(), (buf, codecHelper) -> {
                     final FacingOption value = new FacingOption();
                     value.setPos(codecHelper.readVector3f(buf));
                     return value;
                 })
         );
         instruction.setViewOffset(
-                helper.readOptional(buffer, null, (buf, codecHelper) -> {
+                helper.readOptional(buffer, new ViewOffsetOption(), (buf, codecHelper) -> {
                     final ViewOffsetOption value = new ViewOffsetOption();
                     value.setX(buf.readFloatLE());
                     value.setY(buf.readFloatLE());
@@ -79,7 +79,7 @@ public class CameraInstructionSerializer_v748 extends CameraInstructionSerialize
                 })
         );
         instruction.setEntityOffset(
-                helper.readOptional(buffer, null, (buf, codecHelper) -> {
+                helper.readOptional(buffer, new EntityOffsetOption(), (buf, codecHelper) -> {
                     final EntityOffsetOption value = new EntityOffsetOption();
                     value.setEntityOffsetX(buf.readFloatLE());
                     value.setEntityOffsetY(buf.readFloatLE());
