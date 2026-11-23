@@ -40,7 +40,7 @@ public class BedrockCodecHelper_v1001 extends BedrockCodecHelper_v975 {
 
     @Override
     public void writeInventorySource(ByteBuf buffer, InventorySource source) {
-        VarInts.writeUnsignedInt(buffer, source.getSourceType().ordinal());
+        VarInts.writeUnsignedInt(buffer, source.getSourceType().getId());
         final boolean hasContainer = source.getSourceType().equals(InventorySourceType.CONTAINER_INVENTORY) ||
                 source.getSourceType().equals(InventorySourceType.NON_IMPLEMENTED_FEATURE_TODO);
         buffer.writeBoolean(hasContainer);

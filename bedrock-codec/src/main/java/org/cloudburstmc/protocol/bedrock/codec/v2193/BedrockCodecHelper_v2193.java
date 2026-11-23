@@ -55,7 +55,7 @@ public class BedrockCodecHelper_v2193 extends BedrockCodecHelper_v2168 {
 
     @Override
     public void writeInventorySource(ByteBuf buffer, InventorySource source) {
-        VarInts.writeUnsignedInt(buffer, source.getSourceType().ordinal());
+        VarInts.writeUnsignedInt(buffer, source.getSourceType().getId());
         this.writeOptionalNull(buffer, source.getContainerID(), ByteBuf::writeByte);
         this.writeOptionalNull(buffer, source.getBitFlags(),
                 (buf, bitFlags) -> VarInts.writeUnsignedInt(buf, bitFlags.ordinal()));

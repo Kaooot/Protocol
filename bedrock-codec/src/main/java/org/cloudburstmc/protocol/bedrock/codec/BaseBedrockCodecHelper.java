@@ -447,7 +447,7 @@ public abstract class BaseBedrockCodecHelper implements BedrockCodecHelper {
     public void writeInventorySource(ByteBuf buffer, InventorySource inventorySource) {
         requireNonNull(inventorySource, "InventorySource was null");
 
-        VarInts.writeUnsignedInt(buffer, inventorySource.getSourceType().ordinal());
+        VarInts.writeUnsignedInt(buffer, inventorySource.getSourceType().getId());
 
         switch (inventorySource.getSourceType()) {
             case CONTAINER_INVENTORY:
