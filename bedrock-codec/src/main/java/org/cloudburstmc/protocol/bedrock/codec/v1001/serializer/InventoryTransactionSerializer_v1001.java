@@ -10,23 +10,6 @@ import org.cloudburstmc.protocol.common.util.VarInts;
 public class InventoryTransactionSerializer_v1001 extends InventoryTransactionSerializer_v407 {
     public static final InventoryTransactionSerializer_v1001 INSTANCE = new InventoryTransactionSerializer_v1001();
 
-    protected InventoryTransactionSerializer_v1001() {
-        this.inventoryTransactionVariant = this.inventoryTransactionVariant.toBuilder(
-                        InventoryTransactionType::ordinal,
-                        (buffer, helper, owner, value) ->
-                                helper.writeOptionalNull(buffer, value, VarInts::writeUnsignedInt),
-                        (buffer, helper, owner) -> helper.readOptional(buffer, 0, VarInts::readUnsignedInt)
-                )
-                .prefix(
-                        (buffer, helper, owner, value) -> buffer.writeBoolean(true),
-                        (buffer, helper, owner) -> {
-                            buffer.readBoolean(); // transaction has value
-                            return -1;
-                        }
-                )
-                .build();
-    }
-
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, InventoryTransactionPacket packet) {
         this.writeLegacyRequestId(buffer, helper, packet.getLegacyRequestID());
@@ -35,7 +18,7 @@ public class InventoryTransactionSerializer_v1001 extends InventoryTransactionSe
         if (legacySetSlotsHasValue) {
             helper.writeArray(buffer, packet.getLegacySetItemSlots(), this::writeLegacySetSlot);
         }
-        this.inventoryTransactionVariant.write(buffer, helper, packet, packet.getTransaction());
+        this.writeTransaction(buffer, helper, packet);
     }
 
     @Override
@@ -46,7 +29,21 @@ public class InventoryTransactionSerializer_v1001 extends InventoryTransactionSe
         if (legacySetSlotsHasValue) {
             helper.readArray(buffer, packet.getLegacySetItemSlots(), this::readLegacySetSlot);
         }
-        packet.setTransaction(this.inventoryTransactionVariant.read(buffer, helper, packet));
+        this.readTransaction(buffer, helper, packet);
+    }
+
+    @Override
+    protected void writeTransactionIndex(ByteBuf buffer, BedrockCodecHelper helper, InventoryTransactionPacket packet, InventoryTransactionType type) {
+        buffer.writeBoolean(true);
+        VarInts.writeUnsignedInt(buffer, type.ordinal());
+        buffer.writeBoolean(true);
+    }
+
+    @Override
+    protected InventoryTransactionType readTransactionIndex(ByteBuf buffer, BedrockCodecHelper helper, InventoryTransactionPacket packet) {
+        final int ordinal = buffer.readBoolean() ? VarInts.readUnsignedInt(buffer) : 0;
+        buffer.readBoolean();
+        return InventoryTransactionType.values()[ordinal];
     }
 
     @Override

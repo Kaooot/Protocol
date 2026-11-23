@@ -22,7 +22,7 @@ public class InventoryTransactionSerializer_v407 extends InventoryTransactionSer
             helper.writeArray(buffer, packet.getLegacySetItemSlots(), this::writeLegacySetSlot);
         }
 
-        this.inventoryTransactionVariant.write(buffer, helper, packet, packet.getTransaction());
+        this.writeTransaction(buffer, helper, packet);
     }
 
     @Override
@@ -33,7 +33,7 @@ public class InventoryTransactionSerializer_v407 extends InventoryTransactionSer
             helper.readArray(buffer, packet.getLegacySetItemSlots(), this::readLegacySetSlot);
         }
 
-        packet.setTransaction(this.inventoryTransactionVariant.read(buffer, helper, packet));
+        this.readTransaction(buffer, helper, packet);
     }
 
     protected void writeLegacyRequestId(ByteBuf buffer, BedrockCodecHelper helper, ItemStackLegacyRequestId id) {

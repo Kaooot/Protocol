@@ -5,7 +5,6 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
-import org.cloudburstmc.protocol.bedrock.codec.VariantCodec;
 import org.cloudburstmc.protocol.bedrock.data.text.*;
 import org.cloudburstmc.protocol.bedrock.packet.TextPacket;
 
@@ -13,37 +12,11 @@ import org.cloudburstmc.protocol.bedrock.packet.TextPacket;
 public class TextSerializer_v291 implements BedrockPacketSerializer<TextPacket> {
     public static final TextSerializer_v291 INSTANCE = new TextSerializer_v291();
 
-    protected VariantCodec<TextPacket> bodyVariant = VariantCodec.<TextPacketBodyType, TextPacket>builder(
-                    TextPacketBodyType::ordinal,
-                    (buffer, helper, owner, value) -> {
-                    },
-                    (buffer, helper, owner) -> TextPacketBodyType.from(owner.getMessageType()).ordinal()
-            )
-            .add(
-                    TextPacketBodyType.MESSAGE_ONLY,
-                    MessageOnly.class,
-                    this::writeMessageOnly,
-                    this::readMessageOnly
-            )
-            .add(
-                    TextPacketBodyType.AUTHOR_AND_MESSAGE,
-                    AuthorAndMessage.class,
-                    this::writeAuthorAndMessage,
-                    this::readAuthorAndMessage
-            )
-            .add(
-                    TextPacketBodyType.MESSAGE_AND_PARAMS,
-                    MessageAndParams.class,
-                    this::writeMessageAndParams,
-                    this::readMessageAndParams
-            )
-            .build();
-
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, TextPacket packet) {
         buffer.writeByte(packet.getMessageType().ordinal());
         buffer.writeBoolean(packet.isLocalize());
-        this.bodyVariant.write(buffer, helper, packet, packet.getBody());
+        this.writeBody(buffer, helper, packet);
         helper.writeString(buffer, packet.getSendersXUID());
         helper.writeString(buffer, packet.getPlatformId());
     }
@@ -52,9 +25,37 @@ public class TextSerializer_v291 implements BedrockPacketSerializer<TextPacket> 
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, TextPacket packet) {
         packet.setMessageType(TextPacketType.from(buffer.readUnsignedByte()));
         packet.setLocalize(buffer.readBoolean());
-        packet.setBody(this.bodyVariant.read(buffer, helper, packet));
+        this.readBody(buffer, helper, packet, TextPacketBodyType.from(packet.getMessageType()));
         packet.setSendersXUID(helper.readStringMaxLen(buffer, 64));
         packet.setPlatformId(helper.readStringMaxLen(buffer, 256));
+    }
+
+    protected void writeBody(ByteBuf buffer, BedrockCodecHelper helper, TextPacket packet) {
+        switch (TextPacketBodyType.from(packet.getBody().getClass())) {
+            case MESSAGE_ONLY:
+                this.writeMessageOnly(buffer, helper, packet, (MessageOnly) packet.getBody());
+                break;
+            case AUTHOR_AND_MESSAGE:
+                this.writeAuthorAndMessage(buffer, helper, packet, (AuthorAndMessage) packet.getBody());
+                break;
+            case MESSAGE_AND_PARAMS:
+                this.writeMessageAndParams(buffer, helper, packet, (MessageAndParams) packet.getBody());
+                break;
+        }
+    }
+
+    protected void readBody(ByteBuf buffer, BedrockCodecHelper helper, TextPacket packet, TextPacketBodyType bodyType) {
+        switch (bodyType) {
+            case MESSAGE_ONLY:
+                packet.setBody(this.readMessageOnly(buffer, helper, packet));
+                break;
+            case AUTHOR_AND_MESSAGE:
+                packet.setBody(this.readAuthorAndMessage(buffer, helper, packet));
+                break;
+            case MESSAGE_AND_PARAMS:
+                packet.setBody(this.readMessageAndParams(buffer, helper, packet));
+                break;
+        }
     }
 
     protected void writeMessageOnly(ByteBuf buffer, BedrockCodecHelper helper, TextPacket packet, MessageOnly messageOnly) {

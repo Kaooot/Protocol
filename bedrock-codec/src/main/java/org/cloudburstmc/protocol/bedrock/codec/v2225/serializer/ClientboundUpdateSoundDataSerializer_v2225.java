@@ -14,12 +14,12 @@ public class ClientboundUpdateSoundDataSerializer_v2225 extends ClientboundUpdat
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ClientboundUpdateSoundDataPacket packet) {
         helper.writeServerSoundHandle(buffer, packet.getServerSoundHandle());
-        this.soundDataVariant.write(buffer, helper, packet, packet.getEvent());
+        this.writeSoundData(buffer, helper, packet, packet.getEvent());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ClientboundUpdateSoundDataPacket packet) {
         packet.setServerSoundHandle(helper.readServerSoundHandle(buffer));
-        packet.setEvent(this.soundDataVariant.read(buffer, helper, packet));
+        packet.setEvent(this.readSoundData(buffer, helper, packet));
     }
 }

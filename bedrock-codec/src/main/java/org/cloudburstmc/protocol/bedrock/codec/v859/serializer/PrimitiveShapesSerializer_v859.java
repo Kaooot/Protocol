@@ -4,7 +4,6 @@ import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
-import org.cloudburstmc.protocol.bedrock.codec.VariantCodec;
 import org.cloudburstmc.protocol.bedrock.codec.v818.serializer.PrimitiveShapesSerializer_v818;
 import org.cloudburstmc.protocol.bedrock.data.shape.ExtraShapeDataType;
 import org.cloudburstmc.protocol.bedrock.data.datastore.NullType;
@@ -17,47 +16,66 @@ import org.cloudburstmc.protocol.common.util.VarInts;
 public class PrimitiveShapesSerializer_v859 extends PrimitiveShapesSerializer_v818 {
     public static final PrimitiveShapesSerializer_v859 INSTANCE = new PrimitiveShapesSerializer_v859();
 
-    protected VariantCodec<PrimitiveShapesPacket> extraShapeDataVariant = VariantCodec.<ExtraShapeDataType, PrimitiveShapesPacket>builder(
-                    ExtraShapeDataType::ordinal
-            )
-            .add(
-                    ExtraShapeDataType.NONE,
-                    NullType.class,
-                    (buffer, helper, packet, value) -> {
-                    },
-                    (buffer, helper, packet) -> new NullType()
-            )
-            .add(
-                    ExtraShapeDataType.ARROW,
-                    ArrowDataPayload.class,
-                    this::writeArrowData,
-                    this::readArrowData
-            )
-            .add(
-                    ExtraShapeDataType.TEXT,
-                    TextDataPayload.class,
-                    this::writeTextData,
-                    this::readTextData
-            )
-            .add(
-                    ExtraShapeDataType.BOX,
-                    BoxDataPayload.class,
-                    this::writeBoxData,
-                    this::readBoxData
-            )
-            .add(
-                    ExtraShapeDataType.LINE,
-                    LineDataPayload.class,
-                    this::writeLineData,
-                    this::readLineData
-            )
-            .add(
-                    ExtraShapeDataType.SPHERE,
-                    SphereDataPayload.class,
-                    this::writeSphereData,
-                    this::readSphereData
-            )
-            .build();
+    protected void writeExtraShapeData(ByteBuf buffer, BedrockCodecHelper helper, PrimitiveShapesPacket packet, Object data) {
+        final ExtraShapeDataType type;
+        if (data instanceof NullType) {
+            type = ExtraShapeDataType.NONE;
+        } else if (data instanceof ArrowDataPayload) {
+            type = ExtraShapeDataType.ARROW;
+        } else if (data instanceof TextDataPayload) {
+            type = ExtraShapeDataType.TEXT;
+        } else if (data instanceof BoxDataPayload) {
+            type = ExtraShapeDataType.BOX;
+        } else if (data instanceof LineDataPayload) {
+            type = ExtraShapeDataType.LINE;
+        } else if (data instanceof SphereDataPayload) {
+            type = ExtraShapeDataType.SPHERE;
+        } else {
+            return;
+        }
+        VarInts.writeUnsignedInt(buffer, type.ordinal());
+        switch (type) {
+            case ARROW:
+                this.writeArrowData(buffer, helper, packet, (ArrowDataPayload) data);
+                break;
+            case TEXT:
+                this.writeTextData(buffer, helper, packet, (TextDataPayload) data);
+                break;
+            case BOX:
+                this.writeBoxData(buffer, helper, packet, (BoxDataPayload) data);
+                break;
+            case LINE:
+                this.writeLineData(buffer, helper, packet, (LineDataPayload) data);
+                break;
+            case SPHERE:
+                this.writeSphereData(buffer, helper, packet, (SphereDataPayload) data);
+                break;
+            case NONE:
+                break;
+        }
+    }
+
+    protected Object readExtraShapeData(ByteBuf buffer, BedrockCodecHelper helper, PrimitiveShapesPacket packet) {
+        return this.readExtraShapeDataBody(buffer, helper, packet, ExtraShapeDataType.from(VarInts.readUnsignedInt(buffer)));
+    }
+
+    protected Object readExtraShapeDataBody(ByteBuf buffer, BedrockCodecHelper helper, PrimitiveShapesPacket packet, ExtraShapeDataType type) {
+        switch (type) {
+            case NONE:
+                return new NullType();
+            case ARROW:
+                return this.readArrowData(buffer, helper, packet);
+            case TEXT:
+                return this.readTextData(buffer, helper, packet);
+            case BOX:
+                return this.readBoxData(buffer, helper, packet);
+            case LINE:
+                return this.readLineData(buffer, helper, packet);
+            case SPHERE:
+                return this.readSphereData(buffer, helper, packet);
+        }
+        return null;
+    }
 
     @Override
     protected void writeShapeData(ByteBuf buffer, BedrockCodecHelper helper, PrimitiveShapesPacket packet, PrimitiveShapeDataPayload payload) {
@@ -69,7 +87,7 @@ public class PrimitiveShapesSerializer_v859 extends PrimitiveShapesSerializer_v8
         helper.writeOptionalNull(buffer, payload.getTotalTimeLeft(), ByteBuf::writeFloatLE);
         helper.writeOptionalNull(buffer, payload.getColor(), ByteBuf::writeIntLE);
         helper.writeOptionalNull(buffer, payload.getDimension(), (buf, dimension) -> VarInts.writeInt(buf, dimension.getValue()));
-        this.extraShapeDataVariant.write(buffer, helper, packet, payload.getExtraShapeData());
+        this.writeExtraShapeData(buffer, helper, packet, payload.getExtraShapeData());
     }
 
     @Override
@@ -83,7 +101,7 @@ public class PrimitiveShapesSerializer_v859 extends PrimitiveShapesSerializer_v8
         payload.setTotalTimeLeft(helper.readOptional(buffer, null, ByteBuf::readFloatLE));
         payload.setColor(helper.readOptional(buffer, null, ByteBuf::readIntLE));
         payload.setDimension(helper.readOptional(buffer, null, buf -> DimensionType.from(VarInts.readInt(buf))));
-        payload.setExtraShapeData(this.extraShapeDataVariant.read(buffer, helper, packet));
+        payload.setExtraShapeData(this.readExtraShapeData(buffer, helper, packet));
         return payload;
     }
 

@@ -6,7 +6,6 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
-import org.cloudburstmc.protocol.bedrock.codec.VariantCodec;
 import org.cloudburstmc.protocol.bedrock.data.datastore.*;
 import org.cloudburstmc.protocol.bedrock.packet.ClientboundDataStorePacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
@@ -20,82 +19,12 @@ public class ClientboundDataStoreSerializer_v898 implements BedrockPacketSeriali
 
     public static final ClientboundDataStoreSerializer_v898 INSTANCE = new ClientboundDataStoreSerializer_v898();
 
-    protected final VariantCodec<ClientboundDataStorePacket> updatesVariant = VariantCodec.<DataStoreType, ClientboundDataStorePacket>builder(DataStoreType::ordinal)
-            .add(
-                    DataStoreType.UPDATE,
-                    DataStoreUpdate.class,
-                    (buffer, helper, packet, value) -> helper.writeDataStoreUpdate(buffer, value),
-                    (buffer, helper, packet) -> helper.readDataStoreUpdate(buffer))
-            .add(
-                    DataStoreType.CHANGE,
-                    DataStoreChange.class,
-                    this::writeDataStoreChange,
-                    this::readDataStoreChange
-            )
-            .add(
-                    DataStoreType.REMOVAL,
-                    DataStoreRemoval.class,
-                    this::writeDataStoreRemoval,
-                    this::readDataStoreRemoval
-            )
-            .build();
-
-    protected final VariantCodec<ClientboundDataStorePacket> dynamicValueVariant = VariantCodec.<DynamicValueType, ClientboundDataStorePacket>builder(
-                    DynamicValueType::ordinal,
-                    (buffer, helper, owner, value) -> buffer.writeIntLE(value),
-                    (buffer, helper, owner) -> buffer.readIntLE()
-            )
-            .add(
-                    DynamicValueType.NULL,
-                    NullType.class,
-                    (buffer, helper, owner, value) -> {
-                    },
-                    (buffer, helper, owner) -> new NullType()
-            )
-            .add(
-                    DynamicValueType.BOOLEAN,
-                    Boolean.class,
-                    (buffer, helper, owner, value) -> buffer.writeBoolean(value),
-                    (buffer, helper, owner) -> buffer.readBoolean()
-            )
-            .add(
-                    DynamicValueType.INTEGER,
-                    Long.class,
-                    (buffer, helper, owner, value) -> buffer.writeLongLE(value),
-                    (buffer, helper, owner) -> buffer.readLongLE()
-            )
-            .add(
-                    DynamicValueType.NUMBER,
-                    Double.class,
-                    (buffer, helper, owner, value) -> buffer.writeDoubleLE(value),
-                    (buffer, helper, owner) -> buffer.readDoubleLE()
-            )
-            .add(
-                    DynamicValueType.STRING,
-                    String.class,
-                    (buffer, helper, owner, value) -> helper.writeString(buffer, value),
-                    (buffer, helper, owner) -> helper.readString(buffer)
-            )
-            .add(
-                    DynamicValueType.ARRAY,
-                    List.class,
-                    (buffer, helper, owner, value) -> this.writeDynamicValueArray(buffer, helper, owner, (List<Object>) value),
-                    this::readDynamicValueArray
-            )
-            .add(
-                    DynamicValueType.OBJECT,
-                    Map.class,
-                    (buffer, helper, owner, value) -> this.writeDynamicValueObject(buffer, helper, owner, (Map<String, Object>) value),
-                    this::readDynamicValueObject
-            )
-            .build();
-
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ClientboundDataStorePacket packet) {
         helper.writeArray(
                 buffer,
                 packet.getUpdates(),
-                (buf, codecHelper, update) -> this.updatesVariant.write(buf, codecHelper, packet, update)
+                (buf, codecHelper, update) -> this.writeUpdate(buf, codecHelper, packet, update)
         );
     }
 
@@ -104,9 +33,46 @@ public class ClientboundDataStoreSerializer_v898 implements BedrockPacketSeriali
         helper.readArray(
                 buffer,
                 packet.getUpdates(),
-                (buf, codecHelper) -> this.updatesVariant.read(buf, codecHelper, packet),
+                (buf, codecHelper) -> this.readUpdate(buf, codecHelper, packet),
                 500
         );
+    }
+
+    protected void writeUpdate(ByteBuf buffer, BedrockCodecHelper helper, ClientboundDataStorePacket packet, Object update) {
+        final DataStoreType type;
+        if (update instanceof DataStoreUpdate) {
+            type = DataStoreType.UPDATE;
+        } else if (update instanceof DataStoreChange) {
+            type = DataStoreType.CHANGE;
+        } else if (update instanceof DataStoreRemoval) {
+            type = DataStoreType.REMOVAL;
+        } else {
+            return;
+        }
+        VarInts.writeUnsignedInt(buffer, type.ordinal());
+        switch (type) {
+            case UPDATE:
+                helper.writeDataStoreUpdate(buffer, (DataStoreUpdate) update);
+                break;
+            case CHANGE:
+                this.writeDataStoreChange(buffer, helper, packet, (DataStoreChange) update);
+                break;
+            case REMOVAL:
+                this.writeDataStoreRemoval(buffer, helper, packet, (DataStoreRemoval) update);
+                break;
+        }
+    }
+
+    protected Object readUpdate(ByteBuf buffer, BedrockCodecHelper helper, ClientboundDataStorePacket packet) {
+        switch (DataStoreType.values()[VarInts.readUnsignedInt(buffer)]) {
+            case UPDATE:
+                return helper.readDataStoreUpdate(buffer);
+            case CHANGE:
+                return this.readDataStoreChange(buffer, helper, packet);
+            case REMOVAL:
+                return this.readDataStoreRemoval(buffer, helper, packet);
+        }
+        return null;
     }
 
     protected void writeDataStoreChange(ByteBuf buffer, BedrockCodecHelper helper, ClientboundDataStorePacket packet, DataStoreChange change) {
@@ -135,12 +101,79 @@ public class ClientboundDataStoreSerializer_v898 implements BedrockPacketSeriali
         return removal;
     }
 
+    @SuppressWarnings("unchecked")
     protected void writeDynamicValue(ByteBuf buffer, BedrockCodecHelper helper, ClientboundDataStorePacket packet, Object value) {
-        this.dynamicValueVariant.write(buffer, helper, packet, value == null ? new NullType() : value);
+        final Object actual = value == null ? new NullType() : value;
+        final DynamicValueType type;
+        if (actual instanceof NullType) {
+            type = DynamicValueType.NULL;
+        } else if (actual instanceof Boolean) {
+            type = DynamicValueType.BOOLEAN;
+        } else if (actual instanceof Long) {
+            type = DynamicValueType.INTEGER;
+        } else if (actual instanceof Double) {
+            type = DynamicValueType.NUMBER;
+        } else if (actual instanceof String) {
+            type = DynamicValueType.STRING;
+        } else if (actual instanceof List) {
+            type = DynamicValueType.ARRAY;
+        } else if (actual instanceof Map) {
+            type = DynamicValueType.OBJECT;
+        } else {
+            return;
+        }
+        buffer.writeIntLE(type.ordinal());
+        switch (type) {
+            case NULL:
+                break;
+            case BOOLEAN:
+                buffer.writeBoolean((Boolean) actual);
+                break;
+            case INTEGER:
+                buffer.writeLongLE((Long) actual);
+                break;
+            case NUMBER:
+                buffer.writeDoubleLE((Double) actual);
+                break;
+            case STRING:
+                helper.writeString(buffer, (String) actual);
+                break;
+            case ARRAY:
+                this.writeDynamicValueArray(buffer, helper, packet, (List<Object>) actual);
+                break;
+            case OBJECT:
+                this.writeDynamicValueObject(buffer, helper, packet, (Map<String, Object>) actual);
+                break;
+        }
     }
 
     protected Object readDynamicValue(ByteBuf buffer, BedrockCodecHelper helper, ClientboundDataStorePacket packet) {
-        final Object value = this.dynamicValueVariant.read(buffer, helper, packet);
+        final Object value;
+        switch (DynamicValueType.values()[buffer.readIntLE()]) {
+            case NULL:
+                value = new NullType();
+                break;
+            case BOOLEAN:
+                value = buffer.readBoolean();
+                break;
+            case INTEGER:
+                value = buffer.readLongLE();
+                break;
+            case NUMBER:
+                value = buffer.readDoubleLE();
+                break;
+            case STRING:
+                value = helper.readString(buffer);
+                break;
+            case ARRAY:
+                value = this.readDynamicValueArray(buffer, helper, packet);
+                break;
+            case OBJECT:
+                value = this.readDynamicValueObject(buffer, helper, packet);
+                break;
+            default:
+                value = null;
+        }
         return value instanceof NullType ? null : value;
     }
 

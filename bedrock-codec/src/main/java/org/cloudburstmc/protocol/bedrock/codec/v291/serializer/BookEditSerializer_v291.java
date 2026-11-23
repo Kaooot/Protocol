@@ -5,7 +5,6 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
-import org.cloudburstmc.protocol.bedrock.codec.VariantCodec;
 import org.cloudburstmc.protocol.bedrock.data.book.*;
 import org.cloudburstmc.protocol.bedrock.packet.BookEditPacket;
 
@@ -16,48 +15,51 @@ public class BookEditSerializer_v291 implements BedrockPacketSerializer<BookEdit
 
     protected static final int MAX_LENGTH = 768;
 
-    protected final VariantCodec<BookEditPacket> bookEditVariant = VariantCodec.<BookEditOperation, BookEditPacket>builder(
-                    BookEditOperation::ordinal,
-                    (buffer, helper, owner, value) -> buffer.writeByte(value),
-                    (buffer, helper, owner) -> (int) buffer.readUnsignedByte()
-            )
-            .add(
-                    BookEditOperation.REPLACE_PAGE,
-                    ReplacePage.class,
-                    this::writeReplacePage,
-                    this::readReplacePage
-            )
-            .add(
-                    BookEditOperation.ADD_PAGE,
-                    AddPage.class,
-                    this::writeAddPage,
-                    this::readAddPage
-            )
-            .add(
-                    BookEditOperation.DELETE_PAGE,
-                    DeletePage.class,
-                    this::writeDeletePage,
-                    this::readDeletePage
-            )
-            .add(
-                    BookEditOperation.SWAP_PAGES,
-                    SwapPages.class,
-                    this::writeSwapPages,
-                    this::readSwapPages
-            )
-            .add(
-                    BookEditOperation.FINALIZE,
-                    Finalize.class,
-                    this::writeFinalize,
-                    this::readFinalize
-            )
-            .build();
+    protected void writeOperation(ByteBuf buffer, BedrockCodecHelper helper, BookEditPacket packet) {
+        final Object operation = packet.getOperation();
+        if (operation instanceof ReplacePage) {
+            buffer.writeByte(BookEditOperation.REPLACE_PAGE.ordinal());
+            this.writeReplacePage(buffer, helper, packet, (ReplacePage) operation);
+        } else if (operation instanceof AddPage) {
+            buffer.writeByte(BookEditOperation.ADD_PAGE.ordinal());
+            this.writeAddPage(buffer, helper, packet, (AddPage) operation);
+        } else if (operation instanceof DeletePage) {
+            buffer.writeByte(BookEditOperation.DELETE_PAGE.ordinal());
+            this.writeDeletePage(buffer, helper, packet, (DeletePage) operation);
+        } else if (operation instanceof SwapPages) {
+            buffer.writeByte(BookEditOperation.SWAP_PAGES.ordinal());
+            this.writeSwapPages(buffer, helper, packet, (SwapPages) operation);
+        } else if (operation instanceof Finalize) {
+            buffer.writeByte(BookEditOperation.FINALIZE.ordinal());
+            this.writeFinalize(buffer, helper, packet, (Finalize) operation);
+        }
+    }
+
+    protected void readOperation(ByteBuf buffer, BedrockCodecHelper helper, BookEditPacket packet) {
+        switch (BookEditOperation.from(buffer.readUnsignedByte())) {
+            case REPLACE_PAGE:
+                packet.setOperation(this.readReplacePage(buffer, helper, packet));
+                break;
+            case ADD_PAGE:
+                packet.setOperation(this.readAddPage(buffer, helper, packet));
+                break;
+            case DELETE_PAGE:
+                packet.setOperation(this.readDeletePage(buffer, helper, packet));
+                break;
+            case SWAP_PAGES:
+                packet.setOperation(this.readSwapPages(buffer, helper, packet));
+                break;
+            case FINALIZE:
+                packet.setOperation(this.readFinalize(buffer, helper, packet));
+                break;
+        }
+    }
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, BookEditPacket packet) {
         final int index = buffer.writerIndex();
 
-        this.bookEditVariant.write(buffer, helper, packet, packet.getOperation());
+        this.writeOperation(buffer, helper, packet);
 
         final int end = buffer.writerIndex();
 
@@ -86,7 +88,7 @@ public class BookEditSerializer_v291 implements BedrockPacketSerializer<BookEdit
         );
         buffer.writerIndex(end - 1);
 
-        packet.setOperation(this.bookEditVariant.read(buffer, helper, packet));
+        this.readOperation(buffer, helper, packet);
     }
 
     protected void writeReplacePage(ByteBuf buffer, BedrockCodecHelper helper, BookEditPacket packet, ReplacePage action) {

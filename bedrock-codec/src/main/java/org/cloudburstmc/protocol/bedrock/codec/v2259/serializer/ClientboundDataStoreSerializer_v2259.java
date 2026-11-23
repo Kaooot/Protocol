@@ -4,43 +4,59 @@ import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
-import org.cloudburstmc.protocol.bedrock.codec.VariantCodec;
 import org.cloudburstmc.protocol.bedrock.codec.v924.serializer.ClientboundDataStoreSerializer_v924;
 import org.cloudburstmc.protocol.bedrock.data.datastore.DataStoreChange;
 import org.cloudburstmc.protocol.bedrock.data.datastore.DataStoreRemoval;
 import org.cloudburstmc.protocol.bedrock.data.datastore.DataStoreVariableType;
 import org.cloudburstmc.protocol.bedrock.packet.ClientboundDataStorePacket;
+import org.cloudburstmc.protocol.common.util.VarInts;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ClientboundDataStoreSerializer_v2259 extends ClientboundDataStoreSerializer_v924 {
     public static final ClientboundDataStoreSerializer_v2259 INSTANCE = new ClientboundDataStoreSerializer_v2259();
 
-    protected final VariantCodec<ClientboundDataStorePacket> variableValueVariant = VariantCodec.<DataStoreVariableType, ClientboundDataStorePacket>builder(DataStoreVariableType::ordinal)
-            .add(
-                    DataStoreVariableType.DOUBLE,
-                    Double.class,
-                    (buffer, helper, owner, value) -> buffer.writeDoubleLE(value),
-                    (buffer, helper, owner) -> buffer.readDoubleLE()
-            )
-            .add(
-                    DataStoreVariableType.BOOLEAN,
-                    Boolean.class,
-                    (buffer, helper, owner, value) -> buffer.writeBoolean(value),
-                    (buffer, helper, owner) -> buffer.readBoolean()
-            )
-            .add(
-                    DataStoreVariableType.STRING,
-                    String.class,
-                    (buffer, helper, owner, value) -> helper.writeString(buffer, value),
-                    (buffer, helper, owner) -> helper.readString(buffer)
-            )
-            .build();
+    protected void writeVariableValue(ByteBuf buffer, BedrockCodecHelper helper, ClientboundDataStorePacket packet, Object value) {
+        final DataStoreVariableType type;
+        if (value instanceof Double) {
+            type = DataStoreVariableType.DOUBLE;
+        } else if (value instanceof Boolean) {
+            type = DataStoreVariableType.BOOLEAN;
+        } else if (value instanceof String) {
+            type = DataStoreVariableType.STRING;
+        } else {
+            return;
+        }
+        VarInts.writeUnsignedInt(buffer, type.ordinal());
+        switch (type) {
+            case DOUBLE:
+                buffer.writeDoubleLE((Double) value);
+                break;
+            case BOOLEAN:
+                buffer.writeBoolean((Boolean) value);
+                break;
+            case STRING:
+                helper.writeString(buffer, (String) value);
+                break;
+        }
+    }
+
+    protected Object readVariableValue(ByteBuf buffer, BedrockCodecHelper helper, ClientboundDataStorePacket packet) {
+        switch (DataStoreVariableType.values()[VarInts.readUnsignedInt(buffer)]) {
+            case DOUBLE:
+                return buffer.readDoubleLE();
+            case BOOLEAN:
+                return buffer.readBoolean();
+            case STRING:
+                return helper.readString(buffer);
+        }
+        return null;
+    }
 
     @Override
     protected void writeDataStoreChange(ByteBuf buffer, BedrockCodecHelper helper, ClientboundDataStorePacket packet, DataStoreChange change) {
         helper.writeString(buffer, change.getVariableName());
         buffer.writeIntLE(change.getUpdateCount());
-        this.variableValueVariant.write(buffer, helper, packet, change.getTheNewVariableValue());
+        this.writeVariableValue(buffer, helper, packet, change.getTheNewVariableValue());
     }
 
     @Override
@@ -48,7 +64,7 @@ public class ClientboundDataStoreSerializer_v2259 extends ClientboundDataStoreSe
         final DataStoreChange change = new DataStoreChange();
         change.setVariableName(helper.readString(buffer));
         change.setUpdateCount(buffer.readIntLE());
-        change.setTheNewVariableValue(this.variableValueVariant.read(buffer, helper, packet));
+        change.setTheNewVariableValue(this.readVariableValue(buffer, helper, packet));
         return change;
     }
 

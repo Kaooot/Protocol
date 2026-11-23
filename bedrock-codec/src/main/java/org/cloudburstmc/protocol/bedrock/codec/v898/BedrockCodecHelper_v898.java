@@ -2,7 +2,6 @@ package org.cloudburstmc.protocol.bedrock.codec.v898;
 
 import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
-import org.cloudburstmc.protocol.bedrock.codec.VariantCodec;
 import org.cloudburstmc.protocol.bedrock.codec.v844.BedrockCodecHelper_v844;
 import org.cloudburstmc.protocol.bedrock.data.ability.AbilitiesIndex;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandOriginData;
@@ -13,29 +12,9 @@ import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerEnumName;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequestActionType;
 import org.cloudburstmc.protocol.bedrock.data.text.TextProcessingEventOrigin;
 import org.cloudburstmc.protocol.common.util.TypeMap;
+import org.cloudburstmc.protocol.common.util.VarInts;
 
 public class BedrockCodecHelper_v898 extends BedrockCodecHelper_v844 {
-
-    protected final VariantCodec<DataStoreUpdate> dataStoreUpdateDataTypeVariant = VariantCodec.<DataStoreVariableType, DataStoreUpdate>builder(DataStoreVariableType::ordinal)
-            .add(
-                    DataStoreVariableType.DOUBLE,
-                    Double.class,
-                    (buffer, helper, owner, value) -> buffer.writeDoubleLE(value),
-                    (buffer, helper, owner) -> buffer.readDoubleLE()
-            )
-            .add(
-                    DataStoreVariableType.BOOLEAN,
-                    Boolean.class,
-                    (buffer, helper, owner, value) -> buffer.writeBoolean(value),
-                    (buffer, helper, owner) -> buffer.readBoolean()
-            )
-            .add(
-                    DataStoreVariableType.STRING,
-                    String.class,
-                    (buffer, helper, owner, value) -> helper.writeString(buffer, value),
-                    (buffer, helper, owner) -> helper.readString(buffer)
-            )
-            .build();
 
     public BedrockCodecHelper_v898(ActorDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes, TypeMap<ItemStackRequestActionType> stackRequestActionTypes,
                                    TypeMap<ContainerEnumName> containerEnumNames, TypeMap<AbilitiesIndex> abilities, TypeMap<TextProcessingEventOrigin> textProcessingEventOrigins) {
@@ -65,8 +44,45 @@ public class BedrockCodecHelper_v898 extends BedrockCodecHelper_v844 {
         this.writeString(buffer, update.getDataStoreName());
         this.writeString(buffer, update.getProperty());
         this.writeString(buffer, update.getPath());
-        this.dataStoreUpdateDataTypeVariant.write(buffer, this, update, update.getData());
+        this.writeDataStoreUpdateData(buffer, update, update.getData());
         buffer.writeIntLE(update.getPropertyUpdateCount());
+    }
+
+    protected void writeDataStoreUpdateData(ByteBuf buffer, DataStoreUpdate update, Object value) {
+        final DataStoreVariableType type;
+        if (value instanceof Double) {
+            type = DataStoreVariableType.DOUBLE;
+        } else if (value instanceof Boolean) {
+            type = DataStoreVariableType.BOOLEAN;
+        } else if (value instanceof String) {
+            type = DataStoreVariableType.STRING;
+        } else {
+            return;
+        }
+        VarInts.writeUnsignedInt(buffer, type.ordinal());
+        switch (type) {
+            case DOUBLE:
+                buffer.writeDoubleLE((Double) value);
+                break;
+            case BOOLEAN:
+                buffer.writeBoolean((Boolean) value);
+                break;
+            case STRING:
+                this.writeString(buffer, (String) value);
+                break;
+        }
+    }
+
+    protected Object readDataStoreUpdateData(ByteBuf buffer, DataStoreUpdate update) {
+        switch (DataStoreVariableType.values()[VarInts.readUnsignedInt(buffer)]) {
+            case DOUBLE:
+                return buffer.readDoubleLE();
+            case BOOLEAN:
+                return buffer.readBoolean();
+            case STRING:
+                return this.readString(buffer);
+        }
+        return null;
     }
 
     @Override
@@ -75,7 +91,7 @@ public class BedrockCodecHelper_v898 extends BedrockCodecHelper_v844 {
         update.setDataStoreName(this.readStringMaxLen(buffer, 1000));
         update.setProperty(this.readStringMaxLen(buffer, 1000));
         update.setPath(this.readStringMaxLen(buffer, 1000));
-        update.setData(this.dataStoreUpdateDataTypeVariant.read(buffer, this, update));
+        update.setData(this.readDataStoreUpdateData(buffer, update));
         update.setPropertyUpdateCount(buffer.readIntLE());
         return update;
     }

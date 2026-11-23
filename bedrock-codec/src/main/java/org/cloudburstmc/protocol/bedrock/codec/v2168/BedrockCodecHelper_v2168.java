@@ -82,18 +82,19 @@ public class BedrockCodecHelper_v2168 extends BedrockCodecHelper_v975 {
     public BedrockCodecHelper_v2168(ActorDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes, TypeMap<ItemStackRequestActionType> stackRequestActionTypes,
                                     TypeMap<ContainerEnumName> containerEnumNames, TypeMap<AbilitiesIndex> abilities, TypeMap<TextProcessingEventOrigin> textProcessingEventOrigins) {
         super(entityData, gameRulesTypes, stackRequestActionTypes, containerEnumNames, abilities, textProcessingEventOrigins);
-        this.itemStackRequestActionsVariant = this.itemStackRequestActionsVariant.toBuilder(
-                        this.stackRequestActionTypes::getId,
-                        (buffer, helper, owner, value) -> VarInts.writeUnsignedInt(buffer, value),
-                        (buffer, helper, owner) -> VarInts.readUnsignedInt(buffer)
-                )
-                .prefix(
-                        (buffer, helper, owner, value) ->
-                                buffer.writeByte(this.legacyItemStackRequestActionTypeMap.getId(this.stackRequestActionTypes.getType(value))),
-                        (buffer, helper, owner) ->
-                                (int) buffer.readUnsignedByte()
-                )
-                .build();
+    }
+
+    @Override
+    protected void writeItemStackRequestActionIndex(ByteBuf buffer, ItemStackRequestActionType type) {
+        VarInts.writeUnsignedInt(buffer, this.stackRequestActionTypes.getId(type));
+        buffer.writeByte(this.legacyItemStackRequestActionTypeMap.getId(type));
+    }
+
+    @Override
+    protected ItemStackRequestActionType readItemStackRequestActionIndex(ByteBuf buffer) {
+        final ItemStackRequestActionType type = this.stackRequestActionTypes.getType(VarInts.readUnsignedInt(buffer));
+        buffer.readUnsignedByte();
+        return type;
     }
 
     @Override

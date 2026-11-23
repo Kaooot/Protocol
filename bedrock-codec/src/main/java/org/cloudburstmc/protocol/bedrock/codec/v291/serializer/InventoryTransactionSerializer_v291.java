@@ -5,7 +5,6 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
-import org.cloudburstmc.protocol.bedrock.codec.VariantCodec;
 import org.cloudburstmc.protocol.bedrock.data.inventory.InventoryMismatchData;
 import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.*;
 import org.cloudburstmc.protocol.bedrock.packet.InventoryTransactionPacket;
@@ -15,47 +14,83 @@ import org.cloudburstmc.protocol.common.util.VarInts;
 public class InventoryTransactionSerializer_v291 implements BedrockPacketSerializer<InventoryTransactionPacket> {
     public static final InventoryTransactionSerializer_v291 INSTANCE = new InventoryTransactionSerializer_v291();
 
-    protected VariantCodec<InventoryTransactionPacket> inventoryTransactionVariant = VariantCodec.<InventoryTransactionType, InventoryTransactionPacket>builder(InventoryTransactionType::ordinal)
-            .add(
-                    InventoryTransactionType.NORMAL,
-                    NormalTransactionData.class,
-                    this::writeNormalTransactionData,
-                    this::readNormalTransactionData
-            )
-            .add(
-                    InventoryTransactionType.MISMATCH,
-                    InventoryMismatchData.class,
-                    this::writeInventoryMismatchData,
-                    this::readInventoryMismatchData
-            )
-            .add(
-                    InventoryTransactionType.ITEM_USE,
-                    ItemUseInventoryTransaction.class,
-                    (buffer, helper, owner, value) -> helper.writeItemUseInventoryTransaction(buffer, value),
-                    (buffer, helper, owner) -> helper.readItemUseInventoryTransaction(buffer)
-            )
-            .add(
-                    InventoryTransactionType.ITEM_USE_ON_ACTOR,
-                    ItemUseOnActorInventoryTransaction.class,
-                    this::writeItemUseOnActorInventoryTransaction,
-                    this::readItemUseOnActorInventoryTransaction
-            )
-            .add(
-                    InventoryTransactionType.ITEM_RELEASE,
-                    ItemReleaseInventoryTransaction.class,
-                    this::writeItemReleaseInventoryTransaction,
-                    this::readItemReleaseInventoryTransaction
-            )
-            .build();
-
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, InventoryTransactionPacket packet) {
-        this.inventoryTransactionVariant.write(buffer, helper, packet, packet.getTransaction());
+        this.writeTransaction(buffer, helper, packet);
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, InventoryTransactionPacket packet) {
-        packet.setTransaction(this.inventoryTransactionVariant.read(buffer, helper, packet));
+        this.readTransaction(buffer, helper, packet);
+    }
+
+    protected void writeTransaction(ByteBuf buffer, BedrockCodecHelper helper, InventoryTransactionPacket packet) {
+        final Object transaction = packet.getTransaction();
+        final InventoryTransactionType type;
+        if (transaction instanceof NormalTransactionData) {
+            type = InventoryTransactionType.NORMAL;
+        } else if (transaction instanceof InventoryMismatchData) {
+            type = InventoryTransactionType.MISMATCH;
+        } else if (transaction instanceof ItemUseInventoryTransaction) {
+            type = InventoryTransactionType.ITEM_USE;
+        } else if (transaction instanceof ItemUseOnActorInventoryTransaction) {
+            type = InventoryTransactionType.ITEM_USE_ON_ACTOR;
+        } else if (transaction instanceof ItemReleaseInventoryTransaction) {
+            type = InventoryTransactionType.ITEM_RELEASE;
+        } else {
+            return;
+        }
+        this.writeTransactionIndex(buffer, helper, packet, type);
+        this.writeTransactionBody(buffer, helper, packet, type, transaction);
+    }
+
+    protected void writeTransactionIndex(ByteBuf buffer, BedrockCodecHelper helper, InventoryTransactionPacket packet, InventoryTransactionType type) {
+        VarInts.writeUnsignedInt(buffer, type.ordinal());
+    }
+
+    protected void writeTransactionBody(ByteBuf buffer, BedrockCodecHelper helper, InventoryTransactionPacket packet, InventoryTransactionType type, Object transaction) {
+        switch (type) {
+            case NORMAL:
+                this.writeNormalTransactionData(buffer, helper, packet, (NormalTransactionData) transaction);
+                break;
+            case MISMATCH:
+                this.writeInventoryMismatchData(buffer, helper, packet, (InventoryMismatchData) transaction);
+                break;
+            case ITEM_USE:
+                helper.writeItemUseInventoryTransaction(buffer, (ItemUseInventoryTransaction) transaction);
+                break;
+            case ITEM_USE_ON_ACTOR:
+                this.writeItemUseOnActorInventoryTransaction(buffer, helper, packet, (ItemUseOnActorInventoryTransaction) transaction);
+                break;
+            case ITEM_RELEASE:
+                this.writeItemReleaseInventoryTransaction(buffer, helper, packet, (ItemReleaseInventoryTransaction) transaction);
+                break;
+        }
+    }
+
+    protected void readTransaction(ByteBuf buffer, BedrockCodecHelper helper, InventoryTransactionPacket packet) {
+        final InventoryTransactionType type = this.readTransactionIndex(buffer, helper, packet);
+        packet.setTransaction(this.readTransactionBody(buffer, helper, packet, type));
+    }
+
+    protected InventoryTransactionType readTransactionIndex(ByteBuf buffer, BedrockCodecHelper helper, InventoryTransactionPacket packet) {
+        return InventoryTransactionType.values()[VarInts.readUnsignedInt(buffer)];
+    }
+
+    protected Object readTransactionBody(ByteBuf buffer, BedrockCodecHelper helper, InventoryTransactionPacket packet, InventoryTransactionType type) {
+        switch (type) {
+            case NORMAL:
+                return this.readNormalTransactionData(buffer, helper, packet);
+            case MISMATCH:
+                return this.readInventoryMismatchData(buffer, helper, packet);
+            case ITEM_USE:
+                return helper.readItemUseInventoryTransaction(buffer);
+            case ITEM_USE_ON_ACTOR:
+                return this.readItemUseOnActorInventoryTransaction(buffer, helper, packet);
+            case ITEM_RELEASE:
+                return this.readItemReleaseInventoryTransaction(buffer, helper, packet);
+        }
+        return null;
     }
 
     protected void writeNormalTransactionData(ByteBuf buffer, BedrockCodecHelper helper, InventoryTransactionPacket packet, NormalTransactionData data) {

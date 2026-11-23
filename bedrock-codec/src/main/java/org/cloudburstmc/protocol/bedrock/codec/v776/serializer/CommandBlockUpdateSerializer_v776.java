@@ -14,7 +14,7 @@ public class CommandBlockUpdateSerializer_v776 extends CommandBlockUpdateSeriali
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, CommandBlockUpdatePacket packet) {
-        this.targetVariant.write(buffer, helper, packet, packet.getTarget());
+        this.writeTarget(buffer, helper, packet);
         helper.writeString(buffer, packet.getCommand());
         helper.writeString(buffer, packet.getLastOutput());
         helper.writeString(buffer, packet.getName());
@@ -26,7 +26,7 @@ public class CommandBlockUpdateSerializer_v776 extends CommandBlockUpdateSeriali
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, CommandBlockUpdatePacket packet) {
-        packet.setTarget(this.targetVariant.read(buffer, helper, packet));
+        this.readTarget(buffer, helper, packet);
         packet.setCommand(helper.readString(buffer));
         packet.setLastOutput(helper.readString(buffer));
         packet.setName(helper.readString(buffer));

@@ -26,7 +26,7 @@ public class PrimitiveShapesSerializer_v924 extends PrimitiveShapesSerializer_v8
         helper.writeOptionalNull(buffer, payload.getColor(), ByteBuf::writeIntLE);
         helper.writeOptionalNull(buffer, payload.getDimension(), (buf, dimension) -> VarInts.writeInt(buf, dimension.getValue()));
         helper.writeOptionalNull(buffer, payload.getAttachedToEntityID(), VarInts::writeUnsignedLong);
-        this.extraShapeDataVariant.write(buffer, helper, packet, payload.getExtraShapeData());
+        this.writeExtraShapeData(buffer, helper, packet, payload.getExtraShapeData());
     }
 
     @Override
@@ -41,7 +41,7 @@ public class PrimitiveShapesSerializer_v924 extends PrimitiveShapesSerializer_v8
         payload.setColor(helper.readOptional(buffer, null, ByteBuf::readIntLE));
         payload.setDimension(helper.readOptional(buffer, null, buf -> DimensionType.from(VarInts.readInt(buf))));
         payload.setAttachedToEntityID(helper.readOptional(buffer, null, VarInts::readUnsignedLong));
-        payload.setExtraShapeData(this.extraShapeDataVariant.read(buffer, helper, packet));
+        payload.setExtraShapeData(this.readExtraShapeData(buffer, helper, packet));
         return payload;
     }
 }

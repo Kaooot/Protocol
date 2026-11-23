@@ -5,7 +5,6 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
-import org.cloudburstmc.protocol.bedrock.codec.VariantCodec;
 import org.cloudburstmc.protocol.bedrock.data.attribute.*;
 import org.cloudburstmc.protocol.bedrock.data.camera.EasingFunction;
 import org.cloudburstmc.protocol.bedrock.data.world.DimensionType;
@@ -18,62 +17,103 @@ public class ClientboundAttributeLayerSyncSerializer_v944 implements BedrockPack
 
     protected static final int NAME_LENGTH = 128;
 
-    protected final VariantCodec<ClientboundAttributeLayerSyncPacket> dataVariant = VariantCodec.<ClientboundAttributeLayerSyncDataType, ClientboundAttributeLayerSyncPacket>builder(ClientboundAttributeLayerSyncDataType::ordinal)
-            .add(
-                    ClientboundAttributeLayerSyncDataType.UPDATE_ATTRIBUTE_LAYERS,
-                    UpdateAttributeLayersData.class,
-                    this::writeUpdateAttributeLayersData,
-                    this::readUpdateAttributeLayersData
-            )
-            .add(
-                    ClientboundAttributeLayerSyncDataType.UPDATE_ATTRIBUTE_LAYER_SETTINGS,
-                    UpdateAttributeLayerSettingsData.class,
-                    this::writeUpdateAttributeLayerSettingsData,
-                    this::readUpdateAttributeLayerSettingsData
-            )
-            .add(
-                    ClientboundAttributeLayerSyncDataType.UPDATE_ENVIRONMENT_ATTRIBUTES,
-                    UpdateEnvironmentAttributesData.class,
-                    this::writeUpdateEnvironmentAttributesData,
-                    this::readUpdateEnvironmentAttributesData
-            )
-            .add(
-                    ClientboundAttributeLayerSyncDataType.REMOVE_ENVIRONMENT_ATTRIBUTES,
-                    RemoveEnvironmentAttributesData.class,
-                    this::writeRemoveEnvironmentAttributesData,
-                    this::readRemoveEnvironmentAttributesData
-            )
-            .build();
-
-    protected VariantCodec<ClientboundAttributeLayerSyncPacket> attributeDataVariant = VariantCodec.<AttributeDataType, ClientboundAttributeLayerSyncPacket>builder(AttributeDataType::ordinal)
-            .add(
-                    AttributeDataType.BOOL,
-                    BoolAttributeData.class,
-                    this::writeBoolAttributeData,
-                    this::readBoolAttributeData
-            )
-            .add(
-                    AttributeDataType.FLOAT,
-                    FloatAttributeData.class,
-                    this::writeFloatAttributeData,
-                    this::readFloatAttributeData
-            )
-            .add(
-                    AttributeDataType.COLOR,
-                    ColorAttributeData.class,
-                    this::writeColorAttributeData,
-                    this::readColorAttributeData
-            )
-            .build();
-
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ClientboundAttributeLayerSyncPacket packet) {
-        this.dataVariant.write(buffer, helper, packet, packet.getData());
+        this.writeData(buffer, helper, packet);
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ClientboundAttributeLayerSyncPacket packet) {
-        packet.setData(this.dataVariant.read(buffer, helper, packet));
+        this.readData(buffer, helper, packet);
+    }
+
+    protected void writeData(ByteBuf buffer, BedrockCodecHelper helper, ClientboundAttributeLayerSyncPacket packet) {
+        final Object data = packet.getData();
+        final ClientboundAttributeLayerSyncDataType type;
+        if (data instanceof UpdateAttributeLayersData) {
+            type = ClientboundAttributeLayerSyncDataType.UPDATE_ATTRIBUTE_LAYERS;
+        } else if (data instanceof UpdateAttributeLayerSettingsData) {
+            type = ClientboundAttributeLayerSyncDataType.UPDATE_ATTRIBUTE_LAYER_SETTINGS;
+        } else if (data instanceof UpdateEnvironmentAttributesData) {
+            type = ClientboundAttributeLayerSyncDataType.UPDATE_ENVIRONMENT_ATTRIBUTES;
+        } else if (data instanceof RemoveEnvironmentAttributesData) {
+            type = ClientboundAttributeLayerSyncDataType.REMOVE_ENVIRONMENT_ATTRIBUTES;
+        } else {
+            return;
+        }
+        VarInts.writeUnsignedInt(buffer, type.ordinal());
+        switch (type) {
+            case UPDATE_ATTRIBUTE_LAYERS:
+                this.writeUpdateAttributeLayersData(buffer, helper, packet, (UpdateAttributeLayersData) data);
+                break;
+            case UPDATE_ATTRIBUTE_LAYER_SETTINGS:
+                this.writeUpdateAttributeLayerSettingsData(buffer, helper, packet, (UpdateAttributeLayerSettingsData) data);
+                break;
+            case UPDATE_ENVIRONMENT_ATTRIBUTES:
+                this.writeUpdateEnvironmentAttributesData(buffer, helper, packet, (UpdateEnvironmentAttributesData) data);
+                break;
+            case REMOVE_ENVIRONMENT_ATTRIBUTES:
+                this.writeRemoveEnvironmentAttributesData(buffer, helper, packet, (RemoveEnvironmentAttributesData) data);
+                break;
+        }
+    }
+
+    protected void readData(ByteBuf buffer, BedrockCodecHelper helper, ClientboundAttributeLayerSyncPacket packet) {
+        switch (ClientboundAttributeLayerSyncDataType.values()[VarInts.readUnsignedInt(buffer)]) {
+            case UPDATE_ATTRIBUTE_LAYERS:
+                packet.setData(this.readUpdateAttributeLayersData(buffer, helper, packet));
+                break;
+            case UPDATE_ATTRIBUTE_LAYER_SETTINGS:
+                packet.setData(this.readUpdateAttributeLayerSettingsData(buffer, helper, packet));
+                break;
+            case UPDATE_ENVIRONMENT_ATTRIBUTES:
+                packet.setData(this.readUpdateEnvironmentAttributesData(buffer, helper, packet));
+                break;
+            case REMOVE_ENVIRONMENT_ATTRIBUTES:
+                packet.setData(this.readRemoveEnvironmentAttributesData(buffer, helper, packet));
+                break;
+        }
+    }
+
+    protected void writeAttributeData(ByteBuf buffer, BedrockCodecHelper helper, ClientboundAttributeLayerSyncPacket packet, Object attribute) {
+        final AttributeDataType type;
+        if (attribute instanceof BoolAttributeData) {
+            type = AttributeDataType.BOOL;
+        } else if (attribute instanceof FloatAttributeData) {
+            type = AttributeDataType.FLOAT;
+        } else if (attribute instanceof ColorAttributeData) {
+            type = AttributeDataType.COLOR;
+        } else {
+            return;
+        }
+        VarInts.writeUnsignedInt(buffer, type.ordinal());
+        switch (type) {
+            case BOOL:
+                this.writeBoolAttributeData(buffer, helper, packet, (BoolAttributeData) attribute);
+                break;
+            case FLOAT:
+                this.writeFloatAttributeData(buffer, helper, packet, (FloatAttributeData) attribute);
+                break;
+            case COLOR:
+                this.writeColorAttributeData(buffer, helper, packet, (ColorAttributeData) attribute);
+                break;
+        }
+    }
+
+    protected Object readAttributeData(ByteBuf buffer, BedrockCodecHelper helper, ClientboundAttributeLayerSyncPacket packet) {
+        return this.readAttributeData(buffer, helper, packet, AttributeDataType.from(VarInts.readUnsignedInt(buffer)));
+    }
+
+    protected Object readAttributeData(ByteBuf buffer, BedrockCodecHelper helper, ClientboundAttributeLayerSyncPacket packet, AttributeDataType type) {
+        switch (type) {
+            case BOOL:
+                return this.readBoolAttributeData(buffer, helper, packet);
+            case FLOAT:
+                return this.readFloatAttributeData(buffer, helper, packet);
+            case COLOR:
+                return this.readColorAttributeData(buffer, helper, packet);
+        }
+        return null;
     }
 
     protected void writeUpdateAttributeLayersData(ByteBuf buffer, BedrockCodecHelper helper, ClientboundAttributeLayerSyncPacket packet, UpdateAttributeLayersData data) {
@@ -192,13 +232,13 @@ public class ClientboundAttributeLayerSyncSerializer_v944 implements BedrockPack
         helper.writeOptionalNull(
                 buffer,
                 data.getFromAttribute(),
-                (buf, codecHelper, attribute) -> this.attributeDataVariant.write(buf, codecHelper, packet, attribute)
+                (buf, codecHelper, attribute) -> this.writeAttributeData(buf, codecHelper, packet, attribute)
         );
-        this.attributeDataVariant.write(buffer, helper, packet, data.getAttribute());
+        this.writeAttributeData(buffer, helper, packet, data.getAttribute());
         helper.writeOptionalNull(
                 buffer,
                 data.getToAttribute(),
-                (buf, codecHelper, attribute) -> this.attributeDataVariant.write(buf, codecHelper, packet, attribute)
+                (buf, codecHelper, attribute) -> this.writeAttributeData(buf, codecHelper, packet, attribute)
         );
         buffer.writeIntLE(data.getCurrentTransitionTicks());
         buffer.writeIntLE(data.getTotalTransitionTicks());
@@ -212,15 +252,15 @@ public class ClientboundAttributeLayerSyncSerializer_v944 implements BedrockPack
                 helper.readOptional(
                         buffer,
                         null,
-                        (buf, codecHelper) -> this.attributeDataVariant.read(buf, codecHelper, packet)
+                        (buf, codecHelper) -> this.readAttributeData(buf, codecHelper, packet)
                 )
         );
-        data.setAttribute(this.attributeDataVariant.read(buffer, helper, packet));
+        data.setAttribute(this.readAttributeData(buffer, helper, packet));
         data.setToAttribute(
                 helper.readOptional(
                         buffer,
                         null,
-                        (buf, codecHelper) -> this.attributeDataVariant.read(buf, codecHelper, packet)
+                        (buf, codecHelper) -> this.readAttributeData(buf, codecHelper, packet)
                 )
         );
         data.setCurrentTransitionTicks(buffer.readIntLE());

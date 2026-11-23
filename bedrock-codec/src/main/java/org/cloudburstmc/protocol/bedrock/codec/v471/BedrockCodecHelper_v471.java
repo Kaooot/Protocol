@@ -16,20 +16,42 @@ public class BedrockCodecHelper_v471 extends BedrockCodecHelper_v465 {
     public BedrockCodecHelper_v471(ActorDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes,
                                    TypeMap<ItemStackRequestActionType> stackRequestActionTypes, TypeMap<ContainerEnumName> containerEnumNames) {
         super(entityData, gameRulesTypes, stackRequestActionTypes, containerEnumNames);
-        this.itemStackRequestActionsVariant = this.itemStackRequestActionsVariant.toBuilder(this.stackRequestActionTypes::getId)
-                .add(
-                        ItemStackRequestActionType.CRAFT_REPAIR_AND_DISENCHANT,
-                        ItemStackRequestCraftRepairAndDisenchantAction.class,
-                        (buffer, helper, type, value) -> this.writeItemStackRequestCraftRepairAndDisenchantAction(buffer, type, value),
-                        (buffer, helper, type) -> this.readItemStackRequestCraftRepairAndDisenchantAction(buffer, type)
-                )
-                .add(
-                        ItemStackRequestActionType.CRAFT_LOOM,
-                        ItemStackRequestCraftLoomAction.class,
-                        (buffer, helper, type, value) -> this.writeItemStackRequestCraftLoomAction(buffer, type, value),
-                        (buffer, helper, type) -> this.readItemStackRequestCraftLoomAction(buffer, type)
-                )
-                .build();
+    }
+
+    @Override
+    protected ItemStackRequestActionType itemStackRequestActionType(Object action) {
+        if (action instanceof ItemStackRequestCraftRepairAndDisenchantAction) {
+            return ItemStackRequestActionType.CRAFT_REPAIR_AND_DISENCHANT;
+        } else if (action instanceof ItemStackRequestCraftLoomAction) {
+            return ItemStackRequestActionType.CRAFT_LOOM;
+        }
+        return super.itemStackRequestActionType(action);
+    }
+
+    @Override
+    protected void writeItemStackRequestActionBody(ByteBuf buffer, ItemStackRequestActionType type, Object action) {
+        switch (type) {
+            case CRAFT_REPAIR_AND_DISENCHANT:
+                this.writeItemStackRequestCraftRepairAndDisenchantAction(buffer, type, (ItemStackRequestCraftRepairAndDisenchantAction) action);
+                break;
+            case CRAFT_LOOM:
+                this.writeItemStackRequestCraftLoomAction(buffer, type, (ItemStackRequestCraftLoomAction) action);
+                break;
+            default:
+                super.writeItemStackRequestActionBody(buffer, type, action);
+        }
+    }
+
+    @Override
+    protected Object readItemStackRequestActionBody(ByteBuf buffer, ItemStackRequestActionType type) {
+        switch (type) {
+            case CRAFT_REPAIR_AND_DISENCHANT:
+                return this.readItemStackRequestCraftRepairAndDisenchantAction(buffer, type);
+            case CRAFT_LOOM:
+                return this.readItemStackRequestCraftLoomAction(buffer, type);
+            default:
+                return super.readItemStackRequestActionBody(buffer, type);
+        }
     }
 
     protected void writeItemStackRequestCraftRepairAndDisenchantAction(ByteBuf buffer, ItemStackRequestActionType type, ItemStackRequestCraftRepairAndDisenchantAction action) {

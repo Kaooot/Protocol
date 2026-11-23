@@ -20,14 +20,31 @@ public class BedrockCodecHelper_v422 extends BedrockCodecHelper_v419 {
     public BedrockCodecHelper_v422(ActorDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes,
                                    TypeMap<ItemStackRequestActionType> stackRequestActionTypes, TypeMap<ContainerEnumName> containerEnumNames) {
         super(entityData, gameRulesTypes, stackRequestActionTypes, containerEnumNames);
-        this.itemStackRequestActionsVariant = this.itemStackRequestActionsVariant.toBuilder(this.stackRequestActionTypes::getId)
-                .add(
-                        ItemStackRequestActionType.CRAFT_RECIPE_OPTIONAL,
-                        ItemStackRequestCraftRecipeOptionalAction.class,
-                        (buffer, helper, type, value) -> this.writeItemStackRequestCraftRecipeOptionalAction(buffer, type, value),
-                        (buffer, helper, type) -> this.readItemStackRequestCraftRecipeOptionalAction(buffer, type)
-                )
-                .build();
+    }
+
+    @Override
+    protected ItemStackRequestActionType itemStackRequestActionType(Object action) {
+        if (action instanceof ItemStackRequestCraftRecipeOptionalAction) {
+            return ItemStackRequestActionType.CRAFT_RECIPE_OPTIONAL;
+        }
+        return super.itemStackRequestActionType(action);
+    }
+
+    @Override
+    protected void writeItemStackRequestActionBody(ByteBuf buffer, ItemStackRequestActionType type, Object action) {
+        if (type == ItemStackRequestActionType.CRAFT_RECIPE_OPTIONAL) {
+            this.writeItemStackRequestCraftRecipeOptionalAction(buffer, type, (ItemStackRequestCraftRecipeOptionalAction) action);
+        } else {
+            super.writeItemStackRequestActionBody(buffer, type, action);
+        }
+    }
+
+    @Override
+    protected Object readItemStackRequestActionBody(ByteBuf buffer, ItemStackRequestActionType type) {
+        if (type == ItemStackRequestActionType.CRAFT_RECIPE_OPTIONAL) {
+            return this.readItemStackRequestCraftRecipeOptionalAction(buffer, type);
+        }
+        return super.readItemStackRequestActionBody(buffer, type);
     }
 
     @Override
@@ -36,7 +53,7 @@ public class BedrockCodecHelper_v422 extends BedrockCodecHelper_v419 {
         this.writeArray(
                 buffer,
                 request.getActions(),
-                (buf, codecHelper, object) -> this.itemStackRequestActionsVariant.write(buf, codecHelper, null, object)
+                (buf, codecHelper, object) -> this.writeItemStackRequestAction(buf, object)
         );
         this.writeArray(buffer, request.getStringsToFilter(), this::writeString);
     }
@@ -48,7 +65,7 @@ public class BedrockCodecHelper_v422 extends BedrockCodecHelper_v419 {
         this.readArray(
                 buffer,
                 request.getActions(),
-                (buf, codecHelper) -> this.itemStackRequestActionsVariant.read(buf, codecHelper, null),
+                (buf, codecHelper) -> this.readItemStackRequestAction(buf),
                 this.getEncodingSettings().maxInventoryActionsOrRequests()
         );
         this.readArray(buffer, request.getStringsToFilter(), (buf, helper) -> helper.readStringMaxLen(buf, 1000));

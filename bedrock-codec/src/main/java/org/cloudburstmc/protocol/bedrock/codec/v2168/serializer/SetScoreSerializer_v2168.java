@@ -4,7 +4,6 @@ import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
-import org.cloudburstmc.protocol.bedrock.codec.VariantCodec;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.SetScoreSerializer_v291;
 import org.cloudburstmc.protocol.bedrock.data.scoreboard.*;
 import org.cloudburstmc.protocol.bedrock.packet.SetScorePacket;
@@ -14,43 +13,12 @@ import org.cloudburstmc.protocol.common.util.VarInts;
 public class SetScoreSerializer_v2168 extends SetScoreSerializer_v291 {
     public static final SetScoreSerializer_v2168 INSTANCE = new SetScoreSerializer_v2168();
 
-    protected VariantCodec<SetScorePacket> scoreInfoVariant = VariantCodec.<ScorePacketEntryAction, SetScorePacket>builder(ScorePacketEntryAction::ordinal)
-            .prefix(
-                    (buffer, helper, owner, value) -> helper.writeString(buffer, ScorePacketEntryAction.from(value).getId()),
-                    (buffer, helper, owner) -> ScorePacketEntryAction.from(helper.readString(buffer)).ordinal()
-            )
-            .add(
-                    ScorePacketEntryAction.REMOVE,
-                    RemoveScore.class,
-                    this::writeRemoveScore,
-                    this::readRemoveScore
-            )
-            .add(
-                    ScorePacketEntryAction.CHANGE_PLAYER,
-                    ChangePlayerScore.class,
-                    this::writeChangePlayerScore,
-                    this::readChangePlayerScore
-            )
-            .add(
-                    ScorePacketEntryAction.CHANGE_ENTITY,
-                    ChangeEntityScore.class,
-                    this::writeChangeEntityScore,
-                    this::readChangeEntityScore
-            )
-            .add(
-                    ScorePacketEntryAction.CHANGE_FAKE_PLAYER,
-                    ChangeFakePlayerScore.class,
-                    this::writeChangeFakePlayerScore,
-                    this::readChangeFakePlayerScore
-            )
-            .build();
-
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, SetScorePacket packet) {
         helper.writeArray(
                 buffer,
                 packet.getScoreInfo(),
-                (buf, codecHelper, object) -> this.scoreInfoVariant.write(buf, codecHelper, packet, object)
+                (buf, codecHelper, object) -> this.writeScoreInfo(buf, codecHelper, packet, object)
         );
     }
 
@@ -59,8 +27,55 @@ public class SetScoreSerializer_v2168 extends SetScoreSerializer_v291 {
         helper.readArray(
                 buffer,
                 packet.getScoreInfo(),
-                (buf, codecHelper) -> this.scoreInfoVariant.read(buf, codecHelper, packet)
+                (buf, codecHelper) -> this.readScoreInfo(buf, codecHelper, packet)
         );
+    }
+
+    protected void writeScoreInfo(ByteBuf buffer, BedrockCodecHelper helper, SetScorePacket packet, Object score) {
+        final ScorePacketEntryAction action;
+        if (score instanceof RemoveScore) {
+            action = ScorePacketEntryAction.REMOVE;
+        } else if (score instanceof ChangePlayerScore) {
+            action = ScorePacketEntryAction.CHANGE_PLAYER;
+        } else if (score instanceof ChangeEntityScore) {
+            action = ScorePacketEntryAction.CHANGE_ENTITY;
+        } else if (score instanceof ChangeFakePlayerScore) {
+            action = ScorePacketEntryAction.CHANGE_FAKE_PLAYER;
+        } else {
+            return;
+        }
+        VarInts.writeUnsignedInt(buffer, action.ordinal());
+        helper.writeString(buffer, action.getId());
+        switch (action) {
+            case REMOVE:
+                this.writeRemoveScore(buffer, helper, packet, (RemoveScore) score);
+                break;
+            case CHANGE_PLAYER:
+                this.writeChangePlayerScore(buffer, helper, packet, (ChangePlayerScore) score);
+                break;
+            case CHANGE_ENTITY:
+                this.writeChangeEntityScore(buffer, helper, packet, (ChangeEntityScore) score);
+                break;
+            case CHANGE_FAKE_PLAYER:
+                this.writeChangeFakePlayerScore(buffer, helper, packet, (ChangeFakePlayerScore) score);
+                break;
+        }
+    }
+
+    protected Object readScoreInfo(ByteBuf buffer, BedrockCodecHelper helper, SetScorePacket packet) {
+        final ScorePacketEntryAction action = ScorePacketEntryAction.from(VarInts.readUnsignedInt(buffer));
+        ScorePacketEntryAction.from(helper.readString(buffer));
+        switch (action) {
+            case REMOVE:
+                return this.readRemoveScore(buffer, helper, packet);
+            case CHANGE_PLAYER:
+                return this.readChangePlayerScore(buffer, helper, packet);
+            case CHANGE_ENTITY:
+                return this.readChangeEntityScore(buffer, helper, packet);
+            case CHANGE_FAKE_PLAYER:
+                return this.readChangeFakePlayerScore(buffer, helper, packet);
+        }
+        return null;
     }
 
     protected void writeRemoveScore(ByteBuf buffer, BedrockCodecHelper helper, SetScorePacket packet, RemoveScore score) {

@@ -53,20 +53,43 @@ public class BedrockCodecHelper_v2225 extends BedrockCodecHelper_v2193 {
                 .shift(28, 1)
                 .insert(28, PieceType.CO_CO)
                 .build();
-        this.itemStackRequestActionsVariant = this.itemStackRequestActionsVariant.toBuilder(this.stackRequestActionTypes::getId)
-                .add(
-                        ItemStackRequestActionType.CRAFT_DISC_PRESS,
-                        ItemStackRequestCraftDiscPressAction.class,
-                        (buffer, helper, owner, value) -> {
-                        },
-                        (buffer, helper, owner) -> new ItemStackRequestCraftDiscPressAction()
-                )
-                .prefix(
-                        (buffer, helper, owner, value) ->
-                                buffer.writeByte(ACTION_TYPE_VALUES.getId(this.stackRequestActionTypes.getType(value))),
-                        (buffer, helper, owner) -> (int) buffer.readUnsignedByte()
-                )
-                .build();
+    }
+
+    @Override
+    protected ItemStackRequestActionType itemStackRequestActionType(Object action) {
+        if (action instanceof ItemStackRequestCraftDiscPressAction) {
+            return ItemStackRequestActionType.CRAFT_DISC_PRESS;
+        }
+        return super.itemStackRequestActionType(action);
+    }
+
+    @Override
+    protected void writeItemStackRequestActionIndex(ByteBuf buffer, ItemStackRequestActionType type) {
+        VarInts.writeUnsignedInt(buffer, this.stackRequestActionTypes.getId(type));
+        buffer.writeByte(ACTION_TYPE_VALUES.getId(type));
+    }
+
+    @Override
+    protected ItemStackRequestActionType readItemStackRequestActionIndex(ByteBuf buffer) {
+        final ItemStackRequestActionType type = this.stackRequestActionTypes.getType(VarInts.readUnsignedInt(buffer));
+        buffer.readUnsignedByte();
+        return type;
+    }
+
+    @Override
+    protected void writeItemStackRequestActionBody(ByteBuf buffer, ItemStackRequestActionType type, Object action) {
+        if (type == ItemStackRequestActionType.CRAFT_DISC_PRESS) {
+            return;
+        }
+        super.writeItemStackRequestActionBody(buffer, type, action);
+    }
+
+    @Override
+    protected Object readItemStackRequestActionBody(ByteBuf buffer, ItemStackRequestActionType type) {
+        if (type == ItemStackRequestActionType.CRAFT_DISC_PRESS) {
+            return new ItemStackRequestCraftDiscPressAction();
+        }
+        return super.readItemStackRequestActionBody(buffer, type);
     }
 
     @Override

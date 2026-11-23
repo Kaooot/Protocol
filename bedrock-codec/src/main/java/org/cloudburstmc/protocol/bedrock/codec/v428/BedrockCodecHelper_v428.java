@@ -24,14 +24,31 @@ public class BedrockCodecHelper_v428 extends BedrockCodecHelper_v422 {
     public BedrockCodecHelper_v428(ActorDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes, TypeMap<ItemStackRequestActionType> stackRequestActionTypes,
                                    TypeMap<ContainerEnumName> containerEnumNames) {
         super(entityData, gameRulesTypes, stackRequestActionTypes, containerEnumNames);
-        this.itemStackRequestActionsVariant = this.itemStackRequestActionsVariant.toBuilder(this.stackRequestActionTypes::getId)
-                .add(
-                        ItemStackRequestActionType.SCREEN_HUD_MINE_BLOCK,
-                        ItemStackRequestMineBlockAction.class,
-                        (buffer, helper, type, value) -> this.writeItemStackRequestMineBlockAction(buffer, type, value),
-                        (buffer, helper, type) -> this.readItemStackRequestMineBlockAction(buffer, type)
-                )
-                .build();
+    }
+
+    @Override
+    protected ItemStackRequestActionType itemStackRequestActionType(Object action) {
+        if (action instanceof ItemStackRequestMineBlockAction) {
+            return ItemStackRequestActionType.SCREEN_HUD_MINE_BLOCK;
+        }
+        return super.itemStackRequestActionType(action);
+    }
+
+    @Override
+    protected void writeItemStackRequestActionBody(ByteBuf buffer, ItemStackRequestActionType type, Object action) {
+        if (type == ItemStackRequestActionType.SCREEN_HUD_MINE_BLOCK) {
+            this.writeItemStackRequestMineBlockAction(buffer, type, (ItemStackRequestMineBlockAction) action);
+        } else {
+            super.writeItemStackRequestActionBody(buffer, type, action);
+        }
+    }
+
+    @Override
+    protected Object readItemStackRequestActionBody(ByteBuf buffer, ItemStackRequestActionType type) {
+        if (type == ItemStackRequestActionType.SCREEN_HUD_MINE_BLOCK) {
+            return this.readItemStackRequestMineBlockAction(buffer, type);
+        }
+        return super.readItemStackRequestActionBody(buffer, type);
     }
 
     protected void writeItemStackRequestMineBlockAction(ByteBuf buffer, ItemStackRequestActionType type, ItemStackRequestMineBlockAction action) {

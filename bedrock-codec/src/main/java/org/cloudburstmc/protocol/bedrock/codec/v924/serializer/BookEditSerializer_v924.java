@@ -19,13 +19,13 @@ public class BookEditSerializer_v924 extends BookEditSerializer_v291 {
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, BookEditPacket packet) {
         VarInts.writeInt(buffer, packet.getBookSlot());
-        this.bookEditVariant.write(buffer, helper, packet, packet.getOperation());
+        this.writeOperation(buffer, helper, packet);
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, BookEditPacket packet) {
         packet.setBookSlot(VarInts.readInt(buffer));
-        packet.setOperation(this.bookEditVariant.read(buffer, helper, packet));
+        this.readOperation(buffer, helper, packet);
     }
 
     @Override

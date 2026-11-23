@@ -1,6 +1,8 @@
 package org.cloudburstmc.protocol.bedrock.codec.v1001.serializer;
 
 import io.netty.buffer.ByteBuf;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v975.serializer.PrimitiveShapesSerializer_v975;
 import org.cloudburstmc.protocol.bedrock.data.shape.ExtraShapeDataType;
@@ -9,37 +11,45 @@ import org.cloudburstmc.protocol.bedrock.data.shape.CylinderDataPayload;
 import org.cloudburstmc.protocol.bedrock.data.shape.EllipsoidDataPayload;
 import org.cloudburstmc.protocol.bedrock.data.shape.PyramidDataPayload;
 import org.cloudburstmc.protocol.bedrock.packet.PrimitiveShapesPacket;
+import org.cloudburstmc.protocol.common.util.VarInts;
 
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PrimitiveShapesSerializer_v1001 extends PrimitiveShapesSerializer_v975 {
     public static final PrimitiveShapesSerializer_v1001 INSTANCE = new PrimitiveShapesSerializer_v1001();
 
-    protected PrimitiveShapesSerializer_v1001() {
-        this.extraShapeDataVariant = this.extraShapeDataVariant.toBuilder(ExtraShapeDataType::ordinal)
-                .add(
-                        ExtraShapeDataType.CYLINDER,
-                        CylinderDataPayload.class,
-                        this::writeCylinderData,
-                        this::readCylinderData
-                )
-                .add(
-                        ExtraShapeDataType.PYRAMID,
-                        PyramidDataPayload.class,
-                        this::writePyramidData,
-                        this::readPyramidData
-                )
-                .add(
-                        ExtraShapeDataType.ELLIPSOID,
-                        EllipsoidDataPayload.class,
-                        this::writeEllipsoidData,
-                        this::readEllipsoidData
-                )
-                .add(
-                        ExtraShapeDataType.CONE,
-                        ConeDataPayload.class,
-                        this::writeConeData,
-                        this::readConeData
-                )
-                .build();
+    @Override
+    protected void writeExtraShapeData(ByteBuf buffer, BedrockCodecHelper helper, PrimitiveShapesPacket packet, Object data) {
+        if (data instanceof CylinderDataPayload) {
+            VarInts.writeUnsignedInt(buffer, ExtraShapeDataType.CYLINDER.ordinal());
+            this.writeCylinderData(buffer, helper, packet, (CylinderDataPayload) data);
+        } else if (data instanceof PyramidDataPayload) {
+            VarInts.writeUnsignedInt(buffer, ExtraShapeDataType.PYRAMID.ordinal());
+            this.writePyramidData(buffer, helper, packet, (PyramidDataPayload) data);
+        } else if (data instanceof EllipsoidDataPayload) {
+            VarInts.writeUnsignedInt(buffer, ExtraShapeDataType.ELLIPSOID.ordinal());
+            this.writeEllipsoidData(buffer, helper, packet, (EllipsoidDataPayload) data);
+        } else if (data instanceof ConeDataPayload) {
+            VarInts.writeUnsignedInt(buffer, ExtraShapeDataType.CONE.ordinal());
+            this.writeConeData(buffer, helper, packet, (ConeDataPayload) data);
+        } else {
+            super.writeExtraShapeData(buffer, helper, packet, data);
+        }
+    }
+
+    @Override
+    protected Object readExtraShapeDataBody(ByteBuf buffer, BedrockCodecHelper helper, PrimitiveShapesPacket packet, ExtraShapeDataType type) {
+        switch (type) {
+            case CYLINDER:
+                return this.readCylinderData(buffer, helper, packet);
+            case PYRAMID:
+                return this.readPyramidData(buffer, helper, packet);
+            case ELLIPSOID:
+                return this.readEllipsoidData(buffer, helper, packet);
+            case CONE:
+                return this.readConeData(buffer, helper, packet);
+            default:
+                return super.readExtraShapeDataBody(buffer, helper, packet, type);
+        }
     }
 
     protected void writeCylinderData(ByteBuf buffer, BedrockCodecHelper helper, PrimitiveShapesPacket packet, CylinderDataPayload payload) {

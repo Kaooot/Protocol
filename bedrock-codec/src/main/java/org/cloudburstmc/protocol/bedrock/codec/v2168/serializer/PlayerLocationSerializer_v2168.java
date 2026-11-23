@@ -4,7 +4,6 @@ import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
-import org.cloudburstmc.protocol.bedrock.codec.VariantCodec;
 import org.cloudburstmc.protocol.bedrock.codec.v800.serializer.PlayerLocationSerializer_v800;
 import org.cloudburstmc.protocol.bedrock.data.location.CoordinatesLocation;
 import org.cloudburstmc.protocol.bedrock.data.location.HiddenLocation;
@@ -16,32 +15,49 @@ import org.cloudburstmc.protocol.common.util.VarInts;
 public class PlayerLocationSerializer_v2168 extends PlayerLocationSerializer_v800 {
     public static final PlayerLocationSerializer_v2168 INSTANCE = new PlayerLocationSerializer_v2168();
 
-    protected VariantCodec<PlayerLocationPacket> locationVariant = VariantCodec.<PlayerLocationPacketType, PlayerLocationPacket>builder(PlayerLocationPacketType::ordinal)
-            .prefix(
-                    (buffer, helper, packet, value) -> VarInts.writeInt(buffer, value),
-                    (buffer, helper, packet) -> VarInts.readInt(buffer)
-            )
-            .add(
-                    PlayerLocationPacketType.PLAYER_LOCATION_COORDINATES,
-                    CoordinatesLocation.class,
-                    this::writeCoordinatesLocation,
-                    this::readCoordinatesLocation
-            )
-            .add(
-                    PlayerLocationPacketType.PLAYER_LOCATION_HIDE,
-                    HiddenLocation.class
-            )
-            .build();
-
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, PlayerLocationPacket packet) {
         VarInts.writeLong(buffer, packet.getTargetActorID());
-        this.locationVariant.write(buffer, helper, packet, packet.getLocation());
+        this.writeLocation(buffer, helper, packet);
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, PlayerLocationPacket packet) {
         packet.setTargetActorID(VarInts.readLong(buffer));
-        packet.setLocation(this.locationVariant.read(buffer, helper, packet));
+        this.readLocation(buffer, helper, packet);
+    }
+
+    protected void writeLocation(ByteBuf buffer, BedrockCodecHelper helper, PlayerLocationPacket packet) {
+        final Object location = packet.getLocation();
+        final PlayerLocationPacketType type;
+        if (location instanceof CoordinatesLocation) {
+            type = PlayerLocationPacketType.PLAYER_LOCATION_COORDINATES;
+        } else if (location instanceof HiddenLocation) {
+            type = PlayerLocationPacketType.PLAYER_LOCATION_HIDE;
+        } else {
+            return;
+        }
+        VarInts.writeUnsignedInt(buffer, type.ordinal());
+        VarInts.writeInt(buffer, type.ordinal());
+        switch (type) {
+            case PLAYER_LOCATION_COORDINATES:
+                this.writeCoordinatesLocation(buffer, helper, packet, (CoordinatesLocation) location);
+                break;
+            case PLAYER_LOCATION_HIDE:
+                break;
+        }
+    }
+
+    protected void readLocation(ByteBuf buffer, BedrockCodecHelper helper, PlayerLocationPacket packet) {
+        final PlayerLocationPacketType type = PlayerLocationPacketType.from(VarInts.readUnsignedInt(buffer));
+        VarInts.readInt(buffer);
+        switch (type) {
+            case PLAYER_LOCATION_COORDINATES:
+                packet.setLocation(this.readCoordinatesLocation(buffer, helper, packet));
+                break;
+            case PLAYER_LOCATION_HIDE:
+                packet.setLocation(new HiddenLocation());
+                break;
+        }
     }
 }

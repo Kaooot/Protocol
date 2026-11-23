@@ -22,14 +22,23 @@ public class BedrockCodecHelper_v2259 extends BedrockCodecHelper_v2225 {
 
     public BedrockCodecHelper_v2259(ActorDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes, TypeMap<ItemStackRequestActionType> stackRequestActionTypes, TypeMap<ContainerEnumName> containerEnumNames, TypeMap<AbilitiesIndex> abilities, TypeMap<TextProcessingEventOrigin> textProcessingEventOrigins) {
         super(entityData, gameRulesTypes, stackRequestActionTypes, containerEnumNames, abilities, textProcessingEventOrigins);
-        this.itemStackRequestActionsVariant = this.itemStackRequestActionsVariant.toBuilder(this.stackRequestActionTypes::getId)
-                .update(
-                        ItemStackRequestActionType.CRAFT_DISC_PRESS,
-                        ItemStackRequestCraftDiscPressAction.class,
-                        this::writeItemStackRequestCraftDiscPressAction,
-                        this::readItemStackRequestCraftDiscPressAction
-                )
-                .build();
+    }
+
+    @Override
+    protected void writeItemStackRequestActionBody(ByteBuf buffer, ItemStackRequestActionType type, Object action) {
+        if (type == ItemStackRequestActionType.CRAFT_DISC_PRESS) {
+            this.writeItemStackRequestCraftDiscPressAction(buffer, this, type, (ItemStackRequestCraftDiscPressAction) action);
+        } else {
+            super.writeItemStackRequestActionBody(buffer, type, action);
+        }
+    }
+
+    @Override
+    protected Object readItemStackRequestActionBody(ByteBuf buffer, ItemStackRequestActionType type) {
+        if (type == ItemStackRequestActionType.CRAFT_DISC_PRESS) {
+            return this.readItemStackRequestCraftDiscPressAction(buffer, this, type);
+        }
+        return super.readItemStackRequestActionBody(buffer, type);
     }
 
     @Override
@@ -85,7 +94,7 @@ public class BedrockCodecHelper_v2259 extends BedrockCodecHelper_v2225 {
     @Override
     public void writeDataStoreUpdate(ByteBuf buffer, DataStoreUpdate update) {
         this.writeString(buffer, update.getVariableName());
-        this.dataStoreUpdateDataTypeVariant.write(buffer, this, update, update.getData());
+        this.writeDataStoreUpdateData(buffer, update, update.getData());
         buffer.writeIntLE(update.getUpdateCount());
     }
 
@@ -93,7 +102,7 @@ public class BedrockCodecHelper_v2259 extends BedrockCodecHelper_v2225 {
     public DataStoreUpdate readDataStoreUpdate(ByteBuf buffer) {
         final DataStoreUpdate update = new DataStoreUpdate();
         update.setVariableName(this.readString(buffer));
-        update.setData(this.dataStoreUpdateDataTypeVariant.read(buffer, this, update));
+        update.setData(this.readDataStoreUpdateData(buffer, update));
         update.setUpdateCount(buffer.readIntLE());
         return update;
     }

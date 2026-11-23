@@ -2,7 +2,6 @@ package org.cloudburstmc.protocol.bedrock.codec.v407;
 
 import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.protocol.bedrock.codec.ActorDataTypeMap;
-import org.cloudburstmc.protocol.bedrock.codec.VariantCodec;
 import org.cloudburstmc.protocol.bedrock.codec.v390.BedrockCodecHelper_v390;
 import org.cloudburstmc.protocol.bedrock.data.actor.link.ActorLink;
 import org.cloudburstmc.protocol.bedrock.data.definitions.ItemDefinition;
@@ -37,105 +36,141 @@ public class BedrockCodecHelper_v407 extends BedrockCodecHelper_v390 {
     protected final TypeMap<ItemStackRequestActionType> stackRequestActionTypes;
     protected final TypeMap<ContainerEnumName> containerEnumNames;
 
-    protected VariantCodec<ItemStackRequestActionType> itemStackRequestActionsVariant;
-
     public BedrockCodecHelper_v407(ActorDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes,
                                    TypeMap<ItemStackRequestActionType> stackRequestActionTypes, TypeMap<ContainerEnumName> containerEnumNames) {
         super(entityData, gameRulesTypes);
         this.stackRequestActionTypes = stackRequestActionTypes;
         this.containerEnumNames = containerEnumNames;
-        this.itemStackRequestActionsVariant = VariantCodec.<ItemStackRequestActionType, ItemStackRequestActionType>builder(
-                        this.stackRequestActionTypes::getId,
-                        (buffer, helper, type, value) -> buffer.writeByte(value),
-                        (buffer, helper, type) -> (int) buffer.readByte()
-                )
-                .add(
-                        ItemStackRequestActionType.TAKE,
-                        ItemStackRequestTakeAction.class,
-                        (buffer, helper, type, value) -> this.writeItemStackRequestTakeAction(buffer, type, value),
-                        (buffer, helper, type) -> this.readItemStackRequestTakeAction(buffer, type)
-                )
-                .add(
-                        ItemStackRequestActionType.PLACE,
-                        ItemStackRequestPlaceAction.class,
-                        (buffer, helper, type, value) -> this.writeItemStackRequestPlaceAction(buffer, type, value),
-                        (buffer, helper, type) -> this.readItemStackRequestPlaceAction(buffer, type)
-                )
-                .add(
-                        ItemStackRequestActionType.SWAP,
-                        ItemStackRequestSwapAction.class,
-                        (buffer, helper, type, value) -> this.writeItemStackRequestSwapAction(buffer, type, value),
-                        (buffer, helper, type) -> this.readItemStackRequestSwapAction(buffer, type)
-                )
-                .add(
-                        ItemStackRequestActionType.DROP,
-                        ItemStackRequestDropAction.class,
-                        (buffer, helper, type, value) -> this.writeItemStackRequestDropAction(buffer, type, value),
-                        (buffer, helper, type) -> this.readItemStackRequestDropAction(buffer, type)
-                )
-                .add(
-                        ItemStackRequestActionType.DESTROY,
-                        ItemStackRequestDestroyAction.class,
-                        (buffer, helper, type, value) -> this.writeItemStackRequestDestroyAction(buffer, type, value),
-                        (buffer, helper, type) -> this.readItemStackRequestDestroyAction(buffer, type)
-                )
-                .add(
-                        ItemStackRequestActionType.CONSUME,
-                        ItemStackRequestConsumeAction.class,
-                        (buffer, helper, type, value) -> this.writeItemStackRequestConsumeAction(buffer, type, value),
-                        (buffer, helper, type) -> this.readItemStackRequestConsumeAction(buffer, type)
-                )
-                .add(
-                        ItemStackRequestActionType.CREATE,
-                        ItemStackRequestCreateAction.class,
-                        (buffer, helper, type, value) -> this.writeItemStackRequestCreateAction(buffer, type, value),
-                        (buffer, helper, type) -> this.readItemStackRequestCreateAction(buffer, type)
-                )
-                .add(
-                        ItemStackRequestActionType.SCREEN_LAB_TABLE_COMBINE,
-                        ItemStackRequestLabTableCombineAction.class,
-                        (buffer, helper, type, value) -> {
-                        },
-                        (buffer, helper, type) -> new ItemStackRequestLabTableCombineAction()
-                )
-                .add(
-                        ItemStackRequestActionType.SCREEN_BEACON_PAYMENT,
-                        ItemStackRequestBeaconPaymentAction.class,
-                        (buffer, helper, type, value) -> this.writeItemStackRequestBeaconPaymentAction(buffer, type, value),
-                        (buffer, helper, type) -> this.readItemStackRequestBeaconPaymentAction(buffer, type)
-                )
-                .add(
-                        ItemStackRequestActionType.CRAFT_RECIPE,
-                        ItemStackRequestCraftRecipeAction.class,
-                        (buffer, helper, type, value) -> this.writeItemStackRequestCraftRecipeAction(buffer, type, value),
-                        (buffer, helper, type) -> this.readItemStackRequestCraftRecipeAction(buffer, type)
-                )
-                .add(
-                        ItemStackRequestActionType.CRAFT_RECIPE_AUTO,
-                        ItemStackRequestCraftRecipeAutoAction.class,
-                        (buffer, helper, type, value) -> this.writeItemStackRequestCraftRecipeAutoAction(buffer, type, value),
-                        (buffer, helper, type) -> this.readItemStackRequestCraftRecipeAutoAction(buffer, type)
-                )
-                .add(
-                        ItemStackRequestActionType.CRAFT_CREATIVE,
-                        ItemStackRequestCraftCreativeAction.class,
-                        (buffer, helper, type, value) -> this.writeItemStackRequestCraftCreativeAction(buffer, type, value),
-                        (buffer, helper, type) -> this.readItemStackRequestCraftCreativeAction(buffer, type)
-                )
-                .add(
-                        ItemStackRequestActionType.CRAFT_NON_IMPLEMENTED,
-                        ItemStackRequestCraftNonImplementedDeprecatedAction.class,
-                        (buffer, helper, type, value) -> {
-                        },
-                        (buffer, helper, type) -> new ItemStackRequestCraftNonImplementedDeprecatedAction()
-                )
-                .add(
-                        ItemStackRequestActionType.CRAFT_RESULTS,
-                        ItemStackRequestCraftResultsDeprecatedAction.class,
-                        (buffer, helper, type, value) -> this.writeItemStackRequestCraftResultsDeprecatedAction(buffer, type, value),
-                        (buffer, helper, type) -> this.readItemStackRequestCraftResultsDeprecatedAction(buffer, type)
-                )
-                .build();
+    }
+
+    protected ItemStackRequestActionType itemStackRequestActionType(Object action) {
+        if (action instanceof ItemStackRequestTakeAction) {
+            return ItemStackRequestActionType.TAKE;
+        } else if (action instanceof ItemStackRequestPlaceAction) {
+            return ItemStackRequestActionType.PLACE;
+        } else if (action instanceof ItemStackRequestSwapAction) {
+            return ItemStackRequestActionType.SWAP;
+        } else if (action instanceof ItemStackRequestDropAction) {
+            return ItemStackRequestActionType.DROP;
+        } else if (action instanceof ItemStackRequestDestroyAction) {
+            return ItemStackRequestActionType.DESTROY;
+        } else if (action instanceof ItemStackRequestConsumeAction) {
+            return ItemStackRequestActionType.CONSUME;
+        } else if (action instanceof ItemStackRequestCreateAction) {
+            return ItemStackRequestActionType.CREATE;
+        } else if (action instanceof ItemStackRequestLabTableCombineAction) {
+            return ItemStackRequestActionType.SCREEN_LAB_TABLE_COMBINE;
+        } else if (action instanceof ItemStackRequestBeaconPaymentAction) {
+            return ItemStackRequestActionType.SCREEN_BEACON_PAYMENT;
+        } else if (action instanceof ItemStackRequestCraftRecipeAction) {
+            return ItemStackRequestActionType.CRAFT_RECIPE;
+        } else if (action instanceof ItemStackRequestCraftRecipeAutoAction) {
+            return ItemStackRequestActionType.CRAFT_RECIPE_AUTO;
+        } else if (action instanceof ItemStackRequestCraftCreativeAction) {
+            return ItemStackRequestActionType.CRAFT_CREATIVE;
+        } else if (action instanceof ItemStackRequestCraftNonImplementedDeprecatedAction) {
+            return ItemStackRequestActionType.CRAFT_NON_IMPLEMENTED;
+        } else if (action instanceof ItemStackRequestCraftResultsDeprecatedAction) {
+            return ItemStackRequestActionType.CRAFT_RESULTS;
+        }
+        return null;
+    }
+
+    protected void writeItemStackRequestActionIndex(ByteBuf buffer, ItemStackRequestActionType type) {
+        buffer.writeByte(this.stackRequestActionTypes.getId(type));
+    }
+
+    protected ItemStackRequestActionType readItemStackRequestActionIndex(ByteBuf buffer) {
+        return this.stackRequestActionTypes.getType(buffer.readByte());
+    }
+
+    protected void writeItemStackRequestAction(ByteBuf buffer, Object action) {
+        final ItemStackRequestActionType type = this.itemStackRequestActionType(action);
+        this.writeItemStackRequestActionIndex(buffer, type);
+        this.writeItemStackRequestActionBody(buffer, type, action);
+    }
+
+    protected Object readItemStackRequestAction(ByteBuf buffer) {
+        final ItemStackRequestActionType type = this.readItemStackRequestActionIndex(buffer);
+        return this.readItemStackRequestActionBody(buffer, type);
+    }
+
+    protected void writeItemStackRequestActionBody(ByteBuf buffer, ItemStackRequestActionType type, Object action) {
+        switch (type) {
+            case TAKE:
+                this.writeItemStackRequestTakeAction(buffer, type, (ItemStackRequestTakeAction) action);
+                break;
+            case PLACE:
+                this.writeItemStackRequestPlaceAction(buffer, type, (ItemStackRequestPlaceAction) action);
+                break;
+            case SWAP:
+                this.writeItemStackRequestSwapAction(buffer, type, (ItemStackRequestSwapAction) action);
+                break;
+            case DROP:
+                this.writeItemStackRequestDropAction(buffer, type, (ItemStackRequestDropAction) action);
+                break;
+            case DESTROY:
+                this.writeItemStackRequestDestroyAction(buffer, type, (ItemStackRequestDestroyAction) action);
+                break;
+            case CONSUME:
+                this.writeItemStackRequestConsumeAction(buffer, type, (ItemStackRequestConsumeAction) action);
+                break;
+            case CREATE:
+                this.writeItemStackRequestCreateAction(buffer, type, (ItemStackRequestCreateAction) action);
+                break;
+            case SCREEN_BEACON_PAYMENT:
+                this.writeItemStackRequestBeaconPaymentAction(buffer, type, (ItemStackRequestBeaconPaymentAction) action);
+                break;
+            case CRAFT_RECIPE:
+                this.writeItemStackRequestCraftRecipeAction(buffer, type, (ItemStackRequestCraftRecipeAction) action);
+                break;
+            case CRAFT_RECIPE_AUTO:
+                this.writeItemStackRequestCraftRecipeAutoAction(buffer, type, (ItemStackRequestCraftRecipeAutoAction) action);
+                break;
+            case CRAFT_CREATIVE:
+                this.writeItemStackRequestCraftCreativeAction(buffer, type, (ItemStackRequestCraftCreativeAction) action);
+                break;
+            case CRAFT_RESULTS:
+                this.writeItemStackRequestCraftResultsDeprecatedAction(buffer, type, (ItemStackRequestCraftResultsDeprecatedAction) action);
+                break;
+            case SCREEN_LAB_TABLE_COMBINE:
+            case CRAFT_NON_IMPLEMENTED:
+                break;
+        }
+    }
+
+    protected Object readItemStackRequestActionBody(ByteBuf buffer, ItemStackRequestActionType type) {
+        switch (type) {
+            case TAKE:
+                return this.readItemStackRequestTakeAction(buffer, type);
+            case PLACE:
+                return this.readItemStackRequestPlaceAction(buffer, type);
+            case SWAP:
+                return this.readItemStackRequestSwapAction(buffer, type);
+            case DROP:
+                return this.readItemStackRequestDropAction(buffer, type);
+            case DESTROY:
+                return this.readItemStackRequestDestroyAction(buffer, type);
+            case CONSUME:
+                return this.readItemStackRequestConsumeAction(buffer, type);
+            case CREATE:
+                return this.readItemStackRequestCreateAction(buffer, type);
+            case SCREEN_LAB_TABLE_COMBINE:
+                return new ItemStackRequestLabTableCombineAction();
+            case SCREEN_BEACON_PAYMENT:
+                return this.readItemStackRequestBeaconPaymentAction(buffer, type);
+            case CRAFT_RECIPE:
+                return this.readItemStackRequestCraftRecipeAction(buffer, type);
+            case CRAFT_RECIPE_AUTO:
+                return this.readItemStackRequestCraftRecipeAutoAction(buffer, type);
+            case CRAFT_CREATIVE:
+                return this.readItemStackRequestCraftCreativeAction(buffer, type);
+            case CRAFT_NON_IMPLEMENTED:
+                return new ItemStackRequestCraftNonImplementedDeprecatedAction();
+            case CRAFT_RESULTS:
+                return this.readItemStackRequestCraftResultsDeprecatedAction(buffer, type);
+        }
+        return null;
     }
 
     @Override
@@ -171,7 +206,7 @@ public class BedrockCodecHelper_v407 extends BedrockCodecHelper_v390 {
         this.writeArray(
                 buffer,
                 request.getActions(),
-                (buf, codecHelper, object) -> this.itemStackRequestActionsVariant.write(buf, codecHelper, null, object)
+                (buf, codecHelper, object) -> this.writeItemStackRequestAction(buf, object)
         );
     }
 
@@ -182,7 +217,7 @@ public class BedrockCodecHelper_v407 extends BedrockCodecHelper_v390 {
         this.readArray(
                 buffer,
                 request.getActions(),
-                (buf, codecHelper) -> this.itemStackRequestActionsVariant.read(buf, codecHelper, null),
+                (buf, codecHelper) -> this.readItemStackRequestAction(buf),
                 this.getEncodingSettings().maxInventoryActionsOrRequests()
         );
         return request;

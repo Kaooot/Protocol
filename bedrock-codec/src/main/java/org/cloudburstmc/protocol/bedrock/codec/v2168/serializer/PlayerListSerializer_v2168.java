@@ -5,7 +5,6 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
-import org.cloudburstmc.protocol.bedrock.codec.VariantCodec;
 import org.cloudburstmc.protocol.bedrock.data.connection.BuildPlatform;
 import org.cloudburstmc.protocol.bedrock.data.player.list.PlayerListAddEntry;
 import org.cloudburstmc.protocol.bedrock.data.player.list.PlayerListPacketType;
@@ -19,31 +18,12 @@ public class PlayerListSerializer_v2168 implements BedrockPacketSerializer<Playe
 
     protected static final int MAX_ENTRIES = 1000;
 
-    protected final VariantCodec<PlayerListPacket> entryVariant = VariantCodec.<PlayerListPacketType, PlayerListPacket>builder(PlayerListPacketType::ordinal)
-            .prefix(
-                    (buffer, helper, owner, value) -> buffer.writeByte(PlayerListPacketType.from(value).getLegacyId()),
-                    (buffer, helper, owner) -> (int) buffer.readUnsignedByte()
-            )
-            .add(
-                    PlayerListPacketType.REMOVE,
-                    PlayerListRemoveEntry.class,
-                    this::writePlayerListRemoveEntry,
-                    this::readPlayerListRemoveEntry
-            )
-            .add(
-                    PlayerListPacketType.ADD,
-                    PlayerListAddEntry.class,
-                    this::writePlayerListAddEntry,
-                    this::readPlayerListAddEntry
-            )
-            .build();
-
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, PlayerListPacket packet) {
         helper.writeArray(
                 buffer,
                 packet.getEntries(),
-                (buf, codecHelper, entry) -> this.entryVariant.write(buf, codecHelper, packet, entry)
+                (buf, codecHelper, entry) -> this.writeEntry(buf, codecHelper, packet, entry)
         );
     }
 
@@ -52,9 +32,42 @@ public class PlayerListSerializer_v2168 implements BedrockPacketSerializer<Playe
         helper.readArray(
                 buffer,
                 packet.getEntries(),
-                (buf, codecHelper) -> this.entryVariant.read(buf, codecHelper, packet),
+                (buf, codecHelper) -> this.readEntry(buf, codecHelper, packet),
                 MAX_ENTRIES
         );
+    }
+
+    protected void writeEntry(ByteBuf buffer, BedrockCodecHelper helper, PlayerListPacket packet, Object entry) {
+        final PlayerListPacketType type;
+        if (entry instanceof PlayerListRemoveEntry) {
+            type = PlayerListPacketType.REMOVE;
+        } else if (entry instanceof PlayerListAddEntry) {
+            type = PlayerListPacketType.ADD;
+        } else {
+            return;
+        }
+        VarInts.writeUnsignedInt(buffer, type.ordinal());
+        buffer.writeByte(type.getLegacyId());
+        switch (type) {
+            case REMOVE:
+                this.writePlayerListRemoveEntry(buffer, helper, packet, (PlayerListRemoveEntry) entry);
+                break;
+            case ADD:
+                this.writePlayerListAddEntry(buffer, helper, packet, (PlayerListAddEntry) entry);
+                break;
+        }
+    }
+
+    protected Object readEntry(ByteBuf buffer, BedrockCodecHelper helper, PlayerListPacket packet) {
+        final PlayerListPacketType type = PlayerListPacketType.from(VarInts.readUnsignedInt(buffer));
+        buffer.readUnsignedByte();
+        switch (type) {
+            case REMOVE:
+                return this.readPlayerListRemoveEntry(buffer, helper, packet);
+            case ADD:
+                return this.readPlayerListAddEntry(buffer, helper, packet);
+        }
+        return null;
     }
 
     protected void writePlayerListRemoveEntry(ByteBuf buffer, BedrockCodecHelper helper, PlayerListPacket packet, PlayerListRemoveEntry entry) {

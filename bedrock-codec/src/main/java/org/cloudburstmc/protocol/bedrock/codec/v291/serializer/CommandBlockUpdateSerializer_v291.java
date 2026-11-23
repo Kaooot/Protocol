@@ -5,7 +5,6 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
-import org.cloudburstmc.protocol.bedrock.codec.VariantCodec;
 import org.cloudburstmc.protocol.bedrock.data.command.BlockCommandData;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandBlockMode;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandBlockUpdateTargetType;
@@ -17,24 +16,31 @@ import org.cloudburstmc.protocol.common.util.VarInts;
 public class CommandBlockUpdateSerializer_v291 implements BedrockPacketSerializer<CommandBlockUpdatePacket> {
     public static final CommandBlockUpdateSerializer_v291 INSTANCE = new CommandBlockUpdateSerializer_v291();
 
-    protected final VariantCodec<CommandBlockUpdatePacket> targetVariant = VariantCodec.<CommandBlockUpdateTargetType, CommandBlockUpdatePacket>builder(CommandBlockUpdateTargetType::ordinal)
-            .add(
-                    CommandBlockUpdateTargetType.ENTITY,
-                    EntityCommandTarget.class,
-                    this::writeEntityCommandTarget,
-                    this::readEntityCommandTarget
-            )
-            .add(
-                    CommandBlockUpdateTargetType.BLOCK,
-                    BlockCommandData.class,
-                    this::writeBlockCommandData,
-                    this::readBlockCommandData
-            )
-            .build();
+    protected void writeTarget(ByteBuf buffer, BedrockCodecHelper helper, CommandBlockUpdatePacket packet) {
+        final Object target = packet.getTarget();
+        if (target instanceof EntityCommandTarget) {
+            VarInts.writeUnsignedInt(buffer, CommandBlockUpdateTargetType.ENTITY.ordinal());
+            this.writeEntityCommandTarget(buffer, helper, packet, (EntityCommandTarget) target);
+        } else if (target instanceof BlockCommandData) {
+            VarInts.writeUnsignedInt(buffer, CommandBlockUpdateTargetType.BLOCK.ordinal());
+            this.writeBlockCommandData(buffer, helper, packet, (BlockCommandData) target);
+        }
+    }
+
+    protected void readTarget(ByteBuf buffer, BedrockCodecHelper helper, CommandBlockUpdatePacket packet) {
+        switch (CommandBlockUpdateTargetType.from(VarInts.readUnsignedInt(buffer))) {
+            case ENTITY:
+                packet.setTarget(this.readEntityCommandTarget(buffer, helper, packet));
+                break;
+            case BLOCK:
+                packet.setTarget(this.readBlockCommandData(buffer, helper, packet));
+                break;
+        }
+    }
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, CommandBlockUpdatePacket packet) {
-        this.targetVariant.write(buffer, helper, packet, packet.getTarget());
+        this.writeTarget(buffer, helper, packet);
         helper.writeString(buffer, packet.getCommand());
         helper.writeString(buffer, packet.getLastOutput());
         helper.writeString(buffer, packet.getName());
@@ -43,7 +49,7 @@ public class CommandBlockUpdateSerializer_v291 implements BedrockPacketSerialize
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, CommandBlockUpdatePacket packet) {
-        packet.setTarget(this.targetVariant.read(buffer, helper, packet));
+        this.readTarget(buffer, helper, packet);
         packet.setCommand(helper.readString(buffer));
         packet.setLastOutput(helper.readString(buffer));
         packet.setName(helper.readString(buffer));

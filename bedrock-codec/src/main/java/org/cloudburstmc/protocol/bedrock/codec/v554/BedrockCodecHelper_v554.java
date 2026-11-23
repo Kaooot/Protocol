@@ -33,7 +33,7 @@ public class BedrockCodecHelper_v554 extends BedrockCodecHelper_v534 {
         this.writeArray(
                 buffer,
                 request.getActions(),
-                (buf, codecHelper, object) -> this.itemStackRequestActionsVariant.write(buf, codecHelper, null, object)
+                (buf, codecHelper, object) -> this.writeItemStackRequestAction(buf, object)
         );
         this.writeArray(buffer, request.getStringsToFilter(), this::writeString);
         final TextProcessingEventOrigin origin = request.getStringsToFilterOrigin(); // new for v554
@@ -47,7 +47,7 @@ public class BedrockCodecHelper_v554 extends BedrockCodecHelper_v534 {
         this.readArray(
                 buffer,
                 request.getActions(),
-                (buf, codecHelper) -> this.itemStackRequestActionsVariant.read(buf, codecHelper, null),
+                (buf, codecHelper) -> this.readItemStackRequestAction(buf),
                 this.getEncodingSettings().maxInventoryActionsOrRequests()
         );
         this.readArray(buffer, request.getStringsToFilter(), (buf, helper) -> helper.readStringMaxLen(buf, 1000));

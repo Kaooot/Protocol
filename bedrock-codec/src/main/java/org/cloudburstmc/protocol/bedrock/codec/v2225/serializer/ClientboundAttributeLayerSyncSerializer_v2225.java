@@ -4,7 +4,6 @@ import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
-import org.cloudburstmc.protocol.bedrock.codec.VariantCodec;
 import org.cloudburstmc.protocol.bedrock.codec.v2193.serializer.ClientboundAttributeLayerSyncSerializer_v2193;
 import org.cloudburstmc.protocol.bedrock.data.attribute.*;
 import org.cloudburstmc.protocol.bedrock.data.camera.EasingFunction;
@@ -16,26 +15,42 @@ import org.cloudburstmc.protocol.common.util.VarInts;
 public class ClientboundAttributeLayerSyncSerializer_v2225 extends ClientboundAttributeLayerSyncSerializer_v2193 {
     public static final ClientboundAttributeLayerSyncSerializer_v2225 INSTANCE = new ClientboundAttributeLayerSyncSerializer_v2225();
 
-    protected final VariantCodec<ClientboundAttributeLayerSyncPacket> environmentAttributePayloadVariant = VariantCodec.<EnvironmentAttributePayloadType, ClientboundAttributeLayerSyncPacket>builder(EnvironmentAttributePayloadType::ordinal)
-            .add(
-                    EnvironmentAttributePayloadType.CONSTANT,
-                    ConstantAttributeData.class,
-                    this::writeConstantAttributeData,
-                    this::readConstantAttributeData
-            )
-            .add(
-                    EnvironmentAttributePayloadType.TRANSITION,
-                    TransitionAttributeData.class,
-                    this::writeTransitionAttributeData,
-                    this::readTransitionAttributeData
-            )
-            .add(
-                    EnvironmentAttributePayloadType.NOISE_TRANSITION,
-                    NoiseTransitionAttributeData.class,
-                    this::writeNoiseTransitionAttributeData,
-                    this::readNoiseTransitionAttributeData
-            )
-            .build();
+    protected void writeEnvironmentAttributePayload(ByteBuf buffer, BedrockCodecHelper helper, ClientboundAttributeLayerSyncPacket packet, Object payload) {
+        final EnvironmentAttributePayloadType type;
+        if (payload instanceof ConstantAttributeData) {
+            type = EnvironmentAttributePayloadType.CONSTANT;
+        } else if (payload instanceof TransitionAttributeData) {
+            type = EnvironmentAttributePayloadType.TRANSITION;
+        } else if (payload instanceof NoiseTransitionAttributeData) {
+            type = EnvironmentAttributePayloadType.NOISE_TRANSITION;
+        } else {
+            return;
+        }
+        VarInts.writeUnsignedInt(buffer, type.ordinal());
+        switch (type) {
+            case CONSTANT:
+                this.writeConstantAttributeData(buffer, helper, packet, (ConstantAttributeData) payload);
+                break;
+            case TRANSITION:
+                this.writeTransitionAttributeData(buffer, helper, packet, (TransitionAttributeData) payload);
+                break;
+            case NOISE_TRANSITION:
+                this.writeNoiseTransitionAttributeData(buffer, helper, packet, (NoiseTransitionAttributeData) payload);
+                break;
+        }
+    }
+
+    protected Object readEnvironmentAttributePayload(ByteBuf buffer, BedrockCodecHelper helper, ClientboundAttributeLayerSyncPacket packet) {
+        switch (EnvironmentAttributePayloadType.values()[VarInts.readUnsignedInt(buffer)]) {
+            case CONSTANT:
+                return this.readConstantAttributeData(buffer, helper, packet);
+            case TRANSITION:
+                return this.readTransitionAttributeData(buffer, helper, packet);
+            case NOISE_TRANSITION:
+                return this.readNoiseTransitionAttributeData(buffer, helper, packet);
+        }
+        return null;
+    }
 
     @Override
     protected void writeAttributeLayerData(ByteBuf buffer, BedrockCodecHelper helper, ClientboundAttributeLayerSyncPacket packet, AttributeLayerData data) {
@@ -67,37 +82,37 @@ public class ClientboundAttributeLayerSyncSerializer_v2225 extends ClientboundAt
     @Override
     protected void writeEnvironmentAttributeData(ByteBuf buffer, BedrockCodecHelper helper, ClientboundAttributeLayerSyncPacket packet, EnvironmentAttributeData data) {
         helper.writeString(buffer, data.getAttributeName());
-        this.environmentAttributePayloadVariant.write(buffer, helper, packet, data.getPayload());
+        this.writeEnvironmentAttributePayload(buffer, helper, packet, data.getPayload());
     }
 
     @Override
     protected EnvironmentAttributeData readEnvironmentAttributeData(ByteBuf buffer, BedrockCodecHelper helper, ClientboundAttributeLayerSyncPacket packet) {
         final EnvironmentAttributeData data = new EnvironmentAttributeData();
         data.setAttributeName(helper.readStringMaxLen(buffer, NAME_LENGTH));
-        data.setPayload(this.environmentAttributePayloadVariant.read(buffer, helper, packet));
+        data.setPayload(this.readEnvironmentAttributePayload(buffer, helper, packet));
         return data;
     }
 
     protected void writeConstantAttributeData(ByteBuf buffer, BedrockCodecHelper helper, ClientboundAttributeLayerSyncPacket packet, ConstantAttributeData data) {
-        this.attributeDataVariant.write(buffer, helper, packet, data.getAttribute());
+        this.writeAttributeData(buffer, helper, packet,data.getAttribute());
     }
 
     protected ConstantAttributeData readConstantAttributeData(ByteBuf buffer, BedrockCodecHelper helper, ClientboundAttributeLayerSyncPacket packet) {
         final ConstantAttributeData data = new ConstantAttributeData();
-        data.setAttribute(this.attributeDataVariant.read(buffer, helper, packet));
+        data.setAttribute(this.readAttributeData(buffer, helper, packet));
         return data;
     }
 
     protected void writeTransitionAttributeData(ByteBuf buffer, BedrockCodecHelper helper, ClientboundAttributeLayerSyncPacket packet, TransitionAttributeData data) {
-        this.attributeDataVariant.write(buffer, helper, packet, data.getFromAttribute());
-        this.attributeDataVariant.write(buffer, helper, packet, data.getToAttribute());
+        this.writeAttributeData(buffer, helper, packet,data.getFromAttribute());
+        this.writeAttributeData(buffer, helper, packet,data.getToAttribute());
         this.writeTransitionSettingsData(buffer, helper, packet, data.getSettings());
     }
 
     protected TransitionAttributeData readTransitionAttributeData(ByteBuf buffer, BedrockCodecHelper helper, ClientboundAttributeLayerSyncPacket packet) {
         final TransitionAttributeData data = new TransitionAttributeData();
-        data.setFromAttribute(this.attributeDataVariant.read(buffer, helper, packet));
-        data.setToAttribute(this.attributeDataVariant.read(buffer, helper, packet));
+        data.setFromAttribute(this.readAttributeData(buffer, helper, packet));
+        data.setToAttribute(this.readAttributeData(buffer, helper, packet));
         data.setSettings(this.readTransitionSettingsData(buffer, helper, packet));
         return data;
     }
@@ -119,15 +134,15 @@ public class ClientboundAttributeLayerSyncSerializer_v2225 extends ClientboundAt
     }
 
     protected void writeNoiseTransitionAttributeData(ByteBuf buffer, BedrockCodecHelper helper, ClientboundAttributeLayerSyncPacket packet, NoiseTransitionAttributeData data) {
-        this.attributeDataVariant.write(buffer, helper, packet, data.getFromAttribute());
-        this.attributeDataVariant.write(buffer, helper, packet, data.getToAttribute());
+        this.writeAttributeData(buffer, helper, packet,data.getFromAttribute());
+        this.writeAttributeData(buffer, helper, packet,data.getToAttribute());
         this.writeNoiseTransitionSettingsData(buffer, helper, packet, data.getSettings());
     }
 
     protected NoiseTransitionAttributeData readNoiseTransitionAttributeData(ByteBuf buffer, BedrockCodecHelper helper, ClientboundAttributeLayerSyncPacket packet) {
         final NoiseTransitionAttributeData data = new NoiseTransitionAttributeData();
-        data.setFromAttribute(this.attributeDataVariant.read(buffer, helper, packet));
-        data.setToAttribute(this.attributeDataVariant.read(buffer, helper, packet));
+        data.setFromAttribute(this.readAttributeData(buffer, helper, packet));
+        data.setToAttribute(this.readAttributeData(buffer, helper, packet));
         data.setSettings(this.readNoiseTransitionSettingsData(buffer, helper, packet));
         return data;
     }

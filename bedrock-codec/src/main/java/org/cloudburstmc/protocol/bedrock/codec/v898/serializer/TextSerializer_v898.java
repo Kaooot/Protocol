@@ -24,7 +24,7 @@ public class TextSerializer_v898 extends TextSerializer_v685 {
         }
 
         buffer.writeByte(packet.getMessageType().ordinal());
-        this.bodyVariant.write(buffer, helper, packet, packet.getBody());
+        this.writeBody(buffer, helper, packet);
         helper.writeString(buffer, packet.getSendersXUID());
         helper.writeString(buffer, packet.getPlatformId());
         final String filteredMessage = helper.getTextConverter().serialize(
@@ -47,7 +47,7 @@ public class TextSerializer_v898 extends TextSerializer_v685 {
 
         final TextPacketType messageType = TextPacketType.from(buffer.readUnsignedByte());
         packet.setMessageType(messageType);
-        packet.setBody(this.bodyVariant.read(buffer, helper, packet));
+        this.readBody(buffer, helper, packet, TextPacketBodyType.from(packet.getMessageType()));
         packet.setSendersXUID(helper.readStringMaxLen(buffer, 64));
         packet.setPlatformId(helper.readStringMaxLen(buffer, 256));
         packet.setFilteredMessage(
