@@ -6,7 +6,13 @@ import lombok.Data;
  * ReplacePage operation, sent when a page should be replaced. See BookEditPacket
  */
 @Data
-public class ReplacePage {
+public class ReplacePage implements BookEditAction {
+
+    @Override
+    public BookEditOperation getType() {
+        return BookEditOperation.REPLACE_PAGE;
+    }
+
 
     /**
      * Page replacement index

@@ -7,7 +7,13 @@ import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
 import org.cloudburstmc.protocol.bedrock.data.player.HandSlot;
 
 @Data
-public class ItemReleaseInventoryTransaction {
+public class ItemReleaseInventoryTransaction implements InventoryTransactionData {
+
+    @Override
+    public InventoryTransactionType getType() {
+        return InventoryTransactionType.ITEM_RELEASE;
+    }
+
 
     private InventoryTransaction actions;
     private ItemReleaseActionType actionType;

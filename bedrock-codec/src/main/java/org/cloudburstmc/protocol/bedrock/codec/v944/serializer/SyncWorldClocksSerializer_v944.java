@@ -16,19 +16,8 @@ public class SyncWorldClocksSerializer_v944 implements BedrockPacketSerializer<S
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, SyncWorldClocksPacket packet) {
-        final Object data = packet.getData();
-        final SyncWorldClocksPayloadType type;
-        if (data instanceof SyncStateData) {
-            type = SyncWorldClocksPayloadType.SYNC_STATE_DATA;
-        } else if (data instanceof InitializeRegistryData) {
-            type = SyncWorldClocksPayloadType.INITIALIZE_REGISTRY_DATA;
-        } else if (data instanceof AddTimeMarkerData) {
-            type = SyncWorldClocksPayloadType.ADD_TIMER_MARKER_DATA;
-        } else if (data instanceof RemoveTimeMarkerData) {
-            type = SyncWorldClocksPayloadType.REMOVE_TIME_MARKER_DATA;
-        } else {
-            return;
-        }
+        final SyncWorldClocksPayload data = packet.getData();
+        final SyncWorldClocksPayloadType type = data.getType();
         VarInts.writeUnsignedInt(buffer, type.ordinal());
         switch (type) {
             case SYNC_STATE_DATA:

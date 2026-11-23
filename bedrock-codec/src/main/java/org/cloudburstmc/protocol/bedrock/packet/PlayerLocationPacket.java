@@ -3,6 +3,7 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.cloudburstmc.protocol.bedrock.data.location.PlayerLocationData;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
@@ -11,7 +12,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 public class PlayerLocationPacket implements BedrockPacket {
 
     private long targetActorID;
-    private Object location;
+    private PlayerLocationData location;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

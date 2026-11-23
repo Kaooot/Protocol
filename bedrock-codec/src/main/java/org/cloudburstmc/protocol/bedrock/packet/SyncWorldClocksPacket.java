@@ -3,6 +3,7 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.cloudburstmc.protocol.bedrock.data.clock.SyncWorldClocksPayload;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
@@ -10,8 +11,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @ToString(doNotUseGetters = true)
 public class SyncWorldClocksPacket implements BedrockPacket {
 
-    //oneOf<SyncStateData, InitializeRegistryData, AddTimeMarkerData, RemoveTimeMarkerData>
-    private Object data;
+    private SyncWorldClocksPayload data;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

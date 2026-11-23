@@ -3,7 +3,13 @@ package org.cloudburstmc.protocol.bedrock.data.scoreboard;
 import lombok.Data;
 
 @Data
-public class ChangeEntityScore {
+public class ChangeEntityScore implements ScoreInfo {
+
+    @Override
+    public ScorePacketEntryAction getType() {
+        return ScorePacketEntryAction.CHANGE_ENTITY;
+    }
+
 
     private ScoreboardId scoreboardId;
     private String objectiveName;

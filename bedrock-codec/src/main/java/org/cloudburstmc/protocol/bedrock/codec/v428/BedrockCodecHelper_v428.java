@@ -27,14 +27,6 @@ public class BedrockCodecHelper_v428 extends BedrockCodecHelper_v422 {
     }
 
     @Override
-    protected ItemStackRequestActionType itemStackRequestActionType(Object action) {
-        if (action instanceof ItemStackRequestMineBlockAction) {
-            return ItemStackRequestActionType.SCREEN_HUD_MINE_BLOCK;
-        }
-        return super.itemStackRequestActionType(action);
-    }
-
-    @Override
     protected void writeItemStackRequestActionBody(ByteBuf buffer, ItemStackRequestActionType type, Object action) {
         if (type == ItemStackRequestActionType.SCREEN_HUD_MINE_BLOCK) {
             this.writeItemStackRequestMineBlockAction(buffer, type, (ItemStackRequestMineBlockAction) action);

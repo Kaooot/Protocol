@@ -6,7 +6,12 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class InitializeRegistryData {
+public class InitializeRegistryData implements SyncWorldClocksPayload {
 
     private final List<WorldClockData> clockData = new ObjectArrayList<>();
+
+    @Override
+    public SyncWorldClocksPayloadType getType() {
+        return SyncWorldClocksPayloadType.INITIALIZE_REGISTRY_DATA;
+    }
 }

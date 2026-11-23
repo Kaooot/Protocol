@@ -4,7 +4,13 @@ import lombok.Data;
 import org.cloudburstmc.protocol.bedrock.annotation.Removed;
 
 @Data
-public class RemoveScore {
+public class RemoveScore implements ScoreInfo {
+
+    @Override
+    public ScorePacketEntryAction getType() {
+        return ScorePacketEntryAction.REMOVE;
+    }
+
 
     private ScoreboardId scoreboardId;
     private String objectiveName;

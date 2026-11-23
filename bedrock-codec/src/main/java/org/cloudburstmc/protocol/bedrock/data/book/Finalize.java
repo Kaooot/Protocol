@@ -6,7 +6,13 @@ import lombok.Data;
  * Finalize operation, sent when a book should be signed. See BookEditPacket
  */
 @Data
-public class Finalize {
+public class Finalize implements BookEditAction {
+
+    @Override
+    public BookEditOperation getType() {
+        return BookEditOperation.FINALIZE;
+    }
+
 
     /**
      * Title of the book

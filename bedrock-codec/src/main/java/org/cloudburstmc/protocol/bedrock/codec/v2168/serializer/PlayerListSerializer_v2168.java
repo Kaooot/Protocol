@@ -7,6 +7,7 @@ import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
 import org.cloudburstmc.protocol.bedrock.data.connection.BuildPlatform;
 import org.cloudburstmc.protocol.bedrock.data.player.list.PlayerListAddEntry;
+import org.cloudburstmc.protocol.bedrock.data.player.list.PlayerListEntry;
 import org.cloudburstmc.protocol.bedrock.data.player.list.PlayerListPacketType;
 import org.cloudburstmc.protocol.bedrock.data.player.list.PlayerListRemoveEntry;
 import org.cloudburstmc.protocol.bedrock.packet.PlayerListPacket;
@@ -37,15 +38,8 @@ public class PlayerListSerializer_v2168 implements BedrockPacketSerializer<Playe
         );
     }
 
-    protected void writeEntry(ByteBuf buffer, BedrockCodecHelper helper, PlayerListPacket packet, Object entry) {
-        final PlayerListPacketType type;
-        if (entry instanceof PlayerListRemoveEntry) {
-            type = PlayerListPacketType.REMOVE;
-        } else if (entry instanceof PlayerListAddEntry) {
-            type = PlayerListPacketType.ADD;
-        } else {
-            return;
-        }
+    protected void writeEntry(ByteBuf buffer, BedrockCodecHelper helper, PlayerListPacket packet, PlayerListEntry entry) {
+        final PlayerListPacketType type = entry.getType();
         VarInts.writeUnsignedInt(buffer, type.ordinal());
         buffer.writeByte(type.getLegacyId());
         switch (type) {
@@ -58,7 +52,7 @@ public class PlayerListSerializer_v2168 implements BedrockPacketSerializer<Playe
         }
     }
 
-    protected Object readEntry(ByteBuf buffer, BedrockCodecHelper helper, PlayerListPacket packet) {
+    protected PlayerListEntry readEntry(ByteBuf buffer, BedrockCodecHelper helper, PlayerListPacket packet) {
         final PlayerListPacketType type = PlayerListPacketType.from(VarInts.readUnsignedInt(buffer));
         buffer.readUnsignedByte();
         switch (type) {

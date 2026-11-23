@@ -19,16 +19,6 @@ public class BedrockCodecHelper_v471 extends BedrockCodecHelper_v465 {
     }
 
     @Override
-    protected ItemStackRequestActionType itemStackRequestActionType(Object action) {
-        if (action instanceof ItemStackRequestCraftRepairAndDisenchantAction) {
-            return ItemStackRequestActionType.CRAFT_REPAIR_AND_DISENCHANT;
-        } else if (action instanceof ItemStackRequestCraftLoomAction) {
-            return ItemStackRequestActionType.CRAFT_LOOM;
-        }
-        return super.itemStackRequestActionType(action);
-    }
-
-    @Override
     protected void writeItemStackRequestActionBody(ByteBuf buffer, ItemStackRequestActionType type, Object action) {
         switch (type) {
             case CRAFT_REPAIR_AND_DISENCHANT:

@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
 import org.cloudburstmc.protocol.bedrock.data.player.list.PlayerListAddEntry;
+import org.cloudburstmc.protocol.bedrock.data.player.list.PlayerListEntry;
 import org.cloudburstmc.protocol.bedrock.data.player.list.PlayerListPacketType;
 import org.cloudburstmc.protocol.bedrock.data.player.list.PlayerListRemoveEntry;
 import org.cloudburstmc.protocol.bedrock.data.skin.SerializedSkin;
@@ -22,7 +23,7 @@ public class PlayerListSerializer_v291 implements BedrockPacketSerializer<Player
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, PlayerListPacket packet) {
         buffer.writeByte(
-                packet.getEntries().get(0) instanceof PlayerListRemoveEntry ?
+                packet.getEntries().get(0).getType() == PlayerListPacketType.REMOVE ?
                         PlayerListPacketType.REMOVE.getLegacyId() : PlayerListPacketType.ADD.getLegacyId()
         );
         helper.writeArray(buffer, packet.getEntries(), this::writePlayerListEntry);
@@ -35,15 +36,15 @@ public class PlayerListSerializer_v291 implements BedrockPacketSerializer<Player
                 this.readPlayerListEntry(buf, codecHelper, packetType), MAX_ENTRIES);
     }
 
-    protected void writePlayerListEntry(ByteBuf buffer, BedrockCodecHelper helper, Object entry) {
-        if (entry instanceof PlayerListRemoveEntry) {
+    protected void writePlayerListEntry(ByteBuf buffer, BedrockCodecHelper helper, PlayerListEntry entry) {
+        if (entry.getType() == PlayerListPacketType.REMOVE) {
             this.writePlayerListRemoveEntry(buffer, helper, (PlayerListRemoveEntry) entry);
         } else {
             this.writePlayerListAddEntry(buffer, helper, (PlayerListAddEntry) entry);
         }
     }
 
-    protected Object readPlayerListEntry(ByteBuf buffer, BedrockCodecHelper helper, PlayerListPacketType packetType) {
+    protected PlayerListEntry readPlayerListEntry(ByteBuf buffer, BedrockCodecHelper helper, PlayerListPacketType packetType) {
         return packetType.equals(PlayerListPacketType.REMOVE) ?
                 this.readPlayerListRemoveEntry(buffer, helper) :
                 this.readPlayerListAddEntry(buffer, helper);

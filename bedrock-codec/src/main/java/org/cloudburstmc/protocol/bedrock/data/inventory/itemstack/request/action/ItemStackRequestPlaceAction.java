@@ -5,7 +5,13 @@ import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemSt
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequestSlotInfo;
 
 @Data
-public class ItemStackRequestPlaceAction {
+public class ItemStackRequestPlaceAction implements ItemStackRequestAction {
+
+    @Override
+    public ItemStackRequestActionType getType() {
+        return ItemStackRequestActionType.PLACE;
+    }
+
 
     private ItemStackRequestActionType actionType;
     private int amount;

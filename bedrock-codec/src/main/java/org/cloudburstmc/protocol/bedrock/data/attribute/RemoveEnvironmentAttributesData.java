@@ -7,7 +7,13 @@ import org.cloudburstmc.protocol.bedrock.data.world.DimensionType;
 import java.util.List;
 
 @Data
-public class RemoveEnvironmentAttributesData {
+public class RemoveEnvironmentAttributesData implements ClientboundAttributeLayerSyncData {
+
+    @Override
+    public ClientboundAttributeLayerSyncDataType getType() {
+        return ClientboundAttributeLayerSyncDataType.REMOVE_ENVIRONMENT_ATTRIBUTES;
+    }
+
 
     private String attributeLayerName;
     private DimensionType attributeLayerDimension;

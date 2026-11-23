@@ -4,6 +4,7 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.cloudburstmc.protocol.bedrock.data.datastore.DataStoreEntry;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.List;
 @ToString(doNotUseGetters = true)
 public class ClientboundDataStorePacket implements BedrockPacket {
 
-    private final List<Object> updates = new ObjectArrayList<>();
+    private final List<DataStoreEntry> updates = new ObjectArrayList<>();
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

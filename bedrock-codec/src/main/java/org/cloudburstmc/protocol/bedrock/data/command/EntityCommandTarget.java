@@ -7,7 +7,13 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class EntityCommandTarget {
+public class EntityCommandTarget implements CommandBlockUpdateTarget {
+
+    @Override
+    public CommandBlockUpdateTargetType getType() {
+        return CommandBlockUpdateTargetType.ENTITY;
+    }
+
 
     private long targetRuntimeID;
 }

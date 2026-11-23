@@ -6,7 +6,13 @@ import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemSt
 import org.cloudburstmc.protocol.bedrock.data.recipe.RecipeNetId;
 
 @Data
-public class ItemStackRequestCraftRecipeAction {
+public class ItemStackRequestCraftRecipeAction implements ItemStackRequestAction {
+
+    @Override
+    public ItemStackRequestActionType getType() {
+        return ItemStackRequestActionType.CRAFT_RECIPE;
+    }
+
 
     private ItemStackRequestActionType actionType;
     private RecipeNetId recipeNetId;

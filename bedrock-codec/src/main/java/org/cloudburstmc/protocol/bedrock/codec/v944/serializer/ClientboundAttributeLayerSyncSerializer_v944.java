@@ -28,19 +28,8 @@ public class ClientboundAttributeLayerSyncSerializer_v944 implements BedrockPack
     }
 
     protected void writeData(ByteBuf buffer, BedrockCodecHelper helper, ClientboundAttributeLayerSyncPacket packet) {
-        final Object data = packet.getData();
-        final ClientboundAttributeLayerSyncDataType type;
-        if (data instanceof UpdateAttributeLayersData) {
-            type = ClientboundAttributeLayerSyncDataType.UPDATE_ATTRIBUTE_LAYERS;
-        } else if (data instanceof UpdateAttributeLayerSettingsData) {
-            type = ClientboundAttributeLayerSyncDataType.UPDATE_ATTRIBUTE_LAYER_SETTINGS;
-        } else if (data instanceof UpdateEnvironmentAttributesData) {
-            type = ClientboundAttributeLayerSyncDataType.UPDATE_ENVIRONMENT_ATTRIBUTES;
-        } else if (data instanceof RemoveEnvironmentAttributesData) {
-            type = ClientboundAttributeLayerSyncDataType.REMOVE_ENVIRONMENT_ATTRIBUTES;
-        } else {
-            return;
-        }
+        final ClientboundAttributeLayerSyncData data = packet.getData();
+        final ClientboundAttributeLayerSyncDataType type = data.getType();
         VarInts.writeUnsignedInt(buffer, type.ordinal());
         switch (type) {
             case UPDATE_ATTRIBUTE_LAYERS:
@@ -76,17 +65,12 @@ public class ClientboundAttributeLayerSyncSerializer_v944 implements BedrockPack
     }
 
     protected void writeAttributeData(ByteBuf buffer, BedrockCodecHelper helper, ClientboundAttributeLayerSyncPacket packet, Object attribute) {
-        final AttributeDataType type;
-        if (attribute instanceof BoolAttributeData) {
-            type = AttributeDataType.BOOL;
-        } else if (attribute instanceof FloatAttributeData) {
-            type = AttributeDataType.FLOAT;
-        } else if (attribute instanceof ColorAttributeData) {
-            type = AttributeDataType.COLOR;
-        } else {
-            return;
-        }
+        final AttributeDataType type = ((AttributeData) attribute).getType();
         VarInts.writeUnsignedInt(buffer, type.ordinal());
+        this.writeAttributeDataBody(buffer, helper, packet, type, attribute);
+    }
+
+    protected void writeAttributeDataBody(ByteBuf buffer, BedrockCodecHelper helper, ClientboundAttributeLayerSyncPacket packet, AttributeDataType type, Object attribute) {
         switch (type) {
             case BOOL:
                 this.writeBoolAttributeData(buffer, helper, packet, (BoolAttributeData) attribute);

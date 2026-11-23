@@ -6,8 +6,13 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class RemoveTimeMarkerData {
+public class RemoveTimeMarkerData implements SyncWorldClocksPayload {
 
     private long clockId;
     private final List<Long> timeMarkerIds = new ObjectArrayList<>();
+
+    @Override
+    public SyncWorldClocksPayloadType getType() {
+        return SyncWorldClocksPayloadType.REMOVE_TIME_MARKER_DATA;
+    }
 }

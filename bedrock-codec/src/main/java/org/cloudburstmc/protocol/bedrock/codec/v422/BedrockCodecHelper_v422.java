@@ -23,14 +23,6 @@ public class BedrockCodecHelper_v422 extends BedrockCodecHelper_v419 {
     }
 
     @Override
-    protected ItemStackRequestActionType itemStackRequestActionType(Object action) {
-        if (action instanceof ItemStackRequestCraftRecipeOptionalAction) {
-            return ItemStackRequestActionType.CRAFT_RECIPE_OPTIONAL;
-        }
-        return super.itemStackRequestActionType(action);
-    }
-
-    @Override
     protected void writeItemStackRequestActionBody(ByteBuf buffer, ItemStackRequestActionType type, Object action) {
         if (type == ItemStackRequestActionType.CRAFT_RECIPE_OPTIONAL) {
             this.writeItemStackRequestCraftRecipeOptionalAction(buffer, type, (ItemStackRequestCraftRecipeOptionalAction) action);

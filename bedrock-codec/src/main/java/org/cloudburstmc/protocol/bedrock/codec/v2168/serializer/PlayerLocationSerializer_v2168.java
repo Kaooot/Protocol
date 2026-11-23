@@ -7,6 +7,7 @@ import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v800.serializer.PlayerLocationSerializer_v800;
 import org.cloudburstmc.protocol.bedrock.data.location.CoordinatesLocation;
 import org.cloudburstmc.protocol.bedrock.data.location.HiddenLocation;
+import org.cloudburstmc.protocol.bedrock.data.location.PlayerLocationData;
 import org.cloudburstmc.protocol.bedrock.data.location.PlayerLocationPacketType;
 import org.cloudburstmc.protocol.bedrock.packet.PlayerLocationPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
@@ -28,15 +29,8 @@ public class PlayerLocationSerializer_v2168 extends PlayerLocationSerializer_v80
     }
 
     protected void writeLocation(ByteBuf buffer, BedrockCodecHelper helper, PlayerLocationPacket packet) {
-        final Object location = packet.getLocation();
-        final PlayerLocationPacketType type;
-        if (location instanceof CoordinatesLocation) {
-            type = PlayerLocationPacketType.PLAYER_LOCATION_COORDINATES;
-        } else if (location instanceof HiddenLocation) {
-            type = PlayerLocationPacketType.PLAYER_LOCATION_HIDE;
-        } else {
-            return;
-        }
+        final PlayerLocationData location = packet.getLocation();
+        final PlayerLocationPacketType type = location.getType();
         VarInts.writeUnsignedInt(buffer, type.ordinal());
         VarInts.writeInt(buffer, type.ordinal());
         switch (type) {

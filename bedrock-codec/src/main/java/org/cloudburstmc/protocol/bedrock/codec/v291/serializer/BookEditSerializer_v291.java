@@ -16,22 +16,24 @@ public class BookEditSerializer_v291 implements BedrockPacketSerializer<BookEdit
     protected static final int MAX_LENGTH = 768;
 
     protected void writeOperation(ByteBuf buffer, BedrockCodecHelper helper, BookEditPacket packet) {
-        final Object operation = packet.getOperation();
-        if (operation instanceof ReplacePage) {
-            buffer.writeByte(BookEditOperation.REPLACE_PAGE.ordinal());
-            this.writeReplacePage(buffer, helper, packet, (ReplacePage) operation);
-        } else if (operation instanceof AddPage) {
-            buffer.writeByte(BookEditOperation.ADD_PAGE.ordinal());
-            this.writeAddPage(buffer, helper, packet, (AddPage) operation);
-        } else if (operation instanceof DeletePage) {
-            buffer.writeByte(BookEditOperation.DELETE_PAGE.ordinal());
-            this.writeDeletePage(buffer, helper, packet, (DeletePage) operation);
-        } else if (operation instanceof SwapPages) {
-            buffer.writeByte(BookEditOperation.SWAP_PAGES.ordinal());
-            this.writeSwapPages(buffer, helper, packet, (SwapPages) operation);
-        } else if (operation instanceof Finalize) {
-            buffer.writeByte(BookEditOperation.FINALIZE.ordinal());
-            this.writeFinalize(buffer, helper, packet, (Finalize) operation);
+        final BookEditAction operation = packet.getOperation();
+        buffer.writeByte(operation.getType().ordinal());
+        switch (operation.getType()) {
+            case REPLACE_PAGE:
+                this.writeReplacePage(buffer, helper, packet, (ReplacePage) operation);
+                break;
+            case ADD_PAGE:
+                this.writeAddPage(buffer, helper, packet, (AddPage) operation);
+                break;
+            case DELETE_PAGE:
+                this.writeDeletePage(buffer, helper, packet, (DeletePage) operation);
+                break;
+            case SWAP_PAGES:
+                this.writeSwapPages(buffer, helper, packet, (SwapPages) operation);
+                break;
+            case FINALIZE:
+                this.writeFinalize(buffer, helper, packet, (Finalize) operation);
+                break;
         }
     }
 

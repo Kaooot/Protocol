@@ -31,19 +31,8 @@ public class SetScoreSerializer_v2168 extends SetScoreSerializer_v291 {
         );
     }
 
-    protected void writeScoreInfo(ByteBuf buffer, BedrockCodecHelper helper, SetScorePacket packet, Object score) {
-        final ScorePacketEntryAction action;
-        if (score instanceof RemoveScore) {
-            action = ScorePacketEntryAction.REMOVE;
-        } else if (score instanceof ChangePlayerScore) {
-            action = ScorePacketEntryAction.CHANGE_PLAYER;
-        } else if (score instanceof ChangeEntityScore) {
-            action = ScorePacketEntryAction.CHANGE_ENTITY;
-        } else if (score instanceof ChangeFakePlayerScore) {
-            action = ScorePacketEntryAction.CHANGE_FAKE_PLAYER;
-        } else {
-            return;
-        }
+    protected void writeScoreInfo(ByteBuf buffer, BedrockCodecHelper helper, SetScorePacket packet, ScoreInfo score) {
+        final ScorePacketEntryAction action = score.getType();
         VarInts.writeUnsignedInt(buffer, action.ordinal());
         helper.writeString(buffer, action.getId());
         switch (action) {
@@ -62,7 +51,7 @@ public class SetScoreSerializer_v2168 extends SetScoreSerializer_v291 {
         }
     }
 
-    protected Object readScoreInfo(ByteBuf buffer, BedrockCodecHelper helper, SetScorePacket packet) {
+    protected ScoreInfo readScoreInfo(ByteBuf buffer, BedrockCodecHelper helper, SetScorePacket packet) {
         final ScorePacketEntryAction action = ScorePacketEntryAction.from(VarInts.readUnsignedInt(buffer));
         ScorePacketEntryAction.from(helper.readString(buffer));
         switch (action) {

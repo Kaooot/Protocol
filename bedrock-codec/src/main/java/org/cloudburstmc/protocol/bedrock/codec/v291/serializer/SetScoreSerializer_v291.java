@@ -15,7 +15,7 @@ public class SetScoreSerializer_v291 implements BedrockPacketSerializer<SetScore
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, SetScorePacket packet) {
-        final boolean isRemove = !packet.getScoreInfo().isEmpty() && packet.getScoreInfo().get(0) instanceof RemoveScore;
+        final boolean isRemove = !packet.getScoreInfo().isEmpty() && packet.getScoreInfo().get(0).getType() == ScorePacketEntryAction.REMOVE;
         buffer.writeBoolean(isRemove);
         helper.writeArray(buffer, packet.getScoreInfo(), (buf, codecHelper, scoreInfo) -> {
             if (isRemove) {
@@ -26,27 +26,33 @@ public class SetScoreSerializer_v291 implements BedrockPacketSerializer<SetScore
                 return;
             }
 
-            if (scoreInfo instanceof ChangePlayerScore) {
-                final ChangePlayerScore changePlayerScore = (ChangePlayerScore) scoreInfo;
-                VarInts.writeLong(buf, changePlayerScore.getScoreboardId().getScoreboardId());
-                codecHelper.writeString(buf, changePlayerScore.getObjectiveName());
-                buf.writeIntLE(changePlayerScore.getScoreValue());
-                buf.writeByte(ScorePacketEntryAction.CHANGE_PLAYER.ordinal());
-                VarInts.writeLong(buf, changePlayerScore.getPlayerUniqueId().getPlayerUniqueId());
-            } else if (scoreInfo instanceof ChangeEntityScore) {
-                final ChangeEntityScore changeEntityScore = (ChangeEntityScore) scoreInfo;
-                VarInts.writeLong(buf, changeEntityScore.getScoreboardId().getScoreboardId());
-                codecHelper.writeString(buf, changeEntityScore.getObjectiveName());
-                buf.writeIntLE(changeEntityScore.getScoreValue());
-                buf.writeByte(ScorePacketEntryAction.CHANGE_ENTITY.ordinal());
-                VarInts.writeLong(buf, changeEntityScore.getActorId());
-            } else if (scoreInfo instanceof ChangeFakePlayerScore) {
-                final ChangeFakePlayerScore changeFakePlayerScore = (ChangeFakePlayerScore) scoreInfo;
-                VarInts.writeLong(buf, changeFakePlayerScore.getScoreboardId().getScoreboardId());
-                codecHelper.writeString(buf, changeFakePlayerScore.getObjectiveName());
-                buf.writeIntLE(changeFakePlayerScore.getScoreValue());
-                buf.writeByte(ScorePacketEntryAction.CHANGE_FAKE_PLAYER.ordinal());
-                codecHelper.writeString(buf, changeFakePlayerScore.getFakePlayerName());
+            switch (scoreInfo.getType()) {
+                case CHANGE_PLAYER:
+                    final ChangePlayerScore changePlayerScore = (ChangePlayerScore) scoreInfo;
+                    VarInts.writeLong(buf, changePlayerScore.getScoreboardId().getScoreboardId());
+                    codecHelper.writeString(buf, changePlayerScore.getObjectiveName());
+                    buf.writeIntLE(changePlayerScore.getScoreValue());
+                    buf.writeByte(ScorePacketEntryAction.CHANGE_PLAYER.ordinal());
+                    VarInts.writeLong(buf, changePlayerScore.getPlayerUniqueId().getPlayerUniqueId());
+                    break;
+                case CHANGE_ENTITY:
+                    final ChangeEntityScore changeEntityScore = (ChangeEntityScore) scoreInfo;
+                    VarInts.writeLong(buf, changeEntityScore.getScoreboardId().getScoreboardId());
+                    codecHelper.writeString(buf, changeEntityScore.getObjectiveName());
+                    buf.writeIntLE(changeEntityScore.getScoreValue());
+                    buf.writeByte(ScorePacketEntryAction.CHANGE_ENTITY.ordinal());
+                    VarInts.writeLong(buf, changeEntityScore.getActorId());
+                    break;
+                case CHANGE_FAKE_PLAYER:
+                    final ChangeFakePlayerScore changeFakePlayerScore = (ChangeFakePlayerScore) scoreInfo;
+                    VarInts.writeLong(buf, changeFakePlayerScore.getScoreboardId().getScoreboardId());
+                    codecHelper.writeString(buf, changeFakePlayerScore.getObjectiveName());
+                    buf.writeIntLE(changeFakePlayerScore.getScoreValue());
+                    buf.writeByte(ScorePacketEntryAction.CHANGE_FAKE_PLAYER.ordinal());
+                    codecHelper.writeString(buf, changeFakePlayerScore.getFakePlayerName());
+                    break;
+                case REMOVE:
+                    break;
             }
         });
     }

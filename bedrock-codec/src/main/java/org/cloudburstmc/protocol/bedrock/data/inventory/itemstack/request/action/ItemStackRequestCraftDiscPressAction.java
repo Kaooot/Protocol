@@ -4,7 +4,13 @@ import lombok.Data;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequestActionType;
 
 @Data
-public class ItemStackRequestCraftDiscPressAction {
+public class ItemStackRequestCraftDiscPressAction implements ItemStackRequestAction {
+
+    @Override
+    public ItemStackRequestActionType getType() {
+        return ItemStackRequestActionType.CRAFT_DISC_PRESS;
+    }
+
 
     private ItemStackRequestActionType actionType;
     private String trackSoundEventId;

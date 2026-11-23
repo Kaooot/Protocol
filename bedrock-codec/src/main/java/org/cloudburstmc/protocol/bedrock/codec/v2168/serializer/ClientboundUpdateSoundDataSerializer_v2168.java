@@ -39,25 +39,8 @@ public class ClientboundUpdateSoundDataSerializer_v2168 extends ClientboundUpdat
         packet.setStop(this.readSoundData(buffer, helper, packet));
     }
 
-    protected void writeSoundData(ByteBuf buffer, BedrockCodecHelper helper, ClientboundUpdateSoundDataPacket packet, Object event) {
-        final SoundDataEventType type;
-        if (event instanceof Stop) {
-            type = SoundDataEventType.STOP;
-        } else if (event instanceof SetVolume) {
-            type = SoundDataEventType.SET_VOLUME;
-        } else if (event instanceof SetPitch) {
-            type = SoundDataEventType.SET_PITCH;
-        } else if (event instanceof Fade) {
-            type = SoundDataEventType.FADE;
-        } else if (event instanceof SeekTo) {
-            type = SoundDataEventType.SEEK_TO;
-        } else if (event instanceof Pause) {
-            type = SoundDataEventType.PAUSE;
-        } else if (event instanceof Resume) {
-            type = SoundDataEventType.RESUME;
-        } else {
-            return;
-        }
+    protected void writeSoundData(ByteBuf buffer, BedrockCodecHelper helper, ClientboundUpdateSoundDataPacket packet, SoundDataEvent event) {
+        final SoundDataEventType type = event.getType();
         VarInts.writeUnsignedInt(buffer, type.ordinal());
         buffer.writeByte(type.ordinal());
         switch (type) {
@@ -80,7 +63,7 @@ public class ClientboundUpdateSoundDataSerializer_v2168 extends ClientboundUpdat
         }
     }
 
-    protected Object readSoundData(ByteBuf buffer, BedrockCodecHelper helper, ClientboundUpdateSoundDataPacket packet) {
+    protected SoundDataEvent readSoundData(ByteBuf buffer, BedrockCodecHelper helper, ClientboundUpdateSoundDataPacket packet) {
         final SoundDataEventType type = SoundDataEventType.from(VarInts.readUnsignedInt(buffer));
         buffer.readUnsignedByte();
         switch (type) {

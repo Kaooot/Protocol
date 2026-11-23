@@ -43,39 +43,6 @@ public class BedrockCodecHelper_v407 extends BedrockCodecHelper_v390 {
         this.containerEnumNames = containerEnumNames;
     }
 
-    protected ItemStackRequestActionType itemStackRequestActionType(Object action) {
-        if (action instanceof ItemStackRequestTakeAction) {
-            return ItemStackRequestActionType.TAKE;
-        } else if (action instanceof ItemStackRequestPlaceAction) {
-            return ItemStackRequestActionType.PLACE;
-        } else if (action instanceof ItemStackRequestSwapAction) {
-            return ItemStackRequestActionType.SWAP;
-        } else if (action instanceof ItemStackRequestDropAction) {
-            return ItemStackRequestActionType.DROP;
-        } else if (action instanceof ItemStackRequestDestroyAction) {
-            return ItemStackRequestActionType.DESTROY;
-        } else if (action instanceof ItemStackRequestConsumeAction) {
-            return ItemStackRequestActionType.CONSUME;
-        } else if (action instanceof ItemStackRequestCreateAction) {
-            return ItemStackRequestActionType.CREATE;
-        } else if (action instanceof ItemStackRequestLabTableCombineAction) {
-            return ItemStackRequestActionType.SCREEN_LAB_TABLE_COMBINE;
-        } else if (action instanceof ItemStackRequestBeaconPaymentAction) {
-            return ItemStackRequestActionType.SCREEN_BEACON_PAYMENT;
-        } else if (action instanceof ItemStackRequestCraftRecipeAction) {
-            return ItemStackRequestActionType.CRAFT_RECIPE;
-        } else if (action instanceof ItemStackRequestCraftRecipeAutoAction) {
-            return ItemStackRequestActionType.CRAFT_RECIPE_AUTO;
-        } else if (action instanceof ItemStackRequestCraftCreativeAction) {
-            return ItemStackRequestActionType.CRAFT_CREATIVE;
-        } else if (action instanceof ItemStackRequestCraftNonImplementedDeprecatedAction) {
-            return ItemStackRequestActionType.CRAFT_NON_IMPLEMENTED;
-        } else if (action instanceof ItemStackRequestCraftResultsDeprecatedAction) {
-            return ItemStackRequestActionType.CRAFT_RESULTS;
-        }
-        return null;
-    }
-
     protected void writeItemStackRequestActionIndex(ByteBuf buffer, ItemStackRequestActionType type) {
         buffer.writeByte(this.stackRequestActionTypes.getId(type));
     }
@@ -85,7 +52,7 @@ public class BedrockCodecHelper_v407 extends BedrockCodecHelper_v390 {
     }
 
     protected void writeItemStackRequestAction(ByteBuf buffer, Object action) {
-        final ItemStackRequestActionType type = this.itemStackRequestActionType(action);
+        final ItemStackRequestActionType type = ((ItemStackRequestAction) action).getType();
         this.writeItemStackRequestActionIndex(buffer, type);
         this.writeItemStackRequestActionBody(buffer, type, action);
     }

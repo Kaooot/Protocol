@@ -5,7 +5,13 @@ import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemSt
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequestSlotInfo;
 
 @Data
-public class ItemStackRequestSwapAction {
+public class ItemStackRequestSwapAction implements ItemStackRequestAction {
+
+    @Override
+    public ItemStackRequestActionType getType() {
+        return ItemStackRequestActionType.SWAP;
+    }
+
 
     private ItemStackRequestActionType actionType;
     private ItemStackRequestSlotInfo source;

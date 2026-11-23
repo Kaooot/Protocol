@@ -3,6 +3,7 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.cloudburstmc.protocol.bedrock.data.attribute.ClientboundAttributeLayerSyncData;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
@@ -10,7 +11,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @ToString(doNotUseGetters = true)
 public class ClientboundAttributeLayerSyncPacket implements BedrockPacket {
 
-    private Object data;
+    private ClientboundAttributeLayerSyncData data;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

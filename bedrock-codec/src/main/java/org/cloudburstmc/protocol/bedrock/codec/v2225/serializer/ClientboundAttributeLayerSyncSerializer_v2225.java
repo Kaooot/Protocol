@@ -16,16 +16,7 @@ public class ClientboundAttributeLayerSyncSerializer_v2225 extends ClientboundAt
     public static final ClientboundAttributeLayerSyncSerializer_v2225 INSTANCE = new ClientboundAttributeLayerSyncSerializer_v2225();
 
     protected void writeEnvironmentAttributePayload(ByteBuf buffer, BedrockCodecHelper helper, ClientboundAttributeLayerSyncPacket packet, Object payload) {
-        final EnvironmentAttributePayloadType type;
-        if (payload instanceof ConstantAttributeData) {
-            type = EnvironmentAttributePayloadType.CONSTANT;
-        } else if (payload instanceof TransitionAttributeData) {
-            type = EnvironmentAttributePayloadType.TRANSITION;
-        } else if (payload instanceof NoiseTransitionAttributeData) {
-            type = EnvironmentAttributePayloadType.NOISE_TRANSITION;
-        } else {
-            return;
-        }
+        final EnvironmentAttributePayloadType type = ((EnvironmentAttributePayload) payload).getType();
         VarInts.writeUnsignedInt(buffer, type.ordinal());
         switch (type) {
             case CONSTANT:

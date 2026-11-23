@@ -11,7 +11,13 @@ import org.cloudburstmc.protocol.bedrock.data.recipe.RecipeNetId;
 import java.util.List;
 
 @Data
-public class ItemStackRequestCraftRecipeAutoAction {
+public class ItemStackRequestCraftRecipeAutoAction implements ItemStackRequestAction {
+
+    @Override
+    public ItemStackRequestActionType getType() {
+        return ItemStackRequestActionType.CRAFT_RECIPE_AUTO;
+    }
+
 
     private ItemStackRequestActionType actionType;
     private RecipeNetId recipeNetId;

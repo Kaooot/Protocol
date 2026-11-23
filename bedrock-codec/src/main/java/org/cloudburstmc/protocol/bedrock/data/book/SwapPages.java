@@ -6,7 +6,13 @@ import lombok.Data;
  * SwapPages operation, sent when two pages are to be swapped. See BookEditPacket
  */
 @Data
-public class SwapPages {
+public class SwapPages implements BookEditAction {
+
+    @Override
+    public BookEditOperation getType() {
+        return BookEditOperation.SWAP_PAGES;
+    }
+
 
     /**
      * Current page index

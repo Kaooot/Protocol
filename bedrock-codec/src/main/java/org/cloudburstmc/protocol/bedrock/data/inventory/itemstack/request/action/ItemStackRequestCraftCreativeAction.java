@@ -6,7 +6,13 @@ import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemSt
 import org.cloudburstmc.protocol.bedrock.data.item.creative.CreativeItemNetId;
 
 @Data
-public class ItemStackRequestCraftCreativeAction {
+public class ItemStackRequestCraftCreativeAction implements ItemStackRequestAction {
+
+    @Override
+    public ItemStackRequestActionType getType() {
+        return ItemStackRequestActionType.CRAFT_CREATIVE;
+    }
+
 
     private ItemStackRequestActionType actionType;
     private CreativeItemNetId creativeItemNetId;

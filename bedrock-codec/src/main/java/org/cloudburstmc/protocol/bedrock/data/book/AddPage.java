@@ -6,7 +6,13 @@ import lombok.Data;
  * AddPage operation sent within the BookEditPacket. Indicates that a new page should be added
  */
 @Data
-public class AddPage {
+public class AddPage implements BookEditAction {
+
+    @Override
+    public BookEditOperation getType() {
+        return BookEditOperation.ADD_PAGE;
+    }
+
 
     /**
      * The index of the page which should be added

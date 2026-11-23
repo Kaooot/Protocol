@@ -8,7 +8,13 @@ import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemSt
 import java.util.List;
 
 @Data
-public class ItemStackRequestCraftResultsDeprecatedAction {
+public class ItemStackRequestCraftResultsDeprecatedAction implements ItemStackRequestAction {
+
+    @Override
+    public ItemStackRequestActionType getType() {
+        return ItemStackRequestActionType.CRAFT_RESULTS;
+    }
+
 
     private ItemStackRequestActionType actionType;
     private final List<ItemData> craftResults = new ObjectArrayList<>();

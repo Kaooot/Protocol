@@ -18,9 +18,10 @@ public class PlayerLocationSerializer_v800 implements BedrockPacketSerializer<Pl
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, PlayerLocationPacket packet) {
-        buffer.writeIntLE(packet.getLocation() instanceof CoordinatesLocation ? 0 : 1);
+        final PlayerLocationPacketType type = packet.getLocation().getType();
+        buffer.writeIntLE(type.ordinal());
         VarInts.writeLong(buffer, packet.getTargetActorID());
-        if (packet.getLocation() instanceof CoordinatesLocation) {
+        if (type == PlayerLocationPacketType.PLAYER_LOCATION_COORDINATES) {
             this.writeCoordinatesLocation(buffer, helper, packet, (CoordinatesLocation) packet.getLocation());
         }
     }

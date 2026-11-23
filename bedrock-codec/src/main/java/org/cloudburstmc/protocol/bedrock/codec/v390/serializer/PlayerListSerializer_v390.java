@@ -6,8 +6,8 @@ import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v388.serializer.PlayerListSerializer_v388;
 import org.cloudburstmc.protocol.bedrock.data.player.list.PlayerListAddEntry;
+import org.cloudburstmc.protocol.bedrock.data.player.list.PlayerListEntry;
 import org.cloudburstmc.protocol.bedrock.data.player.list.PlayerListPacketType;
-import org.cloudburstmc.protocol.bedrock.data.player.list.PlayerListRemoveEntry;
 import org.cloudburstmc.protocol.bedrock.packet.PlayerListPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -19,13 +19,13 @@ public class PlayerListSerializer_v390 extends PlayerListSerializer_v388 {
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, PlayerListPacket packet) {
         VarInts.writeUnsignedInt(
                 buffer,
-                packet.getEntries().get(0) instanceof PlayerListRemoveEntry ?
+                packet.getEntries().get(0).getType() == PlayerListPacketType.REMOVE ?
                         PlayerListPacketType.REMOVE.getLegacyId() : PlayerListPacketType.ADD.getLegacyId()
         );
         helper.writeArray(buffer, packet.getEntries(), this::writePlayerListEntry);
 
-        if (packet.getEntries().get(0) instanceof PlayerListAddEntry) {
-            for (Object entry : packet.getEntries()) {
+        if (packet.getEntries().get(0).getType() == PlayerListPacketType.ADD) {
+            for (PlayerListEntry entry : packet.getEntries()) {
                 buffer.writeBoolean(((PlayerListAddEntry) entry).isTrustedSkin());
             }
         }
@@ -37,7 +37,7 @@ public class PlayerListSerializer_v390 extends PlayerListSerializer_v388 {
         helper.readArray(buffer, packet.getEntries(), (buf, codecHelper) ->
                 this.readPlayerListEntry(buf, codecHelper, packetType), MAX_ENTRIES);
 
-        if (packet.getEntries().get(0) instanceof PlayerListAddEntry) {
+        if (packet.getEntries().get(0).getType() == PlayerListPacketType.ADD) {
             final int length = packet.getEntries().size();
             for (int i = 0; i < length && buffer.isReadable(); i++) {
                 ((PlayerListAddEntry) packet.getEntries().get(i)).setTrustedSkin(buffer.readBoolean());

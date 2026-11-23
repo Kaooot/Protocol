@@ -38,17 +38,8 @@ public class ClientboundDataStoreSerializer_v898 implements BedrockPacketSeriali
         );
     }
 
-    protected void writeUpdate(ByteBuf buffer, BedrockCodecHelper helper, ClientboundDataStorePacket packet, Object update) {
-        final DataStoreType type;
-        if (update instanceof DataStoreUpdate) {
-            type = DataStoreType.UPDATE;
-        } else if (update instanceof DataStoreChange) {
-            type = DataStoreType.CHANGE;
-        } else if (update instanceof DataStoreRemoval) {
-            type = DataStoreType.REMOVAL;
-        } else {
-            return;
-        }
+    protected void writeUpdate(ByteBuf buffer, BedrockCodecHelper helper, ClientboundDataStorePacket packet, DataStoreEntry update) {
+        final DataStoreType type = update.getType();
         VarInts.writeUnsignedInt(buffer, type.ordinal());
         switch (type) {
             case UPDATE:
@@ -63,7 +54,7 @@ public class ClientboundDataStoreSerializer_v898 implements BedrockPacketSeriali
         }
     }
 
-    protected Object readUpdate(ByteBuf buffer, BedrockCodecHelper helper, ClientboundDataStorePacket packet) {
+    protected DataStoreEntry readUpdate(ByteBuf buffer, BedrockCodecHelper helper, ClientboundDataStorePacket packet) {
         switch (DataStoreType.values()[VarInts.readUnsignedInt(buffer)]) {
             case UPDATE:
                 return helper.readDataStoreUpdate(buffer);

@@ -6,7 +6,13 @@ import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemSt
 import org.cloudburstmc.protocol.bedrock.data.recipe.RecipeNetId;
 
 @Data
-public class ItemStackRequestCraftRepairAndDisenchantAction {
+public class ItemStackRequestCraftRepairAndDisenchantAction implements ItemStackRequestAction {
+
+    @Override
+    public ItemStackRequestActionType getType() {
+        return ItemStackRequestActionType.CRAFT_REPAIR_AND_DISENCHANT;
+    }
+
 
     private ItemStackRequestActionType actionType;
     private RecipeNetId recipeNetId;

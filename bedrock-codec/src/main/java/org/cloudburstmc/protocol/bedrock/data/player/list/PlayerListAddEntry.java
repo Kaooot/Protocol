@@ -9,7 +9,13 @@ import org.cloudburstmc.protocol.bedrock.data.skin.SerializedSkin;
 import java.util.UUID;
 
 @Data
-public class PlayerListAddEntry {
+public class PlayerListAddEntry implements PlayerListEntry {
+
+    @Override
+    public PlayerListPacketType getType() {
+        return PlayerListPacketType.ADD;
+    }
+
 
     private UUID uuid;
     private long actorUniqueID;

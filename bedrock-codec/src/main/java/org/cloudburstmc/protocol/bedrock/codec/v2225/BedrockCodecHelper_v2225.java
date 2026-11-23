@@ -56,14 +56,6 @@ public class BedrockCodecHelper_v2225 extends BedrockCodecHelper_v2193 {
     }
 
     @Override
-    protected ItemStackRequestActionType itemStackRequestActionType(Object action) {
-        if (action instanceof ItemStackRequestCraftDiscPressAction) {
-            return ItemStackRequestActionType.CRAFT_DISC_PRESS;
-        }
-        return super.itemStackRequestActionType(action);
-    }
-
-    @Override
     protected void writeItemStackRequestActionIndex(ByteBuf buffer, ItemStackRequestActionType type) {
         VarInts.writeUnsignedInt(buffer, this.stackRequestActionTypes.getId(type));
         buffer.writeByte(ACTION_TYPE_VALUES.getId(type));

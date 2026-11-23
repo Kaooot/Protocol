@@ -25,21 +25,8 @@ public class InventoryTransactionSerializer_v291 implements BedrockPacketSeriali
     }
 
     protected void writeTransaction(ByteBuf buffer, BedrockCodecHelper helper, InventoryTransactionPacket packet) {
-        final Object transaction = packet.getTransaction();
-        final InventoryTransactionType type;
-        if (transaction instanceof NormalTransactionData) {
-            type = InventoryTransactionType.NORMAL;
-        } else if (transaction instanceof InventoryMismatchData) {
-            type = InventoryTransactionType.MISMATCH;
-        } else if (transaction instanceof ItemUseInventoryTransaction) {
-            type = InventoryTransactionType.ITEM_USE;
-        } else if (transaction instanceof ItemUseOnActorInventoryTransaction) {
-            type = InventoryTransactionType.ITEM_USE_ON_ACTOR;
-        } else if (transaction instanceof ItemReleaseInventoryTransaction) {
-            type = InventoryTransactionType.ITEM_RELEASE;
-        } else {
-            return;
-        }
+        final InventoryTransactionData transaction = packet.getTransaction();
+        final InventoryTransactionType type = transaction.getType();
         this.writeTransactionIndex(buffer, helper, packet, type);
         this.writeTransactionBody(buffer, helper, packet, type, transaction);
     }
@@ -77,7 +64,7 @@ public class InventoryTransactionSerializer_v291 implements BedrockPacketSeriali
         return InventoryTransactionType.values()[VarInts.readUnsignedInt(buffer)];
     }
 
-    protected Object readTransactionBody(ByteBuf buffer, BedrockCodecHelper helper, InventoryTransactionPacket packet, InventoryTransactionType type) {
+    protected InventoryTransactionData readTransactionBody(ByteBuf buffer, BedrockCodecHelper helper, InventoryTransactionPacket packet, InventoryTransactionType type) {
         switch (type) {
             case NORMAL:
                 return this.readNormalTransactionData(buffer, helper, packet);

@@ -7,6 +7,7 @@ import lombok.ToString;
 import org.cloudburstmc.protocol.bedrock.annotation.Added;
 import org.cloudburstmc.protocol.bedrock.data.inventory.LegacySetSlot;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.ItemStackLegacyRequestId;
+import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.InventoryTransactionData;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 import java.util.List;
@@ -21,7 +22,7 @@ public class InventoryTransactionPacket implements BedrockPacket {
     @Added("1.16.0")
     private final List<LegacySetSlot> legacySetItemSlots = new ObjectArrayList<>();
     //oneOf<NormalTransactionData, InventoryMismatchData, ItemUseInventoryTransaction, ItemUseOnActorInventoryTransaction, ItemReleaseInventoryTransaction>
-    private Object transaction;
+    private InventoryTransactionData transaction;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

@@ -9,19 +9,17 @@ import org.cloudburstmc.protocol.bedrock.data.attribute.AttributeDataType;
 import org.cloudburstmc.protocol.bedrock.data.attribute.StringAttributeData;
 import org.cloudburstmc.protocol.bedrock.data.attribute.StringAttributeOperation;
 import org.cloudburstmc.protocol.bedrock.packet.ClientboundAttributeLayerSyncPacket;
-import org.cloudburstmc.protocol.common.util.VarInts;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ClientboundAttributeLayerSyncSerializer_v2259 extends ClientboundAttributeLayerSyncSerializer_v2225 {
     public static final ClientboundAttributeLayerSyncSerializer_v2259 INSTANCE = new ClientboundAttributeLayerSyncSerializer_v2259();
 
     @Override
-    protected void writeAttributeData(ByteBuf buffer, BedrockCodecHelper helper, ClientboundAttributeLayerSyncPacket packet, Object attribute) {
-        if (attribute instanceof StringAttributeData) {
-            VarInts.writeUnsignedInt(buffer, AttributeDataType.STRING.ordinal());
+    protected void writeAttributeDataBody(ByteBuf buffer, BedrockCodecHelper helper, ClientboundAttributeLayerSyncPacket packet, AttributeDataType type, Object attribute) {
+        if (type == AttributeDataType.STRING) {
             this.writeStringAttributeData(buffer, helper, packet, (StringAttributeData) attribute);
         } else {
-            super.writeAttributeData(buffer, helper, packet, attribute);
+            super.writeAttributeDataBody(buffer, helper, packet, type, attribute);
         }
     }
 

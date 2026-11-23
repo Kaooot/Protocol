@@ -3,6 +3,7 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.cloudburstmc.protocol.bedrock.data.book.BookEditAction;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
@@ -11,7 +12,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 public class BookEditPacket implements BedrockPacket {
 
     private int bookSlot;
-    private Object operation;
+    private BookEditAction operation;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {
