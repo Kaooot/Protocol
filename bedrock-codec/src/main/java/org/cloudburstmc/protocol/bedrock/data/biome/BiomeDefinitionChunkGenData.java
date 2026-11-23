@@ -3,6 +3,7 @@ package org.cloudburstmc.protocol.bedrock.data.biome;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.cloudburstmc.protocol.bedrock.annotation.Added;
 import org.cloudburstmc.protocol.bedrock.data.world.VillageType;
 
 @Data
@@ -17,20 +18,12 @@ public class BiomeDefinitionChunkGenData {
     private BiomeOverworldGenRulesData overworldGenRules;
     private BiomeMultinoiseGenRulesData multinoiseGenRules;
     private BiomeLegacyWorldGenRulesData legacyWorldGenRules;
-    /**
-     * @since v859
-     */
+    @Added("1.21.120")
     private BiomeReplacementsData replacementBiomes;
-    /**
-     * @since v924
-     */
+    @Added("26.0")
     private VillageType villageType;
-    /**
-     * @since v975
-     */
+    @Added("26.10")
     private BiomeSurfaceBuilderData surfaceBuilderData;
-    /**
-     * @since v975
-     */
+    @Added("26.10")
     private BiomeSurfaceBuilderData subsurfaceBuilderData;
 }

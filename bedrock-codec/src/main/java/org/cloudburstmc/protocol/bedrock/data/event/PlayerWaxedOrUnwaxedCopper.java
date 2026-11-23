@@ -1,13 +1,13 @@
 package org.cloudburstmc.protocol.bedrock.data.event;
 
 import lombok.Data;
+import org.cloudburstmc.protocol.bedrock.annotation.Added;
 
 /**
  * Used for telemetry data relating to copper block wax state changes
- *
- * @since v471
  */
 @Data
+@Added("1.17.40")
 public class PlayerWaxedOrUnwaxedCopper {
 
     /**

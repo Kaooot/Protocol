@@ -3,11 +3,10 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.cloudburstmc.protocol.bedrock.annotation.Removed;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Deprecated since v594
- */
+@Removed("1.20.10")
 @Deprecated
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)

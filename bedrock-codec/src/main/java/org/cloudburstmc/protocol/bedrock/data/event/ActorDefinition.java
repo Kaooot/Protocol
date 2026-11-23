@@ -1,13 +1,13 @@
 package org.cloudburstmc.protocol.bedrock.data.event;
 
 import lombok.Data;
+import org.cloudburstmc.protocol.bedrock.annotation.Added;
 
 /**
  * Provides information about an ActorDefinition, used for telemetry purposes
- *
- * @since v388
  */
 @Data
+@Added("1.13.0")
 public class ActorDefinition {
 
     /**

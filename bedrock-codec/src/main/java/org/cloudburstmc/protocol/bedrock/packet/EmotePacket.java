@@ -3,6 +3,7 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.cloudburstmc.protocol.bedrock.annotation.Added;
 import org.cloudburstmc.protocol.bedrock.data.player.input.EmoteFlag;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
@@ -16,9 +17,7 @@ public class EmotePacket implements BedrockPacket {
 
     private long actorRuntimeId;
     private String emoteId;
-    /**
-     * @since v729
-     */
+    @Added("1.21.30")
     private int emoteLengthTicks;
     private String xuid;
     private String platformId;

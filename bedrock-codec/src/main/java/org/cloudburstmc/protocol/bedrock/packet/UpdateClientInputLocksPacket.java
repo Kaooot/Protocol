@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.math.vector.Vector3f;
+import org.cloudburstmc.protocol.bedrock.annotation.Removed;
 import org.cloudburstmc.protocol.bedrock.data.player.input.ClientInputLockComponent;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
@@ -16,9 +17,8 @@ import java.util.Set;
 public class UpdateClientInputLocksPacket implements BedrockPacket {
 
     private final Set<ClientInputLockComponent> inputLockComponents = EnumSet.noneOf(ClientInputLockComponent.class);
-    /**
-     * @deprecated since v944
-     */
+    @Deprecated
+    @Removed("26.10")
     private Vector3f serverPos;
 
     @Override

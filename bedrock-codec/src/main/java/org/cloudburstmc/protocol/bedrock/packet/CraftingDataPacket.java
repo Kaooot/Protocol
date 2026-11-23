@@ -4,6 +4,7 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.cloudburstmc.protocol.bedrock.annotation.Removed;
 import org.cloudburstmc.protocol.bedrock.data.recipe.*;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
@@ -27,9 +28,8 @@ public class CraftingDataPacket implements BedrockPacket {
     private final List<MaterialReducerDataEntry> materialReducers = new ObjectArrayList<>();
     private boolean clearRecipes;
 
-    /**
-     * @deprecated since v975
-     */
+    @Deprecated
+    @Removed("26.20")
     private final List<FurnaceRecipePayload> furnaceRecipes = new ObjectArrayList<>();
 
     @Override

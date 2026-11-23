@@ -3,6 +3,7 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.cloudburstmc.protocol.bedrock.annotation.Added;
 import org.cloudburstmc.protocol.bedrock.data.connection.PacketCompressionAlgorithm;
 import org.cloudburstmc.protocol.bedrock.data.connection.SctpRecoveryProfile;
 import org.cloudburstmc.protocol.common.PacketSignal;
@@ -13,25 +14,15 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 public class NetworkSettingsPacket implements BedrockPacket {
 
     private int compressionThreshold;
-    /**
-     * @since v554
-     */
+    @Added("1.19.30")
     private PacketCompressionAlgorithm compressionAlgorithm;
-    /**
-     * @since v554
-     */
+    @Added("1.19.30")
     private boolean clientThrottleEnabled;
-    /**
-     * @since v554
-     */
+    @Added("1.19.30")
     private int clientThrottleThreshold;
-    /**
-     * @since v554
-     */
+    @Added("1.19.30")
     private float clientThrottleScalar;
-    /**
-     * @since v2259
-     */
+    @Added("26.70")
     private SctpRecoveryProfile sctpRecoveryProfile;
 
     @Override

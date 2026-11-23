@@ -3,19 +3,21 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.protocol.bedrock.data.world.AdventureSetting;
-import org.cloudburstmc.protocol.bedrock.data.player.PlayerPermissionLevel;
+import org.cloudburstmc.protocol.bedrock.annotation.Removed;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandPermissionLevel;
+import org.cloudburstmc.protocol.bedrock.data.player.PlayerPermissionLevel;
+import org.cloudburstmc.protocol.bedrock.data.world.AdventureSetting;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 import java.util.EnumSet;
 import java.util.Set;
 
 /**
- * @deprecated Removed in 1.19.30 (553). Use {@link UpdateAbilitiesPacket} and {@link UpdateAdventureSettingsPacket} instead.
+ * Use {@link UpdateAbilitiesPacket} and {@link UpdateAdventureSettingsPacket} instead.
  */
 @Data
 @Deprecated
+@Removed("1.19.30")
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class AdventureSettingsPacket implements BedrockPacket {

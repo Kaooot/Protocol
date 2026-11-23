@@ -2,6 +2,7 @@ package org.cloudburstmc.protocol.bedrock.data.camera;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
+import org.cloudburstmc.protocol.bedrock.annotation.Added;
 
 import java.util.List;
 
@@ -14,12 +15,8 @@ public class CameraSplineDefinition {
     private final List<CameraSplineControlPoint> controlPoints = new ObjectArrayList<>();
     private final List<CameraSplineProgressKeyFrame> progressKeyFrames = new ObjectArrayList<>();
     private final List<CameraSplineRotationKeyFrame> rotationKeyFrames = new ObjectArrayList<>();
-    /**
-     * @since v944
-     */
+    @Added("26.10")
     private String splineIdentifier;
-    /**
-     * @since v944
-     */
+    @Added("26.10")
     private boolean loadFromJson;
 }

@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.math.vector.Vector3i;
+import org.cloudburstmc.protocol.bedrock.annotation.Added;
 
 @Data
 @NoArgsConstructor
@@ -14,27 +15,19 @@ public class StructureSettings {
     private String structurePaletteName;
     private boolean shouldIgnoreEntities;
     private boolean shouldIgnoreBlocks;
-    /**
-     * @since v503
-     */
+    @Added("1.18.30")
     private boolean shouldAllowNonTickingPlayerAndTickingAreaChunks;
     private Vector3i structureSize;
     private Vector3i structureOffset;
     private long lastEditPlayer;
     private Rotation rotation;
     private Mirror mirror;
-    /**
-     * @since v440
-     */
+    @Added("1.17.0")
     private AnimationMode animationMode;
-    /**
-     * @since v440
-     */
+    @Added("1.17.0")
     private float animationSeconds;
     private float integrityValue;
     private int integritySeed;
-    /**
-     * @since v388
-     */
+    @Added("1.13.0")
     private Vector3f rotationPivot;
 }

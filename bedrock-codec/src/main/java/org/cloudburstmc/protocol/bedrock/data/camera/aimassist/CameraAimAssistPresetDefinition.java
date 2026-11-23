@@ -2,6 +2,7 @@ package org.cloudburstmc.protocol.bedrock.data.camera.aimassist;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
+import org.cloudburstmc.protocol.bedrock.annotation.Removed;
 
 import java.util.List;
 
@@ -9,9 +10,8 @@ import java.util.List;
 public class CameraAimAssistPresetDefinition {
 
     private String identifier;
-    /**
-     * @deprecated since v776
-     */
+    @Deprecated
+    @Removed("1.21.60")
     private String categories;
     private CameraAimAssistPresetExclusionDefinition exclusionSettings;
     private final List<String> liquidTargetingList = new ObjectArrayList<>();

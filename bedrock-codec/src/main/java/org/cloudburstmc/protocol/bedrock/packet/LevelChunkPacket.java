@@ -7,6 +7,7 @@ import it.unimi.dsi.fastutil.longs.LongList;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.cloudburstmc.protocol.bedrock.annotation.Added;
 import org.cloudburstmc.protocol.bedrock.data.world.DimensionType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
@@ -18,9 +19,7 @@ public class LevelChunkPacket extends AbstractReferenceCounted implements Bedroc
     private int chunkZ;
     private int subChunksCount;
     private boolean cacheEnabled;
-    /**
-     * @since v471
-     */
+    @Added("1.17.40")
     private boolean clientNeedsToRequestSubChunks;
     /**
      * @since v485
@@ -28,13 +27,9 @@ public class LevelChunkPacket extends AbstractReferenceCounted implements Bedroc
     private Integer clientRequestSubChunkLimit;
     private final LongList cacheBlobs = new LongArrayList();
     private ByteBuf serializedChunkData;
-    /**
-     * @since v649
-     */
+    @Added("1.20.60")
     private DimensionType dimension;
-    /**
-     * @since v2225
-     */
+    @Added("26.60")
     private boolean isClientBiomeUpdate;
 
     @Override

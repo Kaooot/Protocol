@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.nbt.NbtMap;
+import org.cloudburstmc.protocol.bedrock.annotation.Added;
 import org.cloudburstmc.protocol.bedrock.data.biome.BiomeDefinitionData;
 import org.cloudburstmc.protocol.bedrock.data.biome.BiomeStringList;
 import org.cloudburstmc.protocol.common.PacketSignal;
@@ -15,10 +16,9 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @ToString(doNotUseGetters = true)
 public class BiomeDefinitionListPacket implements BedrockPacket {
 
-    /**
-     * @since v800 (1.21.80)
-     */
+    @Added("1.21.80")
     private final Int2ObjectMap<BiomeDefinitionData> mapOfBiomeNamesToData = new Int2ObjectOpenHashMap<>();
+    @Added("1.21.80")
     private final BiomeStringList stringList = new BiomeStringList();
     /**
      * @deprecated As of v800 (1.21.80) the biomes are no longer sent as NBT. Use {@link #mapOfBiomeNamesToData} instead.

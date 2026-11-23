@@ -1,6 +1,7 @@
 package org.cloudburstmc.protocol.bedrock.data.camera;
 
 import lombok.Data;
+import org.cloudburstmc.protocol.bedrock.annotation.Added;
 import org.cloudburstmc.protocol.common.util.OptionalBoolean;
 
 @Data
@@ -9,28 +10,16 @@ public class CameraInstruction {
     private CameraSetInstruction set;
     private OptionalBoolean clear = OptionalBoolean.empty();
     private CameraFadeInstruction fade;
-    /**
-     * @since v712
-     */
+    @Added("1.21.20")
     private CameraTargetInstruction target;
-    /**
-     * @since v712
-     */
+    @Added("1.21.20")
     private OptionalBoolean removeTarget = OptionalBoolean.empty();
-    /**
-     * @since v827
-     */
+    @Added("1.21.100")
     private CameraFovInstruction fieldOfView;
-    /**
-     * @since v859
-     */
+    @Added("1.21.120")
     private CameraSplineInstruction spline;
-    /**
-     * @since v859
-     */
+    @Added("1.21.120")
     private CameraAttachToEntityInstruction attachToEntity;
-    /**
-     * @since v859
-     */
+    @Added("1.21.120")
     private OptionalBoolean detachFromEntity = OptionalBoolean.empty();
 }

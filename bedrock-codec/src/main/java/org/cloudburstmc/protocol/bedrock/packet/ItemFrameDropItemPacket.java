@@ -4,11 +4,10 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.math.vector.Vector3i;
+import org.cloudburstmc.protocol.bedrock.annotation.Removed;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Deprecated since v662
- */
+@Removed("1.20.70")
 @Deprecated
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)

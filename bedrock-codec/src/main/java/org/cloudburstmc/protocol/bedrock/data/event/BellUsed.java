@@ -1,13 +1,13 @@
 package org.cloudburstmc.protocol.bedrock.data.event;
 
 import lombok.Data;
+import org.cloudburstmc.protocol.bedrock.annotation.Added;
 
 /**
  * Provides information about a bell use
- *
- * @since v354
  */
 @Data
+@Added("1.11.0")
 public class BellUsed {
 
     /**

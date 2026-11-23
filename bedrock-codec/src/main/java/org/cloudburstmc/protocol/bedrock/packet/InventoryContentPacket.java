@@ -4,6 +4,8 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.cloudburstmc.protocol.bedrock.annotation.Added;
+import org.cloudburstmc.protocol.bedrock.annotation.Removed;
 import org.cloudburstmc.protocol.bedrock.data.inventory.FullContainerName;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
 import org.cloudburstmc.protocol.common.PacketSignal;
@@ -18,10 +20,9 @@ public class InventoryContentPacket implements BedrockPacket {
     private int containerId;
     private final List<ItemData> slots = new ObjectArrayList<>();
     private FullContainerName fullContainerName;
-    /**
-     * @since v729
-     * @deprecated since v748. Use storageItem ItemData size instead.
-     */
+    @Deprecated
+    @Added("1.21.30")
+    @Removed("1.21.40")
     private int dynamicContainerSize;
     private ItemData storageItem;
 

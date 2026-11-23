@@ -1,6 +1,8 @@
 package org.cloudburstmc.protocol.bedrock.data.datastore;
 
 import lombok.Data;
+import org.cloudburstmc.protocol.bedrock.annotation.Added;
+import org.cloudburstmc.protocol.bedrock.annotation.Removed;
 
 @Data
 public class DataStoreUpdate {
@@ -9,25 +11,20 @@ public class DataStoreUpdate {
     private Object data;
     private int updateCount;
 
-    /**
-     * @deprecated since v2259
-     */
+    @Deprecated
+    @Removed("26.70")
     private String dataStoreName;
-    /**
-     * @deprecated since v2259
-     */
+    @Deprecated
+    @Removed("26.70")
     private String property;
-    /**
-     * @deprecated since v2259
-     */
+    @Deprecated
+    @Removed("26.70")
     private String path;
-    /**
-     * @deprecated since v2259
-     */
+    @Deprecated
+    @Removed("26.70")
     private int propertyUpdateCount;
-    /**
-     * @since v924
-     * @deprecated since v2259
-     */
+    @Added("26.0")
+    @Deprecated
+    @Removed("26.70")
     private int pathUpdateCount;
 }

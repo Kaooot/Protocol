@@ -1,6 +1,7 @@
 package org.cloudburstmc.protocol.bedrock.data.ability;
 
 import lombok.Data;
+import org.cloudburstmc.protocol.bedrock.annotation.Added;
 
 import java.util.EnumSet;
 import java.util.Set;
@@ -12,9 +13,7 @@ public class SerializedAbilitiesDataSerializedLayer {
     private final Set<AbilitiesIndex> abilitiesSet = EnumSet.noneOf(AbilitiesIndex.class);
     private final Set<AbilitiesIndex> abilityValues = EnumSet.noneOf(AbilitiesIndex.class);
     private float flySpeed;
-    /**
-     * @since v776
-     */
+    @Added("1.21.60")
     private float verticalFlySpeed;
     private float walkSpeed;
 }

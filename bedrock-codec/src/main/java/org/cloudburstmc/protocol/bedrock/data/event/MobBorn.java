@@ -1,13 +1,13 @@
 package org.cloudburstmc.protocol.bedrock.data.event;
 
 import lombok.Data;
+import org.cloudburstmc.protocol.bedrock.annotation.Added;
 
 /**
  * Sent as soon as a new mob is born
- *
- * @since v332
  */
 @Data
+@Added("1.9.0")
 public class MobBorn {
 
     /**

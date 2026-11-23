@@ -3,13 +3,12 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.cloudburstmc.protocol.bedrock.annotation.Removed;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * @deprecated Removed as of v800 (1.21.80). Server authoritative jump is handled by {@link PlayerAuthInputPacket}
- */
 @Data
 @Deprecated
+@Removed("1.21.80")
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class RiderJumpPacket implements BedrockPacket {

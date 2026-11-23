@@ -2,6 +2,7 @@ package org.cloudburstmc.protocol.bedrock.util;
 
 import lombok.ToString;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.cloudburstmc.protocol.bedrock.annotation.Added;
 import org.jose4j.json.JsonUtil;
 import org.jose4j.jwt.JwtClaims;
 import org.jose4j.jwt.consumer.JwtContext;
@@ -133,8 +134,8 @@ public final class ChainValidationResult {
         public final @Nullable String titleId;
         /**
          * The player's Minecraft PlayFab ID
-         * @since v818
          */
+        @Added("1.21.90")
         @Nullable
         public final String minecraftId;
 

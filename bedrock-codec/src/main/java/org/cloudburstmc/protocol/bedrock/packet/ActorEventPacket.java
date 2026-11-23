@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.math.vector.Vector3f;
+import org.cloudburstmc.protocol.bedrock.annotation.Added;
 import org.cloudburstmc.protocol.bedrock.data.actor.ActorEvent;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
@@ -15,9 +16,7 @@ public class ActorEventPacket implements BedrockPacket {
     private long targetRuntimeID;
     private ActorEvent eventID;
     private int data;
-    /**
-     * @since v975
-     */
+    @Added("26.10")
     private Vector3f fireAtPosition;
 
     @Override

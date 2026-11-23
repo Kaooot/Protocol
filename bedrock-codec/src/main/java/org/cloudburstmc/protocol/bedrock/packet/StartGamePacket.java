@@ -7,6 +7,8 @@ import lombok.ToString;
 import org.cloudburstmc.math.vector.Vector2f;
 import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.nbt.NbtMap;
+import org.cloudburstmc.protocol.bedrock.annotation.Added;
+import org.cloudburstmc.protocol.bedrock.annotation.Removed;
 import org.cloudburstmc.protocol.bedrock.data.ability.NetworkPermissions;
 import org.cloudburstmc.protocol.bedrock.data.connection.ServerConfig;
 import org.cloudburstmc.protocol.bedrock.data.definitions.ItemDefinition;
@@ -40,38 +42,29 @@ public class StartGamePacket implements BedrockPacket {
     private int enchantmentSeed;
     private final List<NbtMap> blockPalette = new ObjectArrayList<>();
     private final List<ServerBlockProperty> blockProperties = new ObjectArrayList<>();
-    /**
-     * @deprecated since v776. Use ItemComponentPacket instead.
-     */
+    @Deprecated
+    @Removed("1.21.60")
     private final List<ItemDefinition> itemDefinitions = new ObjectArrayList<>();
     private String multiplayerCorrelationId;
-    /**
-     * @since v407
-     */
+    @Added("1.16.0")
     private boolean enableItemStackNetManager;
     /**
      * The name of the server software.
      * Used for telemetry within the Bedrock client.
-     *
-     * @since v440
      */
+    @Added("1.17.0")
     private String serverVersion;
-    /**
-     * @since v527
-     */
+    @Added("1.19.0")
     private NbtMap playerPropertyData;
     /**
      * A XXHash64 of all block states by their compound tag.
      * <b>The exact way this is calculated is not currently known.</b>
      * <p>
      * A value of 0 will not be validated by the client.
-     *
-     * @since v475
      */
+    @Added("1.18.0")
     private long serverBlockTypeRegistryChecksum;
-    /**
-     * @since v527
-     */
+    @Added("1.19.0")
     private UUID worldTemplateID;
     /**
      * Enables client side chunk generation
@@ -82,31 +75,22 @@ public class StartGamePacket implements BedrockPacket {
     /**
      * Whether block runtime IDs should be replaced by 32-bit integer hashes of NBT block state.
      * Unlike runtime IDs, this hashes should be persistent across versions and should make support for data-driven/custom blocks easier.
-     *
-     * @since v582
      */
+    @Added("1.19.80")
     private boolean blockNetworkIdsAreHashes;
-    /**
-     * @since v827
-     * @deprecated since v898
-     */
+    @Deprecated
+    @Added("1.21.100")
+    @Removed("1.21.130")
     private boolean tickDeathSystemsEnabled;
-    /**
-     * @since v589
-     */
+    @Added("1.20.0")
     private NetworkPermissions networkPermissions;
-    /**
-     * @since v924
-     */
+    @Added("26.0")
     private ServerConfig serverConfigurationJoinInfo;
-    /**
-     * @since v924
-     */
+    @Added("26.0")
     private ServerTelemetryData serverTelemetryData;
-    /**
-     * @since v1001
-     * @deprecated since v2168
-     */
+    @Added("26.30")
+    @Deprecated
+    @Removed("26.40")
     private boolean isChatLogging;
 
     @Override

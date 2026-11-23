@@ -4,6 +4,8 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.cloudburstmc.protocol.bedrock.annotation.Added;
+import org.cloudburstmc.protocol.bedrock.annotation.Removed;
 import org.cloudburstmc.protocol.bedrock.data.resourcepack.EditorPackType;
 import org.cloudburstmc.protocol.bedrock.data.resourcepack.PackInstanceId;
 import org.cloudburstmc.protocol.bedrock.data.world.Experiments;
@@ -23,14 +25,11 @@ public class ResourcePackStackPacket implements BedrockPacket {
     private final List<PackInstanceId> texturePackList = new ObjectArrayList<>();
     private String baseGameVersion;
     private Experiments experiments;
-    /**
-     * @since v671
-     * @deprecated since v2259
-     */
+    @Deprecated
+    @Added("1.20.80")
+    @Removed("26.70")
     private boolean includeEditorPacks;
-    /**
-     * @since v2259
-     */
+    @Added("26.70")
     private final Set<EditorPackType> editorPackTypes = EnumSet.noneOf(EditorPackType.class);
 
     @Override

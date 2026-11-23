@@ -6,6 +6,8 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.math.vector.Vector2f;
 import org.cloudburstmc.math.vector.Vector3f;
+import org.cloudburstmc.protocol.bedrock.annotation.Added;
+import org.cloudburstmc.protocol.bedrock.annotation.Removed;
 import org.cloudburstmc.protocol.bedrock.data.ability.SerializedAbilitiesData;
 import org.cloudburstmc.protocol.bedrock.data.actor.PropertySyncData;
 import org.cloudburstmc.protocol.bedrock.data.actor.link.ActorLink;
@@ -26,9 +28,8 @@ public class AddPlayerPacket implements BedrockPacket {
 
     private UUID uuid;
     private String playerName;
-    /**
-     * @deprecated since v534
-     */
+    @Deprecated
+    @Removed("1.19.10")
     private long targetActorID;
     private long targetRuntimeID;
     private String platformChatId;
@@ -37,28 +38,18 @@ public class AddPlayerPacket implements BedrockPacket {
     private Vector2f rotation;
     private float yHeadRotation;
     private ItemData carriedItem;
-    /**
-     * @since v503
-     */
+    @Added("1.18.30")
     private GameType playerGameType;
     private ActorDataMap entityData = new ActorDataMap();
-    /**
-     * @since v557
-     */
+    @Added("1.19.40")
     private PropertySyncData synchedProperties = new PropertySyncData();
-    /**
-     * @since v534
-     */
+    @Added("1.19.10")
     private SerializedAbilitiesData abilitiesData = new SerializedAbilitiesData();
     private final List<ActorLink> actorLinks = new ObjectArrayList<>();
-    /**
-     * @since v2225
-     */
+    @Added("26.60")
     private PassengerOfBlockArguments passengerBlockData;
     private String deviceId;
-    /**
-     * @since v388
-     */
+    @Added("1.13.0")
     private BuildPlatform buildPlatform;
 
     private AdventureSettingsPacket adventureSettings = new AdventureSettingsPacket();

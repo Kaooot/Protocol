@@ -4,6 +4,7 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.cloudburstmc.protocol.bedrock.annotation.Added;
 import org.cloudburstmc.protocol.bedrock.data.text.TextProcessingEventOrigin;
 
 import java.util.List;
@@ -15,12 +16,8 @@ public class ItemStackRequest {
 
     private ItemStackRequestId clientRequestId;
     private final List<Object> actions = new ObjectArrayList<>();
-    /**
-     * @since v422
-     */
+    @Added("1.16.200")
     private final List<String> stringsToFilter = new ObjectArrayList<>();
-    /**
-     * @since v554
-     */
+    @Added("1.19.30")
     private TextProcessingEventOrigin stringsToFilterOrigin;
 }

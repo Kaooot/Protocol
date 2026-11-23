@@ -3,6 +3,7 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.cloudburstmc.protocol.bedrock.annotation.Added;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
@@ -11,13 +12,9 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 public class ClientboundDataDrivenUIShowScreenPacket implements BedrockPacket {
 
     private String screenId;
-    /**
-     * @since v944
-     */
+    @Added("26.10")
     private int formId;
-    /**
-     * @since v944
-     */
+    @Added("26.10")
     private Integer dataInstanceId;
 
     @Override

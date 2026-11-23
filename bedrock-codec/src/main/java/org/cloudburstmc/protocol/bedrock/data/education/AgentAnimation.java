@@ -1,10 +1,11 @@
 package org.cloudburstmc.protocol.bedrock.data.education;
 
+import org.cloudburstmc.protocol.bedrock.annotation.Added;
+
 /**
  * Edu only, see AgentAnimationPacket
- *
- * @since v594
  */
+@Added("1.20.10")
 public enum AgentAnimation {
 
     ARM_SWING,

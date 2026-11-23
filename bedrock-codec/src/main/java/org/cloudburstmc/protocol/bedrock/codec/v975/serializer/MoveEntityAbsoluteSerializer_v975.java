@@ -1,6 +1,7 @@
 package org.cloudburstmc.protocol.bedrock.codec.v975.serializer;
 
 import io.netty.buffer.ByteBuf;
+import org.cloudburstmc.protocol.bedrock.annotation.Added;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.MoveEntityAbsoluteSerializer_v291;
 import org.cloudburstmc.protocol.bedrock.data.actor.MoveActorAbsoluteData;
@@ -14,9 +15,7 @@ public class MoveEntityAbsoluteSerializer_v975 extends MoveEntityAbsoluteSeriali
     private static final int FLAG_ON_GROUND = 0x1;
     private static final int FLAG_TELEPORTED = 0x2;
     private static final int FLAG_FORCE_MOVE = 0x4;
-    /**
-     * @since v975
-     */
+    @Added("26.20")
     private static final int FLAG_FORCE_COMPLETION = 0x8;
 
     @Override

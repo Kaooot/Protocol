@@ -1,18 +1,15 @@
 package org.cloudburstmc.protocol.bedrock.data.world;
 
 import lombok.Data;
+import org.cloudburstmc.protocol.bedrock.annotation.Added;
 import org.cloudburstmc.protocol.bedrock.data.biome.SpawnBiomeType;
 
 @Data
 public class SpawnSettings {
 
-    /**
-     * @since v407
-     */
+    @Added("1.16.0")
     private SpawnBiomeType spawnBiomeType;
-    /**
-     * @since v407
-     */
+    @Added("1.16.0")
     private String userDefinedBiomeName;
     private DimensionType dimension;
 }

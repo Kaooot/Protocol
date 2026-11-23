@@ -1,13 +1,13 @@
 package org.cloudburstmc.protocol.bedrock.data.event;
 
 import lombok.Data;
+import org.cloudburstmc.protocol.bedrock.annotation.Added;
 
 /**
  * Piglin Barter telemetry data
- *
- * @since v471
  */
 @Data
+@Added("1.17.40")
 public class PiglinBarter {
 
     /**

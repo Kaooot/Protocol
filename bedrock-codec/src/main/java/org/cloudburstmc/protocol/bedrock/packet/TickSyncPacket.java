@@ -3,13 +3,13 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.cloudburstmc.protocol.bedrock.annotation.Removed;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
  * Used to maintain synchronization with a server running in authoritative mode.
- *
- * @deprecated since v685
  */
+@Removed("1.21.0")
 @Deprecated
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)

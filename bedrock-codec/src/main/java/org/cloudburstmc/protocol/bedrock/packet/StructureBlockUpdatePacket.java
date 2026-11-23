@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.math.vector.Vector3i;
+import org.cloudburstmc.protocol.bedrock.annotation.Added;
 import org.cloudburstmc.protocol.bedrock.data.structure.StructureEditorData;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
@@ -16,9 +17,7 @@ public class StructureBlockUpdatePacket implements BedrockPacket {
     private StructureEditorData structureData;
     private boolean trigger;
     private boolean isWaterlogged;
-    /**
-     * @since v2259
-     */
+    @Added("26.70")
     private boolean keepStructureVoid;
 
     @Override

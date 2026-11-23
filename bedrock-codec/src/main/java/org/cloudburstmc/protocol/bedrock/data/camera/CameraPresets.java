@@ -3,6 +3,8 @@ package org.cloudburstmc.protocol.bedrock.data.camera;
 import lombok.Data;
 import org.cloudburstmc.math.vector.Vector2f;
 import org.cloudburstmc.math.vector.Vector3f;
+import org.cloudburstmc.protocol.bedrock.annotation.Added;
+import org.cloudburstmc.protocol.bedrock.annotation.Removed;
 import org.cloudburstmc.protocol.bedrock.data.camera.aimassist.CameraAimAssistCommandDefinition;
 import org.cloudburstmc.protocol.bedrock.data.player.ControlScheme;
 import org.cloudburstmc.protocol.common.util.OptionalBoolean;
@@ -17,71 +19,40 @@ public class CameraPresets {
     private Float posZ;
     private Float rotX;
     private Float rotY;
-    /**
-     * @since v729
-     */
+    @Added("1.21.30")
     private Float rotationSpeed;
-    /**
-     * @since v729
-     */
+    @Added("1.21.30")
     private OptionalBoolean snapToTarget = OptionalBoolean.empty();
-    /**
-     * @since v766
-     */
+    @Added("1.21.50")
     private Vector2f horizontalRotationLimit;
-    /**
-     * @since v766
-     */
+    @Added("1.21.50")
     private Vector2f verticalRotationLimit;
-    /**
-     * @since v766
-     */
+    @Added("1.21.50")
     private OptionalBoolean continueTargeting = OptionalBoolean.empty();
-    /**
-     * @since v766
-     */
+    @Added("1.21.50")
     private Float blockListeningRadius;
-    /**
-     * @since v712
-     */
+    @Added("1.21.20")
     private Vector2f viewOffset;
-    /**
-     * @since v729
-     */
+    @Added("1.21.30")
     private Vector3f entityOffset;
-    /**
-     * @since v712
-     */
+    @Added("1.21.20")
     private Float radius;
     private Float yawLimitMin;
     private Float yawLimitMax;
-    /**
-     * @since v618
-     */
+    @Added("1.20.30")
     private AudioListener listener;
-    /**
-     * @since v618
-     */
+    @Added("1.20.30")
     private OptionalBoolean playerEffects = OptionalBoolean.empty();
-    /**
-     * @since v766
-     * @deprecated since v818
-     */
+    @Deprecated
+    @Added("1.21.50")
+    @Removed("1.21.90")
     private OptionalBoolean alignTargetAndCameraForward = OptionalBoolean.empty();
-    /**
-     * @since v766
-     */
+    @Added("1.21.50")
     private CameraAimAssistCommandDefinition aimAssist;
-    /**
-     * @since v800
-     */
+    @Added("1.21.80")
     private ControlScheme controlScheme;
-    /**
-     * @since v2193
-     */
+    @Added("26.50")
     private boolean applyInheritedStartingRotation;
-    /**
-     * @since v2193
-     */
+    @Added("26.50")
     private Vector2f startingRotation;
 }

@@ -2,6 +2,8 @@ package org.cloudburstmc.protocol.bedrock.data.waypoint;
 
 import lombok.Data;
 import org.cloudburstmc.math.vector.Vector2f;
+import org.cloudburstmc.protocol.bedrock.annotation.Added;
+import org.cloudburstmc.protocol.bedrock.annotation.Removed;
 import org.cloudburstmc.protocol.bedrock.data.world.WorldPosition;
 import org.cloudburstmc.protocol.common.util.OptionalBoolean;
 
@@ -14,8 +16,11 @@ public class ServerWaypointPayload {
     private OptionalBoolean isVisible = OptionalBoolean.empty();
     private WorldPosition worldPosition;
     /**
-     * @since v944, replaced by {@link #texturePath} + {@link #iconSize} in v975
+     * replaced by {@link #texturePath} + {@link #iconSize}
      */
+    @Added("26.10")
+    @Deprecated
+    @Removed("26.20")
     private VanillaWaypointManagerConstants.ImageType textureId;
     private String texturePath;
     private Vector2f iconSize;

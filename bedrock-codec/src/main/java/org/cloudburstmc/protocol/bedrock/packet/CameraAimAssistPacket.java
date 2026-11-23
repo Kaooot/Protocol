@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.math.vector.Vector2f;
+import org.cloudburstmc.protocol.bedrock.annotation.Added;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
@@ -11,17 +12,13 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @ToString(doNotUseGetters = true)
 public class CameraAimAssistPacket implements BedrockPacket {
 
-    /**
-     * @since v766
-     */
+    @Added("1.21.50")
     private String presetId;
     private Vector2f viewAngle;
     private float distance;
     private TargetMode targetMode;
     private Action action;
-    /**
-     * @since v827
-     */
+    @Added("1.21.100")
     private boolean showDebugRender;
 
     @Override

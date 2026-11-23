@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.math.vector.Vector3i;
+import org.cloudburstmc.protocol.bedrock.annotation.Removed;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
@@ -11,9 +12,8 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @ToString(doNotUseGetters = true)
 public class AnvilDamagePacket implements BedrockPacket {
 
-    /**
-     * @deprecated since v2168
-     */
+    @Deprecated
+    @Removed("26.40")
     private int damage;
     private Vector3i blockPosition;
 

@@ -3,6 +3,7 @@ package org.cloudburstmc.protocol.bedrock.data.biome;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.cloudburstmc.protocol.bedrock.annotation.Removed;
 
 @Data
 @NoArgsConstructor
@@ -11,21 +12,17 @@ public class BiomeClimateData {
 
     private float temperature;
     private float downfall;
-    /**
-     * @deprecated since v844
-     */
+    @Deprecated
+    @Removed("1.21.111")
     float redSporeDensity;
-    /**
-     * @deprecated since v844
-     */
+    @Deprecated
+    @Removed("1.21.111")
     float blueSporeDensity;
-    /**
-     * @deprecated since v844
-     */
+    @Deprecated
+    @Removed("1.21.111")
     float ashDensity;
-    /**
-     * @deprecated since v844
-     */
+    @Deprecated
+    @Removed("1.21.111")
     float whiteAshDensity;
     private float snowAccumulationMin;
     private float snowAccumulationMax;

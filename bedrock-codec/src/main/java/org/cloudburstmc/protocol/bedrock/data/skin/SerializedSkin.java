@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
+import org.cloudburstmc.protocol.bedrock.annotation.Added;
+import org.cloudburstmc.protocol.bedrock.annotation.Removed;
 import org.jose4j.json.internal.json_simple.JSONObject;
 import org.jose4j.json.internal.json_simple.JSONValue;
 
@@ -28,10 +30,9 @@ public class SerializedSkin {
     public static final int SKIN_128_128_SIZE = 128 * 128 * PIXEL_SIZE;
 
     private String ID;
-    /**
-     * @since v428
-     * @deprecated since v2225
-     */
+    @Deprecated
+    @Removed("26.60")
+    @Added("1.16.210")
     @Builder.Default
     private String playFabID = "";
     private String resourcePatch;
@@ -41,9 +42,7 @@ public class SerializedSkin {
     @Builder.Default
     private SkinImage capeImageData = SkinImage.EMPTY;
     private String geometryData;
-    /**
-     * @since v465
-     */
+    @Added("1.17.30")
     @Builder.Default
     private String geometryDataMinEngineVersion = "0.0.0";
     @Builder.Default
@@ -53,9 +52,7 @@ public class SerializedSkin {
     private String fullID;
     @Builder.Default
     private ArmSizeType armSize = ArmSizeType.WIDE;
-    /**
-     * @since v2168
-     */
+    @Added("26.40")
     private int skinColor;
     @Builder.Default
     private List<SerializedPersonaPieceHandle> personaPieces = Collections.emptyList();
@@ -64,19 +61,13 @@ public class SerializedSkin {
     private boolean isPremium;
     private boolean isPersona;
     private boolean isPersonaCapeOnClassicSkin;
-    /**
-     * @since v465
-     */
+    @Added("1.17.30")
     private boolean isPrimaryUser;
     private boolean overridesPlayerAppearance;
-    /**
-     * @since v2168
-     */
+    @Added("26.40")
     @Builder.Default
     private TrustedSkinFlag trustedSkinFlag = TrustedSkinFlag.TRUE;
-    /**
-     * @since v2168
-     */
+    @Added("26.40")
     @Builder.Default
     private String profileHash = "";
 

@@ -2,34 +2,23 @@ package org.cloudburstmc.protocol.bedrock.data.shape;
 
 import lombok.Data;
 import lombok.ToString;
+import org.cloudburstmc.protocol.bedrock.annotation.Added;
 
 @Data
 @ToString
 public class TextDataPayload {
 
     private String text;
-    /**
-     * @since v975
-     */
+    @Added("26.10")
     private boolean useRotation;
-    /**
-     * @since v975
-     */
+    @Added("26.10")
     private Integer backgroundColor;
-    /**
-     * @since v2193
-     */
+    @Added("26.50")
     private float lineGapHeight;
-    /**
-     * @since v975
-     */
+    @Added("26.10")
     private boolean depthTest;
-    /**
-     * @since v975
-     */
+    @Added("26.10")
     private boolean showBackface;
-    /**
-     * @since v975
-     */
+    @Added("26.10")
     private boolean showTextBackface;
 }

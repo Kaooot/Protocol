@@ -3,6 +3,7 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.cloudburstmc.protocol.bedrock.annotation.Removed;
 import org.cloudburstmc.protocol.bedrock.data.actor.MoveActorDeltaData;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
@@ -14,22 +15,18 @@ import java.util.Set;
 @ToString(doNotUseGetters = true)
 public class MoveActorDeltaPacket implements BedrockPacket {
 
-    /**
-     * @deprecated since v2168
-     */
+    @Deprecated
+    @Removed("26.40")
     private final Set<Flag> flags = EnumSet.noneOf(Flag.class);
     private MoveActorDeltaData moveData = new MoveActorDeltaData();
-    /**
-     * @deprecated since v419
-     */
+    @Deprecated
+    @Removed("1.16.100")
     private int deltaX;
-    /**
-     * @deprecated since v419
-     */
+    @Deprecated
+    @Removed("1.16.100")
     private int deltaY;
-    /**
-     * @deprecated since v419
-     */
+    @Deprecated
+    @Removed("1.16.100")
     private int deltaZ;
 
     @Override

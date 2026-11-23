@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.nbt.NbtMap;
+import org.cloudburstmc.protocol.bedrock.annotation.Added;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
@@ -14,6 +15,7 @@ public class UpdateTradePacket implements BedrockPacket {
     private int containerId;
     private int type;
     private int size;
+    @Added("1.8.0")
     private int traderTier;
     private long entityUniqueId;
     private long lastTradingPlayer;

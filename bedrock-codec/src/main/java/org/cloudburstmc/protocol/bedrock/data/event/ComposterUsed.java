@@ -1,13 +1,13 @@
 package org.cloudburstmc.protocol.bedrock.data.event;
 
 import lombok.Data;
+import org.cloudburstmc.protocol.bedrock.annotation.Added;
 
 /**
  * Provides information about a composter use
- *
- * @since v354
  */
 @Data
+@Added("1.11.0")
 public class ComposterUsed {
 
     /**

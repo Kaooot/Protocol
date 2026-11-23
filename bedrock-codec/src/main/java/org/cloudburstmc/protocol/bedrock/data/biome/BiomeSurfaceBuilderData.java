@@ -3,6 +3,7 @@ package org.cloudburstmc.protocol.bedrock.data.biome;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.cloudburstmc.protocol.bedrock.annotation.Added;
 
 @Data
 @NoArgsConstructor
@@ -10,9 +11,7 @@ import lombok.NoArgsConstructor;
 public class BiomeSurfaceBuilderData {
 
     private BiomeSurfaceMaterialData surfaceMaterials;
-    /**
-     * @since v844
-     */
+    @Added("1.21.111")
     private boolean hasDefaultOverworldSurface;
     private boolean hasSwampSurface;
     private boolean hasFrozenOceanSurface;

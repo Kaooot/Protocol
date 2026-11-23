@@ -4,6 +4,7 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.cloudburstmc.protocol.bedrock.annotation.Added;
 import org.cloudburstmc.protocol.bedrock.data.inventory.LegacySetSlot;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.ItemStackLegacyRequestId;
 import org.cloudburstmc.protocol.common.PacketSignal;
@@ -15,13 +16,9 @@ import java.util.List;
 @ToString(doNotUseGetters = true)
 public class InventoryTransactionPacket implements BedrockPacket {
 
-    /**
-     * @since v407
-     */
+    @Added("1.16.0")
     private ItemStackLegacyRequestId legacyRequestID;
-    /**
-     * @since v407
-     */
+    @Added("1.16.0")
     private final List<LegacySetSlot> legacySetItemSlots = new ObjectArrayList<>();
     //oneOf<NormalTransactionData, InventoryMismatchData, ItemUseInventoryTransaction, ItemUseOnActorInventoryTransaction, ItemReleaseInventoryTransaction>
     private Object transaction;

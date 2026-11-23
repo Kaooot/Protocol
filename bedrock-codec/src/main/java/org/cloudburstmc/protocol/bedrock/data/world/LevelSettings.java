@@ -2,6 +2,8 @@ package org.cloudburstmc.protocol.bedrock.data.world;
 
 import lombok.Data;
 import org.cloudburstmc.math.vector.Vector3i;
+import org.cloudburstmc.protocol.bedrock.annotation.Added;
+import org.cloudburstmc.protocol.bedrock.annotation.Removed;
 import org.cloudburstmc.protocol.bedrock.data.connection.GamePublishSetting;
 import org.cloudburstmc.protocol.bedrock.data.editor.EditorLevelMigrationVersion;
 import org.cloudburstmc.protocol.bedrock.data.editor.EditorWorldType;
@@ -19,41 +21,27 @@ public class LevelSettings {
     private final SpawnSettings spawnSettings = new SpawnSettings();
     private GeneratorType generatorType;
     private GameType gameType;
-    /**
-     * @since v671
-     */
+    @Added("1.20.80")
     private boolean isHardcore;
     private Difficulty gameDifficulty;
     private Vector3i defaultSpawnBlockPosition;
     private boolean achievementsDisabled;
-    /**
-     * @since v534
-     */
+    @Added("1.19.10")
     private EditorWorldType editorWorldType;
-    /**
-     * @since v582
-     */
+    @Added("1.19.80")
     private boolean isCreatedInEditor;
-    /**
-     * @since v582
-     */
+    @Added("1.19.80")
     private boolean isExportedFromEditor;
-    /**
-     * @since v2225
-     */
+    @Added("26.60")
     private EditorLevelMigrationVersion editorLevelMigrationVersion;
     private int dayCycleStopTime;
     private EducationEditionOffer educationEditionOffer;
     private boolean educationFeaturesEnabled;
-    /**
-     * @since v407
-     */
+    @Added("1.16.0")
     private String educationProductID;
     private float rainLevel;
     private float lightningLevel;
-    /**
-     * @since v332
-     */
+    @Added("1.9.0")
     private boolean hasConfirmedPlatformLockedContent;
     private boolean multiplayerGameIntent;
     private boolean lanBroadcastIntent;
@@ -62,9 +50,7 @@ public class LevelSettings {
     private boolean commandsEnabled;
     private boolean texturePacksRequired;
     private final GameRulesChangedPacketData ruleData = new GameRulesChangedPacketData();
-    /**
-     * @since v419
-     */
+    @Added("1.16.100")
     private Experiments experiments;
     private boolean hasBonusChestEnabled;
     private boolean startWithMapEnabled;
@@ -74,89 +60,56 @@ public class LevelSettings {
     private boolean hasLockedResourcePack;
     private boolean isFromLockedTemplate;
     private boolean useMsaGamertagsOnly;
-    /**
-     * @since v313
-     */
+    @Added("1.8.0")
     private boolean isFromWorldTemplate;
-    /**
-     * @since v332
-     */
+    @Added("1.9.0")
     private boolean isWorldTemplateOptionLocked;
-    /**
-     * @since v361
-     */
+    @Added("1.12.0")
     private boolean onlySpawnV1Villagers;
-    /**
-     * @since v544
-     */
+    @Added("1.19.20")
     private boolean personaDisabled;
-    /**
-     * @since v544
-     */
+    @Added("1.19.20")
     private boolean customSkinsDisabled;
     /**
      * @since v567
      */
     private boolean emoteChatMuted;
-    /**
-     * @since v388
-     */
+    @Added("1.13.0")
     private String baseGameVersion;
-    /**
-     * @since v407
-     */
+    @Added("1.16.0")
     private int limitedWorldWidth;
-    /**
-     * @since v407
-     */
+    @Added("1.16.0")
     private int limitedWorldDepth;
-    /**
-     * @since v407
-     */
+    @Added("1.16.0")
     private boolean netherType;
-    /**
-     * @since v465
-     */
+    @Added("1.17.30")
     private EduSharedUriResource eduSharedUriResource = EduSharedUriResource.EMPTY;
     private OptionalBoolean overrideForceExperimentalGameplay = OptionalBoolean.empty();
-    /**
-     * @since v544
-     */
+    @Added("1.19.20")
     private ChatRestrictionLevel chatRestrictionLevel;
-    /**
-     * @since v544
-     */
+    @Added("1.19.20")
     private boolean disablePlayerInteractions;
-    /**
-     * @since v1001
-     */
+    @Added("26.30")
     private ServerEditorConnectionPolicy serverEditorConnectionPolicy;
-    /**
-     * @since v1001
-     */
+    @Added("26.30")
     private boolean allowAnonymousBlockDropsInEditorWorlds;
-    /**
-     * @deprecated since v332
-     */
+    @Deprecated
+    @Removed("1.9.0")
     private boolean trustingPlayers;
-    /**
-     * @since v685
-     * @deprecated since v924
-     */
+    @Deprecated
+    @Added("1.21.0")
+    @Removed("26.0")
     private String serverId;
-    /**
-     * @since v685
-     * @deprecated since v924
-     */
+    @Deprecated
+    @Added("1.21.0")
+    @Removed("26.0")
     private String worldId;
-    /**
-     * @since v685
-     * @deprecated since v924
-     */
+    @Deprecated
+    @Added("1.21.0")
+    @Removed("26.0")
     private String scenarioId;
-    /**
-     * @since v818
-     * @deprecated since v924
-     */
+    @Deprecated
+    @Added("1.21.90")
+    @Removed("26.0")
     private String ownerId;
 }

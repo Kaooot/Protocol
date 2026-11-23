@@ -1,6 +1,7 @@
 package org.cloudburstmc.protocol.bedrock.data.prediction;
 
 import lombok.Data;
+import org.cloudburstmc.protocol.bedrock.annotation.Added;
 
 @Data
 public class MovementAttributesComponent {
@@ -11,16 +12,10 @@ public class MovementAttributesComponent {
     private float jumpStrength;
     private float health;
     private float hunger;
-    /**
-     * @since v975
-     */
+    @Added("26.10")
     private float frictionModifier;
-    /**
-     * @since v975
-     */
+    @Added("26.10")
     private float bounciness;
-    /**
-     * @since v975
-     */
+    @Added("26.10")
     private float airDragModifier;
 }

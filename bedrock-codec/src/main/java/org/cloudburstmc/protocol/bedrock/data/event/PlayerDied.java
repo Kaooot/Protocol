@@ -1,6 +1,7 @@
 package org.cloudburstmc.protocol.bedrock.data.event;
 
 import lombok.Data;
+import org.cloudburstmc.protocol.bedrock.annotation.Added;
 
 /**
  * Provides information about a player death
@@ -22,8 +23,7 @@ public class PlayerDied {
     private int damageSource;
     /**
      * Whether the player died whilst being in a village raid
-     *
-     * @since v389
      */
+    @Added("1.14.0")
     private boolean diedInRaid;
 }

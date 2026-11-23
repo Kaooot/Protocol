@@ -3,12 +3,11 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.cloudburstmc.protocol.bedrock.annotation.Removed;
 import org.cloudburstmc.protocol.bedrock.data.player.input.ServerAuthMovementMode;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * @deprecated since v818
- */
+@Removed("1.21.90")
 @Deprecated
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)

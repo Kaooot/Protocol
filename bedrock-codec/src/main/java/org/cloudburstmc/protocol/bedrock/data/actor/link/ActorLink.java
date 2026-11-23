@@ -1,6 +1,7 @@
 package org.cloudburstmc.protocol.bedrock.data.actor.link;
 
 import lombok.Data;
+import org.cloudburstmc.protocol.bedrock.annotation.Added;
 
 /**
  * An ActorLink describes the actor's mounting state, which actors are involved
@@ -28,14 +29,12 @@ public class ActorLink {
     private boolean immediate;
     /**
      * Whether the ActorLink was initiated by the passenger
-     *
-     * @since v407
      */
+    @Added("1.16.0")
     private boolean passengerInitiated;
     /**
      * The angular velocity of the vehicle. Sent when riding a vehicle such as a boat. Defaults to 0
-     *
-     * @since v712
      */
+    @Added("1.21.20")
     private float vehicleAngularVelocity;
 }

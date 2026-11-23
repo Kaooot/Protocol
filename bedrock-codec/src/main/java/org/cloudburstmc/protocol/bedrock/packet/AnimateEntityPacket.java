@@ -5,6 +5,7 @@ import it.unimi.dsi.fastutil.longs.LongList;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.cloudburstmc.protocol.bedrock.annotation.Added;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
@@ -15,9 +16,7 @@ public class AnimateEntityPacket implements BedrockPacket {
     private String animation;
     private String nextState;
     private String stopExpression;
-    /**
-     * @since v465
-     */
+    @Added("1.17.30")
     private int stopExpressionVersion;
     private String controller;
     private float blendOutTime;

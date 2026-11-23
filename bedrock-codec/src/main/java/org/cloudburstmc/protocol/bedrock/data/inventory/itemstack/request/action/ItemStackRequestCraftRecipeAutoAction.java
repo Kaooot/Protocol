@@ -2,6 +2,8 @@ package org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.actio
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
+import org.cloudburstmc.protocol.bedrock.annotation.Added;
+import org.cloudburstmc.protocol.bedrock.annotation.Removed;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequestActionType;
 import org.cloudburstmc.protocol.bedrock.data.recipe.RecipeIngredient;
 import org.cloudburstmc.protocol.bedrock.data.recipe.RecipeNetId;
@@ -13,17 +15,12 @@ public class ItemStackRequestCraftRecipeAutoAction {
 
     private ItemStackRequestActionType actionType;
     private RecipeNetId recipeNetId;
-    /**
-     * @since v712
-     */
+    @Added("1.21.20")
     private int numberOfRequestedCrafts;
-    /**
-     * @since v448
-     * @deprecated since v2168
-     */
+    @Deprecated
+    @Added("1.17.0")
+    @Removed("26.40")
     private int timesCrafted;
-    /**
-     * @since v557
-     */
+    @Added("1.19.40")
     private final List<RecipeIngredient> ingredients = new ObjectArrayList<>();
 }

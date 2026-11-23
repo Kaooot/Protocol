@@ -1,6 +1,8 @@
 package org.cloudburstmc.protocol.bedrock.data.attribute;
 
 import lombok.Data;
+import org.cloudburstmc.protocol.bedrock.annotation.Added;
+import org.cloudburstmc.protocol.bedrock.annotation.Removed;
 import org.cloudburstmc.protocol.bedrock.data.camera.EasingFunction;
 import org.cloudburstmc.protocol.bedrock.data.structure.NoiseAlignment;
 
@@ -8,47 +10,36 @@ import org.cloudburstmc.protocol.bedrock.data.structure.NoiseAlignment;
 public class EnvironmentAttributeData {
 
     private String attributeName;
-    /**
-     * @deprecated since v2225
-     */
+    @Deprecated
+    @Removed("26.60")
     private Object fromAttribute;
-    /**
-     * @deprecated since v2225
-     */
+    @Deprecated
+    @Removed("26.60")
     private Object attribute;
-    /**
-     * @deprecated since v2225
-     */
+    @Deprecated
+    @Removed("26.60")
     private Object toAttribute;
-    /**
-     * @deprecated since v2225
-     */
+    @Deprecated
+    @Removed("26.60")
     private int currentTransitionTicks;
-    /**
-     * @deprecated since v2225
-     */
+    @Deprecated
+    @Removed("26.60")
     private int totalTransitionTicks;
-    /**
-     * @deprecated since v2225
-     */
+    @Deprecated
+    @Removed("26.60")
     private EasingFunction easing;
-    /**
-     * @since v1001
-     * @deprecated since v2225
-     */
+    @Added("26.30")
+    @Deprecated
+    @Removed("26.60")
     private int localTransitionTicks;
-    /**
-     * @since v1001
-     * @deprecated since v2225
-     */
+    @Added("26.30")
+    @Deprecated
+    @Removed("26.60")
     private boolean noiseTransition;
-    /**
-     * @since v2193
-     * @deprecated since v2225
-     */
+    @Added("26.50")
+    @Deprecated
+    @Removed("26.60")
     private NoiseAlignment noiseAlignment;
-    /**
-     * @since v2225
-     */
+    @Added("26.60")
     private Object payload;
 }

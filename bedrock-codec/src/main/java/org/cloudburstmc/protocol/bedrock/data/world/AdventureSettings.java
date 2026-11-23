@@ -1,13 +1,13 @@
 package org.cloudburstmc.protocol.bedrock.data.world;
 
 import lombok.Data;
+import org.cloudburstmc.protocol.bedrock.annotation.Added;
 
 /**
  * AdventureSettings for UpdateAdventureSettingsPacket
- *
- * @since v534
  */
 @Data
+@Added("1.19.10")
 public class AdventureSettings {
 
     /**

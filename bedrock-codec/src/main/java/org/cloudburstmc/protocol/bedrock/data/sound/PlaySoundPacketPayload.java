@@ -2,6 +2,7 @@ package org.cloudburstmc.protocol.bedrock.data.sound;
 
 import lombok.Data;
 import org.cloudburstmc.math.vector.Vector3i;
+import org.cloudburstmc.protocol.bedrock.annotation.Added;
 
 @Data
 public class PlaySoundPacketPayload {
@@ -10,28 +11,16 @@ public class PlaySoundPacketPayload {
     private Vector3i position;
     private float volume;
     private float pitch;
-    /**
-     * @since v2168
-     */
+    @Added("26.40")
     private int loopCount;
-    /**
-     * @since v2193
-     */
+    @Added("26.50")
     private boolean bypassListenerRangeCheck;
-    /**
-     * @since v975
-     */
+    @Added("26.10")
     private ServerSoundHandle serverSoundHandle;
-    /**
-     * @since v2193
-     */
+    @Added("26.50")
     private Float playbackPositionSeconds;
-    /**
-     * @since v2259
-     */
+    @Added("26.70")
     private Float startDelaySeconds;
-    /**
-     * @since v2259
-     */
+    @Added("26.70")
     private SoundAttachOptions attachOptions;
 }

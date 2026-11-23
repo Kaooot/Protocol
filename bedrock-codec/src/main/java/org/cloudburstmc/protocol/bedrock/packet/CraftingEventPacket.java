@@ -4,6 +4,7 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.cloudburstmc.protocol.bedrock.annotation.Removed;
 import org.cloudburstmc.protocol.bedrock.data.inventory.CraftingType;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
 import org.cloudburstmc.protocol.common.PacketSignal;
@@ -11,9 +12,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * @since since v630
- */
+@Removed("1.20.50")
 @Deprecated
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)

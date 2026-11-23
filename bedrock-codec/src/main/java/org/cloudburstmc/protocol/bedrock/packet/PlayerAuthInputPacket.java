@@ -6,6 +6,8 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.math.vector.Vector2f;
 import org.cloudburstmc.math.vector.Vector3f;
+import org.cloudburstmc.protocol.bedrock.annotation.Added;
+import org.cloudburstmc.protocol.bedrock.annotation.Removed;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequest;
 import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.PackedItemUseLegacyInventoryTransaction;
 import org.cloudburstmc.protocol.bedrock.data.player.*;
@@ -30,64 +32,42 @@ public class PlayerAuthInputPacket implements BedrockPacket {
     private float playerHeadRotation;
     private final Set<PlayerAuthInputData> inputData = EnumSet.noneOf(PlayerAuthInputData.class);
     private InputMode inputMode;
-    /**
-     * @deprecated since v748
-     */
+    @Deprecated
+    @Removed("1.21.40")
     private Vector3f vrGazeDirection;
     private ClientPlayMode playMode;
-    /**
-     * @since v527
-     */
+    @Added("1.19.0")
     private NewInteractionModel newInteractionModel;
-    /**
-     * @since v748
-     */
+    @Added("1.21.40")
     private Vector2f interactRotation;
-    /**
-     * @since v419
-     */
+    @Added("1.16.100")
     private PlayerInputTick clientTick;
-    /**
-     * @since v419
-     */
+    @Added("1.16.100")
     private Vector3f posDelta;
     /**
      * {@link #inputData} must contain {@link PlayerAuthInputData#PERFORM_ITEM_INTERACTION} in order for this to not be null.
-     *
-     * @since v428
      */
+    @Added("1.16.210")
     private PackedItemUseLegacyInventoryTransaction itemUseTransaction;
     /**
      * {@link #inputData} must contain {@link PlayerAuthInputData#PERFORM_ITEM_STACK_REQUEST} in order for this to not be null.
-     *
-     * @since v428
      */
+    @Added("1.16.210")
     private ItemStackRequest itemStackRequest;
     /**
      * {@link #inputData} must contain {@link PlayerAuthInputData#PERFORM_BLOCK_ACTIONS} in order for this to not be empty.
-     *
-     * @since v428
      */
+    @Added("1.16.210")
     private final List<PlayerBlockActionData> playerBlockActions = new ObjectArrayList<>();
-    /**
-     * @since v662
-     */
+    @Added("1.20.70")
     private Vector2f vehicleRotation;
-    /**
-     * @since v649
-     */
+    @Added("1.20.60")
     private Long clientPredictedVehicle;
-    /**
-     * @since v575
-     */
+    @Added("1.19.70")
     private Vector2f analogMoveVector;
-    /**
-     * @since v748
-     */
+    @Added("1.21.40")
     private Vector3f cameraOrientation;
-    /**
-     * @since v766
-     */
+    @Added("1.21.50")
     private Vector2f rawMoveVector;
 
     @Override

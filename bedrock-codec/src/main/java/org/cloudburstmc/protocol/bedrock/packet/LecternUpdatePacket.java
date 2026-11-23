@@ -4,6 +4,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.math.vector.Vector3i;
+import org.cloudburstmc.protocol.bedrock.annotation.Added;
+import org.cloudburstmc.protocol.bedrock.annotation.Removed;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
@@ -12,14 +14,11 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 public class LecternUpdatePacket implements BedrockPacket {
 
     private int newPageToShow;
-    /**
-     * @since v354
-     */
+    @Added("1.11.0")
     private int totalPages;
     private Vector3i positionOfLecternToUpdate;
-    /**
-     * @deprecated since v662
-     */
+    @Deprecated
+    @Removed("1.20.70")
     private boolean droppingBook;
 
     @Override

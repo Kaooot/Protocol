@@ -3,6 +3,7 @@ package org.cloudburstmc.protocol.bedrock.data.actor.passenger;
 import lombok.Data;
 import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.math.vector.Vector3i;
+import org.cloudburstmc.protocol.bedrock.annotation.Added;
 
 import java.util.UUID;
 
@@ -14,13 +15,9 @@ public class PassengerOfBlockArguments {
     private float rotation;
     private float rotationLimit;
     private EmoteType emoteType;
-    /**
-     * @since v2259
-     */
+    @Added("26.70")
     private long blockType;
-    /**
-     * @since v2259
-     */
+    @Added("26.70")
     private UUID packUUID;
 
     public enum EmoteType {

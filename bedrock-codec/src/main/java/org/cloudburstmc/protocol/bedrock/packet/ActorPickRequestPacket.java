@@ -3,6 +3,7 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.cloudburstmc.protocol.bedrock.annotation.Added;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
@@ -12,9 +13,7 @@ public class ActorPickRequestPacket implements BedrockPacket {
 
     private long actorID;
     private int maxSlots;
-    /**
-     * @since v465
-     */
+    @Added("1.17.30")
     private boolean withData;
 
     @Override

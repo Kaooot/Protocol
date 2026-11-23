@@ -3,6 +3,7 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.cloudburstmc.protocol.bedrock.annotation.Added;
 import org.cloudburstmc.protocol.bedrock.data.camera.CameraShakeAction;
 import org.cloudburstmc.protocol.bedrock.data.camera.CameraShakeType;
 import org.cloudburstmc.protocol.common.PacketSignal;
@@ -15,9 +16,7 @@ public class CameraShakePacket implements BedrockPacket {
     private float intensity;
     private float seconds;
     private CameraShakeType shakeType;
-    /**
-     * @since v428
-     */
+    @Added("1.16.210")
     private CameraShakeAction shakeAction;
 
     @Override

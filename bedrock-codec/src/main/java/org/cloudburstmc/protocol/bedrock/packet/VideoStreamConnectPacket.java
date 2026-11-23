@@ -3,13 +3,12 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.cloudburstmc.protocol.bedrock.annotation.Removed;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * @deprecated since v407
- */
 @Deprecated
 @Data
+@Removed("1.16.0")
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class VideoStreamConnectPacket implements BedrockPacket {

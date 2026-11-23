@@ -1,6 +1,7 @@
 package org.cloudburstmc.protocol.bedrock.data.definitions;
 
 import lombok.Value;
+import org.cloudburstmc.protocol.bedrock.annotation.Added;
 import org.cloudburstmc.protocol.bedrock.data.world.GeneratorType;
 import org.cloudburstmc.protocol.bedrock.data.world.DimensionType;
 
@@ -16,25 +17,15 @@ public class DimensionDefinition {
     int heightRange;
     int minimumY;
     GeneratorType generatorType;
-    /**
-     * @since v975
-     */
+    @Added("26.10")
     DimensionType dimensionType;
-    /**
-     * @since v2168
-     */
+    @Added("26.40")
     UUID packId;
-    /**
-     * @since v2193
-     */
+    @Added("26.50")
     String defaultBiome;
-    /**
-     * @since v2225
-     */
+    @Added("26.60")
     int cloudHeight;
-    /**
-     * @since v2225
-     */
+    @Added("26.60")
     boolean renderClouds;
 
     /**

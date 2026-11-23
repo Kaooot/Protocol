@@ -2,6 +2,7 @@ package org.cloudburstmc.protocol.bedrock.data.inventory.transaction;
 
 import lombok.Data;
 import org.cloudburstmc.math.vector.Vector3f;
+import org.cloudburstmc.protocol.bedrock.annotation.Added;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
 import org.cloudburstmc.protocol.bedrock.data.player.HandSlot;
 
@@ -13,8 +14,6 @@ public class ItemReleaseInventoryTransaction {
     private int slot;
     private ItemData item;
     private Vector3f fromPosition;
-    /**
-     * @since v2225
-     */
+    @Added("26.60")
     private HandSlot hand;
 }

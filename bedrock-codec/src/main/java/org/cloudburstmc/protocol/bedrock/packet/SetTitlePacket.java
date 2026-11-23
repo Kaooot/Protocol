@@ -3,6 +3,7 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.cloudburstmc.protocol.bedrock.annotation.Added;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
@@ -17,9 +18,7 @@ public class SetTitlePacket implements BedrockPacket {
     private int fadeOutTime;
     private String xuid;
     private String platformOnlineId;
-    /**
-     * @since v712
-     */
+    @Added("1.21.20")
     private CharSequence filteredTitleMessage = "";
 
     @Override

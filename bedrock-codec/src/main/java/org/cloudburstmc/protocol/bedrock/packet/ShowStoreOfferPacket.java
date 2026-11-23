@@ -3,6 +3,7 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.cloudburstmc.protocol.bedrock.annotation.Removed;
 import org.cloudburstmc.protocol.bedrock.data.misc.ShowStoreOfferRedirectType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
@@ -14,9 +15,8 @@ import java.util.UUID;
 public class ShowStoreOfferPacket implements BedrockPacket {
 
     private UUID offerId;
-    /**
-     * @deprecated since v630
-     */
+    @Deprecated
+    @Removed("1.20.50")
     private boolean shownToAll;
     private ShowStoreOfferRedirectType redirectType;
 

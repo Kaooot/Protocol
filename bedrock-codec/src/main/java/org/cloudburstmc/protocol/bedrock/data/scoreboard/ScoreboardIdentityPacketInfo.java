@@ -1,6 +1,8 @@
 package org.cloudburstmc.protocol.bedrock.data.scoreboard;
 
 import lombok.Data;
+import org.cloudburstmc.protocol.bedrock.annotation.Added;
+import org.cloudburstmc.protocol.bedrock.annotation.Removed;
 
 import java.util.UUID;
 
@@ -8,12 +10,9 @@ import java.util.UUID;
 public class ScoreboardIdentityPacketInfo {
 
     private long scoreboardId;
-    /**
-     * @deprecated since v2168
-     */
+    @Deprecated
+    @Removed("26.40")
     private UUID uuid;
-    /**
-     * @since v2168
-     */
+    @Added("26.40")
     private long playerUniqueId;
 }

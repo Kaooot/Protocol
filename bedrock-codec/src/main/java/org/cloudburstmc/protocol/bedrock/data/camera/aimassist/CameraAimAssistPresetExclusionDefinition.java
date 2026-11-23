@@ -2,6 +2,7 @@ package org.cloudburstmc.protocol.bedrock.data.camera.aimassist;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
+import org.cloudburstmc.protocol.bedrock.annotation.Added;
 
 import java.util.List;
 
@@ -9,16 +10,10 @@ import java.util.List;
 public class CameraAimAssistPresetExclusionDefinition {
 
     private final List<String> blocks = new ObjectArrayList<>();
-    /**
-     * @since v898
-     */
+    @Added("1.21.130")
     private final List<String> entities = new ObjectArrayList<>();
-    /**
-     * @since v898
-     */
+    @Added("1.21.130")
     private final List<String> blockTags = new ObjectArrayList<>();
-    /**
-     * @since v924
-     */
+    @Added("26.0")
     private final List<String> entityTypeFamilies = new ObjectArrayList<>();
 }

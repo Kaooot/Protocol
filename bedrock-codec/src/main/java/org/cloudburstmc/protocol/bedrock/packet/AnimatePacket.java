@@ -3,6 +3,8 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.cloudburstmc.protocol.bedrock.annotation.Added;
+import org.cloudburstmc.protocol.bedrock.annotation.Removed;
 import org.cloudburstmc.protocol.bedrock.data.actor.ActorSwingSource;
 import org.cloudburstmc.protocol.bedrock.data.player.HandSlot;
 import org.cloudburstmc.protocol.common.PacketSignal;
@@ -16,13 +18,10 @@ public class AnimatePacket implements BedrockPacket {
     private long targetActorRuntimeID;
     private float data;
     private ActorSwingSource swingSource;
-    /**
-     * @since v2225
-     */
+    @Added("26.60")
     private HandSlot hand;
-    /**
-     * @deprecated since v898
-     */
+    @Deprecated
+    @Removed("1.21.130")
     private float rowingTime;
 
     @Override

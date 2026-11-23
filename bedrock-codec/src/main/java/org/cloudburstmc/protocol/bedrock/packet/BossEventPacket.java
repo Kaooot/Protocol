@@ -3,6 +3,8 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.cloudburstmc.protocol.bedrock.annotation.Added;
+import org.cloudburstmc.protocol.bedrock.annotation.Removed;
 import org.cloudburstmc.protocol.bedrock.data.boss.BossBarColor;
 import org.cloudburstmc.protocol.bedrock.data.boss.BossBarOverlay;
 import org.cloudburstmc.protocol.bedrock.data.boss.BossEventUpdateType;
@@ -14,20 +16,16 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 public class BossEventPacket implements BedrockPacket {
 
     private long targetActorID;
-    /**
-     * @deprecated since v2193
-     */
+    @Deprecated
+    @Removed("26.50")
     private long playerID;
     private BossEventUpdateType eventType;
     private CharSequence name = "";
-    /**
-     * @since v776
-     */
+    @Added("1.21.60")
     private CharSequence filteredName = "";
     private float healthPercent;
-    /**
-     * @deprecated since v1001
-     */
+    @Deprecated
+    @Removed("26.30")
     private int darkenScreen;
     private BossBarColor color = BossBarColor.PINK;
     private BossBarOverlay overlay = BossBarOverlay.PROGRESS;
